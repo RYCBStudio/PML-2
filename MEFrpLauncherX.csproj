@@ -1,0 +1,151 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <PublishAot>false</PublishAot>
+        <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
+        <AssemblyVersion>2.2.0</AssemblyVersion>
+        <NeutralLanguage>zh-Hans</NeutralLanguage>
+        <Version>2.2.0</Version>
+        <ApplicationVersion>2.2.0</ApplicationVersion>
+        <LangVersion>preview</LangVersion>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <Optimize>true</Optimize>
+        <NoWarn>1701;1702;IL2121;CS8902;CS8603;CS8604;CS0169;CS8618;CS8600;CS8604</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AppId>tech.rycb.mefrplauncherx</AppId>
+        <AppName>PML 2</AppName>
+        <DebControlDescription>功能强大、跨平台的 ME Frp 图形化启动工具。</DebControlDescription>
+        <DesktopComment>功能强大、跨平台的 ME Frp 图形化启动工具。</DesktopComment>
+        <DebControlHomepage>https://rycb.mxj.pub/mefl</DebControlHomepage>
+        <DebControlSection>utils</DebControlSection>
+        <DebControlMaintainer>RYCB Studio</DebControlMaintainer>
+        <Png32x32IconFile>Assets\meflx@32x.png</Png32x32IconFile>
+        <SvgIconFile>Assets\meflx.svg</SvgIconFile>
+        <DesktopCategories>Education;Network</DesktopCategories>
+        <InfoPermissions>autostart;notification;trayicon;clipboard</InfoPermissions>
+        <DesktopExec>/usr/share/mefrplauncherx</DesktopExec>
+        <DebControlDepends>libx11-6, libice6, libsm6, libfontconfig1, ca-certificates, tzdata, libc6, libgcc1 | libgcc-s1, libgssapi-krb5-2, libstdc++6, zlib1g, libssl1.0.0 | libssl1.0.2 | libssl1.1 | libssl3, libicu | libicu74 | libicu72 | libicu71 | libicu70 | libicu69 | libicu68 | libicu67 | libicu66 | libicu65 | libicu63 | libicu60 | libicu57 | libicu55 | libicu52</DebControlDepends>
+    </PropertyGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Remove="artifacts\**"/>
+        <AvaloniaResource Include="icon.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1" />
+        <PackageReference Include="Downloader" Version="4.0.3"/>
+        <PackageReference Include="FluentAvalonia.FluentIcons" Version="1.1.201.1-preview7"/>
+        <PackageReference Include="FluentAvaloniaUI" Version="2.4.1" />
+        <PackageReference Include="MessageBox.Avalonia" Version="3.3.0" />
+        <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
+        <PackageReference Include="ReactiveUI.Avalonia" Version="11.3.8" />
+        <PackageReference Include="ScottPlot" Version="5.1.57" />
+        <PackageReference Include="ScottPlot.Avalonia" Version="5.1.57" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+        <PackageReference Include="System.Runtime.Caching" Version="10.0.1" />
+        <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.6.5"/>
+        <PackageReference Update="Packaging.Targets">
+            <Version>0.1.232</Version>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="mefrplauncherx.desktop" CopyToPublishDirectory="PreserveNewest">
+            <LinuxPath>/usr/share/applications/meflx.desktop</LinuxPath>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
+        <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj" />
+        <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj" />
+        <ProjectReference Include="G:\VSProj\Markdown.AIRender-master\src\MarkdownAIRender\MarkdownAIRender.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Views\ConfigEditor.axaml.cs">
+            <DependentUpon>ConfigEditor.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\ALPSettings.axaml.cs">
+            <DependentUpon>ALPSettings.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\ProxyMonitor\ProxyFloat.axaml.cs">
+            <DependentUpon>ProxyFloat.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Remove="artifacts\**"/>
+        <Compile Update="Controls\CreateProxy.axaml.cs">
+          <DependentUpon>CreateProxy.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\Appearance\ProxyFloatSettings.axaml.cs">
+          <DependentUpon>ProxyFloatSettings.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\ALPConfigEditor.axaml.cs">
+          <DependentUpon>ALPConfigEditor.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="Resources\ini.xshd">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\json.xshd">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Terminal.xshd">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\toml.xshd">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\yml.xshd">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Remove="artifacts\**"/>
+        <None Update="Config\Settings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="mscorlib" />
+        <Reference Include="RYCB.PML.MEFrpCaptchaLib">
+            <HintPath>G:\VSProj\RYCB.PML.MEFrpCaptchaLib\bin\Release\Dotfuscated\RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
+        </Reference>
+        <Reference Include="SecretLib">
+          <HintPath>G:\VSProj\SecretLib\bin\Release\net8.0\Dotfuscated\Dotfuscated\SecretLib.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <AvaloniaXaml Remove="artifacts\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Remove="artifacts\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Remove="artifacts\**"/>
+    </ItemGroup>
+</Project>

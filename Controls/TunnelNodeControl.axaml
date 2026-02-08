@@ -1,0 +1,128 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:debug="clr-namespace:MEFrpLauncherX.ViewModels.Debug"
+             VerticalAlignment="Center"
+             Width="250"
+             Height="240"
+             x:Class="MEFrpLauncherX.Controls.TunnelNodeControl"
+             IsEnabled="{Binding IsNotOverloaded}"
+             FontFamily="{StaticResource GlobalFontFamily}"
+             mc:Ignorable="d"
+             x:DataType="local:TunnelNodeViewModel">
+    <UserControl.Resources>
+        <core:BoolToBadgeHeaderConverter x:Key="BoolToBadgeHeaderConverter" />
+    </UserControl.Resources>
+    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{Binding AllowGroup, Converter={x:Static local:AllowGroupToBorderBrushConverter.Instance}}"
+            CornerRadius="5" BorderThickness="1">
+        <Grid>
+            <controls:InfoBadge Margin="0,10,10,0" HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="OrangeRed"
+                                BorderThickness="-1"
+                                Foreground="Azure"
+                                IsVisible="{Binding IsOverloaded}">
+                <controls:InfoBadge.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                             Glyph="{Binding IsOverloaded, Converter={StaticResource BoolToBadgeHeaderConverter}}" />
+                </controls:InfoBadge.IconSource>
+            </controls:InfoBadge>
+            <controls:InfoBadge Margin="0,20,10,0" HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                BorderThickness="-1"
+                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                IsVisible="{Binding AllowGroup, Converter={x:Static local:AllowGroupToIsVisibleConverter.Instance}}">
+                <controls:InfoBadge.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                             Glyph="VIP" />
+                </controls:InfoBadge.IconSource>
+            </controls:InfoBadge>
+            <Border Background="#0f000000" Margin="0" Padding="10"
+                    BorderBrush="{Binding IsOverloaded, 
+                                            Converter={x:Static local:TunnelNodeControl.BoolToColorConverter}}"
+                    BorderThickness="{Binding IsOverloaded, Converter={x:Static local:TunnelNodeControl.BoolToBorderThicknessConverter}}"
+                    CornerRadius="5">
+                <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+
+                    <!-- Title row -->
+                    <TextBlock VerticalAlignment="Center" Grid.Row="0" FontFamily="{StaticResource GlobalFontFamily}"
+                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}">
+                        <Run FontWeight="Bold" Text="#" />
+                        <Run FontWeight="Bold" Text="{Binding NodeId}" />
+                        <Run Text="{Binding Name}" />
+                    </TextBlock>
+
+                    <!-- Description -->
+                    <TextBlock Grid.Row="1"
+                               Margin="0,5,0,0"
+                               Foreground="Gray" FontFamily="{StaticResource GlobalFontFamily}"
+                               Text="{Binding Description}"
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                               TextWrapping="Wrap"
+                               ToolTip.Tip="{Binding Description}">
+                    </TextBlock>
+
+                    <!-- Protocol and bandwidth tags -->
+                    <WrapPanel Grid.Row="2" Margin="0,10,0,0" ItemSpacing="3" LineSpacing="5">
+                        <ItemsControl ItemsSource="{Binding AllowTypes}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" ItemSpacing="3" LineSpacing="5" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Label VerticalAlignment="Center"
+                                           Classes="Green" FontFamily="{StaticResource GlobalFontFamily}"
+                                           Theme="{StaticResource TagLabel}"
+                                           Content="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Label VerticalAlignment="Center"
+                               Classes="Blue" FontFamily="{StaticResource GlobalFontFamily}"
+                               Theme="{StaticResource TagLabel}"
+                               Content="{Binding Bandwidth}" />
+                        <!-- <Label Classes="Indigo" FontFamily="{StaticResource GlobalFontFamily}" -->
+                        <!--        Theme="{StaticResource TagLabel}" VerticalAlignment="Center" -->
+                        <!--        Content="{Binding RegionDisplay}" /> -->
+                    </WrapPanel>
+
+                    <!-- Load progress bar -->
+                    <DockPanel Grid.Row="3"
+                               Margin="0,10,0,0"
+                               VerticalAlignment="Center"
+                               HorizontalSpacing="2">
+                        <TextBlock VerticalAlignment="Center" FontFamily="{StaticResource GlobalFontFamily}"
+                                   Text="负载：" DockPanel.Dock="Left" />
+                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}" VerticalAlignment="Center"
+                                   Text="{Binding StringFormat={}{0}%, Path=LoadPercent}" DockPanel.Dock="Right" />
+
+                        <ProgressBar MinWidth="70" FontFamily="{StaticResource GlobalFontFamily}"
+                                     Foreground="{Binding LoadPercent, Converter={x:Static core:LoadPercentToForegroundConverter.Instance}}"
+                                     Value="{Binding LoadPercent}" />
+                    </DockPanel>
+
+                    <!-- Online status indicator -->
+                    <StackPanel Grid.Row="4"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal">
+                        <Ellipse Width="10"
+                                 Height="10"
+                                 Margin="0,0,5,0"
+                                 VerticalAlignment="Center"
+                                 Fill="{Binding IsOnline, Converter={x:Static local:TunnelNodeControl.BoolToColorConverter}}" />
+                        <TextBlock VerticalAlignment="Center" FontFamily="{StaticResource GlobalFontFamily}"
+                                   Text="{Binding IsOnline, Converter={x:Static local:TunnelNodeControl.BoolToStatusConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

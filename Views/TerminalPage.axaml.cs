@@ -1,0 +1,284 @@
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+using MEFrpLauncherX.Console;
+using MEFrpLauncherX.Core;
+using MEFrpLauncherX.ViewModels;
+
+namespace MEFrpLauncherX.Views
+{
+    public partial class TerminalPage : UserControl
+    {
+        public static TerminalPage Instance
+        {
+            get;
+            private set;
+        }
+
+        public TerminalPage()
+        {
+            MainPageFrameViewModel.Instance?.IsLoading = true;
+            InitializeComponent();
+            Loaded += TerminalPage_Loaded;
+            Instance = this;
+            MainPageFrameViewModel.TerminalPage = this;
+        }
+
+        private async void TerminalPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainPageFrameViewModel.Instance?.IsLoading = false;
+        }
+
+        private async void VisitMEFDoc(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var process = new Process();
+                process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = "https://www.mefrp.com/docs/usage/common",
+                    UseShellExecute = true
+                };
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger.Log($"Error opening URL: {ex.Message}");
+            }
+        }
+
+        public void SendCtrlCCommandToSelected()
+        {
+            if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
+            {
+                terminalControl.SendCtrlCCommand();
+                ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
+            }
+            else
+            {
+                throw new EntryPointNotFoundException();
+            }
+        }
+        
+        public void SendCtrlCCommandToSelected(string header)
+        {
+            if (MainTabCtrl.SelectedItem is TabItem {Content: TerminalControl terminalControl } tabItem)
+            {
+                if (tabItem.Header?.ToString() != header)
+                {
+                    return;
+                }
+
+                terminalControl.SendCtrlCCommand();
+                ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
+            }
+            else
+            {
+                throw new EntryPointNotFoundException();
+            }
+        }
+
+        public void SendCtrlCCommandAll()
+        {
+            foreach (var item in MainTabCtrl.Items)
+            {
+                if (item is TabItem { Content: TerminalControl terminalControl })
+                {
+                    terminalControl.SendCtrlCCommand();
+                }
+            }
+        }
+
+        private async void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl })
+            {
+                await terminalControl.SendCommandAsync("clear");
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            var index = MainTabCtrl.SelectedIndex;
+            if (index >= 0 && index < MainTabCtrl.Items.Count)
+            {
+                // 安全释放终端资源
+                if (MainTabCtrl.Items[index] is TabItem { Content: TerminalControl terminalControl })
+                {
+                    terminalControl.SendCtrlCCommand();
+                    terminalControl.Dispose(); // 显式释放资源
+                }
+                MainTabCtrl.Items.RemoveAt(index);
+        
+                if (MainTabCtrl.Items.Count > 0)
+                {
+                    MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
+                }
+            }
+        }
+
+        private void NewConsoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            CreateNewTerminal();
+        }
+
+        private async void CreateNewTerminal()
+        {
+            try
+            {
+                var captchaResult = await Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    var captchaWindow = new InputWindow("如不清楚，留空即可；输入cancel退出\n可用变量：" +
+                                                        "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
+                                                        "\n{mefrpcp} - ME Frp Client可执行文件目录" +
+                                                        "\n{startup} - 程序启动目录", "输入命令行及参数");
+
+                    return await captchaWindow.ShowDialog<string>(Core.App.MainWindow);
+                });
+
+                if (captchaResult is not null && captchaResult.Equals("cancel", StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                var newTab = new TabItem
+                {
+                    Header = "控制台" + (MainTabCtrl.Items.Count + 1), // 修复索引计算错误
+                    Content = new TerminalControl()
+                };
+
+                MainTabCtrl.Items.Add(newTab);
+                MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
+    
+                var shell = string.IsNullOrEmpty(captchaResult) 
+                    ? TerminalControl.GetDefaultShell() 
+                    : captchaResult.Trim();
+
+                // 变量替换
+                var res = shell.Replace("{mefrpc}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"))
+                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin"))
+                    .Replace("{startup}", Core.App.StartupPath);
+                var isMEFrpCExe = shell.Contains("{mefrpc}");
+
+                if (newTab.Content is TerminalControl terminal)
+                {
+                    // 只启动一次，且确保参数正确
+                    terminal.StartTerminal(isMEFrpCExe ? null : res);
+
+                    if (isMEFrpCExe)
+                    {
+                        await Task.Delay(500); // 确保终端初始化完成
+                        await terminal.SendCommandAsync(res);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Core.App.CurrentLogger.Error(e);
+            }
+        }
+
+        public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "")
+        {
+            var newTab = new TabItem
+            {
+                Header = consoleTitle.IsNullOrEmpty() ? "控制台" + (MainTabCtrl.Items.Count + 1) : consoleTitle,
+                Content = new TerminalControl()
+            };
+
+            MainTabCtrl.Items.Add(newTab);
+            MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
+            if (OperatingSystem.IsWindows())
+            {
+                var res = rs.Replace("{mefrpc}", $"& \"{Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")}\"")
+                    .Replace("{mefrpcp}", $"\"{Path.Combine(Core.App.StartupPath, "bin")}\"")
+                    .Replace("{startup}", Core.App.StartupPath);
+
+                Core.App.CurrentLogger.LogDebug(res);
+                var isMEFrpCExe = rs.Contains("{mefrpc}");
+
+                if (newTab.Content is TerminalControl terminal)
+                {
+                    if (isMEFrpCExe)
+                    {
+                        // 修改5: 移除CurrentConhostId检查，直接发送命令
+
+                        terminal.SendCommandAsync(res).ConfigureAwait(false);
+                    }
+                }
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                var res = rs.Replace("{mefrpc}",
+                        Path.Combine(Core.App.StartupPath, "bin", "mefrpc_linux_amd64_0.61.1", "mefrpc"))
+                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc_linux_amd64_0.61.1"))
+                    .Replace("{startup}", Core.App.StartupPath);
+
+                var isMEFrpCExe = rs.Contains("{mefrpc}");
+
+
+                if (newTab.Content is TerminalControl terminal)
+                {
+                    await terminal.SendCommandAsync("cd /" + Path.Combine("usr", "share", "mefrplauncherx"));
+                    await terminal.SendCommandAsync("""
+                                                    echo -e "\e[33m解压文件...\e[0m"
+                                                    """);
+                    await terminal.SendCommandAsync("tar -xvf " +
+                                                    Path.Combine(Core.App.StartupPath, "bin",
+                                                        "mefrpc.tar") +
+                                                    $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1");
+                    if (isMEFrpCExe)
+                    {
+                        // 修改5: 移除CurrentConhostId检查，直接发送命令
+
+                        Core.App.CurrentLogger.Log(res, type: EnumLogType.Debug);
+                        await terminal.SendCommandAsync(res);
+                    }
+                }
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                var res = rs.Replace("{mefrpc}",
+                        Path.Combine(Core.App.StartupPath, "bin", "mefrpc_darwin_amd64_0.61.1", "mefrpc"))
+                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc_darwin_amd64_0.61.1"))
+                    .Replace("{startup}", Core.App.StartupPath);
+
+                var isMEFrpCExe = rs.Contains("{mefrpc}");
+
+
+                if (newTab.Content is TerminalControl terminal)
+                {
+                    await terminal.SendCommandAsync("cd " + Core.App.StartupPath);
+                    await terminal.SendCommandAsync("""
+                                                    echo -e "\e[33m解压文件...\e[0m"
+                                                    """);
+                    await terminal.SendCommandAsync("tar -xvf " +
+                                                    Path.Combine(Core.App.StartupPath, "bin",
+                                                        "mefrpc.tar") +
+                                                    $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1");
+                    if (isMEFrpCExe)
+                    {
+                        // 修改5: 移除CurrentConhostId检查，直接发送命令
+
+                        Core.App.CurrentLogger.Log(res, type: EnumLogType.Debug);
+                        await terminal.SendCommandAsync(res);
+                    }
+                }
+            }
+        }
+
+        private void VisitRCDoc(object sender, RoutedEventArgs e)
+        {
+            VisitMEFDoc(sender, e); // Reuse the same method
+        }
+
+        private void CtrlCButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendCtrlCCommandToSelected();
+        }
+    }
+}

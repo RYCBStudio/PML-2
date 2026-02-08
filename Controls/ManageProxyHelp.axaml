@@ -1,0 +1,105 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.ManageProxyHelp">
+    <Grid RowDefinitions="Auto,*,Auto,*,Auto,*" HorizontalAlignment="Center" VerticalAlignment="Stretch" RowSpacing="5">
+        <TextBlock Text="搜索命令" Theme="{StaticResource BodyStrongTextBlockStyle}" FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+        <StackPanel Grid.Row="1">
+            <controls:InfoBar IsOpen="True" Title="提示" Message="搜索语法并不通用。目前只适用于本软件。您可以向其他软件开发者提出该请求。"
+                              Severity="Informational" />
+            <WrapPanel ItemSpacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/pid:n" FontFamily="{StaticResource Jbm}"
+                               Background="{DynamicResource SmokeFillColorDefaultBrush}"
+                               Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}" />
+                    <TextBlock Text="n为隧道ID" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/nid:n" FontFamily="{StaticResource Jbm}"
+                               Background="{DynamicResource SmokeFillColorDefaultBrush}"
+                               Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}" />
+                    <TextBlock Text="n为节点ID" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/n:x" FontFamily="{StaticResource Jbm}"
+                               Background="{DynamicResource SmokeFillColorDefaultBrush}"
+                               Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}" />
+                    <TextBlock Text="x为节点名称，支持拼音" />
+                </StackPanel>
+            </WrapPanel>
+            <WrapPanel Orientation="Horizontal" ItemSpacing="15" HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                <TextBlock Text="示例" Theme="{StaticResource {StaticResource BodyStrongTextBlockStyle}}"
+                           FontWeight="Bold" />
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/pid:1" FontFamily="{StaticResource Jbm}" />
+                    <TextBlock Text="搜索所有隧道ID包含&quot;1&quot;的隧道" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/nid:1" FontFamily="{StaticResource Jbm}" />
+                    <TextBlock Text="搜索所有节点ID包含&quot;1&quot;的隧道" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="/n:节点1" FontFamily="{StaticResource Jbm}" />
+                    <TextBlock Text="搜索所有节点名称包含&quot;节点1&quot;的隧道" />
+                </StackPanel>
+            </WrapPanel>
+        </StackPanel>
+        <TextBlock Grid.Row="2" Text="颜色含义解释" Theme="{StaticResource {StaticResource BodyStrongTextBlockStyle}}"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+        <WrapPanel Grid.Row="3" ItemSpacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <controls:InfoBadge
+                Background="{DynamicResource SystemFillColorSuccessBrush}"
+                BorderThickness="-1"
+                Foreground="Azure">
+                <controls:InfoBadge.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                             Glyph="绿色: 隧道在线" />
+                </controls:InfoBadge.IconSource>
+            </controls:InfoBadge>
+            <controls:InfoBadge
+                Background="{DynamicResource SystemFillColorCriticalBrush}"
+                BorderThickness="-1"
+                Foreground="Azure">
+                <controls:InfoBadge.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                             Glyph="红色: 隧道离线" />
+                </controls:InfoBadge.IconSource>
+            </controls:InfoBadge>
+            <controls:InfoBadge
+                Background="{DynamicResource SystemFillColorCautionBrush}"
+                BorderThickness="-1"
+                Foreground="Black">
+                <controls:InfoBadge.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                             Glyph="黄色: 隧道被禁用" />
+                </controls:InfoBadge.IconSource>
+            </controls:InfoBadge>
+        </WrapPanel>
+        <TextBlock Grid.Row="4" Text="示例" Theme="{StaticResource {StaticResource BodyStrongTextBlockStyle}}"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+        <WrapPanel Grid.Row="5" ItemSpacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <Image Width="200" Stretch="Uniform" Source="../Assets/psh_1.png" />
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道在线"></TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <Image Width="200" Stretch="Uniform" Source="../Assets/psh_2.png" />
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线"></TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <Image Width="200" Stretch="Uniform" Source="../Assets/psh_3.png" />
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线且被禁用"></TextBlock>
+            </StackPanel>
+        </WrapPanel>
+    </Grid>
+</UserControl>

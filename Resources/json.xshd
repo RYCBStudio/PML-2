@@ -1,0 +1,47 @@
+<SyntaxDefinition name="JSON" extensions=".json"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#ff7A7E85" />
+    <Color name="String" foreground="#ff6AAB73" />
+    <Color name="Key" foreground="#ffCF8E6D" />
+    <Color name="Boolean" foreground="#ffC77DBB" fontStyle="italic" />
+    <Color name="Number" foreground="#ff2AACB8" />
+    <Color name="Null" foreground="#ff94558D" fontWeight="bold" />
+    <Color name="Punctuation" />
+    
+    <RuleSet>
+        <!-- 字符串 -->
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+        
+        <!-- 键 -->
+        <Rule color="Key">
+            "(\\"|[^"])*"\s*(?=:)
+        </Rule>
+        
+        <!-- 布尔值 -->
+        <Keywords color="Boolean">
+            <Word>true</Word>
+            <Word>false</Word>
+        </Keywords>
+        
+        <!-- null -->
+        <Keywords color="Null">
+            <Word>null</Word>
+        </Keywords>
+        
+        <!-- 数字 -->
+        <Rule color="Number">
+            \b\d+(\.\d+)?([eE][+-]?\d+)?\b
+        </Rule>
+        
+        <!-- 标点符号 -->
+        <Rule color="Punctuation">
+            [\{\}\[\],:]
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

@@ -1,0 +1,23 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        Width="500" Height="200"
+        x:Class="MEFrpLauncherX.Views.ProxyMonitor.ProxyFloatSettings"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Title="设置">
+    <StackPanel Margin="5" Spacing="5">
+        <controls:SettingsExpander Header="窗口位置" Description="设置监控栏的窗口位置">
+            <controls:SettingsExpander.Footer>
+                <ComboBox SelectionChanged="SavePosition" x:Name="PosBox">
+                    <ComboBoxItem Content="左上角" Tag="lt" />
+                    <ComboBoxItem Content="右上角" Tag="rt" />
+                    <ComboBoxItem Content="左下角" Tag="lb" />
+                    <ComboBoxItem Content="右下角" Tag="rb" />
+                    <ComboBoxItem Content="中上" Tag="ct" />
+                    <ComboBoxItem Content="中下" Tag="cb" />
+                </ComboBox>
+            </controls:SettingsExpander.Footer>
+        </controls:SettingsExpander>
+    </StackPanel>
+</Window>

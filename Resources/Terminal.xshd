@@ -1,0 +1,189 @@
+﻿<SyntaxDefinition name="Terminal" extensions=".log"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Default" foreground="#ffffffff" />
+    <Color name="Prompt" foreground="#ff00FF00" />          <!-- 绿色 -->
+    <Color name="Command" foreground="#ff00FFFF" />         <!-- 青色 -->
+    <Color name="Output" foreground="#ffffffff" />          <!-- 白色 -->
+    <Color name="Error" foreground="#ffff0000" />           <!-- 红色 -->
+    <Color name="Warning" foreground="#ffffa500" />         <!-- 橙色 -->
+    <Color name="Success" foreground="#ff90ee90" />         <!-- 亮绿色 -->
+    <Color name="Info" foreground="#ffadd8e6" />            <!-- 亮蓝色 -->
+    <Color name="Timestamp" foreground="#ffa9a9a9" />       <!-- 灰色 -->
+    <Color name="Directory" foreground="#ffffa07a" />       <!-- 浅橙色 -->
+    <Color name="Executable" foreground="#ffffd700" />      <!-- 金色 -->
+    <Color name="Number" foreground="#ff2AACB8" />          <!-- 青色数字 -->
+    <Color name="Punctuation" foreground="#ffcccccc" />     <!-- 浅灰色标点 -->
+
+    <RuleSet>
+        <!-- ANSI 颜色代码 - 使用精确匹配 -->
+        <Rule color="AnsiRed">
+            \x1B\[31m.*?(\x1B\[0m|$)
+        </Rule>
+        <Rule color="AnsiGreen">
+            \x1B\[32m.*?(\x1B\[0m|$)
+        </Rule>
+        <Rule color="AnsiYellow">
+            \x1B\[33m.*?(\x1B\[0m|$)
+        </Rule>
+        <Rule color="AnsiBlue">
+            \x1B\[34m.*?(\x1B\[0m|$)
+        </Rule>
+        <Rule color="AnsiMagenta">
+            \x1B\[35m.*?(\x1B\[0m|$)
+        </Rule>
+        <Rule color="AnsiCyan">
+            \x1B\[36m.*?(\x1B\[0m|$)
+        </Rule>
+
+        <!-- 清除ANSI代码的显示 -->
+        <Rule>
+            \x1B\[[0-9;]*m
+        </Rule>
+
+        <!-- 其他终端元素 -->
+        <Rule color="AnsiGreen">
+            ^(PS&gt;|&gt;|\$ |C:\\.*&gt;)
+        </Rule>
+
+        <Rule color="AnsiRed">
+            \b([Ee]rror|[Ff]ail|[Ee]xception|[Cc]ritical|[Ff]atal)\b
+        </Rule>
+
+        <Rule color="AnsiYellow">
+            \b([Ww]arning|[Ww]arn|[Cc]aution|[Nn]otice)\b
+        </Rule>
+
+        <Rule color="AnsiGreen">
+            \b([Ss]uccess|[Oo]k|[Dd]one|[Cc]omplete|[Rr]eady)\b
+        </Rule>
+
+        <!-- 提示符 -->
+        <Rule color="Prompt">
+            ^(PS&gt;|&gt;|\$ |C:\\.*&gt;|.*&gt;)
+        </Rule>
+
+        <!-- 错误信息关键词 -->
+        <Keywords color="Error">
+            <Word>error</Word>
+            <Word>Error</Word>
+            <Word>ERROR</Word>
+            <Word>fail</Word>
+            <Word>Fail</Word>
+            <Word>FAIL</Word>
+            <Word>failed</Word>
+            <Word>Failed</Word>
+            <Word>FAILED</Word>
+            <Word>exception</Word>
+            <Word>Exception</Word>
+            <Word>EXCEPTION</Word>
+            <Word>critical</Word>
+            <Word>Critical</Word>
+            <Word>CRITICAL</Word>
+            <Word>fatal</Word>
+            <Word>Fatal</Word>
+            <Word>FATAL</Word>
+        </Keywords>
+
+        <!-- 警告信息关键词 -->
+        <Keywords color="Warning">
+            <Word>warning</Word>
+            <Word>Warning</Word>
+            <Word>WARNING</Word>
+            <Word>warn</Word>
+            <Word>Warn</Word>
+            <Word>WARN</Word>
+            <Word>caution</Word>
+            <Word>Caution</Word>
+            <Word>CAUTION</Word>
+            <Word>notice</Word>
+            <Word>Notice</Word>
+            <Word>NOTICE</Word>
+        </Keywords>
+
+        <!-- 成功信息关键词 -->
+        <Keywords color="Success">
+            <Word>success</Word>
+            <Word>Success</Word>
+            <Word>SUCCESS</Word>
+            <Word>ok</Word>
+            <Word>Ok</Word>
+            <Word>OK</Word>
+            <Word>done</Word>
+            <Word>Done</Word>
+            <Word>DONE</Word>
+            <Word>complete</Word>
+            <Word>Complete</Word>
+            <Word>COMPLETE</Word>
+            <Word>finished</Word>
+            <Word>Finished</Word>
+            <Word>FINISHED</Word>
+            <Word>ready</Word>
+            <Word>Ready</Word>
+            <Word>READY</Word>
+        </Keywords>
+
+        <!-- 信息关键词 -->
+        <Keywords color="Info">
+            <Word>info</Word>
+            <Word>Info</Word>
+            <Word>INFO</Word>
+            <Word>information</Word>
+            <Word>Information</Word>
+            <Word>INFORMATION</Word>
+            <Word>status</Word>
+            <Word>Status</Word>
+            <Word>STATUS</Word>
+            <Word>debug</Word>
+            <Word>Debug</Word>
+            <Word>DEBUG</Word>
+        </Keywords>
+
+        <!-- 时间戳 -->
+        <Rule color="Timestamp">
+            \[\d{2}:\d{2}:\d{2}\]|\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]
+        </Rule>
+
+        <!-- 目录路径 -->
+        <Rule color="Directory">
+            (/[a-zA-Z0-9_.-]+)+|([a-zA-Z]:\\([a-zA-Z0-9_.-]+\\)*[a-zA-Z0-9_.-]*)
+        </Rule>
+
+        <!-- 可执行文件 -->
+        <Rule color="Executable">
+            \b\w+\.(exe|bat|cmd|sh|bash|ps1|py)\b
+        </Rule>
+
+        <!-- 数字 -->
+        <Rule color="Number">
+            \b\d+(\.\d+)?([eE][+-]?\d+)?\b
+        </Rule>
+
+        <!-- 标点符号 -->
+        <Rule color="Punctuation">
+            [|&amp;&gt;&lt;=+-/*%]
+        </Rule>
+
+        <!-- 命令行参数 -->
+        <Rule color="Command">
+            (^|\s)(-{1,2}[a-zA-Z0-9]+)(?=\s|$)
+        </Rule>
+
+        <!-- HTTP状态码 -->
+        <Rule color="Error">
+            \b(4\d{2}|5\d{2})\b
+        </Rule>
+        <Rule color="Success">
+            \b(2\d{2}|3\d{2})\b
+        </Rule>
+
+        <!-- 进程ID -->
+        <Rule color="Number">
+            \[PID: \d+\]|\bpid=\d+\b
+        </Rule>
+
+        <!-- 内存和大小 -->
+        <Rule color="Number">
+            \b\d+[KMGT]?B\b|\b\d+(\.\d+)?[KMGT]?i?B\b
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

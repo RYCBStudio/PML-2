@@ -1,0 +1,92 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:LoginViewModel"
+             Loaded="Control_OnLoaded"
+             x:Class="MEFrpLauncherX.Views.LoginPage">
+    <Grid VerticalAlignment="Center" RowDefinitions="*, Auto,Auto,Auto">
+
+        <DockPanel Margin="0,0,0,10">
+            <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center">
+                    免费 · 公益 · 好用 · 低延迟 · 稳定的内网穿透服务 &#x0D;
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    五年技术沉淀 · 稳定可靠
+                </TextBlock>
+            </StackPanel>
+            <TextBlock
+                Margin="10"
+                FontFamily="{StaticResource GlobalFontFamily}"
+                FontWeight="Bold"
+                FontSize="25"
+                HorizontalAlignment="Center"
+                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                Text="欢迎来到&#x0020;ME&#x0020;Frp&#x0020;幻缘映射" />
+        </DockPanel>
+
+        <DockPanel LastChildFill="True"
+                   Grid.Row="1">
+            <TextBlock
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left"
+                FontFamily="{StaticResource GlobalFontFamily}"
+                Text="用户名" />
+            <TextBox
+                x:Name="UsrNameBox"
+                Margin="10,0,10,0"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource GlobalFontFamily}" />
+        </DockPanel>
+        <DockPanel
+            Grid.Row="2"
+            Margin="0,10,0,10"
+            LastChildFill="True">
+            <TextBlock
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left"
+                FontFamily="{StaticResource GlobalFontFamily}"
+                Text="密码" />
+            <Panel>
+                <TextBox
+                    PasswordChar="•" 
+                    RevealPassword="{Binding #RevealPwdToggleBtn.IsChecked}"
+                    x:Name="PwdBox"
+                    Margin="10,0,10,0"
+                    VerticalAlignment="Center"
+                    KeyDown="PassWordOnKeyDown"
+                    FontFamily="{StaticResource GlobalFontFamily}" />
+                <ToggleButton x:Name="RevealPwdToggleBtn" HorizontalAlignment="Right" Margin="0 00 12 0">
+                    <ToggleButton.Content>
+                        <controls:FontIcon Glyph="&#xF78D;" FontFamily="{StaticResource SymbolThemeFontFamily}"></controls:FontIcon>
+                    </ToggleButton.Content>
+                </ToggleButton>
+            </Panel>
+        </DockPanel>
+        <StackPanel Spacing="5" Margin="10,0,10,0" Grid.Row="3">
+            <StackPanel>
+                <Button x:Name="LoginBtn" Classes="accent" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Click="LoginBtn_Click"
+                        Content="{Binding Progress, Converter={x:Static viewModels:ProgressToTextConverter.Instance}}"
+                        FontFamily="{StaticResource GlobalFontFamily}" />
+                <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                             IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
+            </StackPanel>
+            <Button
+                x:Name="SignUpBtn"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Click="SignUpBtn_OnClick"
+                Content="注册"
+                FontFamily="{StaticResource GlobalFontFamily}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

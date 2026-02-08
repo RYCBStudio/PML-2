@@ -1,0 +1,96 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+        Opacity="0.8"
+        Height="50"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        x:Class="MEFrpLauncherX.Views.ProxyFloat"
+        x:DataType="views:ProxyFloatViewModel"
+        CornerRadius="10"
+        Loaded="Setup"
+        SystemDecorations="None"
+        TransparencyLevelHint="Transparent"
+        ShowActivated="False"
+        WindowStartupLocation="Manual"
+        SizeToContent="Width">
+    <DockPanel Opacity="0.8" Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="10,5,5,10" HorizontalSpacing="5">
+        <StackPanel Margin="5,0,0,0" Orientation="Horizontal" DockPanel.Dock="Left" Spacing="5">
+            <Image Source="../../Assets/meflx.png" Stretch="Uniform" Height="20" />
+            <TextBlock
+                FontFamily="{StaticResource GlobalFontFamily}"
+                Theme="{StaticResource BodyStrongTextBlockStyle}"
+                Text="{Binding WindowTitle}" />
+        </StackPanel>
+        <!-- 添加菜单按钮 -->
+        <Button x:Name="MenuButton"
+                DockPanel.Dock="Right"
+                Width="20"
+                Height="20"
+                Margin="5,0,0,0"
+                Background="Transparent"
+                BorderThickness="0"
+                Foreground="White"
+                FontSize="12"
+                Content="⋯"
+                VerticalAlignment="Center">
+            <FlyoutBase.AttachedFlyout>
+                <MenuFlyout Placement="Top">
+                    <controls:MenuFlyoutItem Text="刷新流量" />
+                    <controls:MenuFlyoutItem Text="设置" />
+                    <controls:MenuFlyoutItem Text="退出" />
+                </MenuFlyout>
+            </FlyoutBase.AttachedFlyout>
+        </Button>
+
+        <Grid ColumnDefinitions="*,*">
+            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding Proxies}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <Ellipse Classes="Success" Height="10" Width="10"></Ellipse>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Grid Grid.Column="1" ColumnDefinitions="*, *" HorizontalAlignment="Right">
+                <!-- 下载流量 -->
+                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="16"
+                        Foreground="#FF00B894"
+                        Text="&#xe673;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        Text="{Binding TrafficIn, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+
+                <!-- 上传流量 -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center"
+                            Margin="10,0,0,0">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="16"
+                        Foreground="#FF0984E3"
+                        Text="&#xe672;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        Text="{Binding TrafficOut, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

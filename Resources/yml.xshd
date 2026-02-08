@@ -1,0 +1,64 @@
+<SyntaxDefinition name="YML" extensions=".yaml;.yml"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#ff7A7E85" />
+    <Color name="String" foreground="#ff6AAB73" />
+    <Color name="Key" foreground="#ffCF8E6D" fontWeight="bold" />
+    <Color name="Boolean" foreground="#ffC77DBB" fontStyle="italic" />
+    <Color name="Number" foreground="#ff2AACB8" />
+    <Color name="Directive" foreground="#ffB3AE60" />
+    <Color name="Anchor" foreground="#ff56A8F5" />
+	<Color name="Punctuation" />
+    
+    <RuleSet>
+        <!-- 注释 -->
+        <Span color="Comment" begin="#" />
+        
+        <!-- 字符串 -->
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+        <Span color="String">
+            <Begin>'</Begin>
+            <End>'</End>
+        </Span>
+        
+        <!-- 键 -->
+        <Rule color="Key">
+            ^\s*[a-zA-Z0-9_-]+\s*(?=:)
+        </Rule>
+        
+        <!-- 指令 -->
+        <Rule color="Directive">
+            ^%[A-Z]+\b
+        </Rule>
+        
+        <!-- 锚点 -->
+        <Rule color="Anchor">
+            &amp;\w+|\*\w+
+        </Rule>
+        
+        <!-- 布尔值 -->
+        <Keywords color="Boolean">
+            <Word>true</Word>
+            <Word>false</Word>
+            <Word>yes</Word>
+            <Word>no</Word>
+            <Word>on</Word>
+            <Word>off</Word>
+        </Keywords>
+        
+        <!-- 数字 -->
+        <Rule color="Number">
+            \b\d+(\.\d+)?([eE][+-]?\d+)?\b
+        </Rule>
+        
+        <!-- 标点符号 -->
+        <Rule color="Punctuation">
+            [:,\[\]{}|>]
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

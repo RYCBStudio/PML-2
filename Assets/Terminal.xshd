@@ -1,0 +1,99 @@
+﻿<SyntaxDefinition name="Terminal" extensions=".log"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="AnsiRed" foreground="#ffff0000" />
+    <Color name="AnsiGreen" foreground="#ff00ff00" />
+    <Color name="AnsiYellow" foreground="#ffffff00" />
+    <Color name="AnsiBlue" foreground="#ff0000ff" />
+    <Color name="AnsiMagenta" foreground="#ffff00ff" />
+    <Color name="AnsiCyan" foreground="#ff00ffff" />
+    <Color name="AnsiWhite" foreground="#ffffffff" />
+    <Color name="AnsiBlack" foreground="#ff000000" />
+    <Color name="AnsiBold" fontWeight="bold" />
+    <Color name="AnsiItalic" fontStyle="italic" />
+    <Color name="AnsiUnderline" textDecorations="Underline" />
+    
+    <Color name="Prompt" foreground="#ff00FF00" />
+    <Color name="Command" foreground="#ff00FFFF" />
+    <Color name="Output" foreground="#ffffffff" />
+    <Color name="Error" foreground="#ffff0000" />
+    <Color name="Warning" foreground="#ffffa500" />
+    <Color name="Success" foreground="#ff90ee90" />
+    <Color name="Info" foreground="#ffadd8e6" />
+    <Color name="Timestamp" foreground="#ffa9a9a9" />
+
+    <RuleSet>
+        <!-- ANSI颜色代码解析 -->
+        <Span color="AnsiRed">
+            <Begin>\x1B\[31m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiGreen">
+            <Begin>\x1B\[32m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiYellow">
+            <Begin>\x1B\[33m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiBlue">
+            <Begin>\x1B\[34m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiMagenta">
+            <Begin>\x1B\[35m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiCyan">
+            <Begin>\x1B\[36m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiWhite">
+            <Begin>\x1B\[37m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiBlack">
+            <Begin>\x1B\[30m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        
+        <!-- ANSI样式 -->
+        <Span color="AnsiBold">
+            <Begin>\x1B\[1m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiItalic">
+            <Begin>\x1B\[3m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+        <Span color="AnsiUnderline">
+            <Begin>\x1B\[4m</Begin>
+            <End>\x1B\[0m|\x1B\[[0-9;]*m</End>
+        </Span>
+
+        <!-- 重置所有样式 -->
+        <Rule>
+           \x1B\[0m
+        </Rule>
+
+        <!-- 其他终端元素 -->
+        <Rule color="Prompt">
+            ^(PS&gt;|&gt;|\$ |C:\\.*&gt;|.*&gt;)
+        </Rule>
+
+        <Rule color="Error">
+            \b(error|fail|exception|critical|fatal)\b
+        </Rule>
+
+        <Rule color="Warning">
+            \b(warning|warn|caution)\b
+        </Rule>
+
+        <Rule color="Success">
+            \b(success|ok|done|complete|ready)\b
+        </Rule>
+
+        <Rule color="Timestamp">
+            \[\d{2}:\d{2}:\d{2}\]|\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

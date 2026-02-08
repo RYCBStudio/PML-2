@@ -1,0 +1,426 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:debug="clr-namespace:MEFrpLauncherX.ViewModels.Debug"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.UserProxyControl"
+             IsEnabled="{Binding !isBanned}"
+             FontFamily="{StaticResource GlobalFontFamily}"
+             x:DataType="viewModels:UserProxyViewModel">
+    <!-- TODO: 记得换回去-->
+    <Design.DataContext>
+        <debug:Debug_UserProxyViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <!-- Converters -->
+        <core:BannedToBrushConverter x:Key="BannedToBrushConverter" />
+        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd">
+            <controls1:CommandBarElementContainer>
+                <Button
+                    IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                    x:Name="LaunchProxyViaConfigBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding LaunchProxyViaConfigCommand}"
+                    CommandParameter="{Binding}"
+                    Classes="accent"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe604;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="使用配置文件运行" />
+                    </StackPanel>
+                </Button>
+            </controls1:CommandBarElementContainer>
+            <controls1:CommandBarElementContainer>
+                <Button
+                    IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                    x:Name="EditProxyBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding EditProxyCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe63b;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="编辑" />
+                    </StackPanel>
+                </Button>
+            </controls1:CommandBarElementContainer>
+            <controls1:CommandBarElementContainer>
+                <Button
+                    IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                    x:Name="EditSSLBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding EditSSLCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe642;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="SSL设置" />
+                    </StackPanel>
+                </Button>
+            </controls1:CommandBarElementContainer>
+            <controls1:CommandBarElementContainer>
+                <WrapPanel Orientation="Horizontal" ItemSpacing="5">
+                    <Button
+                        IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                        x:Name="ForceOfflineProxyBtn"
+                        Margin="5,2,5,2"
+                        Command="{Binding ForceOfflineProxyCommand}"
+                        CommandParameter="{Binding}"
+                        Classes="Danger"
+                        FontFamily="{StaticResource GlobalFontFamily}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource IconFont}"
+                                Text="&#xe68f;" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="强制下线" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        x:Name="DeleteProxyBtn"
+                        Margin="5,2,5,2"
+                        Command="{Binding DeleteProxyCommand}"
+                        CommandParameter="{Binding}"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Classes="Danger">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource IconFont}"
+                                Text="&#xe64b;" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="删除" />
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
+            </controls1:CommandBarElementContainer>
+            <controls1:CommandBarElementContainer>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Button
+                        IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                        x:Name="GenerateLaunchConfigBtn"
+                        Margin="5,2,5,2"
+                        Command="{Binding GenerateLaunchConfigCommand}"
+                        FontFamily="{StaticResource GlobalFontFamily}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{x:Static core:MultiBindingConverter.Instance}">
+                                <MultiBinding.Bindings>
+                                    <Binding />
+                                    <Binding ElementName="S" />
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontFamily="{StaticResource IconFont}"
+                                    Text="&#xe693;" />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="生成配置文件" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <ComboBox
+                        IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                        FontFamily="{StaticResource GlobalFontFamily}" SelectedIndex="0" x:Name="S"
+                        VerticalAlignment="Center">
+                        <ComboBoxItem Content="TOML" Tag="toml" />
+                        <ComboBoxItem Content="YML" Tag="yml" />
+                        <ComboBoxItem Content="INI" Tag="ini" />
+                        <ComboBoxItem Content="JSON" Tag="json" />
+                    </ComboBox>
+                </StackPanel>
+            </controls1:CommandBarElementContainer>
+        </controls1:CommandBarFlyout>
+    </UserControl.Resources>
+    <Border MaxWidth="300"
+            Padding="10"
+            CornerRadius="10"
+            Background="{DynamicResource ControlFillColorDefaultBrush}"
+            BorderBrush="{Binding isBanned, Converter={StaticResource BannedToBrushConverter}}"
+            BorderThickness="1">
+        <Border.Styles>
+            <Style Selector="Border:pointerover">
+                <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightLowBrush}" />
+            </Style>
+        </Border.Styles>
+
+        <Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto,Auto">
+            <controls1:InfoBadge Margin="0,5,10,0" HorizontalAlignment="Right"
+                                 Grid.RowSpan="7"
+                                 VerticalAlignment="Top"
+                                 Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
+                                 BorderThickness="-1"
+                                 FontSize="20"
+                                 FontWeight="Bold"
+                                 Foreground="Azure"
+                                 IsVisible="{Binding isBanned}">
+                <controls1:InfoBadge.IconSource>
+                    <controls1:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                              Glyph="已封禁" />
+                </controls1:InfoBadge.IconSource>
+            </controls1:InfoBadge>
+            <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7" IsVisible="{Binding IsLoading}" />
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5">
+                <SelectableTextBlock Text="{Binding proxyName}"
+                                     Theme="{DynamicResource SubtitleTextBlockStyle}" />
+                <Label
+                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                    Theme="{StaticResource CaptionTextBlockStyle}"
+                    VerticalAlignment="Bottom"
+                    Content="{Binding proxyId, StringFormat='# {0}'}"
+                    FontFamily="{StaticResource GlobalFontFamily}" />
+            </StackPanel>
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10">
+                <controls1:InfoBadge>
+                    <controls1:InfoBadge.Background>
+                        <MultiBinding Converter="{x:Static controls:OnlineAndDisabledConverter.Instance}">
+                            <Binding Path="isOnline"></Binding>
+                            <Binding Path="isDisabled"></Binding>
+                        </MultiBinding>
+                    </controls1:InfoBadge.Background>
+                </controls1:InfoBadge>
+            </Grid>
+            <!-- Other fields -->
+            <StackPanel Grid.Row="1">
+                <StackPanel
+                    Margin="5"
+                    Orientation="Horizontal">
+                    <Label
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Classes.Normal="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                        Classes.Danger="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverter.Instance}}">
+                        <Label.Content>
+                            <MultiBinding>
+                                <Binding Path="node" />
+                                <Binding Path="nodeId" />
+                                <MultiBinding.StringFormat>
+                                    #{1} {0}
+                                </MultiBinding.StringFormat>
+                            </MultiBinding>
+                        </Label.Content>
+                    </Label>
+                </StackPanel>
+                <StackPanel
+                    Margin="5"
+                    Orientation="Horizontal">
+                    <TextBlock x:Name="TypeIdentifier" IsVisible="False" Text="{Binding proxyType, 
+                                         Converter={x:Static core:LowerCaseToUpperCaseConverter.Instance}}" >
+                    </TextBlock>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                        <TextBlock.Text>
+                            <MultiBinding>
+                                <Binding Path="proxyType"
+                                         Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}">
+                                </Binding>
+                                <Binding Path="localIp"></Binding>
+                                <Binding Path="localPort"></Binding>
+                                <MultiBinding.StringFormat>
+                                    [{0}] {1}:{2} →
+                                </MultiBinding.StringFormat>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="{Binding remotePort, StringFormat=' {0}'}"
+                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}">
+                    </TextBlock>
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Domains}"
+                              IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <HyperlinkButton Margin="-5" Content="{Binding }" Click="LaunchWeb"
+                                             NavigateUri="{Binding }">
+                            </HyperlinkButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Operation buttons -->
+            <WrapPanel Grid.Row="5" FlowDirection="LeftToRight">
+                <Button
+                    IsVisible="{Binding !isOnline}"
+                    IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
+                    x:Name="LaunchProxyBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding LaunchProxyCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="accent">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe6c1;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            IsVisible="{Binding Detailed}"
+                            Text="启动隧道" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    IsVisible="{Binding isOnline}"
+                    x:Name="StopProxyBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding StopProxyCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="accent">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe68f;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            IsVisible="{Binding Detailed}"
+                            Text="停止隧道" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="ExtraInfoBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding ShowExtraInfoCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource IconFont}"
+                                Text="&#xe600;" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="详细信息"
+                                IsVisible="{Binding Detailed}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    x:Name="DisableProxyBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding DisableProxyCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Warning"
+                    IsVisible="{Binding !isDisabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe655;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="禁用"
+                            IsVisible="{Binding Detailed}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="EnableProxyBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding EnableProxyCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Success"
+                    IsVisible="{Binding isDisabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe6c1;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="启用"
+                            IsVisible="{Binding Detailed}" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="MoreOptionsBtn"
+                    Margin="5,2,5,2"
+                    Click="ShowMoreOptions"
+                    ContextRequested="HideMoreOptions"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource IconFont}"
+                                Text="&#xe6cb;" />
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center" IsVisible="{Binding Detailed}"
+                                Text="更多选项" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    x:Name="CopyInfoBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding CopyInfoCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Text="&#xE16F;" />
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center" IsVisible="{Binding Detailed}"
+                                Text="复制地址" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </WrapPanel>
+        </Grid>
+    </Border>
+</UserControl>

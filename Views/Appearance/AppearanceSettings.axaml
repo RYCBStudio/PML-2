@@ -1,0 +1,129 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:appearance="clr-namespace:MEFrpLauncherX.Views.Appearance"
+        xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+        Width="500" Height="300"
+        x:Class="MEFrpLauncherX.Views.Appearance.AppearanceSettings"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Title="设置"
+        x:DataType="appearance:AppearanceSettingsViewModel">
+    <Design.DataContext>
+        <appearance:AppearanceSettingsViewModel></appearance:AppearanceSettingsViewModel>
+    </Design.DataContext>
+    <ScrollViewer>
+        <StackPanel Margin="5" Spacing="5">
+            <controls:SettingsExpander Header="选择一个背景"
+                                       IsExpanded="True"
+                                       IconSource="Image"
+                                       ItemsSource="{Binding Items}" />
+            <controls:SettingsExpander Header="选择主题色" IconSource="ColorFill" IsExpanded="True">
+                <controls:SettingsExpanderItem>
+                    <Grid ColumnDefinitions="*, *" RowDefinitions="*,*,*,*">
+                        <Border Grid.ColumnSpan="2" Background="{DynamicResource SystemAccentColor}">
+                            <TextBlock Text="SystemAccentColor"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark1}">
+                            <TextBlock Text="SystemAccentDarkColor1"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight1}">
+                            <TextBlock Text="SystemAccentLightColor1"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark2}">
+                            <TextBlock Text="SystemAccentDarkColor2"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight2}">
+                            <TextBlock Text="SystemAccentLightColor2"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark3}">
+                            <TextBlock Text="SystemAccentDarkColor3"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight3}">
+                            <TextBlock Text="SystemAccentLightColor3"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                            </TextBlock>
+                        </Border>
+                    </Grid>
+                    <controls:SettingsExpanderItem.Footer>
+                        <ColorPicker Color="{DynamicResource SystemAccentColor}" ColorChanged="ColorView_OnColorChanged"></ColorPicker>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+
+        </StackPanel>
+    </ScrollViewer>
+
+    <!-- SettingsExpander supports creating items from DataTemplate -->
+    <Window.DataTemplates>
+        <DataTemplate DataType="appearance:RecentImagesSettingsItem">
+            <controls:SettingsExpanderItem>
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{Binding Header}" />
+                    <ListBox ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem:selected">
+                                <Setter Property="Template">
+                                    <ControlTemplate>
+                                        <ContentPresenter Name="PART_ContentPresenter"
+                                                          Background="{TemplateBinding Background}"
+                                                          BorderBrush="{DynamicResource AccentButtonBackground}"
+                                                          BorderThickness="2"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          CornerRadius="{TemplateBinding CornerRadius}" />
+                                    </ControlTemplate>
+                                </Setter>
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="1"></WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding }" Height="70" Width="90" Stretch="UniformToFill"></Image>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </controls:SettingsExpanderItem>
+        </DataTemplate>
+
+        <DataTemplate DataType="appearance:FooterButtonSettingsItem">
+            <controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem.Footer>
+                    <WrapPanel ItemSpacing="5">
+                        <Button Content="{Binding Footer}" Command="{Binding SelectFile}" />
+                        <Button Content="清除所有背景" Command="{Binding ClearFile}" />
+                    </WrapPanel>
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+        </DataTemplate>
+    </Window.DataTemplates>
+</Window>

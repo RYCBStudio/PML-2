@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="controls:ProgressButton"
+             x:Class="MEFrpLauncherX.Controls.ProgressButton">
+    <Panel>
+        <Button x:Name="Button" Content="{Binding BtnContent}" Classes.accent="{Binding IsAccent}" />
+        <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                     IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
+    </Panel>
+</UserControl>

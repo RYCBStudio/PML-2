@@ -1,0 +1,36 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="600"
+        WindowStartupLocation="CenterOwner"
+        Height="400"
+        TransparencyLevelHint="Mica"
+        x:Class="MEFrpLauncherX.Views.ConfigEditor"
+        Title="">
+    <Grid RowDefinitions="Auto,*">
+
+        <StackPanel Margin="5" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="编辑配置文件" FontWeight="Bold" />
+            <TextBlock VerticalAlignment="Center" Text="类型: " />
+            <TextBlock VerticalAlignment="Center" x:Name="ConfigTypeTextBlock" />
+
+
+            <Button VerticalContentAlignment="Center" Margin="8,0,0,0" Click="CloseButton_Click" Content="关闭/取消启动" />
+            <Button Click="CopyButton_Click" Content="复制" />
+            <Button Click="SaveButton_Click" Content="保存" />
+
+            <Button Click="SaveAndRunButton_Click" Content="保存并运行" />
+        </StackPanel>
+
+        <avaloniaEdit:TextEditor
+            x:Name="CfgEditor"
+            Grid.Row="1"
+            FontFamily="{StaticResource Jbm}"
+            FontSize="13"
+            ShowLineNumbers="True"
+            WordWrap="False" />
+    </Grid>
+</Window>

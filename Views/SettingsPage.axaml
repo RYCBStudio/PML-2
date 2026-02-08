@@ -1,0 +1,210 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="350"
+             x:Class="MEFrpLauncherX.Views.SettingsPage">
+    <ScrollViewer>
+        <StackPanel>
+            <controls:SettingsExpander Header="外观" IconSource="DarkTheme" Description="自定义程序的外观">
+                <controls:SettingsExpanderItem Content="主题" IconSource="New" Description="设置程序的配色主题">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox
+                            x:Name="Theme"
+                            SelectionChanged="ThemeChanged">
+                            <ComboBoxItem Content="深色" Tag="Dark" />
+                            <ComboBoxItem Content="浅色" Tag="Light" />
+                            <ComboBoxItem Content="跟随系统" Tag="System" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="材质" IconSource="Scan" Description="设置窗口背景的透明效果和材质">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox
+                            x:Name="Skin"
+                            SelectionChanged="SkinChanged">
+                            <ComboBoxItem Content="云母(Mica)" Tag="Mica" />
+                            <ComboBoxItem Content="亚克力(Acrylic)" Tag="AcrylicBlur" />
+                            <ComboBoxItem Content="模糊(Blur)" Tag="Blur" />
+                            <ComboBoxItem Content="透明(Transparent)" Tag="Transparent" />
+                            <ComboBoxItem Content="无(None)" Tag="None" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="背景" IconSource="Image"
+                                               Description="设置窗口的背景&#x0009;注意: 过大的图片体积可能会降低性能。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5">
+                            <Button Content="选择背景" Click="ChooseBackground" />
+                            <Button Content="清除背景" Click="ClearBackground" />
+                        </WrapPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="自定义"
+                                               ActionIconSource="ChevronRight"
+                                               IsClickEnabled="True"
+                                               Click="SetAppearanceAdvanced" />
+                <controls:SettingsExpanderItem Content="背景设置" IconSource="FullScreenMaximize" Description="设置窗口背景的拉伸模式">
+                    <controls:SettingsExpanderItem.Footer>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <ComboBox x:Name="StretchBox" SelectionChanged="StretchBox_OnSelectionChanged">
+                                <ComboBoxItem Content="无" Tag="None" />
+                                <ComboBoxItem Content="填充" Tag="Stretch" />
+                                <ComboBoxItem Content="均匀" Tag="Uniform" />
+                                <ComboBoxItem Content="均匀填充" Tag="UniformToFill" />
+                            </ComboBox>
+                        </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Header="启动设置" Description="设置程序的启动选项" >
+                <controls:SettingsExpander.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
+                        <controls:FontIconSource.Glyph>&#xE770;</controls:FontIconSource.Glyph>
+                    </controls:FontIconSource>
+                </controls:SettingsExpander.IconSource>
+                <controls:SettingsExpanderItem Content="开机自启" Description="设置软件是否在开机时启动。请注意: 此处的“开机”指用户登录时。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="AutoStart"
+                            IsCheckedChanged="AutoStartChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="启动时自动启动某些隧道"
+                                               Description="设置启动时自动启动某些隧道。请注意: 此处的“启动”指软件启动时。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="AutoLaunch"
+                            IsCheckedChanged="AutoLaunchChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}" Content="设置要启动的隧道">
+                    <controls:SettingsExpanderItem.Footer>
+                        <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
+                            <controls:SymbolIcon Symbol="Settings"></controls:SymbolIcon>
+                        </Button>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="关闭时最小化到系统托盘，而不是直接关闭" Description="启用该选项可以让软件运行在后台。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="HideInsteadOfClose"
+                            IsCheckedChanged="HideInsteadOfCloseChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Header="隧道设置" Description="设置隧道相关选项" IconSource="AllApps" >
+                <controls:SettingsExpanderItem Content="强制下线隧道时不同时禁用隧道"
+                                               Description="幻缘映射官网强制下线隧道时会同时禁用隧道, 我们可以在强制下线隧道时再启用隧道。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="KickWithoutDisable"
+                            IsCheckedChanged="KickWithoutDisableChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="&quot;隧道监控&quot;栏 [BETA]"
+                                               Description="&quot;隧道监控&quot;是我们推出的一项新功能, 可以监视启动隧道的出入流量信息。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch x:Name="pmS" OnContent="开启" OffContent="关闭" IsCheckedChanged="PMChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}" Content="自定义&quot;隧道监控&quot;栏"
+                                               ActionIconSource="ChevronRight"
+                                               IsClickEnabled="True"
+                                               Click="SetProxyMonitorBar" />
+            </controls:SettingsExpander>
+            <controls:SettingsExpander IconSource="Download" Description="设置软件的下载选项" Header="下载设置" IsExpanded="False">
+                <controls:SettingsExpanderItem Content="启用多线程下载" Description="启用多线程下载可以在一定程度上提升下载速度。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="ParallelDownload"
+                            IsCheckedChanged="ParallelDownloadChanged"
+
+                            IsChecked="True" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="多线程下载设置" Description="设置多线程下载的线程数。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <StackPanel Orientation="Horizontal">
+                            <Slider
+                                x:Name="ParallelDownloadThreads"
+                                Width="300"
+                                Margin="10,0,0,0"
+                                Maximum="512"
+                                Minimum="1"
+                                VerticalAlignment="Center"
+                                ValueChanged="ParallelDownloadThreadsChanged"
+                                IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}"
+                                Value="8" />
+                            <controls:NumberBox SpinButtonPlacementMode="Inline"
+                                                Maximum="512"
+                                                Minimum="1"
+                                                VerticalAlignment="Center"
+                                                IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}"
+                                                Value="{Binding ElementName=ParallelDownloadThreads, Path=Value, Mode=TwoWay}" />
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                Text="线程"
+                                VerticalAlignment="Center"
+                                IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
+                        </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
+                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10" Title="警告"
+                                      Message="过多的线程数可能会降低下载速度。推荐的线程数为8~32。"
+                                      Severity="Warning">
+                    </controls:InfoBar>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="ME Frp 客户端下载源" Description="设置ME Frp 客户端下载源, 默认为 TPCA 源。"
+                                               IconSource="CloudDownload">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="DownloadSource" SelectionChanged="DownloadSourceChanged">
+                            <ComboBoxItem Tag="TPCA" Content="TPCA (默认)" />
+                            <ComboBoxItem Tag="Official" Content="官方源" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Description="设置账户相关选项" IconSource="Admin" Header="账户设置" IsExpanded="False">
+                <controls:SettingsExpanderItem Description="设置登录过期天数, 修改后需重新登录。" Content="登录过期天数">
+                    <controls:SettingsExpanderItem.Footer>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <Slider
+                                x:Name="ExpireDaysSlider"
+                                Width="300"
+                                Margin="10,0,0,0"
+                                Maximum="366"
+                                Minimum="1"
+                                VerticalAlignment="Center"
+                                ValueChanged="ExpireDaysSlider_OnValueChanged"
+                                Value="30" />
+                            <controls:NumberBox SpinButtonPlacementMode="Inline"
+                                                VerticalAlignment="Center"
+                                                Maximum="366"
+                                                Minimum="1"
+                                                Value="{Binding ElementName=ExpireDaysSlider, Path=Value, Mode=TwoWay}" />
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="天"
+                                IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
+                        </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Description="设置登录时人机验证的方式。" Content="验证方式">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="CaptchaModeCBox" SelectionChanged="CaptchaModeChanged">
+                            <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit">无感验证</ComboBoxItem>
+                            <ComboBoxItem x:Name="BrowserValidation" Tag="explicit">浏览器验证</ComboBoxItem>
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem
+                    Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
+            </controls:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

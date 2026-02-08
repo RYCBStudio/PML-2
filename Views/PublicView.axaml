@@ -1,0 +1,44 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Views.PublicView">
+    <Grid x:Name="MainGrid" RowDefinitions="Auto,*">
+        <TextBlock
+            Margin="10"
+            FontFamily="{StaticResource GlobalFontFamily}"
+            FontWeight="Bold"
+            FontSize="25"
+            HorizontalAlignment="Center"
+            Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+            Text="欢迎来到 ME Frp 幻缘映射" />
+        <Grid Grid.Row="1" Margin="10" ColumnDefinitions="*,*" RowDefinitions="*,*">
+            <Viewbox>
+                <controls:PublicViewItem
+                    x:Name="Node"
+                    Description="节点数"
+                    TargetNumber="79" />
+            </Viewbox>
+            <Viewbox Grid.Column="1">
+                <controls:PublicViewItem
+                    x:Name="Users"
+                    Description="用户数"
+                    TargetNumber="39710" />
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <controls:PublicViewItem
+                    x:Name="Proxies"
+                    Description="隧道数"
+                    TargetNumber="18574" />
+            </Viewbox>
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <controls:PublicViewItem
+                    x:Name="Traffic"
+                    Description="承载流量(TB)"
+                    TargetNumber="68" />
+            </Viewbox>
+        </Grid>
+    </Grid>
+</UserControl>

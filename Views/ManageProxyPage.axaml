@@ -1,0 +1,144 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="UserControl"
+             x:Class="MEFrpLauncherX.Views.ManageProxyPage"
+             FontFamily="{StaticResource GlobalFontFamily}"
+             x:DataType="views:ProxyViewModel">
+    <Design.DataContext>
+        <views:ProxyViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Top toolbar -->
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Spacing="10">
+            <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="隧道管理" />
+
+            <AutoCompleteBox x:Name="SearchBox" FilterMode="StartsWith" MinimumPrefixLength="1"
+                             Text="{Binding SearchText}" Watermark="搜索隧道:支持拼音和命令语法" Width="200" />
+            <Button Click="OpenHelp">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe83d;" FontFamily="{StaticResource IconFont}" />
+                    <TextBlock Margin="5,0,0,0" Text="帮助" />
+                </StackPanel>
+            </Button>
+            <Button Click="RefreshProxies">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe674;" FontFamily="{StaticResource IconFont}" />
+                    <TextBlock Margin="5,0,0,0" Text="刷新" />
+                </StackPanel>
+            </Button>
+            <Button Click="DownloadMEFClient">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xe72b;" FontFamily="{StaticResource IconFont}" />
+                    <TextBlock Margin="5,0,0,0" Text="下载 ME Frp 客户端" />
+                </StackPanel>
+            </Button>
+            <ToggleButton Content="详细描述" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}"></ToggleButton>
+        </StackPanel>
+
+        <!-- Batch operation area -->
+        <Border x:Name="BatchOperationArea"
+                Grid.Row="1"
+                BorderThickness="0,1,0,1"
+                IsVisible="{Binding IsAnyProxySelected}">
+            <StackPanel Margin="5" Orientation="Horizontal" Spacing="5">
+                <TextBlock Margin="10,0" VerticalAlignment="Center"
+                           Text="{Binding SelectedProxies.Count, StringFormat='已选择 {0} 个隧道'}" />
+
+                <Button Classes="Success" FontFamily="{StaticResource GlobalFontFamily}"
+                        Command="{Binding LaunchMultiProxyCommand}"
+                        CommandParameter="{Binding SelectedProxies}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xe6c1;" FontFamily="{StaticResource IconFont}" />
+                        <TextBlock Margin="5,0,0,0" Text="批量启动" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Margin="5,2"
+                    Command="{Binding DisableProxyCommand}"
+                    CommandParameter="{Binding SelectedProxies}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Warning">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe655;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Text="批量禁用" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Margin="5,2"
+                    Command="{Binding EnableProxyCommand}"
+                    CommandParameter="{Binding SelectedProxies}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Success">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe6c1;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Text="批量启用" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Margin="5,2"
+                    Command="{Binding DeleteProxyCommand}"
+                    CommandParameter="{Binding SelectedProxies}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Danger">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe64b;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Text="批量删除" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Margin="5,2"
+                    Command="{Binding ClearSelectionCommand}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                     Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="{StaticResource IconFont}"
+                            Text="&#xe64b;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            Text="清除选择" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Main content area -->
+        <ListBox Grid.Row="2"
+                 SelectionMode="Multiple"
+                 ItemsSource="{Binding FilteredProxies}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="3" LineSpacing="3"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:UserProxyControl DataContext="{Binding}" Width="300"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,27 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:console="clr-namespace:MEFrpLauncherX.Console"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Views.TerminalPage">
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5">
+            <Button Click="NewConsoleButton_Click" Content="新建控制台" />
+            <Button Click="CloseButton_Click" Content="关闭当前选项卡" />
+            <Button Click="CtrlCButton_Click" Content="发送Ctrl+C信号(终止操作)" />
+            <Button Click="ClearButton_Click" Content="清空输出" />
+            <Button Click="VisitMEFDoc" Content="访问ME Frp文档" />
+            <Button Click="VisitRCDoc" Content="访问控制台文档" />
+        </StackPanel>
+
+        <!-- Tab Control -->
+        <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact">
+            <TabItem Header="默认">
+                <console:TerminalControl x:Name="Terminal" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

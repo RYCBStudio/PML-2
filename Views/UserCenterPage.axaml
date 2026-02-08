@@ -1,0 +1,149 @@
+﻿<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+    xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="views:UserCenterPage"
+    AttachedToVisualTree="UserControl_Loaded"
+    x:Class="MEFrpLauncherX.Views.UserCenterPage"
+    FontFamily="{StaticResource GlobalFontFamily}"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="4*,5.5*,auto">
+        <HeaderedContentControl
+            Margin="10"
+            FontFamily="{StaticResource GlobalFontFamily}"
+            FontSize="15"
+            Header="用户信息">
+            <Grid Margin="5" ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*">
+                <StackPanel Grid.Row="0" Grid.Column="0">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户名" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="UserNameText"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="今日签到" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <Button
+                        x:Name="TodaySignButton"
+                        Click="Sign"
+                        Content="签到"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Classes="Success"
+                        IsVisible="False" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="2">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="实名状态" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="isRealNamed"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="3">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="注册时间" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="regTime"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="4">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="隧道数量" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="proxies"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Grid.Column="5">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="入站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="inBound"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户ID" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="usrId"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="账户状态" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="status"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="2">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户组" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="group"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="3">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="注册邮箱" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="regMail"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="4">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="剩余流量" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="traffic"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="5">
+                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="出站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
+                    <SelectableTextBlock
+                        x:Name="outBound"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </HeaderedContentControl>
+        <controls:TrafficStatusControl x:Name="trafficControl" IsVisible="False" Grid.Row="1" />
+        <controls1:ProgressRing Classes="TPCA" Grid.Row="1" IsVisible="True" IsIndeterminate="True" x:Name="Loading" />
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Margin="10"
+                Click="ExitLogin"
+                Content="退出登录"
+                Theme="{DynamicResource SolidButton}"
+                Classes.Danger="True" />
+            <Button
+                Margin="10"
+                Click="OpenWeb"
+                Content="前往网页端以完成其他操作" />
+            <TextBlock
+                Margin="10"
+                Classes.DefaultInfo="True"
+                Text="为什么？">
+                <ToolTip.Tip>
+                    <TextBlock Text="由于某些原因，网页端的部分功能无法在客户端实现(未开放API)，因此需要您前往网页端进行操作。" TextWrapping="Wrap" />
+                </ToolTip.Tip>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

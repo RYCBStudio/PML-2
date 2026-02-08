@@ -1,0 +1,67 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MEFrpLauncherX.Controls.AnimatedProgressRing" Width="128" Height="128">
+    <UserControl.Resources>
+        <RadialGradientBrush x:Key="Gradient1" GradientOrigin="0.3,0.3" Center="0.5,0.5" Radius="0.8">
+            <GradientStop Offset="0" Color="#1A134E4A" /> <GradientStop Offset="1" Color="#4D042F2E" />
+        </RadialGradientBrush>
+        <LinearGradientBrush x:Key="Gradient2" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#FF14B8A6" />
+            <GradientStop Offset="0.5" Color="#FF2DD4BF" />
+            <GradientStop Offset="1" Color="#FF5EEAD4" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="Gradient3" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#FF14B8A6" />
+            <GradientStop Offset="1" Color="#FF2DD4BF" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="Gradient4" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#CC5EEAD4" />
+            <GradientStop Offset="1" Color="#9959F6E0" />
+        </LinearGradientBrush>
+    </UserControl.Resources>
+
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="120" Height="120">
+            <Ellipse Width="116" Height="116" Canvas.Left="2" Canvas.Top="2" Fill="{StaticResource Gradient1}"
+                     Stroke="{StaticResource Gradient2}" StrokeThickness="2" />
+            <Ellipse Width="16" Height="16" Canvas.Left="52" Canvas.Top="52" Fill="#FF14B8A6" />
+
+            <!-- 使用 StartPoint / EndPoint -->
+            <Line StartPoint="60,20" EndPoint="60,52" Stroke="{StaticResource Gradient3}" StrokeThickness="3"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="60,68" EndPoint="60,100" Stroke="{StaticResource Gradient3}" StrokeThickness="3"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="20,60" EndPoint="52,60" Stroke="{StaticResource Gradient3}" StrokeThickness="3"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="68,60" EndPoint="100,60" Stroke="{StaticResource Gradient3}" StrokeThickness="3"
+                  StrokeLineCap="Round" />
+
+            <Line StartPoint="35,35" EndPoint="52,52" Stroke="{StaticResource Gradient4}" StrokeThickness="2"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="68,68" EndPoint="85,85" Stroke="{StaticResource Gradient4}" StrokeThickness="2"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="85,35" EndPoint="68,52" Stroke="{StaticResource Gradient4}" StrokeThickness="2"
+                  StrokeLineCap="Round" />
+            <Line StartPoint="52,68" EndPoint="35,85" Stroke="{StaticResource Gradient4}" StrokeThickness="2"
+                  StrokeLineCap="Round" />
+
+            <Ellipse Width="12" Height="12" Canvas.Left="54" Canvas.Top="14" Fill="#FF2DD4BF" />
+            <Ellipse Width="12" Height="12" Canvas.Left="54" Canvas.Top="88" Fill="#FF2DD4BF" />
+            <Ellipse Width="12" Height="12" Canvas.Left="14" Canvas.Top="54" Fill="#FF2DD4BF" />
+            <Ellipse Width="12" Height="12" Canvas.Left="88" Canvas.Top="54" Fill="#FF2DD4BF" />
+
+            <Ellipse Width="8" Height="8" Canvas.Left="33" Canvas.Top="33" Fill="#FF5EEAD4" />
+            <Ellipse Width="8" Height="8" Canvas.Left="83" Canvas.Top="33" Fill="#FF5EEAD4" />
+            <Ellipse Width="8" Height="8" Canvas.Left="33" Canvas.Top="83" Fill="#FF5EEAD4" />
+            <Ellipse Width="8" Height="8" Canvas.Left="83" Canvas.Top="83" Fill="#FF5EEAD4" />
+
+            <Ellipse x:Name="MovingTop" Width="4" Height="4" Fill="#FF99F6E0" Opacity="0.8" Canvas.Left="58"
+                     Canvas.Top="28" />
+            <Ellipse x:Name="MovingLeft" Width="4" Height="4" Fill="#FF99F6E0" Opacity="0.8" Canvas.Left="28"
+                     Canvas.Top="58" />
+            <Ellipse x:Name="MovingRight" Width="4" Height="4" Fill="#FF99F6E0" Opacity="0.8" Canvas.Left="88"
+                     Canvas.Top="58" />
+        </Canvas>
+    </Viewbox>
+</UserControl>

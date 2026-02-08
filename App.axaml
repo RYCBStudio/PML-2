@@ -1,0 +1,176 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MEFrpLauncherX.App"
+             xmlns:local="using:MEFrpLauncherX"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:msg="https://github.com/xiyaowong/Message.Avalonia">
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="ControlContentThemeFontSize">13</x:Double>
+            <FontFamily x:Key="ContentControlThemeFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts/#iconfont</FontFamily>
+            <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts/#Jetbrains Mono</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <!-- <semi:SemiTheme Locale="zh-CN" /> -->
+        <!-- <u-semi:SemiTheme Locale="zh-CN" /> -->
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://Notification.Avalonia/Themes/Generic.xaml" />
+        <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
+        <msg:Theme/>
+        <styling:FluentAvaloniaTheme PreferUserAccentColor="True" />
+        <StyleInclude Source="Styles/_generic.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/StackPanelIntroAnimation.axaml"></StyleInclude>
+        <Style Selector="TemplatedControl">
+            <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
+        </Style>
+        <Style Selector="TextBlock :is(HyperlinkButton)">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0 0 0 -4"/>
+            <Setter Property="TextBlock.LineHeight" Value="NaN"/>
+            <Style Selector="^ TextBlock">
+                <!-- 修复字体飞上去的问题 -->
+                <Setter Property="Margin" Value="0 0 0 -2"/>
+            </Style>
+        </Style>
+        <Style Selector="Layoutable">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="ToggleSwitch">
+            <Setter Property="OnContent" Value="开启"/>
+            <Setter Property="OffContent" Value="关闭"/>
+        </Style>
+        <Style Selector="TabControl.compact TabItem">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="TextElement.FontSize" Value="14"/>
+                <Setter Property="TextElement.FontWeight" Value="Medium"/>
+            </Style>
+            <Setter Property="MinHeight" Value="28"/>
+        </Style>
+        <Style Selector="Border.Fatal">
+            <Setter Property="Background" Value="#3FFF0000"></Setter>
+        </Style>
+        <Style Selector="Border.Error">
+            <Setter Property="Background" Value="#60FF0000"></Setter>
+        </Style>
+        <Style Selector="Border.Success">
+            <Setter Property="Background" Value="#3F00E63C"></Setter>
+        </Style>
+        <Style Selector="Border.Warning">
+            <Setter Property="Background" Value="#64AD9600"></Setter>
+        </Style>
+        <Style Selector="Button.Danger">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="HyperlinkButton.Danger">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="Button.Success">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+        </Style>
+        <Style Selector="Button.Warning">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Fatal">
+            <Setter Property="Foreground" Value="#ffBF1A1B" />
+        </Style>
+        <Style Selector="TextBlock.Danger">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Error">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Success">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Warning">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+        <Style Selector="Ellipse.Fatal">
+            <Setter Property="Fill" Value="#ffBF1A1B" />
+        </Style>
+        <Style Selector="Ellipse.Danger">
+            <Setter Property="Fill" Value="#ffD9293B" />
+        </Style>
+        <Style Selector="Ellipse.Error">
+            <Setter Property="Fill" Value="#ffD9293B" />
+        </Style>
+        <Style Selector="Ellipse.Success">
+            <Setter Property="Fill" Value="#FF3AC243" />
+        </Style>
+        <Style Selector="Ellipse.Warning">
+            <Setter Property="Fill" Value="#FFFFB442" />
+        </Style>
+        <Style Selector="TextBlock.Secondary">
+            <Setter Property="Foreground" Value="#FFCBCBCC" />
+        </Style>
+        <Style Selector="TextBlock.SecondaryLight">
+            <Setter Property="Foreground" Value="#FF404040" />
+        </Style>
+        <Style Selector="TextBlock.Tertiary">
+            <Setter Property="Foreground" Value="#FFA5A6A6" />
+        </Style>
+        <Style Selector="TextBlock.TertiaryLight">
+            <Setter Property="Foreground" Value="#FF606060" />
+        </Style>
+        <Style Selector="Label.Normal">
+            <Setter Property="Theme" Value="{StaticResource BodyTextBlockStyle}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        
+        <Style Selector="Label.Blue">
+            <Setter Property="BorderBrush" Value="#ff54A9FF" />
+            <Setter Property="Background" Value="#ff54A9FF" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Foreground" Value="Azure" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="Label.Indigo">
+            <Setter Property="BorderBrush" Value="#ff5F71C5" />
+            <Setter Property="Background" Value="#ff5F71C5" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Foreground" Value="Azure" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="Label.Green">
+            <Setter Property="BorderBrush" Value="#ff5DC264" />
+            <Setter Property="Background" Value="#ff5DC264" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Foreground" Value="Azure" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="Label.Danger">
+            <Setter Property="BorderBrush" Value="#ffD9293B" />
+            <Setter Property="Background" Value="#ffD9293B" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Foreground" Value="Azure" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+        <Style Selector="controls|CommandBarElementContainer">
+            <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+        </Style>
+    </Application.Styles>
+</Application>

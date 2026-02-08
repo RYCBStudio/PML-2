@@ -1,0 +1,29 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:MEFrpLauncherX.Controls">
+    <Design.PreviewWith>
+        <controls:Divider />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|Divider">
+        <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}" />
+        <Setter Property="MinHeight" Value="2" />
+        <Setter Property="MinWidth" Value="2" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Name="PART_Container" Background="Transparent">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      Margin="10,0" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

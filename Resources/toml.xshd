@@ -1,0 +1,70 @@
+<SyntaxDefinition name="TOML" extensions=".toml"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#ff7A7E85" />
+    <Color name="String" foreground="#ff6AAB73" />
+    <Color name="Punctuation" />
+    <Color name="Key" foreground="#ffCF8E6D" fontWeight="bold" />
+    <Color name="Boolean" foreground="#ffC77DBB" fontStyle="italic" />
+    <Color name="Number" foreground="#ff2AACB8" />
+    <Color name="Date" foreground="#ffB3AE60" />
+    <Color name="Table" foreground="#ff56A8F5" fontWeight="bold" />
+
+    <RuleSet>
+        <!-- 注释 -->
+        <Span color="Comment" begin="#" />
+        
+        <!-- 字符串 -->
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+        <Span color="String">
+            <Begin>'</Begin>
+            <End>'</End>
+        </Span>
+        
+        <!-- 多行字符串 -->
+        <Span color="String" multiline="true">
+            <Begin>"""</Begin>
+            <End>"""</End>
+        </Span>
+        <Span color="String" multiline="true">
+            <Begin>'''</Begin>
+            <End>'''</End>
+        </Span>
+        
+        <!-- 键 -->
+        <Rule color="Key">
+            ^\s*[a-zA-Z0-9_-]+\s*(?=\=)
+        </Rule>
+        
+        <!-- 表头 -->
+        <Rule color="Table">
+            ^\s*\[[^\]]+\]\s*$
+        </Rule>
+        
+        <!-- 布尔值 -->
+        <Keywords color="Boolean">
+            <Word>true</Word>
+            <Word>false</Word>
+        </Keywords>
+        
+        <!-- 数字 -->
+        <Rule color="Number">
+            \b\d+(\.\d+)?([eE][+-]?\d+)?\b
+        </Rule>
+        
+        <!-- 日期 -->
+        <Rule color="Date">
+            \b\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(Z|[-+]\d{2}:\d{2})?)?\b
+        </Rule>
+        
+        <!-- 标点符号 -->
+        <Rule color="Punctuation">
+            [=,\[\]{}]
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

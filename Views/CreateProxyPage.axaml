@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:Class="MEFrpLauncherX.Views.CreateProxyPage"
+             mc:Ignorable="d"
+             x:DataType="views:CreateProxyPage">
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <TextBlock Margin="10"
+                   FontFamily="{StaticResource GlobalFontFamily}"
+                   Text="创建隧道" />
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
+
+        <StackPanel Grid.Row="2"
+                    Spacing="5"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button
+                Click="Refresh"
+                Content="刷新"
+                FontFamily="{StaticResource GlobalFontFamily}" />
+            <Button
+                Click="Back"
+                Content="返回"
+                FontFamily="{StaticResource GlobalFontFamily}" />
+            <Button
+                x:Name="NextBtn"
+                Click="Next"
+                Content="下一步"
+                FontFamily="{StaticResource GlobalFontFamily}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

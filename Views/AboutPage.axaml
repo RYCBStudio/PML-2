@@ -1,0 +1,219 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Views.AboutPage"
+             x:DataType="viewModels:AboutViewModel">
+    <Design.DataContext>
+        <viewModels:AboutViewModel />
+    </Design.DataContext>
+    <ScrollViewer>
+        <StackPanel Margin="10">
+            <controls1:SettingsExpander Footer="Codename: Nitrogen" IsExpanded="True">
+                <controls1:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <Image
+                            Width="20"
+                            Margin="5,0,5,0"
+                            Source="/Assets/meflx.png"
+                            Stretch="UniformToFill" />
+                        <TextBlock
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Theme="{StaticResource BodyStrongTextBlockStyle}"
+                            PointerPressed="EnableDebugMode"
+                            Text="{Binding Source={x:Static meFrpLauncherX:App.Version}, StringFormat='PML {0}'}" />
+                    </StackPanel>
+                </controls1:SettingsExpander.Header>
+                <controls1:SettingsExpanderItem Content="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
+                                                Description="由开源软件和 ME Frp 提供支持。">
+                    <controls1:SettingsExpanderItem.Footer>
+
+                        <StackPanel>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <HyperlinkButton
+                                    Click="UA_Click"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="-1"
+                                    Background="Transparent"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    FontFamily="{StaticResource GlobalFontFamily}">
+                                    <TextBlock
+                                        Text="用户协议">
+                                    </TextBlock>
+                                </HyperlinkButton>
+                                <HyperlinkButton
+                                    Click="Privacy_Click"
+                                    BorderBrush="Transparent"
+                                    Background="Transparent"
+                                    BorderThickness="-1"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock
+                                        Text="隐私政策">
+                                    </TextBlock></HyperlinkButton>
+                                <HyperlinkButton
+                                    Click="Doc_Click"
+                                    BorderBrush="Transparent"
+                                    Background="Transparent"
+                                    IsEnabled="False"
+                                    BorderThickness="-1"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock
+                                        Text="帮助文档">
+                                    </TextBlock></HyperlinkButton>
+                                <HyperlinkButton
+                                    BorderBrush="Transparent"
+                                    BorderThickness="-1"
+                                    Background="Transparent"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    Click="Support_Click"
+                                    Classes="Danger"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock
+                                        Text="反馈软件问题">
+                                    </TextBlock></HyperlinkButton>
+                            </StackPanel>
+                            <WrapPanel ItemSpacing="5" x:Name="DebugPanel" IsVisible="False">
+                                <Button Content="抛出异常" Click="Debug_ThrowException" />
+                                <Button Content="TestCaptchaSolution" Click="Debug_TestSolve" />
+                                <Button Content="TestForProxyFloat" Click="OpenProxyFloat" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </controls1:SettingsExpanderItem.Footer>
+
+                </controls1:SettingsExpanderItem>
+            </controls1:SettingsExpander>
+            <controls1:SettingsExpander IsExpanded="True">
+                <controls1:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="20"
+                            Margin="5,0,5,0"
+                            Source="/Assets/mefrp-new.jpg"
+                            IsVisible="{Binding !IsDark}"
+                            Stretch="UniformToFill" />
+                        <Image
+                            Width="20"
+                            Margin="5,0,5,0"
+                            Source="/Assets/mefrp-new-dark.jpg"
+                            IsVisible="{Binding IsDark}"
+                            Stretch="UniformToFill" />
+                        <TextBlock
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Theme="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="关于 ME Frp" />
+                    </StackPanel>
+                </controls1:SettingsExpander.Header>
+                <controls1:SettingsExpander.Footer>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Right"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Text="免费 · 公益 · 好用 · 低延迟 · 稳定的内网穿透服务" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Text="五年技术沉淀 · 稳定可靠" />
+                    </StackPanel>
+                </controls1:SettingsExpander.Footer>
+                <controls1:SettingsExpanderItem>
+                    <TextBlock
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="15"
+                        FontWeight="Bold"
+                        Text="ME Frp 版本" />
+                    <controls1:SettingsExpanderItem.Description>
+                        Core: v5 Client: v0.61.1
+                    </controls1:SettingsExpanderItem.Description>
+                    <controls1:SettingsExpanderItem.Footer>
+                        <Button
+                            Margin="0,5,0,0"
+                            Click="MEFC_Click"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Content="打开ME Frp Client目录"
+                            FontFamily="{StaticResource GlobalFontFamily}" />
+                    </controls1:SettingsExpanderItem.Footer>
+                </controls1:SettingsExpanderItem>
+                <controls1:SettingsExpanderItem>
+                    <TextBlock
+                        Margin="10"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="15"
+                        Text="友情链接" />
+                    <controls1:SettingsExpanderItem.Footer>
+                        <WrapPanel FlowDirection="LeftToRight" ItemSpacing="5">
+                            <Button
+                                Width="90"
+                                Click="OQ_Click"
+                                Content="官方QQ群"
+                                FontFamily="{StaticResource GlobalFontFamily}" />
+                            <Button
+                                Width="90"
+                                Click="FS_Click"
+                                Content="官方飞书群"
+                                FontFamily="{StaticResource GlobalFontFamily}" />
+                            <Button
+                                Width="90"
+                                Click="SM_Click"
+                                Content="支持邮箱"
+                                FontFamily="{StaticResource GlobalFontFamily}" />
+                        </WrapPanel>
+                    </controls1:SettingsExpanderItem.Footer>
+                </controls1:SettingsExpanderItem>
+            </controls1:SettingsExpander>
+
+            <controls1:SettingsExpander Background="Transparent"
+                                        FontFamily="{StaticResource GlobalFontFamily}" IsExpanded="True">
+                <controls1:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="20"
+                            Margin="5,0,5,0"
+                            Source="/Assets/hitokoto.png"
+                            IsVisible="{Binding IsDark}"
+                            Stretch="UniformToFill" />
+                        <TextBlock
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Theme="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="每日一言" />
+                    </StackPanel>
+                </controls1:SettingsExpander.Header>
+                <StackPanel>
+                    <TextBox
+                        x:Name="HitokotoBox"
+                        Text="{Binding Hitokoto}"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        IsReadOnly="True" />
+                    <StackPanel
+                        x:Name="HitokotoPanel"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="RefreshHitokoto"
+                            Margin="10"
+                            Classes="accent"
+                            Click="RefreshHitokoto_Click"
+                            Content="刷新"
+                            FontFamily="{StaticResource GlobalFontFamily}" />
+                        <TextBlock
+                            x:Name="HitokotoAuthor"
+                            Margin="10"
+                            Text="{Binding From, StringFormat='—— {0}'}"
+                            FontFamily="{StaticResource GlobalFontFamily}" />
+                        <controls1:ProgressRing x:Name="HitokotoStatus" Margin="3,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </controls1:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

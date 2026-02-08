@@ -1,0 +1,39 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        FontFamily="{StaticResource GlobalFontFamily}"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MEFrpLauncherX.Views.SplashScreen"
+        SystemDecorations="None"
+        WindowStartupLocation="CenterScreen"
+        CornerRadius="5"
+        Width="480"
+        Height="280">
+    <Grid RowDefinitions="*,Auto,Auto">
+        <Image Source="/Assets/meflx.png" Stretch="Uniform" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Margin="0,0,0,10"
+            Grid.Row="1">
+            <TextBlock
+                Margin="0,0,5,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource GlobalFontFamily}"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="PML 2" />
+            <TextBlock FontSize="30" HorizontalAlignment="Center" FontWeight="Bold" Text="X">
+                <TextBlock.Foreground>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#ffBFE9D5" />
+                        <GradientStop Offset="1" Color="#ff71BEE7" />
+                    </RadialGradientBrush>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </StackPanel>
+        <ProgressBar Grid.Row="2" IsIndeterminate="True" />
+    </Grid>
+</Window>

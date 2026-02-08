@@ -1,0 +1,30 @@
+{
+  "Skin": "None",
+  "KickWithoutDisable": true,
+  "HideInsteadOfClose": true,
+  "ParallelDownload": true,
+  "ParallelCount": 16,
+  "AutoStartup": false,
+  "AutoLaunch": false,
+  "AutoLaunchProxies": [],
+  "ExpireDays": 180,
+  "Theme": "Dark",
+  "BackgroundSettings": {
+    "BackgroundImage": "",
+    "Stretch": "Uniform",
+    "TileMode": "disabled"
+  },
+  "CaptchaMode": "implicit",
+  "UpdateSettings":{
+    "AutoCheck": true,
+    "Channel": "Preview",
+    "Method": "ds",
+    "KeepProfile": true
+  },
+  "DownloadSource": "TPCA",
+  "AccentColor": "",
+  "PMSettings": {
+    "Position": "lt",
+    "Enabled": false
+  }
+}

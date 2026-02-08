@@ -1,0 +1,50 @@
+<SyntaxDefinition name="INI" extensions=".ini;.cfg;.conf"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#ff7A7E85" />
+    <Color name="Section" foreground="#ff56A8F5" fontWeight="bold" />
+    <Color name="Key" foreground="#ffCF8E6D" />
+    <Color name="String" foreground="#ff6AAB73" />
+    <Color name="Number" foreground="#ff2AACB8" />
+    <Color name="Boolean" foreground="#ffC77DBB" fontStyle="italic" />
+	<Color name="Punctuation" />
+    
+    <RuleSet>
+        <!-- 注释 -->
+        <Span color="Comment" begin="[;#]" />
+        
+        <!-- 节 -->
+        <Rule color="Section">
+            ^\s*\[[^\]]+\]\s*$
+        </Rule>
+        
+        <!-- 键 -->
+        <Rule color="Key">
+            ^\s*[a-zA-Z0-9_-]+\s*(?=\=)
+        </Rule>
+        
+        <!-- 字符串值 -->
+        <Rule color="String">
+            =\s*[^;\r\n]+
+        </Rule>
+        
+        <!-- 布尔值 -->
+        <Keywords color="Boolean">
+            <Word>true</Word>
+            <Word>false</Word>
+            <Word>yes</Word>
+            <Word>no</Word>
+            <Word>on</Word>
+            <Word>off</Word>
+        </Keywords>
+        
+        <!-- 数字 -->
+        <Rule color="Number">
+            =\s*\d+(\.\d+)?([eE][+-]?\d+)?\b
+        </Rule>
+        
+        <!-- 标点符号 -->
+        <Rule color="Punctuation">
+            [=\[\]]
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

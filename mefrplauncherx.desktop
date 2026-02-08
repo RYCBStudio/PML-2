@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=PML 2
+Name[zh_CN]=PML 2
+Type=Application
+Terminal=false
+Categories=Applicaltion;
+Exec=/usr/share/mefrplauncherx %U
+Icon=/usr/share/icons/meflx.png
