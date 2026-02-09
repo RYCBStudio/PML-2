@@ -3,21 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36401.2 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX.Core", "..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj", "{EEACB8FA-2076-410B-97CD-FD4DF1D3B465}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX.Core", ".\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj", "{EEACB8FA-2076-410B-97CD-FD4DF1D3B465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX", "MEFrpLauncherX.csproj", "{6D25D2F5-20C5-4999-8C70-6D8BDFA8389D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX", ".\MEFrpLauncherX\MEFrpLauncherX.csproj", "{6D25D2F5-20C5-4999-8C70-6D8BDFA8389D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownAIRender", "G:\VSProj\Markdown.AIRender-master\src\MarkdownAIRender\MarkdownAIRender.csproj", "{9D59971E-F6A7-4526-88CD-70674C72A267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySQLPlugin", "G:\VSProj\MEFrpLauncherX.Plugins\MySQLPlugin\MySQLPlugin.csproj", "{9457C480-7290-4A27-B954-32CA2197DC54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PML2Test", ".\PML2Test\PML2Test.csproj", "{AB725E5A-6A95-43C1-A67A-03E7D098BC27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PML2Test", "..\PML2Test\PML2Test.csproj", "{AB725E5A-6A95-43C1-A67A-03E7D098BC27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX.Fonts", ".\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj", "{3DDBD248-E28F-47A2-A3D8-8FDCC6159A16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX.Fonts", "..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj", "{3DDBD248-E28F-47A2-A3D8-8FDCC6159A16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Mixin.TerminalHelper", ".\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj", "{6C07D7EA-57AC-46A0-BEFB-D9C909A8ED43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Mixin.TerminalHelper", "..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj", "{6C07D7EA-57AC-46A0-BEFB-D9C909A8ED43}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Device.Location", "..\System.Device.Location\System.Device.Location.csproj", "{474E303E-579A-4D04-81B0-708D2A8C2B4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Device.Location", ".\System.Device.Location\System.Device.Location.csproj", "{474E303E-579A-4D04-81B0-708D2A8C2B4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{9D59971E-F6A7-4526-88CD-70674C72A267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D59971E-F6A7-4526-88CD-70674C72A267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D59971E-F6A7-4526-88CD-70674C72A267}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9457C480-7290-4A27-B954-32CA2197DC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9457C480-7290-4A27-B954-32CA2197DC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9457C480-7290-4A27-B954-32CA2197DC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9457C480-7290-4A27-B954-32CA2197DC54}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB725E5A-6A95-43C1-A67A-03E7D098BC27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB725E5A-6A95-43C1-A67A-03E7D098BC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB725E5A-6A95-43C1-A67A-03E7D098BC27}.Release|Any CPU.ActiveCfg = Release|Any CPU

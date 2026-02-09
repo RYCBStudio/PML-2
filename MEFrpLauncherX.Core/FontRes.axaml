@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Add Resources Here -->
+    <FontFamily x:Key="GlobalFontFamily">/Assets/Fonts/#HarmonyOS Sans SC</FontFamily>
+    <FontFamily x:Key="IconFont">/Assets/Fonts/#iconfont</FontFamily>
+    <FontFamily x:Key="Jbm">/Assets/Fonts/#Jetbrains Mono</FontFamily>
+</ResourceDictionary>

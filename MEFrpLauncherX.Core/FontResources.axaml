@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  默认字体设置  -->
+    <FontFamily x:Key="GlobalFontFamily">/Assets/Fonts/#HarmonyOS Sans SC</FontFamily>
+    <FontFamily x:Key="IconFont">/Assets/Fonts/#iconfont</FontFamily>
+    <FontFamily x:Key="Jbm">/Assets/Fonts/#Jetbrains Mono</FontFamily>
+
+    <!--  控件样式  -->
+    <!--<Style TargetType="Control">
+        <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
+    </Style>-->
+</ResourceDictionary>
