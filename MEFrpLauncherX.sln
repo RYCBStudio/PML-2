@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Mixin.TerminalHel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Device.Location", ".\System.Device.Location\System.Device.Location.csproj", "{474E303E-579A-4D04-81B0-708D2A8C2B4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Extensions.MinecraftExtension", "RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj", "{DB43B627-87FE-429D-9F4E-01E2E1095467}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{474E303E-579A-4D04-81B0-708D2A8C2B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{474E303E-579A-4D04-81B0-708D2A8C2B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{474E303E-579A-4D04-81B0-708D2A8C2B4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

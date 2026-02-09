@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -8,9 +6,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Views;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MEFrpLauncherX;
 

@@ -273,6 +273,24 @@ public partial class CreateProxy : UserControl
             _createProxyViewModel.RemoteAddress.AddRange(de.Domains);
         }
     }
+
+    private async void CheckPort(object? sender, RoutedEventArgs e)
+    {
+        var psv = new PortScannerView();
+        var cd = new ContentDialog()
+        {
+            Title = "查找 Minecraft 端口",
+            Content = psv,
+            PrimaryButtonText = "确定",
+            DefaultButton = ContentDialogButton.Primary,
+            IsSecondaryButtonEnabled = false,
+            CloseButtonText = "取消"
+        };
+        if (await cd.ShowAsync() == ContentDialogResult.Primary)
+        {
+            _createProxyViewModel.LocalPort = psv.DataContext.SelectedResult?.Port ?? 0;
+        }
+    }
 }
 
 public class SelectIndexToVisibleConverter : IValueConverter

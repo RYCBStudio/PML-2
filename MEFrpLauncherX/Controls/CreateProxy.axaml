@@ -87,14 +87,17 @@
                     <fa:SettingsExpanderItem>
                         <pml2:RequiredField Label="本地端口" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
-                            <fa:NumberBox
-                                x:Name="LocalPortNudBox"
-                                Margin="5"
-                                SpinButtonPlacementMode="Inline"
-                                FontFamily="{StaticResource GlobalFontFamily}"
-                                Maximum="65535"
-                                Minimum="0"
-                                Value="{Binding LocalPort}" />
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <Button Content="想要MC开服? 点击此处查找端口 (BETA)" Click="CheckPort"/>
+                                <fa:NumberBox
+                                    x:Name="LocalPortNudBox"
+                                    Margin="5"
+                                    SpinButtonPlacementMode="Inline"
+                                    FontFamily="{StaticResource GlobalFontFamily}"
+                                    Maximum="65535"
+                                    Minimum="0"
+                                    Value="{Binding LocalPort}" />
+                            </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem>

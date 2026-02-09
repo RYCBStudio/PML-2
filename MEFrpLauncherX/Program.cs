@@ -170,9 +170,7 @@ internal sealed class Program
             return Path.Combine(AppContext.BaseDirectory, "Tools", filename + ".exe");
         }
 
-        return OperatingSystem.IsLinux()
-            ? Path.Combine(AppContext.BaseDirectory, filename)
-            : throw new PlatformNotSupportedException("Unsupported platform");
+        return Path.Combine(AppContext.BaseDirectory, "Tools", filename);
     }
 }
 

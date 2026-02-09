@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
@@ -121,6 +122,61 @@ public partial class ManageProxyPage : UserControl
                 }
             });
             proxyViewModel.FilterProxies();
+            if (OperatingSystem.IsMacOS())
+            {
+                // 创建原生菜单
+                MainWindow.Instance.NativeMenuBar = new NativeMenu();
+        
+                // 添加应用程序菜单（macOS 第一个菜单）
+                var appMenu = new NativeMenuItem("隧道");
+                var appSubMenu = new NativeMenu();
+        
+                appSubMenu.Add(new NativeMenuItem("管理隧道") 
+                { 
+                    Gesture = KeyGesture.Parse("Ctrl+M"),
+                    Command = ReactiveCommand.Create(() =>
+                    {
+                        MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                    })
+                });
+                appSubMenu.Add(new NativeMenuItemSeparator());
+                appSubMenu.Add(new NativeMenuItem("创建隧道") 
+                { 
+                    Gesture = KeyGesture.Parse("Ctrl+D") ,
+                    Command = ReactiveCommand.Create(() =>
+                    {
+                        MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                    })
+                });
+                appSubMenu.Add(new NativeMenuItemSeparator());
+                var tmp_launchProxy = new NativeMenu();
+                foreach (var proxy in proxyViewModel.AllProxies)
+                {
+                    tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
+                    {
+                        Command = proxy.LaunchProxyCommand
+                    });
+                }
+                appSubMenu.Add(new NativeMenuItem("启动隧道") 
+                { 
+                    Menu = tmp_launchProxy
+                });
+                appSubMenu.Add(new NativeMenuItemSeparator());
+                appSubMenu.Add(new NativeMenuItem("退出程序") 
+                { 
+                    Gesture = KeyGesture.Parse("Ctrl+Q"),
+                    Command = ReactiveCommand.Create(() => 
+                    {
+                        App.Desktop.Shutdown();
+                    })
+                });
+        
+                appMenu.Menu = appSubMenu;
+                MainWindow.Instance.NativeMenuBar.Add(appMenu);
+        
+                // 设置菜单栏
+                NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
+            }
             Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);
             MainPageFrameViewModel.Instance.IsLoading = false;
         }

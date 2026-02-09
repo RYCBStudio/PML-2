@@ -79,6 +79,7 @@
     <ItemGroup>
         <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
         <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj" />
+        <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj" />
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj" />
         <ProjectReference Include="G:\VSProj\Markdown.AIRender-master\src\MarkdownAIRender\MarkdownAIRender.csproj"/>
     </ItemGroup>

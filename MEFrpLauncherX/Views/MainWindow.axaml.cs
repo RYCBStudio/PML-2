@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -21,6 +22,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using Newtonsoft.Json;
+using ReactiveUI;
 using RYCB.PML.MEFrpCaptchaLib;
 using Color = Avalonia.Media.Color;
 using Window = Avalonia.Controls.Window;
@@ -43,6 +45,12 @@ public partial class MainWindow : AppWindow, IDisposable
     {
         get;
         private set;
+    }
+
+    public NativeMenu NativeMenuBar
+    {
+        get;
+        set;
     }
 
     public MainWindow()
@@ -140,7 +148,49 @@ public partial class MainWindow : AppWindow, IDisposable
             Menu = CreateContextMenu(),
             ToolTipText = "PML 2 运行中",
         };
-        //NativeMenu.SetMenu(this, menu);
+        if (OperatingSystem.IsMacOS())
+        {
+            // 创建原生菜单
+            NativeMenuBar = new NativeMenu();
+        
+            // 添加应用程序菜单（macOS 第一个菜单）
+            var appMenu = new NativeMenuItem("隧道");
+            var appSubMenu = new NativeMenu();
+        
+            // 添加标准 macOS 菜单项
+            appSubMenu.Add(new NativeMenuItem("管理隧道") 
+            { 
+                Gesture = KeyGesture.Parse("Ctrl+M"),
+                Command = ReactiveCommand.Create(() =>
+                {
+                    MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                })
+            });
+            appSubMenu.Add(new NativeMenuItemSeparator());
+            appSubMenu.Add(new NativeMenuItem("创建隧道") 
+            { 
+                Gesture = KeyGesture.Parse("Ctrl+D") ,
+                Command = ReactiveCommand.Create(() =>
+                {
+                    MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                })
+            });
+            appSubMenu.Add(new NativeMenuItemSeparator());
+            appSubMenu.Add(new NativeMenuItem("退出程序") 
+            { 
+                Gesture = KeyGesture.Parse("Ctrl+Q"),
+                Command = ReactiveCommand.Create(() => 
+                {
+                    App.Desktop.Shutdown();
+                })
+            });
+        
+            appMenu.Menu = appSubMenu;
+            NativeMenuBar.Add(appMenu);
+        
+            // 设置菜单栏
+            NativeMenu.SetMenu(this, NativeMenuBar);
+        }
         var topLevel = GetTopLevel(this);
         Core.App.WindowNotificationManager = new WindowNotificationManager(topLevel)
             { MaxItems = 5, Position = NotificationPosition.BottomRight };

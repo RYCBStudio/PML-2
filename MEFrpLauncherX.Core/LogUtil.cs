@@ -132,8 +132,8 @@ public class LogUtil : IDisposable
         var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}][{context}] {message}";
         
         _asyncWriter.EnqueueLog(logEntry);
-#endif
         Console.WriteLine($"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
+#endif
     }
 
     /// <summary>
