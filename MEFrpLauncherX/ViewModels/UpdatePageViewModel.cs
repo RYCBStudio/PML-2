@@ -196,7 +196,10 @@ public class UpdatePageViewModel : ViewModelBase
 // #endif
         // var versionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
         // var version = versionRegex.Match(App.Version);
-
+        if (latestVersion == preiewUpdateInfo.version)
+        {
+            updateInfo = preiewUpdateInfo;
+        }
         if (VersionComparer.IsGreaterThan(latestVersion, App.Version))
         {
             Core.App.CurrentLogger.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
@@ -225,6 +228,8 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         LatestVersion = latestVersion;
+        Changelog.Clear();
+        Changelog.AddRange(updateInfo.data.changes);
         Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
         Core.App.CurrentLogger.Log("检查更新完成", module: EnumLogModule.Update);
         IterationCount = new IterationCount(0);

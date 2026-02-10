@@ -34,10 +34,10 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Content="背景" IconSource="Image"
-                                               Description="设置窗口的背景&#x0009;注意: 过大的图片体积可能会降低性能。">
+                                               Description="设置窗口的背景&#x0009;注意: 过大的图片体积可能会降低性能。&#x0009;“选择背景”功能已迁移至下方“自定义”中。">
                     <controls:SettingsExpanderItem.Footer>
                         <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5">
-                            <Button Content="选择背景" Click="ChooseBackground" />
+                            <Button Content="选择背景" IsEnabled="False" Click="ChooseBackground" />
                             <Button Content="清除背景" Click="ClearBackground" />
                         </WrapPanel>
                     </controls:SettingsExpanderItem.Footer>

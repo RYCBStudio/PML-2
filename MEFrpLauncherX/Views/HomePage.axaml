@@ -6,8 +6,6 @@
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
-             xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
-             xmlns:mdxaml="https://github.com/whistyun/Markdown.Avalonia.Tight"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.HomePage"
              x:DataType="viewModels:HomePageViewModel">
@@ -67,7 +65,7 @@
                 </TextBlock>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" ColumnDefinitions="*,1,*">
+        <Grid Grid.Row="1" ColumnDefinitions="*,1,*" ColumnSpacing="5">
             <Border Grid.ColumnSpan="3" Background="#2f000000">
                 <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}">
                 </controls:ProgressRing>

@@ -71,7 +71,12 @@
             </Panel>
         </DockPanel>
         <StackPanel Spacing="5" Margin="10,0,10,0" Grid.Row="3">
-            <StackPanel>
+            <DockPanel HorizontalSpacing="4">
+                <StackPanel Orientation="Horizontal" Spacing="3" DockPanel.Dock="Right">
+                    <TextBlock>验证方式</TextBlock>
+                    <ComboBox x:Name="AuthModeComboBox" ItemsSource="{Binding AuthModes}" SelectedIndex="{Binding AuthMode}" />
+                </StackPanel>
+                <StackPanel>
                 <Button x:Name="LoginBtn" Classes="accent" HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         Click="LoginBtn_Click"
@@ -80,6 +85,7 @@
                 <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                              IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
             </StackPanel>
+            </DockPanel>
             <Button
                 x:Name="SignUpBtn"
                 HorizontalAlignment="Stretch"

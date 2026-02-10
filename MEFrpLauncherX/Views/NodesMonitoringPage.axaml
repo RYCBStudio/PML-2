@@ -103,7 +103,7 @@
                 FontFamily="{StaticResource GlobalFontFamily}" ItemsSource="{Binding FilteredNodes}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <HeaderedContentControl Margin="0,5" Padding="15" CornerRadius="8">
+                        <Border Margin="0,5" Padding="15" CornerRadius="8">
                             <Grid ColumnDefinitions="Auto,*,Auto">
                                 <!-- 节点基本信息 -->
                                 <StackPanel Grid.Column="0">
@@ -158,7 +158,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
-                        </HeaderedContentControl>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

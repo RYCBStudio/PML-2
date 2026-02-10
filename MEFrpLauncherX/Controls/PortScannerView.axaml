@@ -24,7 +24,7 @@
                    Margin="0,0,0,10"/>
         
         <!-- 扫描设置 -->
-        <Border Padding="10" Background="{DynamicResource ControlFillColorSecondaryBrush}" CornerRadius="5">
+        <Border Padding="10" Background="{DynamicResource ControlFillColorSecondaryBrush}" CornerRadius="8">
             <StackPanel Spacing="10">
                 <TextBlock Text="扫描设置" FontWeight="Bold"/>
                 
@@ -85,7 +85,7 @@
         <Border IsVisible="{Binding IsScanning}" 
                 Padding="10" 
                 Background="{DynamicResource ControlFillColorTertiaryBrush}" 
-                CornerRadius="5">
+                CornerRadius="8">
             <StackPanel Spacing="5">
                 <ProgressBar Value="{Binding ScanProgress}" 
                              Maximum="100" />
@@ -95,7 +95,7 @@
         </Border>
         
         <!-- 扫描结果 -->
-        <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="5" BorderThickness="1" BorderBrush="{DynamicResource ControlFillColorSecondaryBrush}">
+        <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource ControlFillColorSecondaryBrush}">
             <StackPanel Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <TextBlock Text="扫描结果" FontWeight="Bold"/>

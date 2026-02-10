@@ -319,6 +319,10 @@ public partial class TerminalControl : UserControl, IDisposable
                 {
                     hasExited = true;
                 }
+                catch (NullReferenceException)
+                {
+                    hasExited = true;
+                }
 
                 if (!hasExited)
                 {

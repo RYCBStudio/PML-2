@@ -143,6 +143,16 @@ public class MEFApiConverter
             return fallBack;
         }
 
+        if (response.Content.StartsWith("<"))
+        {
+            return new ApiInfo<T>()
+            {
+                code = 502,
+                message = "API回源失败, 无法获取api信息",
+                data = default
+            };
+        }
+        
         var result = JsonConvert.DeserializeObject<ApiInfo<T>>(response.Content ?? """
             {
             "code": 0,
@@ -182,6 +192,15 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
+        if (response.Content.StartsWith("<"))
+        {
+            return new ApiInfo<T>()
+            {
+                code = 502,
+                message = "API回源失败, 无法获取api信息",
+                data = default
+            };
+        }
         // Fallback to safe default JSON if content is null
         var safeContent = response.Content ?? """
                                               {
@@ -668,12 +687,7 @@ public class MEFApiConverter
                          {
                          "code": 0,
                          "message": "无法获取api信息",
-                         "data": {
-                             "users": 0,
-                             "nodes": 0,
-                             "proxies": 0,
-                             "traffic": 0
-                             }
+                         "data": null
                          }
                          """) ??
                      new ApiInfo<object>();

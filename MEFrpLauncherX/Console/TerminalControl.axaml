@@ -8,7 +8,7 @@
              x:Class="MEFrpLauncherX.Console.TerminalControl">
     <Grid RowDefinitions="Auto,*,Auto" ZIndex="1">
         <Grid ColumnDefinitions="*,*" Margin="3" ColumnSpacing="10">
-            <Border Margin="6,0,0,0" CornerRadius="5"
+            <Border Margin="6,0,0,0" CornerRadius="8"
                     Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}">
                 <DockPanel Margin="3" HorizontalSpacing="4" VerticalSpacing="4"
                            IsVisible="{Binding Path=#ErrorText.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
@@ -18,7 +18,7 @@
                                Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
                 </DockPanel>
             </Border>
-            <Border Margin="0,0,6,0" Grid.Column="1" CornerRadius="5"
+            <Border Margin="0,0,6,0" Grid.Column="1" CornerRadius="8"
                     Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}">
                 <DockPanel Margin="3" HorizontalSpacing="4" VerticalSpacing="4"
                            IsVisible="{Binding Path=#ErrorText.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">

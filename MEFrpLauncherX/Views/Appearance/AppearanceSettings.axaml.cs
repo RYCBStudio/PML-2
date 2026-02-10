@@ -129,8 +129,13 @@ public class RecentImagesSettingsItem : SettingsItemBase
                 goto FINAL;
             }
 
-            foreach (var image in ImagePaths)
+            foreach (var image in ImagePaths.ToList())
             {
+                if (!File.Exists(image))
+                {
+                    ImagePaths.Remove(image);
+                    continue;
+                }
                 var img = new Bitmap(image);
                 Images.Add(img);
                 Imgs.Add(image, img);

@@ -17,10 +17,34 @@
                 Margin="0,0,0,5"
                 Padding="10">
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBox Width="200" VerticalAlignment="Center"
-                         Watermark="搜索节点..."
-                         FontFamily="{StaticResource GlobalFontFamily}"
-                         Text="{Binding SearchText}" />
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <TextBox Width="200" VerticalAlignment="Center"
+                             Watermark="搜索节点"
+                             FontFamily="{StaticResource GlobalFontFamily}"
+                             Text="{Binding SearchText}" />
+                    <ToggleButton x:Name="HelpBtn">
+                        <ToggleButton.Content>
+                            <controls:SymbolIcon Symbol="Help" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked}"
+                                          Target="{Binding #HelpBtn}"
+                                          Title="搜索帮助"
+                                          IconSource="Help" >
+                        <controls:TeachingTip.Content>
+                            <StackPanel Spacing="3">
+                                <TextBlock>无参数: 直接搜索名称</TextBlock>
+                                <TextBlock>输入/d:&lt;KEYWORD&gt;以搜索描述</TextBlock>
+                                <TextBlock>输入/pn:&lt;PINYIN&gt;以使用拼音搜索名称</TextBlock>
+                                <TextBlock>输入/pd:&lt;PINYIN&gt;以使用拼音搜索描述</TextBlock>
+                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。" IsOpen="True" IsClosable="False"></controls:InfoBar>
+                            </StackPanel>
+                        </controls:TeachingTip.Content>
+                        <controls:TeachingTip.CloseButtonContent>
+                            <controls:SymbolIcon Symbol="Clear"></controls:SymbolIcon>
+                        </controls:TeachingTip.CloseButtonContent>
+                    </controls:TeachingTip>
+                </StackPanel>
 
                 <CheckBox Margin="15,0,0,0"
                           Content="仅显示可建站节点" VerticalAlignment="Center"
@@ -63,7 +87,7 @@
                  IsVisible="{Binding !IsLoading}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" ItemSpacing="5"  LineSpacing="5"/>
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
@@ -83,7 +107,7 @@
                     <Setter Property="IsSelected"
                             Value="{Binding IsSelected, Mode=TwoWay, DataType=ctrls:TunnelNodeViewModel}" />
                 </Style>
-                
+
             </ListBox.Styles>
         </ListBox>
     </Grid>

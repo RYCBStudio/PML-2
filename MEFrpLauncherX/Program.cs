@@ -98,12 +98,19 @@ internal sealed class Program
         if (OperatingSystem.IsLinux())
         {
             options.DefaultFamilyName = "Noto Sans CJK SC";
+            options.FontFallbacks =
+            [
+                new FontFallback()
+                {
+                    FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
+                        "Harmony OS Sans SC")
+                }
+            ];
         }
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace()
             .With(options)
             .With(new X11PlatformOptions
             {

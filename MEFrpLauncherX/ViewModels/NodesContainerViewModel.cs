@@ -251,20 +251,29 @@ public class NodesContainerViewModel : INotifyPropertyChanged
     private async void FilterNodes()
     {
         IsLoading = true;
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            FilteredNodes.Clear();
+        FilteredNodes.Clear();
 
-            var realRegion = "all";
-            var filtered = AllNodes.Where(node =>
-                (string.IsNullOrEmpty(SearchText) ||
-                 node.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                 node.NodeId.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase)) &&
-                IsRegionMeets(node, out realRegion) &&
-                (!FilterCanBuildSite || node.CanBuildSite) &&
-                (!FilterAllowHighTraffic || node.AllowHighTraffic) &&
-                (!FilterNotOverLoaded || node.IsNotOverloaded));
-
+        var realRegion = "all";
+        var filtered = AllNodes.Where(node =>
+            string.IsNullOrEmpty(SearchText) || (SearchText.StartsWith("/d:") &&
+                                                 (node.Description.Contains(SearchText.Remove(0, 3),
+                                                     StringComparison.OrdinalIgnoreCase)) ||
+                                                 (SearchText.StartsWith("/pd:") && PinYinHelper
+                                                     .ConvertToAllSpell(node.Description).Contains(
+                                                         PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
+                                                         StringComparison.OrdinalIgnoreCase)) ||
+                                                 node.Name.Contains(SearchText,
+                                                     StringComparison.OrdinalIgnoreCase) ||
+                                                 (SearchText.StartsWith("/pn:") && PinYinHelper
+                                                     .ConvertToAllSpell(node.Name).Contains(
+                                                         PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
+                                                         StringComparison.OrdinalIgnoreCase)) ||
+                                                 node.NodeId.ToString().Contains(SearchText,
+                                                     StringComparison.OrdinalIgnoreCase)) &&
+            IsRegionMeets(node, out realRegion) &&
+            (!FilterCanBuildSite || node.CanBuildSite) &&
+            (!FilterAllowHighTraffic || node.AllowHighTraffic) &&
+            (!FilterNotOverLoaded || node.IsNotOverloaded));
 //         Core.App.CurrentLogger.LogDebug("Requirements: \n" +
 //                                         $"""
 //                                          SearchText: {SearchText},
@@ -272,9 +281,9 @@ public class NodesContainerViewModel : INotifyPropertyChanged
 //                                          AllowHighTraffic: {FilterAllowHighTraffic},
 //                                          Region: {realRegion}
 //                                          """);
-            foreach (var node in filtered)
-            {
-                // Debug
+        foreach (var node in filtered)
+        {
+            // Debug
 //             Core.App.CurrentLogger.LogDebug("\n=========\nNode #" + node.NodeId + ": " + node.Name +
 //                                             ", meets requirements: \n" +
 //                                             $"""
@@ -283,13 +292,13 @@ public class NodesContainerViewModel : INotifyPropertyChanged
 //                                              Region: {node.Region}(re: {realRegion})
 //                                              ==========
 //                                              """);
-                FilteredNodes.Add(node);
-            }
+            FilteredNodes.Add(node);
+        }
 
-            Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
+        Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
 
-            OnPropertyChanged(nameof(FilteredNodes));
-        }, DispatcherPriority.Background);
+        OnPropertyChanged(nameof(FilteredNodes));
+        // }, DispatcherPriority.Background);
         IsLoading = false;
         MainPageFrameViewModel.Instance.IsLoading = false;
     }

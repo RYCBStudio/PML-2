@@ -1,9 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-        xmlns:system="clr-namespace:System;assembly=System.Runtime"
-        xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
-        xmlns:primitives="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia">
+        xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
             <controls1:AnimatedProgressRing></controls1:AnimatedProgressRing>
@@ -13,36 +10,43 @@
     <Style Selector="HeaderedContentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
+                <Border CornerRadius="8" Margin="2">
+                    <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
 
-                    <!-- Header -->
-                    <Border
-                        ZIndex="1"
-                        Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                        Padding="5,0,5,0"
-                        Margin="5,0,0,0">
-                        <TextBlock
-                            Text="{TemplateBinding Header}"
-                            FontWeight="Bold" />
-                    </Border>
+                        <!-- Header -->
+                        <Border
+                            ZIndex="1"
+                            Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                            Padding="5,0,5,0"
+                            Margin="5,0,0,0">
+                            <TextBlock
+                                Background="Transparent"
+                                Text="{TemplateBinding Header}"
+                                FontWeight="Bold" />
+                        </Border>
 
-                    <!-- Content Area -->
-                    <Border
-                        Grid.RowSpan="2"
-                        Padding="0,5,0,0"
-                        Grid.ColumnSpan="2"
-                        CornerRadius="4"
-                        Margin="0,10,0,0"
-                        BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                        BorderThickness="1">
-                        <ContentPresenter
-                            Name="PART_ContentPresenter"
-                            Padding="8"
-                            Content="{TemplateBinding Content}" />
-                    </Border>
-                </Grid>
+                        <!-- Content Area -->
+                        <Border
+                            Grid.Row="1"
+                            Padding="0,5,0,0"
+                            Grid.ColumnSpan="2"
+                            CornerRadius="4"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Margin="0,10,0,0"
+                            BorderThickness="1">
+                            <ContentPresenter
+                                Name="PART_ContentPresenter"
+                                Padding="8"
+                                Content="{TemplateBinding Content}" />
+                        </Border>
+                    </Grid>
+                </Border>
             </ControlTemplate>
         </Setter>
+    </Style>
+    
+    <Style Selector="GridSplitter">
+        <Setter Property="CornerRadius" Value="50"></Setter>
     </Style>
 
     <Style Selector="controls1|AnimatedProgressRing">

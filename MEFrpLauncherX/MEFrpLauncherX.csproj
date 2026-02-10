@@ -109,6 +109,9 @@
           <DependentUpon>ALPConfigEditor.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Controls\StarMapCanvas.axaml.cs">
+          <DependentUpon>StarMapCanvas.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <None Update="Resources\ini.xshd">
