@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -269,8 +268,8 @@ public partial class CreateProxy : UserControl
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
         {
-            _createProxyViewModel.RemoteAddress.Clear();
-            _createProxyViewModel.RemoteAddress.AddRange(de.Domains);
+            _createProxyViewModel.RemoteAddress?.Clear();
+            _createProxyViewModel.RemoteAddress?.AddRange(de.Domains);
         }
     }
 

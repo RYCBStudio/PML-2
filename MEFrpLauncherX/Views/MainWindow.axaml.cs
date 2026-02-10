@@ -25,7 +25,6 @@ using Newtonsoft.Json;
 using ReactiveUI;
 using RYCB.PML.MEFrpCaptchaLib;
 using Color = Avalonia.Media.Color;
-using Window = Avalonia.Controls.Window;
 
 #pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
 
@@ -38,6 +37,7 @@ public partial class MainWindow : AppWindow, IDisposable
         get;
         private set;
     }
+
     private TrayIcon _notifyIcon;
     private MainWindowViewModel vm;
 
@@ -152,14 +152,14 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             // 创建原生菜单
             NativeMenuBar = new NativeMenu();
-        
+
             // 添加应用程序菜单（macOS 第一个菜单）
             var appMenu = new NativeMenuItem("隧道");
             var appSubMenu = new NativeMenu();
-        
+
             // 添加标准 macOS 菜单项
-            appSubMenu.Add(new NativeMenuItem("管理隧道") 
-            { 
+            appSubMenu.Add(new NativeMenuItem("管理隧道")
+            {
                 Gesture = KeyGesture.Parse("Ctrl+M"),
                 Command = ReactiveCommand.Create(() =>
                 {
@@ -167,33 +167,42 @@ public partial class MainWindow : AppWindow, IDisposable
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
-            appSubMenu.Add(new NativeMenuItem("创建隧道") 
-            { 
-                Gesture = KeyGesture.Parse("Ctrl+D") ,
+            appSubMenu.Add(new NativeMenuItem("创建隧道")
+            {
+                Gesture = KeyGesture.Parse("Ctrl+D"),
                 Command = ReactiveCommand.Create(() =>
                 {
                     MainPageFrameViewModel.Instance?.NavigateToPage("Create");
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
-            appSubMenu.Add(new NativeMenuItem("退出程序") 
-            { 
+            appSubMenu.Add(new NativeMenuItem("退出程序")
+            {
                 Gesture = KeyGesture.Parse("Ctrl+Q"),
-                Command = ReactiveCommand.Create(() => 
+                Command = ReactiveCommand.Create(() =>
                 {
                     App.Desktop.Shutdown();
                 })
             });
-        
+
             appMenu.Menu = appSubMenu;
             NativeMenuBar.Add(appMenu);
-        
+
             // 设置菜单栏
             NativeMenu.SetMenu(this, NativeMenuBar);
         }
+
         var topLevel = GetTopLevel(this);
         Core.App.WindowNotificationManager = new WindowNotificationManager(topLevel)
             { MaxItems = 5, Position = NotificationPosition.BottomRight };
+        try
+        {
+            Program.SplashProcess.Kill();
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine($"\e[31m[E]\e[0m] {ex.GetType()} {ex.Message}");
+        }
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性
@@ -282,12 +291,13 @@ public partial class MainWindow : AppWindow, IDisposable
             if (hasNew)
             {
                 Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {App.Version} → {latest}");
-            }updateChecked = true;
+            }
+
+            updateChecked = true;
         }
 
         App.splash?.Close();
         App.splash = null;
-        //MEFApiConverter.PostInitializeAsync();
     }
 
     private NativeMenu CreateContextMenu()

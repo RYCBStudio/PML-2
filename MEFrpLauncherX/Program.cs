@@ -14,12 +14,24 @@ namespace MEFrpLauncherX;
 
 internal sealed class Program
 {
+
+    public static Process SplashProcess
+    {
+        get;
+        private set;
+    }
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
+        var p = Process.Start(new ProcessStartInfo()
+        {
+            FileName = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash")),
+            Arguments = $"-v \"{App.Version} “{App.Codename}” \" -b {Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg")}"
+        });
+        SplashProcess = p;
 #if !DEBUG
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         AppDomain.CurrentDomain.UnhandledException += ProcessUnhandledExceptions;
