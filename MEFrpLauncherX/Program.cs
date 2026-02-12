@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,12 +16,12 @@ namespace MEFrpLauncherX;
 
 internal sealed class Program
 {
-
     public static Process SplashProcess
     {
         get;
         private set;
     }
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -28,8 +30,8 @@ internal sealed class Program
     {
         var p = Process.Start(new ProcessStartInfo()
         {
-            FileName = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash")),
-            Arguments = $"-v \"{App.Version} “{App.Codename}” \" -b {Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg")}"
+            FileName = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true),
+            Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
         });
         SplashProcess = p;
 #if !DEBUG
@@ -58,6 +60,31 @@ internal sealed class Program
             }
         }
 #endif
+    }
+
+    private static string GetBackground()
+    {
+        var possiblePaths = new List<string>()
+        {
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.png"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.gif"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.webp"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpeg"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.bmp"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpg"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.png"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.gif"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.webp"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpeg"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp"),
+        };
+        foreach (var possiblePath in possiblePaths.Where(File.Exists))
+        {
+            return possiblePath;
+        }
+
+        return possiblePaths[0];
     }
 
     public static void ProcessStartupArguments(string arg)
@@ -147,6 +174,11 @@ internal sealed class Program
         ex = ex.InnerException ?? ex;
         if (Core.App.CurrentLogger != null)
         {
+            System.Console.WriteLine($"""
+                                      Unhandled Exception: 
+                                      [{ex.GetType()}] {ex.Message}
+                                      {ex.StackTrace}
+                                      """);
             Core.App.CurrentLogger.Error(ex, type: EnumLogType.Fatal);
         }
         else
@@ -163,8 +195,7 @@ internal sealed class Program
         var crashLog = crashHandler.GetCrashLog();
         var encodedExInfo = Base64Encode($"{ex.GetType()}||{ex.Message}||{ex.StackTrace}");
         //保存到文件（可选）
-        var logPath = Path.Combine(Core.App.StartupPath, 
-            "PML2", "crash_logs");
+        var logPath = Path.Combine(Core.App.StartupPath, "Logs", "Crash");
         Directory.CreateDirectory(logPath);
         var logFile = Path.Combine(logPath, $"crash_{DateTime.Now:yyyyMMdd_HHmmss}.log");
         File.WriteAllText(logFile, crashLog);
@@ -182,15 +213,15 @@ internal sealed class Program
         return Convert.ToBase64String(plainTextBytes);
     }
 
-    public static string GetPlatformExe(string filename)
-    {
-        if (OperatingSystem.IsWindows())
-        {
-            return Path.Combine(AppContext.BaseDirectory, "Tools", filename + ".exe");
-        }
-
-        return Path.Combine(AppContext.BaseDirectory, "Tools", filename);
-    }
+    public static string GetPlatformExe(string filename, bool fullPath = false) => fullPath
+        ? filename.EndsWith(".exe")
+            ? OperatingSystem.IsWindows() ? Path.Combine(filename) : Path.Combine(filename + ".exe")
+            : OperatingSystem.IsWindows()
+                ? Path.Combine(filename + ".exe")
+                : filename
+        : OperatingSystem.IsWindows()
+            ? Path.Combine(AppContext.BaseDirectory, "Tools", filename + ".exe")
+            : Path.Combine(AppContext.BaseDirectory, "Tools", filename);
 }
 
 public record StartupData

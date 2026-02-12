@@ -324,6 +324,14 @@ public class SelectIndexToVisibleConverterReverse : IValueConverter
         throw new NotImplementedException();
 }
 
+public class LegalProxyNameValidator : ValidationAttribute
+{
+    public override bool IsValid(object? value)
+    {
+        return value is string name && !name.Contains('.');
+    }
+}
+
 public class CreateProxyViewModel : ViewModelBase
 {
     public TunnelNodeViewModel TunnelNode
@@ -332,6 +340,7 @@ public class CreateProxyViewModel : ViewModelBase
         set;
     }
 
+    [LegalProxyNameValidator(ErrorMessage = "隧道名不能包含: .")]
     [Required(ErrorMessage = "必填项")]
     public string ProxyName
     {

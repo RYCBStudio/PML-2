@@ -179,8 +179,41 @@ public class UpdatePageViewModel : ViewModelBase
         Core.App.CurrentLogger.Log("正在检查更新", module: EnumLogModule.Update);
         Status = "正在检查更新";
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
-        var updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync();
-        var preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync();
+        SingleVersionInfo updateInfo = new()
+            {
+                data = new SingleVersionInfo.VersionInfo
+                {
+                    changes = ["获取更新失败"],
+                    codename = App.Codename,
+                    date = DateTime.Now.ToString("0"),
+                    description = "获取更新失败"
+                },
+                success = false,
+                version = App.Version
+            },
+            preiewUpdateInfo = new()
+            {
+                data = new SingleVersionInfo.VersionInfo
+                {
+                    changes = ["获取更新失败"],
+                    codename = App.Codename,
+                    date = DateTime.Now.ToString("0"),
+                    description = "获取更新失败"
+                },
+                success = false,
+                version = App.Version
+            };
+        try
+        {
+            updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync();
+            preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync();
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
+            Core.App.CurrentLogger.Error(ex);
+        }
+
         string latestVersion;
         if (isPreview)
         {
@@ -190,6 +223,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             latestVersion = updateInfo.version;
         }
+
 // #if !DEBUG
 //         Core.App.CurrentLogger.LogDebug("[DEBUG] 模拟更新", module: EnumLogModule.Update);
 //         updateInfo.version = "999.999.999.99";
@@ -200,6 +234,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             updateInfo = preiewUpdateInfo;
         }
+
         if (VersionComparer.IsGreaterThan(latestVersion, App.Version))
         {
             Core.App.CurrentLogger.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);

@@ -248,28 +248,28 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         }
     }
 
-    private async void FilterNodes()
+    private void FilterNodes()
     {
         IsLoading = true;
         FilteredNodes.Clear();
 
         var realRegion = "all";
         var filtered = AllNodes.Where(node =>
-            string.IsNullOrEmpty(SearchText) || (SearchText.StartsWith("/d:") &&
-                                                 (node.Description.Contains(SearchText.Remove(0, 3),
-                                                     StringComparison.OrdinalIgnoreCase)) ||
-                                                 (SearchText.StartsWith("/pd:") && PinYinHelper
-                                                     .ConvertToAllSpell(node.Description).Contains(
-                                                         PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
-                                                         StringComparison.OrdinalIgnoreCase)) ||
-                                                 node.Name.Contains(SearchText,
-                                                     StringComparison.OrdinalIgnoreCase) ||
-                                                 (SearchText.StartsWith("/pn:") && PinYinHelper
-                                                     .ConvertToAllSpell(node.Name).Contains(
-                                                         PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
-                                                         StringComparison.OrdinalIgnoreCase)) ||
-                                                 node.NodeId.ToString().Contains(SearchText,
-                                                     StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(SearchText) || SearchText.StartsWith("/d:") &&
+             node.Description.Contains(SearchText.Remove(0, 3),
+                 StringComparison.OrdinalIgnoreCase) ||
+             (SearchText.StartsWith("/pd:") && PinYinHelper
+                 .ConvertToAllSpell(node.Description).Contains(
+                     PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
+                     StringComparison.OrdinalIgnoreCase)) ||
+             node.Name.Contains(SearchText,
+                 StringComparison.OrdinalIgnoreCase) ||
+             (SearchText.StartsWith("/pn:") && PinYinHelper
+                 .ConvertToAllSpell(node.Name).Contains(
+                     PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
+                     StringComparison.OrdinalIgnoreCase)) ||
+             node.NodeId.ToString().Contains(SearchText,
+                 StringComparison.OrdinalIgnoreCase)) &&
             IsRegionMeets(node, out realRegion) &&
             (!FilterCanBuildSite || node.CanBuildSite) &&
             (!FilterAllowHighTraffic || node.AllowHighTraffic) &&

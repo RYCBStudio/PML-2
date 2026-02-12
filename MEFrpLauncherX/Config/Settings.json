@@ -17,7 +17,7 @@
   "CaptchaMode": "implicit",
   "UpdateSettings":{
     "AutoCheck": true,
-    "Channel": "Preview",
+    "Channel": "Stable",
     "Method": "ds",
     "KeepProfile": true
   },
