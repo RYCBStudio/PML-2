@@ -14,8 +14,8 @@
     </Design.DataContext>
     <ScrollViewer>
         <Panel>
-            <controls:StarMapCanvas></controls:StarMapCanvas>
-            <StackPanel Margin="10">
+            <controls:StarMapCanvas />
+            <StackPanel Margin="10" Classes="animated">
                 <controls1:SettingsExpander Footer="Codename: Nitrogen" IsExpanded="True">
                     <controls1:SettingsExpander.Header>
                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -45,8 +45,7 @@
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="用户协议">
-                                        </TextBlock>
+                                            Text="用户协议" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         Click="Privacy_Click"
@@ -56,8 +55,7 @@
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="隐私政策">
-                                        </TextBlock>
+                                            Text="隐私政策" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         Click="Doc_Click"
@@ -68,8 +66,7 @@
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="帮助文档">
-                                        </TextBlock>
+                                            Text="帮助文档" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         BorderBrush="Transparent"
@@ -80,8 +77,7 @@
                                         Classes="Danger"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="反馈软件问题">
-                                        </TextBlock>
+                                            Text="反馈软件问题" />
                                     </HyperlinkButton>
                                 </StackPanel>
                                 <WrapPanel ItemSpacing="5" x:Name="DebugPanel" IsVisible="False">

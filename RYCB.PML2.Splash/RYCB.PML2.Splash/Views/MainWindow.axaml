@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RYCB.PML2.Splash.ViewModels"
+        Width="500"
+        Height="300"
+        x:Class="RYCB.PML2.Splash.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        ShowInTaskbar="False"
+        PointerMoved="InputElement_OnPointerMoved"
+        PointerPressed="InputElement_OnPointerPressed"
+        PointerReleased="InputElement_OnPointerReleased"
+        Topmost="True"
+        CanResize="False"
+        SystemDecorations="None"
+        CornerRadius="8"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Border CornerRadius="8">
+        <Grid>
+            <!-- 背景图片 -->
+            <Image x:Name="ImgBackground" Source="/Assets/splash_background.png" Stretch="UniformToFill" />
+
+            <Border Background="#4C000000" Margin="8" CornerRadius="8" Padding="6">
+                <!-- 内容层：使用半透明背景提升可读性 -->
+                <Panel> <!-- 半透明白色背景 -->
+                    <!-- 顶部标题 -->
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
+                        <TextBlock x:Name="TbTitle"
+                                   Text="PML 2"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   Effect="{DynamicResource DropShadowEffect}" /> <!-- 添加阴影效果 -->
+                        <TextBlock x:Name="TbVersion"
+                                   Text="2.2.0-rc1"
+                                   FontSize="14"
+                                   Foreground="LightGray"
+                                   Margin="0,5,0,0" />
+                    </StackPanel>
+
+                    <!-- 底部品牌标识 -->
+                    <TextBlock HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               Text="RYCBStudio"
+                               FontSize="12"
+                               Foreground="AliceBlue"
+                               Opacity="0.8" /> <!-- 降低透明度，减少干扰 -->
+                </Panel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

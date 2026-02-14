@@ -28,11 +28,10 @@
         <Image x:Name="LoginBackground" 
                IsVisible="True"
                Source="/Assets/AndroidStudio-2560x1440.png"
-               Stretch="UniformToFill">
-        </Image>
+               Stretch="UniformToFill" />
         <Grid RowDefinitions="*,Auto">
             <ContentControl x:Name="MainContentControl">
-                <Border CornerRadius="15" BorderThickness="1" HorizontalAlignment="Right" Margin="10"
+                <Border CornerRadius="8" BorderThickness="1" HorizontalAlignment="Right" Margin="10"
                         Padding="40,0,40,0"
                         Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}">
                     <views:LoginPage

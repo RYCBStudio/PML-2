@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;

@@ -10,7 +10,7 @@
              mc:Ignorable="d"
              x:Class="MEFrpLauncherX.Views.NodesContainer"
              x:DataType="viewModels:NodesContainerViewModel">
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid RowDefinitions="Auto,Auto,*" Classes="animated">
 
         <!-- Search and filter bar -->
         <Border Grid.Row="0"
@@ -37,11 +37,11 @@
                                 <TextBlock>输入/d:&lt;KEYWORD&gt;以搜索描述</TextBlock>
                                 <TextBlock>输入/pn:&lt;PINYIN&gt;以使用拼音搜索名称</TextBlock>
                                 <TextBlock>输入/pd:&lt;PINYIN&gt;以使用拼音搜索描述</TextBlock>
-                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。" IsOpen="True" IsClosable="False"></controls:InfoBar>
+                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。" IsOpen="True" IsClosable="False" />
                             </StackPanel>
                         </controls:TeachingTip.Content>
                         <controls:TeachingTip.CloseButtonContent>
-                            <controls:SymbolIcon Symbol="Clear"></controls:SymbolIcon>
+                            <controls:SymbolIcon Symbol="Clear" />
                         </controls:TeachingTip.CloseButtonContent>
                     </controls:TeachingTip>
                 </StackPanel>

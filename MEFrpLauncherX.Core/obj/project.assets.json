@@ -601,7 +601,7 @@
           }
         }
       },
-      "ReactiveUI/22.2.1": {
+      "ReactiveUI/22.3.1": {
         "type": "package",
         "dependencies": {
           "DynamicData": "9.4.1",
@@ -1651,7 +1651,7 @@
           }
         }
       },
-      "ReactiveUI/22.2.1": {
+      "ReactiveUI/22.3.1": {
         "type": "package",
         "dependencies": {
           "DynamicData": "9.4.1",
@@ -2701,7 +2701,7 @@
           }
         }
       },
-      "ReactiveUI/22.2.1": {
+      "ReactiveUI/22.3.1": {
         "type": "package",
         "dependencies": {
           "DynamicData": "9.4.1",
@@ -4104,10 +4104,10 @@
         "npinyin.core.nuspec"
       ]
     },
-    "ReactiveUI/22.2.1": {
-      "sha512": "P0ZaWZdRVoycwfcEpkC8C/b9mbEJmueTPkBA4PON9NiopGjUY2YhIP5Dm8lki/FLH9aiKt18NXsDwv/mgO/1Dw==",
+    "ReactiveUI/22.3.1": {
+      "sha512": "rCJ4PwXjpWZCKPXmq9N72chAO7L4EU9J14TlTO6ZI87kzrVHY+LSam8Kvkc6YctNbZA++ORiYuB/AOE8PqjrTg==",
       "type": "package",
-      "path": "reactiveui/22.2.1",
+      "path": "reactiveui/22.3.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4152,7 +4152,7 @@
         "lib/netstandard2.0/ReactiveUI.dll",
         "lib/netstandard2.0/ReactiveUI.xml",
         "logo.png",
-        "reactiveui.22.2.1.nupkg.sha512",
+        "reactiveui.22.3.1.nupkg.sha512",
         "reactiveui.nuspec"
       ]
     },
@@ -4748,7 +4748,7 @@
       "NPinyin.Core >= 3.0.0",
       "Newtonsoft.Json >= 13.0.4",
       "Notification.Avalonia >= 2.1.0",
-      "ReactiveUI >= 22.2.1",
+      "ReactiveUI >= 22.3.0",
       "RestSharp >= 113.0.0",
       "SkiaSharp >= 3.119.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.1",
@@ -4769,7 +4769,7 @@
       "NPinyin.Core >= 3.0.0",
       "Newtonsoft.Json >= 13.0.4",
       "Notification.Avalonia >= 2.1.0",
-      "ReactiveUI >= 22.2.1",
+      "ReactiveUI >= 22.3.0",
       "RestSharp >= 113.0.0",
       "SkiaSharp >= 3.119.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.1",
@@ -4790,7 +4790,7 @@
       "NPinyin.Core >= 3.0.0",
       "Newtonsoft.Json >= 13.0.4",
       "Notification.Avalonia >= 2.1.0",
-      "ReactiveUI >= 22.2.1",
+      "ReactiveUI >= 22.3.0",
       "RestSharp >= 113.0.0",
       "SkiaSharp >= 3.119.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.1",
@@ -4917,7 +4917,7 @@
           },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[22.2.1, )"
+            "version": "[22.3.0, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -4964,7 +4964,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.3.32767]",
@@ -5293,7 +5293,7 @@
           },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[22.2.1, )"
+            "version": "[22.3.0, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -5340,7 +5340,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -5671,7 +5671,7 @@
           },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[22.2.1, )"
+            "version": "[22.3.0, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -5718,7 +5718,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -5997,6 +5997,18 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "MEFrpLauncherX.Core depends on ReactiveUI (>= 22.3.0) but ReactiveUI 22.3.0 was not found. ReactiveUI 22.3.1 was resolved instead.",
+      "libraryId": "ReactiveUI",
+      "targetGraphs": [
+        "net10.0",
+        "net8.0",
+        "net9.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

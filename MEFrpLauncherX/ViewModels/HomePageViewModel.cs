@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
+using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -15,6 +16,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.ViewModels.Commands;
 using Newtonsoft.Json;
 using ReactiveUI;
+using SecretLib;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -157,6 +159,30 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public int PlatformNodes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public int PlatformUsers
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public int PlatformProxies
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public long PlatformTraffic
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public HomePageViewModel()
     {
         // 初始化命令
@@ -188,6 +214,16 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             IsLoading = false;
             return;
         }
+        
+        var platform = await MEFApiConverter.GetPublicInfoAsync();
+        if (platform.code == 200)
+        {
+            PlatformNodes = platform.data.nodes;
+            PlatformUsers = platform.data.users;
+            PlatformProxies = platform.data.proxies;
+            PlatformTraffic = platform.data.traffic;
+        }
+
 
         try
         {
@@ -241,6 +277,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
                 HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
 
+           
             IsLoading = false;
             var popUp = await MEFApiConverter.GetPopupNoticeAsync();
 
@@ -248,7 +285,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             MainPageFrameViewModel.Instance?.IsLoading = false;
             if (popUp?.data.IsNullOrEmpty() == false)
             {
-                var markdownRender = new MarkdownAIRender.Controls.MarkdownRender.MarkdownRender
+                var markdownRender = new MarkdownRender
                 {
                     Value = popUp?.data
                 };
@@ -291,7 +328,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Tools"));
-                await Task.Run(() => SecretLib.PMLAHelper.UnpackPmla(
+                await Task.Run(() => PMLAHelper.UnpackPmla(
                     Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"),
                     Path.Combine(Core.App.StartupPath, "Tools"),
                     (progress, status) =>
@@ -476,7 +513,7 @@ public class NoticeManager
 
     // 检查并显示通知
     public static async Task CheckAndShowNotice(string currentNotice,
-        MarkdownAIRender.Controls.MarkdownRender.MarkdownRender markdownRender)
+        MarkdownRender markdownRender)
     {
         var noticeData = ReadNoticeData();
 

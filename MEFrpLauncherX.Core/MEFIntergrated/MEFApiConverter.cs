@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel;
+using System.Net;
 using System.Text;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
@@ -279,8 +280,7 @@ public class MEFApiConverter
     /// <returns>公共信息</returns>
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
     {
-        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息")
-            .ConfigureAwait(false);
+        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
         CurrentPublicInfo = result;
         return result;
     }
@@ -814,7 +814,7 @@ public class MEFApiConverter
     /// 初始化方法 - 请不要滥用
     /// 保持兼容的同步 wrapper（会阻塞），并提供异步版本 InitializeAsync
     /// </summary>
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Initialize()
     {
         // Compatibility wrapper: blockingly run the async initializer if callers expect the old signature.

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Console;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.ViewModels;
@@ -63,10 +64,10 @@ namespace MEFrpLauncherX.Views
                 throw new EntryPointNotFoundException();
             }
         }
-        
+
         public void SendCtrlCCommandToSelected(string header)
         {
-            if (MainTabCtrl.SelectedItem is TabItem {Content: TerminalControl terminalControl } tabItem)
+            if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
             {
                 if (tabItem.Header?.ToString() != header)
                 {
@@ -112,8 +113,9 @@ namespace MEFrpLauncherX.Views
                     terminalControl.SendCtrlCCommand();
                     terminalControl.Dispose(); // 显式释放资源
                 }
+
                 MainTabCtrl.Items.RemoveAt(index);
-        
+
                 if (MainTabCtrl.Items.Count > 0)
                 {
                     MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
@@ -132,30 +134,40 @@ namespace MEFrpLauncherX.Views
             {
                 var captchaResult = await Dispatcher.UIThread.InvokeAsync(async () =>
                 {
-                    var captchaWindow = new InputWindow("如不清楚，留空即可；输入cancel退出\n可用变量：" +
-                                                        "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
-                                                        "\n{mefrpcp} - ME Frp Client可执行文件目录" +
-                                                        "\n{startup} - 程序启动目录", "输入命令行及参数");
+                    var iw = new InputControl("如不清楚，留空即可；输入cancel退出\n可用变量：" +
+                                             "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
+                                             "\n{mefrpcp} - ME Frp Client可执行文件目录" +
+                                             "\n{startup} - 程序启动目录");
+                    var cd = new ContentDialog()
+                    {
+                        Title = "输入命令行及参数",
+                        Content = iw,
+                        PrimaryButtonText = "确定",
+                        DefaultButton = ContentDialogButton.Primary,
+                        IsSecondaryButtonEnabled = false,
+                        CloseButtonText = "取消"
+                    };
+                    var captchaWindow = await cd.ShowAsync(Core.App.MainWindow);
 
-                    return await captchaWindow.ShowDialog<string>(Core.App.MainWindow);
+                    return captchaWindow == ContentDialogResult.Primary ? iw.CaptchaResult : "cancel";
                 });
 
-                if (captchaResult is not null && captchaResult.Equals("cancel", StringComparison.OrdinalIgnoreCase))
+                if (captchaResult.Equals("cancel", StringComparison.OrdinalIgnoreCase))
                 {
                     return;
                 }
 
                 var newTab = new TabItem
                 {
-                    Header = "控制台" + (MainTabCtrl.Items.Count + 1), // 修复索引计算错误
+                    Header = "控制台" + (MainTabCtrl.Items.Count), 
                     Content = new TerminalControl()
                 };
 
                 MainTabCtrl.Items.Add(newTab);
                 MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
-    
-                var shell = string.IsNullOrEmpty(captchaResult) 
-                    ? TerminalControl.GetDefaultShell() 
+
+                var shell = string.IsNullOrEmpty(captchaResult)
+                    ? TerminalControl.GetDefaultShell()
                     : captchaResult.Trim();
 
                 // 变量替换

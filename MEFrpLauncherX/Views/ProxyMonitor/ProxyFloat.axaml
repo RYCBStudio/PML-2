@@ -9,7 +9,7 @@
         ShowInTaskbar="False"
         x:Class="MEFrpLauncherX.Views.ProxyFloat"
         x:DataType="views:ProxyFloatViewModel"
-        CornerRadius="10"
+        CornerRadius="8"
         Loaded="Setup"
         SystemDecorations="None"
         TransparencyLevelHint="Transparent"
@@ -55,8 +55,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <Ellipse Classes="Success" Height="10" Width="10"></Ellipse>
-                            <TextBlock Text="{Binding}"></TextBlock>
+                            <Ellipse Classes="Success" Height="10" Width="10" />
+                            <TextBlock Text="{Binding}" />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

@@ -11,7 +11,7 @@
              x:Class="MEFrpLauncherX.Views.UpdatePage"
              x:DataType="viewModels:UpdatePageViewModel">
     <Design.DataContext>
-        <viewModels:UpdatePageViewModel></viewModels:UpdatePageViewModel>
+        <viewModels:UpdatePageViewModel />
     </Design.DataContext>
     <ScrollViewer Margin="5">
         <Grid RowDefinitions="Auto, *">
@@ -36,30 +36,25 @@
                     </TextBlock.Styles>
                 </TextBlock>
                 <TextBlock Grid.Column="1" Text="{Binding Status}" FontFamily="{StaticResource GlobalFontFamily}"
-                           Theme="{StaticResource SubtitleTextBlockStyle}">
-                </TextBlock>
+                           Theme="{StaticResource SubtitleTextBlockStyle}" />
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LatestCheckTime, StringFormat='上次检查时间：{0}'}"
                            FontFamily="{StaticResource GlobalFontFamily}"
-                           Theme="{StaticResource BodyTextBlockStyle}">
-                </TextBlock>
+                           Theme="{StaticResource BodyTextBlockStyle}" />
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
                     <Button HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
-                            Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}">
-                    </Button>
+                            Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
-                            Command="{Binding CheckUpdate}">
-                    </Button>
+                            Command="{Binding CheckUpdate}" />
                 </StackPanel>
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Vertical">
-                    <Separator VerticalAlignment="Top"></Separator>
+                    <Separator VerticalAlignment="Top" />
                     <DockPanel HorizontalSpacing="5">
-                        <TextBlock Text="{Binding CurrentSpeed}" DockPanel.Dock="Right"></TextBlock>
+                        <TextBlock Text="{Binding CurrentSpeed}" DockPanel.Dock="Right" />
                         <ProgressBar Maximum="{Binding MaxValue}" IsVisible="{Binding IsLoading}"
                                      Value="{Binding ProgressValue}"
-                                     IsIndeterminate="{Binding IsIdle}">
-                        </ProgressBar>
+                                     IsIndeterminate="{Binding IsIdle}" />
                     </DockPanel>
                     <TabControl ClipToBounds="False" Padding="0" Margin="0" Classes="compact">
                         <TabItem Header="更新日志">
@@ -69,8 +64,8 @@
                                                IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static meFrpLauncherX:App.Version}}">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
-                                                <Binding Path="LatestVersion"></Binding>
-                                                <Binding Source="{x:Static meFrpLauncherX:App.Version}"></Binding>
+                                                <Binding Path="LatestVersion" />
+                                                <Binding Source="{x:Static meFrpLauncherX:App.Version}" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                         <ToolTip.Tip>
@@ -80,22 +75,19 @@
                                     <controls:InfoBadge>
                                         <controls:InfoBadge.IconSource>
                                             <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
-                                                                     Glyph="{Binding Codename}">
-                                            </controls:FontIconSource>
+                                                                     Glyph="{Binding Codename}" />
                                         </controls:InfoBadge.IconSource>
                                     </controls:InfoBadge>
                                 </StackPanel>
                                 <ItemsControl Classes="animated-intro" ItemsSource="{Binding Changelog}"
                                               Margin="15 0 0 0">
-
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <DockPanel>
                                                 <Ellipse Stroke="{StaticResource SystemAltLowColor}"
                                                          Fill="{StaticResource SystemAccentColor}" StrokeThickness="2"
-                                                         Margin="0, 0, 5, 0" Height="5" Width="5">
-                                                </Ellipse>
-                                                <markdownAiRender:MarkdownRender Value="{Binding}"></markdownAiRender:MarkdownRender>
+                                                         Margin="0, 0, 5, 0" Height="5" Width="5" />
+                                                <markdownAiRender:MarkdownRender Value="{Binding}" />
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -117,7 +109,7 @@
                                 <controls:SettingsExpander Header="保留配置"
                                                            Description="设置应用是否应该保留当前配置。请注意: 某些新版本可能新增或更改了配置, 强行覆盖可能会导致意想不到的后果。">
                                     <controls:SettingsExpander.Footer>
-                                        <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged"></ToggleSwitch>
+                                        <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged" />
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
                                 <controls:SettingsExpander Header="更新渠道"
@@ -132,8 +124,7 @@
                                     </controls:SettingsExpander.Footer>
                                     <controls:SettingsExpanderItem
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
-                                        Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}">
-                                    </controls:SettingsExpanderItem>
+                                        Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
                                 </controls:SettingsExpander>
 
                             </StackPanel>

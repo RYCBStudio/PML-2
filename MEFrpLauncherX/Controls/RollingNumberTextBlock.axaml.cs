@@ -29,7 +29,7 @@ public class RollingNumberTextBlock : TextBlock
 
     public RollingNumberTextBlock()
     {
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) }; // ~60fps
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(8) }; // ~120fps
         _timer.Tick += OnTimerTick;
         HorizontalAlignment = HorizontalAlignment.Center;
     }

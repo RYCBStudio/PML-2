@@ -13,7 +13,7 @@
         <views:ProxyViewModel />
     </Design.DataContext>
 
-    <Grid RowDefinitions="Auto,Auto,*">
+    <Grid Classes="animated" RowDefinitions="Auto,Auto,*">
 
         <!-- Top toolbar -->
         <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Spacing="10">
@@ -39,7 +39,7 @@
                     <TextBlock Margin="5,0,0,0" Text="下载 ME Frp 客户端" />
                 </StackPanel>
             </Button>
-            <ToggleButton Content="详细描述" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}"></ToggleButton>
+            <ToggleButton Content="详细描述" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}" />
         </StackPanel>
 
         <!-- Batch operation area -->

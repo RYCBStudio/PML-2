@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="350"
              x:Class="MEFrpLauncherX.Views.SettingsPage">
     <ScrollViewer>
-        <StackPanel>
+        <StackPanel Classes="animated">
             <controls:SettingsExpander Header="外观" IconSource="DarkTheme" Description="自定义程序的外观">
                 <controls:SettingsExpanderItem Content="主题" IconSource="New" Description="设置程序的配色主题">
                     <controls:SettingsExpanderItem.Footer>
@@ -83,7 +83,7 @@
                 <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}" Content="设置要启动的隧道">
                     <controls:SettingsExpanderItem.Footer>
                         <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
-                            <controls:SymbolIcon Symbol="Settings"></controls:SymbolIcon>
+                            <controls:SymbolIcon Symbol="Settings" />
                         </Button>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
@@ -155,8 +155,7 @@
                 <controls:SettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
                     <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10" Title="警告"
                                       Message="过多的线程数可能会降低下载速度。推荐的线程数为8~32。"
-                                      Severity="Warning">
-                    </controls:InfoBar>
+                                      Severity="Warning" />
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Content="ME Frp 客户端下载源" Description="设置ME Frp 客户端下载源, 默认为 TPCA 源。"
                                                IconSource="CloudDownload">

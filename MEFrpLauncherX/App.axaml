@@ -27,20 +27,78 @@
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="avares://Notification.Avalonia/Themes/Generic.xaml" />
         <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
-        <msg:Theme/>
+        <msg:Theme />
         <styling:FluentAvaloniaTheme PreferUserAccentColor="True" />
-        <StyleInclude Source="Styles/_generic.axaml"></StyleInclude>
-        <StyleInclude Source="Styles/StackPanelIntroAnimation.axaml"></StyleInclude>
+        <StyleInclude Source="Styles/_generic.axaml" />
+        <StyleInclude Source="Styles/StackPanelIntroAnimation.axaml" />
         <Style Selector="TemplatedControl">
             <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
         </Style>
+
+        <Style Selector="HeaderedContentControl.animated">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="-25" />
+                </Setter.Value>
+            </Setter>
+            <Style.Animations>
+                <Animation Duration="0:0:0.75" FillMode="Both" Easing="0.00, 1.00, 0.00, 1.00">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="50" />
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="StackPanel.animated">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="-25" />
+                </Setter.Value>
+            </Setter>
+            <Style.Animations>
+                <Animation Duration="0:0:0.75" FillMode="Both" Easing="0.00, 1.00, 0.00, 1.00">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="50" />
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="Grid.animated">
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="-25" />
+                </Setter.Value>
+            </Setter>
+            <Style.Animations>
+                <Animation Duration="0:0:0.75" FillMode="Both" Easing="0.00, 1.00, 0.00, 1.00">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="50" />
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
         <Style Selector="TextBlock :is(HyperlinkButton)">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="0 0 0 -4"/>
-            <Setter Property="TextBlock.LineHeight" Value="NaN"/>
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0 0 0 -4" />
+            <Setter Property="TextBlock.LineHeight" Value="NaN" />
             <Style Selector="^ TextBlock">
                 <!-- 修复字体飞上去的问题 -->
-                <Setter Property="Margin" Value="0 0 0 -2"/>
+                <Setter Property="Margin" Value="0 0 0 -2" />
             </Style>
         </Style>
         <Style Selector="Layoutable">
@@ -50,27 +108,27 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <Style Selector="ToggleSwitch">
-            <Setter Property="OnContent" Value="开启"/>
-            <Setter Property="OffContent" Value="关闭"/>
+            <Setter Property="OnContent" Value="开启" />
+            <Setter Property="OffContent" Value="关闭" />
         </Style>
         <Style Selector="TabControl.compact TabItem">
             <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="TextElement.FontSize" Value="14"/>
-                <Setter Property="TextElement.FontWeight" Value="Medium"/>
+                <Setter Property="TextElement.FontSize" Value="14" />
+                <Setter Property="TextElement.FontWeight" Value="Medium" />
             </Style>
-            <Setter Property="MinHeight" Value="28"/>
+            <Setter Property="MinHeight" Value="28" />
         </Style>
         <Style Selector="Border.Fatal">
-            <Setter Property="Background" Value="#3FFF0000"></Setter>
+            <Setter Property="Background" Value="#3FFF0000" />
         </Style>
         <Style Selector="Border.Error">
-            <Setter Property="Background" Value="#60FF0000"></Setter>
+            <Setter Property="Background" Value="#60FF0000" />
         </Style>
         <Style Selector="Border.Success">
-            <Setter Property="Background" Value="#3F00E63C"></Setter>
+            <Setter Property="Background" Value="#3F00E63C" />
         </Style>
         <Style Selector="Border.Warning">
-            <Setter Property="Background" Value="#64AD9600"></Setter>
+            <Setter Property="Background" Value="#64AD9600" />
         </Style>
         <Style Selector="Button.Danger">
             <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
@@ -127,10 +185,10 @@
             <Setter Property="Foreground" Value="#FF606060" />
         </Style>
         <Style Selector="Label.Normal">
-            <Setter Property="Theme" Value="{StaticResource BodyTextBlockStyle}"/>
+            <Setter Property="Theme" Value="{StaticResource BodyTextBlockStyle}" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
         </Style>
-        
+
         <Style Selector="Label.Blue">
             <Setter Property="BorderBrush" Value="#ff54A9FF" />
             <Setter Property="Background" Value="#ff54A9FF" />
@@ -164,10 +222,10 @@
             <Setter Property="CornerRadius" Value="5" />
         </Style>
         <Style Selector="Button">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
         <Style Selector="controls|CommandBarElementContainer">
             <Setter Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />

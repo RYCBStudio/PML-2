@@ -3,7 +3,7 @@
         xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <controls1:AnimatedProgressRing></controls1:AnimatedProgressRing>
+            <controls1:AnimatedProgressRing />
         </Border>
     </Design.PreviewWith>
 
@@ -30,7 +30,7 @@
                             Grid.Row="1"
                             Padding="0,5,0,0"
                             Grid.ColumnSpan="2"
-                            CornerRadius="4"
+                            CornerRadius="8"
                             Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                             Margin="0,10,0,0"
                             BorderThickness="1">
@@ -46,7 +46,7 @@
     </Style>
     
     <Style Selector="GridSplitter">
-        <Setter Property="CornerRadius" Value="50"></Setter>
+        <Setter Property="CornerRadius" Value="50" />
     </Style>
 
     <Style Selector="controls1|AnimatedProgressRing">

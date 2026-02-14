@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MEFrpLauncherX.CrashDisplayer.ViewModels"
+             x:Class="MEFrpLauncherX.CrashDisplayer.Views.MainView"
+             x:DataType="vm:MainViewModel"
+             mc:Ignorable="d">
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  标题区域  -->
+        <Border
+            Grid.Row="0"
+            Padding="10"
+            Background="#ffcf1111">
+            <StackPanel Background="Transparent" Orientation="Horizontal">
+                <TextBlock
+                    FontSize="32"
+                    Margin="0,0,10,0"
+                    Text="⚠️" />
+                <TextBlock
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="哎呀，程序崩溃了！" />
+            </StackPanel>
+        </Border>
+
+        <!--  内容区域  -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,2*">
+
+            <!--  左侧幽默提示  -->
+            <Border
+                Grid.Column="0"
+                BorderBrush="LightGray"
+                BorderThickness="0,0,1,0">
+                <ScrollViewer>
+
+                    <StackPanel Margin="10">
+                        <!--  笑话标题区域  -->
+                        <Border
+                            Margin="0,0,0,10"
+                            Padding="5"
+                            Background="#FFF0F8FF"
+                            CornerRadius="5">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="24"
+                                    Margin="0,0,5,0"
+                                    Text="🎭" />
+                                <TextBlock
+                                    FontSize="14"
+                                    FontWeight="Bold"
+                                    Foreground="#FF4682B4"
+                                    Text="程序员幽默" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  笑话内容卡片  -->
+                        <Border
+                            x:Name="JokeBorder"
+                            Margin="0,0,0,10"
+                            Padding="15"
+                            Background="#FFFFFACD"
+                            BorderBrush="#FFDAA520"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <StackPanel>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="20"
+                                    Text="💡" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    FontSize="14"
+                                    FontStyle="Italic"
+                                    Foreground="#FF8B4513"
+                                    Text="{Binding JokeMessage}"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  提示文本  -->
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Foreground="Gray"
+                            Text="(此内容仅为缓解紧张情绪，与错误无关)" />
+
+                        <!--  表情符号  -->
+                        <Viewbox
+                            Width="64"
+                            Height="64"
+                            HorizontalAlignment="Center">
+                            <TextBlock FontSize="40" Text="😅" />
+                        </Viewbox>
+
+                        <!--  错误摘要  -->
+                        <TextBlock
+                            Margin="0,20,0,0"
+                            FontWeight="Bold"
+                            Text="{Binding ErrorSummary}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!--  右侧错误详情  -->
+            <Grid Grid.Column="1" RowDefinitions="Auto,*">
+
+                <TextBlock
+                    Margin="10,10,10,5"
+                    FontWeight="Bold"
+                    Text="错误详情:" />
+
+                <TextBox
+                    TextWrapping="WrapWithOverflow"
+                    Grid.Row="1"
+                    Margin="10,0,10,10"
+                    IsReadOnly="True"
+                    Text="{Binding ErrorDetails}" />
+            </Grid>
+        </Grid>
+
+        <!--  底部按钮  -->
+        <StackPanel
+            Grid.Row="2"
+            Margin="10"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Margin="0,0,10,0"
+                Padding="15,5"
+                Command="{Binding CopyCommand}"
+                Content="复制错误信息" />
+            <Button
+                Padding="15,5"
+                Command="{Binding CloseCommand}"
+                Content="关闭" />
+        </StackPanel>
+    </Grid>
+</UserControl>
