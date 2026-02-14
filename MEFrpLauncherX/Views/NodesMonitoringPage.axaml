@@ -19,7 +19,7 @@
         <core:OnlineStatusColorConverter x:Key="OnlineStatusColorConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10" RowDefinitions="Auto,Auto,*">
+    <Grid Margin="10" RowDefinitions="Auto,Auto,*" Classes="animated">
         <fa:ProgressRing IsIndeterminate="True" Grid.RowSpan="3" IsVisible="{Binding IsLoading}" />
 
         <Grid ColumnDefinitions="*,*,*,*,*,*">

@@ -100,7 +100,7 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
                         break;
                     }
 
-                    var cp = new Controls.CreateProxy(_selected);
+                    var cp = new CreateProxy(_selected);
                     CurrentPage = cp;
                 }
                 else

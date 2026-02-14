@@ -8,7 +8,7 @@
              x:Class="MEFrpLauncherX.Controls.CreateProxy"
              x:DataType="pml2:TunnelNodeViewModel">
     <ScrollViewer x:Name="MainContainer">
-        <Grid RowDefinitions="Auto,*" RowSpacing="4">
+        <Grid RowDefinitions="Auto,*" RowSpacing="4" Classes="animated">
 
             <Grid x:Name="CurrentProxyInfo" Grid.Row="0" RowDefinitions="Auto,Auto,Auto">
 
@@ -29,7 +29,7 @@
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="Wrap">
                     <ToolTip.Tip>
-                        <Binding Path="Description"></Binding>
+                        <Binding Path="Description" />
                     </ToolTip.Tip>
                 </TextBlock>
 
@@ -53,7 +53,7 @@
                            Classes="Indigo"
                            Content="{Binding Bandwidth}"
                            FontFamily="{StaticResource GlobalFontFamily}" />
-                    <Label Content="{Binding AllowPorts, StringFormat='允许端口范围: {0}'}"></Label>
+                    <Label Content="{Binding AllowPorts, StringFormat='允许端口范围: {0}'}" />
                 </WrapPanel>
             </Grid>
             <StackPanel Grid.Row="1" x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
@@ -135,7 +135,7 @@
                                         Click="GetRemotePort_Click"
                                         Content="获取远程空闲端口"
                                         FontFamily="{StaticResource GlobalFontFamily}" />
-                                    <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading"></fa:ProgressRing>
+                                    <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading" />
                                 </Panel>
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
@@ -183,7 +183,7 @@
                             <Button Click="EditDomains">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit"></fa:SymbolIcon>
+                                        <fa:SymbolIcon Symbol="Edit" />
                                         <TextBlock>编辑</TextBlock>
                                     </StackPanel>
                                 </Button.Content>
@@ -233,8 +233,7 @@
                                               Margin="0 00 12 0">
                                     <ToggleButton.Content>
                                         <fa:FontIcon Glyph="&#xF78D;"
-                                                     FontFamily="{StaticResource SymbolThemeFontFamily}">
-                                        </fa:FontIcon>
+                                                     FontFamily="{StaticResource SymbolThemeFontFamily}" />
                                     </ToggleButton.Content>
                                 </ToggleButton>
                             </StackPanel>
@@ -254,7 +253,7 @@
                             <Button Click="EditHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit"></fa:SymbolIcon>
+                                        <fa:SymbolIcon Symbol="Edit" />
                                         <TextBlock>编辑</TextBlock>
                                     </StackPanel>
                                 </Button.Content>

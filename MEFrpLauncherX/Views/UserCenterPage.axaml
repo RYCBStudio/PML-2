@@ -13,7 +13,7 @@
     x:Class="MEFrpLauncherX.Views.UserCenterPage"
     FontFamily="{StaticResource GlobalFontFamily}"
     mc:Ignorable="d">
-    <Grid RowDefinitions="4*,5.5*,auto">
+    <Grid RowDefinitions="4*,5.5*,auto" Classes="animated">
         <HeaderedContentControl
             Margin="10"
             FontFamily="{StaticResource GlobalFontFamily}"

@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.HomePage"
              x:DataType="viewModels:HomePageViewModel">
@@ -29,13 +30,13 @@
                                     FontFamily="{StaticResource GlobalFontFamily}">
                 <WrapPanel HorizontalAlignment="Center" ItemSpacing="40">
                     <Grid RowDefinitions="Auto,*">
-                        <TextBlock Grid.Row="1"
-                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontFamily="{StaticResource GlobalFontFamily}"
-                                   FontSize="20"
-                                   Text="{Binding PlatformNodes}" />
+                        <controls1:RollingNumberTextBlock Grid.Row="1"
+                                                          Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          FontFamily="{StaticResource GlobalFontFamily}"
+                                                          FontSize="20"
+                                                          TargetNumber="{Binding PlatformNodes}" />
                         <TextBlock
                             Grid.Row="0"
                             HorizontalAlignment="Center"
@@ -46,13 +47,13 @@
                             Text="节点数" />
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
-                        <TextBlock Grid.Row="1"
-                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontFamily="{StaticResource GlobalFontFamily}"
-                                   FontSize="20"
-                                   Text="{Binding PlatformUsers}" />
+                        <controls1:RollingNumberTextBlock Grid.Row="1"
+                                                          Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          FontFamily="{StaticResource GlobalFontFamily}"
+                                                          FontSize="20"
+                                                          TargetNumber="{Binding PlatformUsers}" />
                         <TextBlock
                             Grid.Row="0"
                             HorizontalAlignment="Center"
@@ -63,13 +64,13 @@
                             Text="用户数" />
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
-                        <TextBlock Grid.Row="1"
-                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontFamily="{StaticResource GlobalFontFamily}"
-                                   FontSize="20"
-                                   Text="{Binding PlatformProxies}" />
+                        <controls1:RollingNumberTextBlock Grid.Row="1"
+                                                          Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          FontFamily="{StaticResource GlobalFontFamily}"
+                                                          FontSize="20"
+                                                          TargetNumber="{Binding PlatformProxies}" />
                         <TextBlock
                             Grid.Row="0"
                             HorizontalAlignment="Center"
@@ -80,13 +81,17 @@
                             Text="在线隧道" />
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
-                        <TextBlock Grid.Row="1"
-                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontFamily="{StaticResource GlobalFontFamily}"
-                                   FontSize="20"
-                                   Text="{Binding PlatformTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                        <DockPanel Grid.Row="1" HorizontalSpacing="3">
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                                       Text="{Binding PlatformTraffic, Converter={x:Static views:TrafficToSizeLevelConverter.Instance}}" />
+                            <controls1:RollingNumberDoubleTextBlock
+                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource GlobalFontFamily}"
+                                FontSize="20"
+                                TargetNumber="{Binding PlatformTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                        </DockPanel>
                         <TextBlock
                             Grid.Row="0"
                             HorizontalAlignment="Center"
@@ -217,6 +222,7 @@
         <GridSplitter Grid.Column="1" />
         <Grid Grid.Column="2" RowDefinitions="Auto, *">
             <controls:InfoBar
+                Margin="3"
                 Severity="{Binding SystemStatus, Converter={x:Static core:StatusNumToSeveritryConverter.Instance}}"
                 IsOpen="{Binding SystemStatus, Converter={x:Static core:StatusNumToVisibilityConverter.Instance}}"
                 Title="{Binding SystemStatus,

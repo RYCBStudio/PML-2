@@ -139,10 +139,6 @@ internal sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .With(new X11PlatformOptions
-            {
-                UseDBusMenu = true,
-            })
             .UseReactiveUI();
     }
 

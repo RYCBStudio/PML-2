@@ -40,6 +40,7 @@ public partial class UserCenterPage : UserControl
 
     private async void UserControl_Loaded(object? s, VisualTreeAttachmentEventArgs? e)
     {
+        if (Design.IsDesignMode) return;
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         // Show loading mask

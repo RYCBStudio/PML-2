@@ -19,7 +19,7 @@
     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{Binding AllowGroup, Converter={x:Static local:AllowGroupToBorderBrushConverter.Instance}}"
             CornerRadius="8" BorderThickness="1">
-        <Grid>
+        <Grid Classes="animated">
             <controls:InfoBadge Margin="0,10,10,0" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Background="OrangeRed"
@@ -64,8 +64,7 @@
                                Text="{Binding Description}"
                                TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
                                TextWrapping="Wrap"
-                               ToolTip.Tip="{Binding Description}">
-                    </TextBlock>
+                               ToolTip.Tip="{Binding Description}" />
 
                     <!-- Protocol and bandwidth tags -->
                     <WrapPanel Grid.Row="2" Margin="0,10,0,0" ItemSpacing="3" LineSpacing="5">

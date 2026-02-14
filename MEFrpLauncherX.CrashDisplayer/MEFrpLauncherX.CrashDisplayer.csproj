@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <SelfContained>true</SelfContained>
+        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+        <NeutralLanguage>zh-Hans</NeutralLanguage>
+        <Version>2.1.0.0</Version>
+        <ApplicationVersion>2.1.0.0</ApplicationVersion>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(Platform.Contains(`Win`))'">
+        <PublishAot>true</PublishAot>
+    </PropertyGroup> 
+
+    <ItemGroup>
+        <Folder Include="Models\"/>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="FluentAvaloniaUI" Version="2.5.0" />
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.232</Version>
+        </PackageReference>
+        <PackageReference Include="SkiaSharp" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.119.1" />
+    </ItemGroup>
+</Project>
