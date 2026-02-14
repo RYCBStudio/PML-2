@@ -20,7 +20,7 @@
     </UserControl.Resources>
 
     <Grid Margin="10" RowDefinitions="Auto,Auto,*">
-        <fa:ProgressRing IsIndeterminate="True" Grid.RowSpan="3" IsVisible="{Binding IsLoading}"></fa:ProgressRing>
+        <fa:ProgressRing IsIndeterminate="True" Grid.RowSpan="3" IsVisible="{Binding IsLoading}" />
 
         <Grid ColumnDefinitions="*,*,*,*,*,*">
             <Grid RowDefinitions="auto,*" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -104,7 +104,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="0,5" Padding="15" CornerRadius="8">
-                            <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Grid ColumnDefinitions="3*,4*,3*">
                                 <!-- 节点基本信息 -->
                                 <StackPanel Grid.Column="0">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
@@ -121,10 +121,9 @@
                                 </StackPanel>
 
                                 <!-- 流量信息 -->
-                                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                <StackPanel Grid.Column="1" Spacing="5">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <TextBlock
-                                            Margin="0,0,5,0"
                                             FontFamily="{StaticResource IconFont}"
                                             FontSize="16"
                                             Foreground="#FF00B894"
@@ -134,7 +133,6 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Spacing="5">
                                         <TextBlock
-                                            Margin="0,0,5,0"
                                             FontFamily="{StaticResource IconFont}"
                                             FontSize="16"
                                             Foreground="#FF0984E3"

@@ -5,6 +5,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
+using FluentAvalonia.UI.Controls;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;
@@ -82,6 +83,29 @@ public class StatusNumToVisibilityConverter : IValueConverter
         }
 
         return status != -2;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class StatusNumToSeveritryConverter : IValueConverter
+{
+    public static StatusNumToSeveritryConverter Instance => new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is not int status)
+        {
+            return false;
+        }
+
+        return status switch
+        {
+            0 => InfoBarSeverity.Success,
+            1 => InfoBarSeverity.Warning,
+            _ => InfoBarSeverity.Error,
+        };
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

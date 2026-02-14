@@ -166,7 +166,7 @@
     </UserControl.Resources>
     <Border MaxWidth="300"
             Padding="10"
-            CornerRadius="10"
+            CornerRadius="8"
             Background="{DynamicResource ControlFillColorDefaultBrush}"
             BorderBrush="{Binding isBanned, Converter={StaticResource BannedToBrushConverter}}"
             BorderThickness="1">
@@ -206,8 +206,8 @@
                 <controls1:InfoBadge>
                     <controls1:InfoBadge.Background>
                         <MultiBinding Converter="{x:Static controls:OnlineAndDisabledConverter.Instance}">
-                            <Binding Path="isOnline"></Binding>
-                            <Binding Path="isDisabled"></Binding>
+                            <Binding Path="isOnline" />
+                            <Binding Path="isDisabled" />
                         </MultiBinding>
                     </controls1:InfoBadge.Background>
                 </controls1:InfoBadge>
@@ -237,8 +237,7 @@
                     Margin="5"
                     Orientation="Horizontal">
                     <TextBlock x:Name="TypeIdentifier" IsVisible="False" Text="{Binding proxyType, 
-                                         Converter={x:Static core:LowerCaseToUpperCaseConverter.Instance}}" >
-                    </TextBlock>
+                                         Converter={x:Static core:LowerCaseToUpperCaseConverter.Instance}}" />
                     <TextBlock
                         VerticalAlignment="Center"
                         FontFamily="{StaticResource GlobalFontFamily}"
@@ -246,10 +245,9 @@
                         <TextBlock.Text>
                             <MultiBinding>
                                 <Binding Path="proxyType"
-                                         Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}">
-                                </Binding>
-                                <Binding Path="localIp"></Binding>
-                                <Binding Path="localPort"></Binding>
+                                         Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}" />
+                                <Binding Path="localIp" />
+                                <Binding Path="localPort" />
                                 <MultiBinding.StringFormat>
                                     [{0}] {1}:{2} →
                                 </MultiBinding.StringFormat>
@@ -257,8 +255,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="{Binding remotePort, StringFormat=' {0}'}"
-                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}">
-                    </TextBlock>
+                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}" />
                 </StackPanel>
                 <ItemsControl ItemsSource="{Binding Domains}"
                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}">
@@ -270,8 +267,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <HyperlinkButton Margin="-5" Content="{Binding }" Click="LaunchWeb"
-                                             NavigateUri="{Binding }">
-                            </HyperlinkButton>
+                                             NavigateUri="{Binding }" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

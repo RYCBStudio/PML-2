@@ -12,7 +12,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.2.1";
+    public static string Version = "2.3.0-preview1";
     public static string Codename = "Nitrogen";
     public static SplashScreen splash;
     public static LogUtil LogService;
@@ -53,7 +53,7 @@ public class App : Application
             var ac = ConfigManager.CurrentConfig.AccentColor;
             if (!ac.IsNullOrEmpty())
             {
-                Application.Current.Styles.OfType<FluentAvaloniaTheme>().First().CustomAccentColor =
+                Current.Styles.OfType<FluentAvaloniaTheme>().First().CustomAccentColor =
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
             Current?.RequestedThemeVariant = currentTheme;

@@ -6,196 +6,229 @@
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.HomePage"
              x:DataType="viewModels:HomePageViewModel">
     <Design.DataContext>
         <viewModels:HomePageViewModel />
     </Design.DataContext>
-    <Grid RowDefinitions="Auto, *" RowSpacing="10">
-
-        <Border
-            IsVisible="{Binding SystemStatus, Converter={x:Static core:StatusNumToVisibilityConverter.Instance}}"
-            CornerRadius="10"
-            Classes.Success="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToSuccessBackgroundConverter.Instance}}"
-            Classes.Warning="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToWarningBackgroundConverter.Instance}}"
-            Classes.Error="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToErrorBackgroundConverter.Instance}}"
-            Classes.Fatal="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToFatalBackgroundConverter.Instance}}">
-
-            <Grid Margin="5" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" ColumnSpacing="10"
-                  RowSpacing="5">
-                <Ellipse Grid.RowSpan="2"
-                         Classes.Success="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToSuccessBackgroundConverter.Instance}}"
-                         Classes.Warning="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToWarningBackgroundConverter.Instance}}"
-                         Classes.Error="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToErrorBackgroundConverter.Instance}}"
-                         Classes.Fatal="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToFatalBackgroundConverter.Instance}}"
-                         Height="10" Width="10">
-                </Ellipse>
-                <TextBlock Grid.Column="1"
-                           FontWeight="Bold"
-                           Text="{Binding SystemStatus,
-                                   Converter={x:Static core:StatusNumToTextConverter.Instance}}"
-                           Classes.Success="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToSuccessBackgroundConverter.Instance}}"
-                           Classes.Warning="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToWarningBackgroundConverter.Instance}}"
-                           Classes.Error="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToErrorBackgroundConverter.Instance}}"
-                           Classes.Fatal="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToFatalBackgroundConverter.Instance}}">
-                </TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SystemStatusRemark}"
-
-                           Classes.Success="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToSuccessBackgroundConverter.Instance}}"
-                           Classes.Warning="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToWarningBackgroundConverter.Instance}}"
-                           Classes.Error="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToErrorBackgroundConverter.Instance}}"
-                           Classes.Fatal="{Binding SystemStatus, 
-                    Converter={x:Static core:StatusNumToFatalBackgroundConverter.Instance}}">
-                </TextBlock>
-            </Grid>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.AccentNumber">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="*,Auto, *">
+        <Border Grid.ColumnSpan="3" Background="#2f000000">
+            <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}" />
         </Border>
-        <Grid Grid.Row="1" ColumnDefinitions="*,1,*" ColumnSpacing="5">
-            <Border Grid.ColumnSpan="3" Background="#2f000000">
-                <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}">
-                </controls:ProgressRing>
-            </Border>
-            <Border
-                MaxHeight="650"
-                Margin="10">
-                <HeaderedContentControl Background="Transparent" Header="用户信息"
-                                        FontFamily="{StaticResource GlobalFontFamily}">
-                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*">
-                        <!-- 用户名 -->
-                        <StackPanel>
-                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="用户名" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding UserName}" />
-                        </StackPanel>
-
-                        <!-- 用户ID -->
-                        <StackPanel Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="用户ID" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding UserId}" />
-                        </StackPanel>
-
-                        <!-- 注册邮箱 -->
-                        <StackPanel
-                            Grid.Row="3"
-                            Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="注册邮箱" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding Email}" />
-                        </StackPanel>
-
-
-                        <!-- 用户组 -->
-                        <StackPanel
-                            Grid.Row="2"
-                            Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="用户组" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding Group}"
-                                                 Classes.Danger="{Binding IsAdmin}" />
-                        </StackPanel>
-
-                        <!-- 入站带宽 -->
-                        <StackPanel Grid.Row="5">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="入站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding InBound}" />
-                        </StackPanel>
-
-                        <!-- 出站带宽 -->
-                        <StackPanel Grid.Row="5" Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="出站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding OutBound}" />
-                        </StackPanel>
-
-                        <!-- 隧道数量 -->
-                        <StackPanel Grid.Row="4">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="隧道数量" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding ProxiesCount}" />
-                        </StackPanel>
-
-                        <!-- 剩余流量 -->
-                        <StackPanel Grid.Row="4" Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="剩余流量" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding Traffic}" />
-                        </StackPanel>
-
-                        <!-- 注册时间 -->
-                        <StackPanel Grid.Row="3">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="注册时间" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                                 Text="{Binding RegisterTime}" />
-                        </StackPanel>
-
-                        <!-- 实名状态 -->
-                        <StackPanel Grid.Row="2">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="实名状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                       Text="{Binding RealNameStatus}"
-                                       Classes.Success="{Binding IsRealNamed}"
-                                       Classes.Danger="{Binding !IsRealNamed}" />
-                        </StackPanel>
-
-                        <!-- 今日签到 -->
-                        <StackPanel Grid.Row="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="今日签到" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <Button
-                                HorizontalAlignment="Left"
-                                Command="{Binding SignCommand}"
-                                Content="{Binding SignButtonText}"
-                                FontFamily="{StaticResource GlobalFontFamily}"
-                                Classes="Success"
-                                IsEnabled="{Binding CanSign}" />
-                        </StackPanel>
-
-                        <!-- 账户状态 -->
-                        <StackPanel Grid.Row="1" Grid.Column="1">
-                            <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Text="账户状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                            <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                       Text="{Binding AccountStatus}"
-                                       Classes.Danger="{Binding IsBanned}"
-                                       Classes.Success="{Binding !IsBanned}" />
-                        </StackPanel>
+        <Grid RowDefinitions="Auto, *"
+              MaxHeight="650" RowSpacing="10"
+              Margin="10">
+            <HeaderedContentControl Header="统计信息" Background="Transparent" Classes="animated"
+                                    FontFamily="{StaticResource GlobalFontFamily}">
+                <WrapPanel HorizontalAlignment="Center" ItemSpacing="40">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="1"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   FontSize="20"
+                                   Text="{Binding PlatformNodes}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                            Text="节点数" />
                     </Grid>
-                </HeaderedContentControl>
-            </Border>
-            <GridSplitter Grid.Column="1"></GridSplitter>
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="1"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   FontSize="20"
+                                   Text="{Binding PlatformUsers}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                            Text="用户数" />
+                    </Grid>
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="1"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   FontSize="20"
+                                   Text="{Binding PlatformProxies}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                            Text="在线隧道" />
+                    </Grid>
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Grid.Row="1"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   FontSize="20"
+                                   Text="{Binding PlatformTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                            Text="承载流量" />
+                    </Grid>
+                </WrapPanel>
+            </HeaderedContentControl>
+            <HeaderedContentControl Classes="animated" Grid.Row="1" Background="Transparent" Header="用户信息"
+                                    FontFamily="{StaticResource GlobalFontFamily}">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*">
+                    <!-- 用户名 -->
+                    <StackPanel>
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="用户名" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding UserName}" />
+                    </StackPanel>
+
+                    <!-- 用户ID -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="用户ID" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding UserId}" />
+                    </StackPanel>
+
+                    <!-- 注册邮箱 -->
+                    <StackPanel
+                        Grid.Row="3"
+                        Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="注册邮箱" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding Email}" />
+                    </StackPanel>
+
+
+                    <!-- 用户组 -->
+                    <StackPanel
+                        Grid.Row="2"
+                        Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="用户组" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding Group}"
+                                             Classes.Danger="{Binding IsAdmin}" />
+                    </StackPanel>
+
+                    <!-- 入站带宽 -->
+                    <StackPanel Grid.Row="5">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="入站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding InBound}" />
+                    </StackPanel>
+
+                    <!-- 出站带宽 -->
+                    <StackPanel Grid.Row="5" Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="出站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding OutBound}" />
+                    </StackPanel>
+
+                    <!-- 隧道数量 -->
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="隧道数量" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding ProxiesCount}" />
+                    </StackPanel>
+
+                    <!-- 剩余流量 -->
+                    <StackPanel Grid.Row="4" Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="剩余流量" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding Traffic}" />
+                    </StackPanel>
+
+                    <!-- 注册时间 -->
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="注册时间" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                             Text="{Binding RegisterTime}" />
+                    </StackPanel>
+
+                    <!-- 实名状态 -->
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="实名状态" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                   Text="{Binding RealNameStatus}"
+                                   Classes.Success="{Binding IsRealNamed}"
+                                   Classes.Danger="{Binding !IsRealNamed}" />
+                    </StackPanel>
+
+                    <!-- 今日签到 -->
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="今日签到" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <Button
+                            HorizontalAlignment="Left"
+                            Command="{Binding SignCommand}"
+                            Content="{Binding SignButtonText}"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Classes="Success"
+                            IsEnabled="{Binding CanSign}" />
+                    </StackPanel>
+
+                    <!-- 账户状态 -->
+                    <StackPanel Grid.Row="1" Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="账户状态" FontFamily="{StaticResource GlobalFontFamily}" />
+                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                   Text="{Binding AccountStatus}"
+                                   Classes.Danger="{Binding IsBanned}"
+                                   Classes.Success="{Binding !IsBanned}" />
+                    </StackPanel>
+                </Grid>
+            </HeaderedContentControl>
+        </Grid>
+        <GridSplitter Grid.Column="1" />
+        <Grid Grid.Column="2" RowDefinitions="Auto, *">
+            <controls:InfoBar
+                Severity="{Binding SystemStatus, Converter={x:Static core:StatusNumToSeveritryConverter.Instance}}"
+                IsOpen="{Binding SystemStatus, Converter={x:Static core:StatusNumToVisibilityConverter.Instance}}"
+                Title="{Binding SystemStatus,
+                                               Converter={x:Static core:StatusNumToTextConverter.Instance}}"
+                Message="{Binding SystemStatusRemark}" />
             <!-- 公告 -->
             <Border
-                Grid.Column="2"
+                Grid.Row="1"
                 Margin="10">
                 <Grid RowDefinitions="Auto,*">
-                    <HeaderedContentControl Grid.Row="1" Header="系统公告" FontFamily="{StaticResource GlobalFontFamily}">
+                    <HeaderedContentControl Classes="animated" Grid.Row="1" Header="系统公告"
+                                            FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                             <markdownAiRender:MarkdownRender TextWrapping="Wrap"
                                                              FontFamily="{StaticResource GlobalFontFamily}"

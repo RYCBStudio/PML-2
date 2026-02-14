@@ -3,19 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:console="clr-namespace:MEFrpLauncherX.Console"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.TerminalPage">
     <Grid RowDefinitions="Auto,*">
 
         <!-- Toolbar -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5">
-            <Button Click="NewConsoleButton_Click" Content="新建控制台" />
-            <Button Click="CloseButton_Click" Content="关闭当前选项卡" />
-            <Button Click="CtrlCButton_Click" Content="发送Ctrl+C信号(终止操作)" />
-            <Button Click="ClearButton_Click" Content="清空输出" />
-            <Button Click="VisitMEFDoc" Content="访问ME Frp文档" />
-            <Button Click="VisitRCDoc" Content="访问控制台文档" />
-        </StackPanel>
+        <controls:CommandBar DefaultLabelPosition="Right">
+            <controls:CommandBar.PrimaryCommands>
+                <controls:CommandBarButton Click="NewConsoleButton_Click" Label="新建控制台" IconSource="Add" />
+                <controls:CommandBarButton Click="CloseButton_Click" Label="关闭当前选项卡" IconSource="Clear" />
+                <controls:CommandBarButton Click="CtrlCButton_Click" Label="发送CtrlC信号 (终止当前操作)"
+                                           IconSource="StopSlideShow" />
+                <controls:CommandBarButton Click="ClearButton_Click" Label="清空输出" IconSource="Delete" />
+            </controls:CommandBar.PrimaryCommands>
+            <controls:CommandBar.SecondaryCommands>
+                <controls:CommandBarButton Click="VisitMEFDoc" Label="访问ME Frp文档" IconSource="Globe" />
+                <controls:CommandBarButton Click="VisitRCDoc" Label="访问控制台文档" IconSource="Document" IsEnabled="False" />
+            </controls:CommandBar.SecondaryCommands>
+        </controls:CommandBar>
+        <!-- <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5"> -->
+        <!--     <Button Click="NewConsoleButton_Click" Content="新建控制台" /> -->
+        <!--     <Button Click="CloseButton_Click" Content="关闭当前选项卡" /> -->
+        <!--     <Button Click="CtrlCButton_Click" Content="发送Ctrl+C信号(终止操作)" /> -->
+        <!--     <Button Click="ClearButton_Click" Content="清空输出" /> -->
+        <!--     <Button Click="VisitMEFDoc" Content="访问ME Frp文档" /> -->
+        <!--     <Button Click="VisitRCDoc" Content="访问控制台文档" /> -->
+        <!-- </StackPanel> -->
 
         <!-- Tab Control -->
         <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact">

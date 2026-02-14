@@ -108,7 +108,7 @@
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" Margin="0,2" CornerRadius="3"
+                            <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" Margin="0,2" CornerRadius="8"
                                     BorderThickness="1" BorderBrush="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
                                 <Grid ColumnDefinitions="60,80,*,100">
                                     <TextBlock Text="{Binding Port, StringFormat='端口:{0}'}" 
@@ -116,7 +116,7 @@
                                     
                                     <Border Grid.Column="1" 
                                             Background="{Binding IsOpen, Converter={StaticResource BoolToColorConverter}}"
-                                            CornerRadius="10" 
+                                            CornerRadius="8" 
                                             HorizontalAlignment="Left"
                                             Padding="5,2" 
                                             Width="60">

@@ -173,8 +173,13 @@ public class UpdatePageViewModel : ViewModelBase
         IsLoading = true;
         IsIdle = true;
         LatestCheckTime = DateTime.Now;
+        try
+        {
+            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+        }catch{
+            // Platform not support
+        }
 
-        Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
         IterationCount = new IterationCount(100000, IterationType.Many);
         Core.App.CurrentLogger.Log("正在检查更新", module: EnumLogModule.Update);
         Status = "正在检查更新";
@@ -185,7 +190,7 @@ public class UpdatePageViewModel : ViewModelBase
                 {
                     changes = ["获取更新失败"],
                     codename = App.Codename,
-                    date = DateTime.Now.ToString("0"),
+                    date = DateTime.Now.ToString("yyyy-MM-dd"),
                     description = "获取更新失败"
                 },
                 success = false,
@@ -197,7 +202,7 @@ public class UpdatePageViewModel : ViewModelBase
                 {
                     changes = ["获取更新失败"],
                     codename = App.Codename,
-                    date = DateTime.Now.ToString("0"),
+                    date = DateTime.Now.ToString("yyyy-MM-dd"),
                     description = "获取更新失败"
                 },
                 success = false,
@@ -265,7 +270,11 @@ public class UpdatePageViewModel : ViewModelBase
         LatestVersion = latestVersion;
         Changelog.Clear();
         Changelog.AddRange(updateInfo.data.changes);
-        Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+        try
+        {
+            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+        }catch{}
+
         Core.App.CurrentLogger.Log("检查更新完成", module: EnumLogModule.Update);
         IterationCount = new IterationCount(0);
     }
