@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data.Converters;
 
 namespace MEFrpLauncherX;
 
@@ -118,4 +120,38 @@ public static class WindowPositionHelper
 
         return result.ToString();
     }
+}
+
+public class LoadPercentToForegroundConverter : IValueConverter
+{
+    public static LoadPercentToForegroundConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return (int)value switch
+        {
+            >= 85 => App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant,
+                out var o)
+                ? o
+                : null,
+            < 85 and >= 60 => App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant,
+                out var o1)
+                ? o1
+                : null,
+            < 60 and >= 40 => App.Current.TryGetResource("SystemFillColorAttentionBrush",
+                App.Current.ActualThemeVariant, out var o3)
+                ? o3
+                : null,
+            < 40 => App.Current.TryGetResource("SystemFillColorSuccessBrush", App.Current.ActualThemeVariant,
+                out var o2)
+                ? o2
+                : null
+        };
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }

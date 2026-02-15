@@ -92,7 +92,7 @@ public partial class CreateProxy : UserControl
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
             useCompression = EnableCompressCBox.IsChecked ?? false,
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = _createProxyViewModel.Locations
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
         };
         if (requestData.proxyName.IsNullOrEmpty())
         {
@@ -255,7 +255,13 @@ public partial class CreateProxy : UserControl
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
         {
-            he.Headers.ToList().ForEach(h => _createProxyViewModel.RequestHeaders?.Add(h.Name, h.Value));
+            he.Headers.ToList().ForEach(h =>
+            {
+                if (!_createProxyViewModel.RequestHeaders.ContainsKey(h.Name))
+                {
+                    _createProxyViewModel.RequestHeaders?.Add(h.Name, h.Value);
+                }
+            });
         }
     }
 
@@ -340,7 +346,7 @@ public partial class CreateProxy : UserControl
 
         var cd = new ContentDialog()
         {
-            Title = "编辑相应头",
+            Title = "编辑响应头",
             Content = he,
             PrimaryButtonText = "确定",
             DefaultButton = ContentDialogButton.Primary,
@@ -350,7 +356,13 @@ public partial class CreateProxy : UserControl
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
         {
-            he.Headers.ToList().ForEach(h => _createProxyViewModel.ResponseHeaders?.Add(h.Name, h.Value));
+            he.Headers.ToList().ForEach(h =>
+            {
+                if (!_createProxyViewModel.ResponseHeaders.ContainsKey(h.Name))
+                {
+                    _createProxyViewModel.ResponseHeaders?.Add(h.Name, h.Value);
+                }
+            });
         }
     }
 

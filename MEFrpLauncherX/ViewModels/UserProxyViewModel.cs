@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -20,6 +21,12 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class UserProxyViewModel : ViewModelBase
 {
+    public List<string> Locations
+    {
+        get;
+        set;
+    }
+
     public string Config
     {
         get;
@@ -128,6 +135,18 @@ public class UserProxyViewModel : ViewModelBase
         private set;
     }
 
+    public Dictionary<string, string> RequestHeaders
+    {
+        get;
+        set;
+    }
+
+    public Dictionary<string, string> ResponseHeaders
+    {
+        get;
+        set;
+    }
+
     public int lastStartTime
     {
         get;
@@ -183,6 +202,36 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public string headerXFromWhere
+    {
+        get;
+        set;
+    }
+
+    public string transportProtocol
+    {
+        get;
+        set;
+    }
+    
+    public string httpUser
+    {
+        get;
+        set;
+    }
+
+    public string httpPassword
+    {
+        get;
+        set;
+    }
+
+    public string crtPath
+    {
+        get;
+        set;
+    }
+
+    public string keyPath
     {
         get;
         set;
@@ -253,18 +302,43 @@ public class UserProxyViewModel : ViewModelBase
     {
         Core.App.CurrentLogger.Log("使用配置文件启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = parameter as UserProxyViewModel;
-        var cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        List<string> configFiles = [];
+        configFiles.AddRange(Directory
+            .EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Config", "frp"), "*.*",
+                SearchOption.TopDirectoryOnly)
+            .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
+                .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase)));
+
+        var configFile = string.Empty;
+        var cs = new ConfigSelect(configFiles);
+        var cd = new ContentDialog()
         {
             Title = "请选择配置文件",
-            AllowMultiple = false,
-            FileTypeFilter = [FilePickerFileTypes.All]
-        });
-        var configFile = string.Empty;
+            Content = cs,
+            PrimaryButtonText = "确定",
+            CloseButtonText = "取消"
+        };
+        ShowExtraMenu = false;
+        IReadOnlyList<IStorageFile>? cfg = [];
+        if (await cd.ShowAsync(Core.App.MainWindow) == ContentDialogResult.Primary)
+        {
+            configFile = cs.SelectedPath;
+        }
+        else
+        {
+            cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "请选择配置文件",
+                AllowMultiple = false,
+                FileTypeFilter = [FilePickerFileTypes.All]
+            });
+        }
+
         if (cfg is not null)
         {
             try
             {
-                configFile = cfg?[0].Path.AbsolutePath;
+                configFile = configFile.IsNullOrEmpty() ? cfg?[0].Path.AbsolutePath : configFile;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -605,7 +679,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(domain);
+            Domains = JsonConvert.DeserializeObject<List<string>>(domain).Distinct().ToList();
         }
         catch
         {
@@ -631,7 +705,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(_domain);
+            Domains = JsonConvert.DeserializeObject<List<string>>(_domain).Distinct().ToList();
         }
         catch
         {
@@ -744,6 +818,18 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public InfoClasses.Nodes? Node
+    {
+        get;
+        set;
+    }
+
+    public bool ShowExtraMenu
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public string httpPlugin
     {
         get;
         set;

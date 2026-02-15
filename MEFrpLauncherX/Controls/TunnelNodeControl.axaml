@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:pml2="clr-namespace:MEFrpLauncherX"
              VerticalAlignment="Center"
              Width="250"
              Height="240"
@@ -103,7 +104,7 @@
                                    Text="{Binding StringFormat={}{0}%, Path=LoadPercent}" DockPanel.Dock="Right" />
 
                         <ProgressBar MinWidth="70" FontFamily="{StaticResource GlobalFontFamily}"
-                                     Foreground="{Binding LoadPercent, Converter={x:Static core:LoadPercentToForegroundConverter.Instance}}"
+                                     Foreground="{Binding LoadPercent, Converter={x:Static pml2:LoadPercentToForegroundConverter.Instance}}"
                                      Value="{Binding LoadPercent}" />
                     </DockPanel>
 

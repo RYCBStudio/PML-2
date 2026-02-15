@@ -19,7 +19,7 @@
     <UserControl.Resources>
         <!-- Converters -->
         <core:BannedToBrushConverter x:Key="BannedToBrushConverter" />
-        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd">
+        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd" IsOpen="{Binding ShowExtraMenu}">
             <controls1:CommandBarElementContainer>
                 <Button
                     IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"

@@ -19,6 +19,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
+using Newtonsoft.Json;
 using ReactiveUI;
 using MessageBox = MEFrpLauncherX.Core.Controls.MessageBox;
 
@@ -117,7 +118,14 @@ public partial class ManageProxyPage : UserControl
                         location = $"{node?.hostname}:{item.remotePort}",
                         accessKey = item.accessKey,
                         hostHeaderRewrite = item.hostHeaderRewrite,
-                        Node = node
+                        Node = node,
+                        transportProtocol = item.transportProtocol,
+                        httpPlugin = item.httpPlugin,
+                        httpUser = item.httpUser,
+                        httpPassword = item.httpPassword,
+                        RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.requestHeaders),
+                        ResponseHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
+                        Locations = JsonConvert.DeserializeObject<List<string>>(item.locations),
                     });
                 }
             });
@@ -125,7 +133,7 @@ public partial class ManageProxyPage : UserControl
             if (OperatingSystem.IsMacOS())
             {
                 // 创建原生菜单
-                MainWindow.Instance.NativeMenuBar = new NativeMenu();
+                MainWindow.Instance.NativeMenuBar = [];
         
                 // 添加应用程序菜单（macOS 第一个菜单）
                 var appMenu = new NativeMenuItem("隧道");
