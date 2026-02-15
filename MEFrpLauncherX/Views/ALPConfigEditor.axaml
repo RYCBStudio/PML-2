@@ -13,11 +13,11 @@
         Closing="Window_OnClosing"
         x:Class="MEFrpLauncherX.Views.ALPConfigEditor"
         Title="编辑配置文件">
-    <Grid RowDefinitions="Auto, *" RowSpacing="4" Margin="3">
+    <Grid RowDefinitions="Auto, *" RowSpacing="4" Margin="3" Classes="animated">
         <DockPanel>
             <StackPanel x:Name="UnSavedTip" DockPanel.Dock="Right" Orientation="Horizontal" Spacing="3">
-                <controls:SymbolIcon Symbol="SaveLocal" FontSize="20" VerticalAlignment="Center"></controls:SymbolIcon>
-                <TextBlock Text="修改未保存。" VerticalAlignment="Center"></TextBlock>
+                <controls:SymbolIcon Symbol="SaveLocal" FontSize="20" VerticalAlignment="Center" />
+                <TextBlock Text="修改未保存。" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Spacing="5">
             <Button VerticalAlignment="Center" Click="OnPasteClicked" Classes="accent">
@@ -45,7 +45,7 @@
                 </Button.Content>
             </Button>
                 <StackPanel Orientation="Horizontal" Spacing="3">
-                    <TextBlock Text="配置文件类型: "></TextBlock>
+                    <TextBlock Text="配置文件类型: " />
                     <ComboBox x:Name="FileTypeComboBox" SelectionChanged="ChangeSyntaxHighlight">
                         <ComboBoxItem Content="JSON" />
                         <ComboBoxItem Content="YAML" />
@@ -55,7 +55,6 @@
                 </StackPanel>
         </StackPanel>
         </DockPanel>
-        <avaloniaEdit:TextEditor ShowLineNumbers="True" x:Name="ConfigEdit" Grid.Row="1">
-        </avaloniaEdit:TextEditor>
+        <avaloniaEdit:TextEditor ShowLineNumbers="True" x:Name="ConfigEdit" Grid.Row="1" />
     </Grid>
 </Window>

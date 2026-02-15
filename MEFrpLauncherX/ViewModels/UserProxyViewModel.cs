@@ -388,7 +388,7 @@ public class UserProxyViewModel : ViewModelBase
         if (OperatingSystem.IsWindows())
         {
             if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"),
-                    "1cc4bb63ff49a578938862a8e1541ec2|7877aebbb5d28b075fe6ff5f823863ce"))
+                    "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce"))
             {
                 var res = await MessageBox.ShowAsync("mefrpc.exe 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
                                                      "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
@@ -412,9 +412,9 @@ public class UserProxyViewModel : ViewModelBase
         else if (OperatingSystem.IsLinux())
         {
             if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar"),
-                    "e402ab9d90ce932339d920a398480ab9"))
+                    "e402ab9d90ce932339d920a398480ab9|ad07416756ca770ca1bb85463d782737"))
             {
-                var res = await MessageBox.ShowAsync("mefrpc 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+                var res = await MessageBox.ShowAsync("mefrpc.tar 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
                                                      "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
                     MessageBoxIcon.Warning, buttons:
                     [

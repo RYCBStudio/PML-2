@@ -11,58 +11,61 @@ public class LogUtil : IDisposable
     private readonly Dictionary<Enum, string> _translation = new()
     {
         // 原有翻译...
-        {EnumLogModule.Main, "主程序"},
-        {EnumLogModule.Update, "更新"},
-        {EnumLogModule.Net, "网络"},
-        {EnumLogModule.Sql, "SQL"},
-        {EnumLogModule.Home, "首页"},
-        {EnumLogModule.CreateProxy, "创建代理"},
-        {EnumLogModule.ManageProxy, "管理代理"},
-        {EnumLogModule.NodesMonitoring, "节点监控"},
-        {EnumLogModule.About, "关于"},
-        {EnumLogModule.Terminal, "终端"},
-        {EnumLogPort.Client, "客户端"},
-        {EnumLogPort.Server, "服务端"},
-        {EnumLogType.Info, "信息"},
-        {EnumLogType.Warn, "警告"},
-        {EnumLogType.Error, "错误"},
-        {EnumLogType.Fatal, "致命错误"},
-        {EnumLogType.Debug, "调试"},
+        { EnumLogModule.Main, "主程序" },
+        { EnumLogModule.Update, "更新" },
+        { EnumLogModule.Net, "网络" },
+        { EnumLogModule.Sql, "SQL" },
+        { EnumLogModule.Home, "首页" },
+        { EnumLogModule.CreateProxy, "创建代理" },
+        { EnumLogModule.ManageProxy, "管理代理" },
+        { EnumLogModule.NodesMonitoring, "节点监控" },
+        { EnumLogModule.About, "关于" },
+        { EnumLogModule.Terminal, "终端" },
+        { EnumLogPort.Client, "客户端" },
+        { EnumLogPort.Server, "服务端" },
+        { EnumLogType.Info, "信息" },
+        { EnumLogType.Warn, "警告" },
+        { EnumLogType.Error, "错误" },
+        { EnumLogType.Fatal, "致命错误" },
+        { EnumLogType.Debug, "调试" },
     };
 
-    public string LogPath { get; }
+    public string LogPath
+    {
+        get;
+    }
 
     public LogUtil(string logPath)
     {
         LogPath = logPath;
         _asyncWriter = new AsyncLogWriter(logPath);
-        
+
         InitializeSystemInfo();
     }
 
     private void InitializeSystemInfo()
     {
-        Log("============= 系统信息 =============", 
-            module: EnumLogModule.Main, 
+        Log("============= 系统信息 =============",
+            module: EnumLogModule.Main,
             customModuleName: "初始化");
 
         try
         {
-            Log($"语言: {CultureInfo.CurrentCulture.DisplayName}", 
-                module: EnumLogModule.Main, 
+            Log($"语言: {CultureInfo.CurrentCulture.DisplayName}",
+                module: EnumLogModule.Main,
                 customModuleName: "初始化");
-            Log($"运行目录: {AppContext.BaseDirectory}", 
-                module: EnumLogModule.Main, 
+            Log($"运行目录: {AppContext.BaseDirectory}",
+                module: EnumLogModule.Main,
                 customModuleName: "初始化");
-            Log($"操作系统: {Environment.OSVersion}", 
-                module: EnumLogModule.Main, 
+            Log($"操作系统: {Environment.OSVersion}",
+                module: EnumLogModule.Main,
                 customModuleName: "初始化");
         }
         catch (Exception ex)
         {
-            Log($"获取系统信息失败: {ex.Message}", 
-                EnumLogType.Warn, 
-                module: EnumLogModule.Main, 
+            Log($"获取系统信息失败: {ex.Message}",
+                EnumLogType.Warn,
+                module: EnumLogModule.Main,
                 customModuleName: "初始化");
         }
     }
@@ -95,9 +98,10 @@ public class LogUtil : IDisposable
 
         var context = $"{Path.GetFileName(sourceFilePath)}:{memberName}:{sourceLineNumber}";
         var moduleName = module == EnumLogModule.Custom ? customModuleName : _translation[module];
-        
-        var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] {message}";
-        
+
+        var logEntry =
+            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] {message}";
+
         _asyncWriter.EnqueueLog(logEntry);
     }
 
@@ -128,11 +132,13 @@ public class LogUtil : IDisposable
 
         var context = $"{Path.GetFileName(sourceFilePath)}:{memberName}:{sourceLineNumber}";
         var moduleName = module == EnumLogModule.Custom ? customModuleName : _translation[module];
-        
-        var logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}][{context}] {message}";
-        
+
+        var logEntry =
+            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}][{context}] {message}";
+
         _asyncWriter.EnqueueLog(logEntry);
-        Console.WriteLine($"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
+        Console.WriteLine(
+            $"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[EnumLogType.Debug]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
 #endif
     }
 
@@ -166,30 +172,35 @@ public class LogUtil : IDisposable
 
         var context = $"{Path.GetFileName(sourceFilePath)}:{memberName}:{sourceLineNumber}";
         var moduleName = module == EnumLogModule.Custom ? customModuleName : _translation[module];
+        Console.WriteLine(
+            $"\e[31m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[31m[{_translation[type]}|{_translation[port]}:{moduleName}]\e[0m\e[31m[{context}]\e[0m 发生错误：[{ex.GetType().Name}] {ex.Message} {message}");
 
         // 简要错误信息
-        var shortLog = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] 发生错误：[{ex.GetType().Name}] {ex.Message} {message}";
+        var shortLog =
+            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] 发生错误：[{ex.GetType().Name}] {ex.Message} {message}";
         _asyncWriter.EnqueueLog(shortLog);
 
         // 详细错误信息
-        var detailedLog = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] \n错误详情:\n类型: [{ex.GetType().FullName}]\n消息: [{ex.Message}]\n堆栈跟踪:\n{GetFullExceptionDetails(ex)}";
+        var detailedLog =
+            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] \n错误详情:\n类型: [{ex.GetType().FullName}]\n消息: [{ex.Message}]\n堆栈跟踪:\n{GetFullExceptionDetails(ex)}";
         _asyncWriter.EnqueueLog(detailedLog);
     }
 
     private string GetFullExceptionDetails(Exception ex)
     {
         var details = ex.StackTrace ?? "无堆栈信息";
-        
+
         // 递归获取内部异常
         var inner = ex.InnerException;
         var depth = 0;
         while (inner != null && depth < 10) // 防止无限递归
         {
-            details += $"\n\n内部异常 [{depth + 1}]:\n类型: {inner.GetType().FullName}\n消息: {inner.Message}\n堆栈: {inner.StackTrace}";
+            details +=
+                $"\n\n内部异常 [{depth + 1}]:\n类型: {inner.GetType().FullName}\n消息: {inner.Message}\n堆栈: {inner.StackTrace}";
             inner = inner.InnerException;
             depth++;
         }
-        
+
         return details;
     }
 
@@ -212,6 +223,7 @@ public enum EnumLogPort
     /// 客户端
     /// </summary>
     Client,
+
     /// <summary>
     /// 服务端
     /// </summary>
@@ -224,42 +236,52 @@ public enum EnumLogModule
     /// 主模块
     /// </summary>
     Main,
+
     /// <summary>
     /// 更新
     /// </summary>
     Update,
+
     /// <summary>
     /// 网络
     /// </summary>
     Net,
+
     /// <summary>
     /// 数据库
     /// </summary>
     Sql,
+
     /// <summary>
     /// 自定义
     /// </summary>
     Custom,
+
     /// <summary>
     /// 页面 - 主页
     /// </summary>
     Home,
+
     /// <summary>
     /// 页面 - 创建隧道
     /// </summary>
     CreateProxy,
+
     /// <summary>
     /// 页面 - 管理隧道
     /// </summary>
     ManageProxy,
+
     /// <summary>
     /// 页面 - 节点监控
     /// </summary>
     NodesMonitoring,
+
     /// <summary>
     /// 页面 - 关于
     /// </summary>
     About,
+
     /// <summary>
     /// 页面 - 终端/控制台
     /// </summary>
@@ -272,18 +294,22 @@ public enum EnumLogType
     /// 信息级别
     /// </summary>
     Info,
+
     /// <summary>
     /// 警告级别
     /// </summary>
     Warn,
+
     /// <summary>
     /// 错误级别
     /// </summary>
     Error,
+
     /// <summary>
     /// 致命错误级别
     /// </summary>
     Fatal,
+
     /// <summary>
     /// 调试级别
     /// </summary>

@@ -115,7 +115,10 @@ public class MEFApiConverter
         }
         else
         {
-            Growl.Success(response.message);
+            if (!ConfigManager.CurrentConfig.DoNotShowSuccessMsg)
+            {
+                Growl.Success(response.message);
+            }
         }
     }
 

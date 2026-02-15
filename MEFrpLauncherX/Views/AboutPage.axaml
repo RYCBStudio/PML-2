@@ -121,7 +121,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                Text="五年技术沉淀 · 稳定可靠" />
+                                Text="六年沉淀 · 全新升级 · 稳定高效的内网穿透利器" />
                         </StackPanel>
                     </controls1:SettingsExpander.Footer>
                     <controls1:SettingsExpanderItem>

@@ -16,6 +16,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.Appearance;
 using MEFrpLauncherX.Views.ProxyMonitor;
+using Microsoft.Win32;
 
 namespace MEFrpLauncherX.Views;
 
@@ -252,7 +253,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
             throw new InvalidOperationException("无法获取可执行文件路径");
         }
 
-        using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+        using var key = Registry.CurrentUser.OpenSubKey(
             @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
 
         if (key == null)
@@ -451,6 +452,11 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     {
         ConfigManager.UpdateConfig(config =>
             config.DownloadSource = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "");
+    }
+
+    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
     }
 }
 

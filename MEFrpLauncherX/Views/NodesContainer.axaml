@@ -27,7 +27,7 @@
                             <controls:SymbolIcon Symbol="Help" />
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked}"
+                    <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
                                           Target="{Binding #HelpBtn}"
                                           Title="搜索帮助"
                                           IconSource="Help" >

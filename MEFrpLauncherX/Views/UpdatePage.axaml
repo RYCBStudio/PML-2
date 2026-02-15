@@ -14,7 +14,7 @@
         <viewModels:UpdatePageViewModel />
     </Design.DataContext>
     <ScrollViewer Margin="5">
-        <Grid RowDefinitions="Auto, *">
+        <Grid RowDefinitions="Auto, *" Classes="animated">
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="7*, 3*" ColumnSpacing="10" RowSpacing="4">
                 <TextBlock Grid.RowSpan="2" Classes="Update" Text="{Binding Icon}"
                            FontFamily="{StaticResource IconFont}"

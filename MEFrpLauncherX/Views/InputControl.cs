@@ -13,6 +13,7 @@ namespace MEFrpLauncherX.Views
 
         public InputControl(string prompt)
         {
+            CaptchaResult = string.Empty;
 
             var stackPanel = new StackPanel
             {
