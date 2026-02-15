@@ -13,137 +13,173 @@
     x:Class="MEFrpLauncherX.Views.UserCenterPage"
     FontFamily="{StaticResource GlobalFontFamily}"
     mc:Ignorable="d">
-    <Grid RowDefinitions="4*,5.5*,auto" Classes="animated">
-        <HeaderedContentControl
-            Margin="10"
-            FontFamily="{StaticResource GlobalFontFamily}"
-            FontSize="15"
-            Header="用户信息">
-            <Grid Margin="5" ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*">
-                <StackPanel Grid.Row="0" Grid.Column="0">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户名" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="UserNameText"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+    <ScrollViewer x:Name="MainViewer">
+        <StackPanel Margin="20" Spacing="16" Classes="animated">
 
-                <StackPanel Grid.Row="0" Grid.Column="1">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="今日签到" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <Button
-                        x:Name="TodaySignButton"
-                        Click="Sign"
-                        Content="签到"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        Classes="Success"
-                        IsVisible="False" />
-                </StackPanel>
+            <!-- 用户基本信息卡片 -->
+            <controls1:SettingsExpander
+                Header="用户信息"
+                IconSource="ContactInfo"
+                Description="查看和管理您的账户基本信息"
+                IsExpanded="True">
 
-                <StackPanel Grid.Row="0" Grid.Column="2">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="实名状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="isRealNamed"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                <controls1:SettingsExpander.Items>
+                    <!-- 第一行信息 -->
+                    <controls1:SettingsExpanderItem Content="用户名">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="UserNameText" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="0" Grid.Column="3">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="注册时间" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="regTime"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="用户ID">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="usrId" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="0" Grid.Column="4">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="隧道数量" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="proxies"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="注册邮箱">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="regMail" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="0" Grid.Column="5">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="入站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="inBound"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="注册时间">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="regTime" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="1" Grid.Column="0">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户ID" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="usrId"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <!-- 第二行信息 -->
+                    <controls1:SettingsExpanderItem Content="用户组">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="group" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="1" Grid.Column="1">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="账户状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="status"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="账户状态">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="status" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="1" Grid.Column="2">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="用户组" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="group"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="实名状态">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="isRealNamed" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
 
-                <StackPanel Grid.Row="1" Grid.Column="3">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="注册邮箱" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="regMail"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                    <controls1:SettingsExpanderItem Content="今日签到">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <Button
+                                x:Name="TodaySignButton"
+                                Click="Sign"
+                                Content="签到"
+                                Classes="accent"
+                                IsVisible="False" />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
+                </controls1:SettingsExpander.Items>
+            </controls1:SettingsExpander>
 
-                <StackPanel Grid.Row="1" Grid.Column="4">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="剩余流量" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="traffic"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+            <!-- 流量和隧道信息卡片 -->
+            <controls1:SettingsExpander
+                Header="流量与隧道"
+                IconSource="Globe"
+                Description="查看您的流量使用情况和隧道配置"
+                IsExpanded="True">
 
-                <StackPanel Grid.Row="1" Grid.Column="5">
-                    <TextBlock  Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="出站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                    <SelectableTextBlock
-                        x:Name="outBound"
-                        FontFamily="{StaticResource GlobalFontFamily}"
-                        TextWrapping="Wrap" />
+                <controls1:SettingsExpander.Items>
+                    <controls1:SettingsExpanderItem Content="剩余流量">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="traffic" Text="加载中..." FontSize="16" FontWeight="SemiBold" />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
+
+                    <controls1:SettingsExpanderItem Content="隧道数量">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="proxies" Text="加载中..." FontSize="16" FontWeight="SemiBold" />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
+
+                    <controls1:SettingsExpanderItem Content="入站带宽">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="inBound" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
+
+                    <controls1:SettingsExpanderItem Content="出站带宽">
+                        <controls1:SettingsExpanderItem.Footer>
+                            <SelectableTextBlock x:Name="outBound" Text="加载中..." />
+                        </controls1:SettingsExpanderItem.Footer>
+                    </controls1:SettingsExpanderItem>
+                </controls1:SettingsExpander.Items>
+            </controls1:SettingsExpander>
+
+            <!-- 流量统计图表 -->
+            <controls1:SettingsExpander
+                Header="流量统计"
+                IconSource="MapDrive"
+                Description="查看近期流量使用趋势"
+                IsExpanded="True">
+                <controls1:SettingsExpanderItem>
+                    <Panel MinHeight="300">
+                        <controls:TrafficStatusControl x:Name="trafficControl"/>
+                        <controls1:ProgressRing IsVisible="True" IsIndeterminate="True" x:Name="Loading" />
+                    </Panel>
+                </controls1:SettingsExpanderItem>
+            </controls1:SettingsExpander>
+
+            <!-- 操作区域 -->
+            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="8"
+                    Padding="16">
+                <StackPanel Spacing="12">
+                    <DockPanel HorizontalSpacing="5">
+                        <controls1:SymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20"/>
+                        <TextBlock
+                            Text="账户操作"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                    </DockPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Button
+                            Click="ExitLogin"
+                            Content="退出登录"
+                            Classes="danger"
+                            Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
+                            Foreground="{DynamicResource SystemFillColorCriticalBrush}">
+                            <Button.Styles>
+                                <Style Selector="Button.accent">
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+
+                        <Button
+                            Click="OpenWeb">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <controls1:SymbolIcon Symbol="Globe" />
+                                    <TextBlock Text="前往网页端以完成其他操作" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+
+                        <controls1:InfoBadge
+                            Theme="{StaticResource AttentionIconInfoBadgeStyle}"
+                            ToolTip.Tip="由于某些原因，网页端的部分功能无法在客户端实现(未开放API)，因此需要您前往网页端进行操作。">
+                            <controls1:InfoBadge.IconSource>
+                                <controls1:SymbolIconSource Symbol="Help" />
+                            </controls1:InfoBadge.IconSource>
+                        </controls1:InfoBadge>
+                    </StackPanel>
                 </StackPanel>
-            </Grid>
-        </HeaderedContentControl>
-        <controls:TrafficStatusControl x:Name="trafficControl" IsVisible="False" Grid.Row="1" />
-        <controls1:ProgressRing Classes="TPCA" Grid.Row="1" IsVisible="True" IsIndeterminate="True" x:Name="Loading" />
-        <StackPanel
-            Grid.Row="2"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
-            <Button
-                Margin="10"
-                Click="ExitLogin"
-                Content="退出登录"
-                Theme="{DynamicResource SolidButton}"
-                Classes.Danger="True" />
-            <Button
-                Margin="10"
-                Click="OpenWeb"
-                Content="前往网页端以完成其他操作" />
-            <TextBlock
-                Margin="10"
-                Classes.DefaultInfo="True"
-                Text="为什么？">
-                <ToolTip.Tip>
-                    <TextBlock Text="由于某些原因，网页端的部分功能无法在客户端实现(未开放API)，因此需要您前往网页端进行操作。" TextWrapping="Wrap" />
-                </ToolTip.Tip>
-            </TextBlock>
+            </Border>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

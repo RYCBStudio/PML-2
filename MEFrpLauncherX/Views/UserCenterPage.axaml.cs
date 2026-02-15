@@ -168,6 +168,10 @@ public partial class UserCenterPage : UserControl
                 .GetMessageBoxStandard("错误", $"签到过程中发生错误: {ex.Message}")
                 .ShowAsync();
         }
+        finally
+        {
+            UserControl_Loaded(sender, null);
+        }
     }
 
     private static string ProcessFileSize(long size)

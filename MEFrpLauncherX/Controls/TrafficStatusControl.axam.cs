@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Styling;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using ScottPlot;
@@ -23,6 +24,13 @@ public partial class TrafficStatusControl : UserControl
         InitializePlot();
         InitializeHoverTools();
         this.Loaded += (sender, args) => init = true;
+    }
+
+    private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs? e)
+    {
+        // 阻止事件继续传播到父级控件
+        base.OnPointerWheelChanged(e);
+        e?.Handled = true;
     }
 
     private void InitializePlot()
@@ -223,7 +231,8 @@ public partial class TrafficStatusControl : UserControl
                     CrosshairTool.IsVisible = true;
                     CrosshairTool.Position = nearest.Coordinates;
                     avaPlot.Refresh();
-                    CrosshairTool.HorizontalLine.Text = $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
+                    CrosshairTool.HorizontalLine.Text =
+                        $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
                 }
 
                 // hide the crosshair when no point is selected
