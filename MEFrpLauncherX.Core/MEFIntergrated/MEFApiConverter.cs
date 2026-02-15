@@ -606,9 +606,9 @@ public class MEFApiConverter
     /// 获取用户的隧道列表
     /// </summary>
     /// <returns>一个"用户隧道"数组。</returns>
-    public static async Task<ApiInfo<ProxyInfo[]>> GetProxiesAsync()
+    public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync()
     {
-        return await ExecuteRequestAsync<ProxyInfo[]>(CreateRequest(), "auth/proxy/list", "隧道列表");
+        return await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", "隧道列表");
     }
 
     /// <summary>

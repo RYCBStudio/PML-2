@@ -13,7 +13,7 @@ namespace MEFrpLauncherX;
 public class App : Application
 {
     public static string Version = "2.3.0-preview1";
-    public static string Codename = "Nitrogen";
+    public static string Codename = "Fluorine";
     public static SplashScreen splash;
     public static LogUtil LogService;
 

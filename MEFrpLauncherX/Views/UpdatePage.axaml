@@ -43,7 +43,7 @@
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdate}" />

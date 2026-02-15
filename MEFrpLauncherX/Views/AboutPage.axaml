@@ -131,7 +131,7 @@
                             FontWeight="Bold"
                             Text="ME Frp 版本" />
                         <controls1:SettingsExpanderItem.Description>
-                            Core: v5 Client: v0.61.1
+                            Core: v5 Client: v0.67.0_20260214_7d549bc1
                         </controls1:SettingsExpanderItem.Description>
                         <controls1:SettingsExpanderItem.Footer>
                             <Button

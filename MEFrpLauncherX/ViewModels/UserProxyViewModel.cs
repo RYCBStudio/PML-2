@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -698,11 +697,11 @@ public class UserProxyViewModel : ViewModelBase
     private async void CopyInfo(UserProxyViewModel obj)
     {
         var clipboard = Core.App.MainWindow.Clipboard;
-        var nameList = await MEFApiConverter.GetNodesNameListAsync();
+        //var nameList = await MEFApiConverter.GetNodesNameListAsync();
         await clipboard.SetTextAsync(obj.proxyType.Equals("http", StringComparison.OrdinalIgnoreCase) ||
                                      obj.proxyType.Equals("https", StringComparison.OrdinalIgnoreCase)
             ? obj.domain
-            : nameList.data?.FirstOrDefault(x => x.nodeId == obj.nodeId)?.hostname +
+            : Node?.hostname +
               $":{obj.remotePort}");
         Growl.Success("已复制隧道信息");
     }
@@ -739,6 +738,12 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public ICommand CopyInfoCommand
+    {
+        get;
+        set;
+    }
+
+    public InfoClasses.Nodes? Node
     {
         get;
         set;

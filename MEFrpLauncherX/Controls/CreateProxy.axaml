@@ -144,7 +144,7 @@
                         <pml2:RequiredField Label="源协议" IsRequired="False" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
-                                <RadioButton GroupName="http" x:Name="SameAsHttp">
+                                <RadioButton GroupName="http" x:Name="SameAsHttp" IsChecked="True">
                                     <TextBlock VerticalAlignment="Bottom">与隧道协议相同(HTTP)</TextBlock>
                                 </RadioButton>
                                 <RadioButton GroupName="http" x:Name="Http2Https">
@@ -156,7 +156,7 @@
                         <pml2:RequiredField Label="源协议" IsRequired="False" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
-                                <RadioButton GroupName="https" x:Name="SameAsHttps">
+                                <RadioButton GroupName="https" x:Name="SameAsHttps" IsChecked="True">
                                     <TextBlock VerticalAlignment="Bottom">与隧道协议相同(HTTPS)</TextBlock>
                                 </RadioButton>
                                 <RadioButton GroupName="https" x:Name="Https2Http">
@@ -239,18 +239,41 @@
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="Host Header Rewrite" Description="请输入 Host 请求头重写值">
+                    <fa:SettingsExpanderItem Content="传输协议" Description="QUIC 提供了类似 TCP 的可靠性，同时克服了 TCP 的性能瓶颈, 部分场景下可以优化延迟。">
                         <fa:SettingsExpanderItem.Footer>
-                            <TextBox
-                                x:Name="HostHeaderRewriteBox"
-                                Margin="5"
-                                Watermark="请输入 Host 请求头重写值"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True" x:Name="TpTcpRb"/>
+                                <RadioButton GroupName="TransmissionProtocol" Content="QUIC" x:Name="TpQuicRb"/>
+                            </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem Content="自定义请求头" IsVisible="False" x:Name="CustomRequestHeaderSettings">
                         <fa:SettingsExpanderItem.Footer>
-                            <Button Click="EditHeaders">
+                            <Button Click="EditRequestHeaders">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <TextBlock>编辑</TextBlock>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                    <fa:SettingsExpanderItem Content="自定义响应头" IsVisible="False" x:Name="CustomResponseHeaderSettings">
+                        <fa:SettingsExpanderItem.Footer>
+                            <Button Click="EditResponseHeaders">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <TextBlock>编辑</TextBlock>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                    <fa:SettingsExpanderItem Content="Locations" Description="编辑 HTTP 隧道的路径路由规则。" IsVisible="False" x:Name="LocationSettings">
+                        <fa:SettingsExpanderItem.Footer>
+                            <Button Click="EditLocations">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <fa:SymbolIcon Symbol="Edit" />

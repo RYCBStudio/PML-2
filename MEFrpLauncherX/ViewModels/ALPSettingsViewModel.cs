@@ -125,10 +125,11 @@ public class ALPSettingsViewModel : ViewModelBase
                 }
 
                 Core.App.CurrentLogger.LogDebug("Loading user proxies");
-                foreach (var item in userProxies)
+                foreach (var item in userProxies.proxies)
                 {
                     var alp = autoLaunchProxies.FirstOrDefault(i => i.Id == item.proxyId);
                     var info = currentNodesList.FirstOrDefault(i => i.nodeId == item.nodeId);
+                    var node = userProxies.nodes.FirstOrDefault(n => n.nodeId == item.nodeId);
                     var proxy = new UserProxyViewModel
                     {
                         // Same property assignments as original
@@ -155,10 +156,9 @@ public class ALPSettingsViewModel : ViewModelBase
                         clientVersion = item.clientVersion,
                         useEncryption = item.useEncryption,
                         useCompression = item.useCompression,
-                        location = item.location,
+                        location = $"{node?.hostname}:{item.remotePort}",
                         accessKey = item.accessKey,
                         hostHeaderRewrite = item.hostHeaderRewrite,
-                        headerXFromWhere = item.headerXFromWhere
                     };
                     AllProxies.Add(proxy);
                     if (alp is not null)

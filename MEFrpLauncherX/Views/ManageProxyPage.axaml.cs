@@ -71,22 +71,22 @@ public partial class ManageProxyPage : UserControl
             await Task.Run(async () =>
             {
                 var userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
-                var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
-                InfoClasses.NodesList[] currentNodesList;
-
-                if (currentNodesListInfo?.NodesList is null)
-                {
-                    currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
-                }
-                else
-                {
-                    currentNodesList = currentNodesListInfo.NodesList;
-                }
+                // var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
+                // InfoClasses.NodesList[] currentNodesList;
+                //
+                // if (currentNodesListInfo?.NodesList is null)
+                // {
+                //     currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
+                // }
+                // else
+                // {
+                //     currentNodesList = currentNodesListInfo.NodesList;
+                // }
 
                 Core.App.CurrentLogger.LogDebug("Loading user proxies");
-                foreach (var item in userProxies)
+                foreach (var item in userProxies.proxies)
                 {
-                    var info = currentNodesList.FirstOrDefault(i => i.nodeId == item.nodeId);
+                    var node = userProxies.nodes.FirstOrDefault(n => n.nodeId == item.nodeId);
 
                     proxyViewModel.AllProxies.Add(new UserProxyViewModel(item.domain)
                     {
@@ -95,7 +95,7 @@ public partial class ManageProxyPage : UserControl
                         proxyName = item.proxyName,
                         proxyId = item.proxyId,
                         proxyType = item.proxyType.ToUpper(),
-                        node = info?.name ?? "节点不存在",
+                        node = node?.name ?? "节点不存在",
                         isBanned = item.isBanned,
                         isOnline = item.isOnline,
                         isDisabled = item.isDisabled,
@@ -104,9 +104,9 @@ public partial class ManageProxyPage : UserControl
                         remotePort = item.remotePort,
                         runId = item.runId,
                         nodeId = item.nodeId,
-                        allowedProtocols = info?.allowType?.Split(';')
-                            ?.Select(type => type.ToUpper())
-                            ?.ToArray() ?? [],
+                        //allowedProtocols = node?.allowType?.Split(';')
+                          //  ?.Select(type => type.ToUpper())
+                          //  ?.ToArray() ?? [],
                         domain = item.domain,
                         lastStartTime = item.lastStartTime,
                         lastCloseTime = item.lastCloseTime,
@@ -114,10 +114,10 @@ public partial class ManageProxyPage : UserControl
                         clientVersion = item.clientVersion,
                         useEncryption = item.useEncryption,
                         useCompression = item.useCompression,
-                        location = item.location,
+                        location = $"{node?.hostname}:{item.remotePort}",
                         accessKey = item.accessKey,
                         hostHeaderRewrite = item.hostHeaderRewrite,
-                        headerXFromWhere = item.headerXFromWhere
+                        Node = node
                     });
                 }
             });

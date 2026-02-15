@@ -9,7 +9,7 @@
              x:DataType="controls1:DomainsEdit">
     <Grid RowDefinitions="Auto, *" RowSpacing="5">
         <Grid ColumnDefinitions="*,Auto, Auto" ColumnSpacing="3" Margin="3">
-            <TextBox Text="{Binding currentDomain}" Watermark="输入将绑定的域名"></TextBox>
+            <TextBox Text="{Binding currentDomain}" Watermark="输入值" />
             <Button Grid.Column="1" Click="AddDomain">
                 <Button.Content>
                     <controls:SymbolIcon Symbol="Add" />

@@ -64,8 +64,8 @@ public partial class EditProxyWindow : Window
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
             he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
                 {
-                    var key = kv.Keys.FirstOrDefault();
-                    var val = kv.Values.FirstOrDefault();
+                    var key = kv.Key;
+                    var val = kv.Value;
                     if (key is null || val is null)
                     {
                         return new RequestHeader
@@ -110,6 +110,62 @@ public partial class EditProxyWindow : Window
         {
             // _createProxyViewModel.RequestHeaders.AddRange(he.Headers
             //     .ToDictionary(header => header.Name, header => header.Value));
+        }
+    }
+    
+    
+    private async void EditResponseHeaders(object? sender, RoutedEventArgs e)
+    {
+        var he = new HeadersEdit();
+        if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+            he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
+                {
+                    var key = kv.Key;
+                    var val = kv.Value;
+                    if (key is null || val is null)
+                    {
+                        return new RequestHeader
+                        {
+                            Name = "NOTFOUND",
+                            Value = "NOTFOUND"
+                        };
+                    }
+
+                    return new RequestHeader
+                    {
+                        Name = key!,
+                        Value = val!
+                    };
+                })
+                .ToList());
+        // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
+        // {
+        //     he.Headers.Remove(header);
+        // }
+        for (var i = 0; i < he.Headers.Count; i++)
+        {
+            if (he.Headers[i].Name != "NOTFOUND")
+            {
+                continue;
+            }
+
+            he.Headers.RemoveAt(i);
+            i--;
+        }
+
+        var cd = new ContentDialog()
+        {
+            Title = "编辑相应头",
+            Content = he,
+            PrimaryButtonText = "确定",
+            DefaultButton = ContentDialogButton.Primary,
+            IsSecondaryButtonEnabled = false,
+            CloseButtonText = "取消"
+        };
+        var res = await cd.ShowAsync();
+        if (res == ContentDialogResult.Primary)
+        {
+            he.Headers.ToList().ForEach(h => _createProxyViewModel.ResponseHeaders?.Add(h.Name, h.Value));
         }
     }
     
