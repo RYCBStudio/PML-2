@@ -71,6 +71,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
                 "OFFICIAL" => 1,
                 _ => 0
             };
+            DoNotShowResponseSettings.IsChecked = ConfigManager.CurrentConfig.DoNotShowSuccessMsg;
             isInit = true;
             if (ParallelDownloadThreads.Value >= 32)
             {

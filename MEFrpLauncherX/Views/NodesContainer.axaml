@@ -93,6 +93,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <ctrls:TunnelNodeControl x:Name="tnc"
+                                             Classes="animated"
                                              VerticalAlignment="Center"
                                              Width="250"
                                              Height="240"

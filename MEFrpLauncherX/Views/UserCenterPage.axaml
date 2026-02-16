@@ -25,50 +25,50 @@
 
                 <controls1:SettingsExpander.Items>
                     <!-- 第一行信息 -->
-                    <controls1:SettingsExpanderItem Content="用户名">
+                    <controls1:SettingsExpanderItem Content="用户名" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="UserNameText" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="用户ID">
+                    <controls1:SettingsExpanderItem Content="用户ID" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="usrId" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="注册邮箱">
+                    <controls1:SettingsExpanderItem Content="注册邮箱" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="regMail" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="注册时间">
+                    <controls1:SettingsExpanderItem Content="注册时间" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="regTime" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
                     <!-- 第二行信息 -->
-                    <controls1:SettingsExpanderItem Content="用户组">
+                    <controls1:SettingsExpanderItem Content="用户组" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="group" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="账户状态">
+                    <controls1:SettingsExpanderItem Content="账户状态" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="status" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="实名状态">
+                    <controls1:SettingsExpanderItem Content="实名状态" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="isRealNamed" Text="加载中..." />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="今日签到">
+                    <controls1:SettingsExpanderItem Content="今日签到" Classes="r2l">
                         <controls1:SettingsExpanderItem.Footer>
                             <Button
                                 x:Name="TodaySignButton"

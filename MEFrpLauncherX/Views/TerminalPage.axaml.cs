@@ -35,7 +35,7 @@ namespace MEFrpLauncherX.Views
             MainPageFrameViewModel.Instance?.IsLoading = false;
         }
 
-        private async void VisitMEFDoc(object sender, RoutedEventArgs e)
+        private void VisitMEFDoc(object sender, RoutedEventArgs e)
         {
             try
             {

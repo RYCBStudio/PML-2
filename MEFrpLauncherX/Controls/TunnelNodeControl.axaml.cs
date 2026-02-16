@@ -171,7 +171,7 @@ namespace MEFrpLauncherX.Controls
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return value is IEnumerable e && !e.Contains("default")
-                ? App.Current.TryGetResource("SystemFillColorCautionBackgroundBrush", App.Current.ActualThemeVariant,
+                ? App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant,
                     out var o)
                     ? o
                     : null

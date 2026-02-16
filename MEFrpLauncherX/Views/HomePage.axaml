@@ -222,6 +222,7 @@
         <GridSplitter Grid.Column="1" />
         <Grid Grid.Column="2" RowDefinitions="Auto, *">
             <controls:InfoBar
+                Classes="animated"
                 Margin="3"
                 Severity="{Binding SystemStatus, Converter={x:Static core:StatusNumToSeveritryConverter.Instance}}"
                 IsOpen="{Binding SystemStatus, Converter={x:Static core:StatusNumToVisibilityConverter.Instance}}"
@@ -232,13 +233,14 @@
             <Border
                 Grid.Row="1"
                 Margin="10">
-                <Grid RowDefinitions="Auto,*">
-                    <HeaderedContentControl Classes="animated" Grid.Row="1" Header="系统公告"
+                <Grid>
+                    <HeaderedContentControl Classes="animated" Header="系统公告"
                                             FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
-                            <markdownAiRender:MarkdownRender TextWrapping="Wrap"
-                                                             FontFamily="{StaticResource GlobalFontFamily}"
-                                                             x:Name="NoticeBoard" Value="{Binding NoticeContent}" />
+                            <markdownAiRender:MarkdownRender
+                                TextWrapping="Wrap"
+                                FontFamily="{StaticResource GlobalFontFamily}"
+                                x:Name="NoticeBoard" Value="{Binding NoticeContent}" />
                             <!-- <mdxaml:MarkdownScrollViewer Markdown="{Binding NoticeContent}"> -->
                             <!--     <mdxaml:MarkdownScrollViewer.Styles> -->
                             <!--         <StyleInclude Source="avares://MEFrpLauncherX/Styles/RichTextStyles.axaml"/> -->

@@ -95,7 +95,7 @@
                             </DockPanel>
                         </TabItem>
                         <TabItem Header="更新设置">
-                            <StackPanel>
+                            <StackPanel Classes="animated">
                                 <controls:SettingsExpander Header="更新模式" Description="设置应用的更新模式。">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateMethodBox" SelectedIndex="{Binding UpdateMethod}"

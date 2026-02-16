@@ -34,12 +34,12 @@
             </controls:InfoBadge>
             <controls:InfoBadge Margin="0,20,10,0" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                Background="{DynamicResource SystemFillColorCautionBrush}"
                                 BorderThickness="-1"
                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 IsVisible="{Binding AllowGroup, Converter={x:Static local:AllowGroupToIsVisibleConverter.Instance}}">
                 <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                    <controls:FontIconSource Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="VIP" />
                 </controls:InfoBadge.IconSource>
             </controls:InfoBadge>
