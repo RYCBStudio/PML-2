@@ -222,7 +222,7 @@
         <GridSplitter Grid.Column="1" />
         <Grid Grid.Column="2" RowDefinitions="Auto, *">
             <controls:InfoBar
-                Classes="animated"
+                Classes="animated-bar"
                 Margin="3"
                 Severity="{Binding SystemStatus, Converter={x:Static core:StatusNumToSeveritryConverter.Instance}}"
                 IsOpen="{Binding SystemStatus, Converter={x:Static core:StatusNumToVisibilityConverter.Instance}}"

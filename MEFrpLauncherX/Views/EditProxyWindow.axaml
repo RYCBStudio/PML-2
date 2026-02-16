@@ -14,8 +14,6 @@
     <Grid RowDefinitions="*, Auto" RowSpacing="5">
         <ScrollViewer x:Name="MainContainer">
             <StackPanel x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
-                <fa:InfoBar IsOpen="True" Severity="Warning"
-                            Message="提示: 编辑隧道时, 由于官网API暂未更新, 以下选项有所调整: &#x0D;1. 安全选项只支持显示禁用和访问密钥, 若隧道启用了 HTTP Basic Auth, 请忽略该选项, 并注意更新后隧道是否正常。&#x0D;2. 请求头设置仅支持添加和删除, 无法修改原有的请求头。" />
                 <fa:SettingsExpander Header="基本设置"
                                      IconSource="AllApps"
                                      Description="以下是创建隧道的必填设置。">
@@ -181,12 +179,14 @@
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    
-                    <fa:SettingsExpanderItem Content="传输协议" Description="QUIC 提供了类似 TCP 的可靠性，同时克服了 TCP 的性能瓶颈, 部分场景下可以优化延迟。">
+
+                    <fa:SettingsExpanderItem Content="传输协议"
+                                             Description="QUIC 提供了类似 TCP 的可靠性，同时克服了 TCP 的性能瓶颈, 部分场景下可以优化延迟。">
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
-                                <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True" x:Name="TpTcpRb"/>
-                                <RadioButton GroupName="TransmissionProtocol" Content="QUIC" x:Name="TpQuicRb"/>
+                                <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True"
+                                             x:Name="TpTcpRb" />
+                                <RadioButton GroupName="TransmissionProtocol" Content="QUIC" x:Name="TpQuicRb" />
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
@@ -214,7 +214,8 @@
                             </Button>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="Locations" Description="编辑 HTTP 隧道的路径路由规则。" IsVisible="False" x:Name="LocationSettings">
+                    <fa:SettingsExpanderItem Content="Locations" Description="编辑 HTTP 隧道的路径路由规则。" IsVisible="False"
+                                             x:Name="LocationSettings">
                         <fa:SettingsExpanderItem.Footer>
                             <Button Click="EditLocations">
                                 <Button.Content>

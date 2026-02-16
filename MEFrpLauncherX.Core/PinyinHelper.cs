@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Concurrent;
+using System.Text;
 using Microsoft.International.Converters.PinYinConverter;
+using NPinyin;
 
 namespace MEFrpLauncherX.Core;
 
@@ -29,7 +31,7 @@ public static class PinYinHelper
         }
         catch (Exception e)
         {
-            Core.App.CurrentLogger.Log("全拼转化出错！" + e.Message);
+            App.CurrentLogger.Log("全拼转化出错！" + e.Message);
             App.CurrentLogger.Error(e);
         }
 
@@ -61,7 +63,7 @@ public static class PinYinHelper
         }
         catch (Exception e)
         {
-            Core.App.CurrentLogger.Log("首字母转化出错！" + e.Message);
+            App.CurrentLogger.Log("首字母转化出错！" + e.Message);
             App.CurrentLogger.Error(e);
         }
 
@@ -70,7 +72,7 @@ public static class PinYinHelper
 
     private static string GetSpell(char chr)
     {
-        var coverchr = NPinyin.Pinyin.GetPinyin(chr);
+        var coverchr = Pinyin.GetPinyin(chr);
 
         var isChineses = ChineseChar.IsValidChar(coverchr[0]);
         if (!isChineses)
@@ -88,5 +90,26 @@ public static class PinYinHelper
         }
 
         return coverchr;
+    }
+    
+    private static readonly ConcurrentDictionary<string, string> _pinyinCache = new();
+    
+    /// <summary>
+    /// 带缓存的汉字转全拼方法
+    /// </summary>
+    public static string ConvertToAllSpellWithCache(string strChinese)
+    {
+        if (string.IsNullOrEmpty(strChinese))
+            return string.Empty;
+            
+        return _pinyinCache.GetOrAdd(strChinese, key => ConvertToAllSpell(key));
+    }
+    
+    /// <summary>
+    /// 清理拼音缓存
+    /// </summary>
+    public static void ClearPinyinCache()
+    {
+        _pinyinCache.Clear();
     }
 }

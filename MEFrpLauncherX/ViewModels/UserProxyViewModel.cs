@@ -212,7 +212,7 @@ public class UserProxyViewModel : ViewModelBase
         get;
         set;
     }
-    
+
     public string httpUser
     {
         get;
@@ -681,7 +681,7 @@ public class UserProxyViewModel : ViewModelBase
                      协议类型: {proxy.proxyType}
                      本地端口: {proxy.localPort}
                      本地地址: {proxy.localIp}
-                     链接地址: {proxy.location}
+                     传输协议: {proxy.transportProtocol.ToUpper()}{(proxy.proxyType.ToLower() is "tcp" or "udp" ? "\n链接地址: " + proxy.location : $"\nHTTP映射类型: {proxy.httpPlugin.ToUpper()}\n安全选项: {GetSecurityOption()}")}
                      上次启动时间: {new UnixTimeToDateTimeConverter()
                          .Convert(proxy.lastStartTime, null, null, null)}
                      上次关闭时间: {new UnixTimeToDateTimeConverter()
@@ -696,6 +696,21 @@ public class UserProxyViewModel : ViewModelBase
         };
 
         await td.ShowAsync(true);
+        return;
+
+        string GetSecurityOption()
+        {
+            if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty() && proxy.accessKey.IsNullOrEmpty())
+            {
+                return "禁用";
+            }
+            if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty())
+            {
+                return "访问密钥";
+            }
+
+            return "HTTP Basic Auth";
+        }
     }
 
     public UserProxyViewModel()

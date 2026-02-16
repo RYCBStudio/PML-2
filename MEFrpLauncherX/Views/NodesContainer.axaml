@@ -30,14 +30,15 @@
                     <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
                                           Target="{Binding #HelpBtn}"
                                           Title="搜索帮助"
-                                          IconSource="Help" >
+                                          IconSource="Help">
                         <controls:TeachingTip.Content>
                             <StackPanel Spacing="3">
                                 <TextBlock>无参数: 直接搜索名称</TextBlock>
                                 <TextBlock>输入/d:&lt;KEYWORD&gt;以搜索描述</TextBlock>
                                 <TextBlock>输入/pn:&lt;PINYIN&gt;以使用拼音搜索名称</TextBlock>
                                 <TextBlock>输入/pd:&lt;PINYIN&gt;以使用拼音搜索描述</TextBlock>
-                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。" IsOpen="True" IsClosable="False" />
+                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。"
+                                                  IsOpen="True" IsClosable="False" />
                             </StackPanel>
                         </controls:TeachingTip.Content>
                         <controls:TeachingTip.CloseButtonContent>
@@ -78,16 +79,22 @@
                                IsIndeterminate="True"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               IsVisible="{Binding IsLoading}" />
+                               RenderTransformOrigin="0.5,0.5"
+                               IsVisible="{Binding IsLoading}">
+            <controls:ProgressRing.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+            </controls:ProgressRing.RenderTransform>
+        </controls:ProgressRing>
         <ListBox Grid.Row="2"
                  x:Name="Nodes"
                  Background="Transparent"
                  ItemsSource="{Binding FilteredNodes}"
                  SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
-                 IsVisible="{Binding !IsLoading}">
+                 IsVisible="{Binding !IsLoading}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5" />
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="2" LineSpacing="2" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>

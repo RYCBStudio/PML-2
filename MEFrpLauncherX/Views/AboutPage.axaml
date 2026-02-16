@@ -134,13 +134,14 @@
                         <!--     <Binding Source="{x:Static meFrpLauncherX:App.MEFrpVersion}" ></Binding> -->
                         <!-- </controls1:SettingsExpanderItem.Description> -->
                         <controls1:SettingsExpanderItem.Footer>
-                            <Button
+                            <HyperlinkButton
                                 Margin="0,5,0,0"
                                 Click="MEFC_Click"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Content="打开ME Frp Client目录"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
+                                FontFamily="{StaticResource GlobalFontFamily}" >
+                                <TextBlock>打开ME Frp Client目录</TextBlock>
+                            </HyperlinkButton>
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
                     <controls1:SettingsExpanderItem>
@@ -151,21 +152,26 @@
                             Text="友情链接" />
                         <controls1:SettingsExpanderItem.Footer>
                             <WrapPanel FlowDirection="LeftToRight" ItemSpacing="5">
-                                <Button
-                                    Width="90"
+                                <HyperlinkButton
                                     Click="OQ_Click"
-                                    Content="官方QQ群"
-                                    FontFamily="{StaticResource GlobalFontFamily}" />
-                                <Button
-                                    Width="90"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock>官方 QQ 一群</TextBlock>
+                                </HyperlinkButton>
+                                <HyperlinkButton
+                                    Click="OQ2_Click"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock>官方 QQ 二群</TextBlock>
+                                </HyperlinkButton>
+                                <HyperlinkButton
                                     Click="FS_Click"
-                                    Content="官方飞书群"
-                                    FontFamily="{StaticResource GlobalFontFamily}" />
-                                <Button
-                                    Width="90"
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock>官方飞书群</TextBlock>
+                                </HyperlinkButton>
+                                <HyperlinkButton
                                     Click="SM_Click"
-                                    Content="支持邮箱"
-                                    FontFamily="{StaticResource GlobalFontFamily}" />
+                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    <TextBlock>支持邮箱</TextBlock>
+                                </HyperlinkButton>
                             </WrapPanel>
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
@@ -188,15 +194,29 @@
                         </StackPanel>
                     </controls1:SettingsExpander.Header>
                     <StackPanel>
-                        <TextBox
+                        <controls:TypingControl
                             x:Name="HitokotoBox"
-                            Text="{Binding Hitokoto}"
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            IsReadOnly="True" />
+                            FontSize="15"
+                            Margin="3, 3, 0, 0"
+                            FontFamily="{StaticResource GlobalFontFamily}" >
+                            
+                            <controls:TypingControl.Text>
+                                <MultiBinding StringFormat=" {0}  —— {2}「{1}」">
+                                    <Binding Path="Hitokoto" />
+                                    <Binding Path="From" />
+                                    <Binding Path="Author" />
+                                </MultiBinding>
+                            </controls:TypingControl.Text>
+                        </controls:TypingControl>
                         <StackPanel
                             x:Name="HitokotoPanel"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
+                            <TextBlock
+                                x:Name="HitokotoAuthor"
+                                Margin="10"
+                                FontFamily="{StaticResource GlobalFontFamily}" />
+                            <controls1:ProgressRing x:Name="HitokotoStatus" Margin="3,0,0,0" />
                             <Button
                                 x:Name="RefreshHitokoto"
                                 Margin="10"
@@ -204,12 +224,6 @@
                                 Click="RefreshHitokoto_Click"
                                 Content="刷新"
                                 FontFamily="{StaticResource GlobalFontFamily}" />
-                            <TextBlock
-                                x:Name="HitokotoAuthor"
-                                Margin="10"
-                                Text="{Binding From, StringFormat='—— {0}'}"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
-                            <controls1:ProgressRing x:Name="HitokotoStatus" Margin="3,0,0,0" />
                         </StackPanel>
                     </StackPanel>
                 </controls1:SettingsExpander>

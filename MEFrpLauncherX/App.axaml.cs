@@ -12,7 +12,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-preview2";
+    public static string Version = "2.3.0-preview3";
 
     public static string MEFrpVersion
     {

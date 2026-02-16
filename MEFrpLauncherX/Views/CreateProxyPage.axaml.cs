@@ -50,7 +50,6 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
 
     private async void CreateProxyPage_Loaded(object sender, VisualTreeAttachmentEventArgs e)
     {
-        MainPageFrameViewModel.Instance.IsLoading = true;
         _index = 0;
         var nc = new NodesContainer();
         CurrentPage = nc;

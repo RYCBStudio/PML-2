@@ -50,7 +50,7 @@
                 </Animation>
             </Style.Animations>
         </Style>
-        <Style Selector="controls|InfoBar.animated">
+        <Style Selector="controls|InfoBar.animated-bar">
             <Style.Animations>
                 <Animation Duration="0:0:1" Delay="0:0:0.25" FillMode="Both" Easing="QuarticEaseInOut">
                     <KeyFrame Cue="0%">

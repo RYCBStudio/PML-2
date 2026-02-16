@@ -13,8 +13,6 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using RestSharp;
 using JsonException = System.Text.Json.JsonException;
@@ -39,6 +37,7 @@ public partial class AboutPage : UserControl
                 return;
             }
 
+            HitokotoBox.Text = string.Empty;
             HitokotoResource Hitokoto = new()
             {
                 hitokoto = "用代码表达言语的魅力，用代码书写山河的壮丽。",
@@ -63,6 +62,7 @@ public partial class AboutPage : UserControl
 
             vm.Hitokoto = Hitokoto.hitokoto;
             vm.From = Hitokoto.from;
+            vm.Author = Hitokoto.from_who;
             Hitokoto = null;
             //MainPageFrameViewModel.Instance.CurrentPage = this;
             MainPageFrameViewModel.AboutPage = this;
@@ -84,15 +84,16 @@ public partial class AboutPage : UserControl
 
     private async void OQ_Click(object sender, RoutedEventArgs e)
     {
-        var res = await MessageBoxManager
-            .GetMessageBoxStandard(
-                "提示",
-                "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。点击“是”将跳转到QQ。点击“否”复制群号",
-                ButtonEnum.YesNoCancel,
-                Icon.Info)
-            .ShowAsync();
+        var res = await MessageBox.ShowAsync(
+            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
+            "提示",
+            [
+                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
+                new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
+                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+            ]);
 
-        if (res == ButtonResult.Yes)
+        if (res == MessageBoxResult.Yes)
         {
             Process.Start(new ProcessStartInfo
             {
@@ -101,7 +102,7 @@ public partial class AboutPage : UserControl
                 UseShellExecute = true
             });
         }
-        else if (res == ButtonResult.No)
+        else if (res == MessageBoxResult.No)
         {
             var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
             await clipboard?.SetTextAsync("1019501085");
@@ -109,16 +110,44 @@ public partial class AboutPage : UserControl
         }
     }
 
+    private async void OQ2_Click(object? sender, RoutedEventArgs e)
+    {
+        var res = await MessageBox.ShowAsync(
+            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
+            "提示",
+            [
+                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
+                new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
+                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+            ]);
+
+        if (res == MessageBoxResult.Yes)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName =
+                    "https://qm.qq.com/q/fBtW7lJ1Xa",
+                UseShellExecute = true
+            });
+        }
+        else if (res == MessageBoxResult.No)
+        {
+            var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+            await clipboard?.SetTextAsync("708797546");
+            Growl.Success("群号已复制到剪贴板");
+        }
+    }
+
     private async void FS_Click(object sender, RoutedEventArgs e)
     {
-        var res = await MessageBoxManager
-            .GetMessageBoxStandard(
-                "提示",
-                "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。点击“是”将跳转到飞书。",
-                ButtonEnum.YesNo,
-                Icon.Info)
-            .ShowAsync();
-        if (res == ButtonResult.Ok)
+        var res = await MessageBox.ShowAsync(
+            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
+            "提示",
+            [
+                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
+                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+            ]);
+        if (res == MessageBoxResult.Yes)
         {
             Process.Start(new ProcessStartInfo
             {
@@ -273,7 +302,7 @@ public partial class AboutPage : UserControl
     }
 
     #endregion
-    
+
     #region HTTP请求
 
     private static RestClient CreateClient(string endpoint)
@@ -409,12 +438,12 @@ public partial class AboutPage : UserControl
         };
         try
         {
-            Hitokoto = await Task.Run(() => ExecuteHitokotoRequest(CreateRequest(),  "一言"));
+            Hitokoto = await Task.Run(() => ExecuteHitokotoRequest(CreateRequest(), "一言"));
         }
         catch (JsonException)
         {
             Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
-            Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(),  "一言"));
+            Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
         }
         catch (Exception ex)
         {
@@ -424,6 +453,7 @@ public partial class AboutPage : UserControl
 
         vm.Hitokoto = Hitokoto.hitokoto;
         vm.From = Hitokoto.from;
+        vm.Author = Hitokoto.from_who;
         Hitokoto = null;
 
         HitokotoStatus.Hide();
@@ -468,6 +498,12 @@ public class HitokotoResource
         set;
     }
 
+    public string uuid
+    {
+        get;
+        set;
+    }
+
     public string hitokoto
     {
         get;
@@ -486,7 +522,31 @@ public class HitokotoResource
         set;
     }
 
+    public string from_who
+    {
+        get;
+        set;
+    }
+
     public string creator
+    {
+        get;
+        set;
+    }
+
+    public int creator_uid
+    {
+        get;
+        set;
+    }
+
+    public int reviewer
+    {
+        get;
+        set;
+    }
+
+    public string commit_from
     {
         get;
         set;
@@ -497,35 +557,8 @@ public class HitokotoResource
         get;
         set;
     }
-}
 
-public class UpdateInfo
-{
-    public string Version
-    {
-        get;
-        set;
-    }
-
-    public int Major
-    {
-        get;
-        set;
-    }
-
-    public int Minor
-    {
-        get;
-        set;
-    }
-
-    public int Micro
-    {
-        get;
-        set;
-    }
-
-    public string Desc
+    public int length
     {
         get;
         set;

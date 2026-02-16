@@ -42,7 +42,10 @@ namespace MEFrpLauncherX.Controls
     }
 
     public class TunnelNodeViewModel : ProxyBase, INotifyPropertyChanged
-    {
+    {// 添加缓存字段
+        private bool? _cachedIsOverloaded;
+        private bool? _cachedIsNotOverloaded;
+        
         public int NodeId
         {
             get;
@@ -82,13 +85,31 @@ namespace MEFrpLauncherX.Controls
         public int LoadPercent
         {
             get;
-            set;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    // 清除缓存
+                    _cachedIsOverloaded = null;
+                    _cachedIsNotOverloaded = null;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsOnline
         {
-            get;
-            set;
+            get => field;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    // 可能影响显示状态，清除相关缓存
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool CanBuildSite
@@ -133,9 +154,9 @@ namespace MEFrpLauncherX.Controls
             _ => "未知"
         };
 
-        public bool IsOverloaded => LoadPercent >= 85;
-        public bool IsSemiOverloaded => LoadPercent > 60;
-        public bool IsNotOverloaded => !IsOverloaded;
+        public bool IsOverloaded => _cachedIsOverloaded ??= LoadPercent >= 85;
+        public bool IsNotOverloaded => _cachedIsNotOverloaded ??= !IsOverloaded;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
