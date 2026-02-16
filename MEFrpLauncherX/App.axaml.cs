@@ -12,7 +12,14 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-preview1";
+    public static string Version = "2.3.0-preview2";
+
+    public static string MEFrpVersion
+    {
+        get;
+        set;
+    } = "0.67.0_20260214_7d549bc1";
+
     public static string Codename = "Fluorine";
     public static SplashScreen splash;
     public static LogUtil LogService;
@@ -36,7 +43,6 @@ public class App : Application
     public override void RegisterServices()
     {
         base.RegisterServices();
-        
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -56,6 +62,7 @@ public class App : Application
                 Current.Styles.OfType<FluentAvaloniaTheme>().First().CustomAccentColor =
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
+
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

@@ -17,5 +17,11 @@ sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
+            .With(new MacOSPlatformOptions()
+            {
+                ShowInDock = false,
+                DisableNativeMenus = true,
+                DisableDefaultApplicationMenuItems = true,
+            })
             .LogToTrace();
 }

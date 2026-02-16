@@ -507,6 +507,29 @@ public class UserProxyViewModel : ViewModelBase
                 }
             }
         }
+        else
+        {
+            if (!File.Exists(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar")))
+            {
+                var res = await MessageBox.ShowAsync("mefrpc.tar 文件不存在，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+                                                     "\n请注意: 我们不对任何非官方的文件运行所造成的任何后果负责。", "警告", "",
+                    MessageBoxIcon.Warning, buttons:
+                    [
+                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
+                        new TaskDialogButton("否", TaskDialogStandardResult.No)
+                    ]);
+                switch (res)
+                {
+                    case MessageBoxResult.No:
+                        break;
+                    case MessageBoxResult.Yes:
+                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
 
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {

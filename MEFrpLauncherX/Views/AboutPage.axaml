@@ -16,7 +16,7 @@
         <Panel>
             <controls:StarMapCanvas />
             <StackPanel Margin="10" Classes="animated">
-                <controls1:SettingsExpander Footer="Codename: Nitrogen" IsExpanded="True">
+                <controls1:SettingsExpander Footer="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" IsExpanded="True">
                     <controls1:SettingsExpander.Header>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <Image
@@ -124,15 +124,15 @@
                                 Text="六年沉淀 · 全新升级 · 稳定高效的内网穿透利器" />
                         </StackPanel>
                     </controls1:SettingsExpander.Footer>
-                    <controls1:SettingsExpanderItem>
+                    <controls1:SettingsExpanderItem Description="{Binding Source={x:Static meFrpLauncherX:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
                         <TextBlock
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="15"
                             FontWeight="Bold"
                             Text="ME Frp 版本" />
-                        <controls1:SettingsExpanderItem.Description>
-                            Core: v5 Client: v0.67.0_20260214_7d549bc1
-                        </controls1:SettingsExpanderItem.Description>
+                        <!-- <controls1:SettingsExpanderItem.Description> -->
+                        <!--     <Binding Source="{x:Static meFrpLauncherX:App.MEFrpVersion}" ></Binding> -->
+                        <!-- </controls1:SettingsExpanderItem.Description> -->
                         <controls1:SettingsExpanderItem.Footer>
                             <Button
                                 Margin="0,5,0,0"
