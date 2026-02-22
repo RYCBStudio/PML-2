@@ -335,7 +335,10 @@ public partial class AboutPage : UserControl
     {
         Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
 
-        using var client = new RestClient("https://v1.hitokoto.cn/");
+        using var client = new RestClient(new RestClientOptions("https://v1.hitokoto.cn")
+        {
+            Timeout = TimeSpan.FromSeconds(3)
+        });
         var response = await client.ExecuteAsync(request);
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);

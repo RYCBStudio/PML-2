@@ -49,6 +49,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\System.Device.Location\System.Device.Location.csproj" />
+      <ProjectReference Include="G:\VSProj\Markdown.AIRender-master\src\MarkdownAIRender\MarkdownAIRender.csproj" />
     </ItemGroup>
 
 </Project>

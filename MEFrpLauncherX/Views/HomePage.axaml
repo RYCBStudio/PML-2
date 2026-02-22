@@ -8,6 +8,7 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:controls2="clr-namespace:MEFrpLauncherX.Core.Controls;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.HomePage"
              x:DataType="viewModels:HomePageViewModel">
@@ -233,8 +234,47 @@
             <Border
                 Grid.Row="1"
                 Margin="10">
-                <Grid>
-                    <HeaderedContentControl Classes="animated" Header="系统公告"
+                <Grid RowDefinitions="4*, 6*" RowSpacing="5">
+                    <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
+                    <HeaderedContentControl Header="软件公告" FontFamily="{StaticResource GlobalFontFamily}">
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding SoftwareNotice}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Classes="animated" Margin="0, 3, 0 ,3" RowDefinitions="Auto, *" ColumnSpacing="10" ColumnDefinitions="*, Auto">
+                                            <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
+                                                       Text="{Binding Summary}" 
+                                                       TextTrimming="PrefixCharacterEllipsis" />
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Date}" />
+                                            <WrapPanel Grid.Row="1" ItemSpacing="5">
+                                                <controls:InfoBadge>
+                                                    <controls:InfoBadge.IconSource>
+                                                        <controls:FontIconSource
+                                                            FontFamily="{StaticResource GlobalFontFamily}"
+                                                            Glyph="{Binding Id, StringFormat='# {0}'}" />
+                                                    </controls:InfoBadge.IconSource>
+                                                </controls:InfoBadge>
+                                                <Label Classes="Indigo"
+                                                    Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
+                                            </WrapPanel>
+
+                                            <Button Command="{Binding ShowNotice}" Grid.RowSpan="2" Grid.Column="1">
+                                                <Button.Content>
+                                                    <controls:SymbolIcon Symbol="View" />
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Grid.Row="1" Classes="animated" Header="系统公告"
                                             FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                             <markdownAiRender:MarkdownRender

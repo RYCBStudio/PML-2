@@ -62,7 +62,8 @@ public partial class ManageProxyPage : UserControl
         }
 
         _isLoadingProxies = true;
-        MainPageFrameViewModel.Instance.IsLoading = true;
+        await Dispatcher.UIThread.InvokeAsync(() =>
+            MainPageFrameViewModel.Instance?.IsLoading = true);
         try
         {
             Core.App.CurrentLogger.LogDebug("Starting LoadProxies");
@@ -106,8 +107,8 @@ public partial class ManageProxyPage : UserControl
                         runId = item.runId,
                         nodeId = item.nodeId,
                         //allowedProtocols = node?.allowType?.Split(';')
-                          //  ?.Select(type => type.ToUpper())
-                          //  ?.ToArray() ?? [],
+                        //  ?.Select(type => type.ToUpper())
+                        //  ?.ToArray() ?? [],
                         domain = item.domain,
                         lastStartTime = item.lastStartTime,
                         lastCloseTime = item.lastCloseTime,
@@ -124,7 +125,8 @@ public partial class ManageProxyPage : UserControl
                         httpUser = item.httpUser,
                         httpPassword = item.httpPassword,
                         RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.requestHeaders),
-                        ResponseHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
+                        ResponseHeaders =
+                            JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
                         Locations = JsonConvert.DeserializeObject<List<string>>(item.locations),
                     });
                 }
@@ -134,13 +136,13 @@ public partial class ManageProxyPage : UserControl
             {
                 // 创建原生菜单
                 MainWindow.Instance.NativeMenuBar = [];
-        
+
                 // 添加应用程序菜单（macOS 第一个菜单）
                 var appMenu = new NativeMenuItem("隧道");
                 var appSubMenu = new NativeMenu();
-        
-                appSubMenu.Add(new NativeMenuItem("管理隧道") 
-                { 
+
+                appSubMenu.Add(new NativeMenuItem("管理隧道")
+                {
                     Gesture = KeyGesture.Parse("Ctrl+M"),
                     Command = ReactiveCommand.Create(() =>
                     {
@@ -148,9 +150,9 @@ public partial class ManageProxyPage : UserControl
                     })
                 });
                 appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("创建隧道") 
-                { 
-                    Gesture = KeyGesture.Parse("Ctrl+D") ,
+                appSubMenu.Add(new NativeMenuItem("创建隧道")
+                {
+                    Gesture = KeyGesture.Parse("Ctrl+D"),
                     Command = ReactiveCommand.Create(() =>
                     {
                         MainPageFrameViewModel.Instance?.NavigateToPage("Create");
@@ -165,28 +167,31 @@ public partial class ManageProxyPage : UserControl
                         Command = proxy.LaunchProxyCommand
                     });
                 }
-                appSubMenu.Add(new NativeMenuItem("启动隧道") 
-                { 
+
+                appSubMenu.Add(new NativeMenuItem("启动隧道")
+                {
                     Menu = tmp_launchProxy
                 });
                 appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("退出程序") 
-                { 
+                appSubMenu.Add(new NativeMenuItem("退出程序")
+                {
                     Gesture = KeyGesture.Parse("Ctrl+Q"),
-                    Command = ReactiveCommand.Create(() => 
+                    Command = ReactiveCommand.Create(() =>
                     {
                         App.Desktop.Shutdown();
                     })
                 });
-        
+
                 appMenu.Menu = appSubMenu;
                 MainWindow.Instance.NativeMenuBar.Add(appMenu);
-        
+
                 // 设置菜单栏
                 NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
             }
+
             Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);
-            MainPageFrameViewModel.Instance.IsLoading = false;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+                MainPageFrameViewModel.Instance?.IsLoading = false);
         }
         catch (Exception ex)
         {
@@ -195,7 +200,8 @@ public partial class ManageProxyPage : UserControl
         }
         finally
         {
-            MainPageFrameViewModel.Instance.IsLoading = false;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+                MainPageFrameViewModel.Instance?.IsLoading = false);
             _isLoadingProxies = false;
         }
     }
@@ -281,7 +287,8 @@ public sealed class ProxyViewModel : ViewModelBase
                  proxy.proxyId.ToString().Contains(SearchText[5..])) ||
                 (SearchText.Replace(" ", string.Empty).StartsWith("/n:") &&
                  (proxy.node.Contains(SearchText[3..]) ||
-                  PinYinHelper.ConvertToAllSpell(proxy.node).Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
+                  PinYinHelper.ConvertToAllSpell(proxy.node)
+                      .Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
                 (SearchText.Replace(" ", string.Empty).StartsWith("/nid:") &&
                  proxy.nodeId.ToString().Contains(SearchText[5..])));
             foreach (var proxy in filtered)

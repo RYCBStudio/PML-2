@@ -34,7 +34,6 @@
         <Style Selector="TemplatedControl">
             <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
         </Style>
-        
         <Style Selector=":is(Control).r2l">
             <Style.Animations>
                 <Animation Duration="0:0:0.75"  FillMode="Both"

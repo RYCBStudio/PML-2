@@ -39,7 +39,8 @@
                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 IsVisible="{Binding AllowGroup, Converter={x:Static local:AllowGroupToIsVisibleConverter.Instance}}">
                 <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" FontFamily="{StaticResource GlobalFontFamily}"
+                    <controls:FontIconSource Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                             FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="VIP" />
                 </controls:InfoBadge.IconSource>
             </controls:InfoBadge>
@@ -103,9 +104,11 @@
                         <TextBlock FontFamily="{StaticResource GlobalFontFamily}" VerticalAlignment="Center"
                                    Text="{Binding StringFormat={}{0}%, Path=LoadPercent}" DockPanel.Dock="Right" />
 
-                        <ProgressBar MinWidth="70" FontFamily="{StaticResource GlobalFontFamily}"
-                                     Foreground="{Binding LoadPercent, Converter={x:Static pml2:LoadPercentToForegroundConverter.Instance}}"
-                                     Value="{Binding LoadPercent}" />
+                        <ProgressBar
+                            AttachedToVisualTree="PerformAnimation" MinWidth="70"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Foreground="{Binding LoadPercent, Converter={x:Static pml2:LoadPercentToForegroundConverter.Instance}}"
+                            Value="{Binding LoadPercent}" />
                     </DockPanel>
 
                     <!-- Online status indicator -->

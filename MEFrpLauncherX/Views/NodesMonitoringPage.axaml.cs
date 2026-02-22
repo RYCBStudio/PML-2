@@ -1,5 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Styling;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;
@@ -19,5 +23,39 @@ public partial class NodesMonitoringPage : UserControl
     {
         base.OnAttachedToVisualTree(e);
         DataContext = new NodesOverviewViewModel();
+    }
+
+    private async void PerformAnimation(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        var pg = sender as ProgressBar;
+        if (pg == null) return;
+        var animation = new Animation
+        {
+            Duration = TimeSpan.FromMilliseconds(800),
+            IterationCount = new IterationCount(1),
+            PlaybackDirection = PlaybackDirection.Normal,
+            FillMode = FillMode.Forward,
+            Children =
+            {
+                new KeyFrame
+                {
+                    Setters = { new Setter(ProgressBar.ValueProperty, 0d) },
+                    Cue = new Cue(0d)
+                },
+                new KeyFrame
+                {
+                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value * 0.3) },
+                    Cue = new Cue(0.3d)
+                },
+                new KeyFrame
+                {
+                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value) },
+                    Cue = new Cue(1d)
+                }
+            },
+            Easing = Easing.Parse("CubicEaseIn")
+        };
+
+        await animation.RunAsync(pg);
     }
 }

@@ -46,7 +46,7 @@ public partial class TerminalControl : UserControl, IDisposable
     private StringBuilder _outputBuffer = new();
     private readonly object _bufferLock = new();
     private readonly AnsiColorizingTransformer _colorizer = new();
-    private TunnelErrorInfoShell _tunnelErrorInfoShell;
+    private TunnelErrorInfo _tunnelErrorInfoShell;
 
     public TerminalControl()
     {
@@ -448,7 +448,7 @@ public partial class TerminalControl : UserControl, IDisposable
                                         ErrorIcon.Symbol = Symbol.ReportHacked;
                                         ErrorText.Text = t.Result.data.Info;
                                         SolutionBox.Text = t.Result.data.Solution[0];
-                                        _tunnelErrorInfoShell = t.Result;
+                                        _tunnelErrorInfoShell = t.Result.data;
                                     });
                                 }
                             }, ct);
@@ -931,7 +931,7 @@ public partial class TerminalControl : UserControl, IDisposable
                                 ErrorIcon.Symbol = Symbol.ReportHacked;
                                 ErrorText.Text = onlineSolution?.data.Info;
                                 SolutionBox.Text = onlineSolution?.data.Solution[0];
-                                _tunnelErrorInfoShell = onlineSolution!;
+                                _tunnelErrorInfoShell = onlineSolution.data!;
                             }
 
                             OutputBox.ScrollToEnd();
@@ -1240,65 +1240,7 @@ public partial class TerminalControl : UserControl, IDisposable
         });
     }
 
-    [Obsolete]
-//TODO
-    private void DisposeProcessBak()
-    {
-        try
-        {
-            if (_process != null)
-            {
-                // 先检查进程是否还在运行
-                bool hasExited;
-                try
-                {
-                    hasExited = _process.HasExited;
-                }
-                catch (InvalidOperationException)
-                {
-                    hasExited = true; // 进程未关联时视为已退出
-                }
-
-                if (!hasExited)
-                {
-                    // 尝试优雅终止
-                    try
-                    {
-                        _inputWriter?.WriteLine("exit");
-                        _inputWriter?.Flush();
-                        if (!_process.WaitForExit(500))
-                        {
-                            _process.Kill();
-                        }
-                    }
-                    catch
-                    {
-                        _process.Kill();
-                    }
-                }
-
-                _process.Dispose();
-            }
-
-            _inputWriter?.Dispose();
-
-            // 终止读取线程
-            if (_outputReaderThread is { IsAlive: true })
-            {
-                _outputReaderThread.Join(500);
-            }
-
-            _outputReaderThread = null; // 重置线程引用
-
-            _process = null; // 重置进程引用
-        }
-        catch (Exception ex)
-        {
-            System.Console.WriteLine($"Error disposing process: {ex.Message}");
-            Core.App.CurrentLogger?.Error(ex);
-        }
-    }
-
+    
     public void Dispose()
     {
         _disposed = true;
@@ -1315,8 +1257,8 @@ public partial class TerminalControl : UserControl, IDisposable
             var cd = new TaskDialog
             {
                 Title = "错误详情",
-                SubHeader = $"{_tunnelErrorInfoShell.data.Flag}: {_tunnelErrorInfoShell.data.Info}",
-                Content = new TunnelErrorPresenter(_tunnelErrorInfoShell.data.Solution),
+                SubHeader = $"{_tunnelErrorInfoShell.Flag}: {_tunnelErrorInfoShell.Info}",
+                Content = new TunnelErrorPresenter(_tunnelErrorInfoShell.Solution),
                 Buttons =
                 {
                     TaskDialogButton.OKButton

@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
@@ -183,6 +184,18 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public AvaloniaList<NoticeContent> SoftwareNotice
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = [];
+
+    public bool IsLoadingNotice
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public HomePageViewModel()
     {
         // 初始化命令
@@ -212,6 +225,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         if (ss.code != 200)
         {
             IsLoading = false;
+            IsLoadingNotice = false;
             return;
         }
         
@@ -276,9 +290,17 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             // 加载公告
             NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
                 HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
-
-           
+            
             IsLoading = false;
+
+            IsLoadingNotice = true;
+            var notice  = await RYCBApiConverter.GetAllNoticeAsync();
+            SoftwareNotice.Clear();
+            if (notice.success)
+            {
+                SoftwareNotice.AddRange(notice.data);
+            }
+            
             var popUp = await MEFApiConverter.GetPopupNoticeAsync();
 
             Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
@@ -354,6 +376,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             MainPageFrameViewModel.Instance?.IsLoading = false;
             IsLoading = false;
+            IsLoadingNotice = false;
         }
     }
 

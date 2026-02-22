@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using FluentAvalonia.UI.Controls;
+using MEFrpLauncherX.Core.Controls;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -65,7 +67,7 @@ public class RYCBApiConverter
     public static async Task<FeedbackResponse> SendEmailAsync(string mode, string receiver, string mailBody,
         string subject)
     {
-        App.CurrentLogger.Log("正在发送反馈请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        App.CurrentLogger.Log("正在发送邮箱", port: EnumLogPort.Client, module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
 
@@ -125,7 +127,7 @@ public class RYCBApiConverter
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
         return result;
     }
-    
+
     public static async Task<SingleVersionInfo> GetLatestPreviewVersionInfoAsync()
     {
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/preview/latest"}", port: EnumLogPort.Server,
@@ -172,8 +174,8 @@ public class RYCBApiConverter
         var result = JsonConvert.DeserializeObject<TunnelErrorInfosShell>(res.Content);
         return result;
     }
-    
-    public static async Task<TunnelErrorInfoShell?> GetTunnelErrorInfoAsync(string flag)
+
+    public static async Task<SingleApiInfo<TunnelErrorInfo>?> GetTunnelErrorInfoAsync(string flag)
     {
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + $"tpca/errors/{flag}"}", port: EnumLogPort.Server,
             module: EnumLogModule.Custom, customModuleName: "API");
@@ -182,7 +184,20 @@ public class RYCBApiConverter
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<TunnelErrorInfoShell>(res.Content);
+        var result = JsonConvert.DeserializeObject<SingleApiInfo<TunnelErrorInfo>>(res.Content);
+        return result;
+    }
+
+    public static async Task<SingleApiInfo<NoticeContent[]>> GetAllNoticeAsync()
+    {
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "notice"}", port: EnumLogPort.Server,
+            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.Log("正在获取软件公告", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        MainWindowViewModel.Instance?.AppMessage = "正在获取软件公告";
+        using var client = CreateClient("notice");
+        var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
+        App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        var result = JsonConvert.DeserializeObject<SingleApiInfo<NoticeContent[]>>(res.Content);
         return result;
     }
 
@@ -198,30 +213,147 @@ public class RYCBApiConverter
     }
 }
 
-public record TunnelErrorInfosShell
+public class NoticeContent(
+    bool active,
+    string content,
+    string date,
+    int id,
+    int priority,
+    string summary,
+    string type
+)
 {
-    public int count { get; set; }
-    public TunnelErrorInfo[] data { get; set; }
-    public bool success { get; set; }
-    public string timestamp { get; set; }
+    public bool Active
+    {
+        get;
+        set;
+    } = active;
+
+    public string ContentOfNotice
+    {
+        get;
+        set;
+    } = content;
+    
+
+    public string Date
+    {
+        get;
+        set;
+    } = date;
+
+    public int Id
+    {
+        get;
+        set;
+    } = id;
+
+    public int Priority
+    {
+        get;
+        set;
+    } = priority;
+
+    public string Summary
+    {
+        get;
+        set;
+    } = summary;
+
+    public string Type
+    {
+        get;
+        set;
+    } = type;
+
+    public void ShowNotice()
+    {
+        var cd = new ContentDialog()
+        {
+            Content = new NoticeView(this, ContentOfNotice),
+            Title = summary,
+            PrimaryButtonText = "确定",
+            CloseButtonText = "关闭",
+            DefaultButton = ContentDialogButton.Primary,
+        };
+        cd.ShowAsync();
+    }
 }
 
-public record TunnelErrorInfoShell
+public record TunnelErrorInfosShell
 {
-    public int count { get; set; }
-    public TunnelErrorInfo data { get; set; }
-    public bool success { get; set; }
-    public string timestamp { get; set; }
+    public int count
+    {
+        get;
+        set;
+    }
+
+    public TunnelErrorInfo[] data
+    {
+        get;
+        set;
+    }
+
+    public bool success
+    {
+        get;
+        set;
+    }
+
+    public string timestamp
+    {
+        get;
+        set;
+    }
+}
+
+public record SingleApiInfo<T>
+{
+    public int count
+    {
+        get;
+        set;
+    }
+
+    public T data
+    {
+        get;
+        set;
+    }
+
+    public bool success
+    {
+        get;
+        set;
+    }
+
+    public string timestamp
+    {
+        get;
+        set;
+    }
 }
 
 public record TunnelErrorInfo
 {
-    public string Flag { get; set; }
-    public string Info { get; set; }
-    public string[] Solution { get; set; }
+    public string Flag
+    {
+        get;
+        set;
+    }
+
+    public string Info
+    {
+        get;
+        set;
+    }
+
+    public string[] Solution
+    {
+        get;
+        set;
+    }
 }
-
-
 
 public class EmailBody
 {
