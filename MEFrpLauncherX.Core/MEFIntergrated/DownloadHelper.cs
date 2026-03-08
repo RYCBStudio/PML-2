@@ -579,7 +579,7 @@ public partial class DownloadHelper
         catch (Exception ex)
         {
             // 使用更现代的异常处理方式，保留原始异常作为内部异常
-            App.CurrentLogger.Error(new Exception("GetMD5HashFromFile() failed.", ex));
+            App.CurrentLogger?.Error(new Exception("GetMD5HashFromFile() failed.", ex));
         }
 
         return string.Empty; // 发生异常时返回空字符串
