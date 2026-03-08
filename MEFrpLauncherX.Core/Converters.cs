@@ -535,26 +535,6 @@ public class MultiBindingConverter : IMultiValueConverter
     }
 }
 
-public class LoadPercentToForegroundConverter : IValueConverter
-{
-    public static LoadPercentToForegroundConverter Instance
-    {
-        get;
-    } = new();
-
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return (int)value switch
-        {
-            >= 85 => new SolidColorBrush(Color.TryParse("#FFD9293B", out var c) ? c : Colors.OrangeRed),
-            < 85 and >= 60 => new SolidColorBrush(Color.TryParse("#FFFFB442", out var c) ? c : Colors.Yellow),
-            < 60 => new SolidColorBrush(Colors.ForestGreen)
-        };
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        throw new NotImplementedException();
-}
 
 public class BytesToReadableConverterEx : IValueConverter
 {
@@ -566,11 +546,13 @@ public class BytesToReadableConverterEx : IValueConverter
         {
             return FormatBytes(bytesLong);
         }
-        else if (value is int bytesInt)
+
+        if (value is int bytesInt)
         {
             return FormatBytes(bytesInt);
         }
-        else if (value is double bytesDouble)
+
+        if (value is double bytesDouble)
         {
             return FormatBytes((long)bytesDouble);
         }

@@ -21,6 +21,12 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class UserProxyViewModel : ViewModelBase
 {
+    public List<string> Locations
+    {
+        get;
+        set;
+    }
+
     public string Config
     {
         get;
@@ -129,6 +135,18 @@ public class UserProxyViewModel : ViewModelBase
         private set;
     }
 
+    public Dictionary<string, string> RequestHeaders
+    {
+        get;
+        set;
+    }
+
+    public Dictionary<string, string> ResponseHeaders
+    {
+        get;
+        set;
+    }
+
     public int lastStartTime
     {
         get;
@@ -184,6 +202,36 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public string headerXFromWhere
+    {
+        get;
+        set;
+    }
+
+    public string transportProtocol
+    {
+        get;
+        set;
+    }
+
+    public string httpUser
+    {
+        get;
+        set;
+    }
+
+    public string httpPassword
+    {
+        get;
+        set;
+    }
+
+    public string crtPath
+    {
+        get;
+        set;
+    }
+
+    public string keyPath
     {
         get;
         set;
@@ -254,18 +302,43 @@ public class UserProxyViewModel : ViewModelBase
     {
         Core.App.CurrentLogger.Log("使用配置文件启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = parameter as UserProxyViewModel;
-        var cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        List<string> configFiles = [];
+        configFiles.AddRange(Directory
+            .EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Config", "frp"), "*.*",
+                SearchOption.TopDirectoryOnly)
+            .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
+                .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase)));
+
+        var configFile = string.Empty;
+        var cs = new ConfigSelect(configFiles);
+        var cd = new ContentDialog()
         {
             Title = "请选择配置文件",
-            AllowMultiple = false,
-            FileTypeFilter = [FilePickerFileTypes.All]
-        });
-        var configFile = string.Empty;
+            Content = cs,
+            PrimaryButtonText = "确定",
+            CloseButtonText = "取消"
+        };
+        ShowExtraMenu = false;
+        IReadOnlyList<IStorageFile>? cfg = [];
+        if (await cd.ShowAsync(Core.App.MainWindow) == ContentDialogResult.Primary)
+        {
+            configFile = cs.SelectedPath;
+        }
+        else
+        {
+            cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "请选择配置文件",
+                AllowMultiple = false,
+                FileTypeFilter = [FilePickerFileTypes.All]
+            });
+        }
+
         if (cfg is not null)
         {
             try
             {
-                configFile = cfg?[0].Path.AbsolutePath;
+                configFile = configFile.IsNullOrEmpty() ? cfg?[0].Path.AbsolutePath : configFile;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -389,7 +462,7 @@ public class UserProxyViewModel : ViewModelBase
         if (OperatingSystem.IsWindows())
         {
             if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"),
-                    "1cc4bb63ff49a578938862a8e1541ec2|7877aebbb5d28b075fe6ff5f823863ce"))
+                    "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce"))
             {
                 var res = await MessageBox.ShowAsync("mefrpc.exe 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
                                                      "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
@@ -413,10 +486,33 @@ public class UserProxyViewModel : ViewModelBase
         else if (OperatingSystem.IsLinux())
         {
             if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar"),
-                    "e402ab9d90ce932339d920a398480ab9"))
+                    "e402ab9d90ce932339d920a398480ab9|ad07416756ca770ca1bb85463d782737"))
             {
-                var res = await MessageBox.ShowAsync("mefrpc 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+                var res = await MessageBox.ShowAsync("mefrpc.tar 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
                                                      "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
+                    MessageBoxIcon.Warning, buttons:
+                    [
+                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
+                        new TaskDialogButton("否", TaskDialogStandardResult.No)
+                    ]);
+                switch (res)
+                {
+                    case MessageBoxResult.No:
+                        break;
+                    case MessageBoxResult.Yes:
+                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        else
+        {
+            if (!File.Exists(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar")))
+            {
+                var res = await MessageBox.ShowAsync("mefrpc.tar 文件不存在，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+                                                     "\n请注意: 我们不对任何非官方的文件运行所造成的任何后果负责。", "警告", "",
                     MessageBoxIcon.Warning, buttons:
                     [
                         new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
@@ -585,7 +681,7 @@ public class UserProxyViewModel : ViewModelBase
                      协议类型: {proxy.proxyType}
                      本地端口: {proxy.localPort}
                      本地地址: {proxy.localIp}
-                     链接地址: {proxy.location}
+                     传输协议: {proxy.transportProtocol.ToUpper()}{(proxy.proxyType.ToLower() is "tcp" or "udp" ? "\n链接地址: " + proxy.location : $"\nHTTP映射类型: {proxy.httpPlugin.ToUpper()}\n安全选项: {GetSecurityOption()}")}
                      上次启动时间: {new UnixTimeToDateTimeConverter()
                          .Convert(proxy.lastStartTime, null, null, null)}
                      上次关闭时间: {new UnixTimeToDateTimeConverter()
@@ -600,13 +696,28 @@ public class UserProxyViewModel : ViewModelBase
         };
 
         await td.ShowAsync(true);
+        return;
+
+        string GetSecurityOption()
+        {
+            if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty() && proxy.accessKey.IsNullOrEmpty())
+            {
+                return "禁用";
+            }
+            if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty())
+            {
+                return "访问密钥";
+            }
+
+            return "HTTP Basic Auth";
+        }
     }
 
     public UserProxyViewModel()
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(domain);
+            Domains = JsonConvert.DeserializeObject<List<string>>(domain).Distinct().ToList();
         }
         catch
         {
@@ -632,7 +743,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(_domain);
+            Domains = JsonConvert.DeserializeObject<List<string>>(_domain).Distinct().ToList();
         }
         catch
         {
@@ -698,11 +809,11 @@ public class UserProxyViewModel : ViewModelBase
     private async void CopyInfo(UserProxyViewModel obj)
     {
         var clipboard = Core.App.MainWindow.Clipboard;
-        var nameList = await MEFApiConverter.GetNodesNameListAsync();
+        //var nameList = await MEFApiConverter.GetNodesNameListAsync();
         await clipboard.SetTextAsync(obj.proxyType.Equals("http", StringComparison.OrdinalIgnoreCase) ||
                                      obj.proxyType.Equals("https", StringComparison.OrdinalIgnoreCase)
             ? obj.domain
-            : nameList.data?.FirstOrDefault(x => x.nodeId == obj.nodeId)?.hostname +
+            : Node?.hostname +
               $":{obj.remotePort}");
         Growl.Success("已复制隧道信息");
     }
@@ -739,6 +850,24 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public ICommand CopyInfoCommand
+    {
+        get;
+        set;
+    }
+
+    public InfoClasses.Nodes? Node
+    {
+        get;
+        set;
+    }
+
+    public bool ShowExtraMenu
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public string httpPlugin
     {
         get;
         set;

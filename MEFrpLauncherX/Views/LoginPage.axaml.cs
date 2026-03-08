@@ -27,7 +27,7 @@ public partial class LoginPage : UserControl
     {
         InitializeComponent();
         _loginViewModel = new LoginViewModel();
-        this.DataContext = _loginViewModel;
+        DataContext = _loginViewModel;
     }
 
     public static async Task<string> GetCaptchaResultAsync()

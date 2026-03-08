@@ -146,7 +146,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
                 goto FINAL;
             }
 
-            SelectedImage = this.Imgs[ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage];
+            SelectedImage = Imgs[ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage];
         }
 
         FINAL:

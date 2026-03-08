@@ -50,10 +50,8 @@ public partial class DownloadHelper
         {
             return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
         }
-        else
-        {
-            return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
-        }
+
+        return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
     }
 
     private readonly Dictionary<PlatformID, string> downloadUrls = new()
@@ -91,30 +89,30 @@ public partial class DownloadHelper
     {
         {
             PlatformID.Win32NT,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_windows_amd64_0.61.1.zip"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_windows_amd64_0.67.0_20260214_7d549bc1.zip"
         },
         {
             PlatformID.Unix,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_linux_amd64_0.61.1.tar"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_linux_amd64_0.67.0_20260214_7d549bc1.tar"
         },
         {
             PlatformID.MacOSX,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_darwin_amd64_0.61.1.tar"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_darwin_amd64_0.67.0_20260214_7d549bc1.tar"
         },
     };
     private readonly Dictionary<PlatformID, string> officialArmDownloadUrls = new()
     {
         {
             PlatformID.Win32NT,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_windows_arm64_0.61.1.zip"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_windows_arm64_0.67.0_20260214_7d549bc1.zip"
         },
         {
             PlatformID.Unix,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_linux_arm64_0.61.1.tar"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_linux_arm64_0.67.0_20260214_7d549bc1.tar"
         },
         {
             PlatformID.MacOSX,
-            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrpc/0.61.1/mefrpc_darwin_arm64_0.61.1.tar"
+            "https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/0.67.0_20260214_7d549bc1/mefrpc_darwin_arm64_0.67.0_20260214_7d549bc1.tar"
         },
     };
 

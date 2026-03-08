@@ -9,6 +9,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.NetworkMonitoring;
 using ReactiveUI;
@@ -32,7 +33,7 @@ public partial class ProxyFloat : Window
         }
 
         _vm = vm;
-        this.DataContext = _vm;
+        DataContext = _vm;
 
         // Find the "..." Button and attach events
         _menuButton = this.FindControl<Button>("MenuButton");
@@ -51,8 +52,8 @@ public partial class ProxyFloat : Window
 
     private async void Setup(object? sender, RoutedEventArgs e)
     {
-        this.Position = WindowPositionHelper.GetPosition(this, ConfigManager.CurrentConfig.PMSettings.Position);
-        this.Topmost = true;
+        Position = WindowPositionHelper.GetPosition(this, ConfigManager.CurrentConfig.PMSettings.Position);
+        Topmost = true;
         ClickThroughHelper.SetClickThrough(this, true);
 
         // 启动网络监控
@@ -154,7 +155,7 @@ public class ProxyFloatViewModel : ViewModelBase
         var deltaSent = traffic.TotalBytesSent - _lastBytesSent;
 
         // 更新UI属性（在UI线程上）
-        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        Dispatcher.UIThread.Post(() =>
         {
             TrafficIn = (int)deltaReceived;
             TrafficOut = (int)deltaSent;

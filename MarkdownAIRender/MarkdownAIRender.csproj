@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <PackageId>MarkdownAIRender</PackageId>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Avalonia Markdown组件</Title>
+        <Description>Avalonia Markdown组件支持基础功能</Description>
+        <PackageProjectUrl>https://github.com/AIDotNet/Markdown.AIRender</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/AIDotNet/Markdown.AIRender/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/AIDotNet/Markdown.AIRender</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Avalonia</PackageTags>
+        <PackageReleaseNotes>实现基础功能</PackageReleaseNotes>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Copyright>MIT</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="i18n\Language.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Language.tt</DependentUpon>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="11.3.11" />
+      <PackageReference Include="AvaloniaXmlTranslator" Version="1.0.3.1" />
+      <PackageReference Include="Avalonia.Skia" Version="11.3.11" />
+      <PackageReference Include="Avalonia.Svg" Version="11.2.0.2" />
+      <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+        <PackageReference Include="Markdig" Version="0.39.1" />
+        <PackageReference Include="SkiaSharp" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+        <PackageReference Include="TextMateSharp" Version="2.0.3" />
+        <PackageReference Include="TextMateSharp.Grammars" Version="2.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="i18n\Language.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Language.cs</LastGenOutput>
+      </None>
+      <None Update="i18n\MarkdownAIRender.ja-JP.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="i18n\MarkdownAIRender.en-US.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="i18n\MarkdownAIRender.zh-Hant.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="i18n\MarkdownAIRender.zh-CN.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="i18n\Language.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Language.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    
+</Project>

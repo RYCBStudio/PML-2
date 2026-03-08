@@ -1,8 +1,8 @@
 ﻿// CaptchaService.cs
 
-using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Services
 {
@@ -45,7 +45,7 @@ namespace MEFrpLauncherX.Services
 
         // 解决多个挑战
         public async Task<List<string>> SolveChallengesAsync(List<LocalChallenge> challenges,
-            IProgress<string> progress = null, System.Threading.CancellationToken cancellationToken = default)
+            IProgress<string> progress = null, CancellationToken cancellationToken = default)
         {
             var solutions = new List<string>();
             var completed = 0;
@@ -78,7 +78,7 @@ namespace MEFrpLauncherX.Services
                 var payload = new
                 {
                     frtoken = GenerateFrToken(clientId, timestamp), // 生成 frtoken
-                    solutions = solutions // 解决方案数组
+                    solutions // 解决方案数组
                 };
 
                 var content = new StringContent(
@@ -101,11 +101,9 @@ namespace MEFrpLauncherX.Services
 
                     throw new Exception($"验证失败: {result?.message ?? "未知错误"}");
                 }
-                else
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"HTTP错误 {response.StatusCode}: {errorContent}");
-                }
+
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"HTTP错误 {response.StatusCode}: {errorContent}");
             }
             catch (Exception ex)
             {

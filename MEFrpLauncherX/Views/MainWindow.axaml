@@ -27,7 +27,7 @@
     <Panel>
         <Image x:Name="LoginBackground" 
                IsVisible="True"
-               Source="/Assets/AndroidStudio-2560x1440.png"
+               Source="/Assets/splash.png"
                Stretch="UniformToFill" />
         <Grid RowDefinitions="*,Auto">
             <ContentControl x:Name="MainContentControl">

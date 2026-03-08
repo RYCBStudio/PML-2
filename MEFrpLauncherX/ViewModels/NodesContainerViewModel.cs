@@ -1,37 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Avalonia.Controls;
+using Avalonia.Collections;
 using Avalonia.Controls.Primitives;
+using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using MEFrpLauncherX.Views;
+using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class NodesContainerViewModel : INotifyPropertyChanged
+public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
 {
+    private readonly DispatcherTimer _debounceTimer;
+    private const int DEBOUNCE_DELAY_MS = 300;
+    private bool _isLoading;
+    private DispatcherTimer _loadingDebounceTimer;
+
+// 在构造函数中初始化
+    public NodesContainerViewModel()
+    {
+        // 初始化防抖定时器
+        _debounceTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(DEBOUNCE_DELAY_MS)
+        };
+        _debounceTimer.Tick += (s, e) =>
+        {
+            _debounceTimer.Stop();
+            FilterNodes();
+        };
+    }
+
+// 添加防抖触发方法
+    private void TriggerFilterWithDebounce()
+    {
+        _debounceTimer.Stop();
+        _debounceTimer.Start();
+    }
+
     public bool IsLoading
     {
-        get;
+        get => _isLoading;
         set
         {
-            field = value;
-            OnPropertyChanged();
+            if (_isLoading != value)
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            
+                // 添加防抖，避免频繁切换
+                _loadingDebounceTimer?.Stop();
+                if (value)
+                {
+                    // 立即显示
+                    UpdateLoadingUI(true);
+                }
+                else
+                {
+                    // 延迟隐藏
+                    _loadingDebounceTimer ??= new DispatcherTimer
+                    {
+                        Interval = TimeSpan.FromMilliseconds(100)
+                    };
+                    _loadingDebounceTimer.Tick += (s, e) =>
+                    {
+                        _loadingDebounceTimer.Stop();
+                        UpdateLoadingUI(false);
+                    };
+                    _loadingDebounceTimer.Start();
+                }
+            }
         }
     }
 
-    public ObservableCollection<TunnelNodeViewModel> AllNodes
+    private void UpdateLoadingUI(bool isLoading)
+    {
+        // 分别更新各个loading状态
+        OnPropertyChanged(nameof(IsLoading));
+    }
+
+    public AvaloniaList<TunnelNodeViewModel> AllNodes
     {
         get;
     } = [];
 
-    public ObservableCollection<TunnelNodeViewModel> FilteredNodes
+    public AvaloniaList<TunnelNodeViewModel> FilteredNodes
     {
         get;
     } = [];
@@ -54,21 +112,25 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         {
             if (field != value)
             {
-                field = value;
-                OnPropertyChanged();
-                FilterNodes();
+                this.RaiseAndSetIfChanged(ref field, value);
+                TriggerFilterWithDebounce();
+                // field = value;
+                // OnPropertyChanged();
+                //FilterNodes();
             }
         }
     } = "all";
 
-    public string SearchText
+    public string? SearchText
     {
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
-            FilterNodes();
+            this.RaiseAndSetIfChanged(ref field, value);
+            TriggerFilterWithDebounce();
+            // field = value;
+            // OnPropertyChanged();
+            //FilterNodes();
         }
     }
 
@@ -77,9 +139,11 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
-            FilterNodes();
+            this.RaiseAndSetIfChanged(ref field, value);
+            TriggerFilterWithDebounce();
+            // field = value;
+            // OnPropertyChanged();
+            //FilterNodes();
         }
     }
 
@@ -88,9 +152,11 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
-            FilterNodes();
+            this.RaiseAndSetIfChanged(ref field, value);
+            TriggerFilterWithDebounce();
+            // field = value;
+            // OnPropertyChanged();
+            //FilterNodes();
         }
     }
 
@@ -99,9 +165,11 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
-            FilterNodes();
+            this.RaiseAndSetIfChanged(ref field, value);
+            TriggerFilterWithDebounce();
+            // field = value;
+            // OnPropertyChanged();
+            //FilterNodes();
         }
     }
 
@@ -111,6 +179,7 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         {
             IsLoading = true;
             AllNodes.Clear();
+            FilteredNodes.Clear(); // 提前清空
 
             await Task.Run(async () =>
             {
@@ -143,62 +212,49 @@ public class NodesContainerViewModel : INotifyPropertyChanged
                         Region = node.region,
                         AllowGroup = node.allowGroup.Split(';')
                     };
-                    vm.AllowHighTraffic = new Func<bool>(() =>
-                    {
-                        if (string.IsNullOrEmpty(vm.Bandwidth))
-                        {
-                            return false;
-                        }
-
-                        var bandwidth = vm.Bandwidth.ToLower();
-
-                        if (bandwidth.Contains("gbps"))
-                        {
-                            if (double.TryParse(bandwidth.Replace("gbps", ""), out var gbpsValue))
-                            {
-                                return gbpsValue >= 0.07;
-                            }
-                        }
-                        else if (bandwidth.Contains("mbps"))
-                        {
-                            if (double.TryParse(bandwidth.Replace("mbps", ""), out var mbpsValue))
-                            {
-                                return mbpsValue >= 70;
-                            }
-                        }
-
-                        return false;
-                    }).Invoke();
-// Debug
-//                     Core.App.CurrentLogger.LogDebug("\n==========\nAdding node: Info: \n" +
-//                                                     $"""
-//                                                      NodeId: {vm.NodeId}
-//                                                      Name: {vm.Name}
-//                                                      Description: {vm.Description}
-//                                                      AllowTypes: {string.Join(", ", vm.AllowTypes)}
-//                                                      Bandwidth: {vm.Bandwidth}
-//                                                      LoadPercent: {vm.LoadPercent}
-//                                                      IsOnline: {vm.IsOnline}
-//                                                      AllowPorts: {vm.AllowPorts}
-//                                                      CanBuildSite: {vm.CanBuildSite}
-//                                                      AllowHighTraffic: {vm.AllowHighTraffic}
-//                                                      Region: {vm.Region}
-//                                                      ===========
-//                                                      """);
+                    vm.AllowHighTraffic = CalculateAllowHighTraffic(vm.Bandwidth);
                     AllNodes.Add(vm);
                 }
             });
-
-            FilterNodes();
+            await Dispatcher.UIThread.InvokeAsync(() => FilterNodes(true), DispatcherPriority.Background);
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Log($"加载节点时出错: {ex.Message}");
+            Core.App.CurrentLogger.Error(ex);
         }
         finally
         {
             IsLoading = false;
         }
+    }
+
+    // 提取高流量计算逻辑
+    private static bool CalculateAllowHighTraffic(string bandwidth)
+    {
+        if (string.IsNullOrEmpty(bandwidth))
+        {
+            return false;
+        }
+
+        var lowerBandwidth = bandwidth.ToLower();
+
+        if (lowerBandwidth.Contains("gbps"))
+        {
+            if (double.TryParse(lowerBandwidth.Replace("gbps", ""), out var gbpsValue))
+            {
+                return gbpsValue >= 0.07;
+            }
+        }
+        else if (lowerBandwidth.Contains("mbps"))
+        {
+            if (double.TryParse(lowerBandwidth.Replace("mbps", ""), out var mbpsValue))
+            {
+                return mbpsValue >= 70;
+            }
+        }
+
+        return false;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -215,92 +271,90 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         get;
         set
         {
-            if (field != null)
-            {
-                field.IsSelected = false;
-            }
+            field?.IsSelected = false;
 
-            field = value;
+            this.RaiseAndSetIfChanged(ref field, value);
+            // if (field is { IsOverloaded: true })
+            // {
+            //     field.IsSelected = false;
+            //     var tmplsi = (NodesContainer.Instance.Nodes.ContainerFromItem(field) as
+            //         ListBoxItem)!;
+            //     if (tmplsi != null)
+            //     {
+            //         tmplsi.IsEnabled = false;
+            //     }
+            //
+            //     NodesContainer.Instance.Nodes.SelectedIndex = -1;
+            //     return;
+            // }
 
+            field?.IsSelected = true;
 
-            if (field is { IsOverloaded: true })
-            {
-                field.IsSelected = false;
-                var tmplsi = (NodesContainer.Instance.Nodes.ContainerFromItem(field) as
-                    ListBoxItem)!;
-                if (tmplsi != null)
-                {
-                    tmplsi.IsEnabled = false;
-                }
-
-                NodesContainer.Instance.Nodes.SelectedIndex = -1;
-                return;
-            }
-
-            if (field != null)
-            {
-                field.IsSelected = true;
-            }
-
-            OnPropertyChanged();
             NodeSelected?.Invoke(field);
         }
     }
 
-    private void FilterNodes()
+    private async void FilterNodes(bool force = false)
     {
+        if (IsLoading && !force) return;
+
         IsLoading = true;
-        FilteredNodes.Clear();
-
-        var realRegion = "all";
-        var filtered = AllNodes.Where(node =>
-            (string.IsNullOrEmpty(SearchText) || SearchText.StartsWith("/d:") &&
-             node.Description.Contains(SearchText.Remove(0, 3),
-                 StringComparison.OrdinalIgnoreCase) ||
-             (SearchText.StartsWith("/pd:") && PinYinHelper
-                 .ConvertToAllSpell(node.Description).Contains(
-                     PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
-                     StringComparison.OrdinalIgnoreCase)) ||
-             node.Name.Contains(SearchText,
-                 StringComparison.OrdinalIgnoreCase) ||
-             (SearchText.StartsWith("/pn:") && PinYinHelper
-                 .ConvertToAllSpell(node.Name).Contains(
-                     PinYinHelper.ConvertToAllSpell(SearchText.Remove(0, 4)),
-                     StringComparison.OrdinalIgnoreCase)) ||
-             node.NodeId.ToString().Contains(SearchText,
-                 StringComparison.OrdinalIgnoreCase)) &&
-            IsRegionMeets(node, out realRegion) &&
-            (!FilterCanBuildSite || node.CanBuildSite) &&
-            (!FilterAllowHighTraffic || node.AllowHighTraffic) &&
-            (!FilterNotOverLoaded || node.IsNotOverloaded));
-//         Core.App.CurrentLogger.LogDebug("Requirements: \n" +
-//                                         $"""
-//                                          SearchText: {SearchText},
-//                                          CanBuildSite: {FilterCanBuildSite},
-//                                          AllowHighTraffic: {FilterAllowHighTraffic},
-//                                          Region: {realRegion}
-//                                          """);
-        foreach (var node in filtered)
+        try
         {
-            // Debug
-//             Core.App.CurrentLogger.LogDebug("\n=========\nNode #" + node.NodeId + ": " + node.Name +
-//                                             ", meets requirements: \n" +
-//                                             $"""
-//                                              CanBuildSite: {node.CanBuildSite}(re: {FilterCanBuildSite}),
-//                                              AllowHighTraffic: {node.AllowHighTraffic}(re: {FilterAllowHighTraffic}),
-//                                              Region: {node.Region}(re: {realRegion})
-//                                              ==========
-//                                              """);
-            FilteredNodes.Add(node);
+            await Task.Run(async () =>
+            {
+                var realRegion = "all";
+                var filteredNodes = AllNodes.Where(node =>
+                        MeetsSearchCriteria(node) &&
+                        IsRegionMeets(node, out realRegion) &&
+                        (!FilterCanBuildSite || node.CanBuildSite) &&
+                        (!FilterAllowHighTraffic || node.AllowHighTraffic) &&
+                        (!FilterNotOverLoaded || node.IsNotOverloaded))
+                    .ToList();
+
+                // 在UI线程上更新集合
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    // 一次性替换整个集合并暂停通知
+                    FilteredNodes.Clear();
+                    foreach (var node in filteredNodes)
+                    {
+                        FilteredNodes.Add(node);
+                    }
+                }, DispatcherPriority.Background);
+
+                Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
+            });
         }
-
-        Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
-
-        OnPropertyChanged(nameof(FilteredNodes));
-        // }, DispatcherPriority.Background);
-        IsLoading = false;
-        MainPageFrameViewModel.Instance.IsLoading = false;
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
+
+// 提取搜索逻辑到单独方法
+    private bool MeetsSearchCriteria(TunnelNodeViewModel node)
+    {
+        if (string.IsNullOrEmpty(SearchText)) return true;
+
+        return SearchText.StartsWith("/d:")
+            ? node.Description.Contains(SearchText.Remove(0, 3), StringComparison.OrdinalIgnoreCase)
+            : SearchText.StartsWith("/pd:")
+                ? PinYinHelper.ConvertToAllSpellWithCache(node.Description).Contains(
+                    PinYinHelper.ConvertToAllSpellWithCache(SearchText.Remove(0, 4)),
+                    StringComparison.OrdinalIgnoreCase)
+                : SearchText.StartsWith("/pn:")
+                    ? PinYinHelper.ConvertToAllSpellWithCache(node.Name).Contains(
+                        PinYinHelper.ConvertToAllSpellWithCache(SearchText.Remove(0, 4)),
+                        StringComparison.OrdinalIgnoreCase)
+                    : node.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                      node.NodeId.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    }
+
 
     private bool IsRegionMeets(TunnelNodeViewModel vm, out string region)
     {
@@ -308,7 +362,8 @@ public class NodesContainerViewModel : INotifyPropertyChanged
         var _ = SelectedRegion.GetType();
         if (SelectedRegion is TabStripItem item)
         {
-            _tmpRegion = item.Tag.ToString();
+            Dispatcher.UIThread.Invoke(() =>
+                _tmpRegion = item.Tag.ToString());
         }
         else
         {

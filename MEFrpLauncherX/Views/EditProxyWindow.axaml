@@ -14,9 +14,6 @@
     <Grid RowDefinitions="*, Auto" RowSpacing="5">
         <ScrollViewer x:Name="MainContainer">
             <StackPanel x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
-                <fa:InfoBar IsOpen="True" Severity="Warning"
-                            Message="提示: 编辑隧道时, 由于官网API暂未更新, 以下选项有所调整: &#x0D;1. 安全选项只支持显示禁用和访问密钥, 若隧道启用了 HTTP Basic Auth, 请忽略该选项, 并注意更新后隧道是否正常。&#x0D;2. 请求头设置仅支持添加和删除, 无法修改原有的请求头。">
-                </fa:InfoBar>
                 <fa:SettingsExpander Header="基本设置"
                                      IconSource="AllApps"
                                      Description="以下是创建隧道的必填设置。">
@@ -56,23 +53,6 @@
                                 Value="{Binding LocalPort}" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem>
-                        <pml2:RequiredField Label="协议类型" IsRequired="True" />
-                        <fa:SettingsExpanderItem.Footer>
-                            <ComboBox
-                                x:Name="ProtocolCbBox"
-                                Margin="5"
-                                FontFamily="{StaticResource GlobalFontFamily}"
-                                SelectedIndex="0"
-                                SelectionChanged="ProtocolCbBox_SelectionChanged">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="RemotePortGrid">
                         <pml2:RequiredField Label="远程端口" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
@@ -92,7 +72,7 @@
                                         Click="GetRemotePort_Click"
                                         Content="获取远程空闲端口"
                                         FontFamily="{StaticResource GlobalFontFamily}" />
-                                    <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading"></fa:ProgressRing>
+                                    <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading" />
                                 </Panel>
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
@@ -143,7 +123,7 @@
                             <Button Click="EditDomains">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit"></fa:SymbolIcon>
+                                        <fa:SymbolIcon Symbol="Edit" />
                                         <TextBlock>编辑</TextBlock>
                                     </StackPanel>
                                 </Button.Content>
@@ -193,28 +173,54 @@
                                               Margin="0 00 12 0">
                                     <ToggleButton.Content>
                                         <fa:FontIcon Glyph="&#xF78D;"
-                                                     FontFamily="{StaticResource SymbolThemeFontFamily}">
-                                        </fa:FontIcon>
+                                                     FontFamily="{StaticResource SymbolThemeFontFamily}" />
                                     </ToggleButton.Content>
                                 </ToggleButton>
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="Host Header Rewrite" Description="请输入 Host 请求头重写值">
+
+                    <fa:SettingsExpanderItem Content="传输协议"
+                                             Description="QUIC 提供了类似 TCP 的可靠性，同时克服了 TCP 的性能瓶颈, 部分场景下可以优化延迟。">
                         <fa:SettingsExpanderItem.Footer>
-                            <TextBox
-                                x:Name="HostHeaderRewriteBox"
-                                Margin="5"
-                                Watermark="请输入 Host 请求头重写值"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True"
+                                             x:Name="TpTcpRb" />
+                                <RadioButton GroupName="TransmissionProtocol" Content="QUIC" x:Name="TpQuicRb" />
+                            </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem Content="自定义请求头" IsVisible="False" x:Name="CustomRequestHeaderSettings">
                         <fa:SettingsExpanderItem.Footer>
-                            <Button Click="EditHeaders">
+                            <Button Click="EditRequestHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit"></fa:SymbolIcon>
+                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <TextBlock>编辑</TextBlock>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                    <fa:SettingsExpanderItem Content="自定义响应头" IsVisible="False" x:Name="CustomResponseHeaderSettings">
+                        <fa:SettingsExpanderItem.Footer>
+                            <Button Click="EditResponseHeaders">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <TextBlock>编辑</TextBlock>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                    <fa:SettingsExpanderItem Content="Locations" Description="编辑 HTTP 隧道的路径路由规则。" IsVisible="False"
+                                             x:Name="LocationSettings">
+                        <fa:SettingsExpanderItem.Footer>
+                            <Button Click="EditLocations">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                        <fa:SymbolIcon Symbol="Edit" />
                                         <TextBlock>编辑</TextBlock>
                                     </StackPanel>
                                 </Button.Content>

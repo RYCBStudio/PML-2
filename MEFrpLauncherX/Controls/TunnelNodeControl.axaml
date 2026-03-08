@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:pml2="clr-namespace:MEFrpLauncherX"
              VerticalAlignment="Center"
              Width="250"
              Height="240"
@@ -33,12 +34,13 @@
             </controls:InfoBadge>
             <controls:InfoBadge Margin="0,20,10,0" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                                Background="{DynamicResource SystemFillColorCautionBrush}"
                                 BorderThickness="-1"
                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 IsVisible="{Binding AllowGroup, Converter={x:Static local:AllowGroupToIsVisibleConverter.Instance}}">
                 <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                    <controls:FontIconSource Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                                             FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="VIP" />
                 </controls:InfoBadge.IconSource>
             </controls:InfoBadge>
@@ -102,9 +104,11 @@
                         <TextBlock FontFamily="{StaticResource GlobalFontFamily}" VerticalAlignment="Center"
                                    Text="{Binding StringFormat={}{0}%, Path=LoadPercent}" DockPanel.Dock="Right" />
 
-                        <ProgressBar MinWidth="70" FontFamily="{StaticResource GlobalFontFamily}"
-                                     Foreground="{Binding LoadPercent, Converter={x:Static core:LoadPercentToForegroundConverter.Instance}}"
-                                     Value="{Binding LoadPercent}" />
+                        <ProgressBar
+                            AttachedToVisualTree="PerformAnimation" MinWidth="70"
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Foreground="{Binding LoadPercent, Converter={x:Static pml2:LoadPercentToForegroundConverter.Instance}}"
+                            Value="{Binding LoadPercent}" />
                     </DockPanel>
 
                     <!-- Online status indicator -->

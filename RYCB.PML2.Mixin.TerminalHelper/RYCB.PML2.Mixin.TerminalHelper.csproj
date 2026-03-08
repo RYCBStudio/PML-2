@@ -10,4 +10,8 @@
       <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+    </ItemGroup>
+
 </Project>

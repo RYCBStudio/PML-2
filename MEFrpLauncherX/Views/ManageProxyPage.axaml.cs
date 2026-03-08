@@ -19,6 +19,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
+using Newtonsoft.Json;
 using ReactiveUI;
 using MessageBox = MEFrpLauncherX.Core.Controls.MessageBox;
 
@@ -61,7 +62,8 @@ public partial class ManageProxyPage : UserControl
         }
 
         _isLoadingProxies = true;
-        MainPageFrameViewModel.Instance.IsLoading = true;
+        await Dispatcher.UIThread.InvokeAsync(() =>
+            MainPageFrameViewModel.Instance?.IsLoading = true);
         try
         {
             Core.App.CurrentLogger.LogDebug("Starting LoadProxies");
@@ -71,22 +73,22 @@ public partial class ManageProxyPage : UserControl
             await Task.Run(async () =>
             {
                 var userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
-                var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
-                InfoClasses.NodesList[] currentNodesList;
-
-                if (currentNodesListInfo?.NodesList is null)
-                {
-                    currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
-                }
-                else
-                {
-                    currentNodesList = currentNodesListInfo.NodesList;
-                }
+                // var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
+                // InfoClasses.NodesList[] currentNodesList;
+                //
+                // if (currentNodesListInfo?.NodesList is null)
+                // {
+                //     currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
+                // }
+                // else
+                // {
+                //     currentNodesList = currentNodesListInfo.NodesList;
+                // }
 
                 Core.App.CurrentLogger.LogDebug("Loading user proxies");
-                foreach (var item in userProxies)
+                foreach (var item in userProxies.proxies)
                 {
-                    var info = currentNodesList.FirstOrDefault(i => i.nodeId == item.nodeId);
+                    var node = userProxies.nodes.FirstOrDefault(n => n.nodeId == item.nodeId);
 
                     proxyViewModel.AllProxies.Add(new UserProxyViewModel(item.domain)
                     {
@@ -95,7 +97,7 @@ public partial class ManageProxyPage : UserControl
                         proxyName = item.proxyName,
                         proxyId = item.proxyId,
                         proxyType = item.proxyType.ToUpper(),
-                        node = info?.name ?? "节点不存在",
+                        node = node?.name ?? "节点不存在",
                         isBanned = item.isBanned,
                         isOnline = item.isOnline,
                         isDisabled = item.isDisabled,
@@ -104,9 +106,9 @@ public partial class ManageProxyPage : UserControl
                         remotePort = item.remotePort,
                         runId = item.runId,
                         nodeId = item.nodeId,
-                        allowedProtocols = info?.allowType?.Split(';')
-                            ?.Select(type => type.ToUpper())
-                            ?.ToArray() ?? [],
+                        //allowedProtocols = node?.allowType?.Split(';')
+                        //  ?.Select(type => type.ToUpper())
+                        //  ?.ToArray() ?? [],
                         domain = item.domain,
                         lastStartTime = item.lastStartTime,
                         lastCloseTime = item.lastCloseTime,
@@ -114,10 +116,18 @@ public partial class ManageProxyPage : UserControl
                         clientVersion = item.clientVersion,
                         useEncryption = item.useEncryption,
                         useCompression = item.useCompression,
-                        location = item.location,
+                        location = $"{node?.hostname}:{item.remotePort}",
                         accessKey = item.accessKey,
                         hostHeaderRewrite = item.hostHeaderRewrite,
-                        headerXFromWhere = item.headerXFromWhere
+                        Node = node,
+                        transportProtocol = item.transportProtocol,
+                        httpPlugin = item.httpPlugin,
+                        httpUser = item.httpUser,
+                        httpPassword = item.httpPassword,
+                        RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.requestHeaders),
+                        ResponseHeaders =
+                            JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
+                        Locations = JsonConvert.DeserializeObject<List<string>>(item.locations),
                     });
                 }
             });
@@ -125,14 +135,14 @@ public partial class ManageProxyPage : UserControl
             if (OperatingSystem.IsMacOS())
             {
                 // 创建原生菜单
-                MainWindow.Instance.NativeMenuBar = new NativeMenu();
-        
+                MainWindow.Instance.NativeMenuBar = [];
+
                 // 添加应用程序菜单（macOS 第一个菜单）
                 var appMenu = new NativeMenuItem("隧道");
                 var appSubMenu = new NativeMenu();
-        
-                appSubMenu.Add(new NativeMenuItem("管理隧道") 
-                { 
+
+                appSubMenu.Add(new NativeMenuItem("管理隧道")
+                {
                     Gesture = KeyGesture.Parse("Ctrl+M"),
                     Command = ReactiveCommand.Create(() =>
                     {
@@ -140,9 +150,9 @@ public partial class ManageProxyPage : UserControl
                     })
                 });
                 appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("创建隧道") 
-                { 
-                    Gesture = KeyGesture.Parse("Ctrl+D") ,
+                appSubMenu.Add(new NativeMenuItem("创建隧道")
+                {
+                    Gesture = KeyGesture.Parse("Ctrl+D"),
                     Command = ReactiveCommand.Create(() =>
                     {
                         MainPageFrameViewModel.Instance?.NavigateToPage("Create");
@@ -157,28 +167,31 @@ public partial class ManageProxyPage : UserControl
                         Command = proxy.LaunchProxyCommand
                     });
                 }
-                appSubMenu.Add(new NativeMenuItem("启动隧道") 
-                { 
+
+                appSubMenu.Add(new NativeMenuItem("启动隧道")
+                {
                     Menu = tmp_launchProxy
                 });
                 appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("退出程序") 
-                { 
+                appSubMenu.Add(new NativeMenuItem("退出程序")
+                {
                     Gesture = KeyGesture.Parse("Ctrl+Q"),
-                    Command = ReactiveCommand.Create(() => 
+                    Command = ReactiveCommand.Create(() =>
                     {
                         App.Desktop.Shutdown();
                     })
                 });
-        
+
                 appMenu.Menu = appSubMenu;
                 MainWindow.Instance.NativeMenuBar.Add(appMenu);
-        
+
                 // 设置菜单栏
                 NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
             }
+
             Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);
-            MainPageFrameViewModel.Instance.IsLoading = false;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+                MainPageFrameViewModel.Instance?.IsLoading = false);
         }
         catch (Exception ex)
         {
@@ -187,7 +200,8 @@ public partial class ManageProxyPage : UserControl
         }
         finally
         {
-            MainPageFrameViewModel.Instance.IsLoading = false;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+                MainPageFrameViewModel.Instance?.IsLoading = false);
             _isLoadingProxies = false;
         }
     }
@@ -273,7 +287,8 @@ public sealed class ProxyViewModel : ViewModelBase
                  proxy.proxyId.ToString().Contains(SearchText[5..])) ||
                 (SearchText.Replace(" ", string.Empty).StartsWith("/n:") &&
                  (proxy.node.Contains(SearchText[3..]) ||
-                  PinYinHelper.ConvertToAllSpell(proxy.node).Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
+                  PinYinHelper.ConvertToAllSpell(proxy.node)
+                      .Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
                 (SearchText.Replace(" ", string.Empty).StartsWith("/nid:") &&
                  proxy.nodeId.ToString().Contains(SearchText[5..])));
             foreach (var proxy in filtered)

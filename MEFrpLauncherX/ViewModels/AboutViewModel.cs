@@ -19,5 +19,11 @@ public class AboutViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public string? Author
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public bool IsDark => Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
 }

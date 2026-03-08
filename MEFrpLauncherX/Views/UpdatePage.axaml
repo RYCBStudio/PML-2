@@ -14,7 +14,7 @@
         <viewModels:UpdatePageViewModel />
     </Design.DataContext>
     <ScrollViewer Margin="5">
-        <Grid RowDefinitions="Auto, *">
+        <Grid RowDefinitions="Auto, *" Classes="animated">
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="7*, 3*" ColumnSpacing="10" RowSpacing="4">
                 <TextBlock Grid.RowSpan="2" Classes="Update" Text="{Binding Icon}"
                            FontFamily="{StaticResource IconFont}"
@@ -43,7 +43,7 @@
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdate}" />
@@ -95,7 +95,7 @@
                             </DockPanel>
                         </TabItem>
                         <TabItem Header="更新设置">
-                            <StackPanel>
+                            <StackPanel Classes="animated">
                                 <controls:SettingsExpander Header="更新模式" Description="设置应用的更新模式。">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateMethodBox" SelectedIndex="{Binding UpdateMethod}"

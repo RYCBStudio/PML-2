@@ -5,5 +5,5 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MEFrpLauncherX.Views.CustomPresenter"
         Title="CustomPresenter">
-    <ContentControl x:Name="Main" />
+    <ContentControl x:Name="Main" Classes="animated" />
 </Window>

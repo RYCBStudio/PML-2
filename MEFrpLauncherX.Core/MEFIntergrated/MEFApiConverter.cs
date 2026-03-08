@@ -82,7 +82,7 @@ public class MEFApiConverter
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : "RYCB-PML2/Desktop 2.1.0",
-            Timeout = TimeSpan.FromSeconds(10),
+            Timeout = TimeSpan.FromSeconds(3),
         });
     }
 
@@ -115,7 +115,10 @@ public class MEFApiConverter
         }
         else
         {
-            Growl.Success(response.message);
+            if (!ConfigManager.CurrentConfig.DoNotShowSuccessMsg)
+            {
+                Growl.Success(response.message);
+            }
         }
     }
 
@@ -606,9 +609,9 @@ public class MEFApiConverter
     /// 获取用户的隧道列表
     /// </summary>
     /// <returns>一个"用户隧道"数组。</returns>
-    public static async Task<ApiInfo<ProxyInfo[]>> GetProxiesAsync()
+    public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync()
     {
-        return await ExecuteRequestAsync<ProxyInfo[]>(CreateRequest(), "auth/proxy/list", "隧道列表");
+        return await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", "隧道列表");
     }
 
     /// <summary>

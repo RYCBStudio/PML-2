@@ -26,5 +26,6 @@
   "PMSettings": {
     "Position": "lt",
     "Enabled": false
-  }
+  },
+  "DoNotShowSuccessMsg": false
 }

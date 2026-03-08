@@ -5,6 +5,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 
@@ -12,10 +14,12 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-preview1";
-    public static string Codename = "Nitrogen";
+    public static string Version = "2.3.0-preview4";
+
+    public const string MEFrpVersion = "0.67.0_20260214_7d549bc1";
+
+    public static string Codename = "Fluorine";
     public static SplashScreen splash;
-    public static LogUtil LogService;
 
     public static FluentAvaloniaTheme? FATheme;
 
@@ -30,17 +34,16 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
         // splash = new SplashScreen();
         // splash.Show();
-        Core.App.Initialize();
     }
 
     public override void RegisterServices()
     {
         base.RegisterServices();
-        
     }
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Core.App.Initialize();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             FATheme = Current?.Styles[4] as FluentAvaloniaTheme;
@@ -50,12 +53,18 @@ public class App : Application
                 "light" => ThemeVariant.Light,
                 _ => ThemeVariant.Default
             };
+            if (currentTheme == ThemeVariant.Dark)
+            {
+                LiveCharts.Configure(config =>
+                    config.AddDarkTheme());
+            }
             var ac = ConfigManager.CurrentConfig.AccentColor;
             if (!ac.IsNullOrEmpty())
             {
                 Current.Styles.OfType<FluentAvaloniaTheme>().First().CustomAccentColor =
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
+
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

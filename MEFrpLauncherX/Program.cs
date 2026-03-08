@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
 using Avalonia.Media;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.MEFIntergrated;
 using Newtonsoft.Json;
 using ReactiveUI.Avalonia;
 
@@ -28,12 +30,31 @@ internal sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        var p = Process.Start(new ProcessStartInfo()
+        
+        AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
         {
-            FileName = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true),
-            Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
-        });
-        SplashProcess = p;
+            var assemblyPath = Path.Combine(AppContext.BaseDirectory, "assemblies", $"{assemblyName.Name}.dll");
+            return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
+        };
+
+        var file = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
+        if (!DownloadHelper.ValidateFileSimple(file,
+                "0180aeb78b091ba60891b5635c218b14|803dff910453f2bcde6d114acb082cd5|" +
+                "f4ee9156ffb37e77f6cdc822d7acbd7c|85a6ad0adbab937851c13345127a3489|" +
+                "f699e44cce5056e68d1c03620ad80016|86efbb015589a98cc5fe10d08c0747ef"))
+        {
+            System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
+            System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
+        }
+        else
+        {
+            var p = Process.Start(new ProcessStartInfo()
+            {
+                FileName = file,
+                Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
+            });
+            SplashProcess = p;
+        }
 #if !DEBUG
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         AppDomain.CurrentDomain.UnhandledException += ProcessUnhandledExceptions;
@@ -66,8 +87,8 @@ internal sealed class Program
     {
         var possiblePaths = new List<string>()
         {
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.png"),
+            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.gif"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.webp"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.jpeg"),

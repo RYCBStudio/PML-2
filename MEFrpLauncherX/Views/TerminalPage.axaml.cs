@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -34,7 +35,7 @@ namespace MEFrpLauncherX.Views
             MainPageFrameViewModel.Instance?.IsLoading = false;
         }
 
-        private async void VisitMEFDoc(object sender, RoutedEventArgs e)
+        private void VisitMEFDoc(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -135,9 +136,9 @@ namespace MEFrpLauncherX.Views
                 var captchaResult = await Dispatcher.UIThread.InvokeAsync(async () =>
                 {
                     var iw = new InputControl("如不清楚，留空即可；输入cancel退出\n可用变量：" +
-                                             "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
-                                             "\n{mefrpcp} - ME Frp Client可执行文件目录" +
-                                             "\n{startup} - 程序启动目录");
+                                              "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
+                                              "\n{mefrpcp} - ME Frp Client可执行文件目录" +
+                                              "\n{startup} - 程序启动目录");
                     var cd = new ContentDialog()
                     {
                         Title = "输入命令行及参数",
@@ -159,7 +160,7 @@ namespace MEFrpLauncherX.Views
 
                 var newTab = new TabItem
                 {
-                    Header = "控制台" + (MainTabCtrl.Items.Count), 
+                    Header = "控制台" + (MainTabCtrl.Items.Count),
                     Content = new TerminalControl()
                 };
 
@@ -219,15 +220,15 @@ namespace MEFrpLauncherX.Views
                     {
                         // 修改5: 移除CurrentConhostId检查，直接发送命令
 
-                        terminal.SendCommandAsync(res).ConfigureAwait(false);
+                        await terminal.SendCommandAsync(res);
                     }
                 }
             }
             else if (OperatingSystem.IsLinux())
             {
                 var res = rs.Replace("{mefrpc}",
-                        Path.Combine(Core.App.StartupPath, "bin", "mefrpc_linux_amd64_0.61.1", "mefrpc"))
-                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc_linux_amd64_0.61.1"))
+                        Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc"))
+                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()))
                     .Replace("{startup}", Core.App.StartupPath);
 
                 var isMEFrpCExe = rs.Contains("{mefrpc}");
@@ -235,7 +236,7 @@ namespace MEFrpLauncherX.Views
 
                 if (newTab.Content is TerminalControl terminal)
                 {
-                    await terminal.SendCommandAsync("cd /" + Path.Combine("usr", "share", "mefrplauncherx"));
+                    await terminal.SendCommandAsync("cd /" + Path.Combine("opt", "pml-2"));
                     await terminal.SendCommandAsync("""
                                                     echo -e "\e[33m解压文件...\e[0m"
                                                     """);
@@ -255,8 +256,8 @@ namespace MEFrpLauncherX.Views
             else if (OperatingSystem.IsMacOS())
             {
                 var res = rs.Replace("{mefrpc}",
-                        Path.Combine(Core.App.StartupPath, "bin", "mefrpc_darwin_amd64_0.61.1", "mefrpc"))
-                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc_darwin_amd64_0.61.1"))
+                        Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc"))
+                    .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()))
                     .Replace("{startup}", Core.App.StartupPath);
 
                 var isMEFrpCExe = rs.Contains("{mefrpc}");
@@ -280,6 +281,40 @@ namespace MEFrpLauncherX.Views
                         await terminal.SendCommandAsync(res);
                     }
                 }
+            }
+        }
+
+        private string GetArchiveFileName()
+        {
+            string platform;
+            if (OperatingSystem.IsWindows())
+            {
+                platform = "windows";
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                platform = "linux";
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                platform = "darwin";
+            }
+            else
+            {
+                throw new NotSupportedException("Unsupported OS");
+            }
+
+            if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                return $"mefrpc_{platform}_arm64_{App.MEFrpVersion}";
+            }
+            else if (RuntimeInformation.OSArchitecture == Architecture.X64)
+            {
+                return $"mefrpc_{platform}_amd64_{App.MEFrpVersion}";
+            }
+            else
+            {
+                throw new NotSupportedException("Unsupported architecture");
             }
         }
 

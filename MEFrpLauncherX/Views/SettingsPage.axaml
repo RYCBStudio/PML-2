@@ -59,7 +59,7 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="启动设置" Description="设置程序的启动选项" >
+            <controls:SettingsExpander Header="启动设置" Description="设置程序的启动选项">
                 <controls:SettingsExpander.IconSource>
                     <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
                         <controls:FontIconSource.Glyph>&#xE770;</controls:FontIconSource.Glyph>
@@ -95,7 +95,7 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="隧道设置" Description="设置隧道相关选项" IconSource="AllApps" >
+            <controls:SettingsExpander Header="隧道设置" Description="设置隧道相关选项" IconSource="AllApps">
                 <controls:SettingsExpanderItem Content="强制下线隧道时不同时禁用隧道"
                                                Description="幻缘映射官网强制下线隧道时会同时禁用隧道, 我们可以在强制下线隧道时再启用隧道。">
                     <controls:SettingsExpanderItem.Footer>
@@ -203,6 +203,13 @@
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem
                     Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Header="其他设置" IconSource="Settings" Description="设置一些杂项。">
+                <controls:SettingsExpanderItem Content="不显示请求响应" Description="设置软件是否应该在界面上显示请求的响应。请注意: 该设置项只对成功的请求有效。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch x:Name="DoNotShowResponseSettings" IsCheckedChanged="DoNotShowResponseSettings_OnIsCheckedChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>

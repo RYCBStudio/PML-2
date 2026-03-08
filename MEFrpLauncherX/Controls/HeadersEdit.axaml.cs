@@ -61,14 +61,14 @@ public partial class HeadersEdit : UserControl
             ];
         }
 
-        this.DataContext = this;
+        DataContext = this;
     }
 
     public HeadersEdit(IEnumerable<RequestHeader> headers)
     {
         InitializeComponent();
         Headers = new AvaloniaList<RequestHeader>(headers);
-        this.DataContext = this;
+        DataContext = this;
     }
 
     private void AddHeader(object? sender, RoutedEventArgs e)

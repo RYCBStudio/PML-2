@@ -19,7 +19,7 @@
     <UserControl.Resources>
         <!-- Converters -->
         <core:BannedToBrushConverter x:Key="BannedToBrushConverter" />
-        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd">
+        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd" IsOpen="{Binding ShowExtraMenu}">
             <controls1:CommandBarElementContainer>
                 <Button
                     IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
@@ -169,7 +169,8 @@
             CornerRadius="8"
             Background="{DynamicResource ControlFillColorDefaultBrush}"
             BorderBrush="{Binding isBanned, Converter={StaticResource BannedToBrushConverter}}"
-            BorderThickness="1">
+            BorderThickness="1"
+            Classes="r2l">
         <Border.Styles>
             <Style Selector="Border:pointerover">
                 <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightLowBrush}" />
@@ -192,7 +193,7 @@
                 </controls1:InfoBadge.IconSource>
             </controls1:InfoBadge>
             <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7" IsVisible="{Binding IsLoading}" />
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5">
+            <WrapPanel Grid.Row="0" Orientation="Horizontal" ItemSpacing="5">
                 <SelectableTextBlock Text="{Binding proxyName}"
                                      Theme="{DynamicResource SubtitleTextBlockStyle}" />
                 <Label
@@ -201,7 +202,7 @@
                     VerticalAlignment="Bottom"
                     Content="{Binding proxyId, StringFormat='# {0}'}"
                     FontFamily="{StaticResource GlobalFontFamily}" />
-            </StackPanel>
+            </WrapPanel>
             <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10">
                 <controls1:InfoBadge>
                     <controls1:InfoBadge.Background>

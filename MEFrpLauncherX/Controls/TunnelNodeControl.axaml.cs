@@ -3,8 +3,13 @@ using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Styling;
 using FluentAvalonia.Core;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Models;
@@ -28,6 +33,44 @@ namespace MEFrpLauncherX.Controls
         public static readonly BoolToBorderThicknessConverter BoolToBorderThicknessConverter = new();
         public static readonly SelectedToBorderBrushConverter SelectedToBorderBrushConverter = new();
         public static readonly LoadPercentColorConverter LoadPercentColorConverter = new();
+
+
+        private async void PerformAnimation(object? sender, VisualTreeAttachmentEventArgs e)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(150));
+            var pg = sender as ProgressBar;
+            if (pg == null) return;
+
+            // 更精细的控制
+            var animation = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(800),
+                IterationCount = new IterationCount(1),
+                PlaybackDirection = PlaybackDirection.Normal,
+                FillMode = FillMode.Forward,
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters = { new Setter(ProgressBar.ValueProperty, 0d) },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters = { new Setter(ProgressBar.ValueProperty, pg.Value * 0.3) },
+                        Cue = new Cue(0.3d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters = { new Setter(ProgressBar.ValueProperty, pg.Value) },
+                        Cue = new Cue(1d)
+                    }
+                },
+                Easing = Easing.Parse("CubicEaseIn")
+            };
+
+            await animation.RunAsync(pg);
+        }
     }
 
     public class BoolToBorderThicknessConverter : IValueConverter
@@ -43,6 +86,10 @@ namespace MEFrpLauncherX.Controls
 
     public class TunnelNodeViewModel : ProxyBase, INotifyPropertyChanged
     {
+        // 添加缓存字段
+        private bool? _cachedIsOverloaded;
+        private bool? _cachedIsNotOverloaded;
+
         public int NodeId
         {
             get;
@@ -82,13 +129,31 @@ namespace MEFrpLauncherX.Controls
         public int LoadPercent
         {
             get;
-            set;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    // 清除缓存
+                    _cachedIsOverloaded = null;
+                    _cachedIsNotOverloaded = null;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsOnline
         {
-            get;
-            set;
+            get => field;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    // 可能影响显示状态，清除相关缓存
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool CanBuildSite
@@ -133,9 +198,9 @@ namespace MEFrpLauncherX.Controls
             _ => "未知"
         };
 
-        public bool IsOverloaded => LoadPercent >= 85;
-        public bool IsSemiOverloaded => LoadPercent > 60;
-        public bool IsNotOverloaded => !IsOverloaded;
+        public bool IsOverloaded => _cachedIsOverloaded ??= LoadPercent >= 85;
+        public bool IsNotOverloaded => _cachedIsNotOverloaded ??= !IsOverloaded;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -171,7 +236,7 @@ namespace MEFrpLauncherX.Controls
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return value is IEnumerable e && !e.Contains("default")
-                ? App.Current.TryGetResource("SystemFillColorCautionBackgroundBrush", App.Current.ActualThemeVariant,
+                ? App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant,
                     out var o)
                     ? o
                     : null

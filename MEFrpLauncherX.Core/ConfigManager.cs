@@ -226,6 +226,12 @@ namespace MEFrpLauncherX.Core
             set;
         }
 
+        public bool DoNotShowSuccessMsg
+        {
+            get;
+            set;
+        }
+
         public string Theme
         {
             get;

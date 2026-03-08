@@ -167,5 +167,16 @@ public static class Extensions
             return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, length).ToLower(),
                 str.AsSpan(startIndex + length));
         }
+
+        /// <summary>
+        /// 判断字符串是否以指定的后缀结尾
+        /// </summary>
+        /// <param name="suffixes">要判断的后缀, 多个后缀用<c>,</c>分隔</param>
+        /// <returns></returns>
+        public bool EndsWithEx(string suffixes)
+        {
+            var possibleSuffix = suffixes.Split(',');
+            return possibleSuffix.Any(str.ToLower().EndsWith);
+        }
     }
 }

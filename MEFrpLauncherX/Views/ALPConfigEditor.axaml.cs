@@ -44,7 +44,7 @@ public partial class ALPConfigEditor : Window
         }
         else
         {
-            var cfg = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+            var cfg = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "请选择保存配置文件的路径",
                 SuggestedFileType = _type.ToLower() switch

@@ -76,6 +76,8 @@ public partial class CreateProxy : UserControl
             localPort = _createProxyViewModel.LocalPort,
             remotePort = (int?)(ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null),
             domain = "[\"" + string.Join("\", \"", _createProxyViewModel.RemoteAddress) + "\"]",
+            requestHeaders = _createProxyViewModel.RequestHeaders,
+            responseHeaders = _createProxyViewModel.ResponseHeaders,
             proxyType = ProtocolCbBox.SelectedItem?.ToString()?.ToLower() ?? "",
             accessKey = SecurityOptionsSelect.SelectedIndex == 2 ? AccessKeyBox.Text : string.Empty,
             httpPlugin = GetHttpPlugin(),
@@ -88,7 +90,9 @@ public partial class CreateProxy : UserControl
                 ? ""
                 : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
-            useCompression = EnableCompressCBox.IsChecked ?? false
+            useCompression = EnableCompressCBox.IsChecked ?? false,
+            transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
         };
         if (requestData.proxyName.IsNullOrEmpty())
         {
@@ -164,18 +168,21 @@ public partial class CreateProxy : UserControl
         {
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
-            CustomRequestHeaderSettings.Show();
             SecurityOptionsSettingsExpander.Show();
             switch (ProtocolCbBox.SelectedIndex)
             {
                 case 2:
                     SourceProtocolSettingsExpanderItemForHttp.Show();
+                    CustomRequestHeaderSettings.Show();
+                    CustomResponseHeaderSettings.Show();
+                    LocationSettings.Show();
                     SourceProtocolSettingsExpanderItemForHttps.Hide();
                     CertificateSettingsForPath.Hide();
                     CertificateSettingsForPrivateKey.Hide();
                     break;
                 case 3:
                     SourceProtocolSettingsExpanderItemForHttp.Hide();
+                    LocationSettings.Collapse();
                     SourceProtocolSettingsExpanderItemForHttps.Show();
                     CertificateSettingsForPath.Show();
                     CertificateSettingsForPrivateKey.Show();
@@ -186,7 +193,9 @@ public partial class CreateProxy : UserControl
         {
             RemoteAddressStackPanel.Collapse();
             RemotePortGrid.Show();
+            LocationSettings.Collapse();
             CustomRequestHeaderSettings.Collapse();
+            CustomResponseHeaderSettings.Collapse();
             SecurityOptionsSettingsExpander.Hide();
             SourceProtocolSettingsExpanderItemForHttp.Hide();
             SourceProtocolSettingsExpanderItemForHttps.Hide();
@@ -195,14 +204,14 @@ public partial class CreateProxy : UserControl
         }
     }
 
-    private async void EditHeaders(object? sender, RoutedEventArgs e)
+    private async void EditRequestHeaders(object? sender, RoutedEventArgs e)
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
             he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
                 {
-                    var key = kv.Keys.FirstOrDefault();
-                    var val = kv.Values.FirstOrDefault();
+                    var key = kv.Key;
+                    var val = kv.Value;
                     if (key is null || val is null)
                     {
                         return new RequestHeader
@@ -234,7 +243,7 @@ public partial class CreateProxy : UserControl
             i--;
         }
 
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑请求头",
             Content = he,
@@ -246,8 +255,13 @@ public partial class CreateProxy : UserControl
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
         {
-            _createProxyViewModel.RequestHeaders.AddRange(he.Headers
-                .ToDictionary(header => header.Name, header => header.Value));
+            he.Headers.ToList().ForEach(h =>
+            {
+                if (!_createProxyViewModel.RequestHeaders.ContainsKey(h.Name))
+                {
+                    _createProxyViewModel.RequestHeaders?.Add(h.Name, h.Value);
+                }
+            });
         }
     }
 
@@ -256,7 +270,7 @@ public partial class CreateProxy : UserControl
         var de = new DomainsEdit();
         if (_createProxyViewModel.RemoteAddress is not null && _createProxyViewModel.RemoteAddress.Count != 0)
             de.Domains.AddRange(_createProxyViewModel.RemoteAddress);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
             Content = de,
@@ -276,7 +290,7 @@ public partial class CreateProxy : UserControl
     private async void CheckPort(object? sender, RoutedEventArgs e)
     {
         var psv = new PortScannerView();
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "查找 Minecraft 端口",
             Content = psv,
@@ -288,6 +302,89 @@ public partial class CreateProxy : UserControl
         if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
             _createProxyViewModel.LocalPort = psv.DataContext.SelectedResult?.Port ?? 0;
+        }
+    }
+
+    private async void EditResponseHeaders(object? sender, RoutedEventArgs e)
+    {
+        var he = new HeadersEdit();
+        if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+            he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
+                {
+                    var key = kv.Key;
+                    var val = kv.Value;
+                    if (key is null || val is null)
+                    {
+                        return new RequestHeader
+                        {
+                            Name = "NOTFOUND",
+                            Value = "NOTFOUND"
+                        };
+                    }
+
+                    return new RequestHeader
+                    {
+                        Name = key!,
+                        Value = val!
+                    };
+                })
+                .ToList());
+        // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
+        // {
+        //     he.Headers.Remove(header);
+        // }
+        for (var i = 0; i < he.Headers.Count; i++)
+        {
+            if (he.Headers[i].Name != "NOTFOUND")
+            {
+                continue;
+            }
+
+            he.Headers.RemoveAt(i);
+            i--;
+        }
+
+        var cd = new ContentDialog
+        {
+            Title = "编辑响应头",
+            Content = he,
+            PrimaryButtonText = "确定",
+            DefaultButton = ContentDialogButton.Primary,
+            IsSecondaryButtonEnabled = false,
+            CloseButtonText = "取消"
+        };
+        var res = await cd.ShowAsync();
+        if (res == ContentDialogResult.Primary)
+        {
+            he.Headers.ToList().ForEach(h =>
+            {
+                if (!_createProxyViewModel.ResponseHeaders.ContainsKey(h.Name))
+                {
+                    _createProxyViewModel.ResponseHeaders?.Add(h.Name, h.Value);
+                }
+            });
+        }
+    }
+
+    private async void EditLocations(object? sender, RoutedEventArgs e)
+    {
+        var de = new DomainsEdit();
+        if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
+            de.Domains.AddRange(_createProxyViewModel.Locations);
+        var cd = new ContentDialog
+        {
+            Title = "编辑路径",
+            Content = de,
+            PrimaryButtonText = "确定",
+            DefaultButton = ContentDialogButton.Primary,
+            IsSecondaryButtonEnabled = false,
+            CloseButtonText = "取消"
+        };
+        var res = await cd.ShowAsync();
+        if (res == ContentDialogResult.Primary)
+        {
+            _createProxyViewModel.Locations?.Clear();
+            _createProxyViewModel.Locations?.AddRange(de.Domains);
         }
     }
 }
@@ -368,6 +465,12 @@ public class CreateProxyViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = [];
 
+    public List<string> Locations
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = [];
+
     [Required(ErrorMessage = "必填项")]
     public int RemotePort
     {
@@ -381,7 +484,13 @@ public class CreateProxyViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "";
 
-    public List<Dictionary<string, string>> RequestHeaders
+    public Dictionary<string, string> RequestHeaders
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = [];
+
+    public Dictionary<string, string> ResponseHeaders
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
