@@ -44,7 +44,7 @@ AvaloniaProperty.Register<SVirtualizingPanel, Boolean>(nameof(IsReachEnd));
         public abstract IReadOnlyList<double> GetIrregularSnapPoints(Orientation orientation, SnapPointsAlignment snapPointsAlignment);
         public abstract double GetRegularSnapPoints(Orientation orientation, SnapPointsAlignment snapPointsAlignment, out double offset);
         
-        public Boolean IsLoadingMore { get; protected set; } = false;        
+        public Boolean IsLoadingMore { get; protected set; }        
     
         protected int _CurrentIndex = 0;
         protected int _LastIndex = 0;

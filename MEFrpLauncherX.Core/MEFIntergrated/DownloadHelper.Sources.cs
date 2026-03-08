@@ -50,10 +50,8 @@ public partial class DownloadHelper
         {
             return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
         }
-        else
-        {
-            return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
-        }
+
+        return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
     }
 
     private readonly Dictionary<PlatformID, string> downloadUrls = new()

@@ -69,14 +69,14 @@ public partial class DomainsEdit : UserControl, INotifyPropertyChanged
             ];
         }
 
-        this.DataContext = this;
+        DataContext = this;
     }
 
     public DomainsEdit(IEnumerable<string> headers)
     {
         InitializeComponent();
         Domains = new AvaloniaList<string>(headers);
-        this.DataContext = this;
+        DataContext = this;
     }
 
     private void AddDomain(object? sender, RoutedEventArgs e)

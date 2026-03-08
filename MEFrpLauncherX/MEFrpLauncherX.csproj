@@ -4,6 +4,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <PublishAot>false</PublishAot>
+        <SelfContained>true</SelfContained>
         <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;win-arm64;linux-arm64;osx-arm64</RuntimeIdentifiers>
         <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -20,6 +21,7 @@
         <Optimize>true</Optimize>
         <NoWarn>1701;1702;IL2121;CS8902;CS8603;CS8604;CS0169;CS8618;CS8600;CS8604;CS8762</NoWarn>
     </PropertyGroup>
+    
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
@@ -42,35 +44,36 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
         <AvaloniaResource Remove="artifacts\**"/>
+        <None Include="Resources\splash.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Include="icon.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="Resources\splash.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        <None Remove="Assets\splash.png" />
+        <AvaloniaResource Include="Assets\splash.png" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.11" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+        <PackageReference Include="Avalonia" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.11"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1" />
+        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1"/>
         <PackageReference Include="Downloader" Version="4.0.3"/>
         <PackageReference Include="FluentAvalonia.FluentIcons" Version="1.1.201.1-preview7"/>
-        <PackageReference Include="FluentAvaloniaUI" Version="2.4.1" />
-        <PackageReference Include="MessageBox.Avalonia" Version="3.3.0" />
+        <PackageReference Include="FluentAvaloniaUI" Version="2.4.1"/>
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1"/>
+        <PackageReference Include="MessageBox.Avalonia" Version="3.3.0"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
-        <PackageReference Include="ReactiveUI.Avalonia" Version="11.3.8" />
-        <PackageReference Include="ScottPlot" Version="5.1.57" />
-        <PackageReference Include="ScottPlot.Avalonia" Version="5.1.57" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
-        <PackageReference Include="System.Runtime.Caching" Version="10.0.1" />
+        <PackageReference Include="ReactiveUI.Avalonia" Version="11.3.8"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1"/>
+        <PackageReference Include="System.Runtime.Caching" Version="10.0.1"/>
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.6.5"/>
         <PackageReference Update="Packaging.Targets">
             <Version>0.1.232</Version>
@@ -83,10 +86,10 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
-        <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj" />
-        <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj" />
-        <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj" />
-        <ProjectReference Include="G:\VSProj\Markdown.AIRender-master\src\MarkdownAIRender\MarkdownAIRender.csproj"/>
+        <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj"/>
+        <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj"/>
+        <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj"/>
+        <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Views\ConfigEditor.axaml.cs">
@@ -103,23 +106,23 @@
         </Compile>
         <Compile Remove="artifacts\**"/>
         <Compile Update="Controls\CreateProxy.axaml.cs">
-          <DependentUpon>CreateProxy.axaml</DependentUpon>
-          <SubType>Code</SubType>
+            <DependentUpon>CreateProxy.axaml</DependentUpon>
+            <SubType>Code</SubType>
         </Compile>
         <Compile Update="Views\Appearance\ProxyFloatSettings.axaml.cs">
-          <DependentUpon>ProxyFloatSettings.axaml</DependentUpon>
-          <SubType>Code</SubType>
+            <DependentUpon>ProxyFloatSettings.axaml</DependentUpon>
+            <SubType>Code</SubType>
         </Compile>
         <Compile Update="Views\ALPConfigEditor.axaml.cs">
-          <DependentUpon>ALPConfigEditor.axaml</DependentUpon>
-          <SubType>Code</SubType>
+            <DependentUpon>ALPConfigEditor.axaml</DependentUpon>
+            <SubType>Code</SubType>
         </Compile>
         <Compile Update="Controls\StarMapCanvas.axaml.cs">
-          <DependentUpon>StarMapCanvas.axaml</DependentUpon>
+            <DependentUpon>StarMapCanvas.axaml</DependentUpon>
         </Compile>
         <Compile Update="Controls\RollingNumberDoubleTextBlock.cs">
-          <DependentUpon>RollingNumberTextBlock.axaml</DependentUpon>
-          <SubType>Code</SubType>
+            <DependentUpon>RollingNumberTextBlock.axaml</DependentUpon>
+            <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
     <ItemGroup>
@@ -143,16 +146,16 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Resources\splash.jpg.LEGACY1">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="mscorlib" />
+        <Reference Include="mscorlib"/>
         <Reference Include="RYCB.PML.MEFrpCaptchaLib">
             <HintPath>G:\VSProj\RYCB.PML.MEFrpCaptchaLib\bin\Release\Dotfuscated\RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="SecretLib">
-          <HintPath>G:\VSProj\SecretLib\bin\Release\net8.0\Dotfuscated\Dotfuscated\SecretLib.dll</HintPath>
+            <HintPath>G:\VSProj\SecretLib\bin\Release\net8.0\Dotfuscated\Dotfuscated\SecretLib.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>

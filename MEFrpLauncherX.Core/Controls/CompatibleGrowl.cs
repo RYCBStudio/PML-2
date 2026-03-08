@@ -19,8 +19,6 @@ public class Growl
         {
         }
 
-        return;
-
         // Dispatcher.UIThread.Invoke(() =>
         //     App.WindowNotificationManager?.Show(
         //         new Notification(title, message),
@@ -42,8 +40,6 @@ public class Growl
         catch
         {
         }
-
-        return;
 
         // Dispatcher.UIThread.Invoke(() =>
         //     App.WindowNotificationManager?.Show(
@@ -68,8 +64,6 @@ public class Growl
         {
         }
 
-        return;
-
         // Dispatcher.UIThread.Invoke(() =>
         //     App.WindowNotificationManager?.Show(
         //         new Notification(title, message),
@@ -92,7 +86,6 @@ public class Growl
         {
         }
 
-        return;
         // Dispatcher.UIThread.Invoke(() =>
         //     App.WindowNotificationManager?.Show(
         //         new Notification(title, message),

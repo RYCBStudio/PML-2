@@ -101,6 +101,8 @@ public class LogUtil : IDisposable
 
         var logEntry =
             $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] {message}";
+        
+        Console.WriteLine($"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[type]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
 
         _asyncWriter.EnqueueLog(logEntry);
     }

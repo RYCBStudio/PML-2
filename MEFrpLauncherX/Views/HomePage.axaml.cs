@@ -15,7 +15,7 @@ public partial class HomePage : ReactiveUserControl<HomePageViewModel>, IDisposa
     {
         InitializeComponent();
         DataContext = null;
-        this.AttachedToVisualTree += (s, e) =>
+        AttachedToVisualTree += (s, e) =>
         {
             if (!Design.IsDesignMode)
             {

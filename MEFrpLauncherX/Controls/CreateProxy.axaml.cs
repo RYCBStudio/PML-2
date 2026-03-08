@@ -243,7 +243,7 @@ public partial class CreateProxy : UserControl
             i--;
         }
 
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑请求头",
             Content = he,
@@ -270,7 +270,7 @@ public partial class CreateProxy : UserControl
         var de = new DomainsEdit();
         if (_createProxyViewModel.RemoteAddress is not null && _createProxyViewModel.RemoteAddress.Count != 0)
             de.Domains.AddRange(_createProxyViewModel.RemoteAddress);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
             Content = de,
@@ -290,7 +290,7 @@ public partial class CreateProxy : UserControl
     private async void CheckPort(object? sender, RoutedEventArgs e)
     {
         var psv = new PortScannerView();
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "查找 Minecraft 端口",
             Content = psv,
@@ -344,7 +344,7 @@ public partial class CreateProxy : UserControl
             i--;
         }
 
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑响应头",
             Content = he,
@@ -371,7 +371,7 @@ public partial class CreateProxy : UserControl
         var de = new DomainsEdit();
         if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
             de.Domains.AddRange(_createProxyViewModel.Locations);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑路径",
             Content = de,

@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+            </ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://MarkdownAIRender/Themes/Controls/_index.axaml" />
+                <ResourceInclude Source="avares://MarkdownAIRender/Themes/Shared/_index.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    <StyleInclude Source="avares://MarkdownAIRender/Themes/Styles/_index.axaml" />
+</Styles>

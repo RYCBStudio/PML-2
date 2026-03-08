@@ -5,6 +5,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Styling;
 using FluentAvalonia.Styling;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 
@@ -37,7 +39,6 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
         // splash = new SplashScreen();
         // splash.Show();
-        Core.App.Initialize();
     }
 
     public override void RegisterServices()
@@ -47,6 +48,7 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Core.App.Initialize();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             FATheme = Current?.Styles[4] as FluentAvaloniaTheme;
@@ -56,6 +58,11 @@ public class App : Application
                 "light" => ThemeVariant.Light,
                 _ => ThemeVariant.Default
             };
+            if (currentTheme == ThemeVariant.Dark)
+            {
+                LiveCharts.Configure(config =>
+                    config.AddDarkTheme());
+            }
             var ac = ConfigManager.CurrentConfig.AccentColor;
             if (!ac.IsNullOrEmpty())
             {

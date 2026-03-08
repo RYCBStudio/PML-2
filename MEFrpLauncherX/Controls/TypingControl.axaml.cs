@@ -62,7 +62,7 @@ public partial class TypingControl : UserControl
     {
         this.GetObservable(TextProperty).Skip(1).Subscribe(_ => UpdateText());
         InitializeComponent();
-        this.AttachedToVisualTree += (sender, args) => UpdateText();
+        AttachedToVisualTree += (sender, args) => UpdateText();
     }
 
     private async void UpdateText()

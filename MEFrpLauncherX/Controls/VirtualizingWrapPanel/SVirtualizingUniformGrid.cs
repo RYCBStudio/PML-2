@@ -16,7 +16,7 @@ namespace SVirtualizingWrapPanel
     {
         
         public static readonly StyledProperty<int> ColumnsProperty =
-  AvaloniaProperty.Register<SVirtualizingUniformGrid, int>(nameof(Columns), 0);
+  AvaloniaProperty.Register<SVirtualizingUniformGrid, int>(nameof(Columns));
 
         public int Columns
         {
@@ -34,7 +34,7 @@ namespace SVirtualizingWrapPanel
         }
 
         public static readonly StyledProperty<double> RowSpacingProperty =
- AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(RowSpacing), 0);
+ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(RowSpacing));
 
         public double RowSpacing
         {
@@ -43,7 +43,7 @@ namespace SVirtualizingWrapPanel
         }
 
         public static readonly StyledProperty<double> ColumnSpacingProperty =
-AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing), 0);
+AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing));
 
         public double ColumnSpacing
         {
@@ -59,7 +59,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
 
         public SVirtualizingUniformGrid()
         {
-            this.EffectiveViewportChanged += SVirtualizingUniformGrid_EffectiveViewportChanged; ;
+            EffectiveViewportChanged += SVirtualizingUniformGrid_EffectiveViewportChanged; ;
         }
 
         private void SVirtualizingUniformGrid_EffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
@@ -155,12 +155,12 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             {
                 return 0;
             }
-            var _elementWidth = (this.Bounds.Width - (Columns - 1) * ColumnSpacing) / Columns;
+            var _elementWidth = (Bounds.Width - (Columns - 1) * ColumnSpacing) / Columns;
             var _lineIndex = 0;
             var _endIndex = Items.Count - 1;
             var _index = startIndex;
             //Debug.WriteLine("_maxLineWidth" + _maxLineWidth);
-            double _maxLineWidth = this.Bounds.Width;
+            double _maxLineWidth = Bounds.Width;
             double _maxLineHeight = 0.0;
             if (_ElementDictionary.TryGetValue(_index, out var _firstElement))
             {

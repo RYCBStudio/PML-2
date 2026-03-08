@@ -13,7 +13,7 @@ public partial class ALPSettings : Window
     public ALPSettings()
     {
         InitializeComponent();
-        this.DataContext = new ALPSettingsViewModel();
+        DataContext = new ALPSettingsViewModel();
         SearchBox.ItemsSource = new List<string> { "/pid:", "/nid:", "/n:" }.OrderBy(x => x);
         SearchBox1.ItemsSource = new List<string> { "/pid:", "/nid:", "/n:" }.OrderBy(x => x);
     }
@@ -29,12 +29,12 @@ public partial class ALPSettings : Window
                         Name = proxy.proxyName, Id = proxy.proxyId, UseConfig = proxy.UseConfig, Config = proxy.Config,
                     })
                 .ToList()));
-        this.Close();
+        Close();
         Growl.Success("保存成功");
     }
 
     private void Close(object? sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
 }

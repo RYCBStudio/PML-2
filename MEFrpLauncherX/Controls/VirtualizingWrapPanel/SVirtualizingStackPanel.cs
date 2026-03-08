@@ -33,7 +33,7 @@ namespace SVirtualizingWrapPanel
 
         public SVirtualizingStackPanel()
         {
-            this.EffectiveViewportChanged += SVirtualizingStackPanel_EffectiveViewportChanged;
+            EffectiveViewportChanged += SVirtualizingStackPanel_EffectiveViewportChanged;
         }
 
         private void SVirtualizingStackPanel_EffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
@@ -187,7 +187,7 @@ namespace SVirtualizingWrapPanel
                     _CurrentLineHeight = 0;
                 }
                 _CurrentLineWidth = 0;
-                var _boundsWidth = this.Bounds.Width;
+                var _boundsWidth = Bounds.Width;
                 for (int i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
@@ -252,7 +252,7 @@ namespace SVirtualizingWrapPanel
                     _CurrentLineWidth = 0;
                 }
                 _CurrentLineHeight = 0;
-                var _boundsHeight = this.Bounds.Height;
+                var _boundsHeight = Bounds.Height;
                 for (int i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];

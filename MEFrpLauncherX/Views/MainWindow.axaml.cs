@@ -63,7 +63,7 @@ public partial class MainWindow : AppWindow, IDisposable
             "Transparent" => WindowTransparencyLevel.Transparent,
             _ => WindowTransparencyLevel.None
         };
-        this.TransparencyLevelHint = [preferredTLH];
+        TransparencyLevelHint = [preferredTLH];
 
         InitializeComponent();
         Loaded += OnLoaded;

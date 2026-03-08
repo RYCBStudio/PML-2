@@ -62,7 +62,7 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
         Paths.AddRange(paths);
-        this.DataContext = this;
+        DataContext = this;
         ConfigPresenter.Load(new FileStream(SelectedPath, FileMode.Open, FileAccess.Read));
         SetupSyntaxHighlighting(Path.GetExtension(SelectedPath));
     }

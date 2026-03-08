@@ -10,7 +10,7 @@ public partial class ProxyFloatSettings : Window
     public ProxyFloatSettings()
     {
         InitializeComponent();
-        this.Loaded += (sender, args) =>
+        Loaded += (sender, args) =>
         {
             PosBox.SelectedIndex = ConfigManager.CurrentConfig.PMSettings.Position switch
             {

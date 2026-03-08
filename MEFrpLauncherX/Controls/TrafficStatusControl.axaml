@@ -2,18 +2,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:avalonia="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:lvcore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
+             xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MEFrpLauncherX.Controls.TrafficStatusControl">
-    <Grid RowDefinitions="Auto, *">
-        <StackPanel Orientation="Horizontal" Spacing="5">
-            <TextBlock Text="时间范围:" VerticalAlignment="Center"/>
-            <ComboBox SelectionChanged="UpdateData" SelectedIndex="0">
-                <ComboBoxItem Content="最近7天" Tag="7"/>
-                <ComboBoxItem Content="最近15天" Tag="15"/>
-                <ComboBoxItem Content="最近30天" Tag="30"/>
+             x:Class="MEFrpLauncherX.Controls.TrafficStatusControl"
+             x:DataType="controls:TrafficStatusControlViewModel">
+    <Grid RowDefinitions="Auto, *" Margin="1" RowSpacing="2">
+        <StackPanel Orientation="Horizontal" Spacing="3">
+            <ComboBox SelectedItem="{Binding SelectedPeriod}" ItemsSource="{Binding Periods}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding StringFormat='最近{0}天'}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Margin="10 0 0 0 ">缩放(WIP): </TextBlock>
+            <ComboBox SelectedItem="{Binding ZoomMode}" ItemsSource="{Binding ZoomModes}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding }" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
-        <avalonia:AvaPlot Grid.Row="1" x:Name="avaPlot" PointerWheelChanged="OnPointerWheelChanged"/>
+        <TabStrip
+            Theme="{StaticResource AlternateTabStripTheme}"
+            ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}" SelectedIndex="{Binding SelectedType}"
+            HorizontalAlignment="Right" Classes="compact">
+            <TabStripItem>折线图</TabStripItem>
+            <TabStripItem>柱状图</TabStripItem>
+        </TabStrip>
+        <lvc:CartesianChart Grid.Row="1" LegendPosition="Top"
+                            ZoomMode="{Binding ZoomMode}" ZoomingSpeed="0.6"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            EasingFunction="{Binding Source={x:Static lvcore:EasingFunctions.SinInOut}}"
+                            Series="{Binding Series}" />
+        <Panel Grid.Row="1" Background="{DynamicResource ControlStrokeColorForStrongFillWhenOnImageBrush}"
+               IsVisible="{Binding IsLoading}">
+            <controls1:ProgressRing />
+        </Panel>
     </Grid>
 </UserControl>

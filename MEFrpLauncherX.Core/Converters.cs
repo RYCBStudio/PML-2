@@ -546,11 +546,13 @@ public class BytesToReadableConverterEx : IValueConverter
         {
             return FormatBytes(bytesLong);
         }
-        else if (value is int bytesInt)
+
+        if (value is int bytesInt)
         {
             return FormatBytes(bytesInt);
         }
-        else if (value is double bytesDouble)
+
+        if (value is double bytesDouble)
         {
             return FormatBytes((long)bytesDouble);
         }

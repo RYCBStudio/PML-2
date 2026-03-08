@@ -70,7 +70,7 @@ public partial class EditProxyWindow : Window
         _createProxyViewModel.ResponseHeaders = pr.ResponseHeaders;
         _createProxyViewModel.Locations = pr.Locations;
         _createProxyViewModel.RemoteAddress.AddRange(_proxy.Domains ?? []);
-        this.DataContext = _createProxyViewModel;
+        DataContext = _createProxyViewModel;
         SecurityOptionsSelect.SelectedIndex = GetSecurityOptions();
         HTTPBasicAuthNameBox.Text = pr.httpUser;
         HTTPBasicAuthPwdBox.Text = pr.httpPassword;
@@ -117,7 +117,7 @@ public partial class EditProxyWindow : Window
             i--;
         }
 
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑响应头",
             Content = he,
@@ -144,7 +144,7 @@ public partial class EditProxyWindow : Window
         var de = new DomainsEdit();
         if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
             de.Domains.AddRange(_createProxyViewModel.Locations);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑路径",
             Content = de,
@@ -217,7 +217,7 @@ public partial class EditProxyWindow : Window
             i--;
         }
 
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑请求头",
             Content = he,
@@ -247,7 +247,7 @@ public partial class EditProxyWindow : Window
         var enumerable = filteredDomains.ToList();
         if (filteredDomains is not null && enumerable.Count != 0)
             de.Domains.AddRange(enumerable);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
             Content = de,

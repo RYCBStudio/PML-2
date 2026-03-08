@@ -22,7 +22,7 @@ namespace SVirtualizingWrapPanel
 
         public SVirtualizingWrapPanel()
         {
-            this.EffectiveViewportChanged += VirtualizingWrapPanel_EffectiveViewportChanged;
+            EffectiveViewportChanged += VirtualizingWrapPanel_EffectiveViewportChanged;
         }
         private void VirtualizingWrapPanel_EffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
         {
@@ -115,7 +115,7 @@ namespace SVirtualizingWrapPanel
             var _endIndex = Items.Count - 1;
             var _index = startIndex;
             //Debug.WriteLine("_maxLineWidth" + _maxLineWidth);
-            double _maxLineWidth = this.Bounds.Width;
+            double _maxLineWidth = Bounds.Width;
             double _maxLineHeight = 0.0;
             if (_ElementDictionary.TryGetValue(_index, out var _firstElement))
             {
