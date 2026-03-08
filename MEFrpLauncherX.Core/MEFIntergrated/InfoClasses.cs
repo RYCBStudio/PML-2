@@ -67,19 +67,19 @@ public class InfoClasses
             set;
         }
 
-        public int[] trafficIn
+        public ulong[] trafficIn
         {
             get;
             set;
         }
 
-        public int[] trafficOut
+        public ulong[] trafficOut
         {
             get;
             set;
         }
 
-        public int[] totalTraffic
+        public ulong[] totalTraffic
         {
             get;
             set;

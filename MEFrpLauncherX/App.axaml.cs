@@ -14,17 +14,12 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-preview3";
+    public static string Version = "2.3.0-preview4";
 
-    public static string MEFrpVersion
-    {
-        get;
-        set;
-    } = "0.67.0_20260214_7d549bc1";
+    public const string MEFrpVersion = "0.67.0_20260214_7d549bc1";
 
     public static string Codename = "Fluorine";
     public static SplashScreen splash;
-    public static LogUtil LogService;
 
     public static FluentAvaloniaTheme? FATheme;
 
