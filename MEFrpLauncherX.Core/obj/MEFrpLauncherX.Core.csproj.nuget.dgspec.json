@@ -1218,6 +1218,10 @@
               "target": "Package",
               "version": "[113.0.0, )"
             },
+            "Sentry": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
             "SkiaSharp": {
               "target": "Package",
               "version": "[3.119.1, )"
@@ -1599,6 +1603,10 @@
             "RestSharp": {
               "target": "Package",
               "version": "[113.0.0, )"
+            },
+            "Sentry": {
+              "target": "Package",
+              "version": "[6.1.0, )"
             },
             "SkiaSharp": {
               "target": "Package",

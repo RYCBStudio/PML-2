@@ -235,7 +235,7 @@ public class UpdatePageViewModel : ViewModelBase
 // #endif
         // var versionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
         // var version = versionRegex.Match(App.Version);
-        if (latestVersion == preiewUpdateInfo.version)
+        if (VersionComparer.IsLessThan(updateInfo.version, preiewUpdateInfo.version) || VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.version) ||latestVersion == preiewUpdateInfo.version)
         {
             updateInfo = preiewUpdateInfo;
         }

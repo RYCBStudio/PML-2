@@ -12,12 +12,14 @@ using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.ViewModels.Commands;
 using Newtonsoft.Json;
 using ReactiveUI;
 using SecretLib;
+using Sentry;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -254,6 +256,26 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             OutBound = ProcessBoundSize(data.outBound);
             UserId = $"# {data.userId}";
             Group = data.friendlyGroup;
+
+            if (UserCache.CurrentUser?.Email.IsNullOrEmpty() == true)
+            {
+                UserCache.CurrentUser = new InfoClasses.UserInfo()
+                {
+                    group = UserCache.CurrentUser.group,
+                    username = UserCache.CurrentUser.username,
+                    token = UserCache.CurrentUser.token,
+                    Email = Email
+                };
+                
+                SentrySdk.ConfigureScope(scope =>
+                {
+                    scope.User = new SentryUser
+                    {
+                        Id = DeviceIdHelper.GetDeviceUniqueId(),
+                        Username = Email.EncodeToBase64()
+                    };
+                });
+            }
 
             // 用户组样式
             IsAdmin = data.group == "管理员";

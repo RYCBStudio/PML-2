@@ -17,6 +17,11 @@
                                        IsExpanded="True"
                                        IconSource="Image"
                                        ItemsSource="{Binding Items}" />
+            <controls:SettingsExpander Header="背景不透明度" Description="有些时候背景图片可能会影响观感，请选择一个不透明度来调整。">
+                <controls:SettingsExpander.Footer>
+                    <Slider Maximum="100" Minimum="0" Width="200" x:Name="OpacitySlider" ValueChanged="UpdateOpacity" />
+                </controls:SettingsExpander.Footer>
+            </controls:SettingsExpander>
             <controls:SettingsExpander Header="选择主题色" IconSource="ColorFill" IsExpanded="True">
                 <controls:SettingsExpanderItem>
                     <Grid ColumnDefinitions="*, *" RowDefinitions="*,*,*,*">

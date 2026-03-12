@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -13,6 +12,8 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using Newtonsoft.Json;
 using ReactiveUI.Avalonia;
+using Sentry;
+using static MEFrpLauncherX.Core.StringUtils;
 
 namespace MEFrpLauncherX;
 
@@ -30,12 +31,12 @@ internal sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        
-        AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
-        {
-            var assemblyPath = Path.Combine(AppContext.BaseDirectory, "assemblies", $"{assemblyName.Name}.dll");
-            return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
-        };
+        System.Console.OutputEncoding = Encoding.UTF8;
+        // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
+        // {
+        //     var assemblyPath = Path.Combine(AppContext.BaseDirectory, "assemblies", $"{assemblyName.Name}.dll");
+        //     return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
+        // };
 
         var file = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
         if (!DownloadHelper.ValidateFileSimple(file,
@@ -55,6 +56,21 @@ internal sealed class Program
             });
             SplashProcess = p;
         }
+
+        SentrySdk.Init(options =>
+        {
+            // A Sentry Data Source Name (DSN) is required.
+            // See https://docs.sentry.io/product/sentry-basics/dsn-explainer/
+            // You can set it in the SENTRY_DSN environment variable, or you can set it in code here.
+            options.Dsn =
+                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560";
+#if DEBUG
+            options.Debug = true;
+#endif
+            //options.SampleRate = 0.3f;
+            options.Release = App.Version;
+            options.AutoSessionTracking = true;
+        });
 #if !DEBUG
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         AppDomain.CurrentDomain.UnhandledException += ProcessUnhandledExceptions;
@@ -173,6 +189,7 @@ internal sealed class Program
         }
 
         HandleException(ex);
+        SentrySdk.CaptureException(ex);
     }
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
@@ -222,12 +239,6 @@ internal sealed class Program
             Arguments = $"{encodedExInfo} {Base64Encode(crashLog)}",
             UseShellExecute = true
         });
-    }
-
-    public static string Base64Encode(string plainText)
-    {
-        var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-        return Convert.ToBase64String(plainTextBytes);
     }
 
     public static string GetPlatformExe(string filename, bool fullPath = false) => fullPath

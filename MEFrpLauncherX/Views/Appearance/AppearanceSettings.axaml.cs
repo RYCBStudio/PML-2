@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -20,12 +21,20 @@ public partial class AppearanceSettings : Window
     public AppearanceSettings()
     {
         InitializeComponent();
+        OpacitySlider.Value = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity * 100;
     }
 
     private void ColorView_OnColorChanged(object? sender, ColorChangedEventArgs e)
     {
         App.FATheme?.CustomAccentColor = e.NewColor;
         ConfigManager.UpdateConfig(cfg => cfg.AccentColor = e.NewColor.ToString());
+    }
+
+    private void UpdateOpacity(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        var o = e.NewValue / 100;
+        ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.LayerOpacity = o);
+        MainWindow.Instance.MainLayer.Opacity = o;
     }
 }
 
@@ -136,6 +145,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
                     ImagePaths.Remove(image);
                     continue;
                 }
+
                 var img = new Bitmap(image);
                 Images.Add(img);
                 Imgs.Add(image, img);

@@ -158,16 +158,16 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<ulong>()
+                    newSeries.Add(new LineSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(trafficIn),
+                        Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "入站流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<ulong>()
+                    newSeries.Add(new ColumnSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(trafficIn),
+                        Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "入站流量"
                     }); break;
@@ -179,16 +179,16 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<ulong>()
+                    newSeries.Add(new LineSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(trafficOut),
+                        Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "出站流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<ulong>()
+                    newSeries.Add(new ColumnSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(trafficOut),
+                        Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "出站流量"
                     }); break;
@@ -200,16 +200,16 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<ulong>()
+                    newSeries.Add(new LineSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(totalTraffic),
+                        Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "总流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<ulong>()
+                    newSeries.Add(new ColumnSeries<long>()
                     {
-                        Values = new AvaloniaList<ulong>(totalTraffic),
+                        Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "总流量"
                     }); break;

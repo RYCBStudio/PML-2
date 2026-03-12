@@ -314,6 +314,12 @@ namespace MEFrpLauncherX.Core
 
     public class BackgroundSettings
     {
+        public double LayerOpacity
+        {
+            get;
+            set;
+        } = 0.5;
+        
         public string BackgroundImage
         {
             get;

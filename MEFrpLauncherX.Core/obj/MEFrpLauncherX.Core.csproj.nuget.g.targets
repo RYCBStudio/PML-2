@@ -6,6 +6,7 @@
     <Import Project="$(NuGetPackageRoot)\harfbuzzsharp.nativeassets.webassembly\8.3.1.1\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)\harfbuzzsharp.nativeassets.webassembly\8.3.1.1\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.targets')" />
     <Import Project="$(NuGetPackageRoot)\avalonia.buildservices\11.3.2\buildTransitive\Avalonia.BuildServices.targets" Condition="Exists('$(NuGetPackageRoot)\avalonia.buildservices\11.3.2\buildTransitive\Avalonia.BuildServices.targets')" />
     <Import Project="$(NuGetPackageRoot)\avalonia\11.3.11\buildTransitive\Avalonia.targets" Condition="Exists('$(NuGetPackageRoot)\avalonia\11.3.11\buildTransitive\Avalonia.targets')" />
+    <Import Project="$(NuGetPackageRoot)\sentry\6.1.0\buildTransitive\Sentry.targets" Condition="Exists('$(NuGetPackageRoot)\sentry\6.1.0\buildTransitive\Sentry.targets')" />
     <Import Project="$(NuGetPackageRoot)\microsoft.extensions.logging.abstractions\8.0.3\buildTransitive\net6.0\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('$(NuGetPackageRoot)\microsoft.extensions.logging.abstractions\8.0.3\buildTransitive\net6.0\Microsoft.Extensions.Logging.Abstractions.targets')" />
   </ImportGroup>
   <ImportGroup Condition=" '$(TargetFramework)' == 'net9.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
@@ -14,6 +15,7 @@
     <Import Project="$(NuGetPackageRoot)\harfbuzzsharp.nativeassets.webassembly\8.3.1.1\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)\harfbuzzsharp.nativeassets.webassembly\8.3.1.1\buildTransitive\netstandard1.0\HarfBuzzSharp.NativeAssets.WebAssembly.targets')" />
     <Import Project="$(NuGetPackageRoot)\avalonia.buildservices\11.3.2\buildTransitive\Avalonia.BuildServices.targets" Condition="Exists('$(NuGetPackageRoot)\avalonia.buildservices\11.3.2\buildTransitive\Avalonia.BuildServices.targets')" />
     <Import Project="$(NuGetPackageRoot)\avalonia\11.3.11\buildTransitive\Avalonia.targets" Condition="Exists('$(NuGetPackageRoot)\avalonia\11.3.11\buildTransitive\Avalonia.targets')" />
+    <Import Project="$(NuGetPackageRoot)\sentry\6.1.0\buildTransitive\Sentry.targets" Condition="Exists('$(NuGetPackageRoot)\sentry\6.1.0\buildTransitive\Sentry.targets')" />
     <Import Project="$(NuGetPackageRoot)\microsoft.extensions.logging.abstractions\8.0.3\buildTransitive\net6.0\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('$(NuGetPackageRoot)\microsoft.extensions.logging.abstractions\8.0.3\buildTransitive\net6.0\Microsoft.Extensions.Logging.Abstractions.targets')" />
   </ImportGroup>
 </Project>

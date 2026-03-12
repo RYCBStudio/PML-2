@@ -14,6 +14,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using RYCB.PML.MEFrpCaptchaLib;
+using Sentry;
 
 namespace MEFrpLauncherX.Views;
 
@@ -138,7 +139,7 @@ public partial class LoginPage : UserControl
                     {
                         username = userInfo.data.username,
                         token = userInfo.data.token,
-                        group = userInfo.data.group
+                        group = userInfo.data.group,
                     };
                     MainWindow.Instance.LoginBackground.IsVisible = false;
                     MainWindowViewModel.Instance.IsLoggedIn = true;
@@ -190,6 +191,18 @@ public partial class LoginPage : UserControl
         MainWindowViewModel.Instance.IsLoggedIn = true;
         MainWindow.Instance.LoginBackground.IsVisible = false;
         var currentUser = UserCache.CurrentUser;
+                
+        if (currentUser?.Email.IsNullOrEmpty() == false)
+        {
+            SentrySdk.ConfigureScope(scope =>
+            {
+                scope.User = new SentryUser
+                {
+                    Id = DeviceIdHelper.GetDeviceUniqueId(),
+                    Username = currentUser?.Email.EncodeToBase64()
+                };
+            });
+        }
         Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
         MainWindow.Instance.MainContentControl.Content = null;
         MainWindow.Instance.MainContentControl.Content = new MainPageFrame();

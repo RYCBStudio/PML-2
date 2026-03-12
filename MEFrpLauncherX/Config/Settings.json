@@ -8,8 +8,9 @@
   "AutoLaunch": false,
   "AutoLaunchProxies": [],
   "ExpireDays": 180,
-  "Theme": "Dark",
+  "Theme": "System",
   "BackgroundSettings": {
+    "LayerOpacity": 0.6,
     "BackgroundImage": "",
     "Stretch": "Uniform",
     "TileMode": "disabled"
@@ -17,9 +18,9 @@
   "CaptchaMode": "implicit",
   "UpdateSettings":{
     "AutoCheck": true,
-    "Channel": "Stable",
+    "Channel": "Preview",
     "Method": "ds",
-    "KeepProfile": true
+    "KeepProfile": false
   },
   "DownloadSource": "TPCA",
   "AccentColor": "",
@@ -27,5 +28,5 @@
     "Position": "lt",
     "Enabled": false
   },
-  "DoNotShowSuccessMsg": false
+  "DoNotShowSuccessMsg": true
 }

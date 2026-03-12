@@ -1,4 +1,6 @@
-﻿namespace MEFrpLauncherX.Core.MEFIntergrated;
+﻿using Newtonsoft.Json;
+
+namespace MEFrpLauncherX.Core.MEFIntergrated;
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 public class InfoClasses
 {
@@ -67,19 +69,19 @@ public class InfoClasses
             set;
         }
 
-        public ulong[] trafficIn
+        public long[] trafficIn
         {
             get;
             set;
         }
 
-        public ulong[] trafficOut
+        public long[] trafficOut
         {
             get;
             set;
         }
 
-        public ulong[] totalTraffic
+        public long[] totalTraffic
         {
             get;
             set;
@@ -553,6 +555,13 @@ public class Proxies
         /// 用户名
         /// </summary>
         public string username
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public string Email
         {
             get;
             set;

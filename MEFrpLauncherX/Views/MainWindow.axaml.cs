@@ -120,6 +120,8 @@ public partial class MainWindow : AppWindow, IDisposable
                         : Brushes.White;
         }
 
+        MainLayer.Opacity = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity;
+
         if (OperatingSystem.IsLinux() || (Environment.OSVersion.Version.Build <= 22000 &&
                                           ConfigManager.CurrentConfig.Skin.ToUpper(0) == "Mica"
             ))

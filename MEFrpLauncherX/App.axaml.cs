@@ -14,7 +14,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-preview4";
+    public static string Version = "2.3.0-rc1";
 
     public const string MEFrpVersion = "0.67.0_20260214_7d549bc1";
 
@@ -53,11 +53,11 @@ public class App : Application
                 "light" => ThemeVariant.Light,
                 _ => ThemeVariant.Default
             };
-            if (currentTheme == ThemeVariant.Dark)
-            {
-                LiveCharts.Configure(config =>
-                    config.AddDarkTheme());
-            }
+            LiveCharts.Configure(config =>
+                {
+                    config.UseDefaults();
+                }
+            );
             var ac = ConfigManager.CurrentConfig.AccentColor;
             if (!ac.IsNullOrEmpty())
             {
