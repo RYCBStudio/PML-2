@@ -5,7 +5,10 @@ namespace MEFrpLauncherX.Core
     public static class ConfigManager
     {
         private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
-        private static readonly string ConfigPath = Path.Combine(ConfigDirectory, "Settings.json");
+        public static string ConfigPath
+        {
+            get;
+        } = Path.Combine(ConfigDirectory, "Settings.json");
 
         private static AppConfig _currentConfig;
         private static readonly object _lock = new();
@@ -54,6 +57,24 @@ namespace MEFrpLauncherX.Core
             {
                 lock (_lock)
                 {
+                    var updateBakFile = ConfigPath + ".bak.update";
+                    if (File.Exists(updateBakFile) &&
+                        DateTime.Now.Subtract(File.GetLastWriteTime(ConfigPath)).TotalHours <= 1)
+                    {
+                        var _bak_json = File.ReadAllText(updateBakFile);
+                        var _bak_config = JsonConvert.DeserializeObject<AppConfig>(_bak_json);
+
+                        MergeConfig(_bak_config, _currentConfig);
+
+                        try
+                        {
+                            File.Delete(updateBakFile);
+                        }
+                        catch
+                        {
+                        }
+                    }
+
                     var json = File.ReadAllText(ConfigPath);
                     _currentConfig = JsonConvert.DeserializeObject<AppConfig>(json);
                 }
@@ -65,6 +86,101 @@ namespace MEFrpLauncherX.Core
                 App.CurrentLogger?.Log($"加载配置文件失败，使用默认配置: {ex.Message}",
                     module: EnumLogModule.Custom, customModuleName: "配置管理");
             }
+        }
+
+
+        private static void MergeConfig(AppConfig source, AppConfig target)
+        {
+            if (source == null || target == null) return;
+
+            if (!source.PrivacyAgreed && target.PrivacyAgreed)
+                source.PrivacyAgreed = target.PrivacyAgreed;
+
+            if (!source.IsTelemetryEnabled && target.IsTelemetryEnabled)
+                source.IsTelemetryEnabled = target.IsTelemetryEnabled;
+
+            if (string.IsNullOrEmpty(source.Skin) && !string.IsNullOrEmpty(target.Skin))
+                source.Skin = target.Skin;
+
+            if (!source.KickWithoutDisable && target.KickWithoutDisable)
+                source.KickWithoutDisable = target.KickWithoutDisable;
+
+            if (!source.HideInsteadOfClose && target.HideInsteadOfClose)
+                source.HideInsteadOfClose = target.HideInsteadOfClose;
+
+            if (!source.ParallelDownload && target.ParallelDownload)
+                source.ParallelDownload = target.ParallelDownload;
+
+            if (source.ParallelCount == 0 && target.ParallelCount != 0)
+                source.ParallelCount = target.ParallelCount;
+
+            if (!source.AutoStartup && target.AutoStartup)
+                source.AutoStartup = target.AutoStartup;
+
+            if (!source.AutoLaunch && target.AutoLaunch)
+                source.AutoLaunch = target.AutoLaunch;
+
+            if (source.AutoLaunchProxies != null && target.AutoLaunchProxies != null &&
+                target.AutoLaunchProxies.Count > 0 && source.AutoLaunchProxies.Count == 0)
+                source.AutoLaunchProxies = target.AutoLaunchProxies;
+
+            if (source.ExpireDays == 0 && target.ExpireDays != 0)
+                source.ExpireDays = target.ExpireDays;
+
+            if (!source.DoNotShowSuccessMsg && target.DoNotShowSuccessMsg)
+                source.DoNotShowSuccessMsg = target.DoNotShowSuccessMsg;
+
+            if (string.IsNullOrEmpty(source.Theme) && !string.IsNullOrEmpty(target.Theme))
+                source.Theme = target.Theme;
+
+            if (string.IsNullOrEmpty(source.AccentColor) && !string.IsNullOrEmpty(target.AccentColor))
+                source.AccentColor = target.AccentColor;
+
+            if (string.IsNullOrEmpty(source.CaptchaMode) && !string.IsNullOrEmpty(target.CaptchaMode))
+                source.CaptchaMode = target.CaptchaMode;
+
+            if (string.IsNullOrEmpty(source.DownloadSource) && !string.IsNullOrEmpty(target.DownloadSource))
+                source.DownloadSource = target.DownloadSource;
+
+            if (source.UpdateSettings == null && target.UpdateSettings != null)
+                source.UpdateSettings = target.UpdateSettings;
+            else if (source.UpdateSettings != null && target.UpdateSettings != null)
+                MergeUpdateSettings(source.UpdateSettings, target.UpdateSettings);
+
+            if (source.BackgroundSettings == null && target.BackgroundSettings != null)
+                source.BackgroundSettings = target.BackgroundSettings;
+            else if (source.BackgroundSettings != null && target.BackgroundSettings != null)
+                MergeBackgroundSettings(source.BackgroundSettings, target.BackgroundSettings);
+
+            if (source.PMSettings == null && target.PMSettings != null)
+                source.PMSettings = target.PMSettings;
+        }
+
+        private static void MergeUpdateSettings(UpdateSettings source, UpdateSettings target)
+        {
+            if (!source.AutoCheck && target.AutoCheck)
+                source.AutoCheck = target.AutoCheck;
+
+            if (source.Method != target.Method)
+                source.Method = target.Method;
+
+            if (source.Channel != target.Channel)
+                source.Channel = target.Channel;
+        }
+
+        private static void MergeBackgroundSettings(BackgroundSettings source, BackgroundSettings target)
+        {
+            if (string.IsNullOrEmpty(source.BackgroundImage) && !string.IsNullOrEmpty(target.BackgroundImage))
+                source.BackgroundImage = target.BackgroundImage;
+
+            if (string.IsNullOrEmpty(source.Stretch) && !string.IsNullOrEmpty(target.Stretch))
+                source.Stretch = target.Stretch;
+
+            if (string.IsNullOrEmpty(source.TileMode) && !string.IsNullOrEmpty(target.TileMode))
+                source.TileMode = target.TileMode;
+
+            if (source.LayerOpacity == 0 && target.LayerOpacity != 0)
+                source.LayerOpacity = target.LayerOpacity;
         }
 
         /// <summary>
@@ -155,23 +271,59 @@ namespace MEFrpLauncherX.Core
         {
             return new AppConfig
             {
-                Skin = "Mica",
-                KickWithoutDisable = false,
+                PrivacyAgreed = false,
+                IsTelemetryEnabled = false,
+                Skin = "None",
+                KickWithoutDisable = true,
                 HideInsteadOfClose = true,
                 ParallelDownload = true,
-                ParallelCount = 8,
+                ParallelCount = 16,
                 AutoStartup = false,
                 AutoLaunch = false,
                 AutoLaunchProxies = [],
+                ExpireDays = 30,
+                DoNotShowSuccessMsg = true,
                 Theme = "Dark",
-                ExpireDays = 7
+                AccentColor = null,
+                CaptchaMode = "implicit",
+                DownloadSource = "TPCA",
+                UpdateSettings = new UpdateSettings
+                {
+                    AutoCheck = true,
+                    Channel = "Preview",
+                    Method = "ds",
+                    KeepProfile = true
+                },
+                BackgroundSettings = new BackgroundSettings
+                {
+                    LayerOpacity = 0.5,
+                    BackgroundImage = null,
+                    TileMode = null,
+                    Stretch = null
+                },
+                PMSettings = new PFSConfig
+                {
+                    Position = "rt",
+                    Enabled = false
+                }
             };
         }
     }
 
     public class AppConfig
     {
-        
+        public bool PrivacyAgreed
+        {
+            get;
+            set;
+        }
+
+        public bool IsTelemetryEnabled
+        {
+            get;
+            set;
+        }
+
         public string Skin
         {
             get;
@@ -217,7 +369,7 @@ namespace MEFrpLauncherX.Core
         public List<ALPConfig> AutoLaunchProxies
         {
             get;
-            init;
+            set;
         }
 
         public int ExpireDays
@@ -259,7 +411,7 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         }
-        
+
         public UpdateSettings UpdateSettings
         {
             get;
@@ -271,7 +423,7 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         }
-        
+
 
         public PFSConfig PMSettings
         {
@@ -287,7 +439,7 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         }
-        
+
         public string Channel
         {
             get;
@@ -319,7 +471,7 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         } = 0.5;
-        
+
         public string BackgroundImage
         {
             get;
@@ -337,6 +489,12 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         } = "disabled";
+
+        public bool ShouldFillTitleBar
+        {
+            get;
+            set;
+        }
     }
 
     public class PFSConfig
@@ -353,7 +511,7 @@ namespace MEFrpLauncherX.Core
             set;
         }
     }
-    
+
     public class ALPConfig
     {
         public string Name
@@ -361,6 +519,7 @@ namespace MEFrpLauncherX.Core
             get;
             set;
         }
+
         public int Id
         {
             get;

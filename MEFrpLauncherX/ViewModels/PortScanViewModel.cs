@@ -1,11 +1,13 @@
 // PortScannerViewModel.cs
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Data.Converters;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using ReactiveUI;
@@ -153,16 +155,16 @@ namespace MEFrpLauncherX.ViewModels
                 _cancellationTokenSource = new CancellationTokenSource();
                 ClearResults();
 
-                int start = int.Parse(StartPort);
-                int end = int.Parse(EndPort);
-                int totalPorts = end - start + 1;
-                int scannedPorts = 0;
+                var start = int.Parse(StartPort);
+                var end = int.Parse(EndPort);
+                var totalPorts = end - start + 1;
+                var scannedPorts = 0;
 
                 var ports = Enumerable.Range(start, totalPorts).ToList();
 
                 // 分批扫描，避免阻塞UI
-                int batchSize = 50;
-                for (int i = 0; i < ports.Count; i += batchSize)
+                var batchSize = 50;
+                for (var i = 0; i < ports.Count; i += batchSize)
                 {
                     if (_cancellationTokenSource.Token.IsCancellationRequested)
                         break;
@@ -280,8 +282,8 @@ namespace MEFrpLauncherX.ViewModels
                 return false;
             }
 
-            if (!int.TryParse(StartPort, out int start) ||
-                !int.TryParse(EndPort, out int end))
+            if (!int.TryParse(StartPort, out var start) ||
+                !int.TryParse(EndPort, out var end))
             {
                 StatusMessage = "端口号必须为数字";
                 return false;
@@ -318,29 +320,29 @@ namespace MEFrpLauncherX.ViewModels
     }
 
     // 转换器（需要在App.axaml中注册）
-    public class BoolToColorConverter : Avalonia.Data.Converters.IValueConverter
+    public class BoolToColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value is bool b && b ? "#4CAF50" : "#F44336";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class BoolToStatusConverter : Avalonia.Data.Converters.IValueConverter
+    public class BoolToStatusConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value is bool b && b ? "开放" : "关闭";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             throw new NotImplementedException();
         }

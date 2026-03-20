@@ -22,6 +22,7 @@ public partial class AppearanceSettings : Window
     {
         InitializeComponent();
         OpacitySlider.Value = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity * 100;
+        FillModeBox.SelectedIndex = ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar ? 0 : 1;
     }
 
     private void ColorView_OnColorChanged(object? sender, ColorChangedEventArgs e)
@@ -35,6 +36,53 @@ public partial class AppearanceSettings : Window
         var o = e.NewValue / 100;
         ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.LayerOpacity = o);
         MainWindow.Instance.MainLayer.Opacity = o;
+    }
+
+    private void UpdateBackgroundFillMode(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!_init || sender == null)
+        {
+            return;
+        }
+
+        var sft = FillModeBox.SelectedIndex == 0;
+        ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.ShouldFillTitleBar = sft);
+        UpdateBackground(sft);
+    }
+
+    public static void UpdateBackground(bool sft)
+    {
+        if (!sft)
+        {
+            MainWindow.Instance.MainBackground.Show();
+            MainWindow.Instance.MainBackground.Source =
+                new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
+            MainWindow.Instance.MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+            {
+                "None" => Stretch.None,
+                "Stretch" => Stretch.Fill,
+                "Uniform" => Stretch.Uniform,
+                "UniformToFill" => Stretch.UniformToFill,
+                _ => Stretch.None
+            };
+        }
+        else
+        {
+            MainWindow.Instance.MainBackground.Hide();
+            MainWindow.Instance.Background =
+                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
+                {
+                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                    {
+                        "None" => Stretch.None,
+                        "Stretch" => Stretch.Fill,
+                        "Uniform" => Stretch.Uniform,
+                        "UniformToFill" => Stretch.UniformToFill,
+                        _ => Stretch.None
+                    },
+                };
+            MainWindow.Instance.InvalidateVisual();
+        }
     }
 }
 
@@ -98,18 +146,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
             var img = Imgs.FirstOrDefault(x => x.Value == field);
             var file = HttpUtility.UrlDecode(img.Key);
             ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(file))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
             Core.App.MainWindow.InvalidateVisual();
         }
     }
@@ -192,6 +229,7 @@ public class FooterButtonSettingsItem : SettingsItemBase
         File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), string.Empty);
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = string.Empty);
         Core.App.MainWindow?.Background = null;
+        MainWindow.Instance.MainLayer.Background = null;
         RecentImagesSettingsItem.Instance?.Images?.Clear();
         RecentImagesSettingsItem.Instance?.Imgs?.Clear();
     }
@@ -220,24 +258,14 @@ public class FooterButtonSettingsItem : SettingsItemBase
                 await File.AppendAllLinesAsync(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), [file]);
             }
 
-            ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
+            await ConfigManager.UpdateConfigAsync(config => config.BackgroundSettings.BackgroundImage = file);
             var img = new Bitmap(file);
             RecentImagesSettingsItem.Instance?.Images?.Add(img);
             RecentImagesSettingsItem.Instance?.Imgs?.Add(file, img);
             RecentImagesSettingsItem.Instance?.ImagePaths?.Add(file);
             RecentImagesSettingsItem.Instance?.SelectedImage = img;
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(file))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+            
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
         }
 
         Core.App.MainWindow.InvalidateVisual();

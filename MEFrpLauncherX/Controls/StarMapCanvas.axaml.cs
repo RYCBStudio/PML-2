@@ -95,7 +95,7 @@ public partial class StarMapCanvas : UserControl
         if (!_isNightMode || double.IsNaN(Width) || double.IsNaN(Height)) return;
 
         // 随机生成节点
-        for (int i = 0; i < NodeCount; i++)
+        for (var i = 0; i < NodeCount; i++)
         {
             var node = new StarNode
             {
@@ -146,9 +146,9 @@ public partial class StarMapCanvas : UserControl
         }
 
         // 绘制节点间的连接线条（距离小于阈值时显示）
-        for (int i = 0; i < _nodes.Count; i++)
+        for (var i = 0; i < _nodes.Count; i++)
         {
-            for (int j = i + 1; j < _nodes.Count; j++)
+            for (var j = i + 1; j < _nodes.Count; j++)
             {
                 var node1 = _nodes[i];
                 var node2 = _nodes[j];

@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -57,6 +58,16 @@ public partial class TypingControl : UserControl
     }
 
     private bool _isFirstUpdate = true;
+    
+    private string _previousText;
+    
+    private CancellationTokenSource _currentAnimationCts;
+    
+    private static readonly Random _random = new();
+    
+    private static readonly char[] _specialChars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$%^&*(){}[]|\\:;.,?/".ToCharArray();
+    
+    private static readonly Range _chineseRange = new Range('\u4e00', '\u9fA5');
 
     public TypingControl()
     {
@@ -67,22 +78,80 @@ public partial class TypingControl : UserControl
 
     private async void UpdateText()
     {
-        // TODO: 动画
-        IsBusy = true;
-        if (!_isFirstUpdate)
+        if (Text == _previousText)
         {
-            DisplayingText = "";
-            await Task.Delay(TimeSpan.FromMilliseconds(150));
-            for (int i = 0; i < Text.Length; i++)
-            {
-                DisplayingText = Text[..i] + ((i / 10) % 2 == 0 ? "_" : "");
-                await Task.Delay(TimeSpan.FromMilliseconds(40));
-            }
+            return;
         }
+        
+        await _currentAnimationCts.CancelAsync();
+        _currentAnimationCts = new CancellationTokenSource();
+        var ct = _currentAnimationCts.Token;
+        
+        var isEmpty = string.IsNullOrEmpty(Text) || Text =="   —— 「」";
+        
+        try
+        {
+            if (!isEmpty)
+            {
+                _previousText = Text;
+                IsBusy = true;
+                await Task.Delay(TimeSpan.FromMilliseconds(150), ct);
+                
+                for (var i = 0; i < Text.Length; i++)
+                {
+                    if (ct.IsCancellationRequested)
+                        return;
+                        
+                    var currentChar = Text[i];
+                    string placeholder;
+                    
+                    if (currentChar >= '\u4e00' && currentChar <= '\u9fA5')
+                    {
+                        // 汉字：随机显示一个汉字
+                        var chineseIndex = _random.Next(_chineseRange.Start.Value, _chineseRange.End.Value + 1);
+                        placeholder = ((char)chineseIndex).ToString();
+                    }
+                    else if ((currentChar >= 'A' && currentChar <= 'Z') || 
+                             (currentChar >= 'a' && currentChar <= 'z') || 
+                             (currentChar >= '0' && currentChar <= '9'))
+                    {
+                        // 英文字母或数字：随机显示特殊字符
+                        placeholder = _specialChars[_random.Next(_specialChars.Length)].ToString();
+                    }
+                    else
+                    {
+                        // 其他字符：显示 _
+                        placeholder = "_";
+                    }
+                    
+                    DisplayingText = Text[..i] + placeholder;
+                    await Task.Delay(TimeSpan.FromMilliseconds(40), ct);
+                }
+            }
+            else
+            {
+                IsBusy = true;
+                await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
+                
+                for (var i = DisplayingText?.Length ?? 0; i > 0; i--)
+                {
+                    if (ct.IsCancellationRequested)
+                        return;
+                        
+                    DisplayingText = DisplayingText?[..(i - 1)] ?? "_";
+                    await Task.Delay(TimeSpan.FromMilliseconds(20), ct);
+                }
+                
+                _previousText = Text;
+            }
 
-        _isFirstUpdate = false;
+            _isFirstUpdate = false;
 
-        DisplayingText = Text;  
-        IsBusy = false;
+            DisplayingText = Text;  
+            IsBusy = false;
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 }

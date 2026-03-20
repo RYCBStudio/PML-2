@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MarkdownAIRender.Controls.MarkdownRender;
+using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -19,7 +20,6 @@ using MsBox.Avalonia.ViewModels.Commands;
 using Newtonsoft.Json;
 using ReactiveUI;
 using SecretLib;
-using Sentry;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -206,6 +206,14 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
         IsLoading = LoadDataCommand.IsExecuting
             .ToProperty(this, x => x.IsLoading).Value;
+        LoadDataCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            Core.App.CurrentLogger?.Error(ex);
+        });
+        SignCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            Core.App.CurrentLogger?.Error(ex);
+        });
         // 初始加载数据
         MainPageFrameViewModel.Instance?.IsLoading = false;
         _ = LoadUserDataAsync();
@@ -224,13 +232,13 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         var ss = await MEFApiConverter.GetSystemStatusAsync();
         SystemStatus = ss.data?.status ?? -1;
         SystemStatusRemark = ss.data?.remark ?? $"网络服务不可用，返回代码: {ss.code}";
-        if (ss.code != 200)
+        var networkOk = ss.code == 200;
+        if (!networkOk)
         {
             IsLoading = false;
             IsLoadingNotice = false;
-            return;
         }
-        
+
         var platform = await MEFApiConverter.GetPublicInfoAsync();
         if (platform.code == 200)
         {
@@ -243,97 +251,85 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
         try
         {
-            var res = await Task.Run(async () => await MEFApiConverter.GetExtraUserInfoAsync());
-            var data = res.data;
-            Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
-
-            UserName = data.username;
-            Email = data.email;
-            RegisterTime = DateTimeOffset.FromUnixTimeSeconds(data.regTime).LocalDateTime
-                .ToString("yyyy-MM-dd HH:mm:ss");
-            Traffic = ProcessFileSize(data.traffic);
-            InBound = ProcessBoundSize(data.inBound);
-            OutBound = ProcessBoundSize(data.outBound);
-            UserId = $"# {data.userId}";
-            Group = data.friendlyGroup;
-
-            if (UserCache.CurrentUser?.Email.IsNullOrEmpty() == true)
+            if (networkOk)
             {
-                UserCache.CurrentUser = new InfoClasses.UserInfo()
+                var res = await Task.Run(async () => await MEFApiConverter.GetExtraUserInfoAsync());
+                var data = res.data;
+                Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
+
+                UserName = data.username;
+                Email = data.email;
+                RegisterTime = DateTimeOffset.FromUnixTimeSeconds(data.regTime).LocalDateTime
+                    .ToString("yyyy-MM-dd HH:mm:ss");
+                Traffic = ProcessFileSize(data.traffic);
+                InBound = ProcessBoundSize(data.inBound);
+                OutBound = ProcessBoundSize(data.outBound);
+                UserId = $"# {data.userId}";
+                Group = data.friendlyGroup;
+
+                if (UserCache.CurrentUser?.Email.IsNullOrEmpty() == true)
                 {
-                    group = UserCache.CurrentUser.group,
-                    username = UserCache.CurrentUser.username,
-                    token = UserCache.CurrentUser.token,
-                    Email = Email
-                };
-                
-                SentrySdk.ConfigureScope(scope =>
-                {
-                    scope.User = new SentryUser
+                    UserCache.CurrentUser = new InfoClasses.UserInfo
                     {
-                        Id = DeviceIdHelper.GetDeviceUniqueId(),
-                        Username = Email.EncodeToBase64()
+                        group = UserCache.CurrentUser.group,
+                        username = UserCache.CurrentUser.username,
+                        token = UserCache.CurrentUser.token,
+                        Email = Email
                     };
-                });
-            }
+                    AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), UserCache.CurrentUser.username,
+                        UserCache.CurrentUser.Email);
+                }
 
-            // 用户组样式
-            IsAdmin = data.group == "管理员";
+                // 用户组样式
+                IsAdmin = data.group == "管理员";
 
-            // 实名状态
-            if (data.isRealname)
-            {
-                RealNameStatus = "已实名";
-                IsRealNamed = true;
-            }
-            else
-            {
-                RealNameStatus = "未实名";
-                IsRealNamed = false;
-            }
-
-            // 账户状态
-            AccountStatus = data.status switch
-            {
-                0 => "正常",
-                1 => "封禁",
-                2 => "流量超限",
-                _ => "未知状态"
-            };
-
-            IsBanned = data.status == 1;
-
-            // 签到按钮状态
-            CanSign = !data.todaySigned;
-            SignButtonText = !data.todaySigned ? "签到" : "已签到";
-
-            ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
-
-            // 加载公告
-            NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
-            
-            IsLoading = false;
-
-            IsLoadingNotice = true;
-            var notice  = await RYCBApiConverter.GetAllNoticeAsync();
-            SoftwareNotice.Clear();
-            if (notice.success)
-            {
-                SoftwareNotice.AddRange(notice.data);
-            }
-            
-            var popUp = await MEFApiConverter.GetPopupNoticeAsync();
-
-            Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
-            MainPageFrameViewModel.Instance?.IsLoading = false;
-            if (popUp?.data.IsNullOrEmpty() == false)
-            {
-                var markdownRender = new MarkdownRender
+                // 实名状态
+                if (data.isRealname)
                 {
-                    Value = popUp?.data
+                    RealNameStatus = "已实名";
+                    IsRealNamed = true;
+                }
+                else
+                {
+                    RealNameStatus = "未实名";
+                    IsRealNamed = false;
+                }
+
+                // 账户状态
+                AccountStatus = data.status switch
+                {
+                    0 => "正常",
+                    1 => "封禁",
+                    2 => "流量超限",
+                    _ => "未知状态"
                 };
-                await NoticeManager.CheckAndShowNotice(popUp?.data, markdownRender);
+
+                IsBanned = data.status == 1;
+
+                // 签到按钮状态
+                CanSign = !data.todaySigned;
+                SignButtonText = !data.todaySigned ? "签到" : "已签到";
+
+                ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
+
+                // 加载公告
+                NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
+
+                IsLoading = false;
+
+                var popUp = await MEFApiConverter.GetPopupNoticeAsync();
+
+                Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
+                MainPageFrameViewModel.Instance?.IsLoading = false;
+                if (popUp?.data.IsNullOrEmpty() == false)
+                {
+                    var markdownRender = new MarkdownRender
+                    {
+                        Value = popUp?.data
+                    };
+                    await NoticeManager.CheckAndShowNotice(popUp?.data, markdownRender);
+                }
             }
 
             if (Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
@@ -385,6 +381,14 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     td.Hide(TaskDialogStandardResult.OK);
                 });
                 File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
+            }
+
+            IsLoadingNotice = true;
+            var notice = await RYCBApiConverter.GetAllNoticeAsync();
+            SoftwareNotice.Clear();
+            if (notice.success)
+            {
+                SoftwareNotice.AddRange(notice.data);
             }
         }
         catch (Exception ex)

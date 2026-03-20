@@ -55,7 +55,7 @@ namespace MarkdownAIRender.Controls.Images
         {
             try
             {
-                int firstChr = fileStream.ReadByte();
+                var firstChr = fileStream.ReadByte();
                 if (firstChr != ('<' & 0xFF))
                     return false;
 
@@ -109,7 +109,7 @@ namespace MarkdownAIRender.Controls.Images
 
         private bool IsLocalFile(string input)
         {
-            if (Uri.TryCreate(input, UriKind.RelativeOrAbsolute, out Uri? uri))
+            if (Uri.TryCreate(input, UriKind.RelativeOrAbsolute, out var uri))
             {
                 if (uri.IsFile)
                     return true;
@@ -311,12 +311,12 @@ namespace MarkdownAIRender.Controls.Images
                 // 取 stroke
                 var strokeAttr = pathNode?.Attributes?["stroke"]?.Value; // "#cd0000"
                 // 取 stroke-width
-                double.TryParse(pathNode?.Attributes?["stroke-width"]?.Value, out double strokeWidth);
+                double.TryParse(pathNode?.Attributes?["stroke-width"]?.Value, out var strokeWidth);
                 // 取 fill
                 var fillAttr = pathNode?.Attributes?["fill"]?.Value;
                 // dur="3s" 
                 var durAttr = animateMotionNode.Attributes?["dur"]?.Value ?? "3s";
-                double durSeconds = ParseDurToSeconds(durAttr);
+                var durSeconds = ParseDurToSeconds(durAttr);
 
                 var repeatCountAttr = animateMotionNode.Attributes?["repeatCount"]?.Value ?? "indefinite";
 
@@ -327,8 +327,8 @@ namespace MarkdownAIRender.Controls.Images
                     .FirstOrDefault(n => n.Attributes?["attributeName"]?.Value == "fill");
 
                 string? fromColor = null, toColor = null;
-                double colorDurSeconds = durSeconds; // 如果没写dur,默认和 move动画时长一样
-                string colorRepeat = repeatCountAttr;
+                var colorDurSeconds = durSeconds; // 如果没写dur,默认和 move动画时长一样
+                var colorRepeat = repeatCountAttr;
 
                 if (animateColorNode != null)
                 {
@@ -350,7 +350,7 @@ namespace MarkdownAIRender.Controls.Images
 
                 // 拿父节点 <text> 文字
                 var textNode = animateMotionNode.ParentNode;
-                string textContent = textNode?.InnerText?.Trim() ?? "SVG";
+                var textContent = textNode?.InnerText?.Trim() ?? "SVG";
 
                 info = new AnimateInfo
                 {
@@ -379,7 +379,7 @@ namespace MarkdownAIRender.Controls.Images
             if (durValue.EndsWith("s"))
             {
                 var numPart = durValue[..^1];
-                if (double.TryParse(numPart, out double seconds))
+                if (double.TryParse(numPart, out var seconds))
                     return seconds;
             }
 
@@ -587,20 +587,20 @@ namespace MarkdownAIRender.Controls.Images
             if (_formattedText == null || _skPath == null || _totalLength <= 0)
                 return;
 
-            float distance = (float)(_moveProgress * _totalLength);
+            var distance = (float)(_moveProgress * _totalLength);
 
             using var measure = new SKPathMeasure(_skPath);
             SKPoint position = default;
             SKPoint tangent = default;
 
-            float currentLength = 0f;
-            bool foundPos = false;
+            var currentLength = 0f;
+            var foundPos = false;
             do
             {
-                float len = measure.Length;
+                var len = measure.Length;
                 if (distance <= currentLength + len)
                 {
-                    float distInThisContour = distance - currentLength;
+                    var distInThisContour = distance - currentLength;
                     foundPos = measure.GetPositionAndTangent(distInThisContour, out position, out tangent);
                     break;
                 }
@@ -649,10 +649,10 @@ namespace MarkdownAIRender.Controls.Images
         // 线性插值颜色
         private static Color LerpColor(Color c1, Color c2, float t)
         {
-            byte a = (byte)(c1.A + (c2.A - c1.A) * t);
-            byte r = (byte)(c1.R + (c2.R - c1.R) * t);
-            byte g = (byte)(c1.G + (c2.G - c1.G) * t);
-            byte b = (byte)(c1.B + (c2.B - c1.B) * t);
+            var a = (byte)(c1.A + (c2.A - c1.A) * t);
+            var r = (byte)(c1.R + (c2.R - c1.R) * t);
+            var g = (byte)(c1.G + (c2.G - c1.G) * t);
+            var b = (byte)(c1.B + (c2.B - c1.B) * t);
             return Color.FromArgb(a, r, g, b);
         }
     }

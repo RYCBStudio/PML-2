@@ -1,6 +1,7 @@
 // PortScannerService.cs
 
 using System.Net.Sockets;
+using System.Text;
 
 namespace RYCB.PML2.Extensions.MinecraftExtension
 {
@@ -26,7 +27,7 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
             var semaphore = new SemaphoreSlim(maxConcurrent);
             var tasks = new List<Task>();
 
-            for (int port = startPort; port <= endPort; port++)
+            for (var port = startPort; port <= endPort; port++)
             {
                 if (cancellationToken.IsCancellationRequested)
                     break;
@@ -148,17 +149,17 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
                 stream.WriteTimeout = 500;
 
                 // 发送握手包
-                byte[] handshake = CreateMinecraftHandshake();
+                var handshake = CreateMinecraftHandshake();
                 await stream.WriteAsync(handshake, 0, handshake.Length, cancellationToken);
                 
                 // 尝试读取响应
-                byte[] buffer = new byte[1024];
-                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+                var buffer = new byte[1024];
+                var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
                 
                 // 简单的MC服务器响应检测
                 if (bytesRead > 0)
                 {
-                    string response = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    var response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     return response.Contains("Minecraft") || 
                            response.Contains("MC") || 
                            CheckMinecraftPacket(buffer, bytesRead);
@@ -175,8 +176,8 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
         private byte[] CreateMinecraftHandshake()
         {
             // 创建一个简单的MC握手包
-            using (var ms = new System.IO.MemoryStream())
-            using (var writer = new System.IO.BinaryWriter(ms))
+            using (var ms = new MemoryStream())
+            using (var writer = new BinaryWriter(ms))
             {
                 // 包ID (Handshake = 0x00)
                 writer.Write((byte)0x00);
@@ -193,11 +194,11 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
             }
         }
 
-        private void WriteVarInt(System.IO.BinaryWriter writer, int value)
+        private void WriteVarInt(BinaryWriter writer, int value)
         {
             do
             {
-                byte temp = (byte)(value & 0b01111111);
+                var temp = (byte)(value & 0b01111111);
                 value >>= 7;
                 if (value != 0)
                 {
@@ -207,9 +208,9 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
             } while (value != 0);
         }
 
-        private void WriteString(System.IO.BinaryWriter writer, string str)
+        private void WriteString(BinaryWriter writer, string str)
         {
-            var bytes = System.Text.Encoding.UTF8.GetBytes(str);
+            var bytes = Encoding.UTF8.GetBytes(str);
             WriteVarInt(writer, bytes.Length);
             writer.Write(bytes);
         }
@@ -222,8 +223,8 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
             // 检查包长度字段
             try
             {
-                int index = 0;
-                int packetLength = ReadVarInt(buffer, ref index);
+                var index = 0;
+                var packetLength = ReadVarInt(buffer, ref index);
                 return packetLength > 0 && packetLength < 1000;
             }
             catch
@@ -234,8 +235,8 @@ namespace RYCB.PML2.Extensions.MinecraftExtension
 
         private int ReadVarInt(byte[] buffer, ref int index)
         {
-            int value = 0;
-            int size = 0;
+            var value = 0;
+            var size = 0;
             int b;
             
             while (((b = buffer[index++]) & 0x80) == 0x80)

@@ -124,7 +124,6 @@
                 <controls1:SettingsExpanderItem>
                     <Panel MinHeight="300">
                         <controls:TrafficStatusControl x:Name="trafficControl"/>
-                        <controls1:ProgressRing IsVisible="True" IsIndeterminate="True" x:Name="Loading" />
                     </Panel>
                 </controls1:SettingsExpanderItem>
             </controls1:SettingsExpander>

@@ -1,4 +1,6 @@
 {
+  "IsTelemetryEnabled": true,
+  "PrivacyAgreed": true,
   "Skin": "None",
   "KickWithoutDisable": true,
   "HideInsteadOfClose": true,
@@ -13,7 +15,8 @@
     "LayerOpacity": 0.6,
     "BackgroundImage": "",
     "Stretch": "Uniform",
-    "TileMode": "disabled"
+    "TileMode": "disabled",
+    "ShouldFillTitleBar": false
   },
   "CaptchaMode": "implicit",
   "UpdateSettings":{

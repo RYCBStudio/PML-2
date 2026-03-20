@@ -12,7 +12,9 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
+using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -205,6 +207,8 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             System.Console.WriteLine($"\e[31m[E]\e[0m] {ex.GetType()} {ex.Message}");
         }
+
+        await CheckPolicy();
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性
@@ -227,6 +231,7 @@ public partial class MainWindow : AppWindow, IDisposable
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd,
                 data?.StartProxyName);
         }
+
 
         AUTO_START:
         if (!ConfigManager.CurrentConfig.AutoLaunch || ConfigManager.CurrentConfig.AutoLaunchProxies.Count <= 0)
@@ -252,6 +257,68 @@ public partial class MainWindow : AppWindow, IDisposable
         }
     }
 
+    private static async Task CheckPolicy()
+    {
+        var cd = new ContentDialog
+        {
+            Content = new MarkdownRender
+            {
+                Value = """
+                        ### PML 2 隐私政策 (关键版)
+                        **重要提示：** 我们使用 [Sentry](https://sentry.io) 进行错误跟踪和性能监控，以改善软件稳定性。数据存储在 Sentry 位于欧盟的服务器上。  
+                        ### 1. 信息收集范围
+                        - **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
+                        - **设备数据**：设备标识符、IP 地址、操作系统版本、崩溃堆栈和错误日志
+                        - **使用行为**：功能点击、会话时长、错误日志
+                        ___
+                        **注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。  
+                        ### 2. 信息用途
+                        - 提供核心功能服务（账号验证、数据同步）
+                        - 优化用户体验（故障修复、功能改进）
+                        - 错误监控与性能分析（通过 Sentry）  
+                        ### 3. 数据共享
+                        **我们不会出售用户数据**。仅在以下情况共享：
+                        - 经您明确同意
+                        - 履行法律义务
+                        - 与第三方服务商合作（如云服务）必需时  
+                        ___
+                        ### 4. 您的权利
+                        您有权访问、更正或删除个人信息，可通过设置禁用遥测数据收集。  
+                        **联系方式：** [邮件](mailto://rycbstudio@163.com) | [官网](https://rycb.mxj.pub/)  
+                        ___
+                        详细隐私政策请查看：[PML 2 隐私政策](https://rycb.mxj.pub/mefl/privacy)
+                        """,
+            },
+            PrimaryButtonText = "同意",
+            SecondaryButtonText = "同意, 但禁用遥测",
+            CloseButtonText = "拒绝",
+            IsPrimaryButtonEnabled = true,
+        };
+        if (ConfigManager.CurrentConfig.PrivacyAgreed)
+        {
+            return;
+        }
+
+        var res = await cd.ShowAsync();
+        switch (res)
+        {
+            case ContentDialogResult.None:
+                App.Desktop.Shutdown();
+                ConfigManager.CurrentConfig.PrivacyAgreed = false;
+                break;
+            case ContentDialogResult.Primary:
+                ConfigManager.CurrentConfig.IsTelemetryEnabled = true;
+                ConfigManager.CurrentConfig.PrivacyAgreed = true;
+                break;
+            case ContentDialogResult.Secondary:
+                ConfigManager.CurrentConfig.IsTelemetryEnabled = false;
+                ConfigManager.CurrentConfig.PrivacyAgreed = true;
+                break;
+            default:
+                break;
+        }
+    }
+
     /// <summary>
     /// 判断指定的时间是否在指定的范围
     /// </summary>
@@ -272,18 +339,37 @@ public partial class MainWindow : AppWindow, IDisposable
     {
         if (File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
         {
-            Background =
-                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+            if (ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar)
+            {
+                Background =
+                    new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
                     {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
+                        Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                        {
+                            "None" => Stretch.None,
+                            "Stretch" => Stretch.Fill,
+                            "Uniform" => Stretch.Uniform,
+                            "UniformToFill" => Stretch.UniformToFill,
+                            _ => Stretch.None
+                        },
+                    };
+                MainBackground.Hide();
+            }
+            else
+            {
+                Background = null;
+                MainBackground.Show();
+                MainBackground.Source =
+                    new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
+                MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                {
+                    "None" => Stretch.None,
+                    "Stretch" => Stretch.Fill,
+                    "Uniform" => Stretch.Uniform,
+                    "UniformToFill" => Stretch.UniformToFill,
+                    _ => Stretch.None
                 };
+            }
         }
 
 

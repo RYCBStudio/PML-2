@@ -12,7 +12,7 @@ public class InfoClasses
         /// <summary>
         /// 数据
         /// </summary>
-        public T data
+        public T? data
         {
             get;
             set;

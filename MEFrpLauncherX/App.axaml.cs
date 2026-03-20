@@ -1,5 +1,6 @@
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -7,6 +8,7 @@ using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 
@@ -14,11 +16,11 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public static string Version = "2.3.0-rc1";
+    public const string Version = "2.3.0-rc1";
 
     public const string MEFrpVersion = "0.67.0_20260214_7d549bc1";
 
-    public static string Codename = "Fluorine";
+    public const string Codename = "Fluorine";
     public static SplashScreen splash;
 
     public static FluentAvaloniaTheme? FATheme;
@@ -44,6 +46,16 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         Core.App.Initialize();
+        if (!Design.IsDesignMode)
+        {
+            AppAnalytics.Setup(
+                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
+                Version);
+            if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
+            {
+                AppAnalytics.EnableAnalytics();
+            }
+        }
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             FATheme = Current?.Styles[4] as FluentAvaloniaTheme;

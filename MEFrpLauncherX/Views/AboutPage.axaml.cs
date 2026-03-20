@@ -428,10 +428,14 @@ public partial class AboutPage : UserControl
     {
         HitokotoStatus.Show();
         // 确保控件存在
-        if (HitokotoBox == null || HitokotoAuthor == null)
+        if (HitokotoBox == null)
         {
             return;
         }
+
+        vm.Hitokoto = "";
+        vm.Author = "";
+        vm.From = "";
 
         // 获取新一言
         HitokotoResource Hitokoto = new()

@@ -76,7 +76,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                 //Debug.WriteLine($"Top:{_EffectiveViewport.Top}");
                 #region//获取进入渲染位置的第一个index
                 var _firstIndex = 0;
-                for (int i = 0; i < Items.Count; i++)
+                for (var i = 0; i < Items.Count; i++)
                 {
                     if (_ElementDictionary.TryGetValue(i, out var _element))
                     {
@@ -91,7 +91,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                 #endregion
                 #region//获取该进行渲染的第一个index
                 var _startIndex = 0;
-                for (int i = _firstIndex; i >= 0; i--)
+                for (var i = _firstIndex; i >= 0; i--)
                 {
                     if (_ElementDictionary.TryGetValue(i, out var _element))
                     {
@@ -110,7 +110,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                 //Debug.WriteLine("lastIndex:" + _LastIndex);
                 #endregion
                 #region//回收其他元素
-                for (int i = 0; i < Items.Count; i++)
+                for (var i = 0; i < Items.Count; i++)
                 {
                     if (i < _startIndex || i > _LastIndex)
                     {
@@ -160,8 +160,8 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             var _endIndex = Items.Count - 1;
             var _index = startIndex;
             //Debug.WriteLine("_maxLineWidth" + _maxLineWidth);
-            double _maxLineWidth = Bounds.Width;
-            double _maxLineHeight = 0.0;
+            var _maxLineWidth = Bounds.Width;
+            var _maxLineHeight = 0.0;
             if (_ElementDictionary.TryGetValue(_index, out var _firstElement))
             {
                 _CurrentLineHeight = _firstElement.Top;
@@ -174,7 +174,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             #region//先计算需渲染的每个控件所需的空间          
             if (double.IsPositiveInfinity(RowHeight))
             {
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -220,7 +220,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             }
             else
             {
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -337,7 +337,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        int _clearStartIndex = 0;
+                        var _clearStartIndex = 0;
                         if (e.NewStartingIndex < _LastIndex)
                         {
                             _clearStartIndex = Math.Min(e.NewStartingIndex, _CurrentIndex);
@@ -346,7 +346,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                         {
                             _clearStartIndex = _LastIndex;
                         }
-                        for (int i = _clearStartIndex; i < Items.Count; i++)
+                        for (var i = _clearStartIndex; i < Items.Count; i++)
                         {
                             if (_ElementDictionary.TryGetValue(i, out var _element))
                             {
@@ -363,7 +363,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                     }
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        int _clearStartIndex = 0;
+                        var _clearStartIndex = 0;
                         if (e.OldStartingIndex < _LastIndex)
                         {
                             _clearStartIndex = Math.Min(e.NewStartingIndex, _CurrentIndex);
@@ -373,7 +373,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                             _clearStartIndex = _LastIndex;
                         }
                         var _count = _ElementDictionary.Count;
-                        for (int i = _clearStartIndex; i < _count; i++)
+                        for (var i = _clearStartIndex; i < _count; i++)
                         {
                             if (_ElementDictionary.TryGetValue(i, out var _element))
                             {

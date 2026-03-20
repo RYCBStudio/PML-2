@@ -52,7 +52,7 @@ public static class DeviceIdHelper
         }
 
         // 2. 生成新ID
-        string deviceId = GenerateDeviceId();
+        var deviceId = GenerateDeviceId();
 
         // 3. 保存到本地
         try
@@ -76,11 +76,11 @@ public static class DeviceIdHelper
         try
         {
             // 收集硬件特征（不同系统取不同标识）
-            string hardwareInfo = GetPlatformSpecificHardwareInfo();
+            var hardwareInfo = GetPlatformSpecificHardwareInfo();
 
             // 哈希加密（不可逆，避免泄露原始硬件信息）
             using var sha256 = SHA256.Create();
-            byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(hardwareInfo));
+            var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(hardwareInfo));
 
             // 转成32位字符串（简洁、唯一）
             return BitConverter.ToString(hashBytes)
@@ -184,7 +184,7 @@ public static class DeviceIdHelper
             }
         };
         process.Start();
-        string output = process.StandardOutput.ReadToEnd();
+        var output = process.StandardOutput.ReadToEnd();
         process.WaitForExit();
 
         // 清理输出，只保留有效字符

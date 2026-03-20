@@ -22,6 +22,14 @@
                     <Slider Maximum="100" Minimum="0" Width="200" x:Name="OpacitySlider" ValueChanged="UpdateOpacity" />
                 </controls:SettingsExpander.Footer>
             </controls:SettingsExpander>
+            <controls:SettingsExpander Header="背景填充模式" Description="设置软件是否应该将背景图片填充整个窗口至标题栏。">
+                <controls:SettingsExpander.Footer>
+                    <ComboBox x:Name="FillModeBox" SelectionChanged="UpdateBackgroundFillMode">
+                        <ComboBoxItem>填充至标题栏</ComboBoxItem>
+                        <ComboBoxItem>仅填充至窗口</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsExpander.Footer>
+            </controls:SettingsExpander>
             <controls:SettingsExpander Header="选择主题色" IconSource="ColorFill" IsExpanded="True">
                 <controls:SettingsExpanderItem>
                     <Grid ColumnDefinitions="*, *" RowDefinitions="*,*,*,*">

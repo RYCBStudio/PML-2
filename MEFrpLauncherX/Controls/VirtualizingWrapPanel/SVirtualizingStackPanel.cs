@@ -52,7 +52,7 @@ namespace SVirtualizingWrapPanel
                     //Debug.WriteLine($"Top:{_EffectiveViewport.Top}");
                     #region//获取进入渲染位置的第一个index
                     var _firstIndex = 0;
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         if (_ElementDictionary.TryGetValue(i, out var _element))
                         {
@@ -84,7 +84,7 @@ namespace SVirtualizingWrapPanel
                     //Debug.WriteLine($"Top:{_EffectiveViewport.Top}");
                     #region//获取进入渲染位置的第一个index
                     var _firstIndex = 0;
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         if (_ElementDictionary.TryGetValue(i, out var _element))
                         {
@@ -129,7 +129,7 @@ namespace SVirtualizingWrapPanel
         {
             #region//获取该进行渲染的第一个index
             var _startIndex = 0;
-            for (int i = firstIndex; i >= 0; i--)
+            for (var i = firstIndex; i >= 0; i--)
             {
                 if (_ElementDictionary.TryGetValue(i, out var _element))
                 {
@@ -145,7 +145,7 @@ namespace SVirtualizingWrapPanel
             //Debug.WriteLine("lastIndex:" + _lastIndex);
             #endregion
             #region//回收其他元素
-            for (int i = 0; i < Items.Count; i++)
+            for (var i = 0; i < Items.Count; i++)
             {
                 if (i < _startIndex || i > _LastIndex)
                 {
@@ -188,7 +188,7 @@ namespace SVirtualizingWrapPanel
                 }
                 _CurrentLineWidth = 0;
                 var _boundsWidth = Bounds.Width;
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -253,7 +253,7 @@ namespace SVirtualizingWrapPanel
                 }
                 _CurrentLineHeight = 0;
                 var _boundsHeight = Bounds.Height;
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -344,7 +344,7 @@ namespace SVirtualizingWrapPanel
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        int _clearStartIndex = 0;
+                        var _clearStartIndex = 0;
                         if (e.NewStartingIndex < _LastIndex)
                         {
                             _clearStartIndex = Math.Min(e.NewStartingIndex, _CurrentIndex);
@@ -353,7 +353,7 @@ namespace SVirtualizingWrapPanel
                         {
                             _clearStartIndex = _LastIndex;
                         }
-                        for (int i = _clearStartIndex; i < Items.Count; i++)
+                        for (var i = _clearStartIndex; i < Items.Count; i++)
                         {
                             if (_ElementDictionary.TryGetValue(i, out var _element))
                             {
@@ -370,7 +370,7 @@ namespace SVirtualizingWrapPanel
                     }
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        int _clearStartIndex = 0;
+                        var _clearStartIndex = 0;
                         if (e.OldStartingIndex < _LastIndex)
                         {
                             _clearStartIndex = Math.Min(e.NewStartingIndex, _CurrentIndex);
@@ -380,7 +380,7 @@ namespace SVirtualizingWrapPanel
                             _clearStartIndex = _LastIndex;
                         }
                         var _count=_ElementDictionary.Count;
-                        for (int i = _clearStartIndex; i < _count; i++)
+                        for (var i = _clearStartIndex; i < _count; i++)
                         {
                             if (_ElementDictionary.TryGetValue(i, out var _element))
                             {

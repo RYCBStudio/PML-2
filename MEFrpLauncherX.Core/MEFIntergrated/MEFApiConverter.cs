@@ -869,7 +869,10 @@ public class MEFApiConverter
         var response = await client.ExecuteAsync(request).ConfigureAwait(false);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
+        if (response.Content?.StartsWith('<') == true)
+        {
+            return default;
+        }
         var result = JsonConvert.DeserializeObject<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
                      new ApiInfo<TrafficStatus>();
         HandleResponse(result);

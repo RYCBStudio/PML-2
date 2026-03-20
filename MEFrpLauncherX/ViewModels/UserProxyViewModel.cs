@@ -311,7 +311,7 @@ public class UserProxyViewModel : ViewModelBase
 
         var configFile = string.Empty;
         var cs = new ConfigSelect(configFiles);
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = "请选择配置文件",
             Content = cs,

@@ -16,7 +16,9 @@
         <Panel>
             <controls:StarMapCanvas />
             <StackPanel Margin="10" Classes="animated">
-                <controls1:SettingsExpander Footer="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" IsExpanded="True">
+                <controls1:SettingsExpander
+                    Footer="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}"
+                    IsExpanded="True">
                     <controls1:SettingsExpander.Header>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <Image
@@ -124,7 +126,8 @@
                                 Text="六年沉淀 · 全新升级 · 稳定高效的内网穿透利器" />
                         </StackPanel>
                     </controls1:SettingsExpander.Footer>
-                    <controls1:SettingsExpanderItem Description="{Binding Source={x:Static meFrpLauncherX:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
+                    <controls1:SettingsExpanderItem
+                        Description="{Binding Source={x:Static meFrpLauncherX:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
                         <TextBlock
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="15"
@@ -139,7 +142,7 @@
                                 Click="MEFC_Click"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                FontFamily="{StaticResource GlobalFontFamily}" >
+                                FontFamily="{StaticResource GlobalFontFamily}">
                                 <TextBlock>打开ME Frp Client目录</TextBlock>
                             </HyperlinkButton>
                         </controls1:SettingsExpanderItem.Footer>
@@ -154,22 +157,22 @@
                             <WrapPanel FlowDirection="LeftToRight" ItemSpacing="5">
                                 <HyperlinkButton
                                     Click="OQ_Click"
-                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    FontFamily="{StaticResource GlobalFontFamily}">
                                     <TextBlock>官方 QQ 一群</TextBlock>
                                 </HyperlinkButton>
                                 <HyperlinkButton
                                     Click="OQ2_Click"
-                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    FontFamily="{StaticResource GlobalFontFamily}">
                                     <TextBlock>官方 QQ 二群</TextBlock>
                                 </HyperlinkButton>
                                 <HyperlinkButton
                                     Click="FS_Click"
-                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    FontFamily="{StaticResource GlobalFontFamily}">
                                     <TextBlock>官方飞书群</TextBlock>
                                 </HyperlinkButton>
                                 <HyperlinkButton
                                     Click="SM_Click"
-                                    FontFamily="{StaticResource GlobalFontFamily}" >
+                                    FontFamily="{StaticResource GlobalFontFamily}">
                                     <TextBlock>支持邮箱</TextBlock>
                                 </HyperlinkButton>
                             </WrapPanel>
@@ -193,13 +196,18 @@
                                 Text="每日一言" />
                         </StackPanel>
                     </controls1:SettingsExpander.Header>
-                    <StackPanel>
+                    <StackPanel Spacing="5" PointerPressed="RefreshHitokoto_Click" Background="Transparent">
+                        <ProgressBar Margin="-10, -10, -10 ,-10" x:Name="HitokotoStatus" IsVisible="False"
+                                     VerticalAlignment="Top" IsIndeterminate="True" />
                         <controls:TypingControl
                             x:Name="HitokotoBox"
                             FontSize="15"
+                            Background="Transparent"
+                            PointerPressed="RefreshHitokoto_Click"
                             Margin="3, 3, 0, 0"
-                            FontFamily="{StaticResource GlobalFontFamily}" >
-                            
+                            IsHitTestVisible="False"
+                            FontFamily="{StaticResource GlobalFontFamily}">
+
                             <controls:TypingControl.Text>
                                 <MultiBinding StringFormat=" {0}  —— {2}「{1}」">
                                     <Binding Path="Hitokoto" />
@@ -208,23 +216,6 @@
                                 </MultiBinding>
                             </controls:TypingControl.Text>
                         </controls:TypingControl>
-                        <StackPanel
-                            x:Name="HitokotoPanel"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-                            <TextBlock
-                                x:Name="HitokotoAuthor"
-                                Margin="10"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
-                            <controls1:ProgressRing x:Name="HitokotoStatus" Margin="3,0,0,0" />
-                            <Button
-                                x:Name="RefreshHitokoto"
-                                Margin="10"
-                                Classes="accent"
-                                Click="RefreshHitokoto_Click"
-                                Content="刷新"
-                                FontFamily="{StaticResource GlobalFontFamily}" />
-                        </StackPanel>
                     </StackPanel>
                 </controls1:SettingsExpander>
             </StackPanel>

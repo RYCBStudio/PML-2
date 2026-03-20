@@ -139,7 +139,7 @@ namespace MEFrpLauncherX.Views
                                               "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
                                               "\n{mefrpcp} - ME Frp Client可执行文件目录" +
                                               "\n{startup} - 程序启动目录");
-                    var cd = new ContentDialog()
+                    var cd = new ContentDialog
                     {
                         Title = "输入命令行及参数",
                         Content = iw,

@@ -16,6 +16,7 @@ using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
+// ReSharper disable EmptyGeneralCatchClause
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -95,7 +96,7 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public string CurrentSpeed
+    public string? CurrentSpeed
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -175,13 +176,15 @@ public class UpdatePageViewModel : ViewModelBase
         LatestCheckTime = DateTime.Now;
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
-        }catch{
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+        }
+        catch
+        {
             // Platform not support
         }
 
         IterationCount = new IterationCount(100000, IterationType.Many);
-        Core.App.CurrentLogger.Log("正在检查更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在检查更新", module: EnumLogModule.Update);
         Status = "正在检查更新";
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
         SingleVersionInfo updateInfo = new()
@@ -215,8 +218,8 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
-            Core.App.CurrentLogger.Error(ex);
+            Core.App.CurrentLogger?.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Error(ex);
         }
 
         string latestVersion;
@@ -235,14 +238,16 @@ public class UpdatePageViewModel : ViewModelBase
 // #endif
         // var versionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
         // var version = versionRegex.Match(App.Version);
-        if (VersionComparer.IsLessThan(updateInfo.version, preiewUpdateInfo.version) || VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.version) ||latestVersion == preiewUpdateInfo.version)
+        if (VersionComparer.IsLessThan(updateInfo.version, preiewUpdateInfo.version) ||
+            VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.version) ||
+            latestVersion == preiewUpdateInfo.version)
         {
             updateInfo = preiewUpdateInfo;
         }
 
         if (VersionComparer.IsGreaterThan(latestVersion, App.Version))
         {
-            Core.App.CurrentLogger.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
             IterationCount = new IterationCount(0);
             Icon = ICONS.DOWNLOAD;
             if (latestVersion == preiewUpdateInfo.version)
@@ -261,7 +266,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
         else
         {
-            Core.App.CurrentLogger.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
             Status = "当前版本已经是最新版本";
             IsLoading = false;
             IsIdle = true;
@@ -272,10 +277,13 @@ public class UpdatePageViewModel : ViewModelBase
         Changelog.AddRange(updateInfo.data.changes);
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
-        }catch{}
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+        }
+        catch
+        {
+        }
 
-        Core.App.CurrentLogger.Log("检查更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("检查更新完成", module: EnumLogModule.Update);
         IterationCount = new IterationCount(0);
     }
 
@@ -301,7 +309,7 @@ public class UpdatePageViewModel : ViewModelBase
 
     public async void DownloadUpdate()
     {
-        Core.App.CurrentLogger.Log("正在下载更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = "正在下载更新";
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
@@ -372,11 +380,11 @@ public class UpdatePageViewModel : ViewModelBase
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
 
-        string savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
+        var savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
         await downloader.DownloadFileTaskAsync(downloadUrl, savePath);
 
         // ===== 4. 下载完成后处理 =====
-        Core.App.CurrentLogger.Log("下载更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
@@ -384,7 +392,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
         }
         catch
         {
@@ -399,10 +407,22 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
+        try
+        {
+            if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
+            {
+                File.Copy(ConfigManager.ConfigPath, ConfigManager.ConfigPath + ".bak.update");
+            }
+        }
+        catch
+        {
+            Icon = ICONS.ERROR;
+            Status = "备份配置文件失败, 请手动备份配置文件";
+        }
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {
-            Core.App.CurrentLogger.Log("正在安装更新", module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
             await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
             Process.Start(
                 new ProcessStartInfo(savePath)
@@ -427,7 +447,7 @@ public class UpdatePageViewModel : ViewModelBase
             return;
         }
 
-        Core.App.CurrentLogger.Log("正在下载更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = "正在下载更新";
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
@@ -463,7 +483,7 @@ public class UpdatePageViewModel : ViewModelBase
             $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
             $"{LatestVersion}/pml2_setup%20{LatestVersion}.exe",
             Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
-        Core.App.CurrentLogger.Log("下载更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
@@ -477,7 +497,7 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
-        Core.App.CurrentLogger.Log("正在安装更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
         await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
         Process.Start(
             new ProcessStartInfo(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"))
@@ -547,7 +567,7 @@ public class UpdatePageViewModel : ViewModelBase
 
     private void DownloaderOnDownloadStarted(object? sender, DownloadStartedEventArgs e)
     {
-        Core.App.CurrentLogger.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
+        Core.App.CurrentLogger?.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
         MaxValue = e.TotalBytesToReceive;
     }
 
@@ -560,7 +580,7 @@ public class UpdatePageViewModel : ViewModelBase
                 $"{ProcessFileSize(e.ReceivedBytesSize)}/{ProcessFileSize(MaxValue)} {ProcessSpeed(e.BytesPerSecondSpeed)}";
             try
             {
-                Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
+                Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
                     (ulong)e.TotalBytesToReceive);
             }
             catch
@@ -623,13 +643,13 @@ public class UpdatePageViewModel : ViewModelBase
     {
         if (e.Error != null)
         {
-            Core.App.CurrentLogger.Error(e.Error, module: EnumLogModule.Net);
-            Core.App.CurrentLogger.Log("下载失败");
+            Core.App.CurrentLogger?.Error(e.Error, module: EnumLogModule.Net);
+            Core.App.CurrentLogger?.Log("下载失败");
         }
         else
         {
             CurrentSpeed = "";
-            Core.App.CurrentLogger.Log("下载完成");
+            Core.App.CurrentLogger?.Log("下载完成");
         }
     }
 }

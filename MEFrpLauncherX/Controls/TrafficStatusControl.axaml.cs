@@ -99,7 +99,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
         IsLoading = true;
         if (Design.IsDesignMode)
         {
-            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net);
+            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type:EnumLogType.Warn);
             return;
         }
 
@@ -119,7 +119,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
             }
             else
             {
-                Core.App.CurrentLogger?.Log("获取流量失败", EnumLogType.Warn);
+                Core.App.CurrentLogger?.Log("获取流量失败", module: EnumLogModule.Net, type:EnumLogType.Warn);
                 IsLoading = false;
                 return;
             }
@@ -127,6 +127,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         _data = data;
 
+        if (data == null)
+        {
+            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            XAxes = [new Axis { Labels = [] }];
+            Series = [];
+            IsLoading = false;
+            return;
+        }
         var dates = data.dates ?? [];
         var trafficIn = data.trafficIn ?? [];
         var trafficOut = data.trafficOut ?? [];
@@ -134,8 +142,8 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         if (dates.Length == 0)
         {
-            Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net);
-            XAxes = [new Axis() { Labels = [] }];
+            Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            XAxes = [new Axis { Labels = [] }];
             Series = [];
             IsLoading = false;
             return;
@@ -143,14 +151,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         if (trafficIn.Length == 0 && trafficOut.Length == 0 && totalTraffic.Length == 0)
         {
-            Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net);
-            XAxes = [new Axis() { Labels = dates }];
+            Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            XAxes = [new Axis { Labels = dates }];
             Series = [];
             IsLoading = false;
             return;
         }
 
-        XAxes = [new Axis() { Labels = dates }];
+        XAxes = [new Axis { Labels = dates }];
         var newSeries = new AvaloniaList<ISeries>();
 
         if (trafficIn.Length > 0)
@@ -158,14 +166,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<long>()
+                    newSeries.Add(new LineSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "入站流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<long>()
+                    newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
@@ -179,14 +187,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<long>()
+                    newSeries.Add(new LineSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "出站流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<long>()
+                    newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
@@ -200,14 +208,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
             switch (type)
             {
                 case 0:
-                    newSeries.Add(new LineSeries<long>()
+                    newSeries.Add(new LineSeries<long>
                     {
                         Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
                         Name = "总流量"
                     }); break;
                 case 1:
-                    newSeries.Add(new ColumnSeries<long>()
+                    newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
@@ -229,13 +237,13 @@ public class TrafficStatusControlViewModel : ViewModelBase
         {
             Series =
             [
-                new LineSeries<int>()
+                new LineSeries<int>
                 {
                     Values = [1, 1, 4, 5, 1, 4],
                     Name = "Test111"
                 }
             ];
-            XAxes = [new Axis()
+            XAxes = [new Axis
             {
                 Labels = ["2026-3-1", "2026-3-2", "2026-3-3", "2026-3-4", "2026-3-5", "2026-3-6"],
             }];
@@ -246,7 +254,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
         }
 
         SelectedPeriod = 7;
-        YAxes = [new Axis() { Labeler = ProcessFileSize }];
+        YAxes = [new Axis { Labeler = ProcessFileSize }];
         ZoomMode = ZoomAndPanMode.X;
     }
 

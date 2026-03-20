@@ -67,16 +67,16 @@ namespace MarkdownAIRender.CodeRender
 
                 foreach (var token in lineResult.Tokens)
                 {
-                    int startIndex = Math.Min(token.StartIndex, line.Length);
-                    int endIndex = Math.Min(token.EndIndex, line.Length);
+                    var startIndex = Math.Min(token.StartIndex, line.Length);
+                    var endIndex = Math.Min(token.EndIndex, line.Length);
                     if (endIndex <= startIndex) continue;
 
-                    string tokenText = line.Substring(startIndex, endIndex - startIndex);
+                    var tokenText = line.Substring(startIndex, endIndex - startIndex);
 
                     // 分析该 token 的所有 themeRule，并叠加样式
-                    int foregroundId = -1;
-                    int backgroundId = -1;
-                    TmFontStyle fontStyle = TmFontStyle.NotSet;
+                    var foregroundId = -1;
+                    var backgroundId = -1;
+                    var fontStyle = TmFontStyle.NotSet;
 
                     var matchedRules = theme.Match(token.Scopes);
                     foreach (var rule in matchedRules)
@@ -169,9 +169,9 @@ namespace MarkdownAIRender.CodeRender
             if (hexString.StartsWith('#'))
                 hexString = hexString[1..];
 
-            byte r = byte.Parse(hexString[..2], NumberStyles.HexNumber);
-            byte g = byte.Parse(hexString.Substring(2, 2), NumberStyles.HexNumber);
-            byte b = byte.Parse(hexString.Substring(4, 2), NumberStyles.HexNumber);
+            var r = byte.Parse(hexString[..2], NumberStyles.HexNumber);
+            var g = byte.Parse(hexString.Substring(2, 2), NumberStyles.HexNumber);
+            var b = byte.Parse(hexString.Substring(4, 2), NumberStyles.HexNumber);
 
             return Color.FromRgb(r, g, b);
         }

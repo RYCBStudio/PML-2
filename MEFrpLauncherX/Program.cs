@@ -49,28 +49,13 @@ internal sealed class Program
         }
         else
         {
-            var p = Process.Start(new ProcessStartInfo()
+            var p = Process.Start(new ProcessStartInfo
             {
                 FileName = file,
                 Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
             });
             SplashProcess = p;
         }
-
-        SentrySdk.Init(options =>
-        {
-            // A Sentry Data Source Name (DSN) is required.
-            // See https://docs.sentry.io/product/sentry-basics/dsn-explainer/
-            // You can set it in the SENTRY_DSN environment variable, or you can set it in code here.
-            options.Dsn =
-                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560";
-#if DEBUG
-            options.Debug = true;
-#endif
-            //options.SampleRate = 0.3f;
-            options.Release = App.Version;
-            options.AutoSessionTracking = true;
-        });
 #if !DEBUG
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         AppDomain.CurrentDomain.UnhandledException += ProcessUnhandledExceptions;
@@ -101,7 +86,7 @@ internal sealed class Program
 
     private static string GetBackground()
     {
-        var possiblePaths = new List<string>()
+        var possiblePaths = new List<string>
         {
             Path.Combine(Core.App.StartupPath, "Resources", "splash.png"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
@@ -164,7 +149,7 @@ internal sealed class Program
             options.DefaultFamilyName = "Noto Sans CJK SC";
             options.FontFallbacks =
             [
-                new FontFallback()
+                new FontFallback
                 {
                     FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
                         "Harmony OS Sans SC")

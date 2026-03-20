@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
+using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -14,7 +15,6 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using RYCB.PML.MEFrpCaptchaLib;
-using Sentry;
 
 namespace MEFrpLauncherX.Views;
 
@@ -194,14 +194,7 @@ public partial class LoginPage : UserControl
                 
         if (currentUser?.Email.IsNullOrEmpty() == false)
         {
-            SentrySdk.ConfigureScope(scope =>
-            {
-                scope.User = new SentryUser
-                {
-                    Id = DeviceIdHelper.GetDeviceUniqueId(),
-                    Username = currentUser?.Email.EncodeToBase64()
-                };
-            });
+            AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
         }
         Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
         MainWindow.Instance.MainContentControl.Content = null;

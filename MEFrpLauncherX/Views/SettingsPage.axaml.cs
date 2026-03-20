@@ -9,7 +9,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -412,18 +411,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         });
         if (File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
         {
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
         }
 
         Core.App.MainWindow.InvalidateVisual();
@@ -432,6 +420,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     private void ClearBackground(object? sender, RoutedEventArgs e)
     {
         Core.App.MainWindow.Background = null;
+        MainWindow.Instance.MainBackground.Hide();
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = "");
         Core.App.MainWindow.InvalidateVisual();
     }

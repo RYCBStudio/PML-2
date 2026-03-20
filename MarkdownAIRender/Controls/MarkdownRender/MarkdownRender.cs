@@ -188,7 +188,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
         /// </summary>
         private void RenderDocumentSafeAppend()
         {
-            string newMarkdown = GetValue(ValueProperty) ?? string.Empty;
+            var newMarkdown = GetValue(ValueProperty) ?? string.Empty;
 
             // 先做完整解析，避免上下文丢失
             var newDoc = Markdown.Parse(newMarkdown);
@@ -199,7 +199,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
                 && newMarkdown.Length > _oldMarkdown.Length)
             {
                 // 试图找一个安全边界
-                int boundaryIndex = FindSafeBoundary(_oldMarkdown);
+                var boundaryIndex = FindSafeBoundary(_oldMarkdown);
                 // 如果找不到边界，或在末尾 => 无法安全部分渲染，直接全量
                 if (boundaryIndex < 0 || boundaryIndex >= _oldMarkdown.Length)
                 {
@@ -230,7 +230,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
         {
             // 简单找最后一次换行符
             // 如果想要更安全，可以找“```”或空行(\n\n)等
-            int idx = oldMarkdown.LastIndexOf('\n');
+            var idx = oldMarkdown.LastIndexOf('\n');
             return idx; // -1表示没找到换行
         }
 
@@ -290,7 +290,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
             }
 
             // 找到“旧文档”里 boundaryIndex 所在的块下标
-            int blockIndex = FindBlockIndexByOffset(_parsedDocument, boundaryIndex);
+            var blockIndex = FindBlockIndexByOffset(_parsedDocument, boundaryIndex);
 
             // 如果找不到有效的 blockIndex，就全量
             if (blockIndex < 0)
@@ -300,13 +300,13 @@ namespace MarkdownAIRender.Controls.MarkdownRender
             }
 
             // 移除 container 中从 blockIndex 之后的所有子控件
-            for (int i = container.Children.Count - 1; i >= blockIndex; i--)
+            for (var i = container.Children.Count - 1; i >= blockIndex; i--)
             {
                 container.Children.RemoveAt(i);
             }
 
             // 然后把 newDoc 中 blockIndex 之后的那些块转换添加进来
-            for (int i = blockIndex; i < newDoc.Count; i++)
+            for (var i = blockIndex; i < newDoc.Count; i++)
             {
                 var ctrl = ConvertBlock(newDoc[i]);
                 if (ctrl != null)
@@ -326,7 +326,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
 
             // Markdig 的 Block 有一个 Span 属性 (SourceSpan) 记录文本范围
             // 这里就简单找第一个“Span.End >= boundaryIndex”的 block
-            for (int i = 0; i < oldDoc.Count; i++)
+            for (var i = 0; i < oldDoc.Count; i++)
             {
                 var block = oldDoc[i];
                 if (block.Span.End >= boundaryIndex)
@@ -574,7 +574,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
                 Spacing = 4
             };
 
-            int orderIndex = 1;
+            var orderIndex = 1;
 
             foreach (var item in listBlock)
             {
@@ -643,7 +643,7 @@ namespace MarkdownAIRender.Controls.MarkdownRender
             stackPanel.Children.Add(headerPanel);
             border.Child = stackPanel;
 
-            foreach (Block block in quoteBlock)
+            foreach (var block in quoteBlock)
             {
                 var control = ConvertBlock(block);
                 if (control != null)

@@ -7,7 +7,7 @@ public class FileFormatDetector
     public static string DetectFormatFromFile(string filePath)
     {
         // 读取文件内容
-        string content = File.ReadAllText(filePath).Trim();
+        var content = File.ReadAllText(filePath).Trim();
 
         // 判断是否为 JSON
         if (IsJson(content))

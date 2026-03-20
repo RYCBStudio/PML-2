@@ -48,7 +48,7 @@ public partial class UserCenterPage : UserControl
 
         try
         {
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 var res = await MEFApiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
@@ -120,7 +120,6 @@ public partial class UserCenterPage : UserControl
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
                     trafficControl.IsVisible = true;
-                    Loading.IsVisible = false;
                 });
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
             });
@@ -218,13 +217,13 @@ public partial class UserCenterPage : UserControl
         {
             // 使用独立的重启器进程（避免文件占用问题）
             var tempBat = Path.Combine(Path.GetTempPath(), "restart.bat");
-            File.WriteAllText(tempBat, $"""
+            await File.WriteAllTextAsync(tempBat, $"""
 
-                                        @echo off
-                                        timeout /t 1 /nobreak >nul
-                                        start "" "{Environment.ProcessPath}"
-                                        del "%~f0"
-                                        """);
+                                                   @echo off
+                                                   timeout /t 1 /nobreak >nul
+                                                   start "" "{Environment.ProcessPath}"
+                                                   del "%~f0"
+                                                   """);
 
             Process.Start(new ProcessStartInfo
             {

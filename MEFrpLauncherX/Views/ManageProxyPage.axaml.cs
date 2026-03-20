@@ -72,7 +72,15 @@ public partial class ManageProxyPage : UserControl
             proxyViewModel.FilteredProxies.Clear();
             await Task.Run(async () =>
             {
-                var userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
+                InfoClasses.ProxyInfo userProxies = null;
+                try
+                {
+                    userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
+                }
+                catch
+                {
+                    
+                }
                 // var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
                 //
@@ -84,6 +92,59 @@ public partial class ManageProxyPage : UserControl
                 // {
                 //     currentNodesList = currentNodesListInfo.NodesList;
                 // }
+
+#if DEBUG
+                var db_nodes = new List<InfoClasses.Nodes>
+                {
+                    new InfoClasses.Nodes
+                    {
+                        nodeId = 0,
+                        name = "DEBUG",
+                        hostname = "114.514.191.810"
+                    }
+                };
+                var db_proxy = new List<InfoClasses.Proxies>
+                {
+                    new InfoClasses.Proxies
+                    {
+                        proxyId = -114,
+                        username = "111",
+                        proxyName = "DEBUG_Proxy1",
+                        proxyType = "tcp",
+                        isBanned = false,
+                        isDisabled = false,
+                        localIp = "127.0.0.1",
+                        localPort = 1145,
+                        remotePort = 11451,
+                        nodeId = 0,
+                        runId = "",
+                        isOnline = false,
+                        domain = "",
+                        lastStartTime = 0,
+                        lastCloseTime = 0,
+                        clientVersion = "",
+                        proxyProtocolVersion = "",
+                        useEncryption = false,
+                        useCompression = false,
+                        locations = "",
+                        accessKey = "",
+                        hostHeaderRewrite = "",
+                        httpPlugin = "",
+                        crtPath = "",
+                        keyPath = "",
+                        requestHeaders = "",
+                        responseHeaders = "",
+                        httpUser = "",
+                        httpPassword = "",
+                        transportProtocol = ""
+                    }
+                };
+                userProxies ??= new InfoClasses.ProxyInfo
+                {
+                    nodes = db_nodes.ToArray(),
+                    proxies = db_proxy.ToArray()
+                };
+#endif
 
                 Core.App.CurrentLogger.LogDebug("Loading user proxies");
                 foreach (var item in userProxies.proxies)
