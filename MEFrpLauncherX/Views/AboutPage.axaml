@@ -209,7 +209,7 @@
                             FontFamily="{StaticResource GlobalFontFamily}">
 
                             <controls:TypingControl.Text>
-                                <MultiBinding StringFormat=" {0}  —— {2}「{1}」">
+                                <MultiBinding StringFormat=" {0}{2}{1}">
                                     <Binding Path="Hitokoto" />
                                     <Binding Path="From" />
                                     <Binding Path="Author" />

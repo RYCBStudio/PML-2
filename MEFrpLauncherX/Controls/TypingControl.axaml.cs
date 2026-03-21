@@ -82,8 +82,12 @@ public partial class TypingControl : UserControl
         {
             return;
         }
-        
-        await _currentAnimationCts.CancelAsync();
+
+        try
+        {
+            await _currentAnimationCts.CancelAsync();
+        }catch{}
+
         _currentAnimationCts = new CancellationTokenSource();
         var ct = _currentAnimationCts.Token;
         
@@ -137,8 +141,15 @@ public partial class TypingControl : UserControl
                 {
                     if (ct.IsCancellationRequested)
                         return;
-                        
-                    DisplayingText = DisplayingText?[..(i - 1)] ?? "_";
+                    try
+                    {
+                        DisplayingText = DisplayingText?[..(i - 1)] ?? "_";
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        DisplayingText = Text;
+                    }
+
                     await Task.Delay(TimeSpan.FromMilliseconds(20), ct);
                 }
                 

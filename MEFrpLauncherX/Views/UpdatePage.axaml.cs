@@ -29,6 +29,7 @@ public partial class UpdatePage : UserControl
             "Preview" => 1,
             _ => 0
         };
+        KeepProfileSwitch.IsChecked = ConfigManager.CurrentConfig.UpdateSettings.KeepProfile;
         
         _init = true;
         MainPageFrameViewModel.UpdatePage = this;
