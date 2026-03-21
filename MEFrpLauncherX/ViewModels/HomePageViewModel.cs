@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,6 +9,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Windowing;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Core;
@@ -379,6 +381,44 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 Dispatcher.UIThread.Post(() =>
                 {
                     td.Hide(TaskDialogStandardResult.OK);
+                });
+                File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
+            }
+            if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp")).Any())
+            {
+                var btn = new TaskDialogButton
+                {
+                    DialogResult = TaskDialogStandardResult.Cancel,
+                    Text = "取消",
+                    Command = new RelayCommand(async _ =>
+                    {
+                    })
+                };
+                var cnt = "";
+                var td = new TaskDialog
+                {
+                    Title = "PML Ⅱ 正在进行更新后清理",
+                    ShowProgressBar = true,
+                    IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+                    SubHeader = "正在清理过期更新文件",
+                    Content = cnt,
+                    Buttons =
+                    {
+                        btn
+                    }
+                };
+                td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+                td.XamlRoot = Core.App.MainWindow;
+                td.ShowAsync();
+
+                await Task.Run(() => Directory.Delete(Path.Combine(Core.App.StartupPath, "Cache"), true));
+                Dispatcher.UIThread.Post(() =>
+                {
+                    Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Normal);
+                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
+                    td.Hide(TaskDialogStandardResult.OK);
+                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
                 });
                 File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
             }

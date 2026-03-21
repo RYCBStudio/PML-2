@@ -6,7 +6,6 @@
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
-             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:controls2="clr-namespace:MEFrpLauncherX.Core.Controls;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -84,14 +83,14 @@
                     <Grid RowDefinitions="Auto,*">
                         <DockPanel Grid.Row="1" HorizontalSpacing="3">
                             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                                       Text="{Binding PlatformTraffic, Converter={x:Static views:TrafficToSizeLevelConverter.Instance}}" />
+                                       Text="{Binding PlatformTraffic, Converter={x:Static core:TrafficToSizeLevelConverter.Instance}}" />
                             <controls1:RollingNumberDoubleTextBlock
                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 FontSize="20"
-                                TargetNumber="{Binding PlatformTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                                TargetNumber="{Binding PlatformTraffic, Converter={x:Static core:TrafficToTargetNumberConverter.Instance}}" />
                         </DockPanel>
                         <TextBlock
                             Grid.Row="0"

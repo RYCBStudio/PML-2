@@ -613,6 +613,91 @@ public class BytesToReadableConverter : IValueConverter
     }
 }
 
+public class TrafficToTargetNumberConverter : IValueConverter
+{
+    public static TrafficToTargetNumberConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is long traffic ? ProcessFileSize(traffic) /*.ToString("######.## TB") : "- TB";*/ : 0;
+    }
+
+    /// <summary>
+    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
+    /// <br/>
+    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
+    /// 返回值的数值范围为1~1000。
+    /// </summary>
+    /// <param name="fileSize">文件大小，单位为Bytes</param>
+    /// <returns>处理后的文件大小值。</returns>
+    private static double ProcessFileSize(long fileSize)
+    {
+        string[] sizeUnits = ["B", "KB", "MB", "GB", "TB"];
+        double size = fileSize;
+        var unitIndex = 0;
+
+        while (size >= 1024 && unitIndex < sizeUnits.Length - 1)
+        {
+            size /= 1024;
+        }
+
+        return size;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class TrafficToSizeLevelConverter : IValueConverter
+{
+    public static TrafficToSizeLevelConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        var res = value is long traffic ? ProcessFileSizeIndex(traffic) : 0;
+        try
+        {
+            return new[] { "B", "KB", "MB", "GB", "TB" }[res];
+        }
+        catch
+        {
+            return "???";
+        }
+    }
+
+    /// <summary>
+    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
+    /// <br/>
+    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
+    /// 返回值的数值范围为1~1000。
+    /// </summary>
+    /// <param name="fileSize">文件大小，单位为Bytes</param>
+    /// <returns>处理后的文件大小值。</returns>
+    private static int ProcessFileSizeIndex(long fileSize)
+    {
+        string[] sizeUnits = ["B", "KB", "MB", "GB", "TB"];
+        double size = fileSize;
+        var unitIndex = 0;
+
+        while (size >= 1024 && unitIndex < sizeUnits.Length - 1)
+        {
+            size /= 1024;
+            unitIndex++;
+        }
+
+        return unitIndex;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
 public class BoundToReadableConverter : IValueConverter
 {
     public static BoundToReadableConverter Instance

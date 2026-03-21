@@ -14,7 +14,6 @@
     </Design.DataContext>
     <ScrollViewer>
         <Panel>
-            <controls:StarMapCanvas />
             <StackPanel Margin="10" Classes="animated">
                 <controls1:SettingsExpander
                     Footer="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}"
