@@ -226,8 +226,8 @@ public partial class MainWindow : AppWindow, IDisposable
             await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")));
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
-            var _frpt = await Task.Run(() => MEFApiConverter.GetFrpToken().data);
-            var cmd = $"{{mefrpc}} -t {_frpt.token} -p {data?.StartProxyId}";
+            var _frpt = await MEFApiConverter.GetFrpTokenAsync();
+            var cmd = $"{{mefrpc}} -t {_frpt.data?.token} -p {data?.StartProxyId}";
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd,
                 data?.StartProxyName);
         }
@@ -240,7 +240,7 @@ public partial class MainWindow : AppWindow, IDisposable
         }
 
         Hide();
-        var frpt = await Task.Run(() => MEFApiConverter.GetFrpToken().data);
+        var frpt = await MEFApiConverter.GetFrpTokenAsync();
         foreach (var alp in ConfigManager.CurrentConfig.AutoLaunchProxies)
         {
             if (alp.UseConfig)
@@ -251,7 +251,7 @@ public partial class MainWindow : AppWindow, IDisposable
             }
             else
             {
-                var cmd = $"{{mefrpc}} -t {frpt.token} -p {alp.Id}";
+                var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {alp.Id}";
                 MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
             }
         }

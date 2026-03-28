@@ -109,12 +109,19 @@
         <!-- 现代化节点列表 -->
         <ScrollViewer Grid.Row="2">
             <ItemsControl
-                FontFamily="{StaticResource GlobalFontFamily}" ItemsSource="{Binding FilteredNodes}">
+                FontFamily="{StaticResource GlobalFontFamily}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemsSource>
+                    <Binding Path="FilteredNodes">
+                        <Binding.FallbackValue>
+                            <local:NoData />
+                        </Binding.FallbackValue>
+                    </Binding>
+                </ItemsControl.ItemsSource>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="0,5" Padding="15" CornerRadius="8">

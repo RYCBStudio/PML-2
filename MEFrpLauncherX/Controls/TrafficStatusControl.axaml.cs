@@ -99,17 +99,18 @@ public class TrafficStatusControlViewModel : ViewModelBase
         IsLoading = true;
         if (Design.IsDesignMode)
         {
-            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type: EnumLogType.Warn);
             return;
         }
 
         data ??= (await MEFApiConverter.GetTrafficStatusAsync(period)).data;
 //
-// #if DEBUG
-//         data.trafficIn = [214, 25, 236, 2346, 2346, 234, 44];
-//         data.trafficOut = [2124, 215, 26, 346, 234, 24, 44];
-//         data.totalTraffic = [1, 0, 0, 0, 0, 0, 999];
-// #endif
+#if DEBUG
+        data ??= new InfoClasses.TrafficStatus();
+        data.trafficIn = [21423423, 2606203265, 236, 2346, 2346, 232528914, 44];
+        data.trafficOut = [21227994, 2606203265, 26, 346, 234, 24, 44];
+        data.totalTraffic = [2320923638, 2606203265, 262, 2372, 2580, 232528938, 88];
+#endif
         if (shouldLoadNew)
         {
             var r = await MEFApiConverter.GetTrafficStatusAsync(period);
@@ -119,7 +120,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
             }
             else
             {
-                Core.App.CurrentLogger?.Log("获取流量失败", module: EnumLogModule.Net, type:EnumLogType.Warn);
+                Core.App.CurrentLogger?.Log("获取流量失败", module: EnumLogModule.Net, type: EnumLogType.Warn);
                 IsLoading = false;
                 return;
             }
@@ -129,12 +130,13 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         if (data == null)
         {
-            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type: EnumLogType.Warn);
             XAxes = [new Axis { Labels = [] }];
             Series = [];
             IsLoading = false;
             return;
         }
+
         var dates = data.dates ?? [];
         var trafficIn = data.trafficIn ?? [];
         var trafficOut = data.trafficOut ?? [];
@@ -142,7 +144,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         if (dates.Length == 0)
         {
-            Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
             XAxes = [new Axis { Labels = [] }];
             Series = [];
             IsLoading = false;
@@ -151,7 +153,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
 
         if (trafficIn.Length == 0 && trafficOut.Length == 0 && totalTraffic.Length == 0)
         {
-            Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net, type:EnumLogType.Warn);
+            Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
             XAxes = [new Axis { Labels = dates }];
             Series = [];
             IsLoading = false;
@@ -243,10 +245,13 @@ public class TrafficStatusControlViewModel : ViewModelBase
                     Name = "Test111"
                 }
             ];
-            XAxes = [new Axis
-            {
-                Labels = ["2026-3-1", "2026-3-2", "2026-3-3", "2026-3-4", "2026-3-5", "2026-3-6"],
-            }];
+            XAxes =
+            [
+                new Axis
+                {
+                    Labels = ["2026-3-1", "2026-3-2", "2026-3-3", "2026-3-4", "2026-3-5", "2026-3-6"],
+                }
+            ];
         }
         else
         {

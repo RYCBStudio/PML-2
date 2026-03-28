@@ -29,12 +29,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.3.11" />
-      <PackageReference Include="AvaloniaXmlTranslator" Version="1.0.3.1" />
-      <PackageReference Include="Avalonia.Skia" Version="11.3.11" />
+      <PackageReference Include="Avalonia" Version="11.3.13" />
+      <PackageReference Include="Avalonia.Skia" Version="11.3.13" />
       <PackageReference Include="Avalonia.Svg" Version="11.2.0.2" />
       <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
-        <PackageReference Include="Markdig" Version="0.39.1" />
+        <PackageReference Include="Markdig" Version="1.1.2" />
         <PackageReference Include="SkiaSharp" Version="3.119.1" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />

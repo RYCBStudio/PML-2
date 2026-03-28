@@ -1,6 +1,6 @@
 {
-  "IsTelemetryEnabled": true,
-  "PrivacyAgreed": true,
+  "IsTelemetryEnabled": false,
+  "PrivacyAgreed": false,
   "Skin": "None",
   "KickWithoutDisable": true,
   "HideInsteadOfClose": true,

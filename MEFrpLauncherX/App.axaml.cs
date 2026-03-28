@@ -8,8 +8,8 @@ using Avalonia.Styling;
 using FluentAvalonia.Styling;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Views;
 
 namespace MEFrpLauncherX;

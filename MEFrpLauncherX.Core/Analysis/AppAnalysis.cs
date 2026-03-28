@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Sentry;
+﻿using System.Diagnostics;
 
-namespace MEFrpLauncherX.Analysis;
+namespace MEFrpLauncherX.Core.Analysis;
 
 public static class AppAnalytics
 {

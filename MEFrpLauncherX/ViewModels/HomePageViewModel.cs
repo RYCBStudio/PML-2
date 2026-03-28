@@ -11,8 +11,8 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
 using MarkdownAIRender.Controls.MarkdownRender;
-using MEFrpLauncherX.Analysis;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
@@ -420,7 +420,6 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     td.Hide(TaskDialogStandardResult.OK);
                     Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
                 });
-                File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
             }
 
             IsLoadingNotice = true;

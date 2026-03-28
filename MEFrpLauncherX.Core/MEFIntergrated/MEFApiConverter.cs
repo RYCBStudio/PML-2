@@ -1,12 +1,23 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Net;
 using System.Text;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
 using Newtonsoft.Json;
 using RestSharp;
 using RYCB.PML.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
+
+// ReSharper disable SuspiciousLockOverSynchronizationPrimitive
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
+#pragma warning disable CS8603 // 可能返回 null 引用。
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
 
 namespace MEFrpLauncherX.Core.MEFIntergrated;
 
@@ -156,7 +167,7 @@ public class MEFApiConverter
                 data = default
             };
         }
-        
+
         var result = JsonConvert.DeserializeObject<ApiInfo<T>>(response.Content ?? """
             {
             "code": 0,
@@ -205,6 +216,7 @@ public class MEFApiConverter
                 data = default
             };
         }
+
         // Fallback to safe default JSON if content is null
         var safeContent = response.Content ?? """
                                               {
@@ -255,8 +267,13 @@ public class MEFApiConverter
     /// <returns></returns>
     public static async Task<ApiInfo<SystemStatus?>> GetSystemStatusAsync()
     {
-        return await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status", "系统状态")
-            .ConfigureAwait(false);
+        ApiInfo<SystemStatus?> result = null;
+        await AppAnalytics.TrackCostAsync("api.system.status", async () =>
+        {
+            result = await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status", "系统状态")
+                .ConfigureAwait(false);
+        });
+        return result;
     }
 
     /// <summary>
@@ -265,16 +282,26 @@ public class MEFApiConverter
     /// <returns></returns>
     public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
     {
-        return await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
+        ApiInfo<string?> result = null;
+        await AppAnalytics.TrackCostAsync("api.popup-notice", async () =>
+        {
+            result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
+        });
+        return result;
     }
 
     /// <summary>
     /// 异步获取公告
     /// </summary>
     /// <returns>公告内容</returns>
-    public static Task<ApiInfo<string>> GetNoticeAsync()
+    public static async Task<ApiInfo<string>> GetNoticeAsync()
     {
-        return ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", "公告");
+        ApiInfo<string> result = null;
+        await AppAnalytics.TrackCostAsync("api.notice", async () =>
+        {
+            result = await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", "公告");
+        });
+        return result;
     }
 
     /// <summary>
@@ -283,7 +310,11 @@ public class MEFApiConverter
     /// <returns>公共信息</returns>
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
     {
-        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
+        ApiInfo<PublicData> result = null;
+        await AppAnalytics.TrackCostAsync("api.public-info", async () =>
+        {
+            result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
+        });
         CurrentPublicInfo = result;
         return result;
     }
@@ -292,9 +323,14 @@ public class MEFApiConverter
     /// 异步获取用户信息
     /// </summary>
     /// <returns>用户信息</returns>
-    public static Task<ApiInfo<ExtraUserInfo>> GetExtraUserInfoAsync()
+    public static async Task<ApiInfo<ExtraUserInfo>> GetExtraUserInfoAsync()
     {
-        return ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info", "详细的用户信息");
+        ApiInfo<ExtraUserInfo> result = null;
+        await AppAnalytics.TrackCostAsync("api.user-info", async () =>
+        {
+            result = await ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info", "详细的用户信息");
+        });
+        return result;
     }
 
     /// <summary>
@@ -342,10 +378,10 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送签到请求(异步)
+    /// 发送签到请求 (异步)
     /// </summary>
     /// <param name="code">人机验证码</param>
-    /// <returns>(是否成功, 返回的response内容)</returns>
+    /// <returns>(是否成功，返回的 response 内容)</returns>
     public static async Task<(bool, string?)> SendSignRequestAsync(string code)
     {
         App.CurrentLogger.Log("正在发送签到请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
@@ -357,9 +393,11 @@ public class MEFApiConverter
         }, Formatting.Indented);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
         using var client = CreateClient("auth/user/sign");
+
         var response = await client.ExecuteAsync(request);
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return (response.Content?.Contains("成功") ?? false, response.Content);
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        (bool, string?) result = (response.Content?.Contains("成功") ?? false, response.Content);
+        return result;
     }
 
     /// <summary>
@@ -394,32 +432,42 @@ public class MEFApiConverter
     /// <summary>
     /// 获取节点状态
     /// </summary>
-    /// <returns>一个“单个节点状态”数组。</returns>
+    /// <returns>一个"单个节点状态"数组。</returns>
     public static async Task<ApiInfo<NodeStatus[]>> GetNodesStatusAsync()
     {
-        var ns = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status", "节点状态")
-            .ConfigureAwait(false);
-
-        if (ns is { data: not null })
+        ApiInfo<NodeStatus[]> result = null;
+        await AppAnalytics.TrackCostAsync("api.nodes.status", async () =>
         {
-            // 存储到缓存，线程安全
-            lock (_nodesStatusSemaphore)
-            {
-                _nodesStatusInfo ??= new NodesStatusInfo();
-                _nodesStatusInfo.NodesStatus = ns.data;
-            }
+            result = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status", "节点状态");
+        });
+
+        if (result is not { data: not null })
+        {
+            return result;
         }
 
-        return ns;
+        // 存储到缓存，线程安全
+        lock (_nodesStatusSemaphore)
+        {
+            _nodesStatusInfo ??= new NodesStatusInfo();
+            _nodesStatusInfo.NodesStatus = result.data;
+        }
+
+        return result;
     }
 
     /// <summary>
     /// 获取节点信息
     /// </summary>
-    /// <returns>一个“单个节点信息”数组。</returns>
+    /// <returns>一个"单个节点信息"数组。</returns>
     public static async Task<ApiInfo<NodesList[]>> GetNodesInfoAsync()
     {
-        return await ExecuteRequestAsync<NodesList[]>(CreateRequest(), "auth/node/list", "节点信息").ConfigureAwait(false);
+        ApiInfo<NodesList[]> result = null;
+        await AppAnalytics.TrackCostAsync("api.nodes.info", async () =>
+        {
+            result = await ExecuteRequestAsync<NodesList[]>(CreateRequest(), "auth/node/list", "节点信息");
+        });
+        return result;
     }
 
     /// <summary>
@@ -428,7 +476,12 @@ public class MEFApiConverter
     /// <returns></returns>
     public static async Task<ApiInfo<NodeNameList[]>> GetNodesNameListAsync()
     {
-        return await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList", "已连接节点信息");
+        ApiInfo<NodeNameList[]> result = null;
+        await AppAnalytics.TrackCostAsync("api.nodes.name-list", async () =>
+        {
+            result = await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList", "已连接节点信息");
+        });
+        return result;
     }
 
     /// <summary>
@@ -550,14 +603,15 @@ public class MEFApiConverter
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/create");
+
         var response = await client.ExecuteAsync(request);
 
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
         var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
-                         "message": "无法获取api信息",
+                         "message": "无法获取 api 信息",
                          "data": {
                              "users": 0,
                              "nodes": 0,
@@ -584,14 +638,15 @@ public class MEFApiConverter
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/update");
+
         var response = await client.ExecuteAsync(request);
 
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
         var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
-                         "message": "无法获取api信息",
+                         "message": "无法获取 api 信息",
                          "data": {
                              "users": 0,
                              "nodes": 0,
@@ -611,16 +666,26 @@ public class MEFApiConverter
     /// <returns>一个"用户隧道"数组。</returns>
     public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync()
     {
-        return await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", "隧道列表");
+        ApiInfo<ProxyInfo> result = null;
+        await AppAnalytics.TrackCostAsync("api.proxy.list", async () =>
+        {
+            result = await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", "隧道列表");
+        });
+        return result;
     }
 
     /// <summary>
     /// 获取用于快速启动的frpToken。
     /// </summary>
     /// <returns></returns>
-    public static ApiInfo<FrpTokenInfo> GetFrpToken()
+    public static async Task<ApiInfo<FrpTokenInfo>> GetFrpTokenAsync()
     {
-        return ExecuteRequest<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", "FrpToken信息");
+        ApiInfo<FrpTokenInfo> result = null;
+        await AppAnalytics.TrackCostAsync("api.proxy.token", async () =>
+        {
+            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", "FrpToken信息");
+        });
+        return result;
     }
 
     /// <summary>
@@ -852,7 +917,7 @@ public class MEFApiConverter
     /// <summary>
     /// 异步获取用户的流量统计信息
     /// </summary>
-    /// <param name="period">获取的周期，官网上只有7，15，30</param>
+    /// <param name="period">获取的周期，官网上只有 7，15，30</param>
     /// <returns>用户的流量信息</returns>
     public static async Task<ApiInfo<TrafficStatus>> GetTrafficStatusAsync(int period)
     {
@@ -866,14 +931,17 @@ public class MEFApiConverter
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/user/trafficStats");
+
+        ApiInfo<TrafficStatus> result;
         var response = await client.ExecuteAsync(request).ConfigureAwait(false);
 
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        if (response.Content?.StartsWith('<') == true)
-        {
-            return default;
-        }
-        var result = JsonConvert.DeserializeObject<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
+            App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            if (response.Content?.StartsWith('<') == true)
+            {
+                return default;
+            }
+
+            result = JsonConvert.DeserializeObject<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
                      new ApiInfo<TrafficStatus>();
         HandleResponse(result);
         return result;

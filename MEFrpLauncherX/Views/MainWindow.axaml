@@ -51,6 +51,6 @@
                          Value="{Binding Progress}"
                          IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
         </Grid>
-        <msg:MessageHost HostId="PML2_Msg" />
+        <msg:MessageHost ZIndex="10" HostId="PML2_Msg" />
     </Panel>
 </windowing:AppWindow>

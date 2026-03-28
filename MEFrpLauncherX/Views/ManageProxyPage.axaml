@@ -127,8 +127,15 @@
         <!-- Main content area -->
         <ListBox Grid.Row="2"
                  SelectionMode="Multiple"
-                 ItemsSource="{Binding FilteredProxies}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            
+            <ListBox.ItemsSource>
+                <Binding Path="FilteredProxies">
+                    <Binding.FallbackValue>
+                        <controls:NoData />
+                    </Binding.FallbackValue>
+                </Binding>
+            </ListBox.ItemsSource>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal" ItemSpacing="3" LineSpacing="3"/>

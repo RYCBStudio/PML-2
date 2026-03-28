@@ -458,7 +458,7 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log("启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = para as UserProxyViewModel;
         Core.App.CurrentLogger.Log($"正在启动隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
-        var frpt = await Task.Run(() => MEFApiConverter.GetFrpToken().data);
+        var frpt = await MEFApiConverter.GetFrpTokenAsync();
         if (OperatingSystem.IsWindows())
         {
             if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"),
@@ -537,7 +537,7 @@ public class UserProxyViewModel : ViewModelBase
             ProxyFloat.Instance?.Show();
         }
 
-        var cmd = $"{{mefrpc}} -t {frpt.token} -p {proxy.proxyId}";
+        var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {proxy.proxyId}";
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);

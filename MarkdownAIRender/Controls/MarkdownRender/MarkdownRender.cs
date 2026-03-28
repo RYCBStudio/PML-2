@@ -9,7 +9,6 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
-using AvaloniaXmlTranslator;
 using Markdig;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
@@ -528,8 +527,8 @@ namespace MarkdownAIRender.Controls.MarkdownRender
                     clipboard.SetTextAsync(fencedCodeBlock.Lines.ToString());
 
                     _notificationManager?.Show(new Notification(
-                        I18nManager.Instance.GetResource(Localization.MarkdownRender.CopyNotificationTitle),
-                        I18nManager.Instance.GetResource(Localization.MarkdownRender.CopyNotificationMessage),
+                        "复制成功",
+                        "复制成功",
                         NotificationType.Success));
                 };
 

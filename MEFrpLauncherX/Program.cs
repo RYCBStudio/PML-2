@@ -161,7 +161,9 @@ internal sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .UseReactiveUI();
+            .UseReactiveUI(cfg =>
+            {
+            });
     }
 
     private static void ProcessUnhandledExceptions(object sender, UnhandledExceptionEventArgs e)

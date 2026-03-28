@@ -359,7 +359,7 @@ public class UpdatePageViewModel : ViewModelBase
             MaxTryAgainOnFailure = 5,
             ParallelDownload = ConfigManager.CurrentConfig.ParallelDownload,
             ParallelCount = ConfigManager.CurrentConfig.ParallelCount,
-            Timeout = 5000,
+            BlockTimeout = 5000,
             RequestConfiguration =
             {
                 Accept = "*/*",
@@ -460,7 +460,7 @@ public class UpdatePageViewModel : ViewModelBase
             MaxTryAgainOnFailure = 5, // 失败的最大次数
             ParallelDownload = ConfigManager.CurrentConfig.ParallelDownload, // 下载文件是否为并行的。默认值为false
             ParallelCount = ConfigManager.CurrentConfig.ParallelCount,
-            Timeout = 5000, // 每个 stream reader  的超时（毫秒），默认值是1000
+            BlockTimeout = 5000, // 每个 stream reader  的超时（毫秒），默认值是1000
 
             RequestConfiguration = // 定制请求头文件
             {

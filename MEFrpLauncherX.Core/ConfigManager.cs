@@ -57,26 +57,27 @@ namespace MEFrpLauncherX.Core
             {
                 lock (_lock)
                 {
-                    var updateBakFile = ConfigPath + ".bak.update";
-                    if (File.Exists(updateBakFile) &&
-                        DateTime.Now.Subtract(File.GetLastWriteTime(ConfigPath)).TotalHours <= 1)
-                    {
-                        var _bak_json = File.ReadAllText(updateBakFile);
-                        var _bak_config = JsonConvert.DeserializeObject<AppConfig>(_bak_json);
-
-                        MergeConfig(_bak_config, _currentConfig);
-
-                        try
-                        {
-                            File.Delete(updateBakFile);
-                        }
-                        catch
-                        {
-                        }
-                    }
-
                     var json = File.ReadAllText(ConfigPath);
                     _currentConfig = JsonConvert.DeserializeObject<AppConfig>(json);
+                    var updateBakFile = ConfigPath + ".bak.update";
+                    if (!File.Exists(updateBakFile))
+                    {
+                        return;
+                    }
+
+                    var _bak_json = File.ReadAllText(updateBakFile);
+                    var _bak_config = JsonConvert.DeserializeObject<AppConfig>(_bak_json);
+
+                    MergeConfig(_bak_config, ref _currentConfig);
+
+                    try
+                    {
+                        File.Delete(updateBakFile);
+                    }
+                    catch
+                    {
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -89,7 +90,7 @@ namespace MEFrpLauncherX.Core
         }
 
 
-        private static void MergeConfig(AppConfig source, AppConfig target)
+        private static void MergeConfig(AppConfig source, ref AppConfig target)
         {
             if (source == null || target == null) return;
 

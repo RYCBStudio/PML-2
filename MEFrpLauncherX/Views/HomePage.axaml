@@ -279,7 +279,16 @@
                             <markdownAiRender:MarkdownRender
                                 TextWrapping="Wrap"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                x:Name="NoticeBoard" Value="{Binding NoticeContent}" />
+                                x:Name="NoticeBoard" >
+                                
+                                <markdownAiRender:MarkdownRender.Value>
+                                    <Binding Path="NoticeContent">
+                                        <Binding.FallbackValue>
+                                            <controls1:NoData />
+                                        </Binding.FallbackValue>
+                                    </Binding>
+                                </markdownAiRender:MarkdownRender.Value>
+                            </markdownAiRender:MarkdownRender>
                             <!-- <mdxaml:MarkdownScrollViewer Markdown="{Binding NoticeContent}"> -->
                             <!--     <mdxaml:MarkdownScrollViewer.Styles> -->
                             <!--         <StyleInclude Source="avares://MEFrpLauncherX/Styles/RichTextStyles.axaml"/> -->

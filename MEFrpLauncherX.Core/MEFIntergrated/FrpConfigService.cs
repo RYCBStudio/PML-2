@@ -1,8 +1,6 @@
 ﻿using System.Text;
 using MEFrpLauncherX.Core.Models;
 using Newtonsoft.Json;
-using Tomlyn;
-using Tomlyn.Model;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -33,7 +31,7 @@ public class FrpConfigService
 
         return extension switch
         {
-            ".toml" => LoadConfigFromToml(content),
+            //".toml" => LoadConfigFromToml(content),
             ".json" => LoadConfigFromJson(content),
             ".yaml" or ".yml" => LoadConfigFromYaml(content),
             ".ini" => LoadConfigFromIni(content),
@@ -41,71 +39,71 @@ public class FrpConfigService
         };
     }
 
-    public FrpConfig LoadConfigFromToml(string tomlContent)
-    {
-        var model = Toml.ToModel(tomlContent);
-        var config = new FrpConfig();
-
-        // 解析基础配置
-        config.ServerAddr = model["serverAddr"]?.ToString() ?? string.Empty;
-        config.ServerPort = Convert.ToInt32(model["serverPort"]);
-        config.User = model["user"]?.ToString() ?? string.Empty;
-
-        // 解析认证配置
-        if (model["auth"] is TomlTable authTable)
-        {
-            config.Auth.Method = authTable["method"]?.ToString() ?? "token";
-            config.Auth.Token = authTable["token"]?.ToString() ?? string.Empty;
-        }
-
-        // 解析代理配置
-        if (model["proxies"] is TomlTableArray proxiesArray)
-        {
-            foreach (var proxyTable in proxiesArray)
-            {
-                var proxy = new ProxyConfig
-                {
-                    Name = proxyTable["name"]?.ToString() ?? string.Empty,
-                    Type = proxyTable["type"]?.ToString() ?? "tcp",
-                    LocalIP = proxyTable["localIP"]?.ToString() ?? "127.0.0.1",
-                    LocalPort = Convert.ToInt32(proxyTable["localPort"]),
-                    RemotePort = Convert.ToInt32(proxyTable["remotePort"])
-                };
-
-                // 解析自定义域名（HTTPS 代理需要）
-                if (proxyTable["customDomains"] is TomlArray domainsArray)
-                {
-                    proxy.CustomDomains = domainsArray.Select(d => d.ToString()).ToList();
-                }
-
-                // 解析插件配置
-                if (proxyTable["plugin"] is TomlTable pluginTable)
-                {
-                    proxy.Plugin = new PluginConfig
-                    {
-                        Type = pluginTable["type"]?.ToString() ?? string.Empty,
-                        LocalAddr = pluginTable["localAddr"]?.ToString() ?? string.Empty,
-                        CrtPath = pluginTable["crtPath"]?.ToString() ?? string.Empty,
-                        KeyPath = pluginTable["keyPath"]?.ToString() ?? string.Empty
-                    };
-                }
-
-                // 解析传输配置
-                if (proxyTable["transport"] is TomlTable transportTable)
-                {
-                    proxy.Transport = new TransportConfig
-                    {
-                        UseEncryption = Convert.ToBoolean(transportTable["useEncryption"]),
-                        UseCompression = Convert.ToBoolean(transportTable["useCompression"])
-                    };
-                }
-
-                config.Proxies.Add(proxy);
-            }
-        }
-
-        return config;
-    }
+    // public FrpConfig LoadConfigFromToml(string tomlContent)
+    // {
+    //     var model = TomlReader.Create()
+    //     var config = new FrpConfig();
+    //
+    //     // 解析基础配置
+    //     config.ServerAddr = model["serverAddr"]?.ToString() ?? string.Empty;
+    //     config.ServerPort = Convert.ToInt32(model["serverPort"]);
+    //     config.User = model["user"]?.ToString() ?? string.Empty;
+    //
+    //     // 解析认证配置
+    //     if (model["auth"] is TomlTable authTable)
+    //     {
+    //         config.Auth.Method = authTable["method"]?.ToString() ?? "token";
+    //         config.Auth.Token = authTable["token"]?.ToString() ?? string.Empty;
+    //     }
+    //
+    //     // 解析代理配置
+    //     if (model["proxies"] is TomlTableArray proxiesArray)
+    //     {
+    //         foreach (var proxyTable in proxiesArray)
+    //         {
+    //             var proxy = new ProxyConfig
+    //             {
+    //                 Name = proxyTable["name"]?.ToString() ?? string.Empty,
+    //                 Type = proxyTable["type"]?.ToString() ?? "tcp",
+    //                 LocalIP = proxyTable["localIP"]?.ToString() ?? "127.0.0.1",
+    //                 LocalPort = Convert.ToInt32(proxyTable["localPort"]),
+    //                 RemotePort = Convert.ToInt32(proxyTable["remotePort"])
+    //             };
+    //
+    //             // 解析自定义域名（HTTPS 代理需要）
+    //             if (proxyTable["customDomains"] is TomlArray domainsArray)
+    //             {
+    //                 proxy.CustomDomains = domainsArray.Select(d => d.ToString()).ToList();
+    //             }
+    //
+    //             // 解析插件配置
+    //             if (proxyTable["plugin"] is TomlTable pluginTable)
+    //             {
+    //                 proxy.Plugin = new PluginConfig
+    //                 {
+    //                     Type = pluginTable["type"]?.ToString() ?? string.Empty,
+    //                     LocalAddr = pluginTable["localAddr"]?.ToString() ?? string.Empty,
+    //                     CrtPath = pluginTable["crtPath"]?.ToString() ?? string.Empty,
+    //                     KeyPath = pluginTable["keyPath"]?.ToString() ?? string.Empty
+    //                 };
+    //             }
+    //
+    //             // 解析传输配置
+    //             if (proxyTable["transport"] is TomlTable transportTable)
+    //             {
+    //                 proxy.Transport = new TransportConfig
+    //                 {
+    //                     UseEncryption = Convert.ToBoolean(transportTable["useEncryption"]),
+    //                     UseCompression = Convert.ToBoolean(transportTable["useCompression"])
+    //                 };
+    //             }
+    //
+    //             config.Proxies.Add(proxy);
+    //         }
+    //     }
+    //
+    //     return config;
+    // }
 
     public FrpConfig LoadConfigFromJson(string jsonContent)
     {
@@ -133,81 +131,81 @@ public class FrpConfigService
     {
         return format.ToLower() switch
         {
-            "toml" => SaveAsToml(config),
+            //"toml" => SaveAsToml(config),
             "json" => SaveAsJson(config),
             "yaml" => SaveAsYaml(config),
             "ini" => SaveAsIni(config),
-            _ => SaveAsToml(config)
+           // _ => SaveAsToml(config)
         };
     }
 
-    private string SaveAsToml(FrpConfig config)
-    {
-        var table = new TomlTable
-        {
-            ["serverAddr"] = config.ServerAddr,
-            ["serverPort"] = config.ServerPort,
-            ["user"] = config.User
-        };
-
-        // 认证配置
-        var authTable = new TomlTable
-        {
-            ["method"] = config.Auth.Method,
-            ["token"] = config.Auth.Token
-        };
-        table.Add("auth", authTable);
-
-        // 代理配置
-        var proxiesArray = new TomlTableArray();
-        foreach (var proxy in config.Proxies)
-        {
-            var proxyTable = new TomlTable
-            {
-                ["name"] = proxy.Name,
-                ["type"] = proxy.Type,
-                ["localIP"] = proxy.LocalIP,
-                ["localPort"] = proxy.LocalPort,
-                ["remotePort"] = proxy.RemotePort
-            };
-
-            // 自定义域名
-            if (proxy.CustomDomains.Any())
-            {
-                proxyTable["customDomains"] = new TomlArray
-                {
-                    proxy.CustomDomains.Select(object (d) => d).ToList()
-                };
-            }
-
-            // 插件配置
-            if (!string.IsNullOrEmpty(proxy.Plugin.Type))
-            {
-                var pluginTable = new TomlTable
-                {
-                    ["type"] = proxy.Plugin.Type,
-                    ["localAddr"] = proxy.Plugin.LocalAddr,
-                    ["crtPath"] = proxy.Plugin.CrtPath,
-                    ["keyPath"] = proxy.Plugin.KeyPath
-                };
-                proxyTable.Add("plugin", pluginTable);
-            }
-
-            // 传输配置
-            var transportTable = new TomlTable
-            {
-                ["useEncryption"] = proxy.Transport.UseEncryption,
-                ["useCompression"] = proxy.Transport.UseCompression
-            };
-            proxyTable.Add("transport", transportTable);
-
-            proxiesArray.Add(proxyTable);
-        }
-
-        table.Add("proxies", proxiesArray);
-
-        return Toml.FromModel(table);
-    }
+    // private string SaveAsToml(FrpConfig config)
+    // {
+    //     var table = new TomlTable
+    //     {
+    //         ["serverAddr"] = config.ServerAddr,
+    //         ["serverPort"] = config.ServerPort,
+    //         ["user"] = config.User
+    //     };
+    //
+    //     // 认证配置
+    //     var authTable = new TomlTable
+    //     {
+    //         ["method"] = config.Auth.Method,
+    //         ["token"] = config.Auth.Token
+    //     };
+    //     table.Add("auth", authTable);
+    //
+    //     // 代理配置
+    //     var proxiesArray = new TomlTableArray();
+    //     foreach (var proxy in config.Proxies)
+    //     {
+    //         var proxyTable = new TomlTable
+    //         {
+    //             ["name"] = proxy.Name,
+    //             ["type"] = proxy.Type,
+    //             ["localIP"] = proxy.LocalIP,
+    //             ["localPort"] = proxy.LocalPort,
+    //             ["remotePort"] = proxy.RemotePort
+    //         };
+    //
+    //         // 自定义域名
+    //         if (proxy.CustomDomains.Any())
+    //         {
+    //             proxyTable["customDomains"] = new TomlArray
+    //             {
+    //                 proxy.CustomDomains.Select(object (d) => d).ToList()
+    //             };
+    //         }
+    //
+    //         // 插件配置
+    //         if (!string.IsNullOrEmpty(proxy.Plugin.Type))
+    //         {
+    //             var pluginTable = new TomlTable
+    //             {
+    //                 ["type"] = proxy.Plugin.Type,
+    //                 ["localAddr"] = proxy.Plugin.LocalAddr,
+    //                 ["crtPath"] = proxy.Plugin.CrtPath,
+    //                 ["keyPath"] = proxy.Plugin.KeyPath
+    //             };
+    //             proxyTable.Add("plugin", pluginTable);
+    //         }
+    //
+    //         // 传输配置
+    //         var transportTable = new TomlTable
+    //         {
+    //             ["useEncryption"] = proxy.Transport.UseEncryption,
+    //             ["useCompression"] = proxy.Transport.UseCompression
+    //         };
+    //         proxyTable.Add("transport", transportTable);
+    //
+    //         proxiesArray.Add(proxyTable);
+    //     }
+    //
+    //     table.Add("proxies", proxiesArray);
+    //
+    //     return Toml.FromModel(table);
+    // }
 
 
     private string SaveAsJson(FrpConfig config)
