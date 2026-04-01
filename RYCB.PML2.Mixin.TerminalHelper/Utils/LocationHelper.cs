@@ -1,8 +1,8 @@
 ﻿using System.Device.Location;
 using System.Net;
+using System.Text.Json;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace RYCB.PML2.Mixin.TerminalHelper.Utils;
@@ -94,7 +94,7 @@ public class LocationHelper
             return default;
         }
 
-        var result = JsonConvert.DeserializeObject<T>(response.Content) ?? default;
+        var result = JsonSerializer.Deserialize<T>(response.Content) ?? default;
 
         HandleResponse(response);
         return result;

@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
-using Newtonsoft.Json;
 using RestSharp;
 using RYCB.PML.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
@@ -168,7 +168,7 @@ public class MEFApiConverter
             };
         }
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<T>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? """
             {
             "code": 0,
             "message": "无法获取api信息",
@@ -226,7 +226,7 @@ public class MEFApiConverter
                                               }
                                               """;
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<T>>(safeContent) ?? new ApiInfo<T>
+        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent) ?? new ApiInfo<T>
         {
             data = default,
             message = "无法获取api信息",
@@ -247,7 +247,7 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.ChallengeUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonConvert.DeserializeObject<ChallengeInfo>(response.Content ?? "")!;
+        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "")!;
     }
 
     public static async Task<(CaptchaResultX, string)> GetRedeemAsync(string redeemBody)
@@ -258,7 +258,7 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return (JsonConvert.DeserializeObject<CaptchaResultX>(response.Content ?? "")!, response.Content ?? "");
+        return (JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "")!, response.Content ?? "");
     }
 
     /// <summary>
@@ -366,10 +366,10 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送签到请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
         var cr = GetCaptchaResult(code);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             captchaToken = cr
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
         using var client = CreateClient("auth/user/sign");
         var response = client.Execute(request);
@@ -387,10 +387,10 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送签到请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
         var cr = GetCaptchaResult(code);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             captchaToken = cr
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
         using var client = CreateClient("auth/user/sign");
 
@@ -413,12 +413,12 @@ public class MEFApiConverter
 
         var request = CreateRequest(Method.Post);
 
-        var body = JsonConvert.SerializeObject(new LoginInfo
+        var body = JsonSerializer.Serialize(new LoginInfo
         {
             username = username,
             password = password,
             captchaToken = GetCaptchaResult(captchaCode)
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -566,11 +566,11 @@ public class MEFApiConverter
         var request = CreateRequest(Method.Post);
         protocol = protocol.ToLower();
 
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             nodeId,
             protocol,
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -579,7 +579,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<int>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<int>>(response.Content ?? """
             {
             "code": 0,
             "message": "无法获取api信息",
@@ -608,7 +608,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
                          "message": "无法获取 api 信息",
@@ -643,7 +643,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
                          "message": "无法获取 api 信息",
@@ -699,11 +699,11 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送启动配置申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             proxyId,
             format
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/config");
@@ -711,7 +711,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<ConfigInfo>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<ConfigInfo>>(response.Content ?? """
                          {
                          "code": 0,
                          "message": "无法获取api信息",
@@ -739,11 +739,11 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送切换隧道状态隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             proxyId,
             isDisabled
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/toggle");
@@ -751,7 +751,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
                          "message": "无法获取api信息",
@@ -773,10 +773,10 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送强制下线隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             proxyId
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/kick");
@@ -800,7 +800,7 @@ public class MEFApiConverter
 
             try
             {
-                var firstResult = JsonConvert.DeserializeObject<ApiInfo<object>>(firstJson);
+                var firstResult = JsonSerializer.Deserialize<ApiInfo<object>>(firstJson);
                 if (firstResult != null && firstResult.code != 200)
                 {
                     HandleResponse(firstResult);
@@ -814,7 +814,7 @@ public class MEFApiConverter
 
             try
             {
-                var secondResult = JsonConvert.DeserializeObject<ApiInfo<object>>(secondJson);
+                var secondResult = JsonSerializer.Deserialize<ApiInfo<object>>(secondJson);
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
@@ -829,7 +829,7 @@ public class MEFApiConverter
 
         try
         {
-            var result = JsonConvert.DeserializeObject<ApiInfo<object>>(content) ?? new ApiInfo<object>();
+            var result = JsonSerializer.Deserialize<ApiInfo<object>>(content) ?? new ApiInfo<object>();
             HandleResponse(result);
             return result;
         }
@@ -850,7 +850,7 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在发送删除隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             proxyId
         });
@@ -861,7 +861,7 @@ public class MEFApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<ApiInfo<object>>(response.Content ?? """
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? """
                          {
                          "code": 0,
                          "message": "无法获取api信息",
@@ -924,7 +924,7 @@ public class MEFApiConverter
         App.CurrentLogger.Log("正在获取流量统计", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonConvert.SerializeObject(new
+        var body = JsonSerializer.Serialize(new
         {
             datePeriod = period
         });
@@ -935,14 +935,27 @@ public class MEFApiConverter
         ApiInfo<TrafficStatus> result;
         var response = await client.ExecuteAsync(request).ConfigureAwait(false);
 
-            App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-            if (response.Content?.StartsWith('<') == true)
-            {
-                return default;
-            }
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        if (response.Content?.StartsWith('<') == true)
+        {
+            return default;
+        }
 
-            result = JsonConvert.DeserializeObject<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
+        if (!response.IsSuccessful)
+        {
+            result = new ApiInfo<TrafficStatus>()
+            {
+                code = (int)response.StatusCode,
+                message = $"请求失败: {(int)response.StatusCode}",
+                data = default
+            };
+        }
+        else
+        {
+            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
                      new ApiInfo<TrafficStatus>();
+        }
+
         HandleResponse(result);
         return result;
     }

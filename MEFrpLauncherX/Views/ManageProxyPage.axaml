@@ -125,6 +125,7 @@
         </Border>
 
         <!-- Main content area -->
+        <controls:NoData Grid.Row="2" IsVisible="{Binding IsNoData}" />
         <ListBox Grid.Row="2"
                  SelectionMode="Multiple"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">

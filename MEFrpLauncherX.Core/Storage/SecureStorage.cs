@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Core.Storage;
 
@@ -57,7 +57,7 @@ internal static class SecureStorage
             };
 
             // 2. Serialize
-            var json = JsonConvert.SerializeObject(data);
+            var json = JsonSerializer.Serialize(data);
 
             // 3. Generate random IV
             var iv = GenerateRandomIV();
@@ -127,8 +127,8 @@ internal static class SecureStorage
             }
 
             // 4. Deserialize and check expiry
-            var result = JsonConvert.DeserializeObject<dynamic>(json);
-            DateTime expiry = result.Expiry;
+            var result = JsonSerializer.Deserialize<JsonElement>(json, AppJsonSerializerContext.Default.JsonElement);
+            DateTime expiry = result.GetProperty("Expiry").GetDateTime();
 
             if (expiry < DateTime.UtcNow)
             {
@@ -136,7 +136,7 @@ internal static class SecureStorage
                 return null;
             }
 
-            return result.Data.ToObject<InfoClasses.UserInfo>();
+            return result.GetProperty("Data").Deserialize<InfoClasses.UserInfo>(AppJsonSerializerContext.Default.UserInfo);
         }
         catch (CryptographicException ex)
         {

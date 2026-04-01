@@ -63,7 +63,6 @@ MEFrpLauncherX.sln
 - **Message.Avalonia** - 消息通知系统
 - **Notification.Avalonia** - 桌面通知
 - **RestSharp** - HTTP 客户端
-- **Newtonsoft.Json** - JSON 序列化
 - **Sentry** - 错误监控和日志
 - **Downloader** - 多线程下载器
 - **Tomlyn/YamlDotNet** - TOML/YAML 解析

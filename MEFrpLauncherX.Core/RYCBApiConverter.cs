@@ -1,7 +1,8 @@
-﻿using System.Net;
+using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace MEFrpLauncherX.Core;
@@ -39,12 +40,12 @@ public class RYCBApiConverter
 
         var request = CreateRequest(Method.Post);
 
-        var body = JsonConvert.SerializeObject(new FeedbackBody
+        var body = JsonSerializer.Serialize(new FeedbackBody
         {
             user = mail,
             comment = feedback,
             time = DateTime.Now.ToString("O"),
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -52,7 +53,7 @@ public class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var res = JsonConvert.DeserializeObject<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content);
         return res;
     }
 
@@ -71,13 +72,13 @@ public class RYCBApiConverter
 
         var request = CreateRequest(Method.Post);
 
-        var body = JsonConvert.SerializeObject(new EmailBody
+        var body = JsonSerializer.Serialize(new EmailBody
         {
             mode = mode,
             receiver = receiver,
             body = mailBody,
             subject = subject
-        }, Formatting.Indented);
+        }, new JsonSerializerOptions { WriteIndented = true });
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -90,7 +91,7 @@ public class RYCBApiConverter
             App.CurrentLogger.Log(response.Content, EnumLogType.Warn, module: EnumLogModule.Net);
         }
 
-        var res = JsonConvert.DeserializeObject<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content);
         return res;
     }
 
@@ -117,7 +118,7 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonConvert.DeserializeObject<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
+        var result = JsonSerializer.Deserialize<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
         {
             success = false,
             version = "0.0.0",
@@ -151,7 +152,7 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonConvert.DeserializeObject<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
+        var result = JsonSerializer.Deserialize<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
         {
             success = false,
             version = "0.0.0",
@@ -171,7 +172,7 @@ public class RYCBApiConverter
         using var client = CreateClient("tpca/errors");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<TunnelErrorInfosShell>(res.Content);
+        var result = JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content);
         return result;
     }
 
@@ -184,7 +185,7 @@ public class RYCBApiConverter
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<SingleApiInfo<TunnelErrorInfo>>(res.Content);
+        var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content);
         return result;
     }
 
@@ -197,7 +198,7 @@ public class RYCBApiConverter
         using var client = CreateClient("notice");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<SingleApiInfo<NoticeContent[]>>(res.Content);
+        var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content);
         return result;
     }
 
@@ -213,65 +214,64 @@ public class RYCBApiConverter
     }
 }
 
-public class NoticeContent(
-    bool active,
-    string content,
-    string date,
-    int id,
-    int priority,
-    string summary,
-    string type
-)
+public class NoticeContent
 {
+    [JsonPropertyName("active")]
     public bool Active
     {
         get;
         set;
-    } = active;
+    }
 
+    [JsonPropertyName("content")]
     public string ContentOfNotice
     {
         get;
         set;
-    } = content;
+    }
     
 
+    [JsonPropertyName("date")]
     public string Date
     {
         get;
         set;
-    } = date;
+    }
 
+    [JsonPropertyName("id")]
     public int Id
     {
         get;
         set;
-    } = id;
+    }
 
+    [JsonPropertyName("priority")]
     public int Priority
     {
         get;
         set;
-    } = priority;
+    }
 
+    [JsonPropertyName("summary")]
     public string Summary
     {
         get;
         set;
-    } = summary;
+    }
 
+    [JsonPropertyName("type")]
     public string Type
     {
         get;
         set;
-    } = type;
+    }
 
     public void ShowNotice()
     {
         var cd = new ContentDialog()
         {
             Content = new NoticeView(this, ContentOfNotice),
-            Title = summary,
+            Title = Summary,
             PrimaryButtonText = "确定",
             CloseButtonText = "关闭",
             DefaultButton = ContentDialogButton.Primary,

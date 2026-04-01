@@ -200,6 +200,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public bool IsNoData => NoticeContent.IsNullOrEmpty();
+
     public HomePageViewModel()
     {
         // 初始化命令

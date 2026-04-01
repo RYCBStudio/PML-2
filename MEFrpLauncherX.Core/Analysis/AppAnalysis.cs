@@ -174,6 +174,5 @@ public static class AppAnalytics
         {
             if (tag != null) s.SetTag("op", tag);
         });
-        
     }
 }

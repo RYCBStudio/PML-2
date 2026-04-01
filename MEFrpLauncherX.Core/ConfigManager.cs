@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 
 namespace MEFrpLauncherX.Core
 {
@@ -58,7 +58,7 @@ namespace MEFrpLauncherX.Core
                 lock (_lock)
                 {
                     var json = File.ReadAllText(ConfigPath);
-                    _currentConfig = JsonConvert.DeserializeObject<AppConfig>(json);
+                    _currentConfig = JsonSerializer.Deserialize<AppConfig>(json);
                     var updateBakFile = ConfigPath + ".bak.update";
                     if (!File.Exists(updateBakFile))
                     {
@@ -66,7 +66,7 @@ namespace MEFrpLauncherX.Core
                     }
 
                     var _bak_json = File.ReadAllText(updateBakFile);
-                    var _bak_config = JsonConvert.DeserializeObject<AppConfig>(_bak_json);
+                    var _bak_config = JsonSerializer.Deserialize<AppConfig>(_bak_json);
 
                     MergeConfig(_bak_config, ref _currentConfig);
 
@@ -193,7 +193,7 @@ namespace MEFrpLauncherX.Core
             {
                 lock (_lock)
                 {
-                    var json = JsonConvert.SerializeObject(_currentConfig, Formatting.Indented);
+                    var json = JsonSerializer.Serialize(_currentConfig, new JsonSerializerOptions { WriteIndented = true });
                     File.WriteAllText(ConfigPath, json);
                 }
             }
@@ -214,7 +214,7 @@ namespace MEFrpLauncherX.Core
                 string json;
                 lock (_lock)
                 {
-                    json = JsonConvert.SerializeObject(_currentConfig, Formatting.Indented);
+                    json = JsonSerializer.Serialize(_currentConfig, new JsonSerializerOptions { WriteIndented = true });
                 }
 
                 await File.WriteAllTextAsync(ConfigPath, json);

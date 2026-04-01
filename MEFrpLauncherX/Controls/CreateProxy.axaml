@@ -86,7 +86,7 @@
                         <pml2:RequiredField Label="本地端口" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
-                                <Button Content="想要MC开服? 点击此处查找端口 (BETA)" Click="CheckPort" />
+                                <!-- <Button Content="想要MC开服? 点击此处查找端口 (BETA)" Click="CheckPort" /> -->
                                 <fa:NumberBox
                                     x:Name="LocalPortNudBox"
                                     Margin="5"

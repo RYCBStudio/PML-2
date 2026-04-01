@@ -234,6 +234,8 @@
                 Grid.Row="1"
                 Margin="10">
                 <Grid RowDefinitions="4*, 6*" RowSpacing="5">
+                    
+                    <controls1:NoData Grid.Row="1" IsVisible="{Binding IsNoData}" />
                     <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
                     <HeaderedContentControl Header="软件公告" FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer>

@@ -107,6 +107,7 @@
         </Grid>
 
         <!-- 现代化节点列表 -->
+        <local:NoData Grid.Row="2" IsVisible="{Binding IsNoData}" />
         <ScrollViewer Grid.Row="2">
             <ItemsControl
                 FontFamily="{StaticResource GlobalFontFamily}">

@@ -1,6 +1,7 @@
-﻿using System.Text;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core.Models;
-using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -8,10 +9,9 @@ namespace MEFrpLauncherX.Core.MEFIntergrated;
 
 public class FrpConfigService
 {
-    private readonly JsonSerializerSettings _jsonSettings = new()
+    private readonly JsonSerializerOptions _jsonSettings = new()
     {
-        Formatting = Formatting.Indented,
-        NullValueHandling = NullValueHandling.Ignore
+        WriteIndented = true
     };
 
     private readonly ISerializer _yamlSerializer = new SerializerBuilder()
@@ -107,7 +107,7 @@ public class FrpConfigService
 
     public FrpConfig LoadConfigFromJson(string jsonContent)
     {
-        var jsonModel = JsonConvert.DeserializeObject<JsonFrpConfig>(jsonContent, _jsonSettings);
+        var jsonModel = JsonSerializer.Deserialize<JsonFrpConfig>(jsonContent, _jsonSettings);
         return ConvertFromJsonModel(jsonModel);
     }
 
@@ -211,7 +211,7 @@ public class FrpConfigService
     private string SaveAsJson(FrpConfig config)
     {
         var jsonModel = ConvertToJsonModel(config);
-        return JsonConvert.SerializeObject(jsonModel, _jsonSettings);
+        return JsonSerializer.Serialize(jsonModel, _jsonSettings);
     }
 
     private string SaveAsYaml(FrpConfig config)
@@ -232,35 +232,35 @@ public class FrpConfigService
     // JSON 数据模型
     public class JsonFrpConfig
     {
-        [JsonProperty("serverAddr")]
+        [JsonPropertyName("serverAddr")]
         public string ServerAddr
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("serverPort")]
+        [JsonPropertyName("serverPort")]
         public int ServerPort
         {
             get;
             set;
         }
 
-        [JsonProperty("user")]
+        [JsonPropertyName("user")]
         public string User
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("auth")]
+        [JsonPropertyName("auth")]
         public JsonAuthConfig Auth
         {
             get;
             set;
         } = new();
 
-        [JsonProperty("proxies")]
+        [JsonPropertyName("proxies")]
         public List<JsonProxyConfig> Proxies
         {
             get;
@@ -270,14 +270,14 @@ public class FrpConfigService
 
     public class JsonAuthConfig
     {
-        [JsonProperty("method")]
+        [JsonPropertyName("method")]
         public string Method
         {
             get;
             set;
         } = "token";
 
-        [JsonProperty("token")]
+        [JsonPropertyName("token")]
         public string Token
         {
             get;
@@ -287,56 +287,56 @@ public class FrpConfigService
 
     public class JsonProxyConfig
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type
         {
             get;
             set;
         } = "tcp";
 
-        [JsonProperty("localIP")]
+        [JsonPropertyName("localIP")]
         public string LocalIP
         {
             get;
             set;
         } = "127.0.0.1";
 
-        [JsonProperty("localPort")]
+        [JsonPropertyName("localPort")]
         public int LocalPort
         {
             get;
             set;
         }
 
-        [JsonProperty("remotePort")]
+        [JsonPropertyName("remotePort")]
         public int RemotePort
         {
             get;
             set;
         }
 
-        [JsonProperty("customDomains")]
+        [JsonPropertyName("customDomains")]
         public List<string> CustomDomains
         {
             get;
             set;
         } = [];
 
-        [JsonProperty("plugin")]
+        [JsonPropertyName("plugin")]
         public JsonPluginConfig Plugin
         {
             get;
             set;
         } = new();
 
-        [JsonProperty("transport")]
+        [JsonPropertyName("transport")]
         public JsonTransportConfig Transport
         {
             get;
@@ -346,28 +346,28 @@ public class FrpConfigService
 
     public class JsonPluginConfig
     {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("localAddr")]
+        [JsonPropertyName("localAddr")]
         public string LocalAddr
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("crtPath")]
+        [JsonPropertyName("crtPath")]
         public string CrtPath
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("keyPath")]
+        [JsonPropertyName("keyPath")]
         public string KeyPath
         {
             get;
@@ -377,14 +377,14 @@ public class FrpConfigService
 
     public class JsonTransportConfig
     {
-        [JsonProperty("useEncryption")]
+        [JsonPropertyName("useEncryption")]
         public bool UseEncryption
         {
             get;
             set;
         } = true;
 
-        [JsonProperty("useCompression")]
+        [JsonPropertyName("useCompression")]
         public bool UseCompression
         {
             get;

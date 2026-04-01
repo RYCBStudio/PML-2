@@ -575,6 +575,8 @@ public sealed class ProxyViewModel : ViewModelBase
     public bool IsAnyProxySelected => SelectedProxies?.Count > 1;
 
     public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase);
+
+    public bool IsNoData => FilteredProxies?.Count == 0;
 }
 
 public class NotifyingCollection<T> : ObservableCollection<T>

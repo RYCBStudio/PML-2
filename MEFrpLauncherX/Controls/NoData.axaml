@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
+             MaxHeight="100" MaxWidth="100"
              x:Class="MEFrpLauncherX.Controls.NoData">
     <Grid RowDefinitions="*, Auto" Margin="10">
         <controls:SymbolIcon Symbol="CloudOfflineFilled" Foreground="{DynamicResource TextFillColorDisabledBrush}" FontSize="40"/>

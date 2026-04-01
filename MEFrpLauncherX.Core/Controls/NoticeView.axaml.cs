@@ -17,8 +17,7 @@ public partial class NoticeView : UserControl
         InitializeComponent();
         if (Design.IsDesignMode)
         {
-            Notice = new NoticeContent(true, "### 测试公告\n> Hello from PML 2",
-                DateTime.Now.ToString("yyyy-MM-dd"), 114, 514, "测试公告", "notice");
+            Notice = new NoticeContent();
         }
 
         this.DataContext = Notice;

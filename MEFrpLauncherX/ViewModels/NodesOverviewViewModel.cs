@@ -93,6 +93,8 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
     }
 
+    public bool IsNoData => FilteredNodes?.Count == 0;
+
     public NodesOverviewViewModel()
     {
         SelectedSortOption = SortOptions[0];
