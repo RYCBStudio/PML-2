@@ -97,15 +97,9 @@ namespace System.Device.Location
         public String PostalCode { get; set; }
         public String StateProvince { get; set; }
 
-        public Boolean IsUnknown 
-        {
-            get
-            {
-                return (String.IsNullOrEmpty(AddressLine1) && String.IsNullOrEmpty(AddressLine2) &&
-                        String.IsNullOrEmpty(Building) && String.IsNullOrEmpty(City) && String.IsNullOrEmpty(CountryRegion) && String.IsNullOrEmpty(FloorLevel) && String.IsNullOrEmpty(PostalCode) && String.IsNullOrEmpty(StateProvince));
-            }
-        }
-
+        public Boolean IsUnknown =>
+            (String.IsNullOrEmpty(AddressLine1) && String.IsNullOrEmpty(AddressLine2) &&
+             String.IsNullOrEmpty(Building) && String.IsNullOrEmpty(City) && String.IsNullOrEmpty(CountryRegion) && String.IsNullOrEmpty(FloorLevel) && String.IsNullOrEmpty(PostalCode) && String.IsNullOrEmpty(StateProvince));
     }
 
     public interface ICivicAddressResolver

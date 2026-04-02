@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<linker>
+    <!-- 保留 MEFrpLauncherX.Fonts 程序集中的所有字体资源 -->
+    <assembly fullname="MEFrpLauncherX.Fonts">
+        <type fullname="*" preserve="all" />
+    </assembly>
+
+    <!-- 保留 Avalonia 相关的字体处理类型 -->
+    <assembly fullname="Avalonia.Base">
+        <type fullname="Avalonia.Media.*" preserve="all" />
+    </assembly>
+
+    <!-- 保留字体文件资源 -->
+    <assembly fullname="MEFrpLauncherX">
+        <type fullname="*" preserve="all" />
+    </assembly>
+</linker>

@@ -74,8 +74,8 @@ public class CrashHandler
                      {17}
 
                      == 系统信息 ==
-                     软件版本: {5}
-                     操作系统: {6}
+                     软件版本: {6}
+                     操作系统: {5}
                      启动参数: (合计{7}) {8}
                      正常运行时间: {9}s
                      文件路径: {11}
@@ -241,7 +241,7 @@ public class CrashHandler
                 $"\\{_lang_res[CultureInfo.CurrentCulture.Name][2]}_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}_{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}+{DateTime.Now.Millisecond}.txt";
     }
 
-    public void CollectCrashInfo()
+    public static void CollectCrashInfo()
     {
         var InnerExceptionProcess = _ex?.InnerException != null
             ? $"""

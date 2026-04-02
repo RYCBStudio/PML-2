@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -13,7 +14,6 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
-using Newtonsoft.Json;
 using RestSharp;
 using JsonException = System.Text.Json.JsonException;
 
@@ -327,7 +327,7 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<T>(response.Content);
+        var result = JsonSerializer.Deserialize<T>(response.Content, AppJsonSerializerContext.Default.Options);
         return result;
     }
 
@@ -343,7 +343,7 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<HitokotoResource>(response.Content);
+        var result = JsonSerializer.Deserialize<HitokotoResource>(response.Content, AppJsonSerializerContext.Default.HitokotoResource);
         return result;
     }
 
@@ -357,7 +357,7 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<HitokotoResource>(response.Content);
+        var result = JsonSerializer.Deserialize<HitokotoResource>(response.Content, AppJsonSerializerContext.Default.HitokotoResource);
         return result;
     }
 
@@ -370,7 +370,7 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<T>(response.Content);
+        var result = JsonSerializer.Deserialize<T>(response.Content, AppJsonSerializerContext.Default.Options);
         return result;
     }
 

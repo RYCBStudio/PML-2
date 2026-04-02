@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
@@ -6,7 +7,6 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
-using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Views;
 
@@ -333,7 +333,7 @@ public partial class EditProxyWindow : Window
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
             locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
         };
-        var _body = JsonConvert.SerializeObject(requestData, Formatting.Indented);
+        var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
         Core.App.CurrentLogger.LogDebug($"EditProxyWindow: {_body}");
         var success = (await MEFApiConverter.UpdateTunnelAsync(_body)).code == 200;
         if (success)

@@ -37,27 +37,15 @@ namespace System.Device.Location
 
         public T Location
         {
-            get
-            {
-                return m_position;
-            }
+            get => m_position;
 
-            set
-            {
-                m_position = value;
-            }
+            set => m_position = value;
         }
 
         public DateTimeOffset Timestamp
         {
-            get
-            {
-                return m_timestamp;
-            }
-            set
-            {
-                m_timestamp = value;
-            }
+            get => m_timestamp;
+            set => m_timestamp = value;
         }
 
         #endregion

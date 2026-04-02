@@ -16,7 +16,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public const string Version = "2.3.0-rc1";
+    public const string Version = "2.3.0-rc2";
 
     public const string MEFrpVersion = "0.67.0_20260214_7d549bc1";
 

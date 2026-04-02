@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -23,7 +24,6 @@ using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 using RYCB.PML.MEFrpCaptchaLib;
 using Color = Avalonia.Media.Color;
@@ -222,8 +222,8 @@ public partial class MainWindow : AppWindow, IDisposable
             goto AUTO_START;
         }
 
-        var data = JsonConvert.DeserializeObject<StartupData>(
-            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")));
+        var data = JsonSerializer.Deserialize<StartupData>(
+            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")), AppJsonSerializerContext.Default.StartupData);
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
             var _frpt = await MEFApiConverter.GetFrpTokenAsync();

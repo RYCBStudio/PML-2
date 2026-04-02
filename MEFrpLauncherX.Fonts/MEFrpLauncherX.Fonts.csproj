@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AvaloniaResource Include="Fonts\DS-DIGIB-2.ttf" />
       <AvaloniaResource Include="Fonts\FluentSystemIcons-Resizable.ttf" />
       <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
@@ -26,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+      <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj" />
     </ItemGroup>
 
 </Project>

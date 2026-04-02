@@ -82,7 +82,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     public int TotalOnlineProxies => AllNodes?.Sum(n => n.onlineProxy) ?? 0;
     public long TotalInTraffic => AllNodes?.Sum(n => n.totalTrafficIn) ?? 0;
     public long TotalOutTraffic => AllNodes?.Sum(n => n.totalTrafficOut) ?? 0;
-    
+
     public bool IsLoading
     {
         get;
@@ -93,7 +93,15 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool IsNoData => FilteredNodes?.Count == 0;
+    public bool IsNoData
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public NodesOverviewViewModel()
     {
@@ -110,6 +118,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
             IsLoading = false;
             return;
         }
+
         var result = new InfoClasses.NodesStatusInfo
         {
             NodesStatus = res.data
@@ -178,6 +187,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
                 FilteredNodes.Add(node);
             }
         });
+        IsNoData = !query.Any();
         IsLoading = false;
     }
 

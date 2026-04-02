@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -13,7 +14,6 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
-using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.Controls;
@@ -117,7 +117,7 @@ public partial class CreateProxy : UserControl
             }
         }
 
-        var _body = JsonConvert.SerializeObject(requestData, Formatting.Indented);
+        var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
         var success = (await MEFApiConverter.PostNewTunnelAsync(_body)).code == 200;
         if (success)
         {

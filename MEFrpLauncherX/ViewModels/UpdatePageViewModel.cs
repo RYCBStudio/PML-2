@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +12,6 @@ using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MsBox.Avalonia.Enums;
-using Newtonsoft.Json;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
 // ReSharper disable EmptyGeneralCatchClause
@@ -220,6 +218,10 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
             Core.App.CurrentLogger?.Error(ex);
+            Status = "获取更新信息失败";
+            Icon = ICONS.ERROR;
+            IsIdle = false;
+            return;
         }
 
         string latestVersion;
@@ -652,20 +654,4 @@ public class UpdatePageViewModel : ViewModelBase
             Core.App.CurrentLogger?.Log("下载完成");
         }
     }
-}
-
-/// <summary>
-/// 更新清单模型，用于描述更新包中的文件及其对应的SHA256哈希值
-/// </summary>
-public class UpdateManifest
-{
-    /// <summary>
-    /// 文件路径与SHA256哈希值的映射集合
-    /// </summary>
-    [JsonProperty("files")]
-    public Dictionary<string, string> Files
-    {
-        get;
-        set;
-    } = new();
 }

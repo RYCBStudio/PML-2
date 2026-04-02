@@ -14,10 +14,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <x:Double x:Key="ControlContentThemeFontSize">13</x:Double>
-            <FontFamily x:Key="ContentControlThemeFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
-            <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
-            <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts/#iconfont</FontFamily>
-            <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts/#Jetbrains Mono</FontFamily>
+            <FontFamily x:Key="ContentControlThemeFontFamily">avares://MEFrpLauncherX.Fonts/Fonts#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts#iconfont</FontFamily>
+            <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts#Jetbrains Mono</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Styles/TabStripThemes.axaml" />
             </ResourceDictionary.MergedDictionaries>

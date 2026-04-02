@@ -66,10 +66,7 @@ namespace System.Device.Location
 
         public Double Latitude 
         {
-            get
-            {
-                return m_latitude;
-            }
+            get => m_latitude;
             set
             {
                 if (value > 90.0 || value < -90.0)
@@ -82,10 +79,7 @@ namespace System.Device.Location
 
         public Double Longitude
         {
-            get
-            {
-                return m_longitude;
-            }
+            get => m_longitude;
             set
             {
                 if (value > 180.0 || value < -180.0)
@@ -98,23 +92,14 @@ namespace System.Device.Location
 
         public Double Altitude
         {
-            get
-            {
-                return m_altitude;
-            }
+            get => m_altitude;
 
-            set
-            {
-                m_altitude = value;
-            }
+            set => m_altitude = value;
         }
 
         public Double HorizontalAccuracy
         {
-            get
-            {
-                return m_horizontalAccuracy;
-            }
+            get => m_horizontalAccuracy;
             set
             {
                 if (value < 0.0)
@@ -127,10 +112,7 @@ namespace System.Device.Location
 
         public Double VerticalAccuracy 
         {
-            get
-            {
-                return m_verticalAccuracy;
-            }
+            get => m_verticalAccuracy;
             set
             {
                 if (value < 0.0)
@@ -143,10 +125,7 @@ namespace System.Device.Location
 
         public Double Speed
         {
-            get
-            {
-                return m_speed;
-            }
+            get => m_speed;
             set
             {
                 if (value < 0.0)
@@ -159,10 +138,7 @@ namespace System.Device.Location
 
         public Double Course
         {
-            get
-            {
-                return m_course;
-            }
+            get => m_course;
             set
             {
                 if (value < 0.0 || value > 360.0)
@@ -173,13 +149,7 @@ namespace System.Device.Location
             }
         }
         
-        public Boolean IsUnknown 
-        {
-            get
-            {
-                return this.Equals(GeoCoordinate.Unknown);
-            }
-        }
+        public Boolean IsUnknown => this.Equals(Unknown);
 
         #endregion
 
@@ -264,7 +234,7 @@ namespace System.Device.Location
         /// <returns></returns>
         public override string ToString()
         {
-            if (this == GeoCoordinate.Unknown)
+            if (this == Unknown)
             {
                 return "Unknown";
             }
@@ -280,7 +250,7 @@ namespace System.Device.Location
         #region IEquatable
         public bool Equals(GeoCoordinate other)
         {
-            if (object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
@@ -291,9 +261,9 @@ namespace System.Device.Location
         #region Public static operators
         public static Boolean operator ==(GeoCoordinate left, GeoCoordinate right)
         {
-            if (object.ReferenceEquals(left, null))
+            if (ReferenceEquals(left, null))
             {
-                return object.ReferenceEquals(right, null);
+                return ReferenceEquals(right, null);
             }
             return left.Equals(right);
         }

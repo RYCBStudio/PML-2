@@ -58,7 +58,7 @@ namespace MEFrpLauncherX.Core
                 lock (_lock)
                 {
                     var json = File.ReadAllText(ConfigPath);
-                    _currentConfig = JsonSerializer.Deserialize<AppConfig>(json);
+                    _currentConfig = JsonSerializer.Deserialize<AppConfig>(json, AppJsonSerializerContext.Default.AppConfig);
                     var updateBakFile = ConfigPath + ".bak.update";
                     if (!File.Exists(updateBakFile))
                     {
@@ -66,7 +66,7 @@ namespace MEFrpLauncherX.Core
                     }
 
                     var _bak_json = File.ReadAllText(updateBakFile);
-                    var _bak_config = JsonSerializer.Deserialize<AppConfig>(_bak_json);
+                    var _bak_config = JsonSerializer.Deserialize<AppConfig>(_bak_json, AppJsonSerializerContext.Default.AppConfig);
 
                     MergeConfig(_bak_config, ref _currentConfig);
 
@@ -193,7 +193,7 @@ namespace MEFrpLauncherX.Core
             {
                 lock (_lock)
                 {
-                    var json = JsonSerializer.Serialize(_currentConfig, new JsonSerializerOptions { WriteIndented = true });
+                    var json = JsonSerializer.Serialize(_currentConfig, AppJsonSerializerContext.Default.AppConfig);
                     File.WriteAllText(ConfigPath, json);
                 }
             }
@@ -214,7 +214,7 @@ namespace MEFrpLauncherX.Core
                 string json;
                 lock (_lock)
                 {
-                    json = JsonSerializer.Serialize(_currentConfig, new JsonSerializerOptions { WriteIndented = true });
+                    json = JsonSerializer.Serialize(_currentConfig, AppJsonSerializerContext.Default.AppConfig);
                 }
 
                 await File.WriteAllTextAsync(ConfigPath, json);

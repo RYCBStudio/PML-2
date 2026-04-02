@@ -168,13 +168,7 @@ public class MEFApiConverter
             };
         }
 
-        var result = JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? """
-            {
-            "code": 0,
-            "message": "无法获取api信息",
-            "data": null
-            }
-            """) ?? new ApiInfo<T>
+        var result = JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? "", AppJsonSerializerContext.Default.Options) ?? new ApiInfo<T>
         {
             code = 0,
             message = "无法获取api信息",
@@ -226,7 +220,7 @@ public class MEFApiConverter
                                               }
                                               """;
 
-        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent) ?? new ApiInfo<T>
+        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent, AppJsonSerializerContext.Default.Options) ?? new ApiInfo<T>
         {
             data = default,
             message = "无法获取api信息",
@@ -247,7 +241,7 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.ChallengeUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "")!;
+        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "", AppJsonSerializerContext.Default.ChallengeInfo)!;
     }
 
     public static async Task<(CaptchaResultX, string)> GetRedeemAsync(string redeemBody)
@@ -258,7 +252,7 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return (JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "")!, response.Content ?? "");
+        return (JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "", AppJsonSerializerContext.Default.CaptchaResultX)!, response.Content ?? "");
     }
 
     /// <summary>
@@ -570,7 +564,7 @@ public class MEFApiConverter
         {
             nodeId,
             protocol,
-        }, new JsonSerializerOptions { WriteIndented = true });
+        }, AppJsonSerializerContext.Default.FreePortBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -585,7 +579,7 @@ public class MEFApiConverter
             "message": "无法获取api信息",
             "data": -1
             }
-            """) ?? new ApiInfo<int> { data = -1 };
+            """, AppJsonSerializerContext.Default.ApiInfoInt32) ?? new ApiInfo<int> { data = -1 };
         HandleResponse(result);
         return result;
     }
@@ -619,7 +613,7 @@ public class MEFApiConverter
                              "traffic": 0
                              }
                          }
-                         """) ??
+                         """, AppJsonSerializerContext.Default.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -654,7 +648,7 @@ public class MEFApiConverter
                              "traffic": 0
                              }
                          }
-                         """) ??
+                         """, AppJsonSerializerContext.Default.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -722,7 +716,7 @@ public class MEFApiConverter
                              "traffic": 0
                              }
                          }
-                         """) ??
+                         """, AppJsonSerializerContext.Default.Options) ??
                      new ApiInfo<ConfigInfo>();
         HandleResponse(result);
         return result;
@@ -757,7 +751,7 @@ public class MEFApiConverter
                          "message": "无法获取api信息",
                          "data": null
                          }
-                         """) ??
+                         """, AppJsonSerializerContext.Default.Options) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -776,7 +770,7 @@ public class MEFApiConverter
         var body = JsonSerializer.Serialize(new
         {
             proxyId
-        }, new JsonSerializerOptions { WriteIndented = true });
+        });
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/kick");
@@ -800,7 +794,7 @@ public class MEFApiConverter
 
             try
             {
-                var firstResult = JsonSerializer.Deserialize<ApiInfo<object>>(firstJson);
+                var firstResult = JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, AppJsonSerializerContext.Default.Options);
                 if (firstResult != null && firstResult.code != 200)
                 {
                     HandleResponse(firstResult);
@@ -814,7 +808,7 @@ public class MEFApiConverter
 
             try
             {
-                var secondResult = JsonSerializer.Deserialize<ApiInfo<object>>(secondJson);
+                var secondResult = JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, AppJsonSerializerContext.Default.Options);
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
@@ -829,7 +823,7 @@ public class MEFApiConverter
 
         try
         {
-            var result = JsonSerializer.Deserialize<ApiInfo<object>>(content) ?? new ApiInfo<object>();
+            var result = JsonSerializer.Deserialize<ApiInfo<object>>(content, AppJsonSerializerContext.Default.Options) ?? new ApiInfo<object>();
             HandleResponse(result);
             return result;
         }
@@ -872,7 +866,7 @@ public class MEFApiConverter
                              "traffic": 0
                              }
                          }
-                         """) ??
+                         """, AppJsonSerializerContext.Default.Options) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -952,7 +946,7 @@ public class MEFApiConverter
         }
         else
         {
-            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "") ??
+            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",AppJsonSerializerContext.Default.ApiInfoTrafficStatus) ??
                      new ApiInfo<TrafficStatus>();
         }
 
@@ -960,3 +954,42 @@ public class MEFApiConverter
         return result;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

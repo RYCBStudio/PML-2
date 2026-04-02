@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -12,7 +13,6 @@ using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Views;
 
@@ -24,10 +24,7 @@ public partial class UserCenterPage : UserControl
         DataContext = null;
     }
 
-    public bool IsDark
-    {
-        get => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-    }
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
 
     private void OpenWeb(object sender, RoutedEventArgs e)
     {
@@ -144,7 +141,7 @@ public partial class UserCenterPage : UserControl
         {
             var (success, message) = await MEFApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonConvert.DeserializeObject<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message, AppJsonSerializerContext.Default.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)

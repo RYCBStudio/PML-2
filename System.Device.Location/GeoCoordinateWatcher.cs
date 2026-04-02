@@ -14,8 +14,8 @@
 using System.ComponentModel;
 using System.Device.Location.Internal;
 using System.Diagnostics;
-using System.Security;
 using System.Diagnostics.CodeAnalysis;
+using System.Security;
 using Strings.Resources;
 
 namespace System.Device.Location
@@ -337,43 +337,25 @@ namespace System.Device.Location
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             [SecuritySafeCritical]
-            add
-            {
-                m_propertyChanged += value;
-            }
+            add => m_propertyChanged += value;
             [SecuritySafeCritical]
-            remove
-            {
-                m_propertyChanged -= value;
-            }
+            remove => m_propertyChanged -= value;
         }
 
         event EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>> IGeoPositionWatcher<GeoCoordinate>.PositionChanged
         {
             [SecuritySafeCritical]
-            add
-            {
-                m_positionChanged += value;
-            }
+            add => m_positionChanged += value;
             [SecuritySafeCritical]
-            remove
-            {
-                m_positionChanged -= value;
-            }
+            remove => m_positionChanged -= value;
         }
 
         event EventHandler<GeoPositionStatusChangedEventArgs> IGeoPositionWatcher<GeoCoordinate>.StatusChanged
         {
             [SecuritySafeCritical]
-            add
-            {
-                m_statusChanged += value;
-            }
+            add => m_statusChanged += value;
             [SecuritySafeCritical]
-            remove
-            {
-                m_statusChanged -= value;
-            }
+            remove => m_statusChanged -= value;
         }
 
         #endregion

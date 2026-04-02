@@ -405,7 +405,7 @@
           }
         }
       },
-      "LiveChartsCore/2.0.0-rc6.1": {
+      "LiveChartsCore/2.0.0": {
         "type": "package",
         "compile": {
           "lib/net8.0/LiveChartsCore.dll": {
@@ -418,10 +418,10 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView/2.0.0-rc6.1": {
+      "LiveChartsCore.SkiaSharpView/2.0.0": {
         "type": "package",
         "dependencies": {
-          "LiveChartsCore": "2.0.0-rc6.1",
+          "LiveChartsCore": "2.0.0",
           "SkiaSharp": "2.88.9",
           "SkiaSharp.HarfBuzz": "2.88.9"
         },
@@ -436,12 +436,12 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0-rc6.1": {
+      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0": {
         "type": "package",
         "dependencies": {
           "Avalonia": "11.0.0",
           "Avalonia.Skia": "11.0.0",
-          "LiveChartsCore.SkiaSharpView": "2.0.0-rc6.1"
+          "LiveChartsCore.SkiaSharpView": "2.0.0"
         },
         "compile": {
           "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.dll": {
@@ -756,7 +756,7 @@
           }
         }
       },
-      "Sentry/6.2.0": {
+      "Sentry/6.3.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -1231,7 +1231,7 @@
           "Avalonia": "11.3.13",
           "Avalonia.Skia": "11.3.13",
           "Avalonia.Svg": "11.2.0.2",
-          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.0-rc6.1",
+          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.0",
           "Markdig": "1.1.2",
           "SkiaSharp": "3.119.1",
           "SkiaSharp.NativeAssets.Linux": "3.119.1",
@@ -1249,9 +1249,6 @@
       "System.Device.Location/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.0-rc6.1"
-        },
         "compile": {
           "bin/placeholder/System.Device.Location.dll": {}
         },
@@ -1867,73 +1864,56 @@
         "lib/uap10.0/HtmlAgilityPack.pri"
       ]
     },
-    "LiveChartsCore/2.0.0-rc6.1": {
-      "sha512": "yaeFXCpH7AspjMKzXNdfr1Ikg06Dm+a4XRW/8wBtHAa/TEVJLY8yBsG6pNpjrPk+FpRaSImlNYw7pv298W1XPw==",
+    "LiveChartsCore/2.0.0": {
+      "sha512": "6ck/dztjwNAlVxOQeD57tlbpfSk0LBxRH15fn8QK/cWz2Wn6D8WX0be+e241snbDQPTuWYZDhE9cZnrfA6EkIQ==",
       "type": "package",
-      "path": "livechartscore/2.0.0-rc6.1",
+      "path": "livechartscore/2.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "README.md",
         "icon.png",
         "lib/net462/LiveChartsCore.dll",
         "lib/net462/LiveChartsCore.xml",
-        "lib/net6.0-windows10.0.19041/LiveChartsCore.dll",
-        "lib/net6.0-windows10.0.19041/LiveChartsCore.xml",
-        "lib/net8.0-android34.0/LiveChartsCore.dll",
-        "lib/net8.0-android34.0/LiveChartsCore.xml",
-        "lib/net8.0-ios18.0/LiveChartsCore.dll",
-        "lib/net8.0-ios18.0/LiveChartsCore.xml",
-        "lib/net8.0-maccatalyst18.0/LiveChartsCore.dll",
-        "lib/net8.0-maccatalyst18.0/LiveChartsCore.xml",
-        "lib/net8.0-windows10.0.19041/LiveChartsCore.dll",
-        "lib/net8.0-windows10.0.19041/LiveChartsCore.xml",
+        "lib/net8.0-windows7.0/LiveChartsCore.dll",
+        "lib/net8.0-windows7.0/LiveChartsCore.xml",
         "lib/net8.0/LiveChartsCore.dll",
         "lib/net8.0/LiveChartsCore.xml",
         "lib/netstandard2.0/LiveChartsCore.dll",
         "lib/netstandard2.0/LiveChartsCore.xml",
-        "lib/netstandard2.1/LiveChartsCore.dll",
-        "lib/netstandard2.1/LiveChartsCore.xml",
-        "livechartscore.2.0.0-rc6.1.nupkg.sha512",
+        "livechartscore.2.0.0.nupkg.sha512",
         "livechartscore.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView/2.0.0-rc6.1": {
-      "sha512": "FU+0uIxL3xR631+4aN296L+M3f6qWrIEUJr8+SSmcGVVa27iB0+ko55IRInZGdYlmaR+8mRTPAXObXT6/1EMDQ==",
+    "LiveChartsCore.SkiaSharpView/2.0.0": {
+      "sha512": "BHdfDJp8QgMVjOP/kXLvkP50I5UUHft4x+7hwNg4pI6jvlnSKl1X1PAytsJ3OguQU3sJ7PsZt+/UKMEO7yszfQ==",
       "type": "package",
-      "path": "livechartscore.skiasharpview/2.0.0-rc6.1",
+      "path": "livechartscore.skiasharpview/2.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "README.md",
         "icon.png",
         "lib/net462/LiveChartsCore.SkiaSharpView.dll",
         "lib/net462/LiveChartsCore.SkiaSharpView.xml",
-        "lib/net8.0-android34.0/LiveChartsCore.SkiaSharpView.dll",
-        "lib/net8.0-android34.0/LiveChartsCore.SkiaSharpView.xml",
-        "lib/net8.0-ios18.0/LiveChartsCore.SkiaSharpView.dll",
-        "lib/net8.0-ios18.0/LiveChartsCore.SkiaSharpView.xml",
-        "lib/net8.0-maccatalyst18.0/LiveChartsCore.SkiaSharpView.dll",
-        "lib/net8.0-maccatalyst18.0/LiveChartsCore.SkiaSharpView.xml",
-        "lib/net8.0-windows10.0.19041/LiveChartsCore.SkiaSharpView.dll",
-        "lib/net8.0-windows10.0.19041/LiveChartsCore.SkiaSharpView.xml",
-        "lib/net8.0-windows10.0.20348/LiveChartsCore.SkiaSharpView.dll",
-        "lib/net8.0-windows10.0.20348/LiveChartsCore.SkiaSharpView.xml",
+        "lib/net8.0-windows7.0/LiveChartsCore.SkiaSharpView.dll",
+        "lib/net8.0-windows7.0/LiveChartsCore.SkiaSharpView.xml",
         "lib/net8.0/LiveChartsCore.SkiaSharpView.dll",
         "lib/net8.0/LiveChartsCore.SkiaSharpView.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.xml",
-        "lib/netstandard2.1/LiveChartsCore.SkiaSharpView.dll",
-        "lib/netstandard2.1/LiveChartsCore.SkiaSharpView.xml",
-        "livechartscore.skiasharpview.2.0.0-rc6.1.nupkg.sha512",
+        "livechartscore.skiasharpview.2.0.0.nupkg.sha512",
         "livechartscore.skiasharpview.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0-rc6.1": {
-      "sha512": "r5KIlmOWKCYznnNsED3G5V1kRaq4dVxxcfvMfgt9YKsjyDPD1ARVSJJimARQ2C6Zlavk9JqZohrAm4sQA4T4Lg==",
+    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0": {
+      "sha512": "0yWbEnZw4PlEUk66aFHUjIqMa16dQpHWUdIcM3nmRMbvbO7VsJ5oiIN7zkUm6tbfYH98OIUAQs2Y6TTXEAqW8w==",
       "type": "package",
-      "path": "livechartscore.skiasharpview.avalonia/2.0.0-rc6.1",
+      "path": "livechartscore.skiasharpview.avalonia/2.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "README.md",
         "icon.png",
         "lib/net6.0/LiveChartsCore.SkiaSharpView.Avalonia.dll",
         "lib/net6.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
@@ -1941,9 +1921,7 @@
         "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
-        "lib/netstandard2.1/LiveChartsCore.SkiaSharpView.Avalonia.dll",
-        "lib/netstandard2.1/LiveChartsCore.SkiaSharpView.Avalonia.xml",
-        "livechartscore.skiasharpview.avalonia.2.0.0-rc6.1.nupkg.sha512",
+        "livechartscore.skiasharpview.avalonia.2.0.0.nupkg.sha512",
         "livechartscore.skiasharpview.avalonia.nuspec"
       ]
     },
@@ -2372,10 +2350,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.2.0": {
-      "sha512": "kZkHnj9NvQTjf5e8VmVQUT2HdVSmph9MhSm6U+vGoB4vq2uR1a+ZRHpAksNJNl7EjaGbYp55cOWqx5Nh0jQc8w==",
+    "Sentry/6.3.0": {
+      "sha512": "PwcF5yIzcKuhd/3BOxU3QHJA5/xYiuSNSaSpXi2kR3x7ONKel73xi49GfYvRg4mbMN1gRjxduqxQL6iRNNWqBA==",
       "type": "package",
-      "path": "sentry/6.2.0",
+      "path": "sentry/6.3.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2424,7 +2402,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.2.0.nupkg.sha512",
+        "sentry.6.3.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -3067,7 +3045,7 @@
       "Avalonia >= 11.3.13",
       "Downloader >= 5.1.0",
       "FluentAvaloniaUI >= 2.4.1",
-      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.0-rc6.1",
+      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.0",
       "MarkdownAIRender >= 1.0.0",
       "Message.Avalonia >= 1.1.0",
       "MessageBox.Avalonia >= 3.3.0",
@@ -3077,7 +3055,7 @@
       "Notification.Avalonia >= 2.2.0",
       "ReactiveUI >= 23.1.8",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.2.0",
+      "Sentry >= 6.3.0",
       "SkiaSharp >= 3.119.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.1",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.1",
@@ -3160,7 +3138,7 @@
           },
           "LiveChartsCore.SkiaSharpView.Avalonia": {
             "target": "Package",
-            "version": "[2.0.0-rc6.1, )"
+            "version": "[2.0.0, )"
           },
           "Message.Avalonia": {
             "target": "Package",
@@ -3196,7 +3174,7 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.2.0, )"
+            "version": "[6.3.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
@@ -3239,7 +3217,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

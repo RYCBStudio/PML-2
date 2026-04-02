@@ -16,8 +16,8 @@ namespace SVirtualizingWrapPanel
 
         public ICommand? LoadMore
         {
-            get { return GetValue(LoadMoreProperty); }
-            set { SetValue(LoadMoreProperty, value); }
+            get => GetValue(LoadMoreProperty);
+            set => SetValue(LoadMoreProperty, value);
         }
 
 
@@ -26,8 +26,8 @@ AvaloniaProperty.Register<SVirtualizingPanel, Boolean>(nameof(IsReachEnd));
 
         public Boolean IsReachEnd
         {
-            get { return GetValue(IsReachEndProperty); }
-            set { SetValue(IsReachEndProperty, value); }
+            get => GetValue(IsReachEndProperty);
+            set => SetValue(IsReachEndProperty, value);
         }
         protected override void OnLoaded(RoutedEventArgs e)
         {

@@ -13,10 +13,9 @@
 **
 =============================================================================*/
 
-using System.Security;
-using System.Runtime.InteropServices;
 using System.Device.Location.Internal;
-
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace System.Device.Location
 {
@@ -142,13 +141,7 @@ namespace System.Device.Location
         #endregion
 
         #region GeoLocationProviderBase overrides
-        public override GeoLocationStatus Status 
-        { 
-           get 
-           {
-                return ((m_curStatus == GeoLocationStatus.Ready) && (m_curLocation == GeoLocation.Unknown)) ? GeoLocationStatus.NoData : m_curStatus;
-           }
-        }
+        public override GeoLocationStatus Status => ((m_curStatus == GeoLocationStatus.Ready) && (m_curLocation == GeoLocation.Unknown)) ? GeoLocationStatus.NoData : m_curStatus;
 
         public override GeoLocation Location
         {

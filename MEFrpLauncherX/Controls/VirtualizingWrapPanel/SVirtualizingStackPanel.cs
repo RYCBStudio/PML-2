@@ -20,8 +20,8 @@ namespace SVirtualizingWrapPanel
 
         public Orientation Orientation
         {
-            get { return GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         public override bool AreHorizontalSnapPointsRegular { get; set; } = false;

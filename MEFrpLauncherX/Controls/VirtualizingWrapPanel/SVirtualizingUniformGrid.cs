@@ -20,8 +20,8 @@ namespace SVirtualizingWrapPanel
 
         public int Columns
         {
-            get { return GetValue(ColumnsProperty); }
-            set { SetValue(ColumnsProperty, value); }
+            get => GetValue(ColumnsProperty);
+            set => SetValue(ColumnsProperty, value);
         }
 
         public static readonly StyledProperty<double> RowHeightProperty =
@@ -29,8 +29,8 @@ namespace SVirtualizingWrapPanel
 
         public double RowHeight
         {
-            get { return GetValue(RowHeightProperty); }
-            set { SetValue(RowHeightProperty, value); }
+            get => GetValue(RowHeightProperty);
+            set => SetValue(RowHeightProperty, value);
         }
 
         public static readonly StyledProperty<double> RowSpacingProperty =
@@ -38,8 +38,8 @@ namespace SVirtualizingWrapPanel
 
         public double RowSpacing
         {
-            get { return GetValue(RowSpacingProperty); }
-            set { SetValue(RowSpacingProperty, value); }
+            get => GetValue(RowSpacingProperty);
+            set => SetValue(RowSpacingProperty, value);
         }
 
         public static readonly StyledProperty<double> ColumnSpacingProperty =
@@ -47,8 +47,8 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
 
         public double ColumnSpacing
         {
-            get { return GetValue(ColumnSpacingProperty); }
-            set { SetValue(ColumnSpacingProperty, value); }
+            get => GetValue(ColumnSpacingProperty);
+            set => SetValue(ColumnSpacingProperty, value);
         }
 
         public override bool AreHorizontalSnapPointsRegular { get; set; } = false;

@@ -32,7 +32,10 @@ public class StartProxyHandler : IUrlProtocolHandler
 public class ProxyEventArgs : EventArgs
 {
     public string Id { get; }
-    public ProxyEventArgs(string id) => Id = id;
+    public ProxyEventArgs(string id)
+    {
+        Id = id;
+    }
 }
 
 

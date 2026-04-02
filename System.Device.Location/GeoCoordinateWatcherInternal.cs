@@ -13,9 +13,9 @@
 **
 =============================================================================*/
 
-using System.Security;
-using System.Runtime.InteropServices;
 using System.Device.Location.Internal;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace System.Device.Location
 {
@@ -162,10 +162,7 @@ namespace System.Device.Location
 
         public override GeoPositionPermission Permission
         {
-            get
-            {
-                return m_permission;
-            }
+            get => m_permission;
             protected set
             {
                 m_permission = value;
@@ -187,13 +184,7 @@ namespace System.Device.Location
            }
         }
 
-        public override GeoPosition<GeoCoordinate> Position
-        {
-            get
-            {
-                return (IsStarted && (this.Status == GeoPositionStatus.Ready)) ? m_position : new GeoPosition<GeoCoordinate>(DateTimeOffset.MinValue, GeoCoordinate.Unknown);
-            }
-        }
+        public override GeoPosition<GeoCoordinate> Position => (IsStarted && (this.Status == GeoPositionStatus.Ready)) ? m_position : new GeoPosition<GeoCoordinate>(DateTimeOffset.MinValue, GeoCoordinate.Unknown);
 
         public override Boolean TryStart(Boolean suppressPermissionPrompt, TimeSpan timeout)
         {

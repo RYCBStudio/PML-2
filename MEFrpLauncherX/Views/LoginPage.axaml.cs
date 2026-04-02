@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -13,7 +14,6 @@ using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using Newtonsoft.Json;
 using RYCB.PML.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX.Views;
@@ -75,7 +75,7 @@ public partial class LoginPage : UserControl
         }
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
-        var (ri, _err) = await MEFApiConverter.GetRedeemAsync(JsonConvert.SerializeObject(rb));
+        var (ri, _err) = await MEFApiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb));
 
         MainWindowViewModel.Instance.Progress = 80.0;
         if (!ri.success)
@@ -130,7 +130,7 @@ public partial class LoginPage : UserControl
 
             if (success)
             {
-                var userInfo = JsonConvert.DeserializeObject<InfoClasses.ApiInfo<InfoClasses.UserInfo>>(message);
+                var userInfo = JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.UserInfo>>(message, AppJsonSerializerContext.Default.ApiInfoUserInfo);
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {

@@ -45,7 +45,7 @@ public class RYCBApiConverter
             user = mail,
             comment = feedback,
             time = DateTime.Now.ToString("O"),
-        }, new JsonSerializerOptions { WriteIndented = true });
+        }, AppJsonSerializerContext.Default.FeedbackBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -53,7 +53,8 @@ public class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
+            AppJsonSerializerContext.Default.FeedbackResponse);
         return res;
     }
 
@@ -78,7 +79,7 @@ public class RYCBApiConverter
             receiver = receiver,
             body = mailBody,
             subject = subject
-        }, new JsonSerializerOptions { WriteIndented = true });
+        }, AppJsonSerializerContext.Default.EmailBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -91,7 +92,8 @@ public class RYCBApiConverter
             App.CurrentLogger.Log(response.Content, EnumLogType.Warn, module: EnumLogModule.Net);
         }
 
-        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
+            AppJsonSerializerContext.Default.FeedbackResponse);
         return res;
     }
 
@@ -118,12 +120,14 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonSerializer.Deserialize<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
-        {
-            success = false,
-            version = "0.0.0",
-            data = default
-        };
+        var result =
+            JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
+                AppJsonSerializerContext.Default.SingleVersionInfo) ?? new SingleVersionInfo
+            {
+                success = false,
+                version = "0.0.0",
+                data = default
+            };
 
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
         return result;
@@ -152,12 +156,14 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonSerializer.Deserialize<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
-        {
-            success = false,
-            version = "0.0.0",
-            data = default
-        };
+        var result =
+            JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
+                AppJsonSerializerContext.Default.SingleVersionInfo) ?? new SingleVersionInfo
+            {
+                success = false,
+                version = "0.0.0",
+                data = default
+            };
 
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
         return result;
@@ -172,7 +178,9 @@ public class RYCBApiConverter
         using var client = CreateClient("tpca/errors");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content);
+        var result =
+            JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content,
+                AppJsonSerializerContext.Default.TunnelErrorInfosShell);
         return result;
     }
 
@@ -185,7 +193,8 @@ public class RYCBApiConverter
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content);
+        var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content,
+            AppJsonSerializerContext.Default.SingleApiInfoTunnelErrorInfo);
         return result;
     }
 
@@ -198,7 +207,8 @@ public class RYCBApiConverter
         using var client = CreateClient("notice");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content);
+        var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content,
+            AppJsonSerializerContext.Default.SingleApiInfoNoticeContentArray);
         return result;
     }
 
@@ -229,7 +239,7 @@ public class NoticeContent
         get;
         set;
     }
-    
+
 
     [JsonPropertyName("date")]
     public string Date

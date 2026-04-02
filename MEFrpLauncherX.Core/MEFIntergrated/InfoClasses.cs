@@ -97,53 +97,264 @@ public class InfoClasses
             set;
         }
     }
-public class ProxyInfo
-{
-    public Nodes[] nodes { get; set; }
-    public Proxies[] proxies { get; set; }
-}
 
-public class Nodes
-{
-    public int nodeId { get; set; }
-    public string name { get; set; }
-    public string hostname { get; set; }
-}
+    public class ProxyInfo
+    {
+        public Nodes[] nodes
+        {
+            get;
+            set;
+        }
 
-public class Proxies
-{
-    public int proxyId { get; set; }
-    public string username { get; set; }
-    public string proxyName { get; set; }
-    public string proxyType { get; set; }
-    public bool isBanned { get; set; }
-    public bool isDisabled { get; set; }
-    public string localIp { get; set; }
-    public int localPort { get; set; }
-    public int remotePort { get; set; }
-    public int nodeId { get; set; }
-    public string runId { get; set; }
-    public bool isOnline { get; set; }
-    public string domain { get; set; }
-    public int lastStartTime { get; set; }
-    public int lastCloseTime { get; set; }
-    public string clientVersion { get; set; }
-    public string proxyProtocolVersion { get; set; }
-    public bool useEncryption { get; set; }
-    public bool useCompression { get; set; }
-    public string locations { get; set; }
-    public string accessKey { get; set; }
-    public string hostHeaderRewrite { get; set; }
-    public string httpPlugin { get; set; }
-    public string crtPath { get; set; }
-    public string keyPath { get; set; }
-    public string requestHeaders { get; set; }
-    public string responseHeaders { get; set; }
-    public string httpUser { get; set; }
-    public string httpPassword { get; set; }
-    public string transportProtocol { get; set; }
-}
+        public Proxies[] proxies
+        {
+            get;
+            set;
+        }
+    }
 
+    public class Nodes
+    {
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string name
+        {
+            get;
+            set;
+        }
+
+        public string hostname
+        {
+            get;
+            set;
+        }
+    }
+
+    public class Proxies
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public string username
+        {
+            get;
+            set;
+        }
+
+        public string proxyName
+        {
+            get;
+            set;
+        }
+
+        public string proxyType
+        {
+            get;
+            set;
+        }
+
+        public bool isBanned
+        {
+            get;
+            set;
+        }
+
+        public bool isDisabled
+        {
+            get;
+            set;
+        }
+
+        public string localIp
+        {
+            get;
+            set;
+        }
+
+        public int localPort
+        {
+            get;
+            set;
+        }
+
+        public int remotePort
+        {
+            get;
+            set;
+        }
+
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string runId
+        {
+            get;
+            set;
+        }
+
+        public bool isOnline
+        {
+            get;
+            set;
+        }
+
+        public string domain
+        {
+            get;
+            set;
+        }
+
+        public int lastStartTime
+        {
+            get;
+            set;
+        }
+
+        public int lastCloseTime
+        {
+            get;
+            set;
+        }
+
+        public string clientVersion
+        {
+            get;
+            set;
+        }
+
+        public string proxyProtocolVersion
+        {
+            get;
+            set;
+        }
+
+        public bool useEncryption
+        {
+            get;
+            set;
+        }
+
+        public bool useCompression
+        {
+            get;
+            set;
+        }
+
+        public string locations
+        {
+            get;
+            set;
+        }
+
+        public string accessKey
+        {
+            get;
+            set;
+        }
+
+        public string hostHeaderRewrite
+        {
+            get;
+            set;
+        }
+
+        public string httpPlugin
+        {
+            get;
+            set;
+        }
+
+        public string crtPath
+        {
+            get;
+            set;
+        }
+
+        public string keyPath
+        {
+            get;
+            set;
+        }
+
+        public string requestHeaders
+        {
+            get;
+            set;
+        }
+
+        public string responseHeaders
+        {
+            get;
+            set;
+        }
+
+        public string httpUser
+        {
+            get;
+            set;
+        }
+
+        public string httpPassword
+        {
+            get;
+            set;
+        }
+
+        public string transportProtocol
+        {
+            get;
+            set;
+        }
+    }
+    
+    public class KickProxyInfo
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+    }
+    
+    public class ToggleProxyInfo
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public bool isDisabled
+        {
+            get;
+            set;
+        }
+    }
+
+    public class FreePortBody
+    {
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string protocol
+        {
+            get;
+            set;
+        }
+    }
 
 
     public class NodesListInfo
@@ -325,6 +536,7 @@ public class Proxies
             get;
             set;
         }
+
         public string name
         {
             get;

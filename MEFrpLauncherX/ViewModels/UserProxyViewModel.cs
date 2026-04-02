@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
@@ -14,7 +15,6 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -717,7 +717,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(domain).Distinct().ToList();
+            Domains = JsonSerializer.Deserialize<List<string>>(domain, AppJsonSerializerContext.Default.ListString)?.Distinct().ToList() ?? [];
         }
         catch
         {
@@ -743,7 +743,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonConvert.DeserializeObject<List<string>>(_domain).Distinct().ToList();
+            Domains = JsonSerializer.Deserialize<List<string>>(_domain, AppJsonSerializerContext.Default.ListString)?.Distinct().ToList() ?? [];
         }
         catch
         {

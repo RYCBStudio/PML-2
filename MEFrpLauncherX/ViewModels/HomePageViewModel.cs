@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
@@ -19,7 +20,6 @@ using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 using SecretLib;
 
@@ -147,10 +147,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         get;
     }
 
-    public bool IsDark
-    {
-        get => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-    }
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
 
     public int SystemStatus
     {
@@ -200,7 +197,11 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public bool IsNoData => NoticeContent.IsNullOrEmpty();
+    public bool IsNoData
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 
     public HomePageViewModel()
     {
@@ -319,6 +320,11 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
                     HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
+                
+                if (NoticeContent.IsNullOrEmpty())
+                {
+                    IsNoData = true;
+                }
 
                 IsLoading = false;
 
@@ -386,7 +392,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 });
                 File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
             }
-            if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp")).Any())
+
+            if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp"))
+                .Any())
             {
                 var btn = new TaskDialogButton
                 {
@@ -460,7 +468,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             var (success, message) = await MEFApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonConvert.DeserializeObject<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message, AppJsonSerializerContext.Default.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
@@ -567,7 +575,7 @@ public class NoticeManager
             // 读取二进制文件并反序列化
             var fileBytes = File.ReadAllBytes(NoticeFilePath);
             var jsonString = Encoding.UTF8.GetString(fileBytes);
-            return JsonConvert.DeserializeObject<NoticeData>(jsonString) ?? new NoticeData();
+            return JsonSerializer.Deserialize<NoticeData>(jsonString, AppJsonSerializerContext.Default.NoticeData) ?? new NoticeData();
         }
         catch (Exception ex)
         {
@@ -590,7 +598,7 @@ public class NoticeManager
             }
 
             // 序列化为 JSON 并转换为二进制
-            var jsonString = JsonConvert.SerializeObject(data);
+            var jsonString = JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.NoticeData);
             var binaryData = Encoding.UTF8.GetBytes(jsonString);
 
             File.WriteAllBytes(NoticeFilePath, binaryData);

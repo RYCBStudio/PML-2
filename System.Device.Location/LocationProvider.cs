@@ -47,15 +47,9 @@ namespace System.Device.Location
         public abstract void Start();
         public abstract void Stop();
 
-        public virtual GeoLocationStatus Status
-        {
-            get { return GeoLocationStatus.Disabled; }
-        }
+        public virtual GeoLocationStatus Status => GeoLocationStatus.Disabled;
 
-        public virtual GeoLocation Location
-        {
-            get { return GeoLocation.Unknown; }
-        }
+        public virtual GeoLocation Location => GeoLocation.Unknown;
 
         public virtual void OnLocationChanged(GeoLocationChangedEventArgs e)
         {
@@ -264,15 +258,9 @@ namespace System.Device.Location
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             [SecuritySafeCritical]
-            add
-            {
-                m_propertyChanged += value;
-            }
+            add => m_propertyChanged += value;
             [SecuritySafeCritical]
-            remove
-            {
-                m_propertyChanged -= value;
-            }
+            remove => m_propertyChanged -= value;
         }
 
         public event EventHandler<GeoLocationChangedEventArgs> LocationChanged;

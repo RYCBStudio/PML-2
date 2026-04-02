@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
@@ -19,7 +20,6 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 using MessageBox = MEFrpLauncherX.Core.Controls.MessageBox;
 
@@ -79,7 +79,6 @@ public partial class ManageProxyPage : UserControl
                 }
                 catch
                 {
-                    
                 }
                 // var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
@@ -185,10 +184,10 @@ public partial class ManageProxyPage : UserControl
                         httpPlugin = item.httpPlugin,
                         httpUser = item.httpUser,
                         httpPassword = item.httpPassword,
-                        RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.requestHeaders),
+                        RequestHeaders = JsonSerializer.Deserialize<Dictionary<string, string>>(item.requestHeaders, AppJsonSerializerContext.Default.DictionaryStringString),
                         ResponseHeaders =
-                            JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
-                        Locations = JsonConvert.DeserializeObject<List<string>>(item.locations),
+                            JsonSerializer.Deserialize<Dictionary<string, string>>(item.responseHeaders, AppJsonSerializerContext.Default.DictionaryStringString),
+                        Locations = JsonSerializer.Deserialize<List<string>>(item.locations, AppJsonSerializerContext.Default.ListString),
                     });
                 }
             });
@@ -357,6 +356,7 @@ public sealed class ProxyViewModel : ViewModelBase
                 FilteredProxies.Add(proxy);
             }
         });
+        IsNoData = FilteredProxies.Count == 0;
 
         MainPageFrameViewModel.Instance.IsLoading = false;
         Core.App.CurrentLogger.LogDebug("筛选完成，数量: " + FilteredProxies.Count);
@@ -576,7 +576,11 @@ public sealed class ProxyViewModel : ViewModelBase
 
     public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase);
 
-    public bool IsNoData => FilteredProxies?.Count == 0;
+    public bool IsNoData
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 }
 
 public class NotifyingCollection<T> : ObservableCollection<T>

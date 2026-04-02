@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
 using Avalonia.Media;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using Newtonsoft.Json;
 using ReactiveUI.Avalonia;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
@@ -46,6 +46,7 @@ internal sealed class Program
         {
             System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
             System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
+            Core.App.CurrentLogger.Log("启动画面文件完整性检查失败。", type: EnumLogType.Warn);
         }
         else
         {
@@ -137,7 +138,7 @@ internal sealed class Program
 
         Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
         File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
-            JsonConvert.SerializeObject(data));
+            JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.StartupData));
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -147,15 +148,16 @@ internal sealed class Program
         if (OperatingSystem.IsLinux())
         {
             options.DefaultFamilyName = "Noto Sans CJK SC";
-            options.FontFallbacks =
-            [
-                new FontFallback
-                {
-                    FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
-                        "Harmony OS Sans SC")
-                }
-            ];
         }
+
+        options.FontFallbacks =
+        [
+            new FontFallback
+            {
+                FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
+                    "Harmony OS Sans SC")
+            }
+        ];
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
@@ -212,7 +214,7 @@ internal sealed class Program
         }
 
         var crashHandler = new CrashHandler(ex, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        crashHandler.CollectCrashInfo();
+        CrashHandler.CollectCrashInfo();
         var crashLog = crashHandler.GetCrashLog();
         var encodedExInfo = Base64Encode($"{ex.GetType()}||{ex.Message}||{ex.StackTrace}");
         //保存到文件（可选）

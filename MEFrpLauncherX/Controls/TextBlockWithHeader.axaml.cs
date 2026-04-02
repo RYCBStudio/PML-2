@@ -26,10 +26,7 @@ public partial class TextBlockWithHeader : UserControl
         set => SetValue(HeaderProperty, value);
     }
 
-    public bool IsDark
-    {
-        get => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-    }
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
 
     public TextBlockWithHeader()
     {
