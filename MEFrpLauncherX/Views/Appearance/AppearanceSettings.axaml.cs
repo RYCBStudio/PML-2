@@ -6,6 +6,7 @@ using System.Web;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -23,6 +24,12 @@ public partial class AppearanceSettings : Window
         InitializeComponent();
         OpacitySlider.Value = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity * 100;
         FillModeBox.SelectedIndex = ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar ? 0 : 1;
+        ShowSoftwareNotice.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
+        ShowSystemNotice.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice;
+        ShowSystemInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo;
+        ShowUserInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo;
+        ShowStatistics.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowStatistics;
+        _init = true;
     }
 
     private void ColorView_OnColorChanged(object? sender, ColorChangedEventArgs e)
@@ -83,6 +90,62 @@ public partial class AppearanceSettings : Window
                 };
             MainWindow.Instance.InvalidateVisual();
         }
+    }
+    
+    private bool CanDeCheck => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics ||
+                              ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo ||
+                              ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo ||
+                              ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice ||
+                              ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
+
+    private void UpdateVisibilityForStatistics(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowStatistics = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForUserInfo(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowUserInfo = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSystemInfo(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemInfo = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSystemNotice(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemNotice = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSoftwareNotice(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSoftwareNotice = (sender as CheckBox)?.IsChecked ?? false);
     }
 }
 
@@ -264,7 +327,7 @@ public class FooterButtonSettingsItem : SettingsItemBase
             RecentImagesSettingsItem.Instance?.Imgs?.Add(file, img);
             RecentImagesSettingsItem.Instance?.ImagePaths?.Add(file);
             RecentImagesSettingsItem.Instance?.SelectedImage = img;
-            
+
             AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
         }
 

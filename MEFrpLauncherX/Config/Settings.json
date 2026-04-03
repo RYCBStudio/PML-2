@@ -19,7 +19,7 @@
     "ShouldFillTitleBar": false
   },
   "CaptchaMode": "implicit",
-  "UpdateSettings":{
+  "UpdateSettings": {
     "AutoCheck": true,
     "Channel": "Preview",
     "Method": "ds",
@@ -30,6 +30,13 @@
   "PMSettings": {
     "Position": "lt",
     "Enabled": false
+  },
+  "HomeSettings": {
+    "ShowStatistics": true,
+    "ShowUserInfo": true,
+    "ShowSystemInfo": true,
+    "ShowSystemNotice": true,
+    "ShowSoftwareNotice": true
   },
   "DoNotShowSuccessMsg": true
 }

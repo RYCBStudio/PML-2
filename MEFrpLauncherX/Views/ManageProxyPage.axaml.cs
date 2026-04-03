@@ -184,10 +184,18 @@ public partial class ManageProxyPage : UserControl
                         httpPlugin = item.httpPlugin,
                         httpUser = item.httpUser,
                         httpPassword = item.httpPassword,
-                        RequestHeaders = JsonSerializer.Deserialize<Dictionary<string, string>>(item.requestHeaders, AppJsonSerializerContext.Default.DictionaryStringString),
-                        ResponseHeaders =
-                            JsonSerializer.Deserialize<Dictionary<string, string>>(item.responseHeaders, AppJsonSerializerContext.Default.DictionaryStringString),
-                        Locations = JsonSerializer.Deserialize<List<string>>(item.locations, AppJsonSerializerContext.Default.ListString),
+                        RequestHeaders = item.requestHeaders.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<Dictionary<string, string>>(item.requestHeaders,
+                                AppJsonSerializerContext.Default.DictionaryStringString),
+                        ResponseHeaders = item.responseHeaders.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<Dictionary<string, string>>(item.responseHeaders,
+                                AppJsonSerializerContext.Default.DictionaryStringString),
+                        Locations = item.locations.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<List<string>>(item.locations,
+                            AppJsonSerializerContext.Default.ListString),
                     });
                 }
             });

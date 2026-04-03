@@ -359,7 +359,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
     private bool IsRegionMeets(TunnelNodeViewModel vm, out string region)
     {
         var _tmpRegion = "all";
-        var _ = SelectedRegion.GetType();
         if (SelectedRegion is TabStripItem item)
         {
             Dispatcher.UIThread.Invoke(() =>

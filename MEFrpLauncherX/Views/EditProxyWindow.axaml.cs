@@ -314,7 +314,7 @@ public partial class EditProxyWindow : Window
             proxyName = _createProxyViewModel.ProxyName,
             localIp = _createProxyViewModel.LocalAddress,
             localPort = _createProxyViewModel.LocalPort,
-            remotePort = _type is "tcp" or "udp" ? _createProxyViewModel.RemotePort : 0,
+            remotePort = _type.ToLower() is "tcp" or "udp" ? _createProxyViewModel.RemotePort : 0,
             domain = "[\"" + string.Join("\", \"", _createProxyViewModel.RemoteAddress) + "\"]",
             requestHeaders = _createProxyViewModel.RequestHeaders,
             responseHeaders = _createProxyViewModel.ResponseHeaders,
@@ -331,7 +331,7 @@ public partial class EditProxyWindow : Window
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
             useCompression = EnableCompressCBox.IsChecked ?? false,
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations ?? []) + "\"]",
         };
         var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
         Core.App.CurrentLogger.LogDebug($"EditProxyWindow: {_body}");
@@ -347,9 +347,9 @@ public partial class EditProxyWindow : Window
         Close(false);
     }
 
-    private void GetRemotePort_Click(object sender, RoutedEventArgs e)
+    private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
     {
-        RemotePortNudBox.Value = MEFApiConverter.GetFreePort(_proxy.Node.nodeId, _type.ToLower()).data;
+        RemotePortNudBox.Value = (await MEFApiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
     }
 
     private void InitPanels()

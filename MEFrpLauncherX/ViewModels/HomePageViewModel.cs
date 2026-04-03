@@ -224,6 +224,12 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         _ = LoadUserDataAsync();
     }
 
+    public bool ShowSoftwareNotice => ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
+    public bool ShowStatistics => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics;
+    public bool ShowUserInfo => ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo;
+    public bool ShowSystemStatus => ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo;
+    public bool ShowSystemNotice => ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice;
+
     private async Task LoadUserDataAsync()
     {
         if (Design.IsDesignMode)

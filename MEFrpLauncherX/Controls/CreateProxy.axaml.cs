@@ -150,8 +150,7 @@ public partial class CreateProxy : UserControl
     {
         Loading.IsVisible = true;
         var data = -1;
-        var res = await Task.Run(() =>
-            MEFApiConverter.GetFreePort(_node.NodeId, ProtocolCbBox.SelectedItem.ToString()).data);
+        var res = (await MEFApiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem.ToString())).data;
         data = res;
         Loading.IsVisible = false;
         RemotePortNudBox.Value = data;

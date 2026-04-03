@@ -168,12 +168,14 @@ public class MEFApiConverter
             };
         }
 
-        var result = JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? "", AppJsonSerializerContext.Default.Options) ?? new ApiInfo<T>
-        {
-            code = 0,
-            message = "无法获取api信息",
-            data = default
-        };
+        var result =
+            JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? "", AppJsonSerializerContext.Default.Options) ??
+            new ApiInfo<T>
+            {
+                code = 0,
+                message = "无法获取api信息",
+                data = default
+            };
 
         HandleResponse(result);
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {result.code}";
@@ -220,12 +222,13 @@ public class MEFApiConverter
                                               }
                                               """;
 
-        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent, AppJsonSerializerContext.Default.Options) ?? new ApiInfo<T>
-        {
-            data = default,
-            message = "无法获取api信息",
-            code = 0
-        };
+        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent, AppJsonSerializerContext.Default.Options) ??
+                     new ApiInfo<T>
+                     {
+                         data = default,
+                         message = "无法获取api信息",
+                         code = 0
+                     };
 
         HandleResponse(result);
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {result.code}";
@@ -241,7 +244,8 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.ChallengeUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "", AppJsonSerializerContext.Default.ChallengeInfo)!;
+        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "",
+            AppJsonSerializerContext.Default.ChallengeInfo)!;
     }
 
     public static async Task<(CaptchaResultX, string)> GetRedeemAsync(string redeemBody)
@@ -252,7 +256,9 @@ public class MEFApiConverter
         using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return (JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "", AppJsonSerializerContext.Default.CaptchaResultX)!, response.Content ?? "");
+        return (
+            JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "",
+                AppJsonSerializerContext.Default.CaptchaResultX)!, response.Content ?? "");
     }
 
     /// <summary>
@@ -553,23 +559,23 @@ public class MEFApiConverter
     /// <param name="nodeId">节点ID</param>
     /// <param name="protocol">要获取端口的协议, 只有tcp和udp。</param>
     /// <returns>空闲的端口，返回-1则说明获取失败</returns>
-    public static ApiInfo<int> GetFreePort(int nodeId, string protocol = "tcp")
+    public static async Task<ApiInfo<int>> GetFreePortAsync(int nodeId, string protocol = "tcp")
     {
         App.CurrentLogger.Log("正在获取空闲端口", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
         protocol = protocol.ToLower();
 
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new FreePortBody()
         {
-            nodeId,
-            protocol,
+            nodeId = nodeId,
+            protocol = protocol,
         }, AppJsonSerializerContext.Default.FreePortBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/node/freePort");
-        var response = client.Execute(request);
+        var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
@@ -794,7 +800,8 @@ public class MEFApiConverter
 
             try
             {
-                var firstResult = JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, AppJsonSerializerContext.Default.Options);
+                var firstResult =
+                    JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, AppJsonSerializerContext.Default.Options);
                 if (firstResult != null && firstResult.code != 200)
                 {
                     HandleResponse(firstResult);
@@ -808,7 +815,8 @@ public class MEFApiConverter
 
             try
             {
-                var secondResult = JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, AppJsonSerializerContext.Default.Options);
+                var secondResult =
+                    JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, AppJsonSerializerContext.Default.Options);
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
@@ -823,7 +831,9 @@ public class MEFApiConverter
 
         try
         {
-            var result = JsonSerializer.Deserialize<ApiInfo<object>>(content, AppJsonSerializerContext.Default.Options) ?? new ApiInfo<object>();
+            var result =
+                JsonSerializer.Deserialize<ApiInfo<object>>(content, AppJsonSerializerContext.Default.Options) ??
+                new ApiInfo<object>();
             HandleResponse(result);
             return result;
         }
@@ -946,7 +956,8 @@ public class MEFApiConverter
         }
         else
         {
-            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",AppJsonSerializerContext.Default.ApiInfoTrafficStatus) ??
+            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",
+                         AppJsonSerializerContext.Default.ApiInfoTrafficStatus) ??
                      new ApiInfo<TrafficStatus>();
         }
 
@@ -954,42 +965,3 @@ public class MEFApiConverter
         return result;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

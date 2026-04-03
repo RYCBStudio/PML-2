@@ -26,7 +26,8 @@
         <Grid RowDefinitions="Auto, *"
               MaxHeight="650" RowSpacing="10"
               Margin="10">
-            <HeaderedContentControl Header="统计信息" Background="Transparent" Classes="animated"
+            <HeaderedContentControl Header="统计信息" IsVisible="{Binding ShowStatistics}" Background="Transparent"
+                                    Classes="animated"
                                     FontFamily="{StaticResource GlobalFontFamily}">
                 <WrapPanel HorizontalAlignment="Center" ItemSpacing="40">
                     <Grid RowDefinitions="Auto,*">
@@ -104,7 +105,7 @@
                 </WrapPanel>
             </HeaderedContentControl>
             <HeaderedContentControl Classes="animated" Grid.Row="1" Background="Transparent" Header="用户信息"
-                                    FontFamily="{StaticResource GlobalFontFamily}">
+                                    FontFamily="{StaticResource GlobalFontFamily}" IsVisible="{Binding ShowUserInfo}">
                 <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*">
                     <!-- 用户名 -->
                     <StackPanel>
@@ -222,6 +223,7 @@
         <GridSplitter Grid.Column="1" />
         <Grid Grid.Column="2" RowDefinitions="Auto, *">
             <controls:InfoBar
+                IsVisible="{Binding ShowSystemStatus}"
                 Classes="animated-bar"
                 Margin="3"
                 Severity="{Binding SystemStatus, Converter={x:Static core:StatusNumToSeveritryConverter.Instance}}"
@@ -234,10 +236,12 @@
                 Grid.Row="1"
                 Margin="10">
                 <Grid RowDefinitions="4*, 6*" RowSpacing="5">
-                    
+
                     <controls1:NoData Grid.Row="1" IsVisible="{Binding IsNoData}" />
                     <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
-                    <HeaderedContentControl Header="软件公告" FontFamily="{StaticResource GlobalFontFamily}">
+                    <HeaderedContentControl
+                        IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
+                        FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer>
                             <ItemsControl ItemsSource="{Binding SoftwareNotice}">
                                 <ItemsControl.ItemsPanel>
@@ -247,9 +251,10 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Classes="animated" Margin="0, 3, 0 ,3" RowDefinitions="Auto, *" ColumnSpacing="10" ColumnDefinitions="*, Auto">
+                                        <Grid Classes="animated" Margin="0, 3, 0 ,3" RowDefinitions="Auto, *"
+                                              ColumnSpacing="10" ColumnDefinitions="*, Auto">
                                             <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                                       Text="{Binding Summary}" 
+                                                       Text="{Binding Summary}"
                                                        TextTrimming="PrefixCharacterEllipsis" />
                                             <TextBlock HorizontalAlignment="Right" Text="{Binding Date}" />
                                             <WrapPanel Grid.Row="1" ItemSpacing="5">
@@ -261,7 +266,7 @@
                                                     </controls:InfoBadge.IconSource>
                                                 </controls:InfoBadge>
                                                 <Label Classes="Indigo"
-                                                    Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
+                                                       Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
                                             </WrapPanel>
 
                                             <Button Command="{Binding ShowNotice}" Grid.RowSpan="2" Grid.Column="1">
@@ -276,13 +281,14 @@
                         </ScrollViewer>
                     </HeaderedContentControl>
                     <HeaderedContentControl Grid.Row="1" Classes="animated" Header="系统公告"
+                                            IsVisible="{Binding ShowSystemNotice}"
                                             FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                             <markdownAiRender:MarkdownRender
                                 TextWrapping="Wrap"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                x:Name="NoticeBoard" >
-                                
+                                x:Name="NoticeBoard">
+
                                 <markdownAiRender:MarkdownRender.Value>
                                     <Binding Path="NoticeContent">
                                         <Binding.FallbackValue>

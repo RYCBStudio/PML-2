@@ -41,41 +41,56 @@
                         </Border>
                         <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark1}">
                             <TextBlock Text="SystemAccentDarkColor1"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                         <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight1}">
                             <TextBlock Text="SystemAccentLightColor1"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                         <Border Grid.Row="2" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark2}">
                             <TextBlock Text="SystemAccentDarkColor2"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                         <Border Grid.Row="2" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight2}">
                             <TextBlock Text="SystemAccentLightColor2"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                         <Border Grid.Row="3" Grid.Column="0" Background="{DynamicResource SystemAccentColorDark3}">
                             <TextBlock Text="SystemAccentDarkColor3"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                         <Border Grid.Row="3" Grid.Column="1" Background="{DynamicResource SystemAccentColorLight3}">
                             <TextBlock Text="SystemAccentLightColor3"
-                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource TextOnAccentFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </Border>
                     </Grid>
                     <controls:SettingsExpanderItem.Footer>
-                        <ColorPicker Color="{DynamicResource SystemAccentColor}" ColorChanged="ColorView_OnColorChanged" />
+                        <ColorPicker Color="{DynamicResource SystemAccentColor}"
+                                     ColorChanged="ColorView_OnColorChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-
+            <controls:SettingsExpander Header="自定义主页" Description="您可以选择主页展示的内容。">
+                <StackPanel Spacing="3">
+                    <CheckBox Content="统计信息" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics"/>
+                    <CheckBox Content="用户信息" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo"/>
+                    <CheckBox Content="系统信息" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo"/>
+                    <CheckBox Content="软件公告" x:Name="ShowSoftwareNotice" IsCheckedChanged="UpdateVisibilityForSoftwareNotice"/>
+                    <CheckBox Content="系统公告" x:Name="ShowSystemNotice" IsCheckedChanged="UpdateVisibilityForSystemNotice"/>
+                </StackPanel>
+            </controls:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
 

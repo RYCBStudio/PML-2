@@ -425,6 +425,11 @@ namespace MEFrpLauncherX.Core
             set;
         }
 
+        public HomeConfig HomeSettings
+        {
+            get;
+            set;
+        }
 
         public PFSConfig PMSettings
         {
@@ -433,6 +438,35 @@ namespace MEFrpLauncherX.Core
         }
     }
 
+    public class HomeConfig
+    {
+        public bool ShowStatistics
+        {
+            get;
+            set;
+        }
+        public bool ShowUserInfo
+        {
+            get;
+            set;
+        }
+        public bool ShowSystemInfo
+        {
+            get;
+            set;
+        }
+        public bool ShowSystemNotice
+        {
+            get;
+            set;
+        }
+        public bool ShowSoftwareNotice
+        {
+            get;
+            set;
+        }
+    }
+    
     public class UpdateSettings
     {
         public bool AutoCheck
