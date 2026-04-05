@@ -26,7 +26,7 @@
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
-        <PublishAot>true</PublishAot>
+<!--        <PublishAot>true</PublishAot>-->
     </PropertyGroup>
     <PropertyGroup>
         <AppId>tech.rycb.mefrplauncherx</AppId>

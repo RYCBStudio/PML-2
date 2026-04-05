@@ -42,7 +42,7 @@ public partial class AboutPage : UserControl
             {
                 hitokoto = "用代码表达言语的魅力，用代码书写山河的壮丽。",
                 from = "一言「一言开发者中心」",
-                creator = "一言开发者"
+                from_who = "一言开发者"
             };
             MainPageFrameViewModel.Instance?.IsLoading = true;
             try
@@ -56,6 +56,16 @@ public partial class AboutPage : UserControl
             }
             catch (Exception ex)
             {
+                if (Random.Shared.Next() % 2 == 0)
+                {
+                    Hitokoto = new HitokotoResource
+                    {
+                        hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
+                        from = "微软式中文",
+                        creator = "Microsoft"
+                    };
+                }
+
                 Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
                 Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
             }
@@ -343,7 +353,9 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonSerializer.Deserialize<HitokotoResource>(response.Content, AppJsonSerializerContext.Default.HitokotoResource);
+        var result =
+            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
+                AppJsonSerializerContext.Default.HitokotoResource);
         return result;
     }
 
@@ -357,7 +369,9 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonSerializer.Deserialize<HitokotoResource>(response.Content, AppJsonSerializerContext.Default.HitokotoResource);
+        var result =
+            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
+                AppJsonSerializerContext.Default.HitokotoResource);
         return result;
     }
 
@@ -454,6 +468,16 @@ public partial class AboutPage : UserControl
         }
         catch (Exception ex)
         {
+            if (Random.Shared.Next() % 2 == 0)
+            {
+                Hitokoto = new HitokotoResource
+                {
+                    hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
+                    from = "微软式中文",
+                    from_who = "Microsoft"
+                };
+            }
+
             Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
             Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
         }

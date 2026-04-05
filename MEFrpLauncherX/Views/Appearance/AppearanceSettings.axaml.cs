@@ -40,6 +40,10 @@ public partial class AppearanceSettings : Window
 
     private void UpdateOpacity(object? sender, RangeBaseValueChangedEventArgs e)
     {
+        if (!_init)
+        {
+            return;
+        }
         var o = e.NewValue / 100;
         ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.LayerOpacity = o);
         MainWindow.Instance.MainLayer.Opacity = o;
@@ -146,6 +150,14 @@ public partial class AppearanceSettings : Window
             return;
         }
         ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSoftwareNotice = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void RestoreDefaultColors(object? sender, RoutedEventArgs e)
+    {
+        App.FATheme?.CustomAccentColor = null;
+        App.FATheme?.PreferUserAccentColor = true;
+        MainWindow.Instance.InvalidateVisual();
+        ConfigManager.UpdateConfig(cfg => cfg.AccentColor = string.Empty);
     }
 }
 

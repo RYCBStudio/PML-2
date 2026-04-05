@@ -11,9 +11,9 @@
 **
 =============================================================================*/
 
-using System.Security;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace System.Device.Location.Internal
 {
@@ -23,14 +23,14 @@ namespace System.Device.Location.Internal
         [Conditional("DEBUG")]
         public static void DebugAssert(bool condition, string message)
         {
-            System.Diagnostics.Debug.Assert(condition, message);
+            Debug.Assert(condition, message);
         }
 
         [Conditional("DEBUG")]
         public static void Trace(string message)
         {
 #if !SILVERLIGHT
-            System.Diagnostics.Trace.WriteLine(message);
+            Diagnostics.Trace.WriteLine(message);
 #endif
         }
     }

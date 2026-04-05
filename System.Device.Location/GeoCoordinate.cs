@@ -149,7 +149,7 @@ namespace System.Device.Location
             }
         }
         
-        public Boolean IsUnknown => this.Equals(Unknown);
+        public Boolean IsUnknown => Equals(Unknown);
 
         #endregion
 
@@ -175,7 +175,7 @@ namespace System.Device.Location
             //        spherical coordinates (longitude and 
             //        latitude) are lon1,lat1 and lon2, lat2.
 
-            if (Double.IsNaN(this.Latitude)  || Double.IsNaN(this.Longitude) ||
+            if (Double.IsNaN(Latitude)  || Double.IsNaN(Longitude) ||
                 Double.IsNaN(other.Latitude) || Double.IsNaN(other.Longitude))
             {
                 throw new ArgumentException(SR.GetString(SR.Argument_LatitudeOrLongitudeIsNotANumber));
@@ -183,8 +183,8 @@ namespace System.Device.Location
 
             var dDistance = Double.NaN;
 
-            var dLat1 = this.Latitude * (Math.PI / 180.0);
-            var dLon1 = this.Longitude * (Math.PI / 180.0);
+            var dLat1 = Latitude * (Math.PI / 180.0);
+            var dLon1 = Longitude * (Math.PI / 180.0);
             var dLat2 = other.Latitude * (Math.PI / 180.0);
             var dLon2 = other.Longitude * (Math.PI / 180.0);
 

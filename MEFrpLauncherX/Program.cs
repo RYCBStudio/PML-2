@@ -53,7 +53,7 @@ internal sealed class Program
             var p = Process.Start(new ProcessStartInfo
             {
                 FileName = file,
-                Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
+                Arguments = $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
             });
             SplashProcess = p;
         }
@@ -119,26 +119,32 @@ internal sealed class Program
         };
         if (!arg.StartsWith("mefrp://"))
         {
-            return;
-        }
-
-        var url = arg.Replace("mefrp://", "");
-        var args = url.Split('/');
-        if (args is ["StartProxy", var idAndOther, ..])
-        {
-            var res = idAndOther.Split('?');
-            var id = res[0];
-            if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+            if (Path.Exists(arg))
             {
-                data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
+                // TODO: PMLA Unpack
+            }
+        }
+        else
+        {
+
+            var url = arg.Replace("mefrp://", "");
+            var args = url.Split('/');
+            if (args is ["StartProxy", var idAndOther, ..])
+            {
+                var res = idAndOther.Split('?');
+                var id = res[0];
+                if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+                {
+                    data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
+                }
+
+                data.StartProxyId = int.Parse(id);
             }
 
-            data.StartProxyId = int.Parse(id);
+            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+            File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
+                JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.StartupData));
         }
-
-        Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
-        File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
-            JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.StartupData));
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

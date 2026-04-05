@@ -306,11 +306,11 @@ namespace MEFrpLauncherX.Views
 
             if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
             {
-                return $"mefrpc_{platform}_arm64_{App.MEFrpVersion}";
+                return $"mefrpc_{platform}_arm64_{Core.App.MEFrpVersion}";
             }
             else if (RuntimeInformation.OSArchitecture == Architecture.X64)
             {
-                return $"mefrpc_{platform}_amd64_{App.MEFrpVersion}";
+                return $"mefrpc_{platform}_amd64_{Core.App.MEFrpVersion}";
             }
             else
             {

@@ -48,7 +48,7 @@ namespace System.Device.Location
         /// <param name="state"></param>
         private void CreateHandler(object state)
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 try
                 {
@@ -125,7 +125,7 @@ namespace System.Device.Location
             //
             m_eventCreateDone = new ManualResetEvent(false); 
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(this.CreateHandler), desiredAccuracy);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(CreateHandler), desiredAccuracy);
 #if _DEBUG
             m_eventCreateDone.WaitOne(5000);
 #else
@@ -180,7 +180,7 @@ namespace System.Device.Location
                 {
                     m_eventGetLocDone = new ManualResetEvent(false);
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(this.GetInitialLocationData), null);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(GetInitialLocationData), null);
 #if _DEBUG
                     m_eventGetLocDone.WaitOne(300);
 #else
@@ -202,7 +202,7 @@ namespace System.Device.Location
         //
         private void GetInitialLocationData(object state)
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 //
                 // Wait for the creation thread to finish before querying for status
@@ -489,7 +489,7 @@ namespace System.Device.Location
                 //
                 if (prevStatus == GeoLocationStatus.NoPermissions && m_curStatus == GeoLocationStatus.Ready) 
                 {
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(this.GetLocationData), null);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(GetLocationData), null);
                 }
             }
         }
@@ -578,7 +578,7 @@ namespace System.Device.Location
         [SecuritySafeCritical]
         private void Cleanup()
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 if (m_location != null)
                 {

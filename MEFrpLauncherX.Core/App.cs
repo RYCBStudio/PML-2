@@ -9,6 +9,9 @@ namespace MEFrpLauncherX.Core;
 
 public class App : IDisposable
 {
+    public const string Version = "2.3.0-rc2";
+
+    public const string MEFrpVersion = "0.67.0_20260302_f1907e56";
     public static string Flag = "Desktop";
     public static string ReleaseFlag = "Preview";
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;

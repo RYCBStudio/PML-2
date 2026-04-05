@@ -9,6 +9,11 @@ namespace MEFrpLauncherX.Core
         {
             get;
         } = Path.Combine(ConfigDirectory, "Settings.json");
+        
+        public static string BackupConfigPath
+        {
+            get;
+        } = Path.Combine(ConfigDirectory, "Settings.json.bak.update");
 
         private static AppConfig _currentConfig;
         private static readonly object _lock = new();
@@ -59,23 +64,32 @@ namespace MEFrpLauncherX.Core
                 {
                     var json = File.ReadAllText(ConfigPath);
                     _currentConfig = JsonSerializer.Deserialize<AppConfig>(json, AppJsonSerializerContext.Default.AppConfig);
-                    var updateBakFile = ConfigPath + ".bak.update";
+                    var updateBakFile = BackupConfigPath;
                     if (!File.Exists(updateBakFile))
                     {
                         return;
                     }
+                    App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
+                        module: EnumLogModule.Custom, customModuleName: "配置管理");
 
                     var _bak_json = File.ReadAllText(updateBakFile);
                     var _bak_config = JsonSerializer.Deserialize<AppConfig>(_bak_json, AppJsonSerializerContext.Default.AppConfig);
+                    App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
+                        module: EnumLogModule.Custom, customModuleName: "配置管理");
 
                     MergeConfig(_bak_config, ref _currentConfig);
+                    App.CurrentLogger?.Log($"合并更新配置文件: {updateBakFile} 完成",
+                        module: EnumLogModule.Custom, customModuleName: "配置管理");
 
                     try
                     {
                         File.Delete(updateBakFile);
+                        File.Delete(Path.Combine(ConfigDirectory, "KEEP_PROFILE"));
                     }
                     catch
                     {
+                        App.CurrentLogger?.Log($"删除更新配置文件失败: {updateBakFile}",
+                            module: EnumLogModule.Custom, customModuleName: "配置管理");
                     }
 
                 }
@@ -92,96 +106,207 @@ namespace MEFrpLauncherX.Core
 
         private static void MergeConfig(AppConfig source, ref AppConfig target)
         {
-            if (source == null || target == null) return;
+            if (target == null || source == null) return;
 
-            if (!source.PrivacyAgreed && target.PrivacyAgreed)
-                source.PrivacyAgreed = target.PrivacyAgreed;
+            App.CurrentLogger?.Log($"正在合并配置项 PrivacyAgreed: {target.PrivacyAgreed} -> {source.PrivacyAgreed}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.PrivacyAgreed && source.PrivacyAgreed)
+                target.PrivacyAgreed = source.PrivacyAgreed;
+            
+            App.CurrentLogger?.Log($"正在合并配置项 IsTelemetryEnabled: {target.IsTelemetryEnabled} -> {source.IsTelemetryEnabled}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.IsTelemetryEnabled && source.IsTelemetryEnabled)
+                target.IsTelemetryEnabled = source.IsTelemetryEnabled;
+            
+            App.CurrentLogger?.Log($"正在合并配置项 Skin: {target.Skin} -> {source.Skin}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (string.IsNullOrEmpty(target.Skin) && !string.IsNullOrEmpty(source.Skin))
+                target.Skin = source.Skin;
 
-            if (!source.IsTelemetryEnabled && target.IsTelemetryEnabled)
-                source.IsTelemetryEnabled = target.IsTelemetryEnabled;
+            App.CurrentLogger?.Log($"正在合并配置项 KickWithoutDisable: {target.KickWithoutDisable} -> {source.KickWithoutDisable}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.KickWithoutDisable && source.KickWithoutDisable)
+                target.KickWithoutDisable = source.KickWithoutDisable;
 
-            if (string.IsNullOrEmpty(source.Skin) && !string.IsNullOrEmpty(target.Skin))
-                source.Skin = target.Skin;
+            App.CurrentLogger?.Log($"正在合并配置项 HideInsteadOfClose: {target.HideInsteadOfClose} -> {source.HideInsteadOfClose}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.HideInsteadOfClose && source.HideInsteadOfClose)
+                target.HideInsteadOfClose = source.HideInsteadOfClose;
 
-            if (!source.KickWithoutDisable && target.KickWithoutDisable)
-                source.KickWithoutDisable = target.KickWithoutDisable;
+            App.CurrentLogger?.Log($"正在合并配置项 ParallelDownload: {target.ParallelDownload} -> {source.ParallelDownload}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.ParallelDownload && source.ParallelDownload)
+                target.ParallelDownload = source.ParallelDownload;
 
-            if (!source.HideInsteadOfClose && target.HideInsteadOfClose)
-                source.HideInsteadOfClose = target.HideInsteadOfClose;
+            App.CurrentLogger?.Log($"正在合并配置项 ParallelCount: {target.ParallelCount} -> {source.ParallelCount}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.ParallelCount == 0 && source.ParallelCount != 0)
+                target.ParallelCount = source.ParallelCount;
 
-            if (!source.ParallelDownload && target.ParallelDownload)
-                source.ParallelDownload = target.ParallelDownload;
+            App.CurrentLogger?.Log($"正在合并配置项 AutoStartup: {target.AutoStartup} -> {source.AutoStartup}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.AutoStartup && source.AutoStartup)
+                target.AutoStartup = source.AutoStartup;
 
-            if (source.ParallelCount == 0 && target.ParallelCount != 0)
-                source.ParallelCount = target.ParallelCount;
+            App.CurrentLogger?.Log($"正在合并配置项 AutoLaunch: {target.AutoLaunch} -> {source.AutoLaunch}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.AutoLaunch && source.AutoLaunch)
+                target.AutoLaunch = source.AutoLaunch;
 
-            if (!source.AutoStartup && target.AutoStartup)
-                source.AutoStartup = target.AutoStartup;
+            App.CurrentLogger?.Log($"正在合并配置项 AutoLaunchProxies: {target.AutoLaunchProxies} -> {source.AutoLaunchProxies}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.AutoLaunchProxies != null && source.AutoLaunchProxies != null &&
+                source.AutoLaunchProxies.Count > 0 && target.AutoLaunchProxies.Count == 0)
+                target.AutoLaunchProxies = source.AutoLaunchProxies;
 
-            if (!source.AutoLaunch && target.AutoLaunch)
-                source.AutoLaunch = target.AutoLaunch;
+            App.CurrentLogger?.Log($"正在合并配置项 ExpireDays: {target.ExpireDays} -> {source.ExpireDays}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.ExpireDays == 0 && source.ExpireDays != 0)
+                target.ExpireDays = source.ExpireDays;
 
-            if (source.AutoLaunchProxies != null && target.AutoLaunchProxies != null &&
-                target.AutoLaunchProxies.Count > 0 && source.AutoLaunchProxies.Count == 0)
-                source.AutoLaunchProxies = target.AutoLaunchProxies;
+            App.CurrentLogger?.Log($"正在合并配置项 DoNotShowSuccessMsg: {target.DoNotShowSuccessMsg} -> {source.DoNotShowSuccessMsg}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!target.DoNotShowSuccessMsg && source.DoNotShowSuccessMsg)
+                target.DoNotShowSuccessMsg = source.DoNotShowSuccessMsg;
 
-            if (source.ExpireDays == 0 && target.ExpireDays != 0)
-                source.ExpireDays = target.ExpireDays;
+            App.CurrentLogger?.Log($"正在合并配置项 Theme: {target.Theme} -> {source.Theme}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (string.IsNullOrEmpty(target.Theme) && !string.IsNullOrEmpty(source.Theme))
+                target.Theme = source.Theme;
 
-            if (!source.DoNotShowSuccessMsg && target.DoNotShowSuccessMsg)
-                source.DoNotShowSuccessMsg = target.DoNotShowSuccessMsg;
+            App.CurrentLogger?.Log($"正在合并配置项 AccentColor: {target.AccentColor} -> {source.AccentColor}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            target.AccentColor = source.AccentColor;
 
-            if (string.IsNullOrEmpty(source.Theme) && !string.IsNullOrEmpty(target.Theme))
-                source.Theme = target.Theme;
+            App.CurrentLogger?.Log($"正在合并配置项 CaptchaMode: {target.CaptchaMode} -> {source.CaptchaMode}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (string.IsNullOrEmpty(target.CaptchaMode) && !string.IsNullOrEmpty(source.CaptchaMode))
+                target.CaptchaMode = source.CaptchaMode;
 
-            if (string.IsNullOrEmpty(source.AccentColor) && !string.IsNullOrEmpty(target.AccentColor))
-                source.AccentColor = target.AccentColor;
+            App.CurrentLogger?.Log($"正在合并配置项 DownloadSource: {target.DownloadSource} -> {source.DownloadSource}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (string.IsNullOrEmpty(target.DownloadSource) && !string.IsNullOrEmpty(source.DownloadSource))
+                target.DownloadSource = source.DownloadSource;
 
-            if (string.IsNullOrEmpty(source.CaptchaMode) && !string.IsNullOrEmpty(target.CaptchaMode))
-                source.CaptchaMode = target.CaptchaMode;
+            App.CurrentLogger?.Log($"正在合并配置项 UpdateSettings: {target.UpdateSettings} -> {source.UpdateSettings}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.UpdateSettings == null && source.UpdateSettings != null)
+                target.UpdateSettings = source.UpdateSettings;
+            else if (target.UpdateSettings != null && source.UpdateSettings != null)
+                MergeUpdateSettings(target.UpdateSettings, source.UpdateSettings);
 
-            if (string.IsNullOrEmpty(source.DownloadSource) && !string.IsNullOrEmpty(target.DownloadSource))
-                source.DownloadSource = target.DownloadSource;
+            App.CurrentLogger?.Log($"正在合并配置项 BackgroundSettings: {target.BackgroundSettings} -> {source.BackgroundSettings}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.BackgroundSettings == null && source.BackgroundSettings != null)
+                target.BackgroundSettings = source.BackgroundSettings;
+            else if (target.BackgroundSettings != null && source.BackgroundSettings != null)
+                MergeBackgroundSettings(target.BackgroundSettings, source.BackgroundSettings);
 
-            if (source.UpdateSettings == null && target.UpdateSettings != null)
-                source.UpdateSettings = target.UpdateSettings;
-            else if (source.UpdateSettings != null && target.UpdateSettings != null)
-                MergeUpdateSettings(source.UpdateSettings, target.UpdateSettings);
+            App.CurrentLogger?.Log($"正在合并配置项 PMSettings: {target.PMSettings} -> {source.PMSettings}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.PMSettings == null && source.PMSettings != null)
+                target.PMSettings = source.PMSettings;
+            else if (target.PMSettings != null && source.PMSettings != null)
+                MergePMSettings(ref target, source.PMSettings);
+            
+            App.CurrentLogger?.Log($"正在合并配置项 HomeSettings: {target.HomeSettings} -> {source.HomeSettings}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.HomeSettings == null && source.HomeSettings != null)
+                target.HomeSettings = source.HomeSettings;
+            else if (target.HomeSettings != null && source.HomeSettings != null)
+                MergeHomeSettings(target.HomeSettings, source.HomeSettings);
+        }
 
-            if (source.BackgroundSettings == null && target.BackgroundSettings != null)
-                source.BackgroundSettings = target.BackgroundSettings;
-            else if (source.BackgroundSettings != null && target.BackgroundSettings != null)
-                MergeBackgroundSettings(source.BackgroundSettings, target.BackgroundSettings);
-
-            if (source.PMSettings == null && target.PMSettings != null)
-                source.PMSettings = target.PMSettings;
+        private static void MergePMSettings(ref AppConfig target, PFSConfig source)
+        {
+            App.CurrentLogger?.Log($"正在合并配置项 PMSettings>Position: {target.PMSettings.Position} -> {source.Position}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.PMSettings.Position != source.Position)
+                target.PMSettings.Position = source.Position;
+            
+            App.CurrentLogger?.Log($"正在合并配置项 PMSettings>Enabled: {target.PMSettings.Enabled} -> {source.Enabled}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (target.PMSettings.Enabled != source.Enabled)
+                target.PMSettings.Enabled = source.Enabled;
         }
 
         private static void MergeUpdateSettings(UpdateSettings source, UpdateSettings target)
         {
+            App.CurrentLogger?.Log($"正在合并配置项 Update>AutoCheck: {source.AutoCheck} -> {target.AutoCheck}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (!source.AutoCheck && target.AutoCheck)
                 source.AutoCheck = target.AutoCheck;
 
+            App.CurrentLogger?.Log($"正在合并配置项 Update>Method: {source.Method} -> {target.Method}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (source.Method != target.Method)
                 source.Method = target.Method;
 
+            App.CurrentLogger?.Log($"正在合并配置项 Update>Channel: {source.Channel} -> {target.Channel}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (source.Channel != target.Channel)
                 source.Channel = target.Channel;
+            
+            App.CurrentLogger?.Log($"正在合并配置项 Update>KeepProfile: {source.KeepProfile} -> {target.KeepProfile}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (source.KeepProfile != target.KeepProfile)
+                source.KeepProfile = target.KeepProfile;
         }
 
         private static void MergeBackgroundSettings(BackgroundSettings source, BackgroundSettings target)
         {
+            App.CurrentLogger?.Log($"正在合并配置项 Background>BackgroundImage: {source.BackgroundImage} -> {target.BackgroundImage}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (string.IsNullOrEmpty(source.BackgroundImage) && !string.IsNullOrEmpty(target.BackgroundImage))
                 source.BackgroundImage = target.BackgroundImage;
 
+            App.CurrentLogger?.Log($"正在合并配置项 Background>Stretch: {source.Stretch} -> {target.Stretch}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (string.IsNullOrEmpty(source.Stretch) && !string.IsNullOrEmpty(target.Stretch))
                 source.Stretch = target.Stretch;
 
+            App.CurrentLogger?.Log($"正在合并配置项 Background>TileMode: {source.TileMode} -> {target.TileMode}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (string.IsNullOrEmpty(source.TileMode) && !string.IsNullOrEmpty(target.TileMode))
                 source.TileMode = target.TileMode;
 
+            App.CurrentLogger?.Log($"正在合并配置项 Background>LayerOpacity: {source.LayerOpacity} -> {target.LayerOpacity}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
             if (source.LayerOpacity == 0 && target.LayerOpacity != 0)
                 source.LayerOpacity = target.LayerOpacity;
+
+            App.CurrentLogger?.Log($"正在合并配置项 Background>ShouldFillTitleBar: {source.ShouldFillTitleBar} -> {target.ShouldFillTitleBar}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShouldFillTitleBar && target.ShouldFillTitleBar)
+                source.ShouldFillTitleBar = target.ShouldFillTitleBar;
+        }
+
+        private static void MergeHomeSettings(HomeConfig source, HomeConfig target)
+        {
+            App.CurrentLogger?.Log($"正在合并配置项 Home>ShowStatistics: {source.ShowStatistics} -> {target.ShowStatistics}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShowStatistics && target.ShowStatistics)
+                source.ShowStatistics = target.ShowStatistics;
+
+            App.CurrentLogger?.Log($"正在合并配置项 Home>ShowUserInfo: {source.ShowUserInfo} -> {target.ShowUserInfo}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShowUserInfo && target.ShowUserInfo)
+                source.ShowUserInfo = target.ShowUserInfo;
+
+            App.CurrentLogger?.Log($"正在合并配置项 Home>ShowSystemInfo: {source.ShowSystemInfo} -> {target.ShowSystemInfo}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShowSystemInfo && target.ShowSystemInfo)
+                source.ShowSystemInfo = target.ShowSystemInfo;
+
+            App.CurrentLogger?.Log($"正在合并配置项 Home>ShowSystemNotice: {source.ShowSystemNotice} -> {target.ShowSystemNotice}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShowSystemNotice && target.ShowSystemNotice)
+                source.ShowSystemNotice = target.ShowSystemNotice;
+
+            App.CurrentLogger?.Log($"正在合并配置项 Home>ShowSoftwareNotice: {source.ShowSoftwareNotice} -> {target.ShowSoftwareNotice}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            if (!source.ShowSoftwareNotice && target.ShowSoftwareNotice)
+                source.ShowSoftwareNotice = target.ShowSoftwareNotice;
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -87,7 +88,7 @@ public partial class ConfigPreviewer : Window
             return;
         }
 
-        await File.WriteAllTextAsync(file.Path.AbsolutePath, ConfigEditor.Text);
+        await File.WriteAllTextAsync(HttpUtility.UrlDecode(file.Path.AbsolutePath), ConfigEditor.Text);
         ShowNotification($"配置已保存到 {file.Name}");
     }
 

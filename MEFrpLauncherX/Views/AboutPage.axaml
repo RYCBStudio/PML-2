@@ -6,6 +6,7 @@
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.AboutPage"
              x:DataType="viewModels:AboutViewModel">
@@ -29,7 +30,7 @@
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Theme="{StaticResource BodyStrongTextBlockStyle}"
                                 PointerPressed="EnableDebugMode"
-                                Text="{Binding Source={x:Static meFrpLauncherX:App.Version}, StringFormat='PML {0}'}" />
+                                Text="{Binding Source={x:Static core:App.Version}, StringFormat='PML {0}'}" />
                         </StackPanel>
                     </controls1:SettingsExpander.Header>
                     <controls1:SettingsExpanderItem Content="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
@@ -126,7 +127,7 @@
                         </StackPanel>
                     </controls1:SettingsExpander.Footer>
                     <controls1:SettingsExpanderItem
-                        Description="{Binding Source={x:Static meFrpLauncherX:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
+                        Description="{Binding Source={x:Static core:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
                         <TextBlock
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="15"

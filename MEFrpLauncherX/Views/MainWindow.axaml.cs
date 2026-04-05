@@ -57,14 +57,34 @@ public partial class MainWindow : AppWindow, IDisposable
 
     public MainWindow()
     {
-        var preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+        WindowTransparencyLevel preferredTLH;
+        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")))
         {
-            "Mica" => WindowTransparencyLevel.Mica,
-            "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-            "Blur" => WindowTransparencyLevel.Blur,
-            "Transparent" => WindowTransparencyLevel.Transparent,
-            _ => WindowTransparencyLevel.None
-        };
+            var preference = File.ReadAllText(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")).Trim();
+            ConfigManager.CurrentConfig.Skin = preference;
+            File.Delete(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"));
+            preferredTLH = preference.ToUpper(0) switch
+            {
+                "Mica" => WindowTransparencyLevel.Mica,
+                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+                "Blur" => WindowTransparencyLevel.Blur,
+                "Transparent" => WindowTransparencyLevel.Transparent,
+                _ => WindowTransparencyLevel.None
+            };
+        }
+        else
+        {
+
+            preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+            {
+                "Mica" => WindowTransparencyLevel.Mica,
+                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+                "Blur" => WindowTransparencyLevel.Blur,
+                "Transparent" => WindowTransparencyLevel.Transparent,
+                _ => WindowTransparencyLevel.None
+            };
+        }
+
         TransparencyLevelHint = [preferredTLH];
 
         InitializeComponent();
@@ -223,7 +243,8 @@ public partial class MainWindow : AppWindow, IDisposable
         }
 
         var data = JsonSerializer.Deserialize<StartupData>(
-            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")), AppJsonSerializerContext.Default.StartupData);
+            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")),
+            AppJsonSerializerContext.Default.StartupData);
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
             var _frpt = await MEFApiConverter.GetFrpTokenAsync();
@@ -378,7 +399,7 @@ public partial class MainWindow : AppWindow, IDisposable
             var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
             if (hasNew)
             {
-                Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {App.Version} → {latest}");
+                Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {Core.App.Version} → {latest}");
             }
 
             updateChecked = true;

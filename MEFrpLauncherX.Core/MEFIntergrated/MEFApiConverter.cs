@@ -182,65 +182,11 @@ public class MEFApiConverter
         return result;
     }
 
-    private static ApiInfo<T> ExecuteRequest<T>(RestRequest request, string endpoint, string operationName)
-    {
-        // Keep existing behavior: if not logged in and not requesting public info, return failure
-        if (!UserCache.IsLoggedIn() && operationName != "公共信息")
-        {
-            return new ApiInfo<T>
-            {
-                data = default,
-                message = "无法获取api信息",
-                code = 0
-            };
-        }
-
-        App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = $"正在获取{operationName}";
-
-        using var client = CreateClient(endpoint);
-        var response = client.Execute(request);
-
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
-        if (response.Content.StartsWith("<"))
-        {
-            return new ApiInfo<T>()
-            {
-                code = 502,
-                message = "API回源失败, 无法获取api信息",
-                data = default
-            };
-        }
-
-        // Fallback to safe default JSON if content is null
-        var safeContent = response.Content ?? """
-                                              {
-                                              "code": 0,
-                                              "message": "无法获取api信息",
-                                              "data": null
-                                              }
-                                              """;
-
-        var result = JsonSerializer.Deserialize<ApiInfo<T>>(safeContent, AppJsonSerializerContext.Default.Options) ??
-                     new ApiInfo<T>
-                     {
-                         data = default,
-                         message = "无法获取api信息",
-                         code = 0
-                     };
-
-        HandleResponse(result);
-        MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {result.code}";
-        return result;
-    }
-
     public static async Task<ChallengeInfo> PostChallengeAsync(string challengeContent)
     {
         App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
-        var body = challengeContent;
-        request.AddParameter("application/json", body, ParameterType.RequestBody);
+        request.AddParameter("application/json", challengeContent, ParameterType.RequestBody);
         using var client = new RestClient(Constants.ChallengeUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
@@ -333,15 +279,6 @@ public class MEFApiConverter
         return result;
     }
 
-    /// <summary>
-    /// 获取用户信息
-    /// </summary>
-    /// <returns>用户信息</returns>
-    public static ApiInfo<ExtraUserInfo> GetExtraUserInfo()
-    {
-        return ExecuteRequest<ExtraUserInfo>(CreateRequest(), "auth/user/info", "详细的用户信息");
-    }
-
     public static string GetCaptchaResult(string code)
     {
         try
@@ -418,7 +355,7 @@ public class MEFApiConverter
             username = username,
             password = password,
             captchaToken = GetCaptchaResult(captchaCode)
-        }, new JsonSerializerOptions { WriteIndented = true });
+        }, AppJsonSerializerContext.Default.LoginInfo);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 

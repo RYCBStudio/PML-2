@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:markdownAiRender="https://github.com/AIDotNet/Markdown.AIRender"
-             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.UpdatePage"
              x:DataType="viewModels:UpdatePageViewModel">
@@ -61,11 +61,11 @@
                             <DockPanel HorizontalSpacing="5">
                                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10">
                                     <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                               IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static meFrpLauncherX:App.Version}}">
+                                               IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static core:App.Version}}">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
                                                 <Binding Path="LatestVersion" />
-                                                <Binding Source="{x:Static meFrpLauncherX:App.Version}" />
+                                                <Binding Source="{x:Static core:App.Version}" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                         <ToolTip.Tip>

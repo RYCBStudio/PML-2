@@ -77,18 +77,30 @@
                         </Border>
                     </Grid>
                     <controls:SettingsExpanderItem.Footer>
-                        <ColorPicker Color="{DynamicResource SystemAccentColor}"
-                                     ColorChanged="ColorView_OnColorChanged" />
+                        <StackPanel Spacing="3">
+                            <ColorPicker Color="{DynamicResource SystemAccentColor}"
+                                         ColorChanged="ColorView_OnColorChanged" />
+                            <Button Click="RestoreDefaultColors">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal" Spacing="3">
+                                        <controls:SymbolIcon Symbol="Restore" />
+                                        <TextBlock Text="还原" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
             <controls:SettingsExpander Header="自定义主页" Description="您可以选择主页展示的内容。">
                 <StackPanel Spacing="3">
-                    <CheckBox Content="统计信息" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics"/>
-                    <CheckBox Content="用户信息" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo"/>
-                    <CheckBox Content="系统信息" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo"/>
-                    <CheckBox Content="软件公告" x:Name="ShowSoftwareNotice" IsCheckedChanged="UpdateVisibilityForSoftwareNotice"/>
-                    <CheckBox Content="系统公告" x:Name="ShowSystemNotice" IsCheckedChanged="UpdateVisibilityForSystemNotice"/>
+                    <CheckBox Content="统计信息" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics" />
+                    <CheckBox Content="用户信息" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo" />
+                    <CheckBox Content="系统信息" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo" />
+                    <CheckBox Content="软件公告" x:Name="ShowSoftwareNotice"
+                              IsCheckedChanged="UpdateVisibilityForSoftwareNotice" />
+                    <CheckBox Content="系统公告" x:Name="ShowSystemNotice"
+                              IsCheckedChanged="UpdateVisibilityForSystemNotice" />
                 </StackPanel>
             </controls:SettingsExpander>
         </StackPanel>

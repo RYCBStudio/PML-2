@@ -14,6 +14,7 @@ using MEFrpLauncherX.Core.Controls;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
+
 // ReSharper disable EmptyGeneralCatchClause
 
 namespace MEFrpLauncherX.ViewModels;
@@ -62,7 +63,7 @@ public class UpdatePageViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = App.Version;
+    } = Core.App.Version;
 
     public AvaloniaList<string> Changelog
     {
@@ -163,7 +164,7 @@ public class UpdatePageViewModel : ViewModelBase
             latestVersion = updateInfo.version;
         }
 
-        return (VersionComparer.IsGreaterThan(latestVersion, App.Version), latestVersion);
+        return (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version), latestVersion);
     }
 
     public async void CheckUpdate()
@@ -195,7 +196,7 @@ public class UpdatePageViewModel : ViewModelBase
                     description = "获取更新失败"
                 },
                 success = false,
-                version = App.Version
+                version = Core.App.Version
             },
             preiewUpdateInfo = new()
             {
@@ -207,7 +208,7 @@ public class UpdatePageViewModel : ViewModelBase
                     description = "获取更新失败"
                 },
                 success = false,
-                version = App.Version
+                version = Core.App.Version
             };
         try
         {
@@ -247,7 +248,7 @@ public class UpdatePageViewModel : ViewModelBase
             updateInfo = preiewUpdateInfo;
         }
 
-        if (VersionComparer.IsGreaterThan(latestVersion, App.Version))
+        if (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version))
         {
             Core.App.CurrentLogger?.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
             IterationCount = new IterationCount(0);
@@ -298,11 +299,11 @@ public class UpdatePageViewModel : ViewModelBase
             1 => updateInfo.version,
             _ => preiewUpdateInfo.version
         };
-        var res1 = VersionComparer.CompareVersions(App.Version, cd);
+        var res1 = VersionComparer.CompareVersions(Core.App.Version, cd);
         return res1 switch
         {
             -1 => cd,
-            1 => App.Version,
+            1 => Core.App.Version,
             _ => cd
         };
     }
@@ -413,7 +414,9 @@ public class UpdatePageViewModel : ViewModelBase
         {
             if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
             {
-                File.Copy(ConfigManager.ConfigPath, ConfigManager.ConfigPath + ".bak.update");
+                File.Copy(ConfigManager.ConfigPath, ConfigManager.BackupConfigPath, true);
+                await File.WriteAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"),
+                    $"{ConfigManager.CurrentConfig.Skin}");
             }
         }
         catch
@@ -421,6 +424,7 @@ public class UpdatePageViewModel : ViewModelBase
             Icon = ICONS.ERROR;
             Status = "备份配置文件失败, 请手动备份配置文件";
         }
+
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {

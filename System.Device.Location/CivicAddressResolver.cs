@@ -166,7 +166,7 @@ namespace System.Device.Location
                 throw new ArgumentException("coordinate");
             }
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(this.ResolveAddress), coordinate);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ResolveAddress), coordinate);
         }
 
         public event EventHandler<ResolveAddressCompletedEventArgs> ResolveAddressCompleted;

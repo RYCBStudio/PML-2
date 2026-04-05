@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -310,19 +310,22 @@ public class UserProxyViewModel : ViewModelBase
                 .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase)));
 
         var configFile = string.Empty;
-        var cs = new ConfigSelect(configFiles);
-        var cd = new ContentDialog
-        {
-            Title = "请选择配置文件",
-            Content = cs,
-            PrimaryButtonText = "确定",
-            CloseButtonText = "取消"
-        };
-        ShowExtraMenu = false;
         IReadOnlyList<IStorageFile>? cfg = [];
-        if (await cd.ShowAsync(Core.App.MainWindow) == ContentDialogResult.Primary)
+        if (configFiles.Count != 0)
         {
-            configFile = cs.SelectedPath;
+            var cs = new ConfigSelect(configFiles);
+            var cd = new ContentDialog
+            {
+                Title = "请选择配置文件",
+                Content = cs,
+                PrimaryButtonText = "确定",
+                CloseButtonText = "取消"
+            };
+            ShowExtraMenu = false;
+            if (await cd.ShowAsync(Core.App.MainWindow) == ContentDialogResult.Primary)
+            {
+                configFile = cs.SelectedPath;
+            }
         }
         else
         {
@@ -375,56 +378,9 @@ public class UserProxyViewModel : ViewModelBase
     {
         Core.App.CurrentLogger.Log($"正在使用指定配置启动隧道 {proxy?.proxyName}", port: EnumLogPort.Client,
             module: EnumLogModule.Main);
-        if (OperatingSystem.IsWindows())
-        {
-            if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"),
-                    "1cc4bb63ff49a578938862a8e1541ec2|7877aebbb5d28b075fe6ff5f823863ce"))
-            {
-                var res = await MessageBox.ShowAsync("mefrpc.exe 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
-                                                     "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
-                    MessageBoxIcon.Warning, buttons:
-                    [
-                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                        new TaskDialogButton("否", TaskDialogStandardResult.No)
-                    ]);
-                switch (res)
-                {
-                    case MessageBoxResult.No:
-                        break;
-                    case MessageBoxResult.Yes:
-                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
-                        break;
-                    default:
-                        return;
-                }
-            }
-        }
-        else if (OperatingSystem.IsLinux())
-        {
-            if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar"),
-                    "e402ab9d90ce932339d920a398480ab9"))
-            {
-                var res = await MessageBox.ShowAsync("mefrpc 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
-                                                     "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
-                    MessageBoxIcon.Warning, buttons:
-                    [
-                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                        new TaskDialogButton("否", TaskDialogStandardResult.No)
-                    ]);
-                switch (res)
-                {
-                    case MessageBoxResult.No:
-                        break;
-                    case MessageBoxResult.Yes:
-                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
-                        break;
-                    default:
-                        return;
-                }
-            }
-        }
+        
 
-        var cmd = $"{{mefrpc}} -c {configFile}";
+        var cmd = $"{{mefrpc}} -c \"{configFile}\"";
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
@@ -440,6 +396,67 @@ public class UserProxyViewModel : ViewModelBase
         IsLaunched = true;
     }
 
+    /// <summary>
+    /// 检查客户端文件是否存在且校验通过，如果不通过则提示下载
+    /// </summary>
+    /// <returns>如果同意下载, 返回下载后的重新检验值; 如果取消启动, 返回 0; 如果直接启动, 返回 -1.</returns>
+    private async Task<int> IsClientFileValidAsync()
+    {
+        // 定义不同平台的客户端配置
+        var clientConfig = OperatingSystem.IsWindows()
+            ? (FileName: "mefrpc.exe", 
+                Md5Hash: "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce|" +    //v0.67.0_20260214_7d549bc1
+                         "e2d4e8cd4fbd4f14d8101aaf4baaacec|a2b4fa6b50b05c3ebf5b888e2e07590c"       //v0.67.0_20260302_f1907e56
+                         )
+            : OperatingSystem.IsLinux()
+                ? (FileName: "mefrpc.tar", 
+                    Md5Hash: "e402ab9d90ce932339d920a398480ab9|ad07416756ca770ca1bb85463d782737"   //v0.67.0_20260214_7d549bc1
+                    + "|" + "f5236d0899b118a66df5f62548c4d4b8|98948bb0b2adfefc65a3fca19c41b8a6"    //v0.67.0_20260302_f1907e56
+                    )
+                : (FileName: "mefrpc.tar", 
+                    Md5Hash: "36020a261e451e1031d0f76f89627ac0|081271cc3cdd7c6b48b8660a6ecddf73"   //v0.67.0_20260214_7d549bc1
+                    + "|" + "02a4520ebbf57f7e641585e4654b8237|817ea7509443af93092ae74495669ee2");  //v0.67.0_20260302_f1907e56
+    
+        // 不支持的平台直接返回
+        if (string.IsNullOrEmpty(clientConfig.FileName))
+            return -1;
+    
+        var filePath = Path.Combine(Core.App.StartupPath, "bin", clientConfig.FileName);
+    
+        // 文件校验通过，直接启动
+        if (DownloadHelper.ValidateFileSimple(filePath, clientConfig.Md5Hash))
+            return -1;
+    
+        // 文件校验失败，提示用户
+        var res = await MessageBox.ShowAsync(
+            $"{clientConfig.FileName} 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+            "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。",
+            "警告",
+            "",
+            MessageBoxIcon.Warning,
+            buttons:
+            [
+                new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
+                new TaskDialogButton("否", TaskDialogStandardResult.No)
+            ]);
+    
+        return res switch
+        {
+            MessageBoxResult.No => 0,  // 取消启动
+            MessageBoxResult.Yes => await DownloadAndRevalidateAsync(),  // 下载后重新验证
+            _ => -1  // 其他情况直接启动
+        };
+    }
+    
+    /// <summary>
+    /// 下载客户端并重新验证
+    /// </summary>
+    private async Task<int> DownloadAndRevalidateAsync()
+    {
+        await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
+        return await IsClientFileValidAsync();
+    }
+    
     private void LaunchProxy(object parameter)
     {
         var proxies = parameter as IEnumerable<UserProxyViewModel>;
@@ -458,78 +475,16 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log("启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = para as UserProxyViewModel;
         Core.App.CurrentLogger.Log($"正在启动隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
+        
+        // 检查客户端文件有效性
+        var validationResult = await IsClientFileValidAsync();
+        if (validationResult == 0)  // 用户取消启动
+        {
+            IsLoading = false;
+            return;
+        }
+        
         var frpt = await MEFApiConverter.GetFrpTokenAsync();
-        if (OperatingSystem.IsWindows())
-        {
-            if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"),
-                    "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce"))
-            {
-                var res = await MessageBox.ShowAsync("mefrpc.exe 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
-                                                     "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
-                    MessageBoxIcon.Warning, buttons:
-                    [
-                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                        new TaskDialogButton("否", TaskDialogStandardResult.No)
-                    ]);
-                switch (res)
-                {
-                    case MessageBoxResult.No:
-                        break;
-                    case MessageBoxResult.Yes:
-                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
-                        break;
-                    default:
-                        return;
-                }
-            }
-        }
-        else if (OperatingSystem.IsLinux())
-        {
-            if (!DownloadHelper.ValidateFileSimple(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar"),
-                    "e402ab9d90ce932339d920a398480ab9|ad07416756ca770ca1bb85463d782737"))
-            {
-                var res = await MessageBox.ShowAsync("mefrpc.tar 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
-                                                     "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。", "警告", "",
-                    MessageBoxIcon.Warning, buttons:
-                    [
-                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                        new TaskDialogButton("否", TaskDialogStandardResult.No)
-                    ]);
-                switch (res)
-                {
-                    case MessageBoxResult.No:
-                        break;
-                    case MessageBoxResult.Yes:
-                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
-                        break;
-                    default:
-                        return;
-                }
-            }
-        }
-        else
-        {
-            if (!File.Exists(Path.Combine(Core.App.StartupPath, "bin", "mefrpc.tar")))
-            {
-                var res = await MessageBox.ShowAsync("mefrpc.tar 文件不存在，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
-                                                     "\n请注意: 我们不对任何非官方的文件运行所造成的任何后果负责。", "警告", "",
-                    MessageBoxIcon.Warning, buttons:
-                    [
-                        new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                        new TaskDialogButton("否", TaskDialogStandardResult.No)
-                    ]);
-                switch (res)
-                {
-                    case MessageBoxResult.No:
-                        break;
-                    case MessageBoxResult.Yes:
-                        _ = await new DownloadHelper(Core.App.MainWindow).DownloadMEFrpClient(Environment.OSVersion);
-                        break;
-                    default:
-                        return;
-                }
-            }
-        }
 
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {

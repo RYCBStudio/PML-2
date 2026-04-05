@@ -20,14 +20,14 @@ public partial class NoticeView : UserControl
             Notice = new NoticeContent();
         }
 
-        this.DataContext = Notice;
+        DataContext = Notice;
     }
 
     public NoticeView(NoticeContent notice, string markdown)
     {
         InitializeComponent();
         Notice = notice;
-        this.DataContext = this;
+        DataContext = this;
         MarkdownRender.Value = markdown;
     }
 }

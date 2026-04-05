@@ -14,7 +14,7 @@ public partial class UpdatePage : UserControl
     public UpdatePage()
     {
         InitializeComponent();
-        this.DataContext = new UpdatePageViewModel();
+        DataContext = new UpdatePageViewModel();
         var autoUpdate = ConfigManager.CurrentConfig.UpdateSettings.AutoCheck;
         UpdateMethodBox.SelectedIndex = ConfigManager.CurrentConfig.UpdateSettings.Method switch
         {

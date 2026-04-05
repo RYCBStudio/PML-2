@@ -233,7 +233,7 @@ namespace System.Device.Location
         public void Start()
         {
             DisposeCheck();
-            this.Start(false);
+            Start(false);
         }
 
         [SecuritySafeCritical]

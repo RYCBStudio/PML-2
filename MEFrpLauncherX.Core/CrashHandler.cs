@@ -7,7 +7,10 @@ public class CrashHandler
     private static Exception? _ex;
     private static string? _path;
 
-    private static readonly string[] _jokes =
+    public static string[] Jokes
+    {
+        get;
+    } =
     [
         "我们都有不顺利的时候。",
         "滚回功率，坐和放宽。",
@@ -254,7 +257,7 @@ public class CrashHandler
             : "";
 
         _resources["zh-CN"] = string.Format(_resources["zh-CN"],
-            _jokes[new Random().Next(0, _jokes.Length - 1)],
+            Jokes[new Random().Next(0, Jokes.Length - 1)],
             DateTime.Now.TimeOfDay,
             _ex?.GetType(),
             _ex?.Message,

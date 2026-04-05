@@ -61,26 +61,26 @@
                     </StackPanel>
                 </Button>
             </controls1:CommandBarElementContainer>
-            <controls1:CommandBarElementContainer>
-                <Button
-                    IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
-                    x:Name="EditSSLBtn"
-                    Margin="5,2,5,2"
-                    Command="{Binding EditSSLCommand}"
-                    CommandParameter="{Binding}"
-                    FontFamily="{StaticResource GlobalFontFamily}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xe642;" />
-                        <TextBlock
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="SSL设置" />
-                    </StackPanel>
-                </Button>
-            </controls1:CommandBarElementContainer>
+            <!-- <controls1:CommandBarElementContainer> -->
+            <!--     <Button -->
+            <!--         IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}" -->
+            <!--         x:Name="EditSSLBtn" -->
+            <!--         Margin="5,2,5,2" -->
+            <!--         Command="{Binding EditSSLCommand}" -->
+            <!--         CommandParameter="{Binding}" -->
+            <!--         FontFamily="{StaticResource GlobalFontFamily}"> -->
+            <!--         <StackPanel Orientation="Horizontal"> -->
+            <!--             <TextBlock -->
+            <!--                 VerticalAlignment="Center" -->
+            <!--                 FontFamily="{StaticResource IconFont}" -->
+            <!--                 Text="&#xe642;" /> -->
+            <!--             <TextBlock -->
+            <!--                 Margin="5,0,0,0" -->
+            <!--                 VerticalAlignment="Center" -->
+            <!--                 Text="SSL设置" /> -->
+            <!--         </StackPanel> -->
+            <!--     </Button> -->
+            <!-- </controls1:CommandBarElementContainer> -->
             <controls1:CommandBarElementContainer>
                 <WrapPanel Orientation="Horizontal" ItemSpacing="5">
                     <Button

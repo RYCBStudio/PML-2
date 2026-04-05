@@ -258,6 +258,11 @@ public partial class DownloadHelper
                 platform = new OperatingSystem(PlatformID.MacOSX, new Version(13, 0, 0, 0));
             }
 
+            App.CurrentLogger.Log("开始下载MEFrpClient");
+            App.CurrentLogger.Log($"当前平台: {platform.Platform}");
+            App.CurrentLogger.Log(
+                $"当前操作系统: {(OperatingSystem.IsWindows() ? "Windows" : (OperatingSystem.IsMacOS() ? "MacOS" : "Linux"))}");
+
             switch (platform.Platform)
             {
                 case PlatformID.Win32NT:
@@ -281,18 +286,26 @@ public partial class DownloadHelper
                     // 检查是否已取消
                     cancellationToken.ThrowIfCancellationRequested();
                     using var killProcess = new Process();
+                    App.CurrentLogger.Log("正在关闭MEFrpClient");
                     killProcess.StartInfo.FileName = "taskkill";
                     killProcess.StartInfo.Arguments = "/im mefrpc.exe /T /F";
                     killProcess.StartInfo.UseShellExecute = false;
                     killProcess.StartInfo.CreateNoWindow = true;
                     killProcess.Start();
+                    await killProcess.WaitForExitAsync(cancellationToken);
+                    App.CurrentLogger.Log("已关闭MEFrpClient");
+                    App.CurrentLogger.Log("正在删除旧版MEFrpClient");
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe"));
+                    App.CurrentLogger.Log("已删除旧版MEFrpClient");
+                    App.CurrentLogger.Log("正在下载新版MEFrpClient");
                     await downloader.DownloadFileTaskAsync(
                         GetDownloadUrl(platform.Platform, RuntimeInformation.OSArchitecture == Architecture.Arm64),
                         ConfigManager.CurrentConfig.DownloadSource.ToUpper() != "TPCA"
                             ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp")
                             : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"),
                         cancellationToken);
-
+                    App.CurrentLogger.Log("已下载新版MEFrpClient");
+                    App.CurrentLogger.Log("正在解压新版MEFrpClient");
                     // 检查是否已取消
                     if (downloader.IsCancelled || isCancelled)
                     {
@@ -301,18 +314,19 @@ public partial class DownloadHelper
 
                     if (Path.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp")))
                     {
-                        ZipFile.ExtractToDirectory(
+                        await ZipFile.ExtractToDirectoryAsync(
                             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp"),
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), true);
+                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), true, cancellationToken);
                         File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp"));
                         File.Move(
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc_windows_amd64_0.61.1",
+                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin",
+                                $"mefrpc_windows_amd64_{App.MEFrpVersion}",
                                 "mefrpc.exe"),
                             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"), true);
                         Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin",
-                            "mefrpc_windows_amd64_0.61.1"));
+                            $"mefrpc_windows_amd64_{App.MEFrpVersion}"), true);
                     }
-
+                    App.CurrentLogger.Log("已解压新版MEFrpClient");
                     cancellationToken.ThrowIfCancellationRequested();
                     /*
                     td.Content = "验证文件...";
@@ -346,16 +360,19 @@ public partial class DownloadHelper
                     }
 */
                     // All done, auto close the dialog here
+                    td.Content = "正在安装新版MEFrpClient";
                     new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
                         OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp")).MoveTo(
                         Path.Combine(AppContext.BaseDirectory, "bin",
                             OperatingSystem.IsWindows() ? "mefrpc.exe" : "mefrpc.tar"), true);
                     File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
                         OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp"));
+                    App.CurrentLogger.Log("已安装新版MEFrpClient");
                     Dispatcher.UIThread.Post(() =>
                     {
                         td.Hide(TaskDialogStandardResult.OK);
                     });
+                    
 
                     return true;
                 }

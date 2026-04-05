@@ -66,7 +66,7 @@ namespace System.Device.Location
                 default: break;
             }
 
-            this.Permission = permission;
+            Permission = permission;
         }
         /// <summary>
         /// Thread pool callback used to ensure location COM API is instantiated from
@@ -75,7 +75,7 @@ namespace System.Device.Location
         /// <param name="state"></param>
         private void CreateHandler(object state)
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 try
                 {
@@ -147,7 +147,7 @@ namespace System.Device.Location
             // Create the native location object on a worker thread, so that it exists
             // in a multithreaded apartment.
             //
-            ThreadPool.QueueUserWorkItem(new WaitCallback(this.CreateHandler), desiredAccuracy);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(CreateHandler), desiredAccuracy);
 
             Utility.Trace("GeoCoordinateWatcherInternal.ctor:" +
                           " desiredAccuracy: " + desiredAccuracy.ToString() +
@@ -184,7 +184,7 @@ namespace System.Device.Location
            }
         }
 
-        public override GeoPosition<GeoCoordinate> Position => (IsStarted && (this.Status == GeoPositionStatus.Ready)) ? m_position : new GeoPosition<GeoCoordinate>(DateTimeOffset.MinValue, GeoCoordinate.Unknown);
+        public override GeoPosition<GeoCoordinate> Position => (IsStarted && (Status == GeoPositionStatus.Ready)) ? m_position : new GeoPosition<GeoCoordinate>(DateTimeOffset.MinValue, GeoCoordinate.Unknown);
 
         public override Boolean TryStart(Boolean suppressPermissionPrompt, TimeSpan timeout)
         {
@@ -205,12 +205,12 @@ namespace System.Device.Location
                 {
                     m_eventGetLocDone = new ManualResetEvent(false);
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(this.GetInitialLocationData), suppressPermissionPrompt);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(GetInitialLocationData), suppressPermissionPrompt);
                     if (timeout != TimeSpan.Zero)
                     {
                         if (!m_eventGetLocDone.WaitOne(timeout))
                         {
-                            this.Stop();
+                            Stop();
                         }
                     }
                 }
@@ -227,11 +227,11 @@ namespace System.Device.Location
         //
         private void GetInitialLocationData(object state)
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 var suppressPermissionPrompt = (bool)state;
 
-                if (!(suppressPermissionPrompt && (this.Permission != GeoPositionPermission.Granted)))
+                if (!(suppressPermissionPrompt && (Permission != GeoPositionPermission.Granted)))
                 {
                     if (m_location != null)
                     {
@@ -277,7 +277,7 @@ namespace System.Device.Location
         //
         private void GetLocationHelper()
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 if ((m_location != null) && (m_curStatus == GeoPositionStatus.Ready))
                 {
@@ -492,7 +492,7 @@ namespace System.Device.Location
 
         private void HandleLocationStatusChangedEvent(ReportStatus newStatus)
         {
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 //
                 // If we are registered for civic address reports and a latlong provider
@@ -549,7 +549,7 @@ namespace System.Device.Location
                     //
                     if (m_curStatus == GeoPositionStatus.Ready)
                     {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(this.GetLocationData), null);
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(GetLocationData), null);
                     }
                 }
             }
@@ -717,7 +717,7 @@ namespace System.Device.Location
             SpinUntil_NoPositionEventsCurrentlyProcessing();
 #endif  // !SILVERLIGHT
                         
-            lock (this.InternalSyncObject)
+            lock (InternalSyncObject)
             {
                 if (m_location != null)
                 {

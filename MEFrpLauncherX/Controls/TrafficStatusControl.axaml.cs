@@ -19,7 +19,7 @@ public partial class TrafficStatusControl : UserControl
     {
         InitializeComponent();
         _vm = new TrafficStatusControlViewModel();
-        this.DataContext = _vm;
+        DataContext = _vm;
     }
 
     /*
