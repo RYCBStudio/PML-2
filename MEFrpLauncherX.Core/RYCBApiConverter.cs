@@ -9,7 +9,7 @@ namespace MEFrpLauncherX.Core;
 
 public class RYCBApiConverter
 {
-    public const string BaseApiUrl = "https://api.rycb.mxj.pub/api/";
+    public const string BaseApiUrl = "http://101.43.253.67:5000/api/";
 
     public static RestClient? CurrentClient
     {
@@ -87,9 +87,14 @@ public class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        if (!response.IsSuccessful || !response.IsSuccessStatusCode)
+        if (!response.IsSuccessful || !response.IsSuccessStatusCode || response.Content is null)
         {
             App.CurrentLogger.Log(response.Content, EnumLogType.Warn, module: EnumLogModule.Net);
+            return new FeedbackResponse
+            {
+                success = false,
+                message = "发送失败"
+            };
         }
 
         var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
@@ -193,6 +198,16 @@ public class RYCBApiConverter
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        if (res.StatusCode != HttpStatusCode.OK || res.Content is null)
+        {
+            return new SingleApiInfo<TunnelErrorInfo>()
+            {
+                success = false,
+                data = default,
+                count = 0,
+                timestamp = DateTimeOffset.Now.ToString("O")
+            };;
+        }
         var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content,
             AppJsonSerializerContext.Default.SingleApiInfoTunnelErrorInfo);
         return result;
@@ -207,6 +222,16 @@ public class RYCBApiConverter
         using var client = CreateClient("notice");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        if (res.StatusCode != HttpStatusCode.OK || res.Content is null)
+        {
+            return new SingleApiInfo<NoticeContent[]>()
+            {
+                success = false,
+                data = default,
+                count = 0,
+                timestamp = DateTimeOffset.Now.ToString("O")
+            };;
+        }
         var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content,
             AppJsonSerializerContext.Default.SingleApiInfoNoticeContentArray);
         return result;

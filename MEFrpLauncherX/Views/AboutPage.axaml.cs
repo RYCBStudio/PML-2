@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -519,6 +520,78 @@ public partial class AboutPage : UserControl
     }
 
     #endregion
+
+    private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
+    {
+        var cd = new ContentDialog
+        {
+            Content = new MarkdownRender()
+            {
+                Value = """
+                        # Markdown 渲染测试
+
+                        ## HTML 块测试
+
+                        <div>这是一个 HTML div 块</div>
+
+                        <p>这是一个段落标签</p>
+
+                        <strong>这是粗体文本</strong> 和普通文本混合
+
+                        <br/>换行测试
+
+                        ## GitHub 风格警告框测试
+
+                        > [!NOTE]
+                        > 这是一个注意事项，用于提醒用户重要信息。
+
+                        > [!TIP]
+                        > 这是一个提示，提供有用的建议或技巧。
+
+                        > [!WARNING]
+                        > 这是一个警告，提醒用户注意潜在的问题。
+
+                        > [!CAUTION]
+                        > 这是一个重要提示，需要用户特别注意的事项。
+
+                        ## 其他 Markdown 功能测试
+
+                        ### 代码块
+
+                        ```csharp
+                        public class Test
+                        {
+                            public void Hello()
+                            {
+                                Console.WriteLine("Hello, World!");
+                            }
+                        }
+                        ```
+
+                        ### 列表
+
+                        - 项目 1
+                        - 项目 2
+                        - 项目 3
+
+                        ### 引用
+
+                        > 这是一段引用文本
+
+                        ### 链接
+
+                        [这是一个链接](https://example.com)
+
+                        ### 图片
+
+                        ![示例图片](https://via.placeholder.com/150)
+
+                        """,
+            },
+            CloseButtonText = "关闭",
+        };
+        await cd.ShowAsync();
+    }
 }
 
 public class HitokotoResource

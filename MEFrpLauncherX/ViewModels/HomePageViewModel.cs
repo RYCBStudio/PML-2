@@ -264,7 +264,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             if (networkOk)
             {
-                var res = await Task.Run(async () => await MEFApiConverter.GetExtraUserInfoAsync());
+                var res = await MEFApiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
 
@@ -322,7 +322,6 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 SignButtonText = !data.todaySigned ? "签到" : "已签到";
 
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
-
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
                     HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));

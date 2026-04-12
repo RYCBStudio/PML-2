@@ -86,6 +86,7 @@
                                     <Button Content="抛出异常" Click="Debug_ThrowException" />
                                     <Button Content="TestCaptchaSolution" Click="Debug_TestSolve" />
                                     <Button Content="TestForProxyFloat" Click="OpenProxyFloat" />
+                                    <Button Content="TestMarkdown" Click="Debug_TestMarkdown" />
                                 </WrapPanel>
                             </StackPanel>
                         </controls1:SettingsExpanderItem.Footer>
