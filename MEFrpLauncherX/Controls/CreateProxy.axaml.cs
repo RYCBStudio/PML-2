@@ -20,8 +20,8 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class CreateProxy : UserControl
 {
-    private readonly TunnelNodeViewModel _node;
     private readonly CreateProxyViewModel _createProxyViewModel;
+    private readonly TunnelNodeViewModel _node;
 
     public CreateProxy()
     {
@@ -51,7 +51,10 @@ public partial class CreateProxy : UserControl
         };
         AttachedToVisualTree += CreateProxy_Loaded;
         if (!Design.IsDesignMode)
+        {
             CreateProxyPage.Instance.OnCreateProxy += CreateProxy_OnCreateProxy;
+        }
+
         _createProxyViewModel = new CreateProxyViewModel();
         OperationPanel.DataContext = _createProxyViewModel;
     }
@@ -92,7 +95,7 @@ public partial class CreateProxy : UserControl
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
             useCompression = EnableCompressCBox.IsChecked ?? false,
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]"
         };
         if (requestData.proxyName.IsNullOrEmpty())
         {
@@ -118,7 +121,7 @@ public partial class CreateProxy : UserControl
         }
 
         var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
-        var success = (await MEFApiConverter.PostNewTunnelAsync(_body)).code == 200;
+        var success = (await MEpiConverter.PostNewTunnelAsync(_body)).code == 200;
         if (success)
         {
             MainContainer.IsEnabled = false;
@@ -150,7 +153,7 @@ public partial class CreateProxy : UserControl
     {
         Loading.IsVisible = true;
         var data = -1;
-        var res = (await MEFApiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem.ToString())).data;
+        var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem.ToString())).data;
         data = res;
         Loading.IsVisible = false;
         RemotePortNudBox.Value = data;
@@ -207,6 +210,7 @@ public partial class CreateProxy : UserControl
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -227,6 +231,8 @@ public partial class CreateProxy : UserControl
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -268,7 +274,10 @@ public partial class CreateProxy : UserControl
     {
         var de = new DomainsEdit();
         if (_createProxyViewModel.RemoteAddress is not null && _createProxyViewModel.RemoteAddress.Count != 0)
+        {
             de.Domains.AddRange(_createProxyViewModel.RemoteAddress);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
@@ -308,6 +317,7 @@ public partial class CreateProxy : UserControl
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -328,6 +338,8 @@ public partial class CreateProxy : UserControl
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -369,7 +381,10 @@ public partial class CreateProxy : UserControl
     {
         var de = new DomainsEdit();
         if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
+        {
             de.Domains.AddRange(_createProxyViewModel.Locations);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑路径",
@@ -395,10 +410,7 @@ public class SelectIndexToVisibleConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is 1;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is 1;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -411,10 +423,7 @@ public class SelectIndexToVisibleConverterReverse : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is 2;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is 2;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -422,10 +431,7 @@ public class SelectIndexToVisibleConverterReverse : IValueConverter
 
 public class LegalProxyNameValidator : ValidationAttribute
 {
-    public override bool IsValid(object? value)
-    {
-        return value is string name && !name.Contains('.');
-    }
+    public override bool IsValid(object? value) => value is string name && !name.Contains('.');
 }
 
 public class CreateProxyViewModel : ViewModelBase

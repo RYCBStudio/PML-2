@@ -13,7 +13,7 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class TrafficStatusControl : UserControl
 {
-    private TrafficStatusControlViewModel _vm;
+    private readonly TrafficStatusControlViewModel _vm;
 
     public TrafficStatusControl()
     {
@@ -53,19 +53,16 @@ public partial class TrafficStatusControl : UserControl
     }
     */
 
-    public void UpdateTrafficData(InfoClasses.TrafficStatus data)
-    {
-        _vm.UpdateTrafficData(data);
-    }
+    public void UpdateTrafficData(InfoClasses.TrafficStatus data) => _vm.UpdateTrafficData(data);
 
     // ... existing code ...
 
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -87,7 +84,93 @@ public partial class TrafficStatusControl : UserControl
 
 public class TrafficStatusControlViewModel : ViewModelBase
 {
+    private InfoClasses.TrafficStatus _data;
+
+    public TrafficStatusControlViewModel()
+    {
+        if (Design.IsDesignMode)
+        {
+            Series =
+            [
+                new LineSeries<int>
+                {
+                    Values = [1, 1, 4, 5, 1, 4],
+                    Name = "Test111"
+                }
+            ];
+            XAxes =
+            [
+                new Axis
+                {
+                    Labels = ["2026-3-1", "2026-3-2", "2026-3-3", "2026-3-4", "2026-3-5", "2026-3-6"]
+                }
+            ];
+        }
+        else
+        {
+            Series = [];
+        }
+
+        SelectedPeriod = 7;
+        YAxes = [new Axis { Labeler = ProcessFileSize }];
+        ZoomMode = ZoomAndPanMode.X;
+    }
+
     public AvaloniaList<ISeries> Series
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public IList<Axis> XAxes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public IList<Axis> YAxes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public int SelectedType
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            UpdateTrafficData(_data, value);
+        }
+    }
+
+    public List<int> Periods
+    {
+        get;
+    } = [7, 14, 30];
+
+    public int SelectedPeriod
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            UpdateTrafficData(_data, SelectedType, true, value);
+        }
+    }
+
+    public ZoomAndPanMode ZoomMode
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public ZoomAndPanMode[] ZoomModes
+    {
+        get;
+    } = [ZoomAndPanMode.None, ZoomAndPanMode.X, ZoomAndPanMode.Y, ZoomAndPanMode.Both];
+
+    public bool IsLoading
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -103,7 +186,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
             return;
         }
 
-        data ??= (await MEFApiConverter.GetTrafficStatusAsync(period)).data;
+        data ??= (await MEpiConverter.GetTrafficStatusAsync(period)).data;
 //
 #if DEBUG
         data ??= new InfoClasses.TrafficStatus();
@@ -113,7 +196,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
 #endif
         if (shouldLoadNew)
         {
-            var r = await MEFApiConverter.GetTrafficStatusAsync(period);
+            var r = await MEpiConverter.GetTrafficStatusAsync(period);
             if (r.code == 200)
             {
                 data = r.data;
@@ -231,43 +314,11 @@ public class TrafficStatusControlViewModel : ViewModelBase
         Core.App.CurrentLogger?.Log($"图表已更新，日期数：{dates.Length}, 系列数：{newSeries.Count}", module: EnumLogModule.Net);
     }
 
-    private InfoClasses.TrafficStatus _data;
-
-    public TrafficStatusControlViewModel()
-    {
-        if (Design.IsDesignMode)
-        {
-            Series =
-            [
-                new LineSeries<int>
-                {
-                    Values = [1, 1, 4, 5, 1, 4],
-                    Name = "Test111"
-                }
-            ];
-            XAxes =
-            [
-                new Axis
-                {
-                    Labels = ["2026-3-1", "2026-3-2", "2026-3-3", "2026-3-4", "2026-3-5", "2026-3-6"],
-                }
-            ];
-        }
-        else
-        {
-            Series = [];
-        }
-
-        SelectedPeriod = 7;
-        YAxes = [new Axis { Labeler = ProcessFileSize }];
-        ZoomMode = ZoomAndPanMode.X;
-    }
-
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -286,62 +337,5 @@ public class TrafficStatusControlViewModel : ViewModelBase
         return $"{Math.Round(size, 2)}{sizeUnits[unitIndex]}";
     }
 
-    public IList<Axis> XAxes
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public IList<Axis> YAxes
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public int SelectedType
-    {
-        get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            UpdateTrafficData(_data, value);
-        }
-    }
-
-    public List<int> Periods
-    {
-        get;
-    } = [7, 14, 30];
-
-    public int SelectedPeriod
-    {
-        get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            UpdateTrafficData(_data, SelectedType, true, value);
-        }
-    }
-
-    public ZoomAndPanMode ZoomMode
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public ZoomAndPanMode[] ZoomModes
-    {
-        get;
-    } = [ZoomAndPanMode.None, ZoomAndPanMode.X, ZoomAndPanMode.Y, ZoomAndPanMode.Both];
-
-    public bool IsLoading
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public void ClearZoom()
-    {
-        ZoomMode = ZoomAndPanMode.None;
-    }
+    public void ClearZoom() => ZoomMode = ZoomAndPanMode.None;
 }

@@ -20,10 +20,7 @@ public partial class UserProxyControl : UserControl
         Instance = this;
     }
 
-    private void ShowMoreOptions(object? sender, RoutedEventArgs e)
-    {
-        ShowMenu();
-    }
+    private void ShowMoreOptions(object? sender, RoutedEventArgs e) => ShowMenu();
 
     private void HideMoreOptions(object? sender, ContextRequestedEventArgs e)
     {
@@ -34,9 +31,9 @@ public partial class UserProxyControl : UserControl
     private void ShowMenu()
     {
         var flyout = Resources["MoreOptionsCmd"] as CommandBarFlyout;
-        flyout.ShowMode = FlyoutShowMode.Standard;
+        flyout?.ShowMode = FlyoutShowMode.Standard;
 
-        flyout.ShowAt(MoreOptionsBtn);
+        flyout?.ShowAt(MoreOptionsBtn);
     }
 
     private void LaunchWeb(object? sender, RoutedEventArgs e)
@@ -63,23 +60,36 @@ public class OnlineAndDisabledConverter : IMultiValueConverter
     {
         if (values.Count != 2)
         {
-            return App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant, out var o) ? o : null;
+            return App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant, out var o)
+                ? o
+                : null;
         }
 
         var isOnline = values[0] as bool?;
         var isDisabled = values[1] as bool?;
         if (isOnline == true)
         {
-            return App.Current.TryGetResource("SystemFillColorSuccessBrush",  App.Current.ActualThemeVariant, out var o) ? o : null;
+            return App.Current.TryGetResource("SystemFillColorSuccessBrush", App.Current.ActualThemeVariant, out var o)
+                ? o
+                : null;
         }
+
         if (isOnline == false && isDisabled == true)
         {
-            return App.Current.TryGetResource("SystemFillColorCautionBrush",  App.Current.ActualThemeVariant, out var o) ? o : null;
+            return App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant, out var o)
+                ? o
+                : null;
         }
+
         if (isOnline == false && isDisabled == false)
         {
-            return App.Current.TryGetResource("SystemFillColorCriticalBrush",  App.Current.ActualThemeVariant, out var o) ? o : null;
+            return App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant, out var o)
+                ? o
+                : null;
         }
-        return App.Current.TryGetResource("SystemFillColorAttentionBrush",  App.Current.ActualThemeVariant, out var o1) ? o1 : null;
+
+        return App.Current.TryGetResource("SystemFillColorAttentionBrush", App.Current.ActualThemeVariant, out var o1)
+            ? o1
+            : null;
     }
 }

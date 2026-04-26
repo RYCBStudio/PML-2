@@ -12,6 +12,12 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class NodesOverviewViewModel : INotifyPropertyChanged
 {
+    public NodesOverviewViewModel()
+    {
+        SelectedSortOption = SortOptions[0];
+        LoadData();
+    }
+
     public AvaloniaList<InfoClasses.NodeStatus> AllNodes
     {
         get;
@@ -103,16 +109,12 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
     }
 
-    public NodesOverviewViewModel()
-    {
-        SelectedSortOption = SortOptions[0];
-        LoadData();
-    }
+    public event PropertyChangedEventHandler PropertyChanged;
 
     private async void LoadData()
     {
         IsLoading = true;
-        var res = await Task.Run(MEFApiConverter.GetNodesStatusAsync);
+        var res = await Task.Run(MEpiConverter.GetNodesStatusAsync);
         if (res.code != 200)
         {
             IsLoading = false;
@@ -201,16 +203,18 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(TotalOutTraffic));
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
 
 public class SortOption
 {
+    public SortOption(string displayName, string propertyName)
+    {
+        DisplayName = displayName;
+        PropertyName = propertyName;
+    }
+
     public string DisplayName
     {
         get;
@@ -221,11 +225,5 @@ public class SortOption
     {
         get;
         set;
-    }
-
-    public SortOption(string displayName, string propertyName)
-    {
-        DisplayName = displayName;
-        PropertyName = propertyName;
     }
 }

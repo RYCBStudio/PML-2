@@ -6,152 +6,155 @@
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
              x:Class="MEFrpLauncherX.Controls.PortScannerView"
              x:DataType="viewModels:PortScannerViewModel">
-    
+
     <Design.DataContext>
-        <viewModels:PortScannerViewModel/>
+        <viewModels:PortScannerViewModel />
     </Design.DataContext>
     <UserControl.Resources>
-        
-        <viewModels:PortScannerViewModel x:Key="PortScannerViewModel"/>
-        <core:BoolToColorConverter x:Key="BoolToColorConverter"/>
-        <core:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+
+        <core:BoolToColorConverter x:Key="BoolToColorConverter" />
+        <core:BoolToStatusConverter x:Key="BoolToStatusConverter" />
     </UserControl.Resources>
-    
+
     <StackPanel Margin="20" Spacing="10">
-        <TextBlock Text="MC端口扫描工具" 
-                   FontSize="18" 
-                   FontWeight="Bold" 
-                   Margin="0,0,0,10"/>
-        
+        <TextBlock Text="MC端口扫描工具"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,10" />
+
         <!-- 扫描设置 -->
         <Border Padding="10" Background="{DynamicResource ControlFillColorSecondaryBrush}" CornerRadius="8">
             <StackPanel Spacing="10">
-                <TextBlock Text="扫描设置" FontWeight="Bold"/>
-                
+                <TextBlock Text="扫描设置" FontWeight="Bold" />
+
                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
-                    <TextBlock Text="目标IP:" VerticalAlignment="Center"/>
-                    <TextBox Text="{Binding TargetIp}" 
-                             Grid.Column="1" 
-                             Watermark="例如: 127.0.0.1"/>
-                    <Button Content="本机" 
-                            Grid.Column="2" 
+                    <TextBlock Text="目标IP:" VerticalAlignment="Center" />
+                    <TextBox Text="{Binding TargetIp}"
+                             Grid.Column="1"
+                             Watermark="例如: 127.0.0.1" />
+                    <Button Content="本机"
+                            Grid.Column="2"
                             Command="{Binding UseLocalhostCommand}"
-                            Padding="10,2"/>
-                    
-                    <TextBlock Text="端口范围:" 
-                               Grid.Row="1" 
-                               VerticalAlignment="Center"/>
+                            Padding="10,2" />
+
+                    <TextBlock Text="端口范围:"
+                               Grid.Row="1"
+                               VerticalAlignment="Center" />
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Spacing="5">
-                        <TextBox Text="{Binding StartPort}" 
-                                 Width="80" 
-                                 Watermark="起始端口"/>
-                        <TextBlock Text="-" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding EndPort}" 
-                                 Width="80" 
-                                 Watermark="结束端口"/>
+                        <TextBox Text="{Binding StartPort}"
+                                 Width="80"
+                                 Watermark="起始端口" />
+                        <TextBlock Text="-" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding EndPort}"
+                                 Width="80"
+                                 Watermark="结束端口" />
                     </StackPanel>
-                    <Button Content="常用端口" 
-                            Grid.Column="2" 
+                    <Button Content="常用端口"
+                            Grid.Column="2"
                             Grid.Row="1"
                             Command="{Binding UseCommonPortsCommand}"
-                            Padding="10,2"/>
+                            Padding="10,2" />
                 </Grid>
             </StackPanel>
         </Border>
-        
+
         <!-- 控制按钮 -->
         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-            <Button Content="开始扫描" 
+            <Button Content="开始扫描"
                     Classes="accent"
                     Command="{Binding StartScanCommand}"
                     IsEnabled="{Binding IsNotScanning}"
-                    Width="120" 
-                    Height="35"/>
-            
-            <Button Content="停止扫描" 
+                    Width="120"
+                    Height="35" />
+
+            <Button Content="停止扫描"
                     Command="{Binding StopScanCommand}"
                     IsEnabled="{Binding IsScanning}"
-                    Width="120" 
-                    Height="35"/>
-            
-            <Button Content="快速扫描MC端口" 
+                    Width="120"
+                    Height="35" />
+
+            <Button Content="快速扫描MC端口"
                     Command="{Binding QuickScanCommand}"
                     IsEnabled="{Binding IsNotScanning}"
-                    Width="150" 
-                    Height="35"/>
+                    Width="150"
+                    Height="35" />
         </StackPanel>
-        
+
         <!-- 进度显示 -->
-        <Border IsVisible="{Binding IsScanning}" 
-                Padding="10" 
-                Background="{DynamicResource ControlFillColorTertiaryBrush}" 
+        <Border IsVisible="{Binding IsScanning}"
+                Padding="10"
+                Background="{DynamicResource ControlFillColorTertiaryBrush}"
                 CornerRadius="8">
             <StackPanel Spacing="5">
-                <ProgressBar Value="{Binding ScanProgress}" 
+                <ProgressBar Value="{Binding ScanProgress}"
                              Maximum="100" />
-                <TextBlock Text="{Binding StatusMessage}" 
-                           HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding StatusMessage}"
+                           HorizontalAlignment="Center" />
             </StackPanel>
         </Border>
-        
+
         <!-- 扫描结果 -->
-        <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource ControlFillColorSecondaryBrush}">
+        <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="8"
+                BorderThickness="1" BorderBrush="{DynamicResource ControlFillColorSecondaryBrush}">
             <StackPanel Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="扫描结果" FontWeight="Bold"/>
-                    <TextBlock Text="{Binding ResultCount, StringFormat='(共{0}个开放端口)'}"/>
+                    <TextBlock Text="扫描结果" FontWeight="Bold" />
+                    <TextBlock Text="{Binding ResultCount, StringFormat='(共{0}个开放端口)'}" />
                 </StackPanel>
-                
-                <ListBox ItemsSource="{Binding ScanResults}" 
+
+                <ListBox ItemsSource="{Binding ScanResults}"
                          SelectedItem="{Binding SelectedResult}"
                          Height="300"
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" Margin="0,2" CornerRadius="8"
-                                    BorderThickness="1" BorderBrush="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+                            <Border Padding="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    Margin="0,2" CornerRadius="8"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
                                 <Grid ColumnDefinitions="60,80,*,100">
-                                    <TextBlock Text="{Binding Port, StringFormat='端口:{0}'}" 
-                                               FontWeight="Bold"/>
-                                    
-                                    <Border Grid.Column="1" 
+                                    <TextBlock Text="{Binding Port, StringFormat='端口:{0}'}"
+                                               FontWeight="Bold" />
+
+                                    <Border Grid.Column="1"
                                             Background="{Binding IsOpen, Converter={StaticResource BoolToColorConverter}}"
-                                            CornerRadius="8" 
+                                            CornerRadius="8"
                                             HorizontalAlignment="Left"
-                                            Padding="5,2" 
+                                            Padding="5,2"
                                             Width="60">
-                                        <TextBlock Text="{Binding IsOpen, Converter={StaticResource BoolToStatusConverter}}"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock
+                                            Text="{Binding IsOpen, Converter={StaticResource BoolToStatusConverter}}"
+                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                            HorizontalAlignment="Center" />
                                     </Border>
-                                    
-                                    <TextBlock Grid.Column="2" 
+
+                                    <TextBlock Grid.Column="2"
                                                Text="{Binding ServiceName}"
                                                VerticalAlignment="Center"
-                                               Margin="10,0"/>
-                                    
-                                    <Button Grid.Column="3" 
+                                               Margin="10,0" />
+
+                                    <Button Grid.Column="3"
                                             Content="使用此端口"
                                             Command="{Binding $parent[controls:PortScannerView].DataContext.UsePortCommand}"
                                             CommandParameter="{Binding Port}"
-                                            Padding="10,2"/>
+                                            Padding="10,2" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                
+
                 <!-- 操作按钮 -->
                 <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-                    <Button Content="复制选中端口" 
+                    <Button Content="复制选中端口"
                             Command="{Binding CopySelectedPortCommand}"
                             IsEnabled="{Binding HasSelection}"
-                            Padding="10,5"/>
-                    
-                    <Button Content="清空结果" 
+                            Padding="10,5" />
+
+                    <Button Content="清空结果"
                             Command="{Binding ClearResultsCommand}"
                             IsEnabled="{Binding HasResults}"
-                            Padding="10,5"/>
+                            Padding="10,5" />
                 </StackPanel>
             </StackPanel>
         </Border>

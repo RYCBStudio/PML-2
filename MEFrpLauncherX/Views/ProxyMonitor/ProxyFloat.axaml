@@ -16,7 +16,8 @@
         ShowActivated="False"
         WindowStartupLocation="Manual"
         SizeToContent="Width">
-    <DockPanel Opacity="0.8" Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="10,5,5,10" HorizontalSpacing="5">
+    <DockPanel Opacity="0.8" Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="10,5,5,10"
+               HorizontalSpacing="5">
         <StackPanel Margin="5,0,0,0" Orientation="Horizontal" DockPanel.Dock="Left" Spacing="5">
             <Image Source="../../Assets/meflx.png" Stretch="Uniform" Height="20" />
             <TextBlock

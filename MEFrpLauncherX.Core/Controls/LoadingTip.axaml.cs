@@ -5,11 +5,6 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class LoadingTip : UserControl
 {
-    public string Tip
-    {
-        get => GetValue(TipProperty);
-        set => SetValue(TipProperty, value);
-    }
     public static readonly StyledProperty<string> TipProperty =
         AvaloniaProperty.Register<LoadingTip, string>(nameof(Tip));
 
@@ -17,9 +12,16 @@ public partial class LoadingTip : UserControl
     {
         InitializeComponent();
     }
+
     public LoadingTip(string tip)
     {
         InitializeComponent();
         Tip = tip;
+    }
+
+    public string Tip
+    {
+        get => GetValue(TipProperty);
+        set => SetValue(TipProperty, value);
     }
 }

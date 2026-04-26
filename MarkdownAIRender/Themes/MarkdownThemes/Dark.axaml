@@ -48,5 +48,5 @@
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="Foreground" Value="Red" />
     </Style>
-    
+
 </Styles>

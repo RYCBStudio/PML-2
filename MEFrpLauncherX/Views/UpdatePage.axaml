@@ -43,7 +43,8 @@
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新"
+                            IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdate}" />
@@ -63,7 +64,8 @@
                                     <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
                                                IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static core:App.Version}}">
                                         <TextBlock.Text>
-                                            <MultiBinding StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
+                                            <MultiBinding
+                                                StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
                                                 <Binding Path="LatestVersion" />
                                                 <Binding Source="{x:Static core:App.Version}" />
                                             </MultiBinding>

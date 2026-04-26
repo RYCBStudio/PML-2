@@ -237,7 +237,8 @@
                 <StackPanel
                     Margin="5"
                     Orientation="Horizontal">
-                    <TextBlock x:Name="TypeIdentifier" IsVisible="False" Text="{Binding proxyType, 
+                    <TextBlock x:Name="TypeIdentifier" IsVisible="False"
+                               Text="{Binding proxyType, 
                                          Converter={x:Static core:LowerCaseToUpperCaseConverter.Instance}}" />
                     <TextBlock
                         VerticalAlignment="Center"

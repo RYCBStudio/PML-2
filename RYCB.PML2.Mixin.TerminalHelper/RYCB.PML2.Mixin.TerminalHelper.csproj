@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj" />
+        <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
     </ItemGroup>
 
 </Project>

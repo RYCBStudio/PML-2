@@ -33,10 +33,7 @@ public class App : Application
         Core.App.Initialize();
     }
 
-    public override void RegisterServices()
-    {
-        base.RegisterServices();
-    }
+    public override void RegisterServices() => base.RegisterServices();
 
     public override void OnFrameworkInitializationCompleted()
     {
@@ -72,10 +69,13 @@ public class App : Application
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
 
+            Current.Resources["GlobalFontFamily"] = new FontFamily("Exo");
+            Current.Resources["ContentControlThemeFontFamily"] = new FontFamily("Exo");
+
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel()
             };
             desktop.MainWindow = mainWindow;
             desktop.Exit += (sender, args) =>

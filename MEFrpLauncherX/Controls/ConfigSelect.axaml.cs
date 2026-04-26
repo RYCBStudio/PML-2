@@ -17,6 +17,20 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class ConfigSelect : UserControl, INotifyPropertyChanged
 {
+    public ConfigSelect()
+    {
+        InitializeComponent();
+    }
+
+    public ConfigSelect(IEnumerable<string> paths)
+    {
+        InitializeComponent();
+        Paths.AddRange(paths);
+        DataContext = this;
+        ConfigPresenter.Load(new FileStream(SelectedPath, FileMode.Open, FileAccess.Read));
+        SetupSyntaxHighlighting(Path.GetExtension(SelectedPath));
+    }
+
     public AvaloniaList<string> Paths
     {
         get;
@@ -44,7 +58,10 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
         get
         {
             if (SelectedIndex < 0 || SelectedIndex >= Count)
+            {
                 return null;
+            }
+
             var p = Paths[SelectedIndex];
             ConfigPresenter.Load(new FileStream(p, FileMode.Open, FileAccess.Read));
             field = p;
@@ -53,19 +70,7 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
         set;
     }
 
-    public ConfigSelect()
-    {
-        InitializeComponent();
-    }
-
-    public ConfigSelect(IEnumerable<string> paths)
-    {
-        InitializeComponent();
-        Paths.AddRange(paths);
-        DataContext = this;
-        ConfigPresenter.Load(new FileStream(SelectedPath, FileMode.Open, FileAccess.Read));
-        SetupSyntaxHighlighting(Path.GetExtension(SelectedPath));
-    }
+    public new event PropertyChangedEventHandler? PropertyChanged;
 
     private void SetupSyntaxHighlighting(string type)
     {
@@ -76,12 +81,6 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
 
         // Setup TextMate for the editor
         var textMateInstallation = ConfigPresenter.InstallTextMate(registryOptions);
-        TextMate.RegisterExceptionHandler(ex =>
-        {
-            // Handle exceptions from TextMate
-            Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
-            Core.App.CurrentLogger.Error(ex);
-        });
         // Get the grammar based on file type
         var language = registryOptions.GetLanguageByExtension(type);
         if (type == ".toml")
@@ -116,18 +115,17 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
         }
     }
 
-    public new event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     private void PrevFile(object? sender, RoutedEventArgs e)
     {
         SelectedIndex--;
         if (SelectedIndex < 0)
+        {
             SelectedIndex = 0;
+        }
+
         var p = Paths[SelectedIndex];
         SelectedPath = p;
         ConfigPath.Text = p;
@@ -138,7 +136,10 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
     {
         SelectedIndex++;
         if (SelectedIndex >= Count)
+        {
             SelectedIndex = Count - 1;
+        }
+
         var p = Paths[SelectedIndex];
         SelectedPath = p;
         ConfigPath.Text = p;

@@ -29,10 +29,23 @@ public static class MessageBus
 }
 
 // 消息定义
-public class StartProxyMessage { public string Id { get; } public StartProxyMessage(string id)
+public class StartProxyMessage
+{
+    public StartProxyMessage(string id)
     {
         Id = id;
     }
+
+    public string Id
+    {
+        get;
+    }
 }
-public class NavigateToAboutMessage { }
-public class StartMCMessage { }
+
+public class NavigateToAboutMessage
+{
+}
+
+public class StartMCMessage
+{
+}

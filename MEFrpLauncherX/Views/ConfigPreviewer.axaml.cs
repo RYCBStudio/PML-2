@@ -18,9 +18,13 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ConfigPreviewer : Window
 {
-    private readonly string _type;
+    internal static readonly FilePickerFileType fpftype_yml = new("YAML文件") { Patterns = ["*.yaml", "*.yml"] };
+    internal static readonly FilePickerFileType fpftype_ini = new("INI文件") { Patterns = ["*.ini"] };
+    internal static readonly FilePickerFileType fpftype_toml = new("TOML文件") { Patterns = ["*.toml"] };
+    internal static readonly FilePickerFileType fpftype_json = new("JSON文件") { Patterns = ["*.json"] };
     private readonly string _config;
     private readonly string _proxyname;
+    private readonly string _type;
 
     public ConfigPreviewer(string type, string config, string proxyName)
     {
@@ -92,15 +96,7 @@ public partial class ConfigPreviewer : Window
         ShowNotification($"配置已保存到 {file.Name}");
     }
 
-    internal static readonly FilePickerFileType fpftype_yml = new("YAML文件") { Patterns = ["*.yaml", "*.yml"] };
-    internal static readonly FilePickerFileType fpftype_ini = new("INI文件") { Patterns = ["*.ini"] };
-    internal static readonly FilePickerFileType fpftype_toml = new("TOML文件") { Patterns = ["*.toml"] };
-    internal static readonly FilePickerFileType fpftype_json = new("JSON文件") { Patterns = ["*.json"] };
-
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
     private void ConfigPreviewer_Loaded(object sender, RoutedEventArgs e)
     {
@@ -129,12 +125,12 @@ public partial class ConfigPreviewer : Window
 
         // Setup TextMate for the editor
         var textMateInstallation = ConfigEditor.InstallTextMate(registryOptions);
-        TextMate.RegisterExceptionHandler(ex =>
-        {
-            // Handle exceptions from TextMate
-            Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
-            Core.App.CurrentLogger.Error(ex);
-        });
+        // TextMate.RegisterExceptionHandler(ex =>
+        // {
+        //     // Handle exceptions from TextMate
+        //     Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
+        //     Core.App.CurrentLogger.Error(ex);
+        // });
         // Get the grammar based on file type
         var scopeName = _type.ToLower() switch
         {
@@ -177,8 +173,5 @@ public partial class ConfigPreviewer : Window
         }
     }
 
-    private static void ShowNotification(string message)
-    {
-        Growl.Info(message);
-    }
+    private static void ShowNotification(string message) => Growl.Info(message);
 }

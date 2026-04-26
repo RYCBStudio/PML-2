@@ -14,7 +14,7 @@ public static class AppAnalytics
     private static string _appVersion;
 
     /// <summary>
-    /// 预配置（程序启动就调用，不会马上上报）
+    ///     预配置（程序启动就调用，不会马上上报）
     /// </summary>
     public static void Setup(string dsn, string appVersion)
     {
@@ -23,11 +23,14 @@ public static class AppAnalytics
     }
 
     /// <summary>
-    /// 用户同意隐私 → 启用统计
+    ///     用户同意隐私 → 启用统计
     /// </summary>
     public static void EnableAnalytics()
     {
-        if (_isAnalyticsEnabled) return;
+        if (_isAnalyticsEnabled)
+        {
+            return;
+        }
 
         _isAnalyticsEnabled = true;
 
@@ -39,7 +42,7 @@ public static class AppAnalytics
     }
 
     /// <summary>
-    /// 用户拒绝 → 禁用统计
+    ///     用户拒绝 → 禁用统计
     /// </summary>
     public static void DisableAnalytics()
     {
@@ -48,7 +51,7 @@ public static class AppAnalytics
     }
 
     /// <summary>
-    /// 真正初始化 Sentry
+    ///     真正初始化 Sentry
     /// </summary>
     private static void InitSentry()
     {
@@ -70,7 +73,10 @@ public static class AppAnalytics
 
     public static void SetUserId(string userId, string username, string email)
     {
-        if (!_isAnalyticsEnabled) return;
+        if (!_isAnalyticsEnabled)
+        {
+            return;
+        }
 
         SentrySdk.ConfigureScope(scope =>
         {
@@ -78,20 +84,28 @@ public static class AppAnalytics
             {
                 Id = userId,
                 Username = username,
-                Email = email,
+                Email = email
             };
         });
     }
 
     public static void TrackPage(string pageName)
     {
-        if (!_isAnalyticsEnabled) return;
+        if (!_isAnalyticsEnabled)
+        {
+            return;
+        }
+
         SentrySdk.AddBreadcrumb($"页面：{pageName}", "page.view");
     }
 
     public static void TrackAction(string actionName, Dictionary<string, string> data = null)
     {
-        if (!_isAnalyticsEnabled) return;
+        if (!_isAnalyticsEnabled)
+        {
+            return;
+        }
+
         SentrySdk.AddBreadcrumb(actionName, "user.action", data: data);
     }
 
@@ -168,11 +182,17 @@ public static class AppAnalytics
 
     public static void CaptureException(Exception ex, string tag = null)
     {
-        if (!_isAnalyticsEnabled || ex == null) return;
+        if (!_isAnalyticsEnabled || ex == null)
+        {
+            return;
+        }
 
         var id = SentrySdk.CaptureException(ex, s =>
         {
-            if (tag != null) s.SetTag("op", tag);
+            if (tag != null)
+            {
+                s.SetTag("op", tag);
+            }
         });
     }
 }

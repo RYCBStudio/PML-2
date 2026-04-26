@@ -41,18 +41,24 @@ public partial class DownloadHelper
         "您只需要在内部集线器中找到预览体验计划，并点击升级，电脑会自动滚回功率。" +
         "请坐和放宽。",
         "你永远可以相信BugJump的更新速度！",
-        "Never Gonna Give the Minecraft Up",
+        "Never Gonna Give the Minecraft Up"
     ];
 
-    private string GetDownloadUrl(PlatformID platformId, bool isArm)
+    private readonly Dictionary<PlatformID, string> armDownloadUrls = new()
     {
-        if (ConfigManager.CurrentConfig.DownloadSource.ToUpper() == "TPCA")
         {
-            return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
+            PlatformID.Win32NT,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-windows_arm64.exe"
+        },
+        {
+            PlatformID.Unix,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-linux_arm64.tar"
+        },
+        {
+            PlatformID.MacOSX,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-darwin_arm64.tar"
         }
-
-        return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
-    }
+    };
 
     private readonly Dictionary<PlatformID, string> downloadUrls = new()
     {
@@ -67,39 +73,9 @@ public partial class DownloadHelper
         {
             PlatformID.MacOSX,
             "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-darwin_amd64.tar"
-        },
+        }
     };
-    private readonly Dictionary<PlatformID, string> armDownloadUrls = new()
-    {
-        {
-            PlatformID.Win32NT,
-            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-windows_arm64.exe"
-        },
-        {
-            PlatformID.Unix,
-            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-linux_arm64.tar"
-        },
-        {
-            PlatformID.MacOSX,
-            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-darwin_arm64.tar"
-        },
-    };
-    
-    private readonly Dictionary<PlatformID, string> officialDownloadUrls = new()
-    {
-        {
-            PlatformID.Win32NT,
-            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_windows_amd64_{App.MEFrpVersion}.zip"
-        },
-        {
-            PlatformID.Unix,
-            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_linux_amd64_{App.MEFrpVersion}.tar"
-        },
-        {
-            PlatformID.MacOSX,
-            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_darwin_amd64_{App.MEFrpVersion}.tar"
-        },
-    };
+
     private readonly Dictionary<PlatformID, string> officialArmDownloadUrls = new()
     {
         {
@@ -113,7 +89,32 @@ public partial class DownloadHelper
         {
             PlatformID.MacOSX,
             $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_darwin_arm64_{App.MEFrpVersion}.tar"
-        },
+        }
     };
 
+    private readonly Dictionary<PlatformID, string> officialDownloadUrls = new()
+    {
+        {
+            PlatformID.Win32NT,
+            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_windows_amd64_{App.MEFrpVersion}.zip"
+        },
+        {
+            PlatformID.Unix,
+            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_linux_amd64_{App.MEFrpVersion}.tar"
+        },
+        {
+            PlatformID.MacOSX,
+            $"https://drive.mcsl.com.cn/d/ME-Frp/Lanzou/MEFrp-Core/{App.MEFrpVersion}/mefrpc_darwin_amd64_{App.MEFrpVersion}.tar"
+        }
+    };
+
+    private string GetDownloadUrl(PlatformID platformId, bool isArm)
+    {
+        if (ConfigManager.CurrentConfig.DownloadSource.ToUpper() == "TPCA")
+        {
+            return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
+        }
+
+        return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
+    }
 }

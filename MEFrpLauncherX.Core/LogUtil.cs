@@ -6,7 +6,6 @@ namespace MEFrpLauncherX.Core;
 public class LogUtil : IDisposable
 {
     private readonly AsyncLogWriter _asyncWriter;
-    private bool _disposed;
 
     private readonly Dictionary<Enum, string> _translation = new()
     {
@@ -27,13 +26,10 @@ public class LogUtil : IDisposable
         { EnumLogType.Warn, "警告" },
         { EnumLogType.Error, "错误" },
         { EnumLogType.Fatal, "致命错误" },
-        { EnumLogType.Debug, "调试" },
+        { EnumLogType.Debug, "调试" }
     };
 
-    public string LogPath
-    {
-        get;
-    }
+    private bool _disposed;
 
     public LogUtil(string logPath)
     {
@@ -41,6 +37,23 @@ public class LogUtil : IDisposable
         _asyncWriter = new AsyncLogWriter(logPath);
 
         InitializeSystemInfo();
+    }
+
+    public string LogPath
+    {
+        get;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        _asyncWriter?.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private void InitializeSystemInfo()
@@ -71,18 +84,18 @@ public class LogUtil : IDisposable
     }
 
     /// <summary>
-    /// 记录日志
+    ///     记录日志
     /// </summary>
     /// <param name="message">要记录的值</param>
     /// <param name="type">类型</param>
     /// <param name="port">端类型</param>
     /// <param name="module">模块</param>
-    /// <param name="customModuleName">若<paramref name="module"/>为<see cref="EnumLogModule.Custom"/>(自定义模块), 则需要传入该值。</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
     /// <param name="memberName">[自动生成] 调用的方法名</param>
     /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
     /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
     public void Log(
-        object message,
+        object? message,
         EnumLogType type = EnumLogType.Info,
         EnumLogPort port = EnumLogPort.Client,
         EnumLogModule module = EnumLogModule.Main,
@@ -101,19 +114,103 @@ public class LogUtil : IDisposable
 
         var logEntry =
             $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}][{_translation[type]}|{_translation[port]}:{moduleName}][{context}] {message}";
-        
-        Console.WriteLine($"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[type]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
+
+        Console.WriteLine(
+            $"\e[34m[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]\e[0m\e[36m[{_translation[type]}|{_translation[port]}:{moduleName}]\e[0m\e[35m[{context}]\e[0m {message}");
 
         _asyncWriter.EnqueueLog(logEntry);
     }
 
     /// <summary>
-    /// 记录调试日志，只在Debug模式下起作用。
+    ///     记录警告日志
     /// </summary>
     /// <param name="message">要记录的值</param>
     /// <param name="port">端类型</param>
     /// <param name="module">模块</param>
-    /// <param name="customModuleName">若<paramref name="module"/>为<see cref="EnumLogModule.Custom"/>(自定义模块), 则需要传入该值。</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
+    /// <param name="memberName">[自动生成] 调用的方法名</param>
+    /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
+    /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
+    public void Warning(
+        object message,
+        EnumLogPort port = EnumLogPort.Client,
+        EnumLogModule module = EnumLogModule.Main,
+        string customModuleName = "",
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0) =>
+        Log(message, EnumLogType.Warn, port, module, customModuleName, memberName, sourceFilePath, sourceLineNumber);
+
+
+    /// <summary>
+    ///     记录信息日志
+    /// </summary>
+    /// <param name="message">要记录的值</param>
+    /// <param name="port">端类型</param>
+    /// <param name="module">模块</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
+    /// <param name="memberName">[自动生成] 调用的方法名</param>
+    /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
+    /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
+    public void Info(
+        object message,
+        EnumLogPort port = EnumLogPort.Client,
+        EnumLogModule module = EnumLogModule.Main,
+        string customModuleName = "",
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0) =>
+        Log(message, EnumLogType.Info, port, module, customModuleName, memberName, sourceFilePath, sourceLineNumber);
+
+
+    /// <summary>
+    ///     记录错误日志
+    /// </summary>
+    /// <param name="message">要记录的值</param>
+    /// <param name="port">端类型</param>
+    /// <param name="module">模块</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
+    /// <param name="memberName">[自动生成] 调用的方法名</param>
+    /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
+    /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
+    public void Error(
+        object message,
+        EnumLogPort port = EnumLogPort.Client,
+        EnumLogModule module = EnumLogModule.Main,
+        string customModuleName = "",
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0) =>
+        Log(message, EnumLogType.Error, port, module, customModuleName, memberName, sourceFilePath, sourceLineNumber);
+
+    /// <summary>
+    ///     记录致命错误日志
+    /// </summary>
+    /// <param name="message">要记录的值</param>
+    /// <param name="port">端类型</param>
+    /// <param name="module">模块</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
+    /// <param name="memberName">[自动生成] 调用的方法名</param>
+    /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
+    /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
+    public void Fatal(
+        object message,
+        EnumLogPort port = EnumLogPort.Client,
+        EnumLogModule module = EnumLogModule.Main,
+        string customModuleName = "",
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0) =>
+        Log(message, EnumLogType.Fatal, port, module, customModuleName, memberName, sourceFilePath, sourceLineNumber);
+
+
+    /// <summary>
+    ///     记录调试日志，只在Debug模式下起作用。
+    /// </summary>
+    /// <param name="message">要记录的值</param>
+    /// <param name="port">端类型</param>
+    /// <param name="module">模块</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
     /// <param name="memberName">[自动生成] 调用的方法名</param>
     /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
     /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
@@ -145,14 +242,14 @@ public class LogUtil : IDisposable
     }
 
     /// <summary>
-    /// 记录错误日志
+    ///     记录错误日志
     /// </summary>
     /// <param name="ex">需要记录的异常类型</param>
     /// <param name="message">要记录的附加信息, 于错误记录的第一行展示</param>
     /// <param name="type">类型</param>
     /// <param name="port">端类型</param>
     /// <param name="module">模块</param>
-    /// <param name="customModuleName">若<paramref name="module"/>为<see cref="EnumLogModule.Custom"/>(自定义模块), 则需要传入该值。</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
     /// <param name="memberName">[自动生成] 调用的方法名</param>
     /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
     /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
@@ -205,87 +302,75 @@ public class LogUtil : IDisposable
 
         return details;
     }
-
-    public void Dispose()
-    {
-        if (_disposed)
-        {
-            return;
-        }
-
-        _disposed = true;
-        _asyncWriter?.Dispose();
-        GC.SuppressFinalize(this);
-    }
 }
 
 public enum EnumLogPort
 {
     /// <summary>
-    /// 客户端
+    ///     客户端
     /// </summary>
     Client,
 
     /// <summary>
-    /// 服务端
+    ///     服务端
     /// </summary>
-    Server,
+    Server
 }
 
 public enum EnumLogModule
 {
     /// <summary>
-    /// 主模块
+    ///     主模块
     /// </summary>
     Main,
 
     /// <summary>
-    /// 更新
+    ///     更新
     /// </summary>
     Update,
 
     /// <summary>
-    /// 网络
+    ///     网络
     /// </summary>
     Net,
 
     /// <summary>
-    /// 数据库
+    ///     数据库
     /// </summary>
     Sql,
 
     /// <summary>
-    /// 自定义
+    ///     自定义
     /// </summary>
     Custom,
 
     /// <summary>
-    /// 页面 - 主页
+    ///     页面 - 主页
     /// </summary>
     Home,
 
     /// <summary>
-    /// 页面 - 创建隧道
+    ///     页面 - 创建隧道
     /// </summary>
     CreateProxy,
 
     /// <summary>
-    /// 页面 - 管理隧道
+    ///     页面 - 管理隧道
     /// </summary>
     ManageProxy,
 
     /// <summary>
-    /// 页面 - 节点监控
+    ///     页面 - 节点监控
     /// </summary>
     NodesMonitoring,
 
     /// <summary>
-    /// 页面 - 关于
+    ///     页面 - 关于
     /// </summary>
     About,
 
     /// <summary>
-    /// 页面 - 终端/控制台
+    ///     页面 - 终端/控制台
     /// </summary>
     Terminal
 }
@@ -293,27 +378,27 @@ public enum EnumLogModule
 public enum EnumLogType
 {
     /// <summary>
-    /// 信息级别
+    ///     信息级别
     /// </summary>
     Info,
 
     /// <summary>
-    /// 警告级别
+    ///     警告级别
     /// </summary>
     Warn,
 
     /// <summary>
-    /// 错误级别
+    ///     错误级别
     /// </summary>
     Error,
 
     /// <summary>
-    /// 致命错误级别
+    ///     致命错误级别
     /// </summary>
     Fatal,
 
     /// <summary>
-    /// 调试级别
+    ///     调试级别
     /// </summary>
     Debug
 }

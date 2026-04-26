@@ -123,7 +123,7 @@
                 IsExpanded="True">
                 <controls1:SettingsExpanderItem>
                     <Panel MinHeight="300">
-                        <controls:TrafficStatusControl x:Name="trafficControl"/>
+                        <controls:TrafficStatusControl x:Name="trafficControl" />
                     </Panel>
                 </controls1:SettingsExpanderItem>
             </controls1:SettingsExpander>
@@ -134,7 +134,7 @@
                     Padding="16">
                 <StackPanel Spacing="12">
                     <DockPanel HorizontalSpacing="5">
-                        <controls1:SymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20"/>
+                        <controls1:SymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20" />
                         <TextBlock
                             Text="账户操作"
                             FontSize="16"

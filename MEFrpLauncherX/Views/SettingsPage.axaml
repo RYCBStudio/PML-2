@@ -46,7 +46,8 @@
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetAppearanceAdvanced" />
-                <controls:SettingsExpanderItem Content="背景设置" IconSource="FullScreenMaximize" Description="设置窗口背景的拉伸模式">
+                <controls:SettingsExpanderItem Content="背景设置" IconSource="FullScreenMaximize"
+                                               Description="设置窗口背景的拉伸模式">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <ComboBox x:Name="StretchBox" SelectionChanged="StretchBox_OnSelectionChanged">
@@ -205,9 +206,11 @@
                     Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
             </controls:SettingsExpander>
             <controls:SettingsExpander Header="其他设置" IconSource="Settings" Description="设置一些杂项。">
-                <controls:SettingsExpanderItem Content="不显示请求响应" Description="设置软件是否应该在界面上显示请求的响应。请注意: 该设置项只对成功的请求有效。">
+                <controls:SettingsExpanderItem Content="不显示请求响应"
+                                               Description="设置软件是否应该在界面上显示请求的响应。请注意: 该设置项只对成功的请求有效。">
                     <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch x:Name="DoNotShowResponseSettings" IsCheckedChanged="DoNotShowResponseSettings_OnIsCheckedChanged" />
+                        <ToggleSwitch x:Name="DoNotShowResponseSettings"
+                                      IsCheckedChanged="DoNotShowResponseSettings_OnIsCheckedChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>

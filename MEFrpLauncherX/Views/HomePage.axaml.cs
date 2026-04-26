@@ -10,7 +10,6 @@ namespace MEFrpLauncherX.Views;
 
 public partial class HomePage : ReactiveUserControl<HomePageViewModel>, IDisposable
 {
-
     public HomePage()
     {
         InitializeComponent();
@@ -24,8 +23,5 @@ public partial class HomePage : ReactiveUserControl<HomePageViewModel>, IDisposa
         };
     }
 
-    public void Dispose()
-    {
-        SuppressFinalize(this);
-    }
+    public void Dispose() => SuppressFinalize(this);
 }

@@ -27,6 +27,27 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class HomePageViewModel : ViewModelBase, IDisposable
 {
+    public HomePageViewModel()
+    {
+        // 初始化命令
+        SignCommand = ReactiveCommand.CreateFromTask(SignAsync);
+        LoadDataCommand = ReactiveCommand.CreateFromTask(LoadUserDataAsync);
+
+        IsLoading = LoadDataCommand.IsExecuting
+            .ToProperty(this, x => x.IsLoading).Value;
+        LoadDataCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            Core.App.CurrentLogger?.Error(ex);
+        });
+        SignCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            Core.App.CurrentLogger?.Error(ex);
+        });
+        // 初始加载数据
+        MainPageFrameViewModel.Instance?.IsLoading = false;
+        _ = LoadUserDataAsync();
+    }
+
     public bool IsLoading
     {
         get;
@@ -203,32 +224,17 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public HomePageViewModel()
-    {
-        // 初始化命令
-        SignCommand = ReactiveCommand.CreateFromTask(SignAsync);
-        LoadDataCommand = ReactiveCommand.CreateFromTask(LoadUserDataAsync);
-
-        IsLoading = LoadDataCommand.IsExecuting
-            .ToProperty(this, x => x.IsLoading).Value;
-        LoadDataCommand.ThrownExceptions.Subscribe(ex =>
-        {
-            Core.App.CurrentLogger?.Error(ex);
-        });
-        SignCommand.ThrownExceptions.Subscribe(ex =>
-        {
-            Core.App.CurrentLogger?.Error(ex);
-        });
-        // 初始加载数据
-        MainPageFrameViewModel.Instance?.IsLoading = false;
-        _ = LoadUserDataAsync();
-    }
-
     public bool ShowSoftwareNotice => ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
     public bool ShowStatistics => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics;
+    public bool StatisticsSpan2 => ShowStatistics && !ShowUserInfo;
     public bool ShowUserInfo => ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo;
+    public bool UserInfoRow1 => ShowStatistics && ShowUserInfo;
     public bool ShowSystemStatus => ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo;
     public bool ShowSystemNotice => ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice;
+    public bool SystemNoticeSpan2 => ShowSystemNotice && !ShowSoftwareNotice;
+    public bool SoftwareNoticeSpan2 => ShowSoftwareNotice && !ShowSystemNotice;
+
+    public void Dispose() => GC.RemoveMemoryPressure(100 * 1024 * 1024);
 
     private async Task LoadUserDataAsync()
     {
@@ -240,7 +246,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         IsLoading = true;
-        var ss = await MEFApiConverter.GetSystemStatusAsync();
+        var ss = await MEpiConverter.GetSystemStatusAsync();
         SystemStatus = ss.data?.status ?? -1;
         SystemStatusRemark = ss.data?.remark ?? $"网络服务不可用，返回代码: {ss.code}";
         var networkOk = ss.code == 200;
@@ -250,7 +256,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             IsLoadingNotice = false;
         }
 
-        var platform = await MEFApiConverter.GetPublicInfoAsync();
+        var platform = await MEpiConverter.GetPublicInfoAsync();
         if (platform.code == 200)
         {
             PlatformNodes = platform.data.nodes;
@@ -264,7 +270,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             if (networkOk)
             {
-                var res = await MEFApiConverter.GetExtraUserInfoAsync();
+                var res = await MEpiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
 
@@ -324,8 +330,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFApiConverter.GetNoticeAsync()).data));
-                
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEpiConverter.GetNoticeAsync()).data));
+
                 if (NoticeContent.IsNullOrEmpty())
                 {
                     IsNoData = true;
@@ -333,7 +339,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 IsLoading = false;
 
-                var popUp = await MEFApiConverter.GetPopupNoticeAsync();
+                var popUp = await MEpiConverter.GetPopupNoticeAsync();
 
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
                 MainPageFrameViewModel.Instance?.IsLoading = false;
@@ -371,7 +377,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     }
                 };
                 td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
-                td.XamlRoot = Core.App.MainWindow;
+                td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
                 td.ShowAsync();
                 if (!Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
                 {
@@ -423,7 +429,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     }
                 };
                 td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
-                td.XamlRoot = Core.App.MainWindow;
+                td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
                 td.ShowAsync();
 
                 await Task.Run(() => Directory.Delete(Path.Combine(Core.App.StartupPath, "Cache"), true));
@@ -471,9 +477,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         // 执行签到
         try
         {
-            var (success, message) = await MEFApiConverter.SendSignRequestAsync(captchaResult.Trim());
+            var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message, AppJsonSerializerContext.Default.ApiInfoSignInfo);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
+                    AppJsonSerializerContext.Default.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
@@ -532,11 +539,6 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         return $"{adjustedSize:F2} {units[unitIndex]}";
     }
 
-    public void Dispose()
-    {
-        GC.RemoveMemoryPressure(100 * 1024 * 1024);
-    }
-
     ~HomePageViewModel()
     {
         GC.SuppressFinalize(this);
@@ -555,7 +557,7 @@ public class NoticeData
     {
         get;
         set;
-    } = false;
+    }
 }
 
 public class NoticeManager
@@ -580,7 +582,8 @@ public class NoticeManager
             // 读取二进制文件并反序列化
             var fileBytes = File.ReadAllBytes(NoticeFilePath);
             var jsonString = Encoding.UTF8.GetString(fileBytes);
-            return JsonSerializer.Deserialize<NoticeData>(jsonString, AppJsonSerializerContext.Default.NoticeData) ?? new NoticeData();
+            return JsonSerializer.Deserialize<NoticeData>(jsonString, AppJsonSerializerContext.Default.NoticeData) ??
+                   new NoticeData();
         }
         catch (Exception ex)
         {
@@ -630,8 +633,8 @@ public class NoticeManager
 
             // 显示消息框
             await MessageBox.ShowAsync(
-                content: markdownRender,
-                caption: "重要通知");
+                markdownRender,
+                "重要通知");
         }
     }
 }

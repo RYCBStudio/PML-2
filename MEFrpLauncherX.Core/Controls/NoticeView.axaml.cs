@@ -6,12 +6,6 @@ namespace MEFrpLauncherX.Core.Controls;
 
 public partial class NoticeView : UserControl
 {
-    public NoticeContent? Notice
-    {
-        get;
-        set;
-    }
-
     public NoticeView()
     {
         InitializeComponent();
@@ -30,16 +24,21 @@ public partial class NoticeView : UserControl
         DataContext = this;
         MarkdownRender.Value = markdown;
     }
+
+    public NoticeContent? Notice
+    {
+        get;
+        set;
+    }
 }
 
 public class TypeToReadableChineseConverter : IValueConverter
 {
-
     public static TypeToReadableChineseConverter Instance
     {
         get;
     } = new();
-    
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is string _type

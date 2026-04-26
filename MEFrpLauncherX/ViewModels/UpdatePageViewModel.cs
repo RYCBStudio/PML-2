@@ -21,12 +21,23 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class UpdatePageViewModel : ViewModelBase
 {
-    private class ICONS
+    internal DownloadService downloader;
+
+    public UpdatePageViewModel()
     {
-        public const string UPDATE = "\xe68a";
-        public const string DOWNLOAD = "\xe72b";
-        public const string LATEST = "\xe653";
-        public const string ERROR = "\xed27";
+        UpdateChannel = ConfigManager.CurrentConfig.UpdateSettings.Channel switch
+        {
+            "Stable" => 0,
+            "Preview" => 1,
+            _ => 0
+        };
+        UpdateMethod = ConfigManager.CurrentConfig.UpdateSettings.Method switch
+        {
+            "ds" => 0,
+            "dd" => 1,
+            "md" => 2,
+            _ => 0
+        };
     }
 
     public bool HasNewVersion
@@ -108,8 +119,8 @@ public class UpdatePageViewModel : ViewModelBase
     } = App.Codename;
 
     /// <summary>
-    /// 0 - 稳定通道
-    /// 1 - 预览通道
+    ///     0 - 稳定通道
+    ///     1 - 预览通道
     /// </summary>
     public int UpdateChannel
     {
@@ -118,9 +129,9 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 0 - 自动下载并安装
-    /// 1 - 自动下载
-    /// 2 - 手动下载
+    ///     0 - 自动下载并安装
+    ///     1 - 自动下载
+    ///     2 - 手动下载
     /// </summary>
     public int UpdateMethod
     {
@@ -128,25 +139,8 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public UpdatePageViewModel()
-    {
-        UpdateChannel = ConfigManager.CurrentConfig.UpdateSettings.Channel switch
-        {
-            "Stable" => 0,
-            "Preview" => 1,
-            _ => 0
-        };
-        UpdateMethod = ConfigManager.CurrentConfig.UpdateSettings.Method switch
-        {
-            "ds" => 0,
-            "dd" => 1,
-            "md" => 2,
-            _ => 0
-        };
-    }
-
     /// <summary>
-    /// 检查更新
+    ///     检查更新
     /// </summary>
     /// <returns>(是否最新, 最新版本)</returns>
     public static async Task<(bool, string)> GetNewVersionAsync()
@@ -217,7 +211,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger?.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
             Core.App.CurrentLogger?.Error(ex);
             Status = "获取更新信息失败";
             Icon = ICONS.ERROR;
@@ -308,8 +302,6 @@ public class UpdatePageViewModel : ViewModelBase
         };
     }
 
-    internal DownloadService downloader;
-
     public async void DownloadUpdate()
     {
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
@@ -373,7 +365,7 @@ public class UpdatePageViewModel : ViewModelBase
                 ProtocolVersion = HttpVersion.Version11,
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "RYCB/PML Desktop",
+                    "RYCB/PML Desktop"
             }
         };
 
@@ -478,7 +470,7 @@ public class UpdatePageViewModel : ViewModelBase
                 ProtocolVersion = HttpVersion.Version11, // Default value is HTTP 1.1
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "RYCB/PML Desktop",
+                    "RYCB/PML Desktop"
             }
         };
         downloader = new DownloadService(DownloadOpt);
@@ -511,7 +503,7 @@ public class UpdatePageViewModel : ViewModelBase
         App.Desktop.Shutdown();
     }
 
-    void OpenFileInExplorer(string filePath)
+    private void OpenFileInExplorer(string filePath)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -600,10 +592,10 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -623,10 +615,10 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -657,5 +649,13 @@ public class UpdatePageViewModel : ViewModelBase
             CurrentSpeed = "";
             Core.App.CurrentLogger?.Log("下载完成");
         }
+    }
+
+    private class ICONS
+    {
+        public const string UPDATE = "\xe68a";
+        public const string DOWNLOAD = "\xe72b";
+        public const string LATEST = "\xe653";
+        public const string ERROR = "\xed27";
     }
 }

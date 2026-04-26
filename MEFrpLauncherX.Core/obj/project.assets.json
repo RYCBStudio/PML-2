@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "Avalonia/11.3.13": {
+      "Avalonia/11.3.14": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "11.3.13",
+          "Avalonia.Remote.Protocol": "11.3.14",
           "MicroCom.Runtime": "0.11.0"
         },
         "compile": {
@@ -135,7 +135,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.3.13": {
+      "Avalonia.Remote.Protocol/11.3.14": {
         "type": "package",
         "compile": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -148,10 +148,10 @@
           }
         }
       },
-      "Avalonia.Skia/11.3.13": {
+      "Avalonia.Skia/11.3.14": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "11.3.13",
+          "Avalonia": "11.3.14",
           "HarfBuzzSharp": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "8.3.1.1",
@@ -211,7 +211,7 @@
           }
         }
       },
-      "Downloader/5.1.0": {
+      "Downloader/5.2.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "10.0.3"
@@ -223,18 +223,18 @@
           "lib/net10.0/Downloader.dll": {}
         }
       },
-      "DynamicData/9.4.1": {
+      "DynamicData/9.4.31": {
         "type": "package",
         "dependencies": {
-          "System.Reactive": "6.0.1"
+          "System.Reactive": "6.1.0"
         },
         "compile": {
-          "lib/net9.0/DynamicData.dll": {
+          "lib/net10.0/DynamicData.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net9.0/DynamicData.dll": {
+          "lib/net10.0/DynamicData.dll": {
             "related": ".xml"
           }
         }
@@ -404,7 +404,7 @@
           }
         }
       },
-      "LiveChartsCore/2.0.0": {
+      "LiveChartsCore/2.0.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/LiveChartsCore.dll": {
@@ -417,10 +417,10 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView/2.0.0": {
+      "LiveChartsCore.SkiaSharpView/2.0.1": {
         "type": "package",
         "dependencies": {
-          "LiveChartsCore": "2.0.0",
+          "LiveChartsCore": "2.0.1",
           "SkiaSharp": "2.88.9",
           "SkiaSharp.HarfBuzz": "2.88.9"
         },
@@ -435,12 +435,12 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0": {
+      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.1": {
         "type": "package",
         "dependencies": {
           "Avalonia": "11.0.0",
           "Avalonia.Skia": "11.0.0",
-          "LiveChartsCore.SkiaSharpView": "2.0.0"
+          "LiveChartsCore.SkiaSharpView": "2.0.1"
         },
         "compile": {
           "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.dll": {
@@ -453,15 +453,15 @@
           }
         }
       },
-      "Markdig/0.37.0": {
+      "Markdig/1.1.3": {
         "type": "package",
         "compile": {
-          "lib/net8.0/Markdig.dll": {
+          "lib/net10.0/Markdig.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Markdig.dll": {
+          "lib/net10.0/Markdig.dll": {
             "related": ".xml"
           }
         }
@@ -553,7 +553,7 @@
           }
         }
       },
-      "MessageBox.Avalonia/3.3.0": {
+      "MessageBox.Avalonia/3.3.1.1": {
         "type": "package",
         "dependencies": {
           "Avalonia": "11.1.5",
@@ -630,18 +630,6 @@
         },
         "runtime": {
           "lib/ChnCharInfo.dll": {}
-        }
-      },
-      "Notification.Avalonia/2.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.9"
-        },
-        "compile": {
-          "lib/net9.0/Notification.Avalonia.dll": {}
-        },
-        "runtime": {
-          "lib/net9.0/Notification.Avalonia.dll": {}
         }
       },
       "NPinyin.Core/3.0.0": {
@@ -724,10 +712,10 @@
           }
         }
       },
-      "ReactiveUI/23.1.8": {
+      "ReactiveUI/23.2.1": {
         "type": "package",
         "dependencies": {
-          "DynamicData": "9.4.1",
+          "DynamicData": "9.4.31",
           "Splat": "19.3.1",
           "System.Reactive": "6.1.0"
         },
@@ -755,7 +743,7 @@
           }
         }
       },
-      "Sentry/6.3.0": {
+      "Sentry/6.4.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -781,11 +769,11 @@
           "lib/net8.0/ShimSkiaSharp.dll": {}
         }
       },
-      "SkiaSharp/3.119.1": {
+      "SkiaSharp/3.119.3-preview.1.1": {
         "type": "package",
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "3.119.1",
-          "SkiaSharp.NativeAssets.macOS": "3.119.1"
+          "SkiaSharp.NativeAssets.Win32": "3.119.3-preview.1.1",
+          "SkiaSharp.NativeAssets.macOS": "3.119.3-preview.1.1"
         },
         "compile": {
           "ref/net8.0/SkiaSharp.dll": {}
@@ -813,7 +801,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux/3.119.1": {
+      "SkiaSharp.NativeAssets.Linux/3.119.3-preview.1.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/_._": {}
@@ -868,7 +856,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.1": {
+      "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.3-preview.1.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/_._": {}
@@ -923,7 +911,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/3.119.1": {
+      "SkiaSharp.NativeAssets.macOS/3.119.3-preview.1.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/_._": {}
@@ -951,7 +939,7 @@
           "buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets": {}
         }
       },
-      "SkiaSharp.NativeAssets.Win32/3.119.1": {
+      "SkiaSharp.NativeAssets.Win32/3.119.3-preview.1.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/_._": {}
@@ -964,11 +952,23 @@
             "assetType": "native",
             "rid": "win-arm64"
           },
+          "runtimes/win-arm64/native/libSkiaSharp.pdb": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
           "runtimes/win-x64/native/libSkiaSharp.dll": {
             "assetType": "native",
             "rid": "win-x64"
           },
+          "runtimes/win-x64/native/libSkiaSharp.pdb": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
           "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.pdb": {
             "assetType": "native",
             "rid": "win-x86"
           }
@@ -1067,11 +1067,11 @@
           "lib/net8.0/Svg.Model.dll": {}
         }
       },
-      "System.Configuration.ConfigurationManager/10.0.1": {
+      "System.Configuration.ConfigurationManager/10.0.6": {
         "type": "package",
         "dependencies": {
-          "System.Diagnostics.EventLog": "10.0.1",
-          "System.Security.Cryptography.ProtectedData": "10.0.1"
+          "System.Diagnostics.EventLog": "10.0.6",
+          "System.Security.Cryptography.ProtectedData": "10.0.6"
         },
         "compile": {
           "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
@@ -1087,7 +1087,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "System.Diagnostics.EventLog/10.0.1": {
+      "System.Diagnostics.EventLog/10.0.6": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Diagnostics.EventLog.dll": {
@@ -1129,10 +1129,10 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.Runtime.Caching/10.0.1": {
+      "System.Runtime.Caching/10.0.6": {
         "type": "package",
         "dependencies": {
-          "System.Configuration.ConfigurationManager": "10.0.1"
+          "System.Configuration.ConfigurationManager": "10.0.6"
         },
         "compile": {
           "lib/net10.0/System.Runtime.Caching.dll": {
@@ -1154,7 +1154,7 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/10.0.1": {
+      "System.Security.Cryptography.ProtectedData/10.0.6": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
@@ -1227,15 +1227,15 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "Avalonia": "11.3.13",
-          "Avalonia.Skia": "11.3.13",
+          "Avalonia": "11.3.14",
+          "Avalonia.Skia": "11.3.14",
           "Avalonia.Svg": "11.2.0.2",
           "FluentAvaloniaUI": "2.5.1",
-          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.0",
-          "Markdig": "0.37.0",
-          "SkiaSharp": "3.119.1",
-          "SkiaSharp.NativeAssets.Linux": "3.119.1",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.1",
+          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.1",
+          "Markdig": "1.1.3",
+          "SkiaSharp": "3.119.3-preview.1.1",
+          "SkiaSharp.NativeAssets.Linux": "3.119.3-preview.1.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.3-preview.1.1",
           "TextMateSharp": "2.0.3",
           "TextMateSharp.Grammars": "2.0.3"
         },
@@ -1249,10 +1249,10 @@
     }
   },
   "libraries": {
-    "Avalonia/11.3.13": {
-      "sha512": "3o7hhaJSUZTq7CwQiL987df6CkQhdyt2VbL9jN5iq42ZB1/zvFiGG2+4czuZYKFVIo2kl313sJKZ8/3TAnhSYw==",
+    "Avalonia/11.3.14": {
+      "sha512": "RcGp0iXRBqMrDRXOTUOn9OaUTx8NlukTdhuBmY9w5JmVreDtZRRErKwwiHPw+YjkbTHvhfFFNsu3Hhd+oJGIZQ==",
       "type": "package",
-      "path": "avalonia/11.3.13",
+      "path": "avalonia/11.3.14",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1260,7 +1260,7 @@
         "Icon.png",
         "analyzers/dotnet/cs/Avalonia.Analyzers.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.11.3.13.nupkg.sha512",
+        "avalonia.11.3.14.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1486,15 +1486,15 @@
         "readme.md"
       ]
     },
-    "Avalonia.Remote.Protocol/11.3.13": {
-      "sha512": "ATDouTcCn484dUxmvzmyuOfNpwWxOKTz8LbBNnHpMZFCtyzZ0b4gvfZXh/d5szyRIF+kaTPK97LMQ5UH8ZQNhg==",
+    "Avalonia.Remote.Protocol/11.3.14": {
+      "sha512": "P4QPwf9VQt4CjntmfGo8uL+S1RaVbTlcFgECSFIWN3AWc/IbKs76tbZ6ibpdFg1C+IKubBPQ+hUeUq7MrBIWDA==",
       "type": "package",
-      "path": "avalonia.remote.protocol/11.3.13",
+      "path": "avalonia.remote.protocol/11.3.14",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.remote.protocol.11.3.13.nupkg.sha512",
+        "avalonia.remote.protocol.11.3.14.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net6.0/Avalonia.Remote.Protocol.dll",
         "lib/net6.0/Avalonia.Remote.Protocol.xml",
@@ -1504,15 +1504,15 @@
         "lib/netstandard2.0/Avalonia.Remote.Protocol.xml"
       ]
     },
-    "Avalonia.Skia/11.3.13": {
-      "sha512": "ak6fjzPJr+CwR/qUPQwtrYuuwVfT6yqqeJizzuaj2uMcuX+1hw/bSAAWmQ/0YD716xOj4bilA2BHOLl5IRBybg==",
+    "Avalonia.Skia/11.3.14": {
+      "sha512": "ksUk0PRTSjzYajk3aFpGvg+LotLe/pZj1K7B0b8As2ssDxFXFDPUnRvRZmw7f6jBBcfsYI6/LlFJZ93T8YAI2w==",
       "type": "package",
-      "path": "avalonia.skia/11.3.13",
+      "path": "avalonia.skia/11.3.14",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.skia.11.3.13.nupkg.sha512",
+        "avalonia.skia.11.3.14.nupkg.sha512",
         "avalonia.skia.nuspec",
         "lib/net6.0/Avalonia.Skia.dll",
         "lib/net6.0/Avalonia.Skia.xml",
@@ -1567,16 +1567,16 @@
         "lib/netstandard2.0/DialogHost.Avalonia.xml"
       ]
     },
-    "Downloader/5.1.0": {
-      "sha512": "lUsiygfKkPgLx4oFy/dWlKrWOjpg3A/VaiSAoX8f+WiwldoQGi+JBeOgc60ep6qWeSD5FYyrUl7CYvdR1vUt3w==",
+    "Downloader/5.2.0": {
+      "sha512": "HK6fuREiURr3OK3wt+2lwMJfpGmfkhZXow1xZr9ya7WcrLHrSqapIgzGfWk6mDVdWdYOwvp6bfLcKzQGVGW1OA==",
       "type": "package",
-      "path": "downloader/5.1.0",
+      "path": "downloader/5.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "README.md",
-        "downloader.5.1.0.nupkg.sha512",
+        "downloader.5.2.0.nupkg.sha512",
         "downloader.nuspec",
         "downloader.png",
         "lib/net10.0/Downloader.dll",
@@ -1584,17 +1584,19 @@
         "lib/net9.0/Downloader.dll"
       ]
     },
-    "DynamicData/9.4.1": {
-      "sha512": "+SoDTbuzY9j0K+sZfRbbVpGjjylkVMhUQnw6qiPhxzYLBJlwxFpmunXSaNBtTxwC2C9d/XIp0kO7VhMAVuUt7w==",
+    "DynamicData/9.4.31": {
+      "sha512": "w2bT92Z5ADtnmtKiC9mzk21h7MtXtZEQKWFyytuHqhPBo7rKPWnvFk/xy1M/VA6XQTbCjRWMNV795w+RizFn4g==",
       "type": "package",
-      "path": "dynamicdata/9.4.1",
+      "path": "dynamicdata/9.4.31",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE/LICENSE",
         "README.md",
-        "dynamicdata.9.4.1.nupkg.sha512",
+        "dynamicdata.9.4.31.nupkg.sha512",
         "dynamicdata.nuspec",
+        "lib/net10.0/DynamicData.dll",
+        "lib/net10.0/DynamicData.xml",
         "lib/net462/DynamicData.dll",
         "lib/net462/DynamicData.xml",
         "lib/net6.0/DynamicData.dll",
@@ -1849,10 +1851,10 @@
         "lib/uap10.0/HtmlAgilityPack.pri"
       ]
     },
-    "LiveChartsCore/2.0.0": {
-      "sha512": "6ck/dztjwNAlVxOQeD57tlbpfSk0LBxRH15fn8QK/cWz2Wn6D8WX0be+e241snbDQPTuWYZDhE9cZnrfA6EkIQ==",
+    "LiveChartsCore/2.0.1": {
+      "sha512": "jtFjel32vWDyLTmhmg7qMSj1AHR6tKA57AWhDezRXk6Qc+nnpuRbD2eWOHQc+Uzn3uRhhPTlblUG5sRnnkc5pg==",
       "type": "package",
-      "path": "livechartscore/2.0.0",
+      "path": "livechartscore/2.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1866,14 +1868,14 @@
         "lib/net8.0/LiveChartsCore.xml",
         "lib/netstandard2.0/LiveChartsCore.dll",
         "lib/netstandard2.0/LiveChartsCore.xml",
-        "livechartscore.2.0.0.nupkg.sha512",
+        "livechartscore.2.0.1.nupkg.sha512",
         "livechartscore.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView/2.0.0": {
-      "sha512": "BHdfDJp8QgMVjOP/kXLvkP50I5UUHft4x+7hwNg4pI6jvlnSKl1X1PAytsJ3OguQU3sJ7PsZt+/UKMEO7yszfQ==",
+    "LiveChartsCore.SkiaSharpView/2.0.1": {
+      "sha512": "D8GlyqZdUJhypIctQHNZNevzplPeM8UGmrIALMMMoQ8bTQGlJPBhcLX8pO1U298EFpNHHDAWKUzjBOeCwPDKbg==",
       "type": "package",
-      "path": "livechartscore.skiasharpview/2.0.0",
+      "path": "livechartscore.skiasharpview/2.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1887,14 +1889,14 @@
         "lib/net8.0/LiveChartsCore.SkiaSharpView.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.xml",
-        "livechartscore.skiasharpview.2.0.0.nupkg.sha512",
+        "livechartscore.skiasharpview.2.0.1.nupkg.sha512",
         "livechartscore.skiasharpview.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.0": {
-      "sha512": "0yWbEnZw4PlEUk66aFHUjIqMa16dQpHWUdIcM3nmRMbvbO7VsJ5oiIN7zkUm6tbfYH98OIUAQs2Y6TTXEAqW8w==",
+    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.1": {
+      "sha512": "aPIw3Em4lsNUdbIN2NXu9jecpv4XW7Rhz7fpng+GQhBbZpOavPHIfeEIsZpfiAUM3pqXxev8QntCg4zj04mU/A==",
       "type": "package",
-      "path": "livechartscore.skiasharpview.avalonia/2.0.0",
+      "path": "livechartscore.skiasharpview.avalonia/2.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1906,28 +1908,28 @@
         "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
-        "livechartscore.skiasharpview.avalonia.2.0.0.nupkg.sha512",
+        "livechartscore.skiasharpview.avalonia.2.0.1.nupkg.sha512",
         "livechartscore.skiasharpview.avalonia.nuspec"
       ]
     },
-    "Markdig/0.37.0": {
-      "sha512": "biiu4MTPFjW55qw6v5Aphtj0MjDLJ14x8ndZwkJUHIeqvaSGKeqhLY7S7Vu/S3k7/c9KwhhnaCDP9hdFNUhcNA==",
+    "Markdig/1.1.3": {
+      "sha512": "wboYc6YToID7koq+onej7rjd/kv4urZaZ4QMiJoF/jXt/ZlXe2Af9gWG4nOe5tk654UaOPYvKL64iFum7qWEYA==",
       "type": "package",
-      "path": "markdig/0.37.0",
+      "path": "markdig/1.1.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "lib/net10.0/Markdig.dll",
+        "lib/net10.0/Markdig.xml",
         "lib/net462/Markdig.dll",
         "lib/net462/Markdig.xml",
-        "lib/net6.0/Markdig.dll",
-        "lib/net6.0/Markdig.xml",
         "lib/net8.0/Markdig.dll",
         "lib/net8.0/Markdig.xml",
         "lib/netstandard2.0/Markdig.dll",
         "lib/netstandard2.0/Markdig.xml",
         "lib/netstandard2.1/Markdig.dll",
         "lib/netstandard2.1/Markdig.xml",
-        "markdig.0.37.0.nupkg.sha512",
+        "markdig.1.1.3.nupkg.sha512",
         "markdig.nuspec",
         "markdig.png",
         "readme.md"
@@ -2029,16 +2031,16 @@
         "message.avalonia.nuspec"
       ]
     },
-    "MessageBox.Avalonia/3.3.0": {
-      "sha512": "4btMa3Q5S/gZxqfi18tZYixnP9vy0KK/WyXYegQU+2/bfl5OFU56oS2bS7g5xNabXfRysl7Z7qoY/2ELLl4k5A==",
+    "MessageBox.Avalonia/3.3.1.1": {
+      "sha512": "a0NocLvE0ipg0REevrMtilNI+ud+tFTJW7YrPtploeM93ew8S3Y6hEybqZ7W9q5Yqa9u+xOrOjAlG1lTihWhnQ==",
       "type": "package",
-      "path": "messagebox.avalonia/3.3.0",
+      "path": "messagebox.avalonia/3.3.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "icon.jpg",
         "lib/netstandard2.0/MsBox.Avalonia.dll",
-        "messagebox.avalonia.3.3.0.nupkg.sha512",
+        "messagebox.avalonia.3.3.1.1.nupkg.sha512",
         "messagebox.avalonia.nuspec"
       ]
     },
@@ -2183,19 +2185,6 @@
         "microsoft.international.converters.pinyinconverter.nuspec"
       ]
     },
-    "Notification.Avalonia/2.2.0": {
-      "sha512": "8vMcjIi8H2U08ZCsIme4gBHGk+7EduHP/m8+40l42fwqLfSWqviOW49IACRadC2FOr+wothS+kp6xShZE2skYA==",
-      "type": "package",
-      "path": "notification.avalonia/2.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net8.0/Notification.Avalonia.dll",
-        "lib/net9.0/Notification.Avalonia.dll",
-        "notification.avalonia.2.2.0.nupkg.sha512",
-        "notification.avalonia.nuspec"
-      ]
-    },
     "NPinyin.Core/3.0.0": {
       "sha512": "l4RuTh0JEJBc23u6SCmpu2k9I7ph+Q2snoqrkYS9IlkM/VeTl+hvHKvrPnPlflmVaIi1lmVVs/NZZYbM2ILqJw==",
       "type": "package",
@@ -2258,10 +2247,10 @@
         "runtimes/win-x86/native/libonigwrap.dll"
       ]
     },
-    "ReactiveUI/23.1.8": {
-      "sha512": "Z8vtRa76RJ4efznElUzoOCYmguuKEndsV4VdPPVyobsYDLdVsoJV/njpCW4OXVnB+Mw/xTTrP6+gxYPU+TF8zw==",
+    "ReactiveUI/23.2.1": {
+      "sha512": "gSvc1Qe85eNroHpzmOlYar8x768QcbZ2YliXZ6D5QsKrsvhvRTnCM40aKlFeuqny4ldXoGCeo3+QP0HW2R7XKA==",
       "type": "package",
-      "path": "reactiveui/23.1.8",
+      "path": "reactiveui/23.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2306,7 +2295,7 @@
         "lib/net9.0/ReactiveUI.dll",
         "lib/net9.0/ReactiveUI.xml",
         "logo.png",
-        "reactiveui.23.1.8.nupkg.sha512",
+        "reactiveui.23.2.1.nupkg.sha512",
         "reactiveui.nuspec"
       ]
     },
@@ -2335,10 +2324,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.3.0": {
-      "sha512": "PwcF5yIzcKuhd/3BOxU3QHJA5/xYiuSNSaSpXi2kR3x7ONKel73xi49GfYvRg4mbMN1gRjxduqxQL6iRNNWqBA==",
+    "Sentry/6.4.0": {
+      "sha512": "0YOQfECCEpR+oRG0nTBZhdVrP6/7SP+WTA/JsP6Na43+c8zsgbgxRDe0H6dQiJR92FnwA2S0Qyw2MSSE3fTUQg==",
       "type": "package",
-      "path": "sentry/6.3.0",
+      "path": "sentry/6.4.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2387,7 +2376,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.3.0.nupkg.sha512",
+        "sentry.6.4.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -2413,10 +2402,10 @@
         "shimskiasharp.nuspec"
       ]
     },
-    "SkiaSharp/3.119.1": {
-      "sha512": "+Ru1BTSZQne3Vp+vbSb50Ke3Nlc3ZnItxx4+751J9WZ8YzLKAV/n+9DAo4zFTyeCI//ueT63c+VybmTTpYBEiw==",
+    "SkiaSharp/3.119.3-preview.1.1": {
+      "sha512": "+3ndwD845G4jfuyhtg5rrjryh2mEOr2QfAPFtncvAsRLzGX0ferSJ0223av6Sbw9zsEL6Wk0sk/DrXtEpJoo5A==",
       "type": "package",
-      "path": "skiasharp/3.119.1",
+      "path": "skiasharp/3.119.3-preview.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2461,7 +2450,7 @@
         "ref/net8.0/SkiaSharp.dll",
         "ref/netstandard2.0/SkiaSharp.dll",
         "ref/netstandard2.1/SkiaSharp.dll",
-        "skiasharp.3.119.1.nupkg.sha512",
+        "skiasharp.3.119.3-preview.1.1.nupkg.sha512",
         "skiasharp.nuspec"
       ]
     },
@@ -2495,10 +2484,10 @@
         "skiasharp.harfbuzz.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux/3.119.1": {
-      "sha512": "9YNoc4SeKvQhrwiqwT4ezkNfMywPdPSK+UFvo/CaoXqLixcnYOTsQKm5BF9mc4+q3vKgDtEgMt0d1ygZhJTEHg==",
+    "SkiaSharp.NativeAssets.Linux/3.119.3-preview.1.1": {
+      "sha512": "ZvpglyfQzhVIUmnPGngliPYcg6ROJNs0BV7XwJ+kktdqY0qe8jifP+UUgaMqTlOTjvuvyCbV7AI4qIBUfRe3Vw==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux/3.119.1",
+      "path": "skiasharp.nativeassets.linux/3.119.3-preview.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2524,14 +2513,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.3.119.1.nupkg.sha512",
+        "skiasharp.nativeassets.linux.3.119.3-preview.1.1.nupkg.sha512",
         "skiasharp.nativeassets.linux.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.1": {
-      "sha512": "5jj6gBCe4K6TLnIERBXZfmUNE0TUyeTaF28RCxdCgIDVDaCAbHwEbk99eNYRFem/ubW/hKdvayZBOt6PaDL05g==",
+    "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.3-preview.1.1": {
+      "sha512": "zNez41P9kCuDsJTLKAZcexVKlhbIlXBuEzHQULJGS9b8Nvc3r/ozNMNE8tDgQiAKARxbhCBMtccQXRyOxuGx1w==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux.nodependencies/3.119.1",
+      "path": "skiasharp.nativeassets.linux.nodependencies/3.119.3-preview.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2557,14 +2546,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.nodependencies.3.119.1.nupkg.sha512",
+        "skiasharp.nativeassets.linux.nodependencies.3.119.3-preview.1.1.nupkg.sha512",
         "skiasharp.nativeassets.linux.nodependencies.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.macOS/3.119.1": {
-      "sha512": "6hR3BdLhApjDxR1bFrJ7/lMydPfI01s3K+3WjIXFUlfC0MFCFCwRzv+JtzIkW9bDXs7XUVQS+6EVf0uzCasnGQ==",
+    "SkiaSharp.NativeAssets.macOS/3.119.3-preview.1.1": {
+      "sha512": "rv8B3OxG5PGQVxudIPV+ppjqUkt98VRzczNV3qNtearHebWXIcelpHEWzCtMSAYBm1rIsTs+KKAQv8/1exr0kQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.macos/3.119.1",
+      "path": "skiasharp.nativeassets.macos/3.119.3-preview.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2582,7 +2571,7 @@
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/osx/native/libSkiaSharp.dylib",
-        "skiasharp.nativeassets.macos.3.119.1.nupkg.sha512",
+        "skiasharp.nativeassets.macos.3.119.3-preview.1.1.nupkg.sha512",
         "skiasharp.nativeassets.macos.nuspec"
       ]
     },
@@ -2619,10 +2608,10 @@
         "skiasharp.nativeassets.webassembly.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Win32/3.119.1": {
-      "sha512": "8C4GSXVJqSr0y3Tyyv5jz6MJSTVUyYkMjeKrzK+VyZPGLo89MNoUEclVuYahzOCDdtbfXrd2HtxXfDuvoSXrUw==",
+    "SkiaSharp.NativeAssets.Win32/3.119.3-preview.1.1": {
+      "sha512": "PkMb1pGPBSW3ZL0IVKP9DZs+w065HVs4jGQELsbkmKzKSL5P8KHLkrrmnv2XpFpXtx2njOllB8243N1dBMK+CQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.win32/3.119.1",
+      "path": "skiasharp.nativeassets.win32/3.119.3-preview.1.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2640,9 +2629,12 @@
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/win-arm64/native/libSkiaSharp.dll",
+        "runtimes/win-arm64/native/libSkiaSharp.pdb",
         "runtimes/win-x64/native/libSkiaSharp.dll",
+        "runtimes/win-x64/native/libSkiaSharp.pdb",
         "runtimes/win-x86/native/libSkiaSharp.dll",
-        "skiasharp.nativeassets.win32.3.119.1.nupkg.sha512",
+        "runtimes/win-x86/native/libSkiaSharp.pdb",
+        "skiasharp.nativeassets.win32.3.119.3-preview.1.1.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
       ]
     },
@@ -2779,10 +2771,10 @@
         "svg.model.nuspec"
       ]
     },
-    "System.Configuration.ConfigurationManager/10.0.1": {
-      "sha512": "HfOAIlSA8OuaxBZD6xjsUWhtB0KdKSWEfRId8gSGveLUjuP6G8IxfiFgJNxaiRIEC1kx4pSvz3Em5xW/J6LLxA==",
+    "System.Configuration.ConfigurationManager/10.0.6": {
+      "sha512": "NQyzNGPPKUf5ykuPcUl1oKiY/gS+r9iASQmc8ITcwC6jBC20C9aFMIrBznpirpkoRev6I+p9n11u5QcqTfr+vg==",
       "type": "package",
-      "path": "system.configuration.configurationmanager/10.0.1",
+      "path": "system.configuration.configurationmanager/10.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2803,15 +2795,15 @@
         "lib/net9.0/System.Configuration.ConfigurationManager.xml",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.xml",
-        "system.configuration.configurationmanager.10.0.1.nupkg.sha512",
+        "system.configuration.configurationmanager.10.0.6.nupkg.sha512",
         "system.configuration.configurationmanager.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.EventLog/10.0.1": {
-      "sha512": "xfaHEHVDkMOOZR5S6ZGezD0+vekdH1Nx/9Ih8/rOqOGSOk1fxiN3u94bYkBW/wigj0Uw2Wt3vvRj9mtYdgwEjw==",
+    "System.Diagnostics.EventLog/10.0.6": {
+      "sha512": "RMe4gRBwSVd1O6HVRjNwLgcH2jjrT8sHyNRJegZLX68voA+HzMf1xZPvFxMMDpyW86B9U2pYslgl4DFCE61WyA==",
       "type": "package",
-      "path": "system.diagnostics.eventlog/10.0.1",
+      "path": "system.diagnostics.eventlog/10.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2841,7 +2833,7 @@
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.Messages.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.xml",
-        "system.diagnostics.eventlog.10.0.1.nupkg.sha512",
+        "system.diagnostics.eventlog.10.0.6.nupkg.sha512",
         "system.diagnostics.eventlog.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2873,10 +2865,10 @@
         "system.reactive.nuspec"
       ]
     },
-    "System.Runtime.Caching/10.0.1": {
-      "sha512": "bjF0qtW+P6QEDp+HqaUVfYIpPSl5u0rd5hIq0y1yMqRUc7EJ16xYE9marzNGhTH3h0UNMTInDgmR9qFFKEiIMg==",
+    "System.Runtime.Caching/10.0.6": {
+      "sha512": "mvFC/4dX845IFW1fYN2TEqN2WeZ0ut1uNImwAcCm81bTw1Sj/n7tkdL++CdgEq9X5kecMEoe4g82TtANAjCbVQ==",
       "type": "package",
-      "path": "system.runtime.caching/10.0.1",
+      "path": "system.runtime.caching/10.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2906,15 +2898,15 @@
         "runtimes/win/lib/net8.0/System.Runtime.Caching.xml",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.dll",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.xml",
-        "system.runtime.caching.10.0.1.nupkg.sha512",
+        "system.runtime.caching.10.0.6.nupkg.sha512",
         "system.runtime.caching.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Security.Cryptography.ProtectedData/10.0.1": {
-      "sha512": "9SqHNq+lAjZeyPcm69FTQEjr+wsRYvkS3aW8yxoEndVYwDRkCrsP/44QPqpWHwzevoX26rkOoQ6kr7GZWngw2A==",
+    "System.Security.Cryptography.ProtectedData/10.0.6": {
+      "sha512": "XsGj3pcZ4PIqz9Vhk7ymbL9iNQzOAnDzHmMBqK1rzjjfQBJ4AUZVJQWbDmTKUS8BIXX53QBDRrdiCpwdWfZM9A==",
       "type": "package",
-      "path": "system.security.cryptography.protecteddata/10.0.1",
+      "path": "system.security.cryptography.protecteddata/10.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2941,7 +2933,7 @@
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
-        "system.security.cryptography.protecteddata.10.0.1.nupkg.sha512",
+        "system.security.cryptography.protecteddata.10.0.6.nupkg.sha512",
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3022,24 +3014,23 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 11.3.13",
-      "Downloader >= 5.1.0",
+      "Avalonia >= 11.3.14",
+      "Downloader >= 5.2.0",
       "FluentAvaloniaUI >= 2.5.1",
-      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.0",
+      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.1",
       "MarkdownAIRender >= 1.0.0",
       "Message.Avalonia >= 1.1.0",
-      "MessageBox.Avalonia >= 3.3.0",
+      "MessageBox.Avalonia >= 3.3.1.1",
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
-      "Notification.Avalonia >= 2.2.0",
-      "ReactiveUI >= 23.1.8",
+      "ReactiveUI >= 23.2.1",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.3.0",
-      "SkiaSharp >= 3.119.1",
-      "SkiaSharp.NativeAssets.Linux >= 3.119.1",
-      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.1",
-      "System.Runtime.Caching >= 10.0.1",
+      "Sentry >= 6.4.0",
+      "SkiaSharp >= 3.119.3-preview.1.1",
+      "SkiaSharp.NativeAssets.Linux >= 3.119.3-preview.1.1",
+      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.3-preview.1.1",
+      "System.Runtime.Caching >= 10.0.6",
       "Tomlyn >= 2.2.1",
       "YamlDotNet >= 16.3.0"
     ]
@@ -3102,11 +3093,11 @@
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[11.3.13, )"
+            "version": "[11.3.14, )"
           },
           "Downloader": {
             "target": "Package",
-            "version": "[5.1.0, )"
+            "version": "[5.2.0, )"
           },
           "FluentAvaloniaUI": {
             "target": "Package",
@@ -3114,7 +3105,7 @@
           },
           "LiveChartsCore.SkiaSharpView.Avalonia": {
             "target": "Package",
-            "version": "[2.0.0, )"
+            "version": "[2.0.1, )"
           },
           "Message.Avalonia": {
             "target": "Package",
@@ -3122,7 +3113,7 @@
           },
           "MessageBox.Avalonia": {
             "target": "Package",
-            "version": "[3.3.0, )"
+            "version": "[3.3.1.1, )"
           },
           "MessageBox.Avalonia.Markdown": {
             "target": "Package",
@@ -3136,13 +3127,9 @@
             "target": "Package",
             "version": "[3.0.0, )"
           },
-          "Notification.Avalonia": {
-            "target": "Package",
-            "version": "[2.2.0, )"
-          },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[23.1.8, )"
+            "version": "[23.2.1, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -3150,23 +3137,23 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.3.0, )"
+            "version": "[6.4.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
-            "version": "[3.119.1, )"
+            "version": "[3.119.3-preview.1.1, )"
           },
           "SkiaSharp.NativeAssets.Linux": {
             "target": "Package",
-            "version": "[3.119.1, )"
+            "version": "[3.119.3-preview.1.1, )"
           },
           "SkiaSharp.NativeAssets.Linux.NoDependencies": {
             "target": "Package",
-            "version": "[3.119.1, )"
+            "version": "[3.119.3-preview.1.1, )"
           },
           "System.Runtime.Caching": {
             "target": "Package",
-            "version": "[10.0.1, )"
+            "version": "[10.0.6, )"
           },
           "Tomlyn": {
             "target": "Package",
@@ -3193,7 +3180,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.106/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

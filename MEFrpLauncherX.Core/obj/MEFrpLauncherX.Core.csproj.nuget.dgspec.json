@@ -54,11 +54,11 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.13, )"
+              "version": "[11.3.14, )"
             },
             "Avalonia.Skia": {
               "target": "Package",
-              "version": "[11.3.13, )"
+              "version": "[11.3.14, )"
             },
             "Avalonia.Svg": {
               "target": "Package",
@@ -70,23 +70,23 @@
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.0, )"
+              "version": "[2.0.1, )"
             },
             "Markdig": {
               "target": "Package",
-              "version": "[0.37.0, )"
+              "version": "[1.1.3, )"
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "TextMateSharp": {
               "target": "Package",
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.106/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -445,11 +445,11 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.13, )"
+              "version": "[11.3.14, )"
             },
             "Downloader": {
               "target": "Package",
-              "version": "[5.1.0, )"
+              "version": "[5.2.0, )"
             },
             "FluentAvaloniaUI": {
               "target": "Package",
@@ -457,7 +457,7 @@
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.0, )"
+              "version": "[2.0.1, )"
             },
             "Message.Avalonia": {
               "target": "Package",
@@ -465,7 +465,7 @@
             },
             "MessageBox.Avalonia": {
               "target": "Package",
-              "version": "[3.3.0, )"
+              "version": "[3.3.1.1, )"
             },
             "MessageBox.Avalonia.Markdown": {
               "target": "Package",
@@ -479,13 +479,9 @@
               "target": "Package",
               "version": "[3.0.0, )"
             },
-            "Notification.Avalonia": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
             "ReactiveUI": {
               "target": "Package",
-              "version": "[23.1.8, )"
+              "version": "[23.2.1, )"
             },
             "RestSharp": {
               "target": "Package",
@@ -493,23 +489,23 @@
             },
             "Sentry": {
               "target": "Package",
-              "version": "[6.3.0, )"
+              "version": "[6.4.0, )"
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[3.119.1, )"
+              "version": "[3.119.3-preview.1.1, )"
             },
             "System.Runtime.Caching": {
               "target": "Package",
-              "version": "[10.0.1, )"
+              "version": "[10.0.6, )"
             },
             "Tomlyn": {
               "target": "Package",
@@ -536,7 +532,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.104/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.106/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

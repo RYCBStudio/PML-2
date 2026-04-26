@@ -9,8 +9,10 @@ namespace MEFrpLauncherX;
 
 public static class WindowPositionHelper
 {
+    private const int Tolerance = 10;
+
     /// <summary>
-    /// 根据指定的位置指示符组合，计算窗口在屏幕上的坐标。
+    ///     根据指定的位置指示符组合，计算窗口在屏幕上的坐标。
     /// </summary>
     /// <param name="window">需要定位的窗口。</param>
     /// <param name="positionIndicators">位置指示符字符串，例如 "rt" (right-top)。</param>
@@ -63,16 +65,11 @@ public static class WindowPositionHelper
                 case 'b':
                     y = workingArea.Bottom - windowHeight - 50;
                     break;
-                default:
-                    break;
             }
         }
 
         return new PixelPoint((int)x, (int)y);
     }
-
-
-    private const int Tolerance = 10;
 
     public static string GetPositionReverse(Window window)
     {

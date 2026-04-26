@@ -37,7 +37,11 @@ public partial class UserCenterPage : UserControl
 
     private async void UserControl_Loaded(object? s, VisualTreeAttachmentEventArgs? e)
     {
-        if (Design.IsDesignMode) return;
+        if (Design.IsDesignMode)
+        {
+            return;
+        }
+
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         // Show loading mask
@@ -47,7 +51,7 @@ public partial class UserCenterPage : UserControl
         {
             await Task.Run(async () =>
             {
-                var res = await MEFApiConverter.GetExtraUserInfoAsync();
+                var res = await MEpiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
                 if (res.code != 200)
@@ -112,7 +116,7 @@ public partial class UserCenterPage : UserControl
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
-                var trafficStatusData = await Task.Run(() => MEFApiConverter.GetTrafficStatusAsync(7));
+                var trafficStatusData = await Task.Run(() => MEpiConverter.GetTrafficStatusAsync(7));
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
@@ -139,9 +143,10 @@ public partial class UserCenterPage : UserControl
         // 执行签到
         try
         {
-            var (success, message) = await MEFApiConverter.SendSignRequestAsync(captchaResult.Trim());
+            var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message, AppJsonSerializerContext.Default.ApiInfoSignInfo);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
+                    AppJsonSerializerContext.Default.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)

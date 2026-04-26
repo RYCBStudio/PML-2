@@ -5,6 +5,11 @@ namespace MEFrpLauncherX.Core;
 
 public static partial class ClickThroughHelper
 {
+    // --- Windows ---
+    private const int GWL_EXSTYLE = -20;
+    private const int WS_EX_TRANSPARENT = 0x00000020;
+    private const int WS_EX_LAYERED = 0x00080000;
+
     public static void SetClickThrough(Window window, bool enable)
     {
         if (OperatingSystem.IsWindows())
@@ -20,11 +25,6 @@ public static partial class ClickThroughHelper
             SetClickThroughLinux(window, enable);
         }
     }
-
-    // --- Windows ---
-    private const int GWL_EXSTYLE = -20;
-    private const int WS_EX_TRANSPARENT = 0x00000020;
-    private const int WS_EX_LAYERED = 0x00080000;
 
     [DllImport("user32.dll")]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);

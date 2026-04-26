@@ -126,23 +126,6 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="0,5" Padding="15" CornerRadius="8">
-                            <Border.Styles>
-                                <Style>
-                                    <Style.Animations>
-                                        <Animation Duration="0:0:0.75" FillMode="Both"
-                                                   Easing="QuarticEaseInOut">
-                                            <KeyFrame Cue="0%">
-                                                <Setter Property="TranslateTransform.X" Value="25" />
-                                                <Setter Property="Opacity" Value="0" />
-                                            </KeyFrame>
-                                            <KeyFrame Cue="100%">
-                                                <Setter Property="TranslateTransform.X" Value="0" />
-                                                <Setter Property="Opacity" Value="1" />
-                                            </KeyFrame>
-                                        </Animation>
-                                    </Style.Animations>
-                                </Style>
-                            </Border.Styles>
                             <Grid ColumnDefinitions="3*,4*,3*">
                                 <!-- 节点基本信息 -->
                                 <StackPanel Grid.Column="0">

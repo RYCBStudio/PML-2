@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Styling;
 using RYCB.PML.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
@@ -68,7 +69,9 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(KickProxyInfo))]
 [JsonSerializable(typeof(ToggleProxyInfo))]
 [JsonSerializable(typeof(FreePortBody))]
-[JsonSourceGenerationOptions(IncludeFields = true)]
+[JsonSerializable(typeof(ThemeManifest))]
+[JsonSerializable(typeof(AccentMeta))]
+[JsonSourceGenerationOptions(IncludeFields = true, PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {
 }

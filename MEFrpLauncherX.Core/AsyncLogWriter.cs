@@ -4,10 +4,10 @@ namespace MEFrpLauncherX.Core;
 
 public class AsyncLogWriter : IDisposable
 {
-    private readonly StreamWriter _writer;
+    private readonly CancellationTokenSource _cts = new();
     private readonly BlockingCollection<string> _logQueue = new();
     private readonly Task _processingTask;
-    private readonly CancellationTokenSource _cts = new();
+    private readonly StreamWriter _writer;
 
     public AsyncLogWriter(string filePath)
     {
@@ -22,12 +22,33 @@ public class AsyncLogWriter : IDisposable
         {
             File.Delete(filePath);
         }
-        _writer = new StreamWriter(new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete))
+
+        _writer = new StreamWriter(new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite,
+            FileShare.ReadWrite | FileShare.Delete))
         {
-            AutoFlush = true,
+            AutoFlush = true
         };
 
         _processingTask = Task.Run(ProcessLogQueue);
+    }
+
+    public void Dispose()
+    {
+        _logQueue.CompleteAdding();
+        _cts.Cancel();
+        try
+        {
+            _processingTask.Wait(TimeSpan.FromSeconds(5));
+        }
+        catch (Exception)
+        {
+        }
+
+        _writer.Dispose();
+        _logQueue.Dispose();
+        _cts.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 
     private async Task ProcessLogQueue()
@@ -51,21 +72,5 @@ public class AsyncLogWriter : IDisposable
         {
             _logQueue.Add(logEntry);
         }
-    }
-
-    public void Dispose()
-    {
-        _logQueue.CompleteAdding();
-        _cts.Cancel();
-        try
-        {
-            _processingTask.Wait(TimeSpan.FromSeconds(5));
-        }catch(Exception){}
-
-        _writer.Dispose();
-        _logQueue.Dispose();
-        _cts.Dispose();
-
-        GC.SuppressFinalize(this);
     }
 }

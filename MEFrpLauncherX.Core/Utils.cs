@@ -25,6 +25,10 @@ public static class StringUtils
     }
 }
 
+public static class IEnumerableUtils
+{
+}
+
 public static class DeviceIdHelper
 {
     // 存储设备ID的本地路径（跨平台）
@@ -34,7 +38,7 @@ public static class DeviceIdHelper
         "device.id");
 
     /// <summary>
-    /// 获取设备唯一ID（优先读本地，没有则生成）
+    ///     获取设备唯一ID（优先读本地，没有则生成）
     /// </summary>
     public static string GetDeviceUniqueId()
     {
@@ -69,7 +73,7 @@ public static class DeviceIdHelper
     }
 
     /// <summary>
-    /// 生成跨平台设备唯一ID
+    ///     生成跨平台设备唯一ID
     /// </summary>
     private static string GenerateDeviceId()
     {
@@ -96,7 +100,7 @@ public static class DeviceIdHelper
     }
 
     /// <summary>
-    /// 按系统获取硬件特征
+    ///     按系统获取硬件特征
     /// </summary>
     private static string GetPlatformSpecificHardwareInfo()
     {

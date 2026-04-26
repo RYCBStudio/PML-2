@@ -21,33 +21,9 @@ using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 namespace MEFrpLauncherX.Core.MEFIntergrated;
 
-public class MEFApiConverter
+public class MEpiConverter
 {
     public const string BaseApiUrl = "https://api.mefrp.com/api/";
-
-    public static RestClient? CurrentClient
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
-    /// 当前的公共信息
-    /// </summary>
-    public static ApiInfo<PublicData> CurrentPublicInfo
-    {
-        get;
-        private set;
-    } = new();
-
-    /// <summary>
-    /// 当前的用户信息
-    /// </summary>
-    public static ApiInfo<UserInfo> CurrentUserInfo
-    {
-        get;
-        set;
-    }
 
     // Backing fields for node infos (cached)
     private static NodesListInfo? _nodesListInfo;
@@ -57,8 +33,32 @@ public class MEFApiConverter
     private static readonly SemaphoreSlim _nodesListSemaphore = new(1, 1);
     private static readonly SemaphoreSlim _nodesStatusSemaphore = new(1, 1);
 
+    public static RestClient? CurrentClient
+    {
+        get;
+        set;
+    }
+
     /// <summary>
-    /// 当前的节点List信息（仅返回缓存，不触发网络请求）
+    ///     当前的公共信息
+    /// </summary>
+    public static ApiInfo<PublicData> CurrentPublicInfo
+    {
+        get;
+        private set;
+    } = new();
+
+    /// <summary>
+    ///     当前的用户信息
+    /// </summary>
+    public static ApiInfo<UserInfo> CurrentUserInfo
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     当前的节点List信息（仅返回缓存，不触发网络请求）
     /// </summary>
     public static NodesListInfo? CurrentNodesListInfo
     {
@@ -73,7 +73,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 当前的节点状态信息（仅返回缓存，不触发网络请求）
+    ///     当前的节点状态信息（仅返回缓存，不触发网络请求）
     /// </summary>
     public static NodesStatusInfo? CurrentNodesStatusInfo
     {
@@ -92,8 +92,8 @@ public class MEFApiConverter
         return new RestClient(new RestClientOptions(BaseApiUrl + endpoint)
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : "RYCB-PML2/Desktop 2.1.0",
-            Timeout = TimeSpan.FromSeconds(3),
+            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : $"RYCB-PML2/Desktop {App.Version}",
+            Timeout = TimeSpan.FromSeconds(3)
         });
     }
 
@@ -136,8 +136,8 @@ public class MEFApiConverter
     private static async Task<ApiInfo<T>> ExecuteRequestAsync<T>(RestRequest request, string endpoint,
         string operationName)
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = $"正在获取{operationName}";
 
@@ -160,7 +160,7 @@ public class MEFApiConverter
 
         if (response.Content.StartsWith("<"))
         {
-            return new ApiInfo<T>()
+            return new ApiInfo<T>
             {
                 code = 502,
                 message = "API回源失败, 无法获取api信息",
@@ -208,7 +208,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取系统状态
+    ///     获取系统状态
     /// </summary>
     /// <returns></returns>
     public static async Task<ApiInfo<SystemStatus?>> GetSystemStatusAsync()
@@ -223,7 +223,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取重要公告
+    ///     获取重要公告
     /// </summary>
     /// <returns></returns>
     public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
@@ -237,7 +237,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 异步获取公告
+    ///     异步获取公告
     /// </summary>
     /// <returns>公告内容</returns>
     public static async Task<ApiInfo<string>> GetNoticeAsync()
@@ -251,7 +251,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取公共信息
+    ///     获取公共信息
     /// </summary>
     /// <returns>公共信息</returns>
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
@@ -266,7 +266,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 异步获取用户信息
+    ///     异步获取用户信息
     /// </summary>
     /// <returns>用户信息</returns>
     public static async Task<ApiInfo<ExtraUserInfo>> GetExtraUserInfoAsync()
@@ -294,7 +294,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送签到请求
+    ///     发送签到请求
     /// </summary>
     /// <param name="code">人机验证码</param>
     /// <returns>(是否成功, 返回的response内容)</returns>
@@ -315,7 +315,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送签到请求 (异步)
+    ///     发送签到请求 (异步)
     /// </summary>
     /// <param name="code">人机验证码</param>
     /// <returns>(是否成功，返回的 response 内容)</returns>
@@ -338,7 +338,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送登录请求
+    ///     发送登录请求
     /// </summary>
     /// <param name="username">用户名</param>
     /// <param name="password">密码</param>
@@ -367,7 +367,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取节点状态
+    ///     获取节点状态
     /// </summary>
     /// <returns>一个"单个节点状态"数组。</returns>
     public static async Task<ApiInfo<NodeStatus[]>> GetNodesStatusAsync()
@@ -394,7 +394,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取节点信息
+    ///     获取节点信息
     /// </summary>
     /// <returns>一个"单个节点信息"数组。</returns>
     public static async Task<ApiInfo<NodesList[]>> GetNodesInfoAsync()
@@ -408,7 +408,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取已创建隧道的节点连接地址
+    ///     获取已创建隧道的节点连接地址
     /// </summary>
     /// <returns></returns>
     public static async Task<ApiInfo<NodeNameList[]>> GetNodesNameListAsync()
@@ -422,7 +422,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 确保节点列表缓存已初始化（线程安全，幂等）
+    ///     确保节点列表缓存已初始化（线程安全，幂等）
     /// </summary>
     public static async Task<NodesListInfo?> EnsureNodesListInfoAsync(CancellationToken cancellationToken = default)
     {
@@ -457,7 +457,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 确保节点状态缓存已初始化（线程安全，幂等）
+    ///     确保节点状态缓存已初始化（线程安全，幂等）
     /// </summary>
     public static async Task<NodesStatusInfo?> EnsureNodesStatusInfoAsync(CancellationToken cancellationToken = default)
     {
@@ -491,7 +491,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取空闲端口
+    ///     获取空闲端口
     /// </summary>
     /// <param name="nodeId">节点ID</param>
     /// <param name="protocol">要获取端口的协议, 只有tcp和udp。</param>
@@ -503,10 +503,10 @@ public class MEFApiConverter
         var request = CreateRequest(Method.Post);
         protocol = protocol.ToLower();
 
-        var body = JsonSerializer.Serialize(new FreePortBody()
+        var body = JsonSerializer.Serialize(new FreePortBody
         {
             nodeId = nodeId,
-            protocol = protocol,
+            protocol = protocol
         }, AppJsonSerializerContext.Default.FreePortBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
@@ -528,9 +528,9 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送新建隧道请求
+    ///     发送新建隧道请求
     /// </summary>
-    /// <param name="body">要传入的请求体，详见<a href="https://apidoc.mefrp.com"/></param>
+    /// <param name="body">要传入的请求体，详见<a href="https://apidoc.mefrp.com" /></param>
     /// <returns></returns>
     public static async Task<ApiInfo<object>> PostNewTunnelAsync(string body)
     {
@@ -563,7 +563,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 发送更新隧道申请
+    ///     发送更新隧道申请
     /// </summary>
     /// <param name="body">请求体</param>
     /// <returns></returns>
@@ -598,7 +598,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取用户的隧道列表
+    ///     获取用户的隧道列表
     /// </summary>
     /// <returns>一个"用户隧道"数组。</returns>
     public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync()
@@ -612,7 +612,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取用于快速启动的frpToken。
+    ///     获取用于快速启动的frpToken。
     /// </summary>
     /// <returns></returns>
     public static async Task<ApiInfo<FrpTokenInfo>> GetFrpTokenAsync()
@@ -626,7 +626,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 获取启动配置
+    ///     获取启动配置
     /// </summary>
     /// <param name="proxyId">要获取的隧道ID</param>
     /// <param name="format">支持的格式: toml, json, yaml, ini</param>
@@ -666,7 +666,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 切换隧道状态
+    ///     切换隧道状态
     /// </summary>
     /// <param name="proxyId">要切换的隧道ID</param>
     /// <param name="isDisabled">是不是要禁用隧道</param>
@@ -701,7 +701,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 强制下线隧道
+    ///     强制下线隧道
     /// </summary>
     /// <param name="proxyId">要下线的隧道ID</param>
     /// <returns></returns>
@@ -782,7 +782,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 删除隧道
+    ///     删除隧道
     /// </summary>
     /// <param name="proxyId">要删除的隧道ID</param>
     /// <returns></returns>
@@ -820,8 +820,8 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 初始化方法 - 请不要滥用
-    /// 保持兼容的同步 wrapper（会阻塞），并提供异步版本 InitializeAsync
+    ///     初始化方法 - 请不要滥用
+    ///     保持兼容的同步 wrapper（会阻塞），并提供异步版本 InitializeAsync
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Initialize()
@@ -830,10 +830,7 @@ public class MEFApiConverter
         InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
-    public static async Task InitializeAsync()
-    {
-        CurrentPublicInfo = await GetPublicInfoAsync().ConfigureAwait(false);
-    }
+    public static async Task InitializeAsync() => CurrentPublicInfo = await GetPublicInfoAsync().ConfigureAwait(false);
 
     public static async Task PostInitializeAsync()
     {
@@ -856,7 +853,7 @@ public class MEFApiConverter
     }
 
     /// <summary>
-    /// 异步获取用户的流量统计信息
+    ///     异步获取用户的流量统计信息
     /// </summary>
     /// <param name="period">获取的周期，官网上只有 7，15，30</param>
     /// <returns>用户的流量信息</returns>
@@ -884,7 +881,7 @@ public class MEFApiConverter
 
         if (!response.IsSuccessful)
         {
-            result = new ApiInfo<TrafficStatus>()
+            result = new ApiInfo<TrafficStatus>
             {
                 code = (int)response.StatusCode,
                 message = $"请求失败: {(int)response.StatusCode}",

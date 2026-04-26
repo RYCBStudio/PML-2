@@ -60,7 +60,6 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(JsonElement))]
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web, IncludeFields = true, PropertyNameCaseInsensitive = false)]
-public partial class AppJsonSerializerContext:JsonSerializerContext
+public partial class AppJsonSerializerContext : JsonSerializerContext
 {
-    
 }

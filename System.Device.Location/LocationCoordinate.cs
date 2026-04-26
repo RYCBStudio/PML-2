@@ -11,7 +11,4 @@
 **
 =============================================================================*/
 
-namespace System.Device.Location
-{
-    
-}
+namespace System.Device.Location;

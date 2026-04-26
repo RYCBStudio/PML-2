@@ -9,6 +9,20 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class MainPageFrameViewModel : ViewModelBase
 {
+    public MainPageFrameViewModel()
+    {
+        // 初始化命令
+        NavigateToHomeCommand = CreateNavigationCommand(() => new HomePage());
+        NavigateToCreateProxyCommand = CreateNavigationCommand(() => new CreateProxyPage());
+        NavigateToManageProxyCommand = CreateNavigationCommand(() => new ManageProxyPage());
+        NavigateToNodesMonitoringCommand = CreateNavigationCommand(() => new NodesMonitoringPage());
+        NavigateToUserCenterCommand = CreateNavigationCommand(() => new UserCenterPage());
+        NavigateToSettingsCommand = CreateNavigationCommand(() => new SettingsPage());
+        NavigateToAboutCommand = CreateNavigationCommand(() => AboutPage ?? new AboutPage());
+        NavigateToTerminalCommand = CreateNavigationCommand(() => TerminalPage ?? new TerminalPage());
+        NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
+    }
+
     public bool IsMenuOpen
     {
         get;
@@ -74,18 +88,29 @@ public class MainPageFrameViewModel : ViewModelBase
         get;
     }
 
-    public MainPageFrameViewModel()
+    // 静态页面实例
+    public static AboutPage AboutPage
     {
-        // 初始化命令
-        NavigateToHomeCommand = CreateNavigationCommand(() => new HomePage());
-        NavigateToCreateProxyCommand = CreateNavigationCommand(() => new CreateProxyPage());
-        NavigateToManageProxyCommand = CreateNavigationCommand(() => new ManageProxyPage());
-        NavigateToNodesMonitoringCommand = CreateNavigationCommand(() => new NodesMonitoringPage());
-        NavigateToUserCenterCommand = CreateNavigationCommand(() => new UserCenterPage());
-        NavigateToSettingsCommand = CreateNavigationCommand(() => new SettingsPage());
-        NavigateToAboutCommand = CreateNavigationCommand(() => AboutPage ?? new AboutPage());
-        NavigateToTerminalCommand = CreateNavigationCommand(() => TerminalPage ?? new TerminalPage());
-        NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
+        get;
+        set;
+    }
+
+    public static TerminalPage? TerminalPage
+    {
+        get;
+        set;
+    }
+
+    public static MainPageFrameViewModel? Instance
+    {
+        get;
+        set;
+    }
+
+    public static UpdatePage? UpdatePage
+    {
+        get;
+        set;
     }
 
     public void NavigateToPage(object pageName)
@@ -141,30 +166,5 @@ public class MainPageFrameViewModel : ViewModelBase
                 IsLoading = false;
             }
         });
-    }
-
-    // 静态页面实例
-    public static AboutPage AboutPage
-    {
-        get;
-        set;
-    }
-
-    public static TerminalPage? TerminalPage
-    {
-        get;
-        set;
-    }
-
-    public static MainPageFrameViewModel? Instance
-    {
-        get;
-        set;
-    }
-
-    public static UpdatePage? UpdatePage
-    {
-        get;
-        set;
     }
 }

@@ -15,8 +15,8 @@
     x:Name="Window"
     Closing="Window_Closing"
     FontFamily="{StaticResource GlobalFontFamily}"
+
     WindowStartupLocation="CenterScreen"
-    ExtendClientAreaChromeHints="PreferSystemChrome"
     x:DataType="core:MainWindowViewModel"
     Icon="/Assets/meflx.png"
     mc:Ignorable="d">

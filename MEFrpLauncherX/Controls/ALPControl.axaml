@@ -40,8 +40,8 @@
                 <controls:InfoBadge.Background>
                     <MultiBinding
                         Converter="{x:Static controls1:OnlineAndDisabledConverter.Instance}">
-                        <Binding Path="isOnline"></Binding>
-                        <Binding Path="isDisabled"></Binding>
+                        <Binding Path="isOnline" />
+                        <Binding Path="isDisabled" />
                     </MultiBinding>
                 </controls:InfoBadge.Background>
             </controls:InfoBadge>
@@ -77,10 +77,9 @@
                     <TextBlock.Text>
                         <MultiBinding>
                             <Binding Path="proxyType"
-                                     Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}">
-                            </Binding>
-                            <Binding Path="localIp"></Binding>
-                            <Binding Path="localPort"></Binding>
+                                     Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}" />
+                            <Binding Path="localIp" />
+                            <Binding Path="localPort" />
                             <MultiBinding.StringFormat>
                                 [{0}] {1}:{2} →
                             </MultiBinding.StringFormat>
@@ -88,11 +87,9 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <TextBlock Text="{Binding remotePort, StringFormat=' {0}'}"
-                           IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}">
-                </TextBlock>
+                           IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}" />
                 <TextBlock Text="{Binding domain, StringFormat=' {0}'}"
-                           IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}">
-                </TextBlock>
+                           IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}" />
             </StackPanel>
         </StackPanel>
         <WrapPanel Grid.Row="2" ItemSpacing="5">

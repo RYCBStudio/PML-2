@@ -35,16 +35,16 @@
             <controls:SettingsExpanderItem Content="证书文件" Description="用于https隧道的SSL证书文件。">
                 <controls:SettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                    <TextBox x:Name="CertFileBox" Watermark="证书文件, 后缀名一般为.crt或.pem" />
-                    <Button Name="CertFileB" Content="..." Click="OpenFile" />
+                        <TextBox x:Name="CertFileBox" Watermark="证书文件, 后缀名一般为.crt或.pem" />
+                        <Button Name="CertFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>
             <controls:SettingsExpanderItem Content="私钥文件" Description="用于https隧道的私钥文件。">
                 <controls:SettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                    <TextBox x:Name="KeyFileBox" Watermark="私钥文件, 后缀名一般为.key" />
-                    <Button Name="KeyFileB" Content="..." Click="OpenFile" />
+                        <TextBox x:Name="KeyFileBox" Watermark="私钥文件, 后缀名一般为.key" />
+                        <Button Name="KeyFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>

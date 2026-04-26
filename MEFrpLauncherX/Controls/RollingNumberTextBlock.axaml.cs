@@ -9,23 +9,18 @@ namespace MEFrpLauncherX.Controls;
 
 public class RollingNumberTextBlock : TextBlock
 {
-    private readonly DispatcherTimer _timer;
-    private Stopwatch _stopwatch;
-    private int _currentValue;
-    private int _targetValue;
-    private DateTime _startTime;
     private const double AnimationDuration = 1.0; // 秒
 
     public static readonly StyledProperty<int> TargetNumberProperty =
         AvaloniaProperty.Register<RollingNumberTextBlock, int>(
-            nameof(TargetNumber), 
+            nameof(TargetNumber),
             coerce: OnTargetNumberChanged);
 
-    public int TargetNumber
-    {
-        get => GetValue(TargetNumberProperty);
-        set => SetValue(TargetNumberProperty, value);
-    }
+    private readonly DispatcherTimer _timer;
+    private int _currentValue;
+    private DateTime _startTime;
+    private Stopwatch _stopwatch;
+    private int _targetValue;
 
     public RollingNumberTextBlock()
     {
@@ -34,12 +29,19 @@ public class RollingNumberTextBlock : TextBlock
         HorizontalAlignment = HorizontalAlignment.Center;
     }
 
+    public int TargetNumber
+    {
+        get => GetValue(TargetNumberProperty);
+        set => SetValue(TargetNumberProperty, value);
+    }
+
     private static int OnTargetNumberChanged(AvaloniaObject d, int value)
     {
         if (d is RollingNumberTextBlock control)
         {
             control.StartAnimation(value);
         }
+
         return value;
     }
 

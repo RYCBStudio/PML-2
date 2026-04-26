@@ -35,17 +35,20 @@ namespace MEFrpLauncherX.Console;
 
 public partial class TerminalControl : UserControl, IDisposable
 {
-    private bool _ctrlPressed;
-    private readonly List<string> _history = [];
-    private int _historyIndex;
-    private string _shell;
-    private Process _process;
-    private StreamWriter _inputWriter;
-    private Thread _outputReaderThread;
-    private bool _disposed;
-    private StringBuilder _outputBuffer = new();
     private readonly object _bufferLock = new();
     private readonly AnsiColorizingTransformer _colorizer = new();
+    private readonly List<string> _history = [];
+    private bool _ctrlPressed;
+
+    // 新增取消令牌（用于终止异步读取任务）
+    private CancellationTokenSource _cts;
+    private bool _disposed;
+    private int _historyIndex;
+    private StreamWriter _inputWriter;
+    private StringBuilder _outputBuffer = new();
+    private Thread _outputReaderThread;
+    private Process _process;
+    private string _shell;
     private TunnelErrorInfo _tunnelErrorInfoShell;
 
     public TerminalControl()
@@ -58,6 +61,13 @@ public partial class TerminalControl : UserControl, IDisposable
 
         // Start with default shell based on platform
         StartTerminal(GetDefaultShell());
+    }
+
+
+    public void Dispose()
+    {
+        _disposed = true;
+        DisposeProcess();
     }
 
     private void InitializeAvaloniaEdit()
@@ -137,14 +147,13 @@ public partial class TerminalControl : UserControl, IDisposable
         {
             return "powershell.exe";
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             return GetMacOSDefaultShell();
         }
-        else
-        {
-            return "/bin/bash";
-        }
+
+        return "/bin/bash";
     }
 
     private static string GetMacOSDefaultShell()
@@ -175,9 +184,6 @@ public partial class TerminalControl : UserControl, IDisposable
             return "/bin/bash";
         }
     }
-
-    // 新增取消令牌（用于终止异步读取任务）
-    private CancellationTokenSource _cts;
 
 // 重构 StartTerminal 方法
     public void StartTerminal(string? shell = null)
@@ -365,14 +371,13 @@ public partial class TerminalControl : UserControl, IDisposable
         {
             return "powershell.exe";
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             return GetMacOSDefaultShell();
         }
-        else
-        {
-            return "/bin/sh"; // Linux 不用 bash，避免交互阻塞
-        }
+
+        return "/bin/sh"; // Linux 不用 bash，避免交互阻塞
     }
 
     // 新增日志辅助方法
@@ -1226,25 +1231,15 @@ public partial class TerminalControl : UserControl, IDisposable
         });
     }
 
-    private static string RemoveAnsiCodes(string text)
-    {
-        return Regex.Replace(text, @"\x1B\[([0-9;]*)m", string.Empty);
-    }
+    private static string RemoveAnsiCodes(string text) => Regex.Replace(text, @"\x1B\[([0-9;]*)m", string.Empty);
 
-// 清除输出
+    // 清除输出
     private void ClearOutput()
     {
         Dispatcher.UIThread.Post(() =>
         {
             OutputBox.Document.Text = string.Empty;
         });
-    }
-
-    
-    public void Dispose()
-    {
-        _disposed = true;
-        DisposeProcess();
     }
 
     [GeneratedRegex(@"\x1B\[([0-9;]*)m")]

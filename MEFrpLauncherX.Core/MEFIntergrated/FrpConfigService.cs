@@ -14,13 +14,39 @@ public class FrpConfigService
         WriteIndented = true
     };
 
+    private readonly IDeserializer _yamlDeserializer = new DeserializerBuilder()
+        .WithNamingConvention(CamelCaseNamingConvention.Instance)
+        .Build();
+
     private readonly ISerializer _yamlSerializer = new SerializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build();
 
-    private readonly IDeserializer _yamlDeserializer = new DeserializerBuilder()
-        .WithNamingConvention(CamelCaseNamingConvention.Instance)
-        .Build();
+    // 添加 HTTPS 代理的便捷方法（保持不变）
+    public void AddHttpsProxy(FrpConfig config, string name, string domain,
+        string localAddr, string crtPath, string keyPath)
+    {
+        var proxy = new ProxyConfig
+        {
+            Name = name,
+            Type = "https",
+            CustomDomains = [domain],
+            Plugin = new PluginConfig
+            {
+                Type = "https2http",
+                LocalAddr = localAddr,
+                CrtPath = crtPath,
+                KeyPath = keyPath
+            },
+            Transport = new TransportConfig
+            {
+                UseEncryption = true,
+                UseCompression = true
+            }
+        };
+
+        config.Proxies.Add(proxy);
+    }
 
     #region 加载配置 - 多格式支持
 
@@ -134,8 +160,8 @@ public class FrpConfigService
             //"toml" => SaveAsToml(config),
             "json" => SaveAsJson(config),
             "yaml" => SaveAsYaml(config),
-            "ini" => SaveAsIni(config),
-           // _ => SaveAsToml(config)
+            "ini" => SaveAsIni(config)
+            // _ => SaveAsToml(config)
         };
     }
 
@@ -220,10 +246,7 @@ public class FrpConfigService
         return _yamlSerializer.Serialize(yamlModel);
     }
 
-    private string SaveAsIni(FrpConfig config)
-    {
-        return GenerateIniContent(config);
-    }
+    private string SaveAsIni(FrpConfig config) => GenerateIniContent(config);
 
     #endregion
 
@@ -862,30 +885,4 @@ public class FrpConfigService
     }
 
     #endregion
-
-    // 添加 HTTPS 代理的便捷方法（保持不变）
-    public void AddHttpsProxy(FrpConfig config, string name, string domain,
-        string localAddr, string crtPath, string keyPath)
-    {
-        var proxy = new ProxyConfig
-        {
-            Name = name,
-            Type = "https",
-            CustomDomains = [domain],
-            Plugin = new PluginConfig
-            {
-                Type = "https2http",
-                LocalAddr = localAddr,
-                CrtPath = crtPath,
-                KeyPath = keyPath
-            },
-            Transport = new TransportConfig
-            {
-                UseEncryption = true,
-                UseCompression = true
-            }
-        };
-
-        config.Proxies.Add(proxy);
-    }
 }

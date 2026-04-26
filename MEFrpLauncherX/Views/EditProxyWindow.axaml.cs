@@ -12,9 +12,9 @@ namespace MEFrpLauncherX.Views;
 
 public partial class EditProxyWindow : Window
 {
-    private readonly UserProxyViewModel _proxy;
     private readonly CreateProxyViewModel _createProxyViewModel;
-    private string _type;
+    private readonly UserProxyViewModel _proxy;
+    private readonly string _type;
 
     public EditProxyWindow(UserProxyViewModel pr)
     {
@@ -56,7 +56,7 @@ public partial class EditProxyWindow : Window
             "https2http" => true,
             _ => false
         };
-        _createProxyViewModel = new()
+        _createProxyViewModel = new CreateProxyViewModel
         {
             ProxyName = pr.proxyName,
             LocalAddress = pr.localIp,
@@ -82,6 +82,7 @@ public partial class EditProxyWindow : Window
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -102,6 +103,8 @@ public partial class EditProxyWindow : Window
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -143,7 +146,10 @@ public partial class EditProxyWindow : Window
     {
         var de = new DomainsEdit();
         if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
+        {
             de.Domains.AddRange(_createProxyViewModel.Locations);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑路径",
@@ -162,10 +168,10 @@ public partial class EditProxyWindow : Window
     }
 
     /// <summary>
-    /// 获取隧道的安全选项
-    /// 0 - 禁用
-    /// 1 - HTTP Basic Auth
-    /// 2 - 访问密钥
+    ///     获取隧道的安全选项
+    ///     0 - 禁用
+    ///     1 - HTTP Basic Auth
+    ///     2 - 访问密钥
     /// </summary>
     /// <returns></returns>
     private int GetSecurityOptions()
@@ -182,6 +188,7 @@ public partial class EditProxyWindow : Window
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -202,6 +209,8 @@ public partial class EditProxyWindow : Window
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -246,7 +255,10 @@ public partial class EditProxyWindow : Window
         var filteredDomains = _proxy.Domains.Distinct();
         var enumerable = filteredDomains.ToList();
         if (filteredDomains is not null && enumerable.Count != 0)
+        {
             de.Domains.AddRange(enumerable);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
@@ -293,13 +305,24 @@ public partial class EditProxyWindow : Window
     {
         // 根据其他字段状态来推断类型
         if (SameAsHttp?.IsChecked == true)
+        {
             return "http";
+        }
+
         if (Http2Https?.IsChecked == true)
+        {
             return "http";
+        }
+
         if (SameAsHttps?.IsChecked == true)
+        {
             return "https";
+        }
+
         if (Https2Http?.IsChecked == true)
+        {
             return "https";
+        }
 
         // 默认返回 http
         return "http";
@@ -331,26 +354,21 @@ public partial class EditProxyWindow : Window
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
             useCompression = EnableCompressCBox.IsChecked ?? false,
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations ?? []) + "\"]",
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations ?? []) + "\"]"
         };
         var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
         Core.App.CurrentLogger.LogDebug($"EditProxyWindow: {_body}");
-        var success = (await MEFApiConverter.UpdateTunnelAsync(_body)).code == 200;
+        var success = (await MEpiConverter.UpdateTunnelAsync(_body)).code == 200;
         if (success)
         {
             Close();
         }
     }
 
-    private void OnCancelClicked(object? sender, RoutedEventArgs e)
-    {
-        Close(false);
-    }
+    private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close(false);
 
-    private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
-    {
-        RemotePortNudBox.Value = (await MEFApiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
-    }
+    private async void GetRemotePort_Click(object sender, RoutedEventArgs e) => RemotePortNudBox.Value =
+        (await MEpiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
 
     private void InitPanels()
     {

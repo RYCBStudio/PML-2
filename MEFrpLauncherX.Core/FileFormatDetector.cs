@@ -11,19 +11,27 @@ public class FileFormatDetector
 
         // 判断是否为 JSON
         if (IsJson(content))
+        {
             return "JSON";
+        }
 
         // 判断是否为 INI
         if (IsIni(content))
+        {
             return "INI";
+        }
 
         // 判断是否为 TOML
         if (IsToml(content))
+        {
             return "TOML";
+        }
 
         // 判断是否为 YAML
         if (IsYaml(content))
+        {
             return "YAML";
+        }
 
         // 无法识别的格式
         return "Unknown";
@@ -33,19 +41,28 @@ public class FileFormatDetector
     {
         // 判断是否为 JSON
         if (IsJson(content))
+        {
             return "JSON";
+        }
 
         // 判断是否为 TOML
         if (IsToml(content))
+        {
             return "TOML";
+        }
 
 
         // 判断是否为 YAML
         if (IsYaml(content))
+        {
             return "YAML";
+        }
+
         // 判断是否为 INI
         if (IsIni(content))
+        {
             return "INI";
+        }
 
 
         // 无法识别的格式

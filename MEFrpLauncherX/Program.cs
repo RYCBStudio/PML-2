@@ -46,7 +46,7 @@ internal sealed class Program
         {
             System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
             System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
-            Core.App.CurrentLogger.Log("启动画面文件完整性检查失败。", type: EnumLogType.Warn);
+            Core.App.CurrentLogger.Log("启动画面文件完整性检查失败。", EnumLogType.Warn);
         }
         else
         {
@@ -100,7 +100,7 @@ internal sealed class Program
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.gif"),
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.webp"),
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpeg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp")
         };
         foreach (var possiblePath in possiblePaths.Where(File.Exists))
         {
@@ -126,7 +126,6 @@ internal sealed class Program
         }
         else
         {
-
             var url = arg.Replace("mefrp://", "");
             var args = url.Split('/');
             if (args is ["StartProxy", var idAndOther, ..])
@@ -160,7 +159,7 @@ internal sealed class Program
         [
             new FontFallback
             {
-                FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
+                FontFamily = new FontFamily(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
                     "Harmony OS Sans SC")
             }
         ];

@@ -331,10 +331,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         });
     }
 
-    private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e)
-    {
+    private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e) =>
         new ALPSettings().ShowDialog(Core.App.MainWindow);
-    }
 
     private void ExpireDaysSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
@@ -378,10 +376,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         Core.App.MainWindow.InvalidateVisual();
     }
 
-    private void SetProxyMonitorBar(object? sender, RoutedEventArgs e)
-    {
+    private void SetProxyMonitorBar(object? sender, RoutedEventArgs e) =>
         new ProxyFloatSettings().ShowDialog(Core.App.MainWindow);
-    }
 
     private void PMChanged(object? sender, RoutedEventArgs e)
     {
@@ -393,10 +389,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         ConfigManager.UpdateConfig(config => config.PMSettings.Enabled = (sender as ToggleButton).IsChecked.Value);
     }
 
-    private async void ChooseBackground(object? sender, RoutedEventArgs e)
-    {
+    private async void ChooseBackground(object? sender, RoutedEventArgs e) =>
         FooterButtonSettingsItem.SelectBackgroundImpl();
-    }
 
     private void StretchBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -425,10 +419,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         Core.App.MainWindow.InvalidateVisual();
     }
 
-    private void SetAppearanceAdvanced(object? sender, RoutedEventArgs e)
-    {
+    private void SetAppearanceAdvanced(object? sender, RoutedEventArgs e) =>
         new AppearanceSettings { DataContext = new AppearanceSettingsViewModel() }.Show(Core.App.MainWindow);
-    }
 
     private void CaptchaModeChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -444,10 +436,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
             config.DownloadSource = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "");
     }
 
-    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
-    {
+    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e) =>
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
-    }
 }
 
 public class ValidationModeConverter : IValueConverter

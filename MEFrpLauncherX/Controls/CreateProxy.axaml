@@ -54,7 +54,7 @@
                 <Label Content="{Binding AllowPorts, StringFormat='允许端口范围: {0}'}" />
             </WrapPanel>
         </Grid>
-        <ScrollViewer Grid.Row="1"  x:Name="MainContainer">
+        <ScrollViewer Grid.Row="1" x:Name="MainContainer">
             <StackPanel x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
                 <fa:SettingsExpander Header="基本设置"
                                      IconSource="AllApps"
@@ -196,7 +196,8 @@
                 <fa:SettingsExpander Header="高级设置"
                                      IconSource="Code"
                                      Description="提示：仅推荐技术用户使用, 一般用户请勿随意填写。请确保您的配置正确, 否则隧道可能无法启动。">
-                    <fa:SettingsExpanderItem Content="安全选项" x:Name="SecurityOptionsSettingsExpander" IsVisible="False">
+                    <fa:SettingsExpanderItem Content="安全选项" x:Name="SecurityOptionsSettingsExpander"
+                                             IsVisible="False">
                         <fa:SettingsExpanderItem.Footer>
                             <ComboBox x:Name="SecurityOptionsSelect" SelectedIndex="0">
                                 <ComboBoxItem>禁用</ComboBoxItem>

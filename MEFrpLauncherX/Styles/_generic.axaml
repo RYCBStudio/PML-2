@@ -44,7 +44,7 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    
+
     <Style Selector="GridSplitter">
         <Setter Property="CornerRadius" Value="50" />
     </Style>

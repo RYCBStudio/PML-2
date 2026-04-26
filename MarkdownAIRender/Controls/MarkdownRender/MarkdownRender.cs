@@ -378,12 +378,16 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
                 TextWrapping = TextWrapping.Wrap,
                 Text = htmlBlock.ToString()
             },
-            ThematicBreakBlock _ => new Border
+            ThematicBreakBlock => new Border
             {
                 BorderBrush = Brushes.Gray,
                 BorderThickness = new Thickness(0, 0, 0, 1),
                 Margin = new Thickness(0, 5, 0, 5)
             },
+            LinkReferenceDefinitionGroup => new SelectableTextBlock()
+        {
+            
+        },
             _ => new SelectableTextBlock
             {
                 IsEnabled = true,
@@ -606,11 +610,11 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
         {
             if (item is ListItemBlock listItemBlock)
             {
-                var itemPanel = new StackPanel() // 改为StackPanel更简单
+                var itemPanel = new WrapPanel() // 改为StackPanel更简单
                 {
                     Orientation = Orientation.Horizontal,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Spacing = 5
+                    ItemSpacing = 5
                 };
 
                 var prefix = listBlock.IsOrdered ? $"{orderIndex++}." : "• ";
@@ -625,7 +629,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
 
                 itemPanel.Children.Add(prefixBlock);
 
-                var contentPanel = new StackPanel
+                var contentPanel = new WrapPanel()
                 {
                     Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch
                 };

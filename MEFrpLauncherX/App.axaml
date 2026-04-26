@@ -28,7 +28,6 @@
         <!-- <semi:SemiTheme Locale="zh-CN" /> -->
         <!-- <u-semi:SemiTheme Locale="zh-CN" /> -->
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <StyleInclude Source="avares://Notification.Avalonia/Themes/Generic.xaml" />
         <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
         <msg:Theme />
         <styling:FluentAvaloniaTheme PreferUserAccentColor="True" />
@@ -94,10 +93,7 @@
                 <Setter Property="Margin" Value="0 0 0 -2" />
             </Style>
         </Style>
-        <Style Selector="Layoutable">
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="TextBlock">
+        <Style Selector=":is(TextBlock)">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <Style Selector="ToggleSwitch">
@@ -179,7 +175,7 @@
             <Setter Property="Foreground" Value="#FF404040" />
         </Style>
         <Style Selector="TextBlock.Tertiary">
-            <Setter Property="Foreground" Value="#FFA5A6A6" />
+            <Setter Property="Foreground" Value="#F5A6A6" />
         </Style>
         <Style Selector="TextBlock.TertiaryLight">
             <Setter Property="Foreground" Value="#FF606060" />

@@ -21,10 +21,13 @@ public partial class TerminalHelper : ILogicalPlugin
         get;
     } = new(2, 2, 0, 2);
 
-    public Task<bool> InitializeAsync()
-    {
-        return Task.Run(() => true);
-    }
+    public Task<bool> InitializeAsync() => Task.Run(() => true);
+
+    public Task<object?> ExecuteQueryAsync(string query, params object[] parameters) => null;
+
+    public Task<int> ExecuteNonQueryAsync(string command, params object[] parameters) => null;
+
+    public Task DisconnectAsync() => null;
 
     public static ISolution? GetSolution(string output)
     {
@@ -112,7 +115,6 @@ public partial class TerminalHelper : ILogicalPlugin
             {
                 return new ErrorSolution
                 {
-
                     Flag = "MT0011",
                     Info = "连接节点失败",
                     Solution = ["请检查节点是否在线", "请检查节点是否可达"]
@@ -130,21 +132,6 @@ public partial class TerminalHelper : ILogicalPlugin
             };
         }
 
-        return null;
-    }
-
-    public Task<object?> ExecuteQueryAsync(string query, params object[] parameters)
-    {
-        return null;
-    }
-
-    public Task<int> ExecuteNonQueryAsync(string command, params object[] parameters)
-    {
-        return null;
-    }
-
-    public Task DisconnectAsync()
-    {
         return null;
     }
 

@@ -98,6 +98,18 @@
                             Text="设置" />
                     </StackPanel>
                 </controls:NavigationViewItem>
+                <controls:NavigationViewItem Tag="Theme"
+                                             x:Name="ThemesPageBtn">
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <controls:SymbolIcon
+                            Margin="-8.5,0,8,0"
+                            VerticalAlignment="Center" Symbol="Library" />
+                        <TextBlock
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Text="主题" />
+                    </StackPanel>
+                </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="About"
                                              x:Name="AboutPageBtn">
                     <StackPanel

@@ -23,8 +23,11 @@ namespace MEFrpLauncherX.Core.MEFIntergrated;
 
 public partial class DownloadHelper
 {
+    private readonly CancellationTokenSource cts;
     private readonly Timer jokeTimer; // 添加计时器
-    private string currentJoke; // 当前显示的笑话
+
+    private readonly TaskDialog td;
+    private readonly Visual? VisualRoot;
 
     private string content =
         $"请稍等，正在下载文件\n文件名:{Environment.OSVersion.Platform switch {
@@ -35,9 +38,7 @@ public partial class DownloadHelper
         }}" +
         $"\n当前线路: {{1}}\n下载速度: {{0}}\n------------------\nJOKE_PLACEHOLDER\n------------------";
 
-    private readonly TaskDialog td;
-    private readonly Visual? VisualRoot;
-    private readonly CancellationTokenSource cts;
+    private string currentJoke; // 当前显示的笑话
 
     internal DownloadService downloader;
     private bool isCancelled;
@@ -68,7 +69,7 @@ public partial class DownloadHelper
                 ProtocolVersion = HttpVersion.Version11, // Default value is HTTP 1.1
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0",
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0"
             }
         };
         downloader = new DownloadService(DownloadOpt);
@@ -105,10 +106,7 @@ public partial class DownloadHelper
     }
 
     // 获取随机笑话的方法
-    private string GetRandomJoke()
-    {
-        return _jokes[Random.Shared.Next(0, _jokes.Length)];
-    }
+    private string GetRandomJoke() => _jokes[Random.Shared.Next(0, _jokes.Length)];
 
     // 计时器事件处理
     private void OnJokeTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -174,10 +172,10 @@ public partial class DownloadHelper
     }
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -224,15 +222,11 @@ public partial class DownloadHelper
         }
     }
 
-    private string ProcessUri(string BASE, bool isWindows)
-    {
-        return isWindows ? BASE + "mefrpc-windows.exe" : BASE + "mefrpc-linux.tar";
-    }
+    private string ProcessUri(string BASE, bool isWindows) =>
+        isWindows ? BASE + "mefrpc-windows.exe" : BASE + "mefrpc-linux.tar";
 
-    private string ProcessSecurityUri(string BASE, bool isWindows)
-    {
-        return isWindows ? BASE + "mefrpc-windows.json" : BASE + "mefrpc-linux.json";
-    }
+    private string ProcessSecurityUri(string BASE, bool isWindows) =>
+        isWindows ? BASE + "mefrpc-windows.json" : BASE + "mefrpc-linux.json";
 
     private void DownloaderOnDownloadStarted(object? sender, DownloadStartedEventArgs e)
     {
@@ -261,7 +255,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Log("开始下载MEFrpClient");
             App.CurrentLogger.Log($"当前平台: {platform.Platform}");
             App.CurrentLogger.Log(
-                $"当前操作系统: {(OperatingSystem.IsWindows() ? "Windows" : (OperatingSystem.IsMacOS() ? "MacOS" : "Linux"))}");
+                $"当前操作系统: {(OperatingSystem.IsWindows() ? "Windows" : OperatingSystem.IsMacOS() ? "MacOS" : "Linux")}");
 
             switch (platform.Platform)
             {
@@ -295,7 +289,15 @@ public partial class DownloadHelper
                     await killProcess.WaitForExitAsync(cancellationToken);
                     App.CurrentLogger.Log("已关闭MEFrpClient");
                     App.CurrentLogger.Log("正在删除旧版MEFrpClient");
-                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe"));
+                    try
+                    {
+                        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe"));
+                    }
+                    catch
+                    {
+                        // 忽略
+                    }
+
                     App.CurrentLogger.Log("已删除旧版MEFrpClient");
                     App.CurrentLogger.Log("正在下载新版MEFrpClient");
                     await downloader.DownloadFileTaskAsync(
@@ -326,6 +328,7 @@ public partial class DownloadHelper
                         Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin",
                             $"mefrpc_windows_amd64_{App.MEFrpVersion}"), true);
                     }
+
                     App.CurrentLogger.Log("已解压新版MEFrpClient");
                     cancellationToken.ThrowIfCancellationRequested();
                     /*
@@ -372,7 +375,7 @@ public partial class DownloadHelper
                     {
                         td.Hide(TaskDialogStandardResult.OK);
                     });
-                    
+
 
                     return true;
                 }

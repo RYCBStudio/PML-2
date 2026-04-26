@@ -20,7 +20,7 @@ namespace MEFrpLauncherX.Views;
 
 public partial class LoginPage : UserControl
 {
-    const string nil = "nil";
+    private const string nil = "nil";
 
     private readonly LoginViewModel _loginViewModel;
 
@@ -37,7 +37,7 @@ public partial class LoginPage : UserControl
             ConfigManager.CurrentConfig.CaptchaMode.Equals("browser", StringComparison.CurrentCultureIgnoreCase))
         {
             await Core.App.MainWindow.Launcher.LaunchUriAsync(
-                new("https://www.mefrp.com/3rdparty/captcha?client=PML%202"));
+                new Uri("https://www.mefrp.com/3rdparty/captcha?client=PML%202"));
             var cd = new ContentDialog
             {
                 Title = "请输入验证码",
@@ -49,7 +49,7 @@ public partial class LoginPage : UserControl
             var input = new TextBox();
             cd.Content = input;
             return await cd.ShowAsync() == ContentDialogResult.Primary
-                ? MEFApiConverter.GetCaptchaResult(input.Text).Split("||")[0]
+                ? MEpiConverter.GetCaptchaResult(input.Text).Split("||")[0]
                 : nil;
         }
 
@@ -58,7 +58,7 @@ public partial class LoginPage : UserControl
         MainWindowViewModel.Instance.Progress = 20.0;
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤2/5";
-        var ci = await MEFApiConverter.PostChallengeAsync(c);
+        var ci = await MEpiConverter.PostChallengeAsync(c);
 
         MainWindowViewModel.Instance.Progress = 40.0;
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤3/5";
@@ -75,7 +75,7 @@ public partial class LoginPage : UserControl
         }
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
-        var (ri, _err) = await MEFApiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb));
+        var (ri, _err) = await MEpiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb));
 
         MainWindowViewModel.Instance.Progress = 80.0;
         if (!ri.success)
@@ -124,22 +124,24 @@ public partial class LoginPage : UserControl
             var usr = UsrNameBox.Text;
             var pwd = PwdBox.Text;
 
-            var (success, message) = MEFApiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
+            var (success, message) = MEpiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
 
             Core.App.CurrentLogger.LogDebug($"API响应: {success}, {message}");
 
             if (success)
             {
-                var userInfo = JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.UserInfo>>(message, AppJsonSerializerContext.Default.ApiInfoUserInfo);
+                var userInfo =
+                    JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.UserInfo>>(message,
+                        AppJsonSerializerContext.Default.ApiInfoUserInfo);
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    MEFApiConverter.CurrentUserInfo = userInfo;
+                    MEpiConverter.CurrentUserInfo = userInfo;
                     UserCache.CurrentUser = new InfoClasses.UserInfo
                     {
                         username = userInfo.data.username,
                         token = userInfo.data.token,
-                        group = userInfo.data.group,
+                        group = userInfo.data.group
                     };
                     MainWindow.Instance.LoginBackground.IsVisible = false;
                     MainWindowViewModel.Instance.IsLoggedIn = true;
@@ -191,11 +193,12 @@ public partial class LoginPage : UserControl
         MainWindowViewModel.Instance.IsLoggedIn = true;
         MainWindow.Instance.LoginBackground.IsVisible = false;
         var currentUser = UserCache.CurrentUser;
-                
+
         if (currentUser?.Email.IsNullOrEmpty() == false)
         {
             AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
         }
+
         Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
         MainWindow.Instance.MainContentControl.Content = null;
         MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
@@ -209,8 +212,6 @@ public partial class LoginPage : UserControl
         }
     }
 
-    private void SignUpBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
+    private void SignUpBtn_OnClick(object? sender, RoutedEventArgs e) =>
         Core.Extensions.OpenUrl("https://www.mefrp.com/auth/register");
-    }
 }

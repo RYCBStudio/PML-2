@@ -8,7 +8,7 @@
              x:DataType="controls:TextBlockWithHeader">
     <Grid RowDefinitions="Auto,Auto">
         <TextBlock
-             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
             VerticalAlignment="Center"
             HorizontalAlignment="Left"
             FontFamily="{StaticResource GlobalFontFamily}"

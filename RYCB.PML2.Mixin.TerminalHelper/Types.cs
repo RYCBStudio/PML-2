@@ -3,27 +3,27 @@
 public interface ISolution
 {
     /// <summary>
-    /// 错误标记
+    ///     错误标记
     /// </summary>
-    public string Flag
+    string Flag
     {
         get;
         set;
     }
 
     /// <summary>
-    /// 错误信息
+    ///     错误信息
     /// </summary>
-    public string Info
+    string Info
     {
         get;
         set;
     }
 
     /// <summary>
-    /// 解决方案
+    ///     解决方案
     /// </summary>
-    public List<string> Solution
+    List<string> Solution
     {
         get;
         set;

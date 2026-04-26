@@ -17,7 +17,7 @@ namespace MEFrpLauncherX.Views.Appearance;
 
 public partial class AppearanceSettings : Window
 {
-    private bool _init;
+    private readonly bool _init;
 
     public AppearanceSettings()
     {
@@ -32,6 +32,12 @@ public partial class AppearanceSettings : Window
         _init = true;
     }
 
+    private bool CanDeCheck => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
+
     private void ColorView_OnColorChanged(object? sender, ColorChangedEventArgs e)
     {
         App.FATheme?.CustomAccentColor = e.NewColor;
@@ -44,6 +50,7 @@ public partial class AppearanceSettings : Window
         {
             return;
         }
+
         var o = e.NewValue / 100;
         ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.LayerOpacity = o);
         MainWindow.Instance.MainLayer.Opacity = o;
@@ -63,6 +70,14 @@ public partial class AppearanceSettings : Window
 
     public static void UpdateBackground(bool sft)
     {
+        if (!File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
+        {
+            Core.App.CurrentLogger.Log(
+                "背景图片不存在，无法加载。错误路径: " + ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage,
+                EnumLogType.Error);
+            return;
+        }
+
         if (!sft)
         {
             MainWindow.Instance.MainBackground.Show();
@@ -90,17 +105,11 @@ public partial class AppearanceSettings : Window
                         "Uniform" => Stretch.Uniform,
                         "UniformToFill" => Stretch.UniformToFill,
                         _ => Stretch.None
-                    },
+                    }
                 };
             MainWindow.Instance.InvalidateVisual();
         }
     }
-    
-    private bool CanDeCheck => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics ||
-                              ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo ||
-                              ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo ||
-                              ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice ||
-                              ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
 
     private void UpdateVisibilityForStatistics(object? sender, RoutedEventArgs e)
     {
@@ -109,6 +118,7 @@ public partial class AppearanceSettings : Window
             (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
             return;
         }
+
         ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowStatistics = (sender as CheckBox)?.IsChecked ?? false);
     }
 
@@ -119,6 +129,7 @@ public partial class AppearanceSettings : Window
             (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
             return;
         }
+
         ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowUserInfo = (sender as CheckBox)?.IsChecked ?? false);
     }
 
@@ -129,6 +140,7 @@ public partial class AppearanceSettings : Window
             (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
             return;
         }
+
         ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemInfo = (sender as CheckBox)?.IsChecked ?? false);
     }
 
@@ -139,6 +151,7 @@ public partial class AppearanceSettings : Window
             (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
             return;
         }
+
         ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemNotice = (sender as CheckBox)?.IsChecked ?? false);
     }
 
@@ -149,7 +162,9 @@ public partial class AppearanceSettings : Window
             (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
             return;
         }
-        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSoftwareNotice = (sender as CheckBox)?.IsChecked ?? false);
+
+        ConfigManager.UpdateConfig(cfg =>
+            cfg.HomeSettings.ShowSoftwareNotice = (sender as CheckBox)?.IsChecked ?? false);
     }
 
     private void RestoreDefaultColors(object? sender, RoutedEventArgs e)
@@ -169,7 +184,7 @@ public class AppearanceSettingsViewModel : ViewModelBase
         [
             new RecentImagesSettingsItem
             {
-                Header = "最近的图片",
+                Header = "最近的图片"
             },
 
             new FooterButtonSettingsItem
@@ -196,48 +211,6 @@ public class SettingsItemBase : ViewModelBase
 
 public class RecentImagesSettingsItem : SettingsItemBase
 {
-    public static RecentImagesSettingsItem Instance
-    {
-        get;
-        private set;
-    }
-
-    public IImage SelectedImage
-    {
-        get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            if (Design.IsDesignMode)
-            {
-                return;
-            }
-
-            if (field == null)
-            {
-                return;
-            }
-
-            var img = Imgs.FirstOrDefault(x => x.Value == field);
-            var file = HttpUtility.UrlDecode(img.Key);
-            ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
-            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
-            Core.App.MainWindow.InvalidateVisual();
-        }
-    }
-
-    public List<string> ImagePaths
-    {
-        get;
-        private set;
-    } = [];
-
-    public Dictionary<string, IImage> Imgs
-    {
-        get;
-        private set;
-    } = [];
-
     public RecentImagesSettingsItem()
     {
         if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", ".photos")))
@@ -275,6 +248,46 @@ public class RecentImagesSettingsItem : SettingsItemBase
         Instance = this;
     }
 
+    public static RecentImagesSettingsItem Instance
+    {
+        get;
+        private set;
+    }
+
+    public IImage SelectedImage
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
+            if (field == null)
+            {
+                return;
+            }
+
+            var img = Imgs.FirstOrDefault(x => x.Value == field);
+            var file = HttpUtility.UrlDecode(img.Key);
+            ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
+            Core.App.MainWindow.InvalidateVisual();
+        }
+    }
+
+    public List<string> ImagePaths
+    {
+        get;
+    } = [];
+
+    public Dictionary<string, IImage> Imgs
+    {
+        get;
+    } = [];
+
     public AvaloniaList<IImage> Images
     {
         get;
@@ -294,10 +307,7 @@ public class FooterButtonSettingsItem : SettingsItemBase
         set;
     }
 
-    public void SelectFile()
-    {
-        SelectBackgroundImpl();
-    }
+    public void SelectFile() => SelectBackgroundImpl();
 
     public void ClearFile()
     {

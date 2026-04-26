@@ -13,7 +13,8 @@
     <Grid RowDefinitions="Auto,*">
 
         <StackPanel Margin="5" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="编辑配置文件" FontWeight="Bold" />
+            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="编辑配置文件"
+                       FontWeight="Bold" />
             <TextBlock VerticalAlignment="Center" Text="类型: " />
             <TextBlock VerticalAlignment="Center" x:Name="ConfigTypeTextBlock" />
 

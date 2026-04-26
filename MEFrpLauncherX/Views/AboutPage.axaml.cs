@@ -17,13 +17,14 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
 using RestSharp;
 using JsonException = System.Text.Json.JsonException;
+#pragma warning disable CS8602 // 解引用可能出现空引用。
 
 namespace MEFrpLauncherX.Views;
 
 public partial class AboutPage : UserControl
 {
-    private int debug_count = 0;
     private readonly AboutViewModel vm;
+    private int debug_count;
 
     public AboutPage()
     {
@@ -50,7 +51,7 @@ public partial class AboutPage : UserControl
             {
                 Hitokoto = await ExecuteHitokotoRequest(CreateRequest(), "一言");
             }
-            catch (JsonException)
+            catch (ArgumentNullException)
             {
                 Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
                 Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
@@ -68,7 +69,7 @@ public partial class AboutPage : UserControl
                 }
 
                 Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
-                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
+                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
             }
 
             vm.Hitokoto = Hitokoto.hitokoto;
@@ -80,6 +81,78 @@ public partial class AboutPage : UserControl
             MainPageFrameViewModel.Instance.IsLoading = false;
             HitokotoStatus.Hide();
         };
+    }
+
+    private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
+    {
+        var cd = new ContentDialog
+        {
+            Content = new MarkdownRender
+            {
+                Value = """
+                        # Markdown 渲染测试
+
+                        ## HTML 块测试
+
+                        <div>这是一个 HTML div 块</div>
+
+                        <p>这是一个段落标签</p>
+
+                        <strong>这是粗体文本</strong> 和普通文本混合
+
+                        <br/>换行测试
+
+                        ## GitHub 风格警告框测试
+
+                        > [!NOTE]
+                        > 这是一个注意事项，用于提醒用户重要信息。
+
+                        > [!TIP]
+                        > 这是一个提示，提供有用的建议或技巧。
+
+                        > [!WARNING]
+                        > 这是一个警告，提醒用户注意潜在的问题。
+
+                        > [!CAUTION]
+                        > 这是一个重要提示，需要用户特别注意的事项。
+
+                        ## 其他 Markdown 功能测试
+
+                        ### 代码块
+
+                        ```csharp
+                        public class Test
+                        {
+                            public void Hello()
+                            {
+                                Console.WriteLine("Hello, World!");
+                            }
+                        }
+                        ```
+
+                        ### 列表
+
+                        - 项目 1
+                        - 项目 2
+                        - 项目 3
+
+                        ### 引用
+
+                        > 这是一段引用文本
+
+                        ### 链接
+
+                        [这是一个链接](https://example.com)
+
+                        ### 图片
+
+                        ![示例图片](https://via.placeholder.com/150)
+
+                        """
+            },
+            CloseButtonText = "关闭"
+        };
+        await cd.ShowAsync();
     }
 
     #region 帮助/支持相关
@@ -184,7 +257,7 @@ public partial class AboutPage : UserControl
         OpenFileInExplorer(exePath);
     }
 
-    void OpenFileInExplorer(string filePath)
+    private void OpenFileInExplorer(string filePath)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -316,30 +389,12 @@ public partial class AboutPage : UserControl
 
     #region HTTP请求
 
-    private static RestClient CreateClient(string endpoint)
-    {
-        return new RestClient("https://content.rycb.mxj.pub/files/mefl" + endpoint);
-    }
-
     private static RestRequest CreateRequest(Method method = Method.Get)
     {
         var request = new RestRequest { Method = method };
         request.AddHeader("Content-Type", "application/json");
 
         return request;
-    }
-
-    private static async Task<T> ExecuteRequestAsync<T>(RestRequest request, string endpoint, string operationName)
-    {
-        Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-
-        using var client = CreateClient(endpoint);
-        var response = await client.ExecuteAsync(request);
-
-        Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
-        var result = JsonSerializer.Deserialize<T>(response.Content, AppJsonSerializerContext.Default.Options);
-        return result;
     }
 
     private static async Task<HitokotoResource> ExecuteHitokotoRequest(RestRequest request, string operationName)
@@ -365,7 +420,7 @@ public partial class AboutPage : UserControl
     {
         Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
 
-        using var client = new RestClient("https://international.v1.hitokoto.cn/");
+        using var client = new RestClient("https://hitokoto.yealqp.cn/");
         var response = await client.ExecuteAsync(request);
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
@@ -373,19 +428,6 @@ public partial class AboutPage : UserControl
         var result =
             JsonSerializer.Deserialize<HitokotoResource>(response.Content,
                 AppJsonSerializerContext.Default.HitokotoResource);
-        return result;
-    }
-
-    private static async Task<T> ExecuteRequest<T>(RestRequest request, string endpoint, string operationName)
-    {
-        Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-
-        using var client = CreateClient(endpoint);
-        var response = await client.ExecuteAsync(request);
-
-        Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
-        var result = JsonSerializer.Deserialize<T>(response.Content, AppJsonSerializerContext.Default.Options);
         return result;
     }
 
@@ -504,94 +546,14 @@ public partial class AboutPage : UserControl
         }
     }
 
-    private void Debug_ThrowException(object? sender, RoutedEventArgs e)
-    {
+    private void Debug_ThrowException(object? sender, RoutedEventArgs e) =>
         throw new ApplicationException("这是一个测试异常", new StackOverflowException("Stack Overflow，小子!"));
-    }
 
-    private async void Debug_TestSolve(object? sender, RoutedEventArgs e)
-    {
-        await LoginPage.GetCaptchaResultAsync();
-    }
+    private async void Debug_TestSolve(object? sender, RoutedEventArgs e) => await LoginPage.GetCaptchaResultAsync();
 
-    private void OpenProxyFloat(object? sender, RoutedEventArgs e)
-    {
-        new ProxyFloat().Show();
-    }
+    private void OpenProxyFloat(object? sender, RoutedEventArgs e) => new ProxyFloat().Show();
 
     #endregion
-
-    private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
-    {
-        var cd = new ContentDialog
-        {
-            Content = new MarkdownRender()
-            {
-                Value = """
-                        # Markdown 渲染测试
-
-                        ## HTML 块测试
-
-                        <div>这是一个 HTML div 块</div>
-
-                        <p>这是一个段落标签</p>
-
-                        <strong>这是粗体文本</strong> 和普通文本混合
-
-                        <br/>换行测试
-
-                        ## GitHub 风格警告框测试
-
-                        > [!NOTE]
-                        > 这是一个注意事项，用于提醒用户重要信息。
-
-                        > [!TIP]
-                        > 这是一个提示，提供有用的建议或技巧。
-
-                        > [!WARNING]
-                        > 这是一个警告，提醒用户注意潜在的问题。
-
-                        > [!CAUTION]
-                        > 这是一个重要提示，需要用户特别注意的事项。
-
-                        ## 其他 Markdown 功能测试
-
-                        ### 代码块
-
-                        ```csharp
-                        public class Test
-                        {
-                            public void Hello()
-                            {
-                                Console.WriteLine("Hello, World!");
-                            }
-                        }
-                        ```
-
-                        ### 列表
-
-                        - 项目 1
-                        - 项目 2
-                        - 项目 3
-
-                        ### 引用
-
-                        > 这是一段引用文本
-
-                        ### 链接
-
-                        [这是一个链接](https://example.com)
-
-                        ### 图片
-
-                        ![示例图片](https://via.placeholder.com/150)
-
-                        """,
-            },
-            CloseButtonText = "关闭",
-        };
-        await cd.ShowAsync();
-    }
 }
 
 public class HitokotoResource

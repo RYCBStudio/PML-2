@@ -28,6 +28,7 @@
               Margin="10">
             <HeaderedContentControl Header="统计信息" IsVisible="{Binding ShowStatistics}" Background="Transparent"
                                     Classes="animated"
+                                    Grid.RowSpan="{Binding StatisticsSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                     FontFamily="{StaticResource GlobalFontFamily}">
                 <WrapPanel HorizontalAlignment="Center" ItemSpacing="40">
                     <Grid RowDefinitions="Auto,*">
@@ -105,6 +106,7 @@
                 </WrapPanel>
             </HeaderedContentControl>
             <HeaderedContentControl Classes="animated" Grid.Row="1" Background="Transparent" Header="用户信息"
+                                    Grid.RowSpan="{Binding !UserInfoRow1, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                     FontFamily="{StaticResource GlobalFontFamily}" IsVisible="{Binding ShowUserInfo}">
                 <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*">
                     <!-- 用户名 -->
@@ -240,6 +242,7 @@
                     <controls1:NoData Grid.Row="1" IsVisible="{Binding IsNoData}" />
                     <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
                     <HeaderedContentControl
+                        Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                         IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
                         FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer>
@@ -280,9 +283,12 @@
                             </ItemsControl>
                         </ScrollViewer>
                     </HeaderedContentControl>
-                    <HeaderedContentControl Grid.Row="1" Classes="animated" Header="系统公告"
-                                            IsVisible="{Binding ShowSystemNotice}"
-                                            FontFamily="{StaticResource GlobalFontFamily}">
+                    <HeaderedContentControl
+                        Grid.Row="{Binding SystemNoticeSpan2, Converter={x:Static core:IsVisibleToRowConverter.Instance}, FallbackValue=1}"
+                        Classes="animated" Header="系统公告"
+                        Grid.RowSpan="{Binding ShowSystemNotice, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
+                        IsVisible="{Binding ShowSystemNotice}"
+                        FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                             <markdownAiRender:MarkdownRender
                                 TextWrapping="Wrap"

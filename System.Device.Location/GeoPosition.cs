@@ -11,43 +11,39 @@
 **
 =============================================================================*/
 
-namespace System.Device.Location
+namespace System.Device.Location;
+
+public class GeoPosition<T>
 {
-    public class GeoPosition<T>
+    #region Constructors
+
+    public GeoPosition() :
+        this(DateTimeOffset.MinValue, default)
     {
-        private DateTimeOffset m_timestamp = DateTimeOffset.MinValue;
-        private T m_position;
-
-        #region Constructors
-
-        public GeoPosition() :
-            this(DateTimeOffset.MinValue, default(T))
-        {
-        }
-
-        public GeoPosition(DateTimeOffset timestamp, T position)
-        {
-            Timestamp = timestamp;
-            Location = position;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public T Location
-        {
-            get => m_position;
-
-            set => m_position = value;
-        }
-
-        public DateTimeOffset Timestamp
-        {
-            get => m_timestamp;
-            set => m_timestamp = value;
-        }
-
-        #endregion
     }
+
+    public GeoPosition(DateTimeOffset timestamp, T position)
+    {
+        Timestamp = timestamp;
+        Location = position;
+    }
+
+    #endregion
+
+    #region Properties
+
+    public T Location
+    {
+        get;
+
+        set;
+    }
+
+    public DateTimeOffset Timestamp
+    {
+        get;
+        set;
+    } = DateTimeOffset.MinValue;
+
+    #endregion
 }

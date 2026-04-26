@@ -9,7 +9,11 @@ public static class MarkdownClass
 
     #region Public Properties
 
-    public static List<MarkdownTheme> Themes { get; private set; } =
+    public static List<MarkdownTheme> Themes
+    {
+        get;
+        private set;
+    } =
     [
         new("Ĭ������", ""),
         new("����", "OrangeHeart"),
@@ -18,7 +22,11 @@ public static class MarkdownClass
         new("�Ƽ���", "TechnologyBlue")
     ];
 
-    public static string CurrentThemeKey { get; private set; } = "";
+    public static string CurrentThemeKey
+    {
+        get;
+        private set;
+    } = "";
 
     #endregion
 
@@ -57,10 +65,7 @@ public static class MarkdownClass
         control.Classes.Add(currentFactThemeKey);
     }
 
-    public static void RemoveControl(Control control)
-    {
-        _boundControls.Remove(control);
-    }
+    public static void RemoveControl(Control control) => _boundControls.Remove(control);
 
     public static void AddMdClass(this Control control, string className)
     {

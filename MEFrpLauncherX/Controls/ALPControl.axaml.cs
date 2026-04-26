@@ -19,11 +19,10 @@ public partial class ALPControl : UserControl
     private async void SetConfig(object? sender, RoutedEventArgs e)
     {
         if (await MessageBox.ShowAsync("打开配置文件还是输入内容？", "提示",
-                buttons:
-                [
-                    new TaskDialogButton("文件", TaskDialogStandardResult.Yes),
-                    new TaskDialogButton("内容", TaskDialogStandardResult.No)
-                ]) ==
+            [
+                new TaskDialogButton("文件", TaskDialogStandardResult.Yes),
+                new TaskDialogButton("内容", TaskDialogStandardResult.No)
+            ]) ==
             MessageBoxResult.Yes)
         {
             var cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions

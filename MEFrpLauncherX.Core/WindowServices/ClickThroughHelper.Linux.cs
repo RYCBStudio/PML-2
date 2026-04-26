@@ -5,6 +5,9 @@ namespace MEFrpLauncherX.Core;
 
 public static partial class ClickThroughHelper
 {
+    // X11 shape constants
+    private const int ShapeInput = 2;
+    private const int ShapeSet = 0;
 
     // --- Linux (X11, basic version) ---
     // This is not guaranteed to work everywhere and is only a best-effort.
@@ -43,6 +46,7 @@ public static partial class ClickThroughHelper
                     display, handle, ShapeInput, 0, 0, IntPtr.Zero, ShapeSet
                 );
             }
+
             Xlib.XFlush(display);
         }
         finally
@@ -71,10 +75,6 @@ public static partial class ClickThroughHelper
     public static extern void XShapeCombineMask(
         IntPtr display, IntPtr window, int shape, int x, int y,
         IntPtr mask, int op);
-
-    // X11 shape constants
-    const int ShapeInput = 2;
-    const int ShapeSet = 0;
 }
 
 // For Xlib calls

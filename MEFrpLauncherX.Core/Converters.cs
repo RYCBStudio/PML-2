@@ -19,15 +19,37 @@ public class ConverterBase : IValueConverter
         get;
     } = new();
 
-    public virtual object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value;
-    }
+    public virtual object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
 
-    public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
+}
+
+public class IsVisibleToRowSpanConverter : IValueConverter
+{
+    public static IsVisibleToRowSpanConverter Instance
     {
-        return value;
-    }
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is true ? 2 : 1;
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class IsVisibleToRowConverter : IValueConverter
+{
+    public static IsVisibleToRowConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is true ? 0 : 1;
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }
 
 public class ProgressToVisibilityConverter : IValueConverter
@@ -37,10 +59,8 @@ public class ProgressToVisibilityConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return double.TryParse(value?.ToString(), out var progress) && progress is > 0 and < 100;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        double.TryParse(value?.ToString(), out var progress) && progress is > 0 and < 100;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -104,7 +124,7 @@ public class StatusNumToSeveritryConverter : IValueConverter
         {
             0 => InfoBarSeverity.Success,
             1 => InfoBarSeverity.Warning,
-            _ => InfoBarSeverity.Error,
+            _ => InfoBarSeverity.Error
         };
     }
 
@@ -188,10 +208,8 @@ public class ThemeToBackgroundConverter : IValueConverter
 {
     public static ThemeToBackgroundConverter Instance => new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is true ? Color.FromArgb(63, 0, 0, 0) : Color.FromArgb(63, 255, 255, 255);
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is true ? Color.FromArgb(63, 0, 0, 0) : Color.FromArgb(63, 255, 255, 255);
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -204,15 +222,11 @@ public class ObjectEqualityConverter : IValueConverter
         get;
     } = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return Equals(value, parameter);
-    }
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        Equals(value, parameter);
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return (bool)value ? parameter : null;
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        (bool)value ? parameter : null;
 }
 
 public class SelectedToBrushConverter : IValueConverter
@@ -226,10 +240,8 @@ public class SelectedToBrushConverter : IValueConverter
         return value is bool and true ? trueBrush : falseBrush;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class Int32ToProgressBarSuccessConvertor : IValueConverter
@@ -239,10 +251,8 @@ public class Int32ToProgressBarSuccessConvertor : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return int.TryParse(value?.ToString(), out var val) && val < 60;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        int.TryParse(value?.ToString(), out var val) && val < 60;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -255,10 +265,8 @@ public class Int32ToProgressBarWarnConvertor : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return int.TryParse(value?.ToString(), out var val) && val >= 60;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        int.TryParse(value?.ToString(), out var val) && val >= 60;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -271,10 +279,8 @@ public class Int32ToProgressBarDangerConvertor : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return int.TryParse(value?.ToString(), out var val) && val >= 85;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        int.TryParse(value?.ToString(), out var val) && val >= 85;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -306,10 +312,7 @@ public class ViewModeTemplateSelector : IDataTemplate
         return (GridTemplate ?? throw new InvalidOperationException()).Build(param);
     }
 
-    public bool Match(object data)
-    {
-        return data is Control;
-    }
+    public bool Match(object data) => data is Control;
 }
 
 public class NodeNotFoundToBoolConverter : IValueConverter
@@ -357,54 +360,37 @@ public class NodeNotFoundToBoolConverterReverse : IValueConverter
 // 枚举到布尔值转换器
 public class EnumToBooleanConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value?.Equals(parameter);
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+        value?.Equals(parameter);
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value?.Equals(true) == true ? parameter : null;
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        value?.Equals(true) == true ? parameter : null;
 }
 
 public class BoolToBadgeHeaderConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return (bool)value ? "负载过高" : null;
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+        (bool)value ? "负载过高" : null;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class DisabledToColorConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return (bool)value ? new SolidColorBrush(Color.FromRgb(242, 189, 86)) : Brushes.ForestGreen;
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+        (bool)value ? new SolidColorBrush(Color.FromRgb(242, 189, 86)) : Brushes.ForestGreen;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class DisabledToSpanConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return (bool)value ? 1 : 2;
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (bool)value ? 1 : 2;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class BoolToColorConverter : IValueConverter
@@ -420,10 +406,8 @@ public class BoolToColorConverter : IValueConverter
         return Brushes.Gray; // 默认值
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class BannedToBrushConverter : IValueConverter
@@ -439,10 +423,8 @@ public class BannedToBrushConverter : IValueConverter
         return null; // 默认值
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class ProxyTypeToBoolConverter : IValueConverter
@@ -451,12 +433,12 @@ public class ProxyTypeToBoolConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is string proxyType && (proxyType.ToLower().Equals("http") || proxyType.ToLower().Equals("https"));
-    }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is string proxyType && (proxyType.ToLower().Equals("http") || proxyType.ToLower().Equals("https"));
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }
 
 public class ProxyTypeToBoolReverseConverter : IValueConverter
@@ -465,21 +447,21 @@ public class ProxyTypeToBoolReverseConverter : IValueConverter
     {
         get;
     } = new();
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is string proxyType &&
                !(proxyType.ToLower().Equals("http") || proxyType.ToLower().Equals("https"));
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }
 
 public class LowerCaseToUpperCaseConverter : ConverterBase
 {
-    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value?.ToString()?.ToUpper();
-    }
+    public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value?.ToString()?.ToUpper();
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -497,24 +479,19 @@ public class BoolToStatusConverter : IValueConverter
         return "未知";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 // 选中状态转边框颜色
 public class SelectedToBorderBrushConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return (bool)value ? new SolidColorBrush(Colors.DodgerBlue) : new SolidColorBrush(Colors.Transparent);
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => (bool)value
+        ? new SolidColorBrush(Colors.DodgerBlue)
+        : new SolidColorBrush(Colors.Transparent);
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class MultiBindingConverter : IMultiValueConverter
@@ -524,17 +501,11 @@ public class MultiBindingConverter : IMultiValueConverter
         get;
     } = new();
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture) => values;
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return values;
-    }
 }
-
 
 public class BytesToReadableConverterEx : IValueConverter
 {
@@ -560,10 +531,8 @@ public class BytesToReadableConverterEx : IValueConverter
         return "0 B";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 
     private string FormatBytes(long bytes)
     {
@@ -607,10 +576,8 @@ public class BytesToReadableConverter : IValueConverter
         return "0 B";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class TrafficToTargetNumberConverter : IValueConverter
@@ -620,16 +587,17 @@ public class TrafficToTargetNumberConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is long traffic ? ProcessFileSize(traffic) /*.ToString("######.## TB") : "- TB";*/ : 0;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is long traffic ? ProcessFileSize(traffic) /*.ToString("######.## TB") : "- TB";*/ : 0;
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -646,9 +614,6 @@ public class TrafficToTargetNumberConverter : IValueConverter
 
         return size;
     }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        throw new NotImplementedException();
 }
 
 public class TrafficToSizeLevelConverter : IValueConverter
@@ -671,11 +636,14 @@ public class TrafficToSizeLevelConverter : IValueConverter
         }
     }
 
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -693,9 +661,6 @@ public class TrafficToSizeLevelConverter : IValueConverter
 
         return unitIndex;
     }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        throw new NotImplementedException();
 }
 
 public class BoundToReadableConverter : IValueConverter
@@ -724,10 +689,8 @@ public class BoundToReadableConverter : IValueConverter
         return value?.ToString() ?? "0 Bps";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class UnixTimeToDateTimeConverter : IValueConverter
@@ -743,10 +706,8 @@ public class UnixTimeToDateTimeConverter : IValueConverter
         return "N/A";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 // 在线状态颜色转换器
@@ -765,10 +726,8 @@ public class OnlineStatusColorConverter : IValueConverter
         return Brushes.Gray;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 // Unix时间戳转换为可读时间（精确到分钟）
@@ -793,6 +752,9 @@ public class UnixTimeToReadableConverter : IValueConverter
         return string.Empty;
     }
 
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+
     private string GetTimeAgoString(TimeSpan timeSpan)
     {
         if (timeSpan.TotalDays >= 1)
@@ -816,11 +778,6 @@ public class UnixTimeToReadableConverter : IValueConverter
 
         return $"{(int)timeSpan.TotalSeconds}秒";
     }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class OnlineStatusTextConverter : IValueConverter
@@ -837,6 +794,9 @@ public class OnlineStatusTextConverter : IValueConverter
 
         return string.Empty;
     }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 
     private string FormatTimeSpan(TimeSpan ts)
     {
@@ -860,11 +820,6 @@ public class OnlineStatusTextConverter : IValueConverter
         }
 
         return $"{(int)ts.TotalSeconds}秒";
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
     }
 }
 
@@ -891,10 +846,8 @@ public class LoadPercentColorConverter : IValueConverter
         return Application.Current.FindResource("NormalProgressBar");
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class BoolToYesNoConverter : IValueConverter
@@ -909,10 +862,8 @@ public class BoolToYesNoConverter : IValueConverter
         return "否";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }
 
 public class StatusToStringConverter : IValueConverter
@@ -933,8 +884,6 @@ public class StatusToStringConverter : IValueConverter
         return "N/A";
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
-    }
 }

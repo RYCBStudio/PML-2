@@ -111,7 +111,7 @@
                     Margin="5,2"
                     Command="{Binding ClearSelectionCommand}"
                     FontFamily="{StaticResource GlobalFontFamily}"
-                     Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                    Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             FontFamily="{StaticResource IconFont}"
@@ -129,7 +129,7 @@
         <ListBox Grid.Row="2"
                  SelectionMode="Multiple"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            
+
             <ListBox.ItemsSource>
                 <Binding Path="FilteredProxies">
                     <Binding.FallbackValue>
@@ -139,12 +139,12 @@
             </ListBox.ItemsSource>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" ItemSpacing="3" LineSpacing="3"/>
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="3" LineSpacing="3" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:UserProxyControl DataContext="{Binding}" Width="300"/>
+                    <controls:UserProxyControl DataContext="{Binding}" Width="300" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

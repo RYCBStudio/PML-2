@@ -10,7 +10,8 @@ namespace MEFrpLauncherX.Views;
 
 public partial class UpdatePage : UserControl
 {
-    private bool _init;
+    private readonly bool _init;
+
     public UpdatePage()
     {
         InitializeComponent();
@@ -30,14 +31,18 @@ public partial class UpdatePage : UserControl
             _ => 0
         };
         KeepProfileSwitch.IsChecked = ConfigManager.CurrentConfig.UpdateSettings.KeepProfile;
-        
+
         _init = true;
         MainPageFrameViewModel.UpdatePage = this;
     }
 
     private void UpdateMethodChange(object? sender, SelectionChangedEventArgs e)
     {
-        if (!_init) return;
+        if (!_init)
+        {
+            return;
+        }
+
         ConfigManager.UpdateConfig(cfg =>
         {
             var method = ((sender as ComboBox).SelectedItem as ComboBoxItem)?.Tag?.ToString();
@@ -48,7 +53,11 @@ public partial class UpdatePage : UserControl
 
     private void UpdateChannelChange(object? sender, SelectionChangedEventArgs e)
     {
-        if (!_init) return;
+        if (!_init)
+        {
+            return;
+        }
+
         ConfigManager.UpdateConfig(cfg =>
         {
             cfg.UpdateSettings.Channel = ((sender as ComboBox).SelectedItem as ComboBoxItem)?.Tag?.ToString();
@@ -57,8 +66,13 @@ public partial class UpdatePage : UserControl
 
     private void KeepProfileChanged(object? sender, RoutedEventArgs e)
     {
-        if (!_init) return;
-        ConfigManager.UpdateConfig(cfg=>cfg.UpdateSettings.KeepProfile = (sender as ToggleSwitch)?.IsChecked ?? false);
+        if (!_init)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg =>
+            cfg.UpdateSettings.KeepProfile = (sender as ToggleSwitch)?.IsChecked ?? false);
     }
 }
 

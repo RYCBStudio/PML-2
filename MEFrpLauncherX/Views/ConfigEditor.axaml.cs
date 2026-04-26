@@ -34,7 +34,7 @@ public partial class ConfigEditor : Window
     public ConfigEditor(string filePath)
     {
         InitializeComponent();
-        _type = Path.GetExtension(filePath).Remove(0,1);
+        _type = Path.GetExtension(filePath).Remove(0, 1);
         _config = File.ReadAllText(filePath);
         _file = filePath;
         Loaded += ConfigPreviewer_Loaded;
@@ -83,10 +83,7 @@ public partial class ConfigEditor : Window
         ShowNotification($"配置已保存到 {file.Name}");
     }
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
-    {
-        Close(false);
-    }
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => Close(false);
 
     private void ConfigPreviewer_Loaded(object sender, RoutedEventArgs e)
     {
@@ -115,12 +112,12 @@ public partial class ConfigEditor : Window
 
         // Setup TextMate for the editor
         var textMateInstallation = CfgEditor.InstallTextMate(registryOptions);
-        TextMate.RegisterExceptionHandler(ex =>
-        {
-            // Handle exceptions from TextMate
-            Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
-            Core.App.CurrentLogger.Error(ex);
-        });
+        // TextMate.RegisterExceptionHandler(ex =>
+        // {
+        //     // Handle exceptions from TextMate
+        //     Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
+        //     Core.App.CurrentLogger.Error(ex);
+        // });
         // Get the grammar based on file type
         var scopeName = _type.ToLower() switch
         {
@@ -163,10 +160,7 @@ public partial class ConfigEditor : Window
         }
     }
 
-    private static void ShowNotification(string message)
-    {
-        Growl.Info(message);
-    }
+    private static void ShowNotification(string message) => Growl.Info(message);
 
     private void SaveAndRunButton_Click(object? sender, RoutedEventArgs e)
     {

@@ -7,23 +7,28 @@ using ShimSkiaSharp;
 namespace MarkdownAIRender.Controls.Images;
 
 /// <summary>
-/// An <see cref="IImage"/> that uses a <see cref="SvgSource"/> for content.
+///     An <see cref="IImage" /> that uses a <see cref="SvgSource" /> for content.
 /// </summary>
 internal class VectorImage : IImage
 {
-    /// <summary>
-    /// Gets or sets the <see cref="SvgSource"/> content.
-    /// </summary>
-    public SvgSource? Source { get; set; }
-
-    /// <inheritdoc/>
-    public Size Size =>
-        Source?.Picture is { } ? new Size(Source.Picture.CullRect.Width, Source.Picture.CullRect.Height) : default;
-
-    private SKPicture? _previousPicture;
     private AvaloniaPicture? _avaloniaPicture;
 
-    /// <inheritdoc/>
+    private SKPicture? _previousPicture;
+
+    /// <summary>
+    ///     Gets or sets the <see cref="SvgSource" /> content.
+    /// </summary>
+    public SvgSource? Source
+    {
+        get;
+        set;
+    }
+
+    /// <inheritdoc />
+    public Size Size =>
+        Source?.Picture is not null ? new Size(Source.Picture.CullRect.Width, Source.Picture.CullRect.Height) : default;
+
+    /// <inheritdoc />
     void IImage.Draw(
         DrawingContext context,
         Rect sourceRect,
@@ -63,7 +68,7 @@ internal class VectorImage : IImage
                     _avaloniaPicture = AvaloniaPicture.Record(source.Picture);
                 }
 
-                if (_avaloniaPicture is { })
+                if (_avaloniaPicture is not null)
                 {
                     _avaloniaPicture.Draw(context);
                 }

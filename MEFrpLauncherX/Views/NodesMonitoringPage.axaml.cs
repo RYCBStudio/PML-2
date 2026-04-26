@@ -10,13 +10,17 @@ namespace MEFrpLauncherX.Views;
 
 public partial class NodesMonitoringPage : UserControl
 {
-    public static NodesMonitoringPage Instance { get; private set; }
-
     public NodesMonitoringPage()
     {
         InitializeComponent();
         Instance = this;
         DataContext = null;
+    }
+
+    public static NodesMonitoringPage Instance
+    {
+        get;
+        private set;
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -28,7 +32,11 @@ public partial class NodesMonitoringPage : UserControl
     private async void PerformAnimation(object? sender, VisualTreeAttachmentEventArgs e)
     {
         var pg = sender as ProgressBar;
-        if (pg == null) return;
+        if (pg == null)
+        {
+            return;
+        }
+
         var animation = new Animation
         {
             Duration = TimeSpan.FromMilliseconds(800),

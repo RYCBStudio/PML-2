@@ -7,16 +7,14 @@
              x:Class="MEFrpLauncherX.Controls.FeedbackForm">
     <StackPanel Spacing="5" Margin="2">
         <DockPanel HorizontalSpacing="2">
-            <TextBlock Text="用户邮箱" DockPanel.Dock="Left"></TextBlock>
+            <TextBlock Text="用户邮箱" DockPanel.Dock="Left" />
             <TextBox Text="{Binding Email,RelativeSource={RelativeSource AncestorType=controls:FeedbackForm}}"
-                     Watermark="请填写您的邮箱" x:Name="EmailBox">
-            </TextBox>
+                     Watermark="请填写您的邮箱" x:Name="EmailBox" />
         </DockPanel>
         <DockPanel HorizontalSpacing="2">
-            <TextBlock Text="反馈内容" DockPanel.Dock="Left"></TextBlock>
+            <TextBlock Text="反馈内容" DockPanel.Dock="Left" />
             <TextBox Text="{Binding Feedback, RelativeSource={RelativeSource AncestorType=controls:FeedbackForm}}"
-                     Watermark="请填写您的反馈内容" AcceptsReturn="True" x:Name="FeedbackBox">
-            </TextBox>
+                     Watermark="请填写您的反馈内容" AcceptsReturn="True" x:Name="FeedbackBox" />
         </DockPanel>
     </StackPanel>
 </UserControl>

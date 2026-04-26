@@ -9,12 +9,20 @@ namespace MEFrpLauncherX.Core;
 
 public class App : IDisposable
 {
-    public const string Version = "2.3.0-rc2";
+    public const string Version = "26.1.0-preview1";
 
     public const string MEFrpVersion = "0.67.0_20260302_f1907e56";
     public static string Flag = "Desktop";
-    public static string ReleaseFlag = "Preview";
+    public static string ReleaseFlag = "Release";
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
+
+    public static WindowNotificationManager? WindowNotificationManager;
+
+    public static MessageManager PML2MsgMnger = new()
+    {
+        HostId = "PML2_Msg",
+        Duration = TimeSpan.FromSeconds(3)
+    };
 
     public static AppWindow? MainWindow
     {
@@ -34,25 +42,19 @@ public class App : IDisposable
         set;
     }
 
-    public static WindowNotificationManager? WindowNotificationManager;
-
-    public static MessageManager PML2MsgMnger = new()
-    {
-        HostId = "PML2_Msg",
-        Duration = TimeSpan.FromSeconds(3)
-    };
-
-    public static LogUtil? CurrentLogger
+    public static LogUtil CurrentLogger
     {
         get;
         private set;
     }
 
-    public static void Initialize()
+    public void Dispose() => CurrentLogger?.Dispose();
+
+    public static async void Initialize()
     {
         Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
         Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
-        
+
         // 使用 Path.Combine 处理跨平台路径
         var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
@@ -68,60 +70,9 @@ public class App : IDisposable
         CurrentLogger = new LogUtil(logPath);
         CurrentLogger.Log("Core App init");
         CurrentLogger.Log("Current OS: " + Environment.OSVersion.Platform);
-        
-        ConfigManager.Initialize();
-        
-        var i18nPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "i18n");
-        Directory.CreateDirectory(i18nPath);
-        File.WriteAllText(Path.Combine(i18nPath, "MarkdownAIRender.en-US.xml"),
-            """
-            <?xml version="1.0" encoding="utf-8"?>
-            <Localization language="English" description="English" cultureName="en-US">
-              <MarkdownRender>
-                <CopyButtonContent>Copy</CopyButtonContent>
-                <CopyNotificationTitle>Copy succeeded</CopyNotificationTitle>
-                <CopyNotificationMessage>Copy succeeded</CopyNotificationMessage>
-              </MarkdownRender>
-            </Localization>
-            """);
-        File.WriteAllText(Path.Combine(i18nPath, "MarkdownAIRender.zh-CN.xml"),
-            """
-            <?xml version="1.0" encoding="utf-8"?>
-            <Localization language="Chinese (Simplified)" description="中文简体" cultureName="zh-CN">
-              <MarkdownRender>
-                <CopyButtonContent>复制</CopyButtonContent>
-                <CopyNotificationTitle>复制成功</CopyNotificationTitle>
-                <CopyNotificationMessage>复制成功</CopyNotificationMessage>
-              </MarkdownRender>
-            </Localization>
-            """);
-        File.WriteAllText(Path.Combine(i18nPath, "MarkdownAIRender.zh-Hant.xml"),
-            """
-            <?xml version="1.0" encoding="utf-8"?>
-            <Localization language="Chinese (Traditional)" description="中文繁體" cultureName="zh-Hant">
-              <MarkdownRender>
-                <CopyButtonContent>複製</CopyButtonContent>
-                <CopyNotificationTitle>複製成功</CopyNotificationTitle>
-                <CopyNotificationMessage>複製成功</CopyNotificationMessage>
-              </MarkdownRender>
-            </Localization>
-            """);
-        File.WriteAllText(Path.Combine(i18nPath, "MarkdownAIRender.ja-JP.xml"),
-            """
-            <?xml version="1.0" encoding="utf-8"?>
-            <Localization language="Japanese" description="日本語" cultureName="ja-JP">
-              <MarkdownRender>
-                <CopyButtonContent>コピー</CopyButtonContent>
-                <CopyNotificationTitle>コピーに成功しました</CopyNotificationTitle>
-                <CopyNotificationMessage>コピーに成功しました</CopyNotificationMessage>
-              </MarkdownRender>
-            </Localization>
-            """);
-    }
 
-    public void Dispose()
-    {
-        CurrentLogger?.Dispose();
+        ConfigManager.Initialize();
+        await RYCBApiConverter.InitializeAsync();
     }
 }
 
@@ -139,16 +90,13 @@ public static class Extensions
     extension(string str)
     {
         /// <summary>
-        /// 判断字符串是否为空或null
+        ///     判断字符串是否为空或null
         /// </summary>
         /// <returns>是否为空或null.</returns>
-        public bool IsNullOrEmpty()
-        {
-            return string.IsNullOrEmpty(str);
-        }
+        public bool IsNullOrEmpty() => string.IsNullOrEmpty(str);
 
         /// <summary>
-        /// 将字符串的指定部分大写
+        ///     将字符串的指定部分大写
         /// </summary>
         /// <param name="startIndex">开始大写的索引</param>
         /// <param name="length">修改的长度</param>
@@ -160,7 +108,7 @@ public static class Extensions
         }
 
         /// <summary>
-        /// 将字符串的指定部分小写
+        ///     将字符串的指定部分小写
         /// </summary>
         /// <param name="startIndex">开始小写的索引</param>
         /// <param name="length">修改的长度</param>
@@ -172,7 +120,7 @@ public static class Extensions
         }
 
         /// <summary>
-        /// 判断字符串是否以指定的后缀结尾
+        ///     判断字符串是否以指定的后缀结尾
         /// </summary>
         /// <param name="suffixes">要判断的后缀, 多个后缀用<c>,</c>分隔</param>
         /// <returns></returns>

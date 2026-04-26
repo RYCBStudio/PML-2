@@ -1,7 +1,7 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="MEFrpLauncherX.Controls.AnimatedProgressRing" Width="128" Height="128">
     <UserControl.Resources>
-        <RadialGradientBrush x:Key="Gradient1" GradientOrigin="0.3,0.3" Center="0.5,0.5" Radius="0.8">
+        <RadialGradientBrush x:Key="Gradient1" GradientOrigin="0.3,0.3" Center="0.5,0.5" RadiusX="0.8">
             <GradientStop Offset="0" Color="#1A134E4A" /> <GradientStop Offset="1" Color="#4D042F2E" />
         </RadialGradientBrush>
         <LinearGradientBrush x:Key="Gradient2" StartPoint="0,0" EndPoint="1,1">

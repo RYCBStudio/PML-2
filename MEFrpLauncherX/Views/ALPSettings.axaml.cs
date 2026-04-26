@@ -26,15 +26,12 @@ public partial class ALPSettings : Window
             cfg.AutoLaunchProxies.AddRange(AutoLaunchList.Items.Cast<UserProxyViewModel>().Select(proxy =>
                     new ALPConfig
                     {
-                        Name = proxy.proxyName, Id = proxy.proxyId, UseConfig = proxy.UseConfig, Config = proxy.Config,
+                        Name = proxy.proxyName, Id = proxy.proxyId, UseConfig = proxy.UseConfig, Config = proxy.Config
                     })
                 .ToList()));
         Close();
         Growl.Success("保存成功");
     }
 
-    private void Close(object? sender, RoutedEventArgs e)
-    {
-        Close();
-    }
+    private void Close(object? sender, RoutedEventArgs e) => Close();
 }
