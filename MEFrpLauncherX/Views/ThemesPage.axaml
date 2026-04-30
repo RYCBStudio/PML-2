@@ -2,10 +2,96 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:MEFrpLauncherX.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MEFrpLauncherX.Views.ThemesPage">
-    <StackPanel Margin="10" Spacing="10">
+             x:Class="MEFrpLauncherX.Views.ThemesPage"
+             x:DataType="vm:ThemesPageViewModel">
+    <Design.DataContext>
+        <vm:ThemesPageViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="10" Spacing="10" Classes="animated-intro">
         <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="主题设置" />
-        <Grid ColumnDefinitions="*, *" />
+
+        <TabControl>
+            <TabItem Header="本地主题">
+                <Grid RowDefinitions="*, Auto">
+                    <ListBox ItemsSource="{Binding LocalThemes}" SelectedItem="{Binding SelectedLocalTheme}"
+                             Margin="0,0,0,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="r2l" BorderBrush="{DynamicResource ThemeBorderMidBrush}"
+                                        BorderThickness="1" CornerRadius="4" Padding="10">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <Image Grid.Column="0" Width="64" Height="64" Source="{Binding PreviewImage}"
+                                               Margin="0,0,10,0" />
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Author}" FontSize="12"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                            <TextBlock Text="{Binding Version}" FontSize="10"
+                                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                                            <Button Content="编辑"
+                                                    Command="{Binding $parent[UserControl].DataContext.EditLocalThemeCommand}" />
+                                            <Button Content="应用"
+                                                    Command="{Binding $parent[UserControl].DataContext.ApplyLocalThemeCommand}" />
+                                            <Button Content="删除"
+                                                    Command="{Binding $parent[UserControl].DataContext.DeleteLocalThemeCommand}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                    <Button Grid.Row="1" Content="刷新" Command="{Binding RefreshLocalThemesCommand}"
+                            HorizontalAlignment="Left" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="在线主题">
+                <Grid RowDefinitions="*, Auto">
+                    <ListBox ItemsSource="{Binding OnlineThemes}" SelectedItem="{Binding SelectedOnlineTheme}"
+                             Margin="0,0,0,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource ThemeBorderMidBrush}" BorderThickness="1"
+                                        CornerRadius="4" Padding="10">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <Image Grid.Column="0" Width="64" Height="64"
+                                               Source="{Binding PreviewImageUrl}" Margin="0,0,10,0" />
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Author}" FontSize="12"
+                                                       Foreground="{DynamicResource ThemeForegroundBrush}" />
+                                            <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Version}" FontSize="10"
+                                                       Foreground="{DynamicResource ThemeAccentBrush}" />
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Content="下载"
+                                                Command="{Binding $parent[UserControl].DataContext.DownloadThemeCommand}"
+                                                IsEnabled="{Binding !$parent[UserControl].DataContext.IsDownloading}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+                        <Button Content="获取在线主题" Command="{Binding FetchOnlineThemesCommand}"
+                                IsEnabled="{Binding !IsLoadingOnlineThemes}" />
+                        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoadingOnlineThemes}" Width="100" />
+                        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsDownloading}" Width="100" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </StackPanel>
 </UserControl>

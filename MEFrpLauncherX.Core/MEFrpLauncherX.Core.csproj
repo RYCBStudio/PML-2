@@ -38,6 +38,9 @@
         <Reference Include="RYCB.PML.MEFrpCaptchaLib">
             <HintPath>G:\VSProj\RYCB.PML.MEFrpCaptchaLib\bin\Release\Dotfuscated\RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
+        <Reference Include="SecretLib">
+          <HintPath>..\MEFrpLauncherX\SecretLib.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

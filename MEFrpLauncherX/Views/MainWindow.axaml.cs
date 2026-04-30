@@ -29,6 +29,7 @@ using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
 using RYCB.PML.MEFrpCaptchaLib;
+using Sentry;
 using Color = Avalonia.Media.Color;
 
 #pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
@@ -86,60 +87,7 @@ public partial class MainWindow : AppWindow, IDisposable
         SplashScreen = new MainAppSplashScreen(this)
         {
             SplashScreenContent = sp,
-            InitApp = async () =>
-            {
-                string selectedTheme;
-                try
-                {
-                    selectedTheme =
-                        (await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                            "selected")))
-                        .Trim();
-                }
-                catch (FileNotFoundException)
-                {
-                    Core.App.CurrentLogger.Log("未找到主题配置文件，跳过主题加载");
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Core.App.CurrentLogger.Error(ex, "加载主题配置文件时发生错误");
-                    return;
-                }
-
-                if (selectedTheme.IsNullOrEmpty())
-                {
-                    return;
-                }
-
-                var themeManifest =
-                    ThemeProcessor.LoadTheme(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                        selectedTheme, "index.json"));
-
-                if (themeManifest != null)
-                {
-                    ConfigManager.UpdateConfig(c =>
-                    {
-                        c.BackgroundSettings.BackgroundImage = themeManifest.Background.Image ?? string.Empty;
-                        c.BackgroundSettings.Stretch = themeManifest.Background.FillMode;
-                        c.BackgroundSettings.LayerOpacity = themeManifest.Background.LayerOpacity;
-                    });
-                    AppearanceSettings.UpdateBackground(false);
-                    if (themeManifest.AccentColor.Count == 1)
-                    {
-                        ConfigManager.UpdateConfig(cfg =>
-                            cfg.AccentColor = themeManifest.AccentColor.FirstOrDefault()?.Color!);
-                        App.FATheme?.CustomAccentColor =
-                            Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
-                    }
-                    else
-                    {
-                        _accentAnimationCts?.Cancel();
-                        _accentAnimationCts = new CancellationTokenSource();
-                        _ = AnimateAccentColorAsync(themeManifest.AccentColor, _accentAnimationCts.Token);
-                    }
-                }
-            }
+            InitApp = async () => await ApplyThemeAsync()
         };
 
         #endregion
@@ -183,6 +131,67 @@ public partial class MainWindow : AppWindow, IDisposable
         Activated += OnActivated;
 
         Instance = this;
+    }
+
+    internal async Task ApplyThemeAsync()
+    {
+        string selectedTheme;
+        try
+        {
+            selectedTheme =
+                (await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Config", "Themes",
+                    "selected")))
+                .Trim();
+        }
+        catch (FileNotFoundException)
+        {
+            Core.App.CurrentLogger.Log("未找到主题配置文件，跳过主题加载");
+            return;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, "加载主题配置文件时发生错误");
+            return;
+        }
+
+        if (selectedTheme.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        var themeManifest =
+            ThemeProcessor.LoadTheme(Path.Combine(Core.App.StartupPath, "Config", "Themes",
+                selectedTheme, "index.json"));
+
+        if (themeManifest != null)
+        {
+            ConfigManager.UpdateConfig(c =>
+            {
+                if (themeManifest.Background.Type == "Image")
+                {
+                    var fullImagePath = Path.GetFullPath(themeManifest.Background.Image,
+                        Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme));
+                    c.BackgroundSettings.BackgroundImage = fullImagePath;
+                    AppearanceSettings.UpdateBackground(false);
+                }
+
+                c.BackgroundSettings.Stretch = themeManifest.Background.FillMode;
+                c.BackgroundSettings.LayerOpacity = themeManifest.Background.LayerOpacity;
+            });
+            if (themeManifest.AccentColor.Count == 1)
+            {
+                ConfigManager.UpdateConfig(cfg =>
+                    cfg.AccentColor = themeManifest.AccentColor.FirstOrDefault()?.Color!);
+                App.FATheme?.CustomAccentColor =
+                    Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
+            }
+            else
+            {
+                _accentAnimationCts?.Cancel();
+                _accentAnimationCts = new CancellationTokenSource();
+                _ = AnimateAccentColorAsync(themeManifest.AccentColor, _accentAnimationCts.Token);
+            }
+        }
     }
 
     internal static MainWindow Instance
@@ -312,6 +321,7 @@ public partial class MainWindow : AppWindow, IDisposable
 
         await CheckPolicy();
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
+        Program.StartupTransaction.Finish(SpanStatus.Ok);
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性
         if (

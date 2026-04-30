@@ -50,18 +50,14 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            FATheme = Current?.Styles[4] as FluentAvaloniaTheme;
+            FATheme = Current.Styles.OfType<FluentAvaloniaTheme>().First();
             var currentTheme = ConfigManager.CurrentConfig.Theme.ToLower() switch
             {
                 "dark" => ThemeVariant.Dark,
                 "light" => ThemeVariant.Light,
                 _ => ThemeVariant.Default
             };
-            LiveCharts.Configure(config =>
-                {
-                    config.UseDefaults();
-                }
-            );
+            LiveCharts.Configure(config => config.UseDefaults());
             var ac = ConfigManager.CurrentConfig.AccentColor;
             if (!ac.IsNullOrEmpty())
             {

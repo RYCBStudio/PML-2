@@ -1,0 +1,213 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+        xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+        xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MEFrpLauncherX.Views.ThemeEditor"
+        Title="主题编辑器"
+        Width="900"
+        Height="700"
+        MinWidth="700"
+        MinHeight="500">
+
+    <Design.DataContext>
+        <viewModels:ThemeEditorViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- 顶部工具栏 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" Spacing="10">
+            <Button Command="{Binding SaveThemeCommand}" Content="💾 保存主题" Classes="accent" />
+            <Button Command="{Binding PreviewThemeCommand}" Content="👁️ 预览主题" />
+            <Button Command="{Binding AddColorCommand}" Content="➕ 添加颜色" />
+            <Button Command="{Binding RemoveColorCommand}" Content="➖ 删除颜色" IsEnabled="{Binding CanRemoveColor}" />
+        </StackPanel>
+
+        <!-- 主内容区域 -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="10" Spacing="15">
+
+                <!-- 基本信息 -->
+                <Expander Header="📋 基本信息" IsExpanded="True">
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="10">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="主题名称：" VerticalAlignment="Center" Margin="0,5" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Margin="5" />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="作者：" VerticalAlignment="Center" Margin="10,5,0,5" />
+                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Author}" Margin="5" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="版本：" VerticalAlignment="Center" Margin="0,5" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Margin="5" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="预览图：" VerticalAlignment="Center"
+                                   Margin="10,5,0,5" />
+                        <Image Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Source="{Binding PreviewImage}" MaxHeight="128"></Image>
+                        <Button Grid.Row="2" Grid.Column="2" Content="选择图片" Margin="5" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="描述：" VerticalAlignment="Top" Margin="0,5" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Description}"
+                                 Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="5" />
+                    </Grid>
+                </Expander>
+
+                <!-- 背景设置 -->
+                <Expander Header="🖼️ 背景设置" IsExpanded="True">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" Margin="10" ColumnSpacing="10">
+                        <StackPanel Orientation="Horizontal" Spacing="20">
+                            <RadioButton Content="纯色背景"
+                                         IsChecked="{Binding BackgroundType, Converter={x:Static viewModels:RadioButtonConverter.Instance}, ConverterParameter=SolidColor}" />
+                            <RadioButton Content="图片背景"
+                                         IsChecked="{Binding BackgroundType, Converter={x:Static viewModels:RadioButtonConverter.Instance}, ConverterParameter=Image}" />
+                        </StackPanel>
+
+                        <!-- 纯色背景 -->
+                        <StackPanel Grid.Row="1" IsVisible="{Binding IsSolidColorBackground}">
+                            <TextBlock Text="背景颜色：" Margin="0,5" />
+                            <TextBox Text="{Binding BackgroundColor}" Width="120" />
+                            <!-- 简单的颜色预览 -->
+                            <Border Width="50" Height="30" Margin="0,5">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding BackgroundColor}" />
+                                </Border.Background>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 图片背景 -->
+                        <StackPanel Grid.Row="1" IsVisible="{Binding IsImageBackground}" Spacing="5">
+                            <TextBlock Text="背景图片：" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBox Grid.Column="0" Text="{Binding BackgroundImagePath}" IsReadOnly="True" />
+                                <Button Grid.Column="1" Command="{Binding BrowseBackgroundCommand}" Content="浏览..."
+                                        Margin="5,0,0,0" />
+                            </Grid>
+                            <Border Margin="0,5" Height="100" VerticalAlignment="Top"
+                                    IsVisible="{Binding BackgroundImagePreview, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <Border.Background>
+                                    <ImageBrush Source="{Binding BackgroundImagePreview}" Stretch="Uniform" />
+                                </Border.Background>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 通用设置 -->
+                        <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                            <StackPanel>
+                                <TextBlock Text="填充模式：" />
+                                <ComboBox ItemsSource="{Binding FillModes}" SelectedItem="{Binding BackgroundFillMode}"
+                                          Width="150" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="图层透明度：" />
+                                <Slider Minimum="0" Maximum="1" Value="{Binding LayerOpacity}" Width="200" />
+                                <TextBlock Text="{Binding LayerOpacity, StringFormat='{}{0:N2}'}" Margin="5,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Expander>
+
+                <!-- 强调色动画 -->
+                <Expander Header="🎨 强调色动画" IsExpanded="True">
+                    <Grid ColumnDefinitions="2*,3*">
+                        <!-- 颜色列表 -->
+                        <Border Grid.Column="0" Margin="5">
+                            <StackPanel>
+                                <TextBlock Text="颜色序列（从上到下循环）" FontWeight="Bold" Margin="0,0,0,5" />
+                                <ListBox ItemsSource="{Binding AccentColors}"
+                                         SelectedItem="{Binding SelectedAccentColor}" Height="300">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="2" Padding="5" CornerRadius="4">
+                                                <Border.Styles>
+                                                    <Style Selector="Border:pointerover">
+                                                        <Setter Property="Background" Value="#30000000" />
+                                                    </Style>
+                                                </Border.Styles>
+                                                <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                                                    <Border Grid.Column="0" Width="30" Height="30" CornerRadius="4"
+                                                            Margin="0,0,10,0">
+                                                        <Border.Background>
+                                                            <SolidColorBrush Color="{Binding Color, Converter={x:Static viewModels:StringColorConverter.Instance}}" />
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <TextBlock Grid.Column="1" Text="RGB" VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Column="2" Text="{Binding Color}"
+                                                               VerticalAlignment="Center" Margin="10,0" />
+                                                    <TextBlock Grid.Column="3"
+                                                               Text="{Binding Duration, StringFormat='{}{0:N1}s'}"
+                                                               VerticalAlignment="Center" Margin="10,0" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,5" Spacing="5">
+                                    <Button Command="{Binding AddColorCommand}" Content="➕ 添加" />
+                                    <Button Command="{Binding RemoveColorCommand}" Content="➖ 删除" />
+                                    <Button Command="{Binding MoveUpCommand}" Content="⬆️ 上移" />
+                                    <Button Command="{Binding MoveDownCommand}" Content="⬇️ 下移" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 编辑区域 -->
+                        <Border Grid.Column="1" Margin="5">
+                            <StackPanel IsVisible="{Binding CanEdit}">
+                                <TextBlock Text="编辑颜色" FontWeight="Bold" Margin="0,0,0,10" />
+
+                                <TextBlock Text="颜色值：" Margin="0,5" />
+                                <TextBox Text="{Binding SelectedAccentColor.Color}" Width="150" />
+
+                                <TextBlock Text="颜色预览：" Margin="0,10,0,5" />
+                                <Border Width="80" Height="80" CornerRadius="8">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding SelectedAccentColor.Color, Converter={x:Static viewModels:StringColorConverter.Instance}}" />
+                                    </Border.Background>
+                                </Border>
+
+                                <TextBlock Text="持续时间（秒）：" Margin="0,10,0,5" />
+                                <Slider Minimum="0.1" Maximum="5" Value="{Binding SelectedAccentColor.Duration}"
+                                        Width="200" />
+                                <TextBlock Text="{Binding SelectedAccentColor.Duration, StringFormat='{}{0:N1} 秒'}"
+                                           Margin="5,0" />
+
+                                <TextBlock Text="预设颜色：" Margin="0,15,0,5" />
+                                <WrapPanel>
+                                    <ItemsControl ItemsSource="{Binding PresetColors}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Width="40" Height="40" Margin="2" Theme="{x:Null}"
+                                                        Command="{Binding $parent[views:ThemeEditor].DataContext.SetColorCommand}"
+                                                        CommandParameter="{Binding}">
+                                                    <Button.Styles>
+                                                        <Style Selector="Button:pointerover">
+                                                            <Setter Property="Background" >
+                                                                <SolidColorBrush Color="{Binding Converter={x:Static viewModels:StringColorConverter.Instance}}" />
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Styles>
+                                                    <Button.Background>
+                                                        <SolidColorBrush Color="{Binding Converter={x:Static viewModels:StringColorConverter.Instance}}" />
+                                                    </Button.Background>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="请从左侧选择一个颜色进行编辑"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   IsVisible="{Binding !CanEdit}" />
+
+                    </Grid>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

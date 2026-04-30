@@ -63,7 +63,6 @@
                                         Click="Doc_Click"
                                         BorderBrush="Transparent"
                                         Background="Transparent"
-                                        IsEnabled="False"
                                         BorderThickness="-1"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">

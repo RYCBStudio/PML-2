@@ -15,8 +15,9 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
+using MsBox.Avalonia.ViewModels.Commands;
 using RestSharp;
-using JsonException = System.Text.Json.JsonException;
+
 #pragma warning disable CS8602 // 解引用可能出现空引用。
 
 namespace MEFrpLauncherX.Views;
@@ -335,14 +336,40 @@ public partial class AboutPage : UserControl
         });
     }
 
-    private void Doc_Click(object sender, RoutedEventArgs e)
+    private async void Doc_Click(object sender, RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo
         {
             FileName =
-                "https://docs.rycb.mxj.pub/index.php/2025/08/11/me-frp-launcher-%e5%b8%ae%e5%8a%a9%e6%96%87%e6%a1%a3/",
+                "https://docs.rycb.mxj.pub/pml-2/intro",
             UseShellExecute = true
         });
+        await MessageBox.ShowAsync("已打开文档。若无法访问, 请选择以下备用源: ", buttons:
+        [
+            new TaskDialogButton("源1", MessageBoxResult.Yes)
+            {
+                Command = new RelayCommand((s) =>
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName =
+                            "https://docs.rycb.tech/pml-2/intro",
+                        UseShellExecute = true
+                    });
+                })
+            },
+            new TaskDialogButton("源2", MessageBoxResult.No)
+            {
+                Command = new RelayCommand((s) =>
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://docs.rycb.mxj.pub/pml-2/intro",
+                        UseShellExecute = true
+                    });
+                })
+            }
+        ]);
     }
 
     private void MEFCL_Click(object sender, RoutedEventArgs e)
@@ -504,7 +531,7 @@ public partial class AboutPage : UserControl
         {
             Hitokoto = await Task.Run(() => ExecuteHitokotoRequest(CreateRequest(), "一言"));
         }
-        catch (JsonException)
+        catch (ArgumentNullException)
         {
             Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
             Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));

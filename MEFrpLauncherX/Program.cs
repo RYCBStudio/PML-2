@@ -25,12 +25,15 @@ internal sealed class Program
         private set;
     }
 
+    internal static ITransactionTracer StartupTransaction;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
+        StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
         // {
@@ -192,7 +195,7 @@ internal sealed class Program
         e.SetObserved();
     }
 
-    private static void HandleException(Exception ex)
+    private static void HandleException(Exception? ex)
     {
         if (ex == null)
         {

@@ -18,7 +18,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
 {
     private const int DEBOUNCE_DELAY_MS = 300;
     private readonly DispatcherTimer _debounceTimer;
-    private bool _isLoading;
     private DispatcherTimer _loadingDebounceTimer;
 
 // 在构造函数中初始化
@@ -38,12 +37,12 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
 
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         set
         {
-            if (_isLoading != value)
+            if (field != value)
             {
-                _isLoading = value;
+                field = value;
                 OnPropertyChanged();
 
                 // 添加防抖，避免频繁切换

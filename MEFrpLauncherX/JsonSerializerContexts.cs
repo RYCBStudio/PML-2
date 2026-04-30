@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.Core.Services;
+using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
 
@@ -57,9 +58,10 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ALPConfig))]
 [JsonSerializable(typeof(List<ALPConfig>))]
 [JsonSerializable(typeof(List<string>))]
+[JsonSerializable(typeof(List<OnlineTheme>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
-[JsonSerializable(typeof(JsonElement))]
-[JsonSourceGenerationOptions(JsonSerializerDefaults.Web, IncludeFields = true, PropertyNameCaseInsensitive = false)]
+[JsonSerializable(typeof(ThemeManifest))]
+[JsonSourceGenerationOptions(PropertyNameCaseInsensitive = false)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {
 }

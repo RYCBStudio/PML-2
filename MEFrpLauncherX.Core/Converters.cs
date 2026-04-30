@@ -24,6 +24,38 @@ public class ConverterBase : IValueConverter
     public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
 }
 
+public class IsNotNull : IValueConverter
+{
+    public static IsNotNull Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is not null;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class IsNull : IValueConverter
+{
+    public static IsNull Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is null;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
 public class IsVisibleToRowSpanConverter : IValueConverter
 {
     public static IsVisibleToRowSpanConverter Instance

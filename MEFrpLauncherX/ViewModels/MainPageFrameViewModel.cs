@@ -21,6 +21,7 @@ public class MainPageFrameViewModel : ViewModelBase
         NavigateToAboutCommand = CreateNavigationCommand(() => AboutPage ?? new AboutPage());
         NavigateToTerminalCommand = CreateNavigationCommand(() => TerminalPage ?? new TerminalPage());
         NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
+        NavigateToThemeCommand = CreateNavigationCommand(() => new ThemesPage());
     }
 
     public bool IsMenuOpen
@@ -88,6 +89,12 @@ public class MainPageFrameViewModel : ViewModelBase
         get;
     }
 
+
+    public ReactiveCommand<Unit, Unit> NavigateToThemeCommand
+    {
+        get;
+    }
+
     // 静态页面实例
     public static AboutPage AboutPage
     {
@@ -143,6 +150,9 @@ public class MainPageFrameViewModel : ViewModelBase
                 break;
             case "Update":
                 NavigateToUpdateCommand.Execute().Subscribe();
+                break;
+            case "Theme":
+                NavigateToThemeCommand.Execute().Subscribe();
                 break;
             default:
                 NavigateToHomeCommand.Execute().Subscribe();

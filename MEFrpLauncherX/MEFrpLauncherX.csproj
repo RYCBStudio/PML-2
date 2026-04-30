@@ -144,7 +144,7 @@
     <ItemGroup>
         <Reference Include="mscorlib"/>
         <Reference Include="RYCB.PML.MEFrpCaptchaLib">
-            <HintPath>RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
+          <HintPath>RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="SecretLib">
             <HintPath>SecretLib.dll</HintPath>
