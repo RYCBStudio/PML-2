@@ -104,9 +104,9 @@ public partial class MainWindow
             return;
         }
 
+        var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
         var themeManifest =
-            ThemeProcessor.LoadTheme(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                selectedTheme, "index.json"));
+            ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
 
         if (themeManifest != null)
         {
@@ -155,6 +155,15 @@ public partial class MainWindow
                 _accentAnimationCts = new CancellationTokenSource();
                 _ = AnimateAccentColorAsync(themeManifest.AccentColor, _accentAnimationCts.Token);
             }
+
+            if (themeManifest.FontFamily is not null)
+            {
+                var ff = new FontFamily(new Uri(Path.Combine(themePath, themeManifest.FontFamily.ToString())),
+                    Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
+                App.Current.Resources["GlobalFontFamily"] = ff;
+                App.Current.Resources["ContentControlThemeFontFamily"] = ff;
+                InvalidateVisual();
+            }
         }
     }
 
@@ -172,21 +181,21 @@ public partial class MainWindow
                     // 径向渐变（中心亮色，边缘深色）
                     new RadialGradientBrush
                     {
-                        GradientStops = new GradientStops
-                        {
+                        GradientStops =
+                        [
                             new GradientStop(baseColor, 0.0),
                             new GradientStop(new Color(0xCC, baseColor.R, baseColor.G, baseColor.B), 1.0)
-                        }
+                        ]
                     },
                 "Gradient" =>
                     // 线性渐变（例如从上到下）
                     new LinearGradientBrush
                     {
-                        GradientStops = new GradientStops
-                        {
+                        GradientStops =
+                        [
                             new GradientStop(baseColor, 0.0),
                             new GradientStop(new Color(0xCC, baseColor.R, baseColor.G, baseColor.B), 1.0)
-                        },
+                        ],
                         StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                         EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative)
                     },

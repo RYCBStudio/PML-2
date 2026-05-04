@@ -25,7 +25,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonSerializer.Deserialize<List<string>>(domain, AppJsonSerializerContext.Default.ListString)
+            Domains = JsonSerializer.Deserialize<List<string>>(domain, App.AppJsonSerializerContext.ListString)
                 ?.Distinct().ToList() ?? [];
         }
         catch
@@ -52,7 +52,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         try
         {
-            Domains = JsonSerializer.Deserialize<List<string>>(_domain, AppJsonSerializerContext.Default.ListString)
+            Domains = JsonSerializer.Deserialize<List<string>>(_domain, App.AppJsonSerializerContext.ListString)
                 ?.Distinct().ToList() ?? [];
         }
         catch

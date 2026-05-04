@@ -34,6 +34,8 @@
                                                        Command="{Binding PackageLocalThemeCommand}" />
                             <controls:CommandBarButton Label="导入" IconSource="Import"
                                                        Command="{Binding ImportThemeCommand}" />
+                            <controls:CommandBarButton Label="访问文档" IconSource="Help"
+                                                       Command="{Binding OpenDocumentationCommand}" />
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>
                     <ListBox Grid.Row="1" ItemsSource="{Binding LocalThemes}"
@@ -79,9 +81,12 @@
                             <controls:CommandBarButton Label="下载所选" IconSource="Download"
                                                        Command="{Binding DownloadThemeCommand}"
                                                        IsEnabled="{Binding !IsDownloading}" />
+                            <controls:CommandBarElementContainer>
+                                <TextBox Watermark="搜索..." MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
+                            </controls:CommandBarElementContainer>
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>
-                    <ListBox Grid.Row="1" ItemsSource="{Binding OnlineThemes}"
+                    <ListBox Grid.Row="1" ItemsSource="{Binding FilteredOnlineThemes}"
                              SelectedItem="{Binding SelectedOnlineTheme}"
                              Margin="0,0,0,10">
                         <ListBox.ItemTemplate>

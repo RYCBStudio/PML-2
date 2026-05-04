@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -61,7 +62,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(List<OnlineTheme>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(ThemeManifest))]
-[JsonSourceGenerationOptions(PropertyNameCaseInsensitive = false)]
+[JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {
 }

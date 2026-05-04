@@ -626,7 +626,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
 
                 itemPanel.Children.Add(prefixBlock);
 
-                var contentPanel = new WrapPanel()
+                var contentPanel = new WrapPanel
                 {
                     Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch
                 };

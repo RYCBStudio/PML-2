@@ -69,7 +69,7 @@ public static class ConfigManager
             {
                 var json = File.ReadAllText(ConfigPath);
                 _currentConfig =
-                    JsonSerializer.Deserialize<AppConfig>(json, AppJsonSerializerContext.Default.AppConfig);
+                    JsonSerializer.Deserialize<AppConfig>(json, App.AppJsonSerializerContext.AppConfig);
                 var updateBakFile = BackupConfigPath;
                 if (!File.Exists(updateBakFile))
                 {
@@ -81,7 +81,7 @@ public static class ConfigManager
 
                 var _bak_json = File.ReadAllText(updateBakFile);
                 var _bak_config =
-                    JsonSerializer.Deserialize<AppConfig>(_bak_json, AppJsonSerializerContext.Default.AppConfig);
+                    JsonSerializer.Deserialize<AppConfig>(_bak_json, App.AppJsonSerializerContext.AppConfig);
                 App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
                     module: EnumLogModule.Custom, customModuleName: "配置管理");
 
@@ -420,7 +420,7 @@ public static class ConfigManager
         {
             lock (_lock)
             {
-                var json = JsonSerializer.Serialize(_currentConfig, AppJsonSerializerContext.Default.AppConfig);
+                var json = JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig);
                 File.WriteAllText(ConfigPath, json);
             }
         }
@@ -441,7 +441,7 @@ public static class ConfigManager
             string json;
             lock (_lock)
             {
-                json = JsonSerializer.Serialize(_currentConfig, AppJsonSerializerContext.Default.AppConfig);
+                json = JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig);
             }
 
             await File.WriteAllTextAsync(ConfigPath, json);

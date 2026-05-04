@@ -132,7 +132,7 @@ public partial class LoginPage : UserControl
             {
                 var userInfo =
                     JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.UserInfo>>(message,
-                        AppJsonSerializerContext.Default.ApiInfoUserInfo);
+                        App.AppJsonSerializerContext.ApiInfoUserInfo);
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {

@@ -169,7 +169,7 @@ public class MEpiConverter
         }
 
         var result =
-            JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? "", AppJsonSerializerContext.Default.Options) ??
+            JsonSerializer.Deserialize<ApiInfo<T>>(response.Content ?? "", App.AppJsonSerializerContext.Options) ??
             new ApiInfo<T>
             {
                 code = 0,
@@ -191,7 +191,7 @@ public class MEpiConverter
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
         return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "",
-            AppJsonSerializerContext.Default.ChallengeInfo)!;
+            App.AppJsonSerializerContext.ChallengeInfo)!;
     }
 
     public static async Task<(CaptchaResultX, string)> GetRedeemAsync(string redeemBody)
@@ -204,7 +204,7 @@ public class MEpiConverter
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
         return (
             JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "",
-                AppJsonSerializerContext.Default.CaptchaResultX)!, response.Content ?? "");
+                App.AppJsonSerializerContext.CaptchaResultX)!, response.Content ?? "");
     }
 
     /// <summary>
@@ -344,7 +344,7 @@ public class MEpiConverter
             username = username,
             password = password,
             captchaToken = GetCaptchaResult(captchaCode)
-        }, AppJsonSerializerContext.Default.LoginInfo);
+        }, App.AppJsonSerializerContext.LoginInfo);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -496,7 +496,7 @@ public class MEpiConverter
         {
             nodeId = nodeId,
             protocol = protocol
-        }, AppJsonSerializerContext.Default.FreePortBody);
+        }, App.AppJsonSerializerContext.FreePortBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -511,7 +511,7 @@ public class MEpiConverter
             "message": "无法获取api信息",
             "data": -1
             }
-            """, AppJsonSerializerContext.Default.ApiInfoInt32) ?? new ApiInfo<int> { data = -1 };
+            """, App.AppJsonSerializerContext.ApiInfoInt32) ?? new ApiInfo<int> { data = -1 };
         HandleResponse(result);
         return result;
     }
@@ -545,7 +545,7 @@ public class MEpiConverter
                              "traffic": 0
                              }
                          }
-                         """, AppJsonSerializerContext.Default.ApiInfoObject) ??
+                         """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -580,7 +580,7 @@ public class MEpiConverter
                              "traffic": 0
                              }
                          }
-                         """, AppJsonSerializerContext.Default.ApiInfoObject) ??
+                         """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -648,7 +648,7 @@ public class MEpiConverter
                              "traffic": 0
                              }
                          }
-                         """, AppJsonSerializerContext.Default.Options) ??
+                         """, App.AppJsonSerializerContext.Options) ??
                      new ApiInfo<ConfigInfo>();
         HandleResponse(result);
         return result;
@@ -683,7 +683,7 @@ public class MEpiConverter
                          "message": "无法获取api信息",
                          "data": null
                          }
-                         """, AppJsonSerializerContext.Default.Options) ??
+                         """, App.AppJsonSerializerContext.Options) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -727,7 +727,7 @@ public class MEpiConverter
             try
             {
                 var firstResult =
-                    JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, AppJsonSerializerContext.Default.Options);
+                    JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, App.AppJsonSerializerContext.Options);
                 if (firstResult != null && firstResult.code != 200)
                 {
                     HandleResponse(firstResult);
@@ -742,7 +742,7 @@ public class MEpiConverter
             try
             {
                 var secondResult =
-                    JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, AppJsonSerializerContext.Default.Options);
+                    JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, App.AppJsonSerializerContext.Options);
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
@@ -758,7 +758,7 @@ public class MEpiConverter
         try
         {
             var result =
-                JsonSerializer.Deserialize<ApiInfo<object>>(content, AppJsonSerializerContext.Default.Options) ??
+                JsonSerializer.Deserialize<ApiInfo<object>>(content, App.AppJsonSerializerContext.Options) ??
                 new ApiInfo<object>();
             HandleResponse(result);
             return result;
@@ -802,7 +802,7 @@ public class MEpiConverter
                              "traffic": 0
                              }
                          }
-                         """, AppJsonSerializerContext.Default.Options) ??
+                         """, App.AppJsonSerializerContext.Options) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -880,7 +880,7 @@ public class MEpiConverter
         else
         {
             result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",
-                         AppJsonSerializerContext.Default.ApiInfoTrafficStatus) ??
+                         App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
                      new ApiInfo<TrafficStatus>();
         }
 

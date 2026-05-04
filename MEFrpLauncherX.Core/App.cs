@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
@@ -16,6 +18,7 @@ public class App : IDisposable
     public static string ReleaseFlag = "Release";
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
 
+    internal static AppJsonSerializerContext AppJsonSerializerContext;
     public static string? SelectedTheme
     {
         get;
@@ -60,6 +63,12 @@ public class App : IDisposable
     {
         Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
         Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
+        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions()
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true
+        });
 
         // 使用 Path.Combine 处理跨平台路径
         var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");

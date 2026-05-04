@@ -145,7 +145,7 @@ internal sealed class Program
 
             Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
             File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
-                JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.StartupData));
+                JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         }
     }
 
@@ -171,7 +171,7 @@ internal sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .With(new Win32PlatformOptions()
+            .With(new Win32PlatformOptions
             {
                 WinUICompositionBackdropCornerRadius = 0.0f,
             })

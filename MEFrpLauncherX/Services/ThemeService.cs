@@ -27,13 +27,13 @@ public class ThemeService
                     "https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/market/themes/manifest.json");
             var themes =
                 JsonSerializer.Deserialize<List<OnlineTheme>>(response,
-                    AppJsonSerializerContext.Default.ListOnlineTheme);
+                    MEFrpLauncherX.App.AppJsonSerializerContext.ListOnlineTheme);
             return new AvaloniaList<OnlineTheme>(themes ?? []);
         }
         catch
         {
             // 返回空列表，如果失败
-            return new AvaloniaList<OnlineTheme>();
+            return [];
         }
     }
 

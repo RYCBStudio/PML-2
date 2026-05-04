@@ -186,15 +186,15 @@ public partial class ManageProxyPage : UserControl
                         RequestHeaders = item.requestHeaders.IsNullOrEmpty()
                             ? null
                             : JsonSerializer.Deserialize<Dictionary<string, string>>(item.requestHeaders,
-                                AppJsonSerializerContext.Default.DictionaryStringString),
+                                App.AppJsonSerializerContext.DictionaryStringString),
                         ResponseHeaders = item.responseHeaders.IsNullOrEmpty()
                             ? null
                             : JsonSerializer.Deserialize<Dictionary<string, string>>(item.responseHeaders,
-                                AppJsonSerializerContext.Default.DictionaryStringString),
+                                App.AppJsonSerializerContext.DictionaryStringString),
                         Locations = item.locations.IsNullOrEmpty()
                             ? null
                             : JsonSerializer.Deserialize<List<string>>(item.locations,
-                                AppJsonSerializerContext.Default.ListString)
+                                App.AppJsonSerializerContext.ListString)
                     });
                 }
             });

@@ -17,7 +17,7 @@ public class ThemeProcessor
         {
             var json = new StreamReader(fs).ReadToEnd();
             var manifest =
-                JsonSerializer.Deserialize<ThemeManifest>(json, AppJsonSerializerContext.Default.ThemeManifest);
+                JsonSerializer.Deserialize<ThemeManifest>(json, App.AppJsonSerializerContext.ThemeManifest);
             return manifest;
         }
         catch (JsonException ex)

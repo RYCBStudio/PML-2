@@ -480,7 +480,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
                 JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
-                    AppJsonSerializerContext.Default.ApiInfoSignInfo);
+                    App.AppJsonSerializerContext.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
@@ -582,7 +582,7 @@ public class NoticeManager
             // 读取二进制文件并反序列化
             var fileBytes = File.ReadAllBytes(NoticeFilePath);
             var jsonString = Encoding.UTF8.GetString(fileBytes);
-            return JsonSerializer.Deserialize<NoticeData>(jsonString, AppJsonSerializerContext.Default.NoticeData) ??
+            return JsonSerializer.Deserialize<NoticeData>(jsonString, App.AppJsonSerializerContext.NoticeData) ??
                    new NoticeData();
         }
         catch (Exception ex)
@@ -606,7 +606,7 @@ public class NoticeManager
             }
 
             // 序列化为 JSON 并转换为二进制
-            var jsonString = JsonSerializer.Serialize(data, AppJsonSerializerContext.Default.NoticeData);
+            var jsonString = JsonSerializer.Serialize(data, App.AppJsonSerializerContext.NoticeData);
             var binaryData = Encoding.UTF8.GetBytes(jsonString);
 
             File.WriteAllBytes(NoticeFilePath, binaryData);

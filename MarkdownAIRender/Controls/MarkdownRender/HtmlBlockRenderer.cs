@@ -59,7 +59,7 @@ public static partial class HtmlBlockRenderer
         alertType = string.Empty;
         alertContent = string.Empty;
 
-        var lines = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        var lines = content.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
         if (lines.Length == 0)
         {
             return false;

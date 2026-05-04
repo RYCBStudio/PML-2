@@ -300,7 +300,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
 
     private async void BrowsePreviewImage()
     {
-        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "选择预览图片",
             AllowMultiple = false,
@@ -440,7 +440,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                 savePath = Path.Combine(themesDir, "index.json");
             }
 
-            var json = JsonSerializer.Serialize(manifest, AppJsonSerializerContext.Default.ThemeManifest);
+            var json = JsonSerializer.Serialize(manifest, App.AppJsonSerializerContext.ThemeManifest);
             File.WriteAllText(savePath, json);
 
             Growl.Success($"主题已保存到: {savePath}");
@@ -529,7 +529,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
 
     private async void BrowseBackground()
     {
-        var dialog = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        var dialog = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "选择背景图片",
             AllowMultiple = false,

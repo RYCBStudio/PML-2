@@ -71,7 +71,7 @@ public class RYCBApiConverter
             user = mail,
             comment = feedback,
             time = DateTime.Now.ToString("O")
-        }, AppJsonSerializerContext.Default.FeedbackBody);
+        }, App.AppJsonSerializerContext.FeedbackBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -80,7 +80,7 @@ public class RYCBApiConverter
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
         var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
-            AppJsonSerializerContext.Default.FeedbackResponse);
+            App.AppJsonSerializerContext.FeedbackResponse);
         return res;
     }
 
@@ -105,7 +105,7 @@ public class RYCBApiConverter
             receiver = receiver,
             body = mailBody,
             subject = subject
-        }, AppJsonSerializerContext.Default.EmailBody);
+        }, App.AppJsonSerializerContext.EmailBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -124,7 +124,7 @@ public class RYCBApiConverter
         }
 
         var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
-            AppJsonSerializerContext.Default.FeedbackResponse);
+            App.AppJsonSerializerContext.FeedbackResponse);
         return res;
     }
 
@@ -153,7 +153,7 @@ public class RYCBApiConverter
 
         var result =
             JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
-                AppJsonSerializerContext.Default.SingleVersionInfo) ?? new SingleVersionInfo
+                App.AppJsonSerializerContext.SingleVersionInfo) ?? new SingleVersionInfo
             {
                 success = false,
                 version = "0.0.0",
@@ -189,7 +189,7 @@ public class RYCBApiConverter
 
         var result =
             JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
-                AppJsonSerializerContext.Default.SingleVersionInfo) ?? new SingleVersionInfo
+                App.AppJsonSerializerContext.SingleVersionInfo) ?? new SingleVersionInfo
             {
                 success = false,
                 version = "0.0.0",
@@ -211,7 +211,7 @@ public class RYCBApiConverter
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
         var result =
             JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content,
-                AppJsonSerializerContext.Default.TunnelErrorInfosShell);
+                App.AppJsonSerializerContext.TunnelErrorInfosShell);
         return result;
     }
 
@@ -237,7 +237,7 @@ public class RYCBApiConverter
         }
 
         var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content,
-            AppJsonSerializerContext.Default.SingleApiInfoTunnelErrorInfo);
+            App.AppJsonSerializerContext.SingleApiInfoTunnelErrorInfo);
         return result;
     }
 
@@ -263,7 +263,7 @@ public class RYCBApiConverter
         }
 
         var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content,
-            AppJsonSerializerContext.Default.SingleApiInfoNoticeContentArray);
+            App.AppJsonSerializerContext.SingleApiInfoNoticeContentArray);
         return result;
     }
 

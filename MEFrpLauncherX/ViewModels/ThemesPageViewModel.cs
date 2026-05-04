@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -29,12 +31,18 @@ public class ThemesPageViewModel : ViewModelBase
     public ObservableCollection<LocalTheme> LocalThemes
     {
         get;
-    } = new();
+    } = [];
 
     public ObservableCollection<OnlineTheme> OnlineThemes
     {
         get;
-    } = new();
+    } = [];
+
+    public AvaloniaList<OnlineTheme> FilteredOnlineThemes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = [];
 
     public LocalTheme? SelectedLocalTheme
     {
@@ -105,6 +113,17 @@ public class ThemesPageViewModel : ViewModelBase
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> OpenDocumentationCommand
+    {
+        get;
+    }
+
+    public string? SearchText
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public ThemesPageViewModel()
     {
         RefreshLocalThemesCommand = ReactiveCommand.Create(RefreshLocalThemes);
@@ -121,12 +140,37 @@ public class ThemesPageViewModel : ViewModelBase
             this.WhenAnyValue(x => x.SelectedLocalTheme, (LocalTheme? theme) => theme != null));
         AddLocalThemeCommand = ReactiveCommand.Create(AddLocalTheme);
         ImportThemeCommand = ReactiveCommand.Create(ImportTheme);
+        OpenDocumentationCommand = ReactiveCommand.Create(() =>
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://docs.rycb.tech/pml-2/themes",
+                UseShellExecute = true
+            });
+        });
+        FetchOnlineThemesCommand.Execute();
+        this.WhenAnyValue(x => x.SearchText).Throttle(TimeSpan.FromMilliseconds(300)).Subscribe(text =>
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                FilteredOnlineThemes.Clear();
+                FilteredOnlineThemes.AddRange(OnlineThemes);
+            }
+            else
+            {
+                FilteredOnlineThemes.Clear();
+                var query = from theme in OnlineThemes
+                    where theme.Name.Contains(text) || theme.Author.Contains(text) || theme.Description.Contains(text)
+                    select theme;
+                FilteredOnlineThemes.AddRange(query);
+            }
+        });
         RefreshLocalThemes();
     }
 
     private async void ImportTheme()
     {
-        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             AllowMultiple = true,
             FileTypeFilter =
@@ -321,7 +365,7 @@ public class ThemesPageViewModel : ViewModelBase
         Growl.Success("主题已打包");
         await MessageBox.ShowAsync("主题打包完成!", buttons:
         [
-            new TaskDialogButton()
+            new TaskDialogButton
             {
                 Text = "打开文件夹",
                 Command = new RelayCommand(_ =>
@@ -329,7 +373,7 @@ public class ThemesPageViewModel : ViewModelBase
                     Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
                 })
             },
-            new TaskDialogButton()
+            new TaskDialogButton
             {
                 Text = "确定",
                 Command = new RelayCommand(_ =>

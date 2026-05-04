@@ -438,7 +438,7 @@ public partial class AboutPage : UserControl
 
         var result =
             JsonSerializer.Deserialize<HitokotoResource>(response.Content,
-                AppJsonSerializerContext.Default.HitokotoResource);
+                App.AppJsonSerializerContext.HitokotoResource);
         return result;
     }
 
@@ -454,7 +454,7 @@ public partial class AboutPage : UserControl
 
         var result =
             JsonSerializer.Deserialize<HitokotoResource>(response.Content,
-                AppJsonSerializerContext.Default.HitokotoResource);
+                App.AppJsonSerializerContext.HitokotoResource);
         return result;
     }
 

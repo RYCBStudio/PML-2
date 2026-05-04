@@ -205,7 +205,7 @@ public partial class MainWindow : AppWindow, IDisposable
         if (OperatingSystem.IsMacOS())
         {
             // 创建原生菜单
-            NativeMenuBar = new NativeMenu();
+            NativeMenuBar = [];
 
             // 添加应用程序菜单（macOS 第一个菜单）
             var appMenu = new NativeMenuItem("隧道");
@@ -275,7 +275,7 @@ public partial class MainWindow : AppWindow, IDisposable
 
         var data = JsonSerializer.Deserialize<StartupData>(
             await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")),
-            AppJsonSerializerContext.Default.StartupData);
+            App.AppJsonSerializerContext.StartupData);
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
             var _frpt = await MEpiConverter.GetFrpTokenAsync();

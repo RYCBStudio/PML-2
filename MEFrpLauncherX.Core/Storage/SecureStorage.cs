@@ -128,7 +128,7 @@ internal static class SecureStorage
             }
 
             // 4. Deserialize and check expiry
-            var result = JsonSerializer.Deserialize(json, AppJsonSerializerContext.Default.JsonElement);
+            var result = JsonSerializer.Deserialize(json, App.AppJsonSerializerContext.JsonElement);
             var expiry = result.GetProperty("Expiry").GetDateTime();
 
             if (expiry < DateTime.UtcNow)
@@ -138,7 +138,7 @@ internal static class SecureStorage
             }
 
             return result.GetProperty("Data")
-                .Deserialize<InfoClasses.UserInfo>(AppJsonSerializerContext.Default.UserInfo);
+                .Deserialize<InfoClasses.UserInfo>(App.AppJsonSerializerContext.UserInfo);
         }
         catch (CryptographicException ex)
         {

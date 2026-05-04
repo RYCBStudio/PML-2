@@ -146,7 +146,7 @@ public partial class UserCenterPage : UserControl
             var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
                 JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
-                    AppJsonSerializerContext.Default.ApiInfoSignInfo);
+                    App.AppJsonSerializerContext.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)

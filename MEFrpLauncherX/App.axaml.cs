@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -26,11 +28,19 @@ public class App : Application
         get;
         private set;
     }
+    
+    internal static AppJsonSerializerContext AppJsonSerializerContext;
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         Core.App.Initialize();
+        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions()
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true
+        });
     }
 
     public override void RegisterServices() => base.RegisterServices();
@@ -65,8 +75,8 @@ public class App : Application
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
 
-            Current.Resources["GlobalFontFamily"] = new FontFamily("Exo");
-            Current.Resources["ContentControlThemeFontFamily"] = new FontFamily("Exo");
+            // Current.Resources["GlobalFontFamily"] = new FontFamily("Exo");
+            // Current.Resources["ContentControlThemeFontFamily"] = new FontFamily("Exo");
 
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
