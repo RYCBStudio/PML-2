@@ -936,7 +936,7 @@ public partial class TerminalControl : UserControl, IDisposable
                                 ErrorIcon.Symbol = Symbol.ReportHacked;
                                 ErrorText.Text = onlineSolution?.data.Info;
                                 SolutionBox.Text = onlineSolution?.data.Solution[0];
-                                _tunnelErrorInfoShell = onlineSolution.data!;
+                                _tunnelErrorInfoShell = onlineSolution?.data;
                             }
 
                             OutputBox.ScrollToEnd();

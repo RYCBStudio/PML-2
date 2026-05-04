@@ -5,10 +5,10 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class Card : UserControl
 {
-    public static StyledProperty<string> TitleProperty =
+    public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<Card, string>(nameof(Title));
 
-    public static StyledProperty<object?> CardContentProperty =
+    public static readonly StyledProperty<object?> CardContentProperty =
         AvaloniaProperty.Register<Card, object?>(nameof(CardContent));
 
     public Card()

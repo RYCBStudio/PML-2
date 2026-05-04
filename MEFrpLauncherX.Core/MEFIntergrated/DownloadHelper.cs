@@ -23,7 +23,6 @@ namespace MEFrpLauncherX.Core.MEFIntergrated;
 
 public partial class DownloadHelper
 {
-    private readonly CancellationTokenSource cts;
     private readonly Timer jokeTimer; // 添加计时器
 
     private readonly TaskDialog td;
@@ -45,7 +44,7 @@ public partial class DownloadHelper
 
     public DownloadHelper(Visual? VisualRoot)
     {
-        cts = new CancellationTokenSource();
+        var cts1 = new CancellationTokenSource();
         this.VisualRoot = VisualRoot;
         jokeTimer = new Timer(1000);
         jokeTimer.Elapsed += OnJokeTimerElapsed;
@@ -85,7 +84,7 @@ public partial class DownloadHelper
                 downloader.CancelAsync();
                 await downloader.CancelTaskAsync();
                 isCancelled = true;
-                cts.Cancel();
+                cts1.Cancel();
             })
         };
         td = new TaskDialog
@@ -154,8 +153,8 @@ public partial class DownloadHelper
 
             try
             {
-                App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Normal);
-                App.MainWindow.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Normal);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
                     (ulong)e.TotalBytesToReceive);
             }
             catch
@@ -201,7 +200,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Error(e.Error, module: EnumLogModule.Net);
             try
             {
-                App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Error);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Error);
             }
             catch
             {
@@ -214,7 +213,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Log("下载完成");
             try
             {
-                App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
             }
             catch
             {
@@ -233,7 +232,7 @@ public partial class DownloadHelper
         App.CurrentLogger.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
         try
         {
-            App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+            App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
         }
         catch
         {

@@ -203,7 +203,6 @@ public static class VersionComparer
         {
             ReleaseFlag.None => 2,
             ReleaseFlag.RC => 1,
-            ReleaseFlag.Preview => 0,
             _ => 0
         };
 
@@ -211,7 +210,6 @@ public static class VersionComparer
         {
             ReleaseFlag.None => 2,
             ReleaseFlag.RC => 1,
-            ReleaseFlag.Preview => 0,
             _ => 0
         };
 

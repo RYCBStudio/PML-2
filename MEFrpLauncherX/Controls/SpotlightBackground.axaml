@@ -1,0 +1,103 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.SpotlightBackground">
+    
+        <!-- 聚光灯背景层：放在内容下面 -->
+        <Grid>
+            <Grid.Styles>
+                <Style Selector="Ellipse.Spotlight">
+                    <Setter Property="Opacity" Value="0.6" />
+                    <Style.Animations>
+                        <!-- 平移动画：让光斑在背景中游走 -->
+                        <Animation Duration="0:0:8"
+                                   FillMode="Forward"
+                                   IterationCount="INFINITE">
+                            <KeyFrame Cue="0%">
+                                <Setter Property="TranslateTransform.X" Value="0" />
+                                <Setter Property="TranslateTransform.Y" Value="0" />
+                            </KeyFrame>
+                            <KeyFrame Cue="50%">
+                                <Setter Property="TranslateTransform.X" Value="80" />
+                                <Setter Property="TranslateTransform.Y" Value="-60" />
+                            </KeyFrame>
+                            <KeyFrame Cue="100%">
+                                <Setter Property="TranslateTransform.X" Value="0" />
+                                <Setter Property="TranslateTransform.Y" Value="0" />
+                            </KeyFrame>
+                        </Animation>
+                        <!-- 旋转动画：让光斑自身有缓慢的旋转感 -->
+                        <Animation Duration="0:0:20"
+                                   FillMode="Forward"
+                                   IterationCount="INFINITE">
+                            <KeyFrame Cue="0%">
+                                <Setter Property="RotateTransform.Angle" Value="0" />
+                            </KeyFrame>
+                            <KeyFrame Cue="100%">
+                                <Setter Property="RotateTransform.Angle" Value="360" />
+                            </KeyFrame>
+                        </Animation>
+                    </Style.Animations>
+                    <Setter Property="Effect">
+                        <BlurEffect Radius="150" />
+                    </Setter>
+                </Style>
+            </Grid.Styles>
+
+            <!-- 光斑1：暖色，大一点，位置偏左上 -->
+            <Ellipse Width="400"
+                     Height="400"
+                     Fill="#7BFFC3"
+                     Opacity="0.5"
+                     Classes="Spotlight"
+                     RenderTransformOrigin="0.3 0.3"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Margin="-100 -100 0 0">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform />
+                        <RotateTransform />
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- 光斑2：冷色，偏蓝 -->
+            <Ellipse Width="250"
+                     Height="250"
+                     Fill="#406AFF"
+                     Opacity="0.6"
+                     Classes="Spotlight"
+                     RenderTransformOrigin="0.7 0.6"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom"
+                     Margin="0 0 -80 -80">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform />
+                        <RotateTransform />
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- 光斑3：青色，小一点，动态感更强 -->
+            <Ellipse Width="180"
+                     Height="180"
+                     Fill="#3EECFF"
+                     Opacity="0.7"
+                     Classes="Spotlight"
+                     RenderTransformOrigin="0.5 0.8"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Margin="0 -50 -50 0">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform />
+                        <RotateTransform />
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Grid>
+</UserControl>

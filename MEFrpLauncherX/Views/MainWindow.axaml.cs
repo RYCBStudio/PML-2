@@ -133,67 +133,6 @@ public partial class MainWindow : AppWindow, IDisposable
         Instance = this;
     }
 
-    internal async Task ApplyThemeAsync()
-    {
-        string selectedTheme;
-        try
-        {
-            selectedTheme =
-                (await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                    "selected")))
-                .Trim();
-        }
-        catch (FileNotFoundException)
-        {
-            Core.App.CurrentLogger.Log("未找到主题配置文件，跳过主题加载");
-            return;
-        }
-        catch (Exception ex)
-        {
-            Core.App.CurrentLogger.Error(ex, "加载主题配置文件时发生错误");
-            return;
-        }
-
-        if (selectedTheme.IsNullOrEmpty())
-        {
-            return;
-        }
-
-        var themeManifest =
-            ThemeProcessor.LoadTheme(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                selectedTheme, "index.json"));
-
-        if (themeManifest != null)
-        {
-            ConfigManager.UpdateConfig(c =>
-            {
-                if (themeManifest.Background.Type == "Image")
-                {
-                    var fullImagePath = Path.GetFullPath(themeManifest.Background.Image,
-                        Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme));
-                    c.BackgroundSettings.BackgroundImage = fullImagePath;
-                    AppearanceSettings.UpdateBackground(false);
-                }
-
-                c.BackgroundSettings.Stretch = themeManifest.Background.FillMode;
-                c.BackgroundSettings.LayerOpacity = themeManifest.Background.LayerOpacity;
-            });
-            if (themeManifest.AccentColor.Count == 1)
-            {
-                ConfigManager.UpdateConfig(cfg =>
-                    cfg.AccentColor = themeManifest.AccentColor.FirstOrDefault()?.Color!);
-                App.FATheme?.CustomAccentColor =
-                    Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
-            }
-            else
-            {
-                _accentAnimationCts?.Cancel();
-                _accentAnimationCts = new CancellationTokenSource();
-                _ = AnimateAccentColorAsync(themeManifest.AccentColor, _accentAnimationCts.Token);
-            }
-        }
-    }
-
     internal static MainWindow Instance
     {
         get;
@@ -623,7 +562,7 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
     public string AppName
     {
         get;
-    }
+    } = "111";
 
     public IImage AppIcon
     {

@@ -8,15 +8,18 @@ using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.Json;
+using Avalonia.Controls.Converters;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 using MEFrpLauncherX.Core;
 using ReactiveUI;
 
@@ -62,19 +65,71 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
-            this.RaisePropertyChanged(nameof(IsSolidColorBackground));
-            this.RaisePropertyChanged(nameof(IsImageBackground));
+            // this.RaisePropertyChanged(nameof(IsSolidColorBackground));
+            // this.RaisePropertyChanged(nameof(IsImageBackground));
         }
     } = "SolidColor";
 
-    public bool IsSolidColorBackground => BackgroundType == "SolidColor";
-    public bool IsImageBackground => BackgroundType == "Image";
+    public bool IsSolidColorBackground
+    {
+        get;
+        set
+        {
+            BackgroundType = value ? "SolidColor" : "Image";
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(FillModes));
+            this.RaisePropertyChanged(nameof(BackgroundFillMode));
+        }
+    }
 
+    public bool IsImageBackground
+    {
+        get;
+        set
+        {
+            BackgroundType = value ? "Image" : "SolidColor";
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(FillModes));
+            this.RaisePropertyChanged(nameof(BackgroundFillMode));
+        }
+    }
+
+    private bool _isUpdating;
+    private Color? _latestAvailableColor;
+
+    [ValidHexStringValidator(ErrorMessage = "请输入有效的十六进制颜色值，例如: #FF0000 或 #FFFF0000")]
     public string BackgroundColor
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        set
+        {
+            if (_isUpdating)
+            {
+                return;
+            }
+
+            this.RaiseAndSetIfChanged(ref field, value);
+            _isUpdating = true;
+            RealBackgroundColor = ColorToHexConverter.ParseHexString(BackgroundColor, AlphaComponentPosition.Leading) ??
+                                  _latestAvailableColor;
+            _latestAvailableColor = RealBackgroundColor;
+            _isUpdating = false;
+        }
     } = "#FF1A1A1A";
+
+    public Color? RealBackgroundColor
+    {
+        get => field ?? ColorToHexConverter.ParseHexString(BackgroundColor, AlphaComponentPosition.Leading);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            //_isUpdating = true;
+            BackgroundColor = ColorToHexConverter.ToHexString(value ?? Color.Parse("#00000000"),
+                AlphaComponentPosition.Leading, true, true);
+            _latestAvailableColor = value;
+            //_isUpdating = false;
+        }
+    }
 
     public string BackgroundImagePath
     {
@@ -112,10 +167,9 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "Uniform";
 
-    public ObservableCollection<string> FillModes
-    {
-        get;
-    } = new(["None", "Stretch", "Uniform", "UniformToFill"]);
+    public ObservableCollection<string> FillModes => IsImageBackground
+        ? ["None", "Stretch", "Uniform", "UniformToFill"]
+        : ["None", "Radiation", "Gradient"];
 
     public double LayerOpacity
     {
@@ -198,6 +252,11 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> BrowsePreviewImageCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<string, Unit> SetColorCommand
     {
         get;
@@ -230,11 +289,39 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         PreviewThemeCommand = ReactiveCommand.Create(PreviewTheme);
         BrowseBackgroundCommand = ReactiveCommand.Create(BrowseBackground);
         SetColorCommand = ReactiveCommand.Create<string>(SetColor);
+        BrowsePreviewImageCommand = ReactiveCommand.Create(BrowsePreviewImage);
 
         // 如果是编辑现有主题，加载数据
         if (!string.IsNullOrEmpty(themeFilePath) && File.Exists(Path.Combine(themeFilePath, "index.json")))
         {
             LoadTheme(Path.Combine(themeFilePath, "index.json"));
+        }
+    }
+
+    private async void BrowsePreviewImage()
+    {
+        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        {
+            Title = "选择预览图片",
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType("图片文件")
+                {
+                    Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"]
+                }
+            ]
+        });
+        if (res.Count > 0)
+        {
+            try
+            {
+                PreviewImage = new Bitmap(res[0].Path.IsFile ? res[0].Path.AbsolutePath : res[0].Path.AbsoluteUri);
+            }
+            catch (Exception ex)
+            {
+                Growl.Error($"加载预览图片失败: {ex.Message}");
+            }
         }
     }
 
@@ -440,25 +527,26 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    private void BrowseBackground()
+    private async void BrowseBackground()
     {
-        var dialog = new OpenFileDialog
+        var dialog = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "选择背景图片",
             AllowMultiple = false,
-            Filters = new List<FileDialogFilter>
-            {
-                new() { Name = "图片文件", Extensions = { "png", "jpg", "jpeg", "bmp", "gif" } }
-            }
-        };
-
-        dialog.ShowAsync(MainWindow.Instance).ContinueWith(t =>
-        {
-            if (t.Result != null && t.Result.Length > 0)
-            {
-                BackgroundImagePath = t.Result[0];
-            }
+            FileTypeFilter =
+            [
+                new FilePickerFileType("图片文件")
+                {
+                    Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"]
+                }
+            ]
         });
+
+        if (dialog.Count > 0)
+        {
+            BackgroundImagePath =
+                dialog[0].Path.IsFile ? dialog[0].Path.AbsolutePath : dialog[0].Path.AbsoluteUri;
+        }
     }
 
     private void LoadTheme(string themeFilePath)
@@ -472,10 +560,14 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
             Author = manifest.Author;
             Description = manifest.Description;
             Version = manifest.Version;
-            PreviewImage = new Bitmap(Path.Combine(Path.GetDirectoryName(themeFilePath) ?? "", manifest.PreviewImage ?? "preview.png"));
+            PreviewImage = new Bitmap(Path.Combine(Path.GetDirectoryName(themeFilePath) ?? "",
+                manifest.PreviewImage ?? "preview.png"));
 
             BackgroundType = manifest.Background.Type;
+            IsSolidColorBackground = manifest.Background.Type == "SolidColor";
+            IsImageBackground = manifest.Background.Type == "Image";
             BackgroundColor = manifest.Background.Color ?? "#FF1A1A1A";
+            RealBackgroundColor = ColorToHexConverter.ParseHexString(BackgroundColor, AlphaComponentPosition.Leading);
             BackgroundImagePath = manifest.Background.Image ?? "";
             BackgroundFillMode = manifest.Background.FillMode;
             LayerOpacity = manifest.Background.LayerOpacity;
@@ -504,13 +596,38 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
     }
 }
 
+public class ValidHexStringValidator : ValidationAttribute
+{
+    public override bool IsValid(object? value) => value is string name && Color.TryParse(name, out _);
+}
+
 public class AccentColorItem : ReactiveObject
 {
+    private bool _isUpdating; // 防止递归
+
     public string Color
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "#FF0000";
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            RealColor = ColorToHexConverter.ParseHexString(Color, AlphaComponentPosition.Leading);
+        }
+    } = "#FFFF0000";
+
+    public Color? RealColor
+    {
+        get => field ?? ColorToHexConverter.ParseHexString(Color, AlphaComponentPosition.Leading);
+        set
+        {
+            if (_isUpdating) return;
+            this.RaiseAndSetIfChanged(ref field, value);
+            _isUpdating = true;
+            Color = ColorToHexConverter.ToHexString(value ?? Avalonia.Media.Color.Parse("#00000000"),
+                AlphaComponentPosition.Leading, true, true);
+            _isUpdating = false;
+        }
+    }
 
     public double Duration
     {
@@ -551,6 +668,8 @@ public class StringColorConverter : IValueConverter
         return Color.TryParse(value?.ToString() ?? "", out var color) ? color : null;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
         throw new NotImplementedException();
+    }
 }

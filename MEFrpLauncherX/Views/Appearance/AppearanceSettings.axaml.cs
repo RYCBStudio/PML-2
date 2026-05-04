@@ -10,6 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using ReactiveUI;
 
@@ -309,12 +310,22 @@ public class FooterButtonSettingsItem : SettingsItemBase
 
     public void SelectFile() => SelectBackgroundImpl();
 
-    public void ClearFile()
+    public static void ClearFile()
     {
         File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), string.Empty);
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = string.Empty);
-        Core.App.MainWindow?.Background = null;
-        MainWindow.Instance.MainLayer.Background = null;
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            Core.App.MainWindow?.Background = null;
+            MainWindow.Instance.MainLayer.Background = null;
+            MainWindow.Instance.MainBackground.Hide();
+            Core.App.MainWindow?.InvalidateVisual();
+        });
+    }
+    
+    public void ClearFileImpl()
+    {
+        ClearFile();
         RecentImagesSettingsItem.Instance?.Images?.Clear();
         RecentImagesSettingsItem.Instance?.Imgs?.Clear();
     }

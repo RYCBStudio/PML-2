@@ -15,6 +15,11 @@ public class App : IDisposable
     public static string Flag = "Desktop";
     public static string ReleaseFlag = "Release";
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
+    public static string SelectedTheme
+    {
+        get;
+        set;
+    }
 
     public static WindowNotificationManager? WindowNotificationManager;
 
@@ -72,6 +77,7 @@ public class App : IDisposable
         CurrentLogger.Log("Current OS: " + Environment.OSVersion.Platform);
 
         ConfigManager.Initialize();
+        SelectedTheme = (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim();
         await RYCBApiConverter.InitializeAsync();
     }
 }

@@ -66,7 +66,6 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(JsonElement))]
-[JsonSerializable(typeof(StartupData))]
 [JsonSerializable(typeof(KickProxyInfo))]
 [JsonSerializable(typeof(ToggleProxyInfo))]
 [JsonSerializable(typeof(FreePortBody))]

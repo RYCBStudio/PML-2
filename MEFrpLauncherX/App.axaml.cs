@@ -16,7 +16,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public const string Codename = "Fluorine";
+    public const string Codename = "Neon";
     public static SplashScreen splash;
 
     public static FluentAvaloniaTheme? FATheme;

@@ -31,12 +31,14 @@ public class RYCBApiConverter
                 BaseApiUrl = "https://api.rycb.tech/api/";
                 CurrentClient = CreateClient("api/health");
                 res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+                CurrentClient.Dispose();
                 if (!res.IsSuccessful)
                 {
                     App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
                     return false;
                 }
             }
+            CurrentClient.Dispose();
             App.CurrentLogger.Log("API客户端初始化完成", port: EnumLogPort.Client, module: EnumLogModule.Net);
             return true;
     }

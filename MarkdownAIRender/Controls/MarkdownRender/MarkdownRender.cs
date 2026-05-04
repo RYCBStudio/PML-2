@@ -384,10 +384,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
                 BorderThickness = new Thickness(0, 0, 0, 1),
                 Margin = new Thickness(0, 5, 0, 5)
             },
-            LinkReferenceDefinitionGroup => new SelectableTextBlock()
-        {
-            
-        },
+            LinkReferenceDefinitionGroup => new SelectableTextBlock(),
             _ => new SelectableTextBlock
             {
                 IsEnabled = true,

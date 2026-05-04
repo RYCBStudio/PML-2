@@ -229,10 +229,7 @@ public class MEpiConverter
     public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
     {
         ApiInfo<string?> result = null;
-        await AppAnalytics.TrackCostAsync("api.popup-notice", async () =>
-        {
-            result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
-        });
+        result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
         return result;
     }
 
@@ -242,12 +239,7 @@ public class MEpiConverter
     /// <returns>公告内容</returns>
     public static async Task<ApiInfo<string>> GetNoticeAsync()
     {
-        ApiInfo<string> result = null;
-        await AppAnalytics.TrackCostAsync("api.notice", async () =>
-        {
-            result = await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", "公告");
-        });
-        return result;
+        return await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", "公告");
     }
 
     /// <summary>
@@ -257,10 +249,7 @@ public class MEpiConverter
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
     {
         ApiInfo<PublicData> result = null;
-        await AppAnalytics.TrackCostAsync("api.public-info", async () =>
-        {
-            result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
-        });
+        result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
         CurrentPublicInfo = result;
         return result;
     }

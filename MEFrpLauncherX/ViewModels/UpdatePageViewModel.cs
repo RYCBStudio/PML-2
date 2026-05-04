@@ -269,9 +269,21 @@ public class UpdatePageViewModel : ViewModelBase
             IsIdle = true;
         }
 
-        LatestVersion = latestVersion;
-        Changelog.Clear();
-        Changelog.AddRange(updateInfo.data.changes);
+        if (updateInfo is { success: true, data.changes.Length: > 0 })
+        {
+            LatestVersion = latestVersion;
+            Changelog.Clear();
+            Changelog.AddRange(updateInfo.data.changes);
+        }
+        else
+        {
+            Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
+            Status = "获取更新信息失败";
+            Icon = ICONS.ERROR;
+            IsIdle = false;
+            return;
+        }
+
         try
         {
             Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);

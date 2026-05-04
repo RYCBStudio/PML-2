@@ -10,6 +10,7 @@ using Markdig.Extensions.Alerts;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using Inline = Avalonia.Controls.Documents.Inline;
+// ReSharper disable RedundantAssignment
 
 namespace MarkdownAIRender.Controls.MarkdownRender;
 

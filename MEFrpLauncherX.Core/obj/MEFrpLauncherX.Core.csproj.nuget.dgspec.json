@@ -27,7 +27,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "G:\\dotnet\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -70,7 +70,7 @@
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.1, )"
+              "version": "[2.0.2, )"
             },
             "Markdig": {
               "target": "Package",
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -414,7 +414,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "G:\\dotnet\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -449,7 +449,7 @@
             },
             "Downloader": {
               "target": "Package",
-              "version": "[5.2.0, )"
+              "version": "[5.4.0, )"
             },
             "FluentAvaloniaUI": {
               "target": "Package",
@@ -457,7 +457,7 @@
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.1, )"
+              "version": "[2.0.2, )"
             },
             "Message.Avalonia": {
               "target": "Package",
@@ -532,7 +532,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

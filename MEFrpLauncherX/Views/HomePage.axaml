@@ -298,7 +298,7 @@
                                 <markdownAiRender:MarkdownRender.Value>
                                     <Binding Path="NoticeContent">
                                         <Binding.FallbackValue>
-                                            <controls1:NoData />
+                                            无数据
                                         </Binding.FallbackValue>
                                     </Binding>
                                 </markdownAiRender:MarkdownRender.Value>

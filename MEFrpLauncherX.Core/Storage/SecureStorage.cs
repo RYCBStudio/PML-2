@@ -374,7 +374,7 @@ public static class UserCache
     public static List<string> GetStoredUsernames() => SecureStorage.GetStoredUsernames();
 
     private static string NormalizeUsername(string? username) =>
-        string.IsNullOrWhiteSpace(username) ? DefaultUsername : username!;
+        string.IsNullOrWhiteSpace(username) ? DefaultUsername : username;
 
     private sealed class CacheEntry
     {

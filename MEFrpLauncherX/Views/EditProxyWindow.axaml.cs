@@ -98,8 +98,8 @@ public partial class EditProxyWindow : Window
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());
@@ -204,8 +204,8 @@ public partial class EditProxyWindow : Window
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());

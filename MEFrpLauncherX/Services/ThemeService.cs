@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
@@ -22,7 +23,8 @@ public class ThemeService
         {
             // 假设在线主题列表从 GitHub 获取
             var response =
-                await _httpClient.GetStringAsync("https://api.github.com/repos/example/themes/manifest.json");
+                await _httpClient.GetStringAsync(
+                    "https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/market/themes/manifest.json");
             var themes =
                 JsonSerializer.Deserialize<List<OnlineTheme>>(response,
                     AppJsonSerializerContext.Default.ListOnlineTheme);
@@ -37,7 +39,7 @@ public class ThemeService
 
     public static AvaloniaList<LocalTheme> GetLocalThemes()
     {
-        var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+        var themesDir = Path.Combine(App.StartupPath, "Config", "Themes");
         var localThemes = new AvaloniaList<LocalTheme>();
 
         if (Directory.Exists(themesDir))
@@ -63,9 +65,10 @@ public class ThemeService
                             });
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // 忽略无效主题
+                        App.CurrentLogger.Warning($"加载主题失败: {dir}, 原因: {ex.Message}");
+                        App.CurrentLogger.Error(ex, "加载主题配置文件时发生错误");
                     }
                 }
             }
@@ -84,11 +87,19 @@ public class ThemeService
             await response.Content.CopyToAsync(fs);
 
             // 解压主题包
-            var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+            var themesDir = Path.Combine(App.StartupPath, "Config", "Themes");
             var themeDir = Path.Combine(themesDir, theme.Name);
             if (Directory.Exists(themeDir))
             {
                 Directory.Delete(themeDir, true);
+            }
+
+            try
+            {
+                await fs.DisposeAsync();
+            }
+            catch
+            {
             }
 
             Directory.CreateDirectory(themeDir);
@@ -109,9 +120,10 @@ public class ThemeService
 
     public async void ApplyTheme(string themePath)
     {
-        var selectedPath = Path.Combine(Core.App.StartupPath, "Config", "Themes", "selected");
+        var selectedPath = Path.Combine(App.StartupPath, "Config", "Themes", "selected");
         var themeName = Path.GetFileName(themePath);
         await File.WriteAllTextAsync(selectedPath, themeName);
+        App.SelectedTheme = themeName;
         await MainWindow.Instance.ApplyThemeAsync();
     }
 
@@ -137,6 +149,12 @@ public class OnlineTheme
         get;
         set;
     } = "";
+
+    public string Id
+    {
+        get;
+        set;
+    }
 
     public string Description
     {

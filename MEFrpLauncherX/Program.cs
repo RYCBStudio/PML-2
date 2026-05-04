@@ -171,6 +171,14 @@ internal sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
+            .With(new Win32PlatformOptions()
+            {
+                WinUICompositionBackdropCornerRadius = 0.0f,
+            })
+            .With(new SkiaOptions
+            {
+                MaxGpuResourceSizeBytes = 256 * 1024 * 1024 // 256 MB
+            })
             .UseReactiveUI(cfg =>
             {
             });

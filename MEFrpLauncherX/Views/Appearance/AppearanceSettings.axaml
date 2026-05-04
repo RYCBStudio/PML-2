@@ -151,7 +151,7 @@
                 <controls:SettingsExpanderItem.Footer>
                     <WrapPanel ItemSpacing="5">
                         <Button Content="{Binding Footer}" Command="{Binding SelectFile}" />
-                        <Button Content="清除所有背景" Command="{Binding ClearFile}" />
+                        <Button Content="清除所有背景" Command="{Binding ClearFileImpl}" />
                     </WrapPanel>
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>

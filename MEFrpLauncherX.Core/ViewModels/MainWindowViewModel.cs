@@ -34,7 +34,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "";
+    }
 
     public double Progress
     {

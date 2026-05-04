@@ -152,11 +152,9 @@ public partial class CreateProxy : UserControl
     private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
     {
         Loading.IsVisible = true;
-        var data = -1;
-        var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem.ToString())).data;
-        data = res;
+        var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem?.ToString())).data;
         Loading.IsVisible = false;
-        RemotePortNudBox.Value = data;
+        RemotePortNudBox.Value = res;
     }
 
     private void ProtocolCbBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,8 +224,8 @@ public partial class CreateProxy : UserControl
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());
@@ -333,8 +331,8 @@ public partial class CreateProxy : UserControl
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());

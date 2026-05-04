@@ -248,7 +248,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         const string appName = "PML Ⅱ"; // 替换为你的应用名称
         var executablePath = Environment.ProcessPath;
 
-        if (string.IsNullOrEmpty(executablePath))
+        if (string.IsNullOrEmpty(executablePath) || !OperatingSystem.IsWindows())
         {
             throw new InvalidOperationException("无法获取可执行文件路径");
         }
@@ -273,7 +273,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void SetAutoStartLinux(bool enable)
     {
-        const string appName = "mefrplauncherx"; // 替换为你的应用ID
+        const string appName = "pml-2"; // 替换为你的应用ID
         var desktopFile =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.config/autostart/{appName}.desktop";
         var executablePath = Environment.ProcessPath;

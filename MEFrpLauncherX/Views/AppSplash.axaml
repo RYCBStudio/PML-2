@@ -3,11 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Background="#9f000000"
              x:Class="MEFrpLauncherX.Views.AppSplash">
     <Grid RowDefinitions="*, Auto,Auto" Margin="10" RowSpacing="10" MaxHeight="400" HorizontalAlignment="Center"
           VerticalAlignment="Center">
         <Image Source="../Assets/meflx.png" MaxHeight="100" />
-        <ProgressBar Grid.Row="1" x:Name="StartupProgress" IsVisible="False" />
+        <ProgressBar Grid.Row="1" x:Name="StartupProgress" IsIndeterminate="True" />
         <TextBlock Grid.Row="2" Text="正在应用主题..." x:Name="OperationLabel"
                    Theme="{StaticResource BodyStrongTextBlockStyle}"
                    HorizontalAlignment="Center" />

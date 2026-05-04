@@ -80,15 +80,6 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
 
     public void StartMonitoring(string interfaceId, TimeSpan updateInterval, NetworkTraffic? initialTraffic = null)
     {
-        initialTraffic ??= new NetworkTraffic
-        {
-            InterfaceId = "",
-            TotalBytesReceived = 0,
-            TotalBytesSent = 0,
-            TotalPacketsReceived = 0,
-            TotalPacketsSent = 0,
-            Timestamp = default
-        };
         lock (_lockObject)
         {
             if (_monitoringTimers.ContainsKey(interfaceId))
