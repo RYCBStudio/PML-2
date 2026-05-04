@@ -145,26 +145,28 @@ public class ThemesPageViewModel : ViewModelBase
                 await MainWindow.Instance.StorageProvider.TryGetFolderFromPathAsync(Path.Combine(Core.App.StartupPath,
                     "Config", "Themes"))
         });
-        if (res.Count > 0)
+        if (res.Count <= 0)
         {
-            var cnt = 0;
-            var total = res.Count;
-            for (var i = 0; i < total; i++)
+            return;
+        }
+
+        var cnt = 0;
+        var total = res.Count;
+        for (var i = 0; i < total; i++)
+        {
+            var storageFile = res[i];
+            MainWindowViewModel.Instance.AppMessage = $"正在导入主题 {storageFile.Name}";
+            MainWindowViewModel.Instance.Progress = cnt;
+            PMLAHelper.UnpackPmla(storageFile.TryGetLocalPath(),
+                Path.Combine(Core.App.StartupPath, "Config", "Themes",
+                    Path.GetFileNameWithoutExtension(storageFile.Name)));
+            if (i == total - 1)
             {
-                var storageFile = res[i];
-                MainWindowViewModel.Instance.AppMessage = $"正在导入主题 {storageFile.Name}";
-                MainWindowViewModel.Instance.Progress = cnt;
-                PMLAHelper.UnpackPmla(storageFile.TryGetLocalPath(),
-                    Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                        Path.GetFileNameWithoutExtension(storageFile.Name)));
-                if (i == total - 1)
-                {
-                    cnt = 100;
-                }
-                else
-                {
-                    cnt += 100 / total;
-                }
+                cnt = 100;
+            }
+            else
+            {
+                cnt += 100 / total;
             }
         }
     }

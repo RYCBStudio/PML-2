@@ -15,7 +15,8 @@ public class App : IDisposable
     public static string Flag = "Desktop";
     public static string ReleaseFlag = "Release";
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
-    public static string SelectedTheme
+
+    public static string? SelectedTheme
     {
         get;
         set;
@@ -77,7 +78,9 @@ public class App : IDisposable
         CurrentLogger.Log("Current OS: " + Environment.OSVersion.Platform);
 
         ConfigManager.Initialize();
-        SelectedTheme = (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim();
+        SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
+            ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
+            : null;
         await RYCBApiConverter.InitializeAsync();
     }
 }

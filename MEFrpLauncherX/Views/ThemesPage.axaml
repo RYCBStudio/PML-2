@@ -21,26 +21,19 @@
                     <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
                         <controls:CommandBar.PrimaryCommands>
                             <controls:CommandBarButton IconSource="Refresh" Label="刷新"
-                                                       Command="{Binding RefreshLocalThemesCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding RefreshLocalThemesCommand}" />
                             <controls:CommandBarButton IconSource="Add" Label="新建"
-                                                       Command="{Binding AddLocalThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding AddLocalThemeCommand}" />
                             <controls:CommandBarButton IconSource="Checkmark" Label="应用所选"
-                                                       Command="{Binding ApplyLocalThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding ApplyLocalThemeCommand}" />
                             <controls:CommandBarButton IconSource="Edit" Label="编辑所选"
-                                                       Command="{Binding EditLocalThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding EditLocalThemeCommand}" />
                             <controls:CommandBarButton IconSource="Delete" Label="删除所选"
-                                                       Command="{Binding DeleteLocalThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding DeleteLocalThemeCommand}" />
                             <controls:CommandBarButton IconSource="OpenFile" Label="打包所选"
-                                                       Command="{Binding PackageLocalThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding PackageLocalThemeCommand}" />
                             <controls:CommandBarButton Label="导入" IconSource="Import"
-                                                       Command="{Binding ImportThemeCommand}">
-                            </controls:CommandBarButton>
+                                                       Command="{Binding ImportThemeCommand}" />
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>
                     <ListBox Grid.Row="1" ItemsSource="{Binding LocalThemes}"
@@ -48,27 +41,24 @@
                              Margin="0,0,0,10">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border Classes="r2l" BorderBrush="{DynamicResource ThemeBorderMidBrush}"
-                                        BorderThickness="1" CornerRadius="4" Padding="10">
-                                    <Grid ColumnDefinitions="Auto, *">
-                                        <Image Grid.Column="0" Width="64" Height="64" Source="{Binding PreviewImage}"
-                                               Margin="0,0,10,0" />
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                            <TextBlock Text="{Binding Author}" FontSize="12"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                            <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-                                            <TextBlock Text="{Binding Version}" FontSize="10"
-                                                       Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
+                                <Grid ColumnDefinitions="Auto, *" Classes="animated">
+                                    <Image Grid.Column="0" Width="64" Height="64" Source="{Binding PreviewImage}"
+                                           Margin="0,0,10,0" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Author}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Text="{Binding Version}" FontSize="10"
+                                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel />
+                                <VirtualizingStackPanel />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                     </ListBox>
@@ -77,7 +67,7 @@
 
             <TabItem Header="在线主题">
                 <Grid RowDefinitions="Auto, Auto, *">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10">
                         <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoadingOnlineThemes}" Width="100" />
                         <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsDownloading}" Width="100" />
                     </StackPanel>
@@ -86,6 +76,9 @@
                             <controls:CommandBarButton Label="刷新" IconSource="Refresh"
                                                        Command="{Binding FetchOnlineThemesCommand}"
                                                        IsEnabled="{Binding !IsLoadingOnlineThemes}" />
+                            <controls:CommandBarButton Label="下载所选" IconSource="Download"
+                                                       Command="{Binding DownloadThemeCommand}"
+                                                       IsEnabled="{Binding !IsDownloading}" />
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>
                     <ListBox Grid.Row="1" ItemsSource="{Binding OnlineThemes}"
@@ -93,27 +86,26 @@
                              Margin="0,0,0,10">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{DynamicResource ThemeBorderMidBrush}" BorderThickness="1"
-                                        CornerRadius="4" Padding="10">
-                                    <Grid ColumnDefinitions="Auto, *, Auto">
-                                        <Image Grid.Column="0" Width="64" Height="64"
-                                               asyncImageLoader:ImageLoader.Source="{Binding PreviewImageUrl}"
-                                               Margin="0,0,10,0" />
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                            <TextBlock Text="{Binding Author}" FontSize="12"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                                            <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" />
-                                            <TextBlock Text="{Binding Version}" FontSize="10"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-                                        </StackPanel>
-                                        <Button Grid.Column="2" Content="下载"
-                                                Command="{Binding $parent[UserControl].DataContext.DownloadThemeCommand}"
-                                                IsEnabled="{Binding !$parent[UserControl].DataContext.IsDownloading}" />
-                                    </Grid>
-                                </Border>
+                                <Grid ColumnDefinitions="Auto, *" Classes="animated">
+                                    <Image Grid.Column="0" Width="64" Height="64"
+                                           asyncImageLoader:ImageLoader.Source="{Binding PreviewImageUrl}"
+                                           Margin="0,0,10,0" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Author}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Version}" FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
                     </ListBox>
                 </Grid>
             </TabItem>
