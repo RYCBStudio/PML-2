@@ -4,9 +4,11 @@ using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Services;
+using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
+using RYCB.PML.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX;
 
@@ -62,6 +64,8 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(List<OnlineTheme>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(ThemeManifest))]
+[JsonSerializable(typeof(RedeemInfo))]
+[JsonSerializable(typeof(InfoClasses.CreateProxyRequestData))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

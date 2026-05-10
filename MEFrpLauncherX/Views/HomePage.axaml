@@ -27,7 +27,7 @@
               MaxHeight="650" RowSpacing="10"
               Margin="10">
             <HeaderedContentControl Header="统计信息" IsVisible="{Binding ShowStatistics}" Background="Transparent"
-                                    Classes="animated"
+                                    Classes="animated FluentCard"
                                     Grid.RowSpan="{Binding StatisticsSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                     FontFamily="{StaticResource GlobalFontFamily}">
                 <WrapPanel HorizontalAlignment="Center" ItemSpacing="40">
@@ -45,8 +45,12 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="12"
-                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="节点数" />
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <InlineUIContainer>
+                                <controls:SymbolIcon Symbol="Earth" />
+                            </InlineUIContainer>
+                            <Run>节点数</Run>
+                        </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
                         <controls1:RollingNumberTextBlock Grid.Row="1"
@@ -62,8 +66,12 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="12"
-                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="用户数" />
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <InlineUIContainer>
+                                <controls:SymbolIcon Symbol="People" />
+                            </InlineUIContainer>
+                            <Run>用户数</Run>
+                        </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
                         <controls1:RollingNumberTextBlock Grid.Row="1"
@@ -79,8 +87,12 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="12"
-                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="在线隧道" />
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <InlineUIContainer>
+                                <controls:FontIcon Glyph="&#xE74C;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                            </InlineUIContainer>
+                            <Run>在线隧道</Run>
+                        </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
                         <DockPanel Grid.Row="1" HorizontalSpacing="3">
@@ -100,125 +112,275 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="12"
-                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="承载流量" />
+                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <InlineUIContainer>
+                                <controls:FontIcon Glyph="&#xEAFC;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                            </InlineUIContainer>
+                            <Run>流量</Run>
+                        </TextBlock>
                     </Grid>
                 </WrapPanel>
             </HeaderedContentControl>
-            <HeaderedContentControl Classes="animated" Grid.Row="1" Background="Transparent" Header="用户信息"
+            <!-- ========== 用户信息卡片（重新设计） ========== -->
+            <HeaderedContentControl Classes="FluentCard"
+                                    Grid.Row="1"
+                                    Header="用户信息"
                                     Grid.RowSpan="{Binding !UserInfoRow1, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
-                                    FontFamily="{StaticResource GlobalFontFamily}" IsVisible="{Binding ShowUserInfo}">
-                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*">
-                    <!-- 用户名 -->
-                    <StackPanel>
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="用户名" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding UserName}" />
-                    </StackPanel>
+                                    IsVisible="{Binding ShowUserInfo}">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      RowSpacing="16" ColumnSpacing="24">
 
-                    <!-- 用户ID -->
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="用户ID" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding UserId}" />
-                    </StackPanel>
+                    <!-- ===== 第一行：用户名 + 用户ID ===== -->
+                    <!-- 用户名（含图标） -->
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="Contact" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="用户名" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <SelectableTextBlock FontSize="16"
+                                                 FontWeight="SemiBold"
+                                                 Text="{Binding UserName}" />
+                        </StackPanel>
+                    </Border>
 
-                    <!-- 注册邮箱 -->
-                    <StackPanel
-                        Grid.Row="3"
-                        Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="注册邮箱" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding Email}" />
-                    </StackPanel>
+                    <!-- 用户ID（带复制功能） -->
+                    <Border Grid.Row="0" Grid.Column="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <InlineUIContainer>
+                                    <controls:SymbolIcon Symbol="Tag" FontSize="12" Margin="0,0,4,0"
+                                                         VerticalAlignment="Center" />
+                                </InlineUIContainer>
+                                <Run Text="用户ID" />
+                            </TextBlock>
+                            <DockPanel HorizontalSpacing="8">
+                                <Button DockPanel.Dock="Right"
+                                        Width="28" Height="28"
+                                        Padding="0"
+                                        ToolTip.Tip="复制"
+                                        Command="{Binding CopyUserIdCommand}">
+                                    <controls:SymbolIcon Symbol="Copy" FontSize="12" />
+                                </Button>
+                                <SelectableTextBlock Text="{Binding UserId}"
+                                                     VerticalAlignment="Center"
+                                                     FontFamily="{StaticResource Jbm}"
+                                                     FontSize="13" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
 
+                    <!-- ===== 第二行：邮箱 + 用户组 ===== -->
+                    <!-- 邮箱（带复制功能） -->
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="Mail" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="注册邮箱" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <DockPanel HorizontalSpacing="8">
+                                <Button DockPanel.Dock="Right"
+                                        Width="28" Height="28"
+                                        Padding="0"
+                                        ToolTip.Tip="复制"
+                                        Command="{Binding CopyEmailCommand}">
+                                    <controls:SymbolIcon Symbol="Copy" FontSize="12" />
+                                </Button>
+                                <SelectableTextBlock Text="{Binding Email}"
+                                                     TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
 
-                    <!-- 用户组 -->
-                    <StackPanel
-                        Grid.Row="2"
-                        Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="用户组" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding Group}"
-                                             Classes.Danger="{Binding IsAdmin}" />
-                    </StackPanel>
+                    <!-- 用户组（带标签样式） -->
+                    <Border Grid.Row="1" Grid.Column="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="People" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="用户组" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <Border CornerRadius="4"
+                                    Padding="8,4"
+                                    Background="{Binding IsAdmin, Converter={x:Static core:BoolToGroupBackgroundConverter.Instance}}"
+                                    HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Group}"
+                                           Foreground="{Binding IsAdmin, Converter={x:Static core:BoolToGroupForegroundConverter.Instance}}"
+                                           FontWeight="SemiBold"
+                                           FontSize="12" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
 
-                    <!-- 入站带宽 -->
-                    <StackPanel Grid.Row="5">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="入站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding InBound}" />
-                    </StackPanel>
-
-                    <!-- 出站带宽 -->
-                    <StackPanel Grid.Row="5" Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="出站带宽" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding OutBound}" />
-                    </StackPanel>
-
-                    <!-- 隧道数量 -->
-                    <StackPanel Grid.Row="4">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="隧道数量" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding ProxiesCount}" />
-                    </StackPanel>
-
-                    <!-- 剩余流量 -->
-                    <StackPanel Grid.Row="4" Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="剩余流量" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding Traffic}" />
-                    </StackPanel>
-
-                    <!-- 注册时间 -->
-                    <StackPanel Grid.Row="3">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="注册时间" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <SelectableTextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                             Text="{Binding RegisterTime}" />
-                    </StackPanel>
-
+                    <!-- ===== 第三行：实名状态 + 账户状态（状态徽章样式） ===== -->
                     <!-- 实名状态 -->
-                    <StackPanel Grid.Row="2">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="实名状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                   Text="{Binding RealNameStatus}"
-                                   Classes.Success="{Binding IsRealNamed}"
-                                   Classes.Danger="{Binding !IsRealNamed}" />
-                    </StackPanel>
-
-                    <!-- 今日签到 -->
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="今日签到" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <Button
-                            HorizontalAlignment="Left"
-                            Command="{Binding SignCommand}"
-                            Content="{Binding SignButtonText}"
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Classes="Success"
-                            IsEnabled="{Binding CanSign}" />
-                    </StackPanel>
+                    <Border Grid.Row="2" Grid.Column="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:FontIcon Glyph="&#xE928;"
+                                                           FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                           FontSize="12" Margin="0,0,4,0"
+                                                           VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="实名状态" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <Border CornerRadius="4"
+                                    Padding="8,4"
+                                    Background="{Binding IsRealNamed, Converter={x:Static core:BoolToVerifiedBackgroundConverter.Instance}}"
+                                    HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <controls:SymbolIcon
+                                        Symbol="{Binding IsRealNamed, Converter={x:Static core:BoolToVerifiedIconConverter.Instance}}"
+                                        FontSize="12" />
+                                    <TextBlock Text="{Binding RealNameStatus}"
+                                               Foreground="{Binding IsRealNamed, Converter={x:Static core:BoolToVerifiedForegroundConverter.Instance}}"
+                                               FontWeight="SemiBold"
+                                               FontSize="12" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
 
                     <!-- 账户状态 -->
-                    <StackPanel Grid.Row="1" Grid.Column="1">
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   Text="账户状态" FontFamily="{StaticResource GlobalFontFamily}" />
-                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                   Text="{Binding AccountStatus}"
-                                   Classes.Danger="{Binding IsBanned}"
-                                   Classes.Success="{Binding !IsBanned}" />
-                    </StackPanel>
+                    <Border Grid.Row="2" Grid.Column="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="ContactInfo" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="账户状态" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <Border CornerRadius="4"
+                                    Padding="8,4"
+                                    Background="{Binding IsBanned, Converter={x:Static core:BoolToStatusBackgroundConverter.Instance}}"
+                                    HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <controls:SymbolIcon
+                                        Symbol="{Binding IsBanned, Converter={x:Static core:BoolToStatusIconConverter.Instance}}"
+                                        FontSize="12" />
+                                    <TextBlock Text="{Binding AccountStatus}"
+                                               Foreground="{Binding IsBanned, Converter={x:Static core:BoolToStatusForegroundConverter.Instance}}"
+                                               FontWeight="SemiBold"
+                                               FontSize="12" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ===== 第四行：隧道数量 + 剩余流量 ===== -->
+                    <!-- 隧道数量（带进度条表示使用率） -->
+                    <Border Grid.Row="3" Grid.Column="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="AllApps" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="隧道数量" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <TextBlock Text="{Binding ProxiesCount}"
+                                       FontSize="16"
+                                       FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 剩余流量（带进度条） -->
+                    <Border Grid.Row="3" Grid.Column="1">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="Cloud" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="剩余流量" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <DockPanel HorizontalSpacing="8">
+                                <TextBlock Text="{Binding Traffic}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold" />
+                                <Button Command="{Binding SignCommand}" DockPanel.Dock="Right"
+                                        Padding="0"
+                                        IsEnabled="{Binding CanSign}"
+                                        IsVisible="{Binding SignButtonText, Converter={x:Static core:IsNotNull.Instance}}">
+                                    <Button.Content>
+                                        <controls1:IconContent Label="{Binding SignButtonText}" />
+                                    </Button.Content>
+                                </Button>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ===== 第五行：入站带宽 + 出站带宽 ===== -->
+                    <!-- 入站带宽 -->
+                    <Border Grid.Row="4" Grid.Column="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="Download" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="入站带宽" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <TextBlock Text="{Binding InBound}"
+                                       FontSize="14"
+                                       FontWeight="Medium" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 出站带宽 -->
+                    <Border Grid.Row="4" Grid.Column="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       FontSize="12">
+                                <TextBlock.Inlines>
+                                    <InlineUIContainer>
+                                        <controls:SymbolIcon Symbol="Upload" FontSize="12" Margin="0,0,4,0"
+                                                             VerticalAlignment="Center" />
+                                    </InlineUIContainer>
+                                    <Run Text="出站带宽" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <TextBlock Text="{Binding OutBound}"
+                                       FontSize="14"
+                                       FontWeight="Medium" />
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </HeaderedContentControl>
         </Grid>
@@ -241,10 +403,10 @@
 
                     <controls1:NoData Grid.Row="1" IsVisible="{Binding IsNoData}" />
                     <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
-                    <HeaderedContentControl
-                        Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
-                        IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
-                        FontFamily="{StaticResource GlobalFontFamily}">
+                    <HeaderedContentControl Classes="FluentCard"
+                                            Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
+                                            IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
+                                            FontFamily="{StaticResource GlobalFontFamily}">
                         <ScrollViewer>
                             <ItemsControl ItemsSource="{Binding SoftwareNotice}">
                                 <ItemsControl.ItemsPanel>
@@ -272,7 +434,8 @@
                                                        Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
                                             </WrapPanel>
 
-                                            <Button Command="{Binding ShowNotice}" Grid.RowSpan="2" Grid.Column="1">
+                                            <Button Command="{Binding ShowNoticeCommand}" Grid.RowSpan="2"
+                                                    Grid.Column="1">
                                                 <Button.Content>
                                                     <controls:SymbolIcon Symbol="View" />
                                                 </Button.Content>
@@ -285,7 +448,7 @@
                     </HeaderedContentControl>
                     <HeaderedContentControl
                         Grid.Row="{Binding SystemNoticeSpan2, Converter={x:Static core:IsVisibleToRowConverter.Instance}, FallbackValue=1}"
-                        Classes="animated" Header="系统公告"
+                        Classes="animated FluentCard" Header="系统公告"
                         Grid.RowSpan="{Binding ShowSystemNotice, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                         IsVisible="{Binding ShowSystemNotice}"
                         FontFamily="{StaticResource GlobalFontFamily}">

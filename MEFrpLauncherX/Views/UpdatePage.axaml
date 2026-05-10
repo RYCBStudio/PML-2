@@ -47,7 +47,7 @@
                             IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
-                            Command="{Binding CheckUpdate}" />
+                            Command="{Binding CheckUpdateCommand}" />
                 </StackPanel>
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Vertical">
                     <Separator VerticalAlignment="Top" />

@@ -20,8 +20,7 @@
             <controls1:SettingsExpander
                 Header="用户信息"
                 IconSource="ContactInfo"
-                Description="查看和管理您的账户基本信息"
-                IsExpanded="True">
+                Description="查看和管理您的账户基本信息">
 
                 <controls1:SettingsExpander.Items>
                     <!-- 第一行信息 -->

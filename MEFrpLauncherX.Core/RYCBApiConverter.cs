@@ -1,8 +1,10 @@
 using System.Net;
+using System.Reactive;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
+using ReactiveUI;
 using RestSharp;
 
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
@@ -279,7 +281,7 @@ public class RYCBApiConverter
     }
 }
 
-public class NoticeContent
+public class NoticeContent:ReactiveObject
 {
     [JsonPropertyName("active")]
     public bool Active
@@ -331,6 +333,9 @@ public class NoticeContent
         set;
     }
 
+
+    public ReactiveCommand<Unit, Unit> ShowNoticeCommand => ReactiveCommand.Create(ShowNotice);
+    
     public void ShowNotice()
     {
         var cd = new ContentDialog

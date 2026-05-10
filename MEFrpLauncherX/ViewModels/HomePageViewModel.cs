@@ -32,6 +32,17 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         // 初始化命令
         SignCommand = ReactiveCommand.CreateFromTask(SignAsync);
         LoadDataCommand = ReactiveCommand.CreateFromTask(LoadUserDataAsync);
+        CopyUserIdCommand = ReactiveCommand.Create(() =>
+        {
+            if (UserId != null)
+                TopLevel.GetTopLevel(Core.App.MainWindow)?.Clipboard?.SetTextAsync(UserId);
+        });
+
+        CopyEmailCommand = ReactiveCommand.Create(() =>
+        {
+            if (Email != null)
+                TopLevel.GetTopLevel(Core.App.MainWindow)?.Clipboard?.SetTextAsync(Email);
+        });
 
         IsLoading = LoadDataCommand.IsExecuting
             .ToProperty(this, x => x.IsLoading).Value;
@@ -164,6 +175,16 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     }
 
     public ReactiveCommand<Unit, Unit> LoadDataCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> CopyUserIdCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> CopyEmailCommand
     {
         get;
     }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Styling;
@@ -42,7 +43,7 @@ public partial class MainWindow
                     var t = elapsed.TotalMilliseconds / duration.TotalMilliseconds;
                     var interpolatedColor = InterpolateColor(startColor, endColor, t);
 
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         App.FATheme?.CustomAccentColor = interpolatedColor;
                     });
@@ -54,7 +55,7 @@ public partial class MainWindow
                 // 确保最终颜色精确
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
                         App.FATheme?.CustomAccentColor = endColor;
                     });
@@ -107,7 +108,6 @@ public partial class MainWindow
         var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
         var themeManifest =
             ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
-
         if (themeManifest != null)
         {
             FooterButtonSettingsItem.ClearFile();
@@ -134,10 +134,34 @@ public partial class MainWindow
                 Background = CreateBackgroundBrush(themeManifest.Background));
             if (themeManifest.AccentColor.Count == 1)
             {
-                await ConfigManager.UpdateConfigAsync(cfg =>
-                    cfg.AccentColor = themeManifest.AccentColor.FirstOrDefault()?.Color!);
-                App.FATheme?.CustomAccentColor =
-                    Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
+                if (themeManifest.AccentColor.FirstOrDefault()?.Color is "accent" or "system" or "" or null)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        App.FATheme?.CustomAccentColor = null;
+                        App.FATheme?.PreferUserAccentColor = true;
+                    });
+                    await ConfigManager.UpdateConfigAsync(cfg =>
+                        cfg.AccentColor = string.Empty);
+                    try
+                    {
+                        await _accentAnimationCts?.CancelAsync();
+                    }catch (NullReferenceException e)
+                    {
+                        System.Console.WriteLine(e);
+                    }
+                }
+
+                else
+                {
+                    await ConfigManager.UpdateConfigAsync(cfg =>
+                        cfg.AccentColor = themeManifest.AccentColor.FirstOrDefault()?.Color!);
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        App.FATheme?.CustomAccentColor =
+                            Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
+                    });
+                }
             }
             else
             {
@@ -162,7 +186,7 @@ public partial class MainWindow
                     Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
                 App.Current.Resources["GlobalFontFamily"] = ff;
                 App.Current.Resources["ContentControlThemeFontFamily"] = ff;
-                InvalidateVisual();
+                //InvalidateVisual();
             }
         }
     }

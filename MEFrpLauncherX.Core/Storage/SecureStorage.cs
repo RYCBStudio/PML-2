@@ -49,7 +49,7 @@ internal static class SecureStorage
         try
         {
             // 1. Prepare data (with expiry)
-            var data = new
+            var data = new SecureUserInfo
             {
                 Data = info,
                 Expiry = DateTime.UtcNow.Add(expiry),
@@ -57,7 +57,7 @@ internal static class SecureStorage
             };
 
             // 2. Serialize
-            var json = JsonSerializer.Serialize(data);
+            var json = JsonSerializer.Serialize(data, App.AppJsonSerializerContext.SecureUserInfo);
 
             // 3. Generate random IV
             var iv = GenerateRandomIV();
@@ -394,4 +394,11 @@ public static class UserCache
             get;
         }
     }
+}
+
+public class SecureUserInfo
+{
+    public InfoClasses.UserInfo Data { get; set; }
+    public DateTime Expiry { get; set; }
+    public string Username { get; set; }
 }

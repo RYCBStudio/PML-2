@@ -28,9 +28,8 @@
                 <controls:NavigationViewItem Tag="Monitoring"
                                              x:Name="NodesMonitoringPageBtn" Content="节点监控">
                     <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource
-                            FontFamily="{StaticResource IconFont}"
-                            Glyph="&#xead4;" FontWeight="Light" />
+                        <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;"
+                                                 FontSize="16" />
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="User"
@@ -44,8 +43,8 @@
                                              x:Name="AboutPageBtn" Content="关于">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
-                            FontFamily="{StaticResource IconFont}"
-                            Glyph="&#xe60a;" />
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xE946;" />
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="Update"
@@ -67,7 +66,11 @@
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
             </controls:NavigationView.MenuItems>
-            <ContentControl Content="{Binding CurrentPage}" />
+            <TransitioningContentControl Content="{Binding CurrentPage}">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade FadeInEasing="CubicEaseIn" FadeOutEasing="CubicEaseOut" Duration="0:0:0.3"></CrossFade>
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
         </controls:NavigationView>
 
         <controls:ProgressRing

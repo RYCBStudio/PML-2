@@ -1,6 +1,9 @@
+using System;
+using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -12,6 +15,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
+using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Views;
 
 namespace MEFrpLauncherX;
@@ -28,18 +32,18 @@ public class App : Application
         get;
         private set;
     }
-    
+
     internal static AppJsonSerializerContext AppJsonSerializerContext;
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         Core.App.Initialize();
-        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions()
+        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             WriteIndented = true,
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
         });
     }
 
@@ -75,9 +79,42 @@ public class App : Application
                     Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color) ? color : null;
             }
 
-            // Current.Resources["GlobalFontFamily"] = new FontFamily("Exo");
-            // Current.Resources["ContentControlThemeFontFamily"] = new FontFamily("Exo");
 
+            string selectedTheme;
+            try
+            {
+                selectedTheme =
+                    File.ReadAllText(Path.Combine(Core.App.StartupPath, "Config", "Themes",
+                            "selected"))
+                    .Trim();
+            }
+            catch (FileNotFoundException)
+            {
+                Core.App.CurrentLogger.Log("未找到主题配置文件，跳过主题加载");
+                goto CONTINUE;
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger.Error(ex, "加载主题配置文件时发生错误");
+                goto CONTINUE;
+            }
+
+            if (selectedTheme.IsNullOrEmpty())
+            {
+                goto CONTINUE;
+            }
+
+            var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
+            var themeManifest =
+                ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
+            if (themeManifest != null)
+            {
+                var ff = new FontFamily(new Uri(Path.Combine(themePath, themeManifest.FontFamily.ToString())),
+                    Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
+                Resources["GlobalFontFamily"] = ff;
+                Resources["ContentControlThemeFontFamily"] = ff;
+            }
+            CONTINUE:
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

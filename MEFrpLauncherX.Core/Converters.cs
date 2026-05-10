@@ -23,6 +23,137 @@ public class ConverterBase : IValueConverter
 
     public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
 }
+public class BoolToVerifiedBackgroundConverter : IValueConverter
+{
+    public static BoolToVerifiedBackgroundConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isVerified && isVerified)
+            return new SolidColorBrush(Color.Parse("#00A67E")); // 成功绿
+        return new SolidColorBrush(Color.Parse("#424242"));    // 中性灰
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class BoolToVerifiedForegroundConverter : IValueConverter
+{
+    public static BoolToVerifiedForegroundConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isVerified && isVerified)
+            return new SolidColorBrush(Colors.White);
+        return new SolidColorBrush(Color.Parse("#E0E0E0"));
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+public class BoolToVerifiedIconConverter : IValueConverter
+{
+    public static BoolToVerifiedIconConverter Instance
+    {
+        get;
+    } = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isVerified && isVerified)
+            return Symbol.Accept;
+        return Symbol.Dismiss;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class BoolToStatusBackgroundConverter : IValueConverter
+{
+    public static BoolToStatusBackgroundConverter Instance
+    {
+        get;
+    } = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isBanned && isBanned)
+            return new SolidColorBrush(Color.Parse("#D32F2F")); // 危险红
+        return new SolidColorBrush(Color.Parse("#2E7D32"));    // 成功绿
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+public class BoolToStatusForegroundConverter : IValueConverter
+{
+    public static BoolToStatusForegroundConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return new SolidColorBrush(Colors.White);
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class BoolToStatusIconConverter : IValueConverter
+{
+    public static BoolToStatusIconConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isBanned && isBanned)
+            return Symbol.ClosedCaption;
+        return Symbol.Accept;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class BoolToGroupBackgroundConverter : IValueConverter
+{
+    public static BoolToGroupBackgroundConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isAdmin && isAdmin)
+            return new SolidColorBrush(Color.Parse("#6C4DFF")); // 紫色（管理组）
+        return new SolidColorBrush(Color.Parse("#3C3C3C"));    // 普通组
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+public class BoolToGroupForegroundConverter : IValueConverter
+{
+    public static BoolToGroupForegroundConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return new SolidColorBrush(Colors.White);
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
 
 public class IsNotNull : IValueConverter
 {

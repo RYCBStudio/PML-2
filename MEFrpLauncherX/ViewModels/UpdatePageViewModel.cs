@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Animation;
@@ -138,6 +139,9 @@ public class UpdatePageViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
+
+    public ReactiveCommand<Unit, Unit> CheckUpdateCommand =>
+        ReactiveCommand.Create(CheckUpdate);
 
     /// <summary>
     ///     检查更新

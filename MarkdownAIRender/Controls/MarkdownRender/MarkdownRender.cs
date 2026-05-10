@@ -258,7 +258,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
             return;
         }
 
-        var container = new StackPanel
+        var container = new StackPanel()
         {
             Spacing = 6,
             HorizontalAlignment = HorizontalAlignment.Stretch, // 确保拉伸

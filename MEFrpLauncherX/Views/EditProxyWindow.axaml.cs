@@ -331,9 +331,9 @@ public partial class EditProxyWindow : Window
 
     private async void OnSaveClicked(object? sender, RoutedEventArgs e)
     {
-        var requestData = new
+        var requestData = new InfoClasses.CreateProxyRequestData()
         {
-            _proxy.proxyId,
+            proxyId = _proxy.proxyId,
             proxyName = _createProxyViewModel.ProxyName,
             localIp = _createProxyViewModel.LocalAddress,
             localPort = _createProxyViewModel.LocalPort,
@@ -356,7 +356,7 @@ public partial class EditProxyWindow : Window
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
             locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations ?? []) + "\"]"
         };
-        var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
+        var _body = JsonSerializer.Serialize(requestData, App.AppJsonSerializerContext.CreateProxyRequestData);
         Core.App.CurrentLogger.LogDebug($"EditProxyWindow: {_body}");
         var success = (await MEpiConverter.UpdateTunnelAsync(_body)).code == 200;
         if (success)

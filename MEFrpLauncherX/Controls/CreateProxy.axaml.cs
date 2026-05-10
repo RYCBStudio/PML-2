@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
+using DynamicData;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -71,13 +72,13 @@ public partial class CreateProxy : UserControl
 
     private async Task<bool> CreateProxy_OnCreateProxy()
     {
-        var requestData = new
+        var requestData = new InfoClasses.CreateProxyRequestData
         {
             nodeId = _node.NodeId,
             proxyName = _createProxyViewModel.ProxyName,
             localIp = _createProxyViewModel.LocalAddress,
             localPort = _createProxyViewModel.LocalPort,
-            remotePort = (int?)(ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null),
+            remotePort = ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null,
             domain = "[\"" + string.Join("\", \"", _createProxyViewModel.RemoteAddress) + "\"]",
             requestHeaders = _createProxyViewModel.RequestHeaders,
             responseHeaders = _createProxyViewModel.ResponseHeaders,
@@ -120,7 +121,7 @@ public partial class CreateProxy : UserControl
             }
         }
 
-        var _body = JsonSerializer.Serialize(requestData, new JsonSerializerOptions { WriteIndented = true });
+        var _body = JsonSerializer.Serialize(requestData, App.AppJsonSerializerContext.CreateProxyRequestData);
         var success = (await MEpiConverter.PostNewTunnelAsync(_body)).code == 200;
         if (success)
         {
@@ -132,26 +133,47 @@ public partial class CreateProxy : UserControl
 
     private string GetHttpPlugin()
     {
-        return ProtocolCbBox.SelectedIndex switch
+        var http = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "http");
+        var https = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "https");
+        if (http == -1 || https == -1)
         {
-            2 when SameAsHttp.IsChecked == true => string.Empty,
-            2 when Http2Https.IsChecked == true => "http2https",
-            2 => string.Empty,
-            3 when SameAsHttps.IsChecked == true => "https2https",
-            3 when Https2Http.IsChecked == true => "https2http",
-            _ => string.Empty
-        };
+            return string.Empty;
+        }
+
+        if (ProtocolCbBox.SelectedIndex == https)
+        {
+            if (SameAsHttps.IsChecked == true)
+            {
+                return string.Empty;
+            }
+
+            return Https2Http.IsChecked == true ? "https2http" : string.Empty;
+        }
+
+        if (ProtocolCbBox.SelectedIndex != http || SameAsHttp.IsChecked == true)
+        {
+            return string.Empty;
+        }
+
+        return Http2Https.IsChecked == true ? "http2https" : string.Empty;
+
     }
 
     private void CreateProxy_Loaded(object sender, VisualTreeAttachmentEventArgs e)
     {
         CurrentProxyInfo.DataContext = _node;
         ProtocolCbBox.ItemsSource = _node.AllowTypes;
+        ProtocolCbBox.SelectedIndex = 0;
     }
 
     private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
     {
         Loading.IsVisible = true;
+        if (ProtocolCbBox.SelectedItem?.ToString() is not "tcp" and not "udp")
+        {
+            return;
+        }
+
         var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem?.ToString())).data;
         Loading.IsVisible = false;
         RemotePortNudBox.Value = res;
@@ -164,14 +186,14 @@ public partial class CreateProxy : UserControl
             return;
         }
 
-        if (ProtocolCbBox.SelectedIndex is 2 or 3)
+        if (ProtocolCbBox.SelectedItem?.ToString()?.ToLower() is "http" or "https")
         {
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
             SecurityOptionsSettingsExpander.Show();
-            switch (ProtocolCbBox.SelectedIndex)
+            switch (ProtocolCbBox.SelectedItem)
             {
-                case 2:
+                case "http":
                     SourceProtocolSettingsExpanderItemForHttp.Show();
                     CustomRequestHeaderSettings.Show();
                     CustomResponseHeaderSettings.Show();
@@ -180,7 +202,7 @@ public partial class CreateProxy : UserControl
                     CertificateSettingsForPath.Hide();
                     CertificateSettingsForPrivateKey.Hide();
                     break;
-                case 3:
+                case "https":
                     SourceProtocolSettingsExpanderItemForHttp.Hide();
                     LocationSettings.Collapse();
                     SourceProtocolSettingsExpanderItemForHttps.Show();

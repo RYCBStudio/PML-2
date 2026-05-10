@@ -37,6 +37,179 @@ public class InfoClasses
         }
     }
 
+    public class DatePeriod
+    {
+        public int datePeriod
+        {
+            get;
+            set;
+        }
+    }
+
+    public class SignPost
+    {
+        public string captchaToken
+        {
+            get;
+            set;
+        }
+    }
+
+    public class CreateProxyRequestData
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string proxyName
+        {
+            get;
+            set;
+        }
+
+        public string localIp
+        {
+            get;
+            set;
+        }
+
+        public int localPort
+        {
+            get;
+            set;
+        }
+
+        public int? remotePort
+        {
+            get;
+            set;
+        }
+
+        public string domain
+        {
+            get;
+            set;
+        }
+
+        public string proxyType
+        {
+            get;
+            set;
+        }
+
+        public string accessKey
+        {
+            get;
+            set;
+        }
+
+        public string hostHeaderRewrite
+        {
+            get;
+            set;
+        }
+
+        public string httpPlugin
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, string> requestHeaders
+        {
+            get;
+            set;
+        }
+        public Dictionary<string, string> responseHeaders
+        {
+            get;
+            set;
+        }
+
+        public string httpUser
+        {
+            get;
+            set;
+        }
+
+        public string httpPassword
+        {
+            get;
+            set;
+        }
+
+        public string crtPath
+        {
+            get;
+            set;
+        }
+
+        public string keyPath
+        {
+            get;
+            set;
+        }
+
+        public string proxyProtocolVersion
+        {
+            get;
+            set;
+        }
+
+        public bool useEncryption
+        {
+            get;
+            set;
+        }
+
+        public bool useCompression
+        {
+            get;
+            set;
+        }
+        public string transportProtocol
+        {
+            get;
+            set;
+        }
+        public string locations
+        {
+            get;
+            set;
+        }
+    }
+
+    public class LaunchConfigRequest
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public string format
+        {
+            get;
+            set;
+        }
+    }
+
+    public class DeleteProxyInfo
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+    }
+
     public class SignInfo
     {
         public int extraTraffic

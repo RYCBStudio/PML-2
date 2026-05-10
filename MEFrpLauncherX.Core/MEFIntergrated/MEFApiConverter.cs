@@ -283,27 +283,6 @@ public class MEpiConverter
     }
 
     /// <summary>
-    ///     发送签到请求
-    /// </summary>
-    /// <param name="code">人机验证码</param>
-    /// <returns>(是否成功, 返回的response内容)</returns>
-    public static (bool, string?) SendSignRequest(string code)
-    {
-        App.CurrentLogger.Log("正在发送签到请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        var request = CreateRequest(Method.Post);
-        var cr = GetCaptchaResult(code);
-        var body = JsonSerializer.Serialize(new
-        {
-            captchaToken = cr
-        }, new JsonSerializerOptions { WriteIndented = true });
-        request.AddParameter("application/json", body, ParameterType.RequestBody);
-        using var client = CreateClient("auth/user/sign");
-        var response = client.Execute(request);
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return (response.Content?.Contains("成功") ?? false, response.Content);
-    }
-
-    /// <summary>
     ///     发送签到请求 (异步)
     /// </summary>
     /// <param name="code">人机验证码</param>
@@ -316,7 +295,7 @@ public class MEpiConverter
         var body = JsonSerializer.Serialize(new
         {
             captchaToken = cr
-        }, new JsonSerializerOptions { WriteIndented = true });
+        }, App.AppJsonSerializerContext.SignPost);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
         using var client = CreateClient("auth/user/sign");
 
@@ -625,11 +604,11 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在发送启动配置申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new LaunchConfigRequest()
         {
-            proxyId,
-            format
-        }, new JsonSerializerOptions { WriteIndented = true });
+            proxyId = proxyId,
+            format = format
+        }, App.AppJsonSerializerContext.LaunchConfigRequest);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/config");
@@ -665,11 +644,11 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在发送切换隧道状态隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new ToggleProxyInfo()
         {
-            proxyId,
-            isDisabled
-        }, new JsonSerializerOptions { WriteIndented = true });
+            proxyId = proxyId,
+            isDisabled = isDisabled
+        }, App.AppJsonSerializerContext.ToggleProxyInfo);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/toggle");
@@ -699,10 +678,10 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在发送强制下线隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new KickProxyInfo()
         {
-            proxyId
-        });
+            proxyId = proxyId
+        }, App.AppJsonSerializerContext.KickProxyInfo);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/kick");
@@ -727,7 +706,7 @@ public class MEpiConverter
             try
             {
                 var firstResult =
-                    JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, App.AppJsonSerializerContext.Options);
+                    JsonSerializer.Deserialize<ApiInfo<object>>(firstJson, App.AppJsonSerializerContext.ApiInfoObject);
                 if (firstResult != null && firstResult.code != 200)
                 {
                     HandleResponse(firstResult);
@@ -742,7 +721,7 @@ public class MEpiConverter
             try
             {
                 var secondResult =
-                    JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, App.AppJsonSerializerContext.Options);
+                    JsonSerializer.Deserialize<ApiInfo<object>>(secondJson, App.AppJsonSerializerContext.ApiInfoObject);
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
@@ -758,7 +737,7 @@ public class MEpiConverter
         try
         {
             var result =
-                JsonSerializer.Deserialize<ApiInfo<object>>(content, App.AppJsonSerializerContext.Options) ??
+                JsonSerializer.Deserialize<ApiInfo<object>>(content, App.AppJsonSerializerContext.ApiInfoObject) ??
                 new ApiInfo<object>();
             HandleResponse(result);
             return result;
@@ -780,10 +759,10 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在发送删除隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new DeleteProxyInfo
         {
-            proxyId
-        });
+            proxyId = proxyId
+        }, App.AppJsonSerializerContext.DeleteProxyInfo);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/proxy/delete");
@@ -795,14 +774,9 @@ public class MEpiConverter
                          {
                          "code": 0,
                          "message": "无法获取api信息",
-                         "data": {
-                             "users": 0,
-                             "nodes": 0,
-                             "proxies": 0,
-                             "traffic": 0
-                             }
+                         "data": null
                          }
-                         """, App.AppJsonSerializerContext.Options) ??
+                         """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;
@@ -851,10 +825,10 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在获取流量统计", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new DatePeriod
         {
             datePeriod = period
-        });
+        }, App.AppJsonSerializerContext.DatePeriod);
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
         using var client = CreateClient("auth/user/trafficStats");

@@ -218,7 +218,14 @@ public class ThemesPageViewModel : ViewModelBase
     private void AddLocalTheme()
     {
         var editor = new Views.ThemeEditor();
-        editor.ShowDialog(Core.App.MainWindow);
+        try
+        {
+            editor.ShowDialog(Core.App.MainWindow);
+        }
+        catch
+        {
+            editor.Show();
+        }
     }
 
     private void EditLocalTheme()
@@ -226,7 +233,14 @@ public class ThemesPageViewModel : ViewModelBase
         if (SelectedLocalTheme == null) return;
 
         var editor = new Views.ThemeEditor(SelectedLocalTheme.Path);
-        editor.ShowDialog(Core.App.MainWindow);
+        try
+        {
+            editor.ShowDialog(Core.App.MainWindow);
+        }
+        catch
+        {
+            editor.Show();
+        }
     }
 
     private void RefreshLocalThemes()
@@ -273,6 +287,10 @@ public class ThemesPageViewModel : ViewModelBase
         try
         {
             var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+            if (!Directory.Exists(themesDir))
+            {
+                Directory.CreateDirectory(themesDir);
+            }
             var downloadPath = Path.Combine(themesDir, $"{SelectedOnlineTheme.Name}.pmla");
 
             var success = await _themeService.DownloadThemeAsync(SelectedOnlineTheme, downloadPath);

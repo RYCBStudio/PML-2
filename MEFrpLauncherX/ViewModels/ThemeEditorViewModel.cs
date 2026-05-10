@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.Json;
+using System.Web;
 using Avalonia.Controls.Converters;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -53,6 +54,12 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
     } = "1.0.0";
 
     public Bitmap PreviewImage
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+    
+    public string PreviewImagePath
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -316,7 +323,8 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         {
             try
             {
-                PreviewImage = new Bitmap(res[0].Path.IsFile ? res[0].Path.AbsolutePath : res[0].Path.AbsoluteUri);
+                PreviewImagePath = res[0].Path.IsFile ? res[0].Path.AbsolutePath : res[0].Path.AbsoluteUri;
+                PreviewImage = new Bitmap(PreviewImagePath);
             }
             catch (Exception ex)
             {
@@ -439,6 +447,8 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                 Directory.CreateDirectory(themesDir);
                 savePath = Path.Combine(themesDir, "index.json");
             }
+            
+            manifest.PreviewImage = PreviewImage != null ? Path.GetRelativePath(Path.GetDirectoryName(savePath), PreviewImagePath) : null;
 
             var json = JsonSerializer.Serialize(manifest, App.AppJsonSerializerContext.ThemeManifest);
             File.WriteAllText(savePath, json);
@@ -480,7 +490,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                 PreviewImage = null
             };
 
-            var json = JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true });
+            var json = JsonSerializer.Serialize(manifest, App.AppJsonSerializerContext.ThemeManifest);
             File.WriteAllText(tempPath, json);
 
             // 保存当前选中的主题路径，以便恢复
@@ -544,8 +554,8 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
 
         if (dialog.Count > 0)
         {
-            BackgroundImagePath =
-                dialog[0].Path.IsFile ? dialog[0].Path.AbsolutePath : dialog[0].Path.AbsoluteUri;
+            BackgroundImagePath = HttpUtility.UrlDecode(
+                dialog[0].Path.IsFile ? dialog[0].Path.AbsolutePath : dialog[0].Path.AbsoluteUri);
         }
     }
 

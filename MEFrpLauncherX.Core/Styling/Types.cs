@@ -51,7 +51,7 @@ public class ThemeManifest
     /// <summary>
     ///     字体名称，支持系统已安装的字体和相对路径（相对于主题文件）的字体文件（.ttf或.otf）。如果指定了字体文件，应用程序将优先使用该字体文件而不是系统字体。
     /// </summary>
-    public object FontFamily
+    public object? FontFamily
     {
         get;
         set;

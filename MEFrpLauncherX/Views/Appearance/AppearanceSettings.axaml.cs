@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Web;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -295,7 +296,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
     } = [];
 }
 
-public class FooterButtonSettingsItem : SettingsItemBase
+public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
 {
     public FooterButtonSettingsItem()
     {
@@ -307,8 +308,6 @@ public class FooterButtonSettingsItem : SettingsItemBase
         get;
         set;
     }
-
-    public void SelectFile() => SelectBackgroundImpl();
 
     public static void ClearFile()
     {
@@ -322,7 +321,10 @@ public class FooterButtonSettingsItem : SettingsItemBase
             Core.App.MainWindow?.InvalidateVisual();
         });
     }
-    
+
+    public ReactiveCommand<Unit, Unit> ClearFileCommand => ReactiveCommand.Create(ClearFileImpl);
+    public ReactiveCommand<Unit, Unit> SelectBackgroundCommand => ReactiveCommand.Create(SelectBackgroundImpl);
+
     public void ClearFileImpl()
     {
         ClearFile();

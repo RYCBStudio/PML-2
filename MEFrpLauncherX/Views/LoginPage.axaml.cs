@@ -75,7 +75,7 @@ public partial class LoginPage : UserControl
         }
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
-        var (ri, _err) = await MEpiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb));
+        var (ri, _err) = await MEpiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
 
         MainWindowViewModel.Instance.Progress = 80.0;
         if (!ri.success)
