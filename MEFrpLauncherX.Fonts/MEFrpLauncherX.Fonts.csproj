@@ -7,26 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj" />
+        <AvaloniaResource Include="Fonts\DS-DIGIB-2.ttf"/>
+        <AvaloniaResource Include="Fonts\FluentSystemIcons-Resizable.ttf"/>
+        <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Bold.ttf"/>
+        <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Light.ttf"/>
+        <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Regular.ttf"/>
+        <AvaloniaResource Include="Fonts\iconfont.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-Bold-Italic.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-Bold.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-Italic.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-Light.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-LightItalic.ttf"/>
+        <AvaloniaResource Include="Fonts\JetBrainsMono-Regular.ttf"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaResource Include="Fonts\DS-DIGIB-2.ttf" />
-      <AvaloniaResource Include="Fonts\FluentSystemIcons-Resizable.ttf" />
-      <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Bold.ttf" />
-      <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Light.ttf" />
-      <AvaloniaResource Include="Fonts\HarmonyOS_Sans_SC_Regular.ttf" />
-      <AvaloniaResource Include="Fonts\iconfont.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-Bold-Italic.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-Bold.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-Italic.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-Light.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-LightItalic.ttf" />
-      <AvaloniaResource Include="Fonts\JetBrainsMono-Regular.ttf" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+        <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
     </ItemGroup>
 
 </Project>

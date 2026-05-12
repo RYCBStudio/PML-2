@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:markdownAiRender="https://github.com/AIDotNet/Markdown.AIRender"
-             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.UpdatePage"
              x:DataType="viewModels:UpdatePageViewModel">
@@ -43,10 +43,11 @@
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新" IsVisible="{Binding HasNewVersion}"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新"
+                            IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
                     <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
-                            Command="{Binding CheckUpdate}" />
+                            Command="{Binding CheckUpdateCommand}" />
                 </StackPanel>
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Vertical">
                     <Separator VerticalAlignment="Top" />
@@ -61,11 +62,12 @@
                             <DockPanel HorizontalSpacing="5">
                                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10">
                                     <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                               IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static meFrpLauncherX:App.Version}}">
+                                               IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static core:App.Version}}">
                                         <TextBlock.Text>
-                                            <MultiBinding StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
+                                            <MultiBinding
+                                                StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
                                                 <Binding Path="LatestVersion" />
-                                                <Binding Source="{x:Static meFrpLauncherX:App.Version}" />
+                                                <Binding Source="{x:Static core:App.Version}" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                         <ToolTip.Tip>

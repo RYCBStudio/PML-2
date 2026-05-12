@@ -88,13 +88,7 @@ public static class AnsiColorProcessor
         return Brushes.White; // 默认颜色
     }
 
-    public static string StripAnsiCodes(string input)
-    {
-        return AnsiColorRegex.Replace(input, string.Empty);
-    }
+    public static string StripAnsiCodes(string input) => AnsiColorRegex.Replace(input, string.Empty);
 
-    public static bool ContainsAnsiCodes(string input)
-    {
-        return AnsiColorRegex.IsMatch(input);
-    }
+    public static bool ContainsAnsiCodes(string input) => AnsiColorRegex.IsMatch(input);
 }

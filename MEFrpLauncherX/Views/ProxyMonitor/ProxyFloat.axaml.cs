@@ -18,11 +18,11 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ProxyFloat : Window
 {
-    private readonly ProxyFloatViewModel _vm;
     public static ProxyFloat? Instance;
 
     private readonly Button _menuButton;
     private readonly FlyoutBase _menuFlyout;
+    private readonly ProxyFloatViewModel _vm;
 
     public ProxyFloat(ProxyFloatViewModel? vm = null)
     {
@@ -47,6 +47,7 @@ public partial class ProxyFloat : Window
             _menuFlyout.Opened += OnFlyoutOpened;
             _menuFlyout.Closed += OnFlyoutClosed;
         }
+
         Instance = this;
     }
 
@@ -67,10 +68,7 @@ public partial class ProxyFloat : Window
         base.OnClosed(e);
     }
 
-    private void OnPointerEnter(object? sender, PointerEventArgs e)
-    {
-        ClickThroughHelper.SetClickThrough(this, false);
-    }
+    private void OnPointerEnter(object? sender, PointerEventArgs e) => ClickThroughHelper.SetClickThrough(this, false);
 
     private void OnPointerExited(object? sender, PointerEventArgs e)
     {
@@ -81,15 +79,9 @@ public partial class ProxyFloat : Window
         }
     }
 
-    private void OnFlyoutOpened(object? sender, EventArgs e)
-    {
-        ClickThroughHelper.SetClickThrough(this, false);
-    }
+    private void OnFlyoutOpened(object? sender, EventArgs e) => ClickThroughHelper.SetClickThrough(this, false);
 
-    private void OnFlyoutClosed(object? sender, EventArgs e)
-    {
-        ClickThroughHelper.SetClickThrough(this, true);
-    }
+    private void OnFlyoutClosed(object? sender, EventArgs e) => ClickThroughHelper.SetClickThrough(this, true);
 }
 
 public class ProxyFloatViewModel : ViewModelBase
@@ -97,9 +89,9 @@ public class ProxyFloatViewModel : ViewModelBase
     public static ProxyFloatViewModel? Instance;
 
     private readonly INetworkMonitor _networkMonitor;
-    private string _monitoredInterfaceId;
     private long _lastBytesReceived;
     private long _lastBytesSent;
+    private string _monitoredInterfaceId;
     private bool _safeFlag;
 
     public ProxyFloatViewModel()
@@ -107,6 +99,29 @@ public class ProxyFloatViewModel : ViewModelBase
         Instance = this;
         _networkMonitor = new CrossPlatformNetworkMonitor();
         _networkMonitor.TrafficUpdated += OnTrafficUpdated;
+    }
+
+    public string WindowTitle
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = "在线隧道";
+
+    public AvaloniaList<string> Proxies
+    {
+        get;
+    } = [];
+
+    public int TrafficIn
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public int TrafficOut
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public async Task StartNetworkMonitoringAsync()
@@ -164,29 +179,6 @@ public class ProxyFloatViewModel : ViewModelBase
         // 保存当前值用于下次计算
         _lastBytesReceived = traffic.TotalBytesReceived;
         _lastBytesSent = traffic.TotalBytesSent;
-    }
-
-    public string WindowTitle
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "在线隧道";
-
-    public AvaloniaList<string> Proxies
-    {
-        get;
-    } = [];
-
-    public int TrafficIn
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public int TrafficOut
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 }
 

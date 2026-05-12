@@ -6,44 +6,6 @@
             <controls1:AnimatedProgressRing />
         </Border>
     </Design.PreviewWith>
-
-    <Style Selector="HeaderedContentControl">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border CornerRadius="8" Margin="2">
-                    <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
-
-                        <!-- Header -->
-                        <Border
-                            ZIndex="1"
-                            Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
-                            Padding="5,0,5,0"
-                            Margin="5,0,0,0">
-                            <TextBlock
-                                Background="Transparent"
-                                Text="{TemplateBinding Header}"
-                                FontWeight="Bold" />
-                        </Border>
-
-                        <!-- Content Area -->
-                        <Border
-                            Grid.Row="1"
-                            Padding="0,5,0,0"
-                            Grid.ColumnSpan="2"
-                            CornerRadius="8"
-                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                            Margin="0,10,0,0"
-                            BorderThickness="1">
-                            <ContentPresenter
-                                Name="PART_ContentPresenter"
-                                Padding="8"
-                                Content="{TemplateBinding Content}" />
-                        </Border>
-                    </Grid>
-                </Border>
-            </ControlTemplate>
-        </Setter>
-    </Style>
     
     <Style Selector="GridSplitter">
         <Setter Property="CornerRadius" Value="50" />
@@ -65,4 +27,91 @@
         </Style.Animations>
     </Style>
 
+    <!-- ========== Fluent Card 样式（用于 HeaderedContentControl） ========== -->
+    <Style Selector="HeaderedContentControl.FluentCard">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border CornerRadius="8"
+                        Margin="8"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+
+                    <Border.Effect>
+                        <DropShadowEffect Color="#1A000000" BlurRadius="8" OffsetX="0" OffsetY="2" />
+                    </Border.Effect>
+                    <Grid RowDefinitions="Auto,*">
+                        <!-- 标题栏 -->
+                        <Border CornerRadius="8,8,0,0"
+                                Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                Padding="12,8">
+                            <TextBlock Text="{TemplateBinding Header}"
+                                       FontWeight="SemiBold"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                        </Border>
+                        <!-- 内容区域 -->
+                        <Border Grid.Row="1"
+                                Background="Transparent"
+                                Padding="12">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <!-- 悬浮放大效果 -->
+        <Setter Property="RenderTransform">
+            <ScaleTransform ScaleX="1" ScaleY="1" />
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+    </Style>
+
+    <Style Selector="HeaderedContentControl.FluentCard:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.02)" />
+        <Setter Property="Effect">
+            <DropShadowEffect Color="#1A000000" BlurRadius="8" OffsetX="0" OffsetY="2" />
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.3" Easing="SineEaseInOut">
+                <KeyFrame Cue="100%">
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.02" />
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.02" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- ========== GridSplitter 样式 ========== -->
+    <Style Selector="GridSplitter">
+        <Setter Property="Background" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+        <Setter Property="Width" Value="4" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Cursor" Value="SizeWestEast" />
+    </Style>
+
+    <Style Selector="GridSplitter:pointerover">
+        <Setter Property="Background" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+        <Setter Property="Width" Value="6" />
+        <Style.Animations>
+            <Animation Duration="0:0:0.1">
+                <KeyFrame Cue="100%">
+                    <Setter Property="Width" Value="6" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- ========== AnimatedProgressRing 动画优化 ========== -->
+    <!-- <Style Selector="controls1|AnimatedProgressRing"> -->
+    <!--     <Style.Animations> -->
+    <!--         <Animation Duration="0:0:1.5" IterationCount="INFINITE" Easing="LinearEasing"> -->
+    <!--             <KeyFrame Cue="0%"> -->
+    <!--                 <Setter Property="RotateTransform.Angle" Value="0" /> -->
+    <!--             </KeyFrame> -->
+    <!--             <KeyFrame Cue="100%"> -->
+    <!--                 <Setter Property="RotateTransform.Angle" Value="360" /> -->
+    <!--             </KeyFrame> -->
+    <!--         </Animation> -->
+    <!--     </Style.Animations> -->
+    <!-- </Style> -->
 </Styles>

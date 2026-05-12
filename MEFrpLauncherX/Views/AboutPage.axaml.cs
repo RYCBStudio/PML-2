@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -9,20 +10,22 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
+using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
-using Newtonsoft.Json;
+using MsBox.Avalonia.ViewModels.Commands;
 using RestSharp;
-using JsonException = System.Text.Json.JsonException;
+
+#pragma warning disable CS8602 // 解引用可能出现空引用。
 
 namespace MEFrpLauncherX.Views;
 
 public partial class AboutPage : UserControl
 {
-    private int debug_count = 0;
     private readonly AboutViewModel vm;
+    private int debug_count;
 
     public AboutPage()
     {
@@ -42,22 +45,32 @@ public partial class AboutPage : UserControl
             {
                 hitokoto = "用代码表达言语的魅力，用代码书写山河的壮丽。",
                 from = "一言「一言开发者中心」",
-                creator = "一言开发者"
+                from_who = "一言开发者"
             };
             MainPageFrameViewModel.Instance?.IsLoading = true;
             try
             {
                 Hitokoto = await ExecuteHitokotoRequest(CreateRequest(), "一言");
             }
-            catch (JsonException)
+            catch (ArgumentNullException)
             {
                 Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
                 Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
             }
             catch (Exception ex)
             {
+                if (Random.Shared.Next() % 2 == 0)
+                {
+                    Hitokoto = new HitokotoResource
+                    {
+                        hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
+                        from = "微软式中文",
+                        creator = "Microsoft"
+                    };
+                }
+
                 Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
-                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
+                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
             }
 
             vm.Hitokoto = Hitokoto.hitokoto;
@@ -69,6 +82,78 @@ public partial class AboutPage : UserControl
             MainPageFrameViewModel.Instance.IsLoading = false;
             HitokotoStatus.Hide();
         };
+    }
+
+    private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
+    {
+        var cd = new ContentDialog
+        {
+            Content = new MarkdownRender
+            {
+                Value = """
+                        # Markdown 渲染测试
+
+                        ## HTML 块测试
+
+                        <div>这是一个 HTML div 块</div>
+
+                        <p>这是一个段落标签</p>
+
+                        <strong>这是粗体文本</strong> 和普通文本混合
+
+                        <br/>换行测试
+
+                        ## GitHub 风格警告框测试
+
+                        > [!NOTE]
+                        > 这是一个注意事项，用于提醒用户重要信息。
+
+                        > [!TIP]
+                        > 这是一个提示，提供有用的建议或技巧。
+
+                        > [!WARNING]
+                        > 这是一个警告，提醒用户注意潜在的问题。
+
+                        > [!CAUTION]
+                        > 这是一个重要提示，需要用户特别注意的事项。
+
+                        ## 其他 Markdown 功能测试
+
+                        ### 代码块
+
+                        ```csharp
+                        public class Test
+                        {
+                            public void Hello()
+                            {
+                                Console.WriteLine("Hello, World!");
+                            }
+                        }
+                        ```
+
+                        ### 列表
+
+                        - 项目 1
+                        - 项目 2
+                        - 项目 3
+
+                        ### 引用
+
+                        > 这是一段引用文本
+
+                        ### 链接
+
+                        [这是一个链接](https://example.com)
+
+                        ### 图片
+
+                        ![示例图片](https://via.placeholder.com/150)
+
+                        """
+            },
+            CloseButtonText = "关闭"
+        };
+        await cd.ShowAsync();
     }
 
     #region 帮助/支持相关
@@ -173,7 +258,7 @@ public partial class AboutPage : UserControl
         OpenFileInExplorer(exePath);
     }
 
-    void OpenFileInExplorer(string filePath)
+    private void OpenFileInExplorer(string filePath)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -251,14 +336,40 @@ public partial class AboutPage : UserControl
         });
     }
 
-    private void Doc_Click(object sender, RoutedEventArgs e)
+    private async void Doc_Click(object sender, RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo
         {
             FileName =
-                "https://docs.rycb.mxj.pub/index.php/2025/08/11/me-frp-launcher-%e5%b8%ae%e5%8a%a9%e6%96%87%e6%a1%a3/",
+                "https://docs.rycb.mxj.pub/pml-2/intro",
             UseShellExecute = true
         });
+        await MessageBox.ShowAsync("已打开文档。若无法访问, 请选择以下备用源: ", buttons:
+        [
+            new TaskDialogButton("源1", MessageBoxResult.Yes)
+            {
+                Command = new RelayCommand((s) =>
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName =
+                            "https://docs.rycb.tech/pml-2/intro",
+                        UseShellExecute = true
+                    });
+                })
+            },
+            new TaskDialogButton("源2", MessageBoxResult.No)
+            {
+                Command = new RelayCommand((s) =>
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "https://docs.rycb.mxj.pub/pml-2/intro",
+                        UseShellExecute = true
+                    });
+                })
+            }
+        ]);
     }
 
     private void MEFCL_Click(object sender, RoutedEventArgs e)
@@ -305,30 +416,12 @@ public partial class AboutPage : UserControl
 
     #region HTTP请求
 
-    private static RestClient CreateClient(string endpoint)
-    {
-        return new RestClient("https://content.rycb.mxj.pub/files/mefl" + endpoint);
-    }
-
     private static RestRequest CreateRequest(Method method = Method.Get)
     {
         var request = new RestRequest { Method = method };
         request.AddHeader("Content-Type", "application/json");
 
         return request;
-    }
-
-    private static async Task<T> ExecuteRequestAsync<T>(RestRequest request, string endpoint, string operationName)
-    {
-        Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-
-        using var client = CreateClient(endpoint);
-        var response = await client.ExecuteAsync(request);
-
-        Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
-        var result = JsonConvert.DeserializeObject<T>(response.Content);
-        return result;
     }
 
     private static async Task<HitokotoResource> ExecuteHitokotoRequest(RestRequest request, string operationName)
@@ -343,7 +436,9 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<HitokotoResource>(response.Content);
+        var result =
+            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
+                App.AppJsonSerializerContext.HitokotoResource);
         return result;
     }
 
@@ -352,25 +447,14 @@ public partial class AboutPage : UserControl
     {
         Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
 
-        using var client = new RestClient("https://international.v1.hitokoto.cn/");
+        using var client = new RestClient("https://hitokoto.yealqp.cn/");
         var response = await client.ExecuteAsync(request);
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result = JsonConvert.DeserializeObject<HitokotoResource>(response.Content);
-        return result;
-    }
-
-    private static async Task<T> ExecuteRequest<T>(RestRequest request, string endpoint, string operationName)
-    {
-        Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-
-        using var client = CreateClient(endpoint);
-        var response = await client.ExecuteAsync(request);
-
-        Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-
-        var result = JsonConvert.DeserializeObject<T>(response.Content);
+        var result =
+            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
+                App.AppJsonSerializerContext.HitokotoResource);
         return result;
     }
 
@@ -428,10 +512,14 @@ public partial class AboutPage : UserControl
     {
         HitokotoStatus.Show();
         // 确保控件存在
-        if (HitokotoBox == null || HitokotoAuthor == null)
+        if (HitokotoBox == null)
         {
             return;
         }
+
+        vm.Hitokoto = "";
+        vm.Author = "";
+        vm.From = "";
 
         // 获取新一言
         HitokotoResource Hitokoto = new()
@@ -443,13 +531,23 @@ public partial class AboutPage : UserControl
         {
             Hitokoto = await Task.Run(() => ExecuteHitokotoRequest(CreateRequest(), "一言"));
         }
-        catch (JsonException)
+        catch (ArgumentNullException)
         {
             Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
             Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
         }
         catch (Exception ex)
         {
+            if (Random.Shared.Next() % 2 == 0)
+            {
+                Hitokoto = new HitokotoResource
+                {
+                    hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
+                    from = "微软式中文",
+                    from_who = "Microsoft"
+                };
+            }
+
             Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
             Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
         }
@@ -475,20 +573,12 @@ public partial class AboutPage : UserControl
         }
     }
 
-    private void Debug_ThrowException(object? sender, RoutedEventArgs e)
-    {
+    private void Debug_ThrowException(object? sender, RoutedEventArgs e) =>
         throw new ApplicationException("这是一个测试异常", new StackOverflowException("Stack Overflow，小子!"));
-    }
 
-    private async void Debug_TestSolve(object? sender, RoutedEventArgs e)
-    {
-        await LoginPage.GetCaptchaResultAsync();
-    }
+    private async void Debug_TestSolve(object? sender, RoutedEventArgs e) => await LoginPage.GetCaptchaResultAsync();
 
-    private void OpenProxyFloat(object? sender, RoutedEventArgs e)
-    {
-        new ProxyFloat().Show();
-    }
+    private void OpenProxyFloat(object? sender, RoutedEventArgs e) => new ProxyFloat().Show();
 
     #endregion
 }

@@ -10,9 +10,14 @@ public partial class TextBlockWithHeader : UserControl
 {
     public static readonly StyledProperty<object> ContentProperty =
         AvaloniaProperty.Register<TextBlockWithHeader, object>(nameof(Content));
-    
+
     public static readonly StyledProperty<string> HeaderProperty =
         AvaloniaProperty.Register<TextBlockWithHeader, string>(nameof(Header));
+
+    public TextBlockWithHeader()
+    {
+        InitializeComponent();
+    }
 
     public object Content
     {
@@ -26,18 +31,7 @@ public partial class TextBlockWithHeader : UserControl
         set => SetValue(HeaderProperty, value);
     }
 
-    public bool IsDark
-    {
-        get => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-    }
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
 
-    public TextBlockWithHeader()
-    {
-        InitializeComponent();
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
+    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 }

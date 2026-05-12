@@ -13,7 +13,8 @@
     <Grid RowDefinitions="Auto,*">
 
         <StackPanel Margin="5" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="配置文件预览" FontWeight="Bold" />
+            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="配置文件预览"
+                       FontWeight="Bold" />
 
             <Button Click="CopyButton_Click" Content="复制" />
             <Button Click="SaveButton_Click" Content="保存" />

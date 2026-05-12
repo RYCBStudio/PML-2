@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Loader;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
 using Avalonia.Media;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using Newtonsoft.Json;
 using ReactiveUI.Avalonia;
+using Sentry;
+using static MEFrpLauncherX.Core.StringUtils;
 
 namespace MEFrpLauncherX;
 
@@ -24,18 +25,21 @@ internal sealed class Program
         private set;
     }
 
+    internal static ITransactionTracer StartupTransaction;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
-        
-        AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
-        {
-            var assemblyPath = Path.Combine(AppContext.BaseDirectory, "assemblies", $"{assemblyName.Name}.dll");
-            return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
-        };
+        StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
+        System.Console.OutputEncoding = Encoding.UTF8;
+        // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
+        // {
+        //     var assemblyPath = Path.Combine(AppContext.BaseDirectory, "assemblies", $"{assemblyName.Name}.dll");
+        //     return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
+        // };
 
         var file = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
         if (!DownloadHelper.ValidateFileSimple(file,
@@ -45,13 +49,14 @@ internal sealed class Program
         {
             System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
             System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
+            Core.App.CurrentLogger.Log("启动画面文件完整性检查失败。", EnumLogType.Warn);
         }
         else
         {
-            var p = Process.Start(new ProcessStartInfo()
+            var p = Process.Start(new ProcessStartInfo
             {
                 FileName = file,
-                Arguments = $"-v \"{App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
+                Arguments = $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
             });
             SplashProcess = p;
         }
@@ -85,7 +90,7 @@ internal sealed class Program
 
     private static string GetBackground()
     {
-        var possiblePaths = new List<string>()
+        var possiblePaths = new List<string>
         {
             Path.Combine(Core.App.StartupPath, "Resources", "splash.png"),
             Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
@@ -98,7 +103,7 @@ internal sealed class Program
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.gif"),
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.webp"),
             Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpeg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp"),
+            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp")
         };
         foreach (var possiblePath in possiblePaths.Where(File.Exists))
         {
@@ -117,26 +122,31 @@ internal sealed class Program
         };
         if (!arg.StartsWith("mefrp://"))
         {
-            return;
-        }
-
-        var url = arg.Replace("mefrp://", "");
-        var args = url.Split('/');
-        if (args is ["StartProxy", var idAndOther, ..])
-        {
-            var res = idAndOther.Split('?');
-            var id = res[0];
-            if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+            if (Path.Exists(arg))
             {
-                data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
+                // TODO: PMLA Unpack
+            }
+        }
+        else
+        {
+            var url = arg.Replace("mefrp://", "");
+            var args = url.Split('/');
+            if (args is ["StartProxy", var idAndOther, ..])
+            {
+                var res = idAndOther.Split('?');
+                var id = res[0];
+                if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+                {
+                    data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
+                }
+
+                data.StartProxyId = int.Parse(id);
             }
 
-            data.StartProxyId = int.Parse(id);
+            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+            File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
+                JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         }
-
-        Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
-        File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
-            JsonConvert.SerializeObject(data));
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -146,21 +156,32 @@ internal sealed class Program
         if (OperatingSystem.IsLinux())
         {
             options.DefaultFamilyName = "Noto Sans CJK SC";
-            options.FontFallbacks =
-            [
-                new FontFallback()
-                {
-                    FontFamily = new(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
-                        "Harmony OS Sans SC")
-                }
-            ];
         }
+
+        options.FontFallbacks =
+        [
+            new FontFallback
+            {
+                FontFamily = new FontFamily(new Uri("avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC"),
+                    "Harmony OS Sans SC")
+            }
+        ];
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .UseReactiveUI();
+            .With(new Win32PlatformOptions
+            {
+                WinUICompositionBackdropCornerRadius = 0.0f,
+            })
+            .With(new SkiaOptions
+            {
+                MaxGpuResourceSizeBytes = 256 * 1024 * 1024 // 256 MB
+            })
+            .UseReactiveUI(cfg =>
+            {
+            });
     }
 
     private static void ProcessUnhandledExceptions(object sender, UnhandledExceptionEventArgs e)
@@ -173,6 +194,7 @@ internal sealed class Program
         }
 
         HandleException(ex);
+        SentrySdk.CaptureException(ex);
     }
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
@@ -181,7 +203,7 @@ internal sealed class Program
         e.SetObserved();
     }
 
-    private static void HandleException(Exception ex)
+    private static void HandleException(Exception? ex)
     {
         if (ex == null)
         {
@@ -208,7 +230,7 @@ internal sealed class Program
         }
 
         var crashHandler = new CrashHandler(ex, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        crashHandler.CollectCrashInfo();
+        CrashHandler.CollectCrashInfo();
         var crashLog = crashHandler.GetCrashLog();
         var encodedExInfo = Base64Encode($"{ex.GetType()}||{ex.Message}||{ex.StackTrace}");
         //保存到文件（可选）
@@ -222,12 +244,6 @@ internal sealed class Program
             Arguments = $"{encodedExInfo} {Base64Encode(crashLog)}",
             UseShellExecute = true
         });
-    }
-
-    public static string Base64Encode(string plainText)
-    {
-        var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-        return Convert.ToBase64String(plainTextBytes);
     }
 
     public static string GetPlatformExe(string filename, bool fullPath = false) => fullPath

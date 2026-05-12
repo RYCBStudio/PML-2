@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Core.Storage;
 
@@ -49,7 +49,7 @@ internal static class SecureStorage
         try
         {
             // 1. Prepare data (with expiry)
-            var data = new
+            var data = new SecureUserInfo
             {
                 Data = info,
                 Expiry = DateTime.UtcNow.Add(expiry),
@@ -57,7 +57,7 @@ internal static class SecureStorage
             };
 
             // 2. Serialize
-            var json = JsonConvert.SerializeObject(data);
+            var json = JsonSerializer.Serialize(data, App.AppJsonSerializerContext.SecureUserInfo);
 
             // 3. Generate random IV
             var iv = GenerateRandomIV();
@@ -79,6 +79,7 @@ internal static class SecureStorage
                     var plainBytes = Encoding.UTF8.GetBytes(json);
                     cs.Write(plainBytes, 0, plainBytes.Length);
                 }
+
                 encryptedData = ms.ToArray();
             }
 
@@ -127,8 +128,8 @@ internal static class SecureStorage
             }
 
             // 4. Deserialize and check expiry
-            var result = JsonConvert.DeserializeObject<dynamic>(json);
-            DateTime expiry = result.Expiry;
+            var result = JsonSerializer.Deserialize(json, App.AppJsonSerializerContext.JsonElement);
+            var expiry = result.GetProperty("Expiry").GetDateTime();
 
             if (expiry < DateTime.UtcNow)
             {
@@ -136,7 +137,8 @@ internal static class SecureStorage
                 return null;
             }
 
-            return result.Data.ToObject<InfoClasses.UserInfo>();
+            return result.GetProperty("Data")
+                .Deserialize<InfoClasses.UserInfo>(App.AppJsonSerializerContext.UserInfo);
         }
         catch (CryptographicException ex)
         {
@@ -194,13 +196,13 @@ internal static class SecureStorage
             if (File.Exists(keyPath))
             {
                 var keyBytes = File.ReadAllBytes(keyPath);
-                
+
                 // On Windows, use DPAPI for additional protection
                 if (OperatingSystem.IsWindows())
                 {
                     keyBytes = ProtectedData.Unprotect(keyBytes, null, DataProtectionScope.CurrentUser);
                 }
-                
+
                 KeyCache[username] = keyBytes;
                 return keyBytes;
             }
@@ -234,7 +236,7 @@ internal static class SecureStorage
                     // Try to restrict file permissions (Unix-only)
                     if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
                     {
-                        File.SetUnixFileMode(keyPath, 
+                        File.SetUnixFileMode(keyPath,
                             UnixFileMode.UserRead | UnixFileMode.UserWrite);
                     }
                 }
@@ -260,6 +262,7 @@ internal static class SecureStorage
         {
             rng.GetBytes(iv);
         }
+
         return iv;
     }
 
@@ -278,10 +281,6 @@ internal static class SecureStorage
 
 public static class UserCache
 {
-    // Simple in-process cache that is AOT/trimming-friendly (no MemoryCache/System.Runtime.Caching)
-    // Keyed by normalized username.
-    private static readonly ConcurrentDictionary<string, CacheEntry> _cache = new();
-
     private const string CacheKeyPrefix = "UserInfo_";
     private const string DefaultUsername = "default";
 
@@ -293,17 +292,9 @@ public static class UserCache
         | DynamicallyAccessedMemberTypes.PublicProperties
         | DynamicallyAccessedMemberTypes.PublicFields;
 
-    private sealed class CacheEntry
-    {
-        public InfoClasses.UserInfo User { get; }
-        public DateTimeOffset Expires { get; }
-
-        public CacheEntry(InfoClasses.UserInfo user, DateTimeOffset expires)
-        {
-            User = user;
-            Expires = expires;
-        }
-    }
+    // Simple in-process cache that is AOT/trimming-friendly (no MemoryCache/System.Runtime.Caching)
+    // Keyed by normalized username.
+    private static readonly ConcurrentDictionary<string, CacheEntry> _cache = new();
 
     public static InfoClasses.UserInfo? CurrentUser
     {
@@ -343,7 +334,8 @@ public static class UserCache
         return storedUser;
     }
 
-    public static void SetUserInfo([DynamicallyAccessedMembers(PreserveUserInfoMembers)] InfoClasses.UserInfo? user, string? username = null)
+    public static void SetUserInfo([DynamicallyAccessedMembers(PreserveUserInfoMembers)] InfoClasses.UserInfo? user,
+        string? username = null)
     {
         if (user == null)
         {
@@ -377,18 +369,36 @@ public static class UserCache
         SecureStorage.ClearUserInfo(username);
     }
 
-    public static bool IsLoggedIn(string? username = null)
-    {
-        return GetUserInfo(username) != null;
-    }
+    public static bool IsLoggedIn(string? username = null) => GetUserInfo(username) != null;
 
-    public static List<string> GetStoredUsernames()
-    {
-        return SecureStorage.GetStoredUsernames();
-    }
+    public static List<string> GetStoredUsernames() => SecureStorage.GetStoredUsernames();
 
-    private static string NormalizeUsername(string? username)
+    private static string NormalizeUsername(string? username) =>
+        string.IsNullOrWhiteSpace(username) ? DefaultUsername : username;
+
+    private sealed class CacheEntry
     {
-        return string.IsNullOrWhiteSpace(username) ? DefaultUsername : username!;
+        public CacheEntry(InfoClasses.UserInfo user, DateTimeOffset expires)
+        {
+            User = user;
+            Expires = expires;
+        }
+
+        public InfoClasses.UserInfo User
+        {
+            get;
+        }
+
+        public DateTimeOffset Expires
+        {
+            get;
+        }
     }
+}
+
+public class SecureUserInfo
+{
+    public InfoClasses.UserInfo Data { get; set; }
+    public DateTime Expiry { get; set; }
+    public string Username { get; set; }
 }

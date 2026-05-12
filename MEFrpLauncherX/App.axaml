@@ -4,7 +4,8 @@
              xmlns:local="using:MEFrpLauncherX"
              xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:msg="https://github.com/xiyaowong/Message.Avalonia">
+             xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
+             xmlns:primitives="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -14,26 +15,31 @@
     <Application.Resources>
         <ResourceDictionary>
             <x:Double x:Key="ControlContentThemeFontSize">13</x:Double>
-            <FontFamily x:Key="ContentControlThemeFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
-            <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC</FontFamily>
-            <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts/#iconfont</FontFamily>
-            <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts/#Jetbrains Mono</FontFamily>
+            <FontFamily x:Key="ContentControlThemeFontFamily">avares://MEFrpLauncherX.Fonts/Fonts#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts#HarmonyOS Sans SC</FontFamily>
+            <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts#iconfont</FontFamily>
+            <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts#Jetbrains Mono</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Styles/TabStripThemes.axaml" />
+                <ResourceInclude Source="Styles/FAFix.axaml" />
+                <ResourceInclude Source="Styles/NavigationViewItemPresenterStyles.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
-        <!-- <semi:SemiTheme Locale="zh-CN" /> -->
-        <!-- <u-semi:SemiTheme Locale="zh-CN" /> -->
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <StyleInclude Source="avares://Notification.Avalonia/Themes/Generic.xaml" />
         <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
         <msg:Theme />
         <styling:FluentAvaloniaTheme PreferUserAccentColor="True" />
         <StyleInclude Source="Styles/_generic.axaml" />
         <StyleInclude Source="Styles/StackPanelIntroAnimation.axaml" />
+
+
+        <Style Selector="primitives|NavigationViewItemPresenter /template/ Border#SelectionIndicator">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
         <Style Selector="TemplatedControl">
             <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
         </Style>
@@ -85,6 +91,10 @@
                 </Animation>
             </Style.Animations>
         </Style>
+        <Style Selector="StackPanel.buttonPanel">
+            <Setter Property="Spacing" Value="3" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
         <Style Selector="TextBlock :is(HyperlinkButton)">
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0 0 0 -4" />
@@ -94,10 +104,7 @@
                 <Setter Property="Margin" Value="0 0 0 -2" />
             </Style>
         </Style>
-        <Style Selector="Layoutable">
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="TextBlock">
+        <Style Selector=":is(TextBlock)">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <Style Selector="ToggleSwitch">
@@ -179,7 +186,7 @@
             <Setter Property="Foreground" Value="#FF404040" />
         </Style>
         <Style Selector="TextBlock.Tertiary">
-            <Setter Property="Foreground" Value="#FFA5A6A6" />
+            <Setter Property="Foreground" Value="#F5A6A6" />
         </Style>
         <Style Selector="TextBlock.TertiaryLight">
             <Setter Property="Foreground" Value="#FF606060" />

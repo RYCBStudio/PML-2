@@ -5,7 +5,7 @@ using MsBox.Avalonia.Enums;
 namespace MEFrpLauncherX.Core.Controls;
 
 /// <summary>
-/// 兼容 Ursa 消息框样式的 MessageBox 类
+///     兼容 Ursa 消息框样式的 MessageBox 类
 /// </summary>
 public static class MessageBox
 {
@@ -50,13 +50,11 @@ public static class MessageBox
 
     // 重载方法，支持更简单的调用
     public static Task<MessageBoxResult> ShowAsync(string message, string caption = "",
-        MessageBoxIcon icon = MessageBoxIcon.Info)
-    {
-        return ShowAsync(message, caption, "", icon);
-    }
+        MessageBoxIcon icon = MessageBoxIcon.Info) =>
+        ShowAsync(message, caption, "", icon);
 
     /// <summary>
-    /// 兼容MsBox.Avalonia的消息框
+    ///     兼容MsBox.Avalonia的消息框
     /// </summary>
     /// <param name="message"></param>
     /// <param name="caption"></param>
@@ -83,10 +81,8 @@ public static class MessageBox
     }
 
     // 重载方法，支持按钮参数
-    public static Task<MessageBoxResult> ShowAsync(string message, string caption, IList<TaskDialogButton> buttons)
-    {
-        return ShowAsync(message, caption, "", MessageBoxIcon.Info, buttons);
-    }
+    public static Task<MessageBoxResult> ShowAsync(string message, string caption, IList<TaskDialogButton> buttons) =>
+        ShowAsync(message, caption, "", MessageBoxIcon.Info, buttons);
 
     private static MessageBoxResult ConvertToMessageBoxResult(object dialogResult, IList<TaskDialogButton> buttons)
     {
@@ -132,7 +128,7 @@ public static class MessageBox
 }
 
 /// <summary>
-/// 消息框结果枚举
+///     消息框结果枚举
 /// </summary>
 public enum MessageBoxResult
 {
@@ -144,7 +140,7 @@ public enum MessageBoxResult
 }
 
 /// <summary>
-/// 消息框图标类型枚举
+///     消息框图标类型枚举
 /// </summary>
 public enum MessageBoxIcon
 {

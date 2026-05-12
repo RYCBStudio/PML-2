@@ -16,6 +16,13 @@ public class ALPSettingsViewModel : ViewModelBase
 {
     private bool _isLoadingProxies;
 
+    public ALPSettingsViewModel()
+    {
+        TransferSelectedProxyToRightCommand = new RelayCommand<UserProxyViewModel>(TransferSelectedProxyToRight);
+        TransferSelectedProxyToLeftCommand = new RelayCommand<UserProxyViewModel>(TransferSelectedProxyToLeft);
+        LoadProxies();
+    }
+
     public UserProxyViewModel SelectedLeft
     {
         get;
@@ -100,7 +107,7 @@ public class ALPSettingsViewModel : ViewModelBase
         }
 
         _isLoadingProxies = true;
-        
+
         IsLoading = true;
         try
         {
@@ -111,13 +118,13 @@ public class ALPSettingsViewModel : ViewModelBase
             await Task.Run(async () =>
             {
                 var autoLaunchProxies = ConfigManager.CurrentConfig.AutoLaunchProxies;
-                var userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
-                var currentNodesListInfo = await MEFApiConverter.EnsureNodesListInfoAsync();
+                var userProxies = (await MEpiConverter.GetProxiesAsync()).data;
+                var currentNodesListInfo = await MEpiConverter.EnsureNodesListInfoAsync();
                 InfoClasses.NodesList[] currentNodesList;
 
                 if (currentNodesListInfo?.NodesList is null)
                 {
-                    currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
+                    currentNodesList = (await MEpiConverter.GetNodesInfoAsync()).data;
                 }
                 else
                 {
@@ -158,7 +165,7 @@ public class ALPSettingsViewModel : ViewModelBase
                         useCompression = item.useCompression,
                         location = $"{node?.hostname}:{item.remotePort}",
                         accessKey = item.accessKey,
-                        hostHeaderRewrite = item.hostHeaderRewrite,
+                        hostHeaderRewrite = item.hostHeaderRewrite
                     };
                     AllProxies.Add(proxy);
                     if (alp is not null)
@@ -198,8 +205,8 @@ public class ALPSettingsViewModel : ViewModelBase
             {
                 var userProxies = AllProxies;
                 var autoLaunchProxies = ConfigManager.CurrentConfig.AutoLaunchProxies;
-                var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
-                //var currentNodesStatusInfo = MEFApiConverter.CurrentNodesStatusInfo;
+                var currentNodesListInfo = MEpiConverter.CurrentNodesListInfo;
+                //var currentNodesStatusInfo = MEpiConverter.CurrentNodesStatusInfo;
                 var currentNodesList = currentNodesListInfo.NodesList;
 
 
@@ -245,7 +252,7 @@ public class ALPSettingsViewModel : ViewModelBase
                         hostHeaderRewrite = userProxy.hostHeaderRewrite,
                         headerXFromWhere = userProxy.headerXFromWhere,
                         UseConfig = proxy.UseConfig,
-                        Config = proxy.Config,
+                        Config = proxy.Config
                     });
                 }
             });
@@ -262,13 +269,6 @@ public class ALPSettingsViewModel : ViewModelBase
         {
             IsLoading = false;
         }
-    }
-
-    public ALPSettingsViewModel()
-    {
-        TransferSelectedProxyToRightCommand = new RelayCommand<UserProxyViewModel>(TransferSelectedProxyToRight);
-        TransferSelectedProxyToLeftCommand = new RelayCommand<UserProxyViewModel>(TransferSelectedProxyToLeft);
-        LoadProxies();
     }
 
     private void TransferSelectedProxyToRight(UserProxyViewModel proxy)

@@ -19,6 +19,14 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
     private int _index;
     private TunnelNodeViewModel? _selected;
 
+    public CreateProxyPage()
+    {
+        InitializeComponent();
+        DataContext = this;
+        AttachedToVisualTree += CreateProxyPage_Loaded;
+        Instance = this;
+    }
+
     public Control CurrentPage
     {
         get;
@@ -38,15 +46,9 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
         private set;
     }
 
-    public event Func<Task<bool>> OnCreateProxy;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    public CreateProxyPage()
-    {
-        InitializeComponent();
-        DataContext = this;
-        AttachedToVisualTree += CreateProxyPage_Loaded;
-        Instance = this;
-    }
+    public event Func<Task<bool>> OnCreateProxy;
 
     private async void CreateProxyPage_Loaded(object sender, VisualTreeAttachmentEventArgs e)
     {
@@ -54,14 +56,14 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
         var nc = new NodesContainer();
         CurrentPage = nc;
 
-        var status = MEFApiConverter.CurrentNodesStatusInfo;
+        var status = MEpiConverter.CurrentNodesStatusInfo;
         status ??= new InfoClasses.NodesStatusInfo
-            { NodesStatus = (await MEFApiConverter.GetNodesStatusAsync()).data };
+            { NodesStatus = (await MEpiConverter.GetNodesStatusAsync()).data };
 
-        var listInfo = MEFApiConverter.CurrentNodesListInfo;
+        var listInfo = MEpiConverter.CurrentNodesListInfo;
         listInfo ??= new InfoClasses.NodesListInfo
         {
-            NodesList = (await MEFApiConverter.GetNodesInfoAsync()).data
+            NodesList = (await MEpiConverter.GetNodesInfoAsync()).data
         };
 
         await nc.LoadNodesAsync(listInfo, status);
@@ -69,17 +71,10 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
         MainPageFrameViewModel.Instance.IsLoading = false;
     }
 
-    private void CreateProxyPage_NodeSelected(TunnelNodeViewModel? obj)
-    {
-        _selected = obj;
-    }
+    private void CreateProxyPage_NodeSelected(TunnelNodeViewModel? obj) => _selected = obj;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
+    protected virtual void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     private async void Next(object sender, RoutedEventArgs e)
     {
@@ -149,13 +144,13 @@ public partial class CreateProxyPage : UserControl, INotifyPropertyChanged
 
     private async void Refresh(object? sender, RoutedEventArgs e)
     {
-        MEFApiConverter.CurrentNodesStatusInfo = new InfoClasses.NodesStatusInfo
+        MEpiConverter.CurrentNodesStatusInfo = new InfoClasses.NodesStatusInfo
         {
-            NodesStatus = (await MEFApiConverter.GetNodesStatusAsync()).data
+            NodesStatus = (await MEpiConverter.GetNodesStatusAsync()).data
         };
-        MEFApiConverter.CurrentNodesListInfo = new InfoClasses.NodesListInfo
+        MEpiConverter.CurrentNodesListInfo = new InfoClasses.NodesListInfo
         {
-            NodesList = (await MEFApiConverter.GetNodesInfoAsync()).data
+            NodesList = (await MEpiConverter.GetNodesInfoAsync()).data
         };
         CreateProxyPage_Loaded(null, null);
     }

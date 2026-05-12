@@ -1,4 +1,4 @@
-<Window
+<windowing:AppWindow
     x:Class="MEFrpLauncherX.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,6 +7,7 @@
     xmlns:views="clr-namespace:MEFrpLauncherX.Views"
     xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
     xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
+    xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="PML 2"
     Width="960"
     Height="540"
@@ -14,8 +15,8 @@
     x:Name="Window"
     Closing="Window_Closing"
     FontFamily="{StaticResource GlobalFontFamily}"
+
     WindowStartupLocation="CenterScreen"
-    ExtendClientAreaChromeHints="PreferSystemChrome"
     x:DataType="core:MainWindowViewModel"
     Icon="/Assets/meflx.png"
     mc:Ignorable="d">
@@ -25,11 +26,13 @@
     </Design.DataContext>
 
     <Panel>
-        <Image x:Name="LoginBackground" 
+        <Border x:Name="MainLayer" ZIndex="1" Background="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
+        <Image x:Name="MainBackground" ZIndex="0" IsVisible="False" />
+        <Image x:Name="LoginBackground" ZIndex="-1"
                IsVisible="True"
                Source="/Assets/splash.png"
                Stretch="UniformToFill" />
-        <Grid RowDefinitions="*,Auto">
+        <Grid RowDefinitions="*,Auto" ZIndex="2">
             <ContentControl x:Name="MainContentControl">
                 <Border CornerRadius="8" BorderThickness="1" HorizontalAlignment="Right" Margin="10"
                         Padding="40,0,40,0"
@@ -48,6 +51,6 @@
                          Value="{Binding Progress}"
                          IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
         </Grid>
-        <msg:MessageHost HostId="PML2_Msg" />
+        <msg:MessageHost ZIndex="10" HostId="PML2_Msg" />
     </Panel>
-</Window>
+</windowing:AppWindow>

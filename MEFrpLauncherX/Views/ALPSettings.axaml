@@ -10,7 +10,7 @@
     <Window.Resources>
     </Window.Resources>
     <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*,*">
-        <controls1:ProgressRing Grid.ColumnSpan="3" Grid.RowSpan="2" IsVisible="{Binding IsLoading}"></controls1:ProgressRing>
+        <controls1:ProgressRing Grid.ColumnSpan="3" Grid.RowSpan="2" IsVisible="{Binding IsLoading}" />
         <TextBlock Grid.ColumnSpan="2" Text="请选择要自启动的隧道" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Theme="{StaticResource TitleTextBlockStyle}" />
         <Grid HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" RowDefinitions="Auto, *, Auto">
@@ -58,8 +58,8 @@
                                     <controls1:InfoBadge.Background>
                                         <MultiBinding
                                             Converter="{x:Static controls:OnlineAndDisabledConverter.Instance}">
-                                            <Binding Path="isOnline"></Binding>
-                                            <Binding Path="isDisabled"></Binding>
+                                            <Binding Path="isOnline" />
+                                            <Binding Path="isDisabled" />
                                         </MultiBinding>
                                     </controls1:InfoBadge.Background>
                                 </controls1:InfoBadge>
@@ -95,10 +95,9 @@
                                         <TextBlock.Text>
                                             <MultiBinding>
                                                 <Binding Path="proxyType"
-                                                         Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}">
-                                                </Binding>
-                                                <Binding Path="localIp"></Binding>
-                                                <Binding Path="localPort"></Binding>
+                                                         Converter="{x:Static core:LowerCaseToUpperCaseConverter.Instance}" />
+                                                <Binding Path="localIp" />
+                                                <Binding Path="localPort" />
                                                 <MultiBinding.StringFormat>
                                                     [{0}] {1}:{2} →
                                                 </MultiBinding.StringFormat>
@@ -106,11 +105,9 @@
                                         </TextBlock.Text>
                                     </TextBlock>
                                     <TextBlock Text="{Binding remotePort, StringFormat=' {0}'}"
-                                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}">
-                                    </TextBlock>
+                                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}" />
                                     <TextBlock Text="{Binding domain, StringFormat=' {0}'}"
-                                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}">
-                                    </TextBlock>
+                                               IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}" />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>

@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -12,18 +14,22 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
+using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.ViewModels;
+using MEFrpLauncherX.Views.Appearance;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 using RYCB.PML.MEFrpCaptchaLib;
+using Sentry;
 using Color = Avalonia.Media.Color;
 
 #pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
@@ -32,40 +38,63 @@ namespace MEFrpLauncherX.Views;
 
 public partial class MainWindow : AppWindow, IDisposable
 {
-    public bool updateChecked
-    {
-        get;
-        private set;
-    }
+    private DispatcherTimer _accentColorRotator;
 
+    private CancellationTokenSource _clearMessageCts;
     private TrayIcon _notifyIcon;
-    private MainWindowViewModel vm;
-
-    internal static MainWindow Instance
-    {
-        get;
-        private set;
-    }
-
-    public NativeMenu NativeMenuBar
-    {
-        get;
-        set;
-    }
+    private bool _updateChecked;
+    private MainWindowViewModel _vm;
 
     public MainWindow()
     {
-        var preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+        #region 透明度设置
+
+        WindowTransparencyLevel preferredTLH;
+        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")))
         {
-            "Mica" => WindowTransparencyLevel.Mica,
-            "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-            "Blur" => WindowTransparencyLevel.Blur,
-            "Transparent" => WindowTransparencyLevel.Transparent,
-            _ => WindowTransparencyLevel.None
-        };
+            var preference = File.ReadAllText(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")).Trim();
+            ConfigManager.CurrentConfig.Skin = preference;
+            File.Delete(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"));
+            preferredTLH = preference.ToUpper(0) switch
+            {
+                "Mica" => WindowTransparencyLevel.Mica,
+                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+                "Blur" => WindowTransparencyLevel.Blur,
+                "Transparent" => WindowTransparencyLevel.Transparent,
+                _ => WindowTransparencyLevel.None
+            };
+        }
+        else
+        {
+            preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+            {
+                "Mica" => WindowTransparencyLevel.Mica,
+                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+                "Blur" => WindowTransparencyLevel.Blur,
+                "Transparent" => WindowTransparencyLevel.Transparent,
+                _ => WindowTransparencyLevel.None
+            };
+        }
+
         TransparencyLevelHint = [preferredTLH];
 
+        #endregion
+
+        #region Splash设置
+
+        var sp = new AppSplash();
+
+        SplashScreen = new MainAppSplashScreen(this)
+        {
+            SplashScreenContent = sp,
+            InitApp = async () => await ApplyThemeAsync()
+        };
+
+        #endregion
+
         InitializeComponent();
+
+
         Loaded += OnLoaded;
         /*
         // if (OperatingSystem.IsWindows())
@@ -104,12 +133,35 @@ public partial class MainWindow : AppWindow, IDisposable
         Instance = this;
     }
 
+    internal static MainWindow Instance
+    {
+        get;
+        private set;
+    }
+
+    public NativeMenu NativeMenuBar
+    {
+        get;
+        set;
+    }
+
+    public void Dispose()
+    {
+        _notifyIcon.Dispose();
+        _clearMessageCts?.Cancel();
+        _clearMessageCts?.Dispose();
+        _clearMessageCts = null;
+        _accentAnimationCts?.Cancel();
+        _accentAnimationCts?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
 
     private async void OnLoaded(object? sender, RoutedEventArgs e)
     {
         Core.App.StorageProvider = StorageProvider;
-        vm = new();
-        DataContext = vm;
+        _vm = new MainWindowViewModel();
+        DataContext = _vm;
         if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
         {
             Background =
@@ -119,6 +171,8 @@ public partial class MainWindow : AppWindow, IDisposable
                         ? new SolidColorBrush(C1)
                         : Brushes.White;
         }
+
+        MainLayer.Opacity = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity;
 
         if (OperatingSystem.IsLinux() || (Environment.OSVersion.Version.Build <= 22000 &&
                                           ConfigManager.CurrentConfig.Skin.ToUpper(0) == "Mica"
@@ -139,19 +193,19 @@ public partial class MainWindow : AppWindow, IDisposable
 
         CaptchaHelper.Init((progress, current, completed, nonce) =>
         {
-            vm.Progress = progress;
+            _vm.Progress = progress;
         });
         var menu = CreateContextMenu();
-        _notifyIcon = new()
+        _notifyIcon = new TrayIcon
         {
             Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://MEFrpLauncherX/Assets/meflx.png"))),
             Menu = CreateContextMenu(),
-            ToolTipText = "PML 2 运行中",
+            ToolTipText = "PML 2 运行中"
         };
         if (OperatingSystem.IsMacOS())
         {
             // 创建原生菜单
-            NativeMenuBar = new NativeMenu();
+            NativeMenuBar = [];
 
             // 添加应用程序菜单（macOS 第一个菜单）
             var appMenu = new NativeMenuItem("隧道");
@@ -203,7 +257,10 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             System.Console.WriteLine($"\e[31m[E]\e[0m] {ex.GetType()} {ex.Message}");
         }
+
+        await CheckPolicy();
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
+        Program.StartupTransaction.Finish(SpanStatus.Ok);
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性
         if (
@@ -216,15 +273,17 @@ public partial class MainWindow : AppWindow, IDisposable
             goto AUTO_START;
         }
 
-        var data = JsonConvert.DeserializeObject<StartupData>(
-            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")));
+        var data = JsonSerializer.Deserialize<StartupData>(
+            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")),
+            App.AppJsonSerializerContext.StartupData);
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
-            var _frpt = await Task.Run(() => MEFApiConverter.GetFrpToken().data);
-            var cmd = $"{{mefrpc}} -t {_frpt.token} -p {data?.StartProxyId}";
+            var _frpt = await MEpiConverter.GetFrpTokenAsync();
+            var cmd = $"{{mefrpc}} -t {_frpt.data?.token} -p {data?.StartProxyId}";
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd,
                 data?.StartProxyName);
         }
+
 
         AUTO_START:
         if (!ConfigManager.CurrentConfig.AutoLaunch || ConfigManager.CurrentConfig.AutoLaunchProxies.Count <= 0)
@@ -233,7 +292,7 @@ public partial class MainWindow : AppWindow, IDisposable
         }
 
         Hide();
-        var frpt = await Task.Run(() => MEFApiConverter.GetFrpToken().data);
+        var frpt = await MEpiConverter.GetFrpTokenAsync();
         foreach (var alp in ConfigManager.CurrentConfig.AutoLaunchProxies)
         {
             if (alp.UseConfig)
@@ -244,14 +303,74 @@ public partial class MainWindow : AppWindow, IDisposable
             }
             else
             {
-                var cmd = $"{{mefrpc}} -t {frpt.token} -p {alp.Id}";
+                var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {alp.Id}";
                 MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
             }
         }
     }
 
+    private static async Task CheckPolicy()
+    {
+        var cd = new ContentDialog
+        {
+            Content = new MarkdownRender
+            {
+                Value = """
+                        ### PML 2 隐私政策 (关键版)
+                        **重要提示：** 我们使用 [Sentry](https://sentry.io) 进行错误跟踪和性能监控，以改善软件稳定性。数据存储在 Sentry 位于欧盟的服务器上。  
+                        ### 1. 信息收集范围
+                        - **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
+                        - **设备数据**：设备标识符、IP 地址、操作系统版本、崩溃堆栈和错误日志
+                        - **使用行为**：功能点击、会话时长、错误日志
+                        ___
+                        **注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。  
+                        ### 2. 信息用途
+                        - 提供核心功能服务（账号验证、数据同步）
+                        - 优化用户体验（故障修复、功能改进）
+                        - 错误监控与性能分析（通过 Sentry）  
+                        ### 3. 数据共享
+                        **我们不会出售用户数据**。仅在以下情况共享：
+                        - 经您明确同意
+                        - 履行法律义务
+                        - 与第三方服务商合作（如云服务）必需时  
+                        ___
+                        ### 4. 您的权利
+                        您有权访问、更正或删除个人信息，可通过设置禁用遥测数据收集。  
+                        **联系方式：** [邮件](mailto://rycbstudio@163.com) | [官网](https://rycb.mxj.pub/)  
+                        ___
+                        详细隐私政策请查看：[PML 2 隐私政策](https://rycb.mxj.pub/mefl/privacy)
+                        """
+            },
+            PrimaryButtonText = "同意",
+            SecondaryButtonText = "同意, 但禁用遥测",
+            CloseButtonText = "拒绝",
+            IsPrimaryButtonEnabled = true
+        };
+        if (ConfigManager.CurrentConfig.PrivacyAgreed)
+        {
+            return;
+        }
+
+        var res = await cd.ShowAsync();
+        switch (res)
+        {
+            case ContentDialogResult.None:
+                App.Desktop.Shutdown();
+                ConfigManager.CurrentConfig.PrivacyAgreed = false;
+                break;
+            case ContentDialogResult.Primary:
+                ConfigManager.CurrentConfig.IsTelemetryEnabled = true;
+                ConfigManager.CurrentConfig.PrivacyAgreed = true;
+                break;
+            case ContentDialogResult.Secondary:
+                ConfigManager.CurrentConfig.IsTelemetryEnabled = false;
+                ConfigManager.CurrentConfig.PrivacyAgreed = true;
+                break;
+        }
+    }
+
     /// <summary>
-    /// 判断指定的时间是否在指定的范围
+    ///     判断指定的时间是否在指定的范围
     /// </summary>
     /// <param name="dateTime">指定时间，字符串类型，形如：yyyy-MM-dd hh:mm:ss</param>
     /// <param name="startTime">开始时间，字符串类型，形如：yyyy-MM-dd hh:mm:ss</param>
@@ -270,30 +389,49 @@ public partial class MainWindow : AppWindow, IDisposable
     {
         if (File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
         {
-            Background =
-                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+            if (ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar)
+            {
+                Background =
+                    new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
                     {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
+                        Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                        {
+                            "None" => Stretch.None,
+                            "Stretch" => Stretch.Fill,
+                            "Uniform" => Stretch.Uniform,
+                            "UniformToFill" => Stretch.UniformToFill,
+                            _ => Stretch.None
+                        }
+                    };
+                MainBackground.Hide();
+            }
+            else
+            {
+                Background = null;
+                MainBackground.Show();
+                MainBackground.Source =
+                    new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
+                MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                {
+                    "None" => Stretch.None,
+                    "Stretch" => Stretch.Fill,
+                    "Uniform" => Stretch.Uniform,
+                    "UniformToFill" => Stretch.UniformToFill,
+                    _ => Stretch.None
                 };
+            }
         }
 
 
-        if (!updateChecked)
+        if (!_updateChecked)
         {
             var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
             if (hasNew)
             {
-                Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {App.Version} → {latest}");
+                Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {Core.App.Version} → {latest}");
             }
 
-            updateChecked = true;
+            _updateChecked = true;
         }
 
         App.splash?.Close();
@@ -307,7 +445,7 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             Header = "PML 2 ",
             Icon = new Bitmap(AssetLoader.Open(new Uri("avares://MEFrpLauncherX/Assets/meflx.png"))),
-            IsEnabled = false,
+            IsEnabled = false
         });
         tmpCM.Items.Add(new NativeMenuItem
         {
@@ -372,8 +510,6 @@ public partial class MainWindow : AppWindow, IDisposable
         e.Cancel = false;
     }
 
-    private CancellationTokenSource _clearMessageCts;
-
     private void StatusBar_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property != TextBlock.TextProperty || e.NewValue is null)
@@ -406,13 +542,41 @@ public partial class MainWindow : AppWindow, IDisposable
             }
         });
     }
+}
 
-    public void Dispose()
+internal class MainAppSplashScreen : IApplicationSplashScreen
+{
+    private MainWindow _owner;
+
+    public MainAppSplashScreen(MainWindow owner)
     {
-        _notifyIcon.Dispose();
-        _clearMessageCts?.Cancel();
-        _clearMessageCts?.Dispose();
-        _clearMessageCts = null;
-        GC.SuppressFinalize(this);
+        _owner = owner;
     }
+
+    public Action? InitApp
+    {
+        get;
+        set;
+    }
+
+    public string AppName
+    {
+        get;
+    } = "111";
+
+    public IImage AppIcon
+    {
+        get;
+    }
+
+    public object SplashScreenContent
+    {
+        get;
+        set;
+    }
+
+    public int MinimumShowTime => 0;
+
+    public Task RunTasks(CancellationToken cancellationToken) =>
+        InitApp == null ? Task.CompletedTask : Task.Run(InitApp, cancellationToken);
 }

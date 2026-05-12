@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
+using DynamicData;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
-using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.Controls;
 
 public partial class CreateProxy : UserControl
 {
-    private readonly TunnelNodeViewModel _node;
     private readonly CreateProxyViewModel _createProxyViewModel;
+    private readonly TunnelNodeViewModel _node;
 
     public CreateProxy()
     {
@@ -51,7 +52,10 @@ public partial class CreateProxy : UserControl
         };
         AttachedToVisualTree += CreateProxy_Loaded;
         if (!Design.IsDesignMode)
+        {
             CreateProxyPage.Instance.OnCreateProxy += CreateProxy_OnCreateProxy;
+        }
+
         _createProxyViewModel = new CreateProxyViewModel();
         OperationPanel.DataContext = _createProxyViewModel;
     }
@@ -68,13 +72,13 @@ public partial class CreateProxy : UserControl
 
     private async Task<bool> CreateProxy_OnCreateProxy()
     {
-        var requestData = new
+        var requestData = new InfoClasses.CreateProxyRequestData
         {
             nodeId = _node.NodeId,
             proxyName = _createProxyViewModel.ProxyName,
             localIp = _createProxyViewModel.LocalAddress,
             localPort = _createProxyViewModel.LocalPort,
-            remotePort = (int?)(ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null),
+            remotePort = ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null,
             domain = "[\"" + string.Join("\", \"", _createProxyViewModel.RemoteAddress) + "\"]",
             requestHeaders = _createProxyViewModel.RequestHeaders,
             responseHeaders = _createProxyViewModel.ResponseHeaders,
@@ -92,7 +96,7 @@ public partial class CreateProxy : UserControl
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
             useCompression = EnableCompressCBox.IsChecked ?? false,
             transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]",
+            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]"
         };
         if (requestData.proxyName.IsNullOrEmpty())
         {
@@ -117,8 +121,8 @@ public partial class CreateProxy : UserControl
             }
         }
 
-        var _body = JsonConvert.SerializeObject(requestData, Formatting.Indented);
-        var success = (await MEFApiConverter.PostNewTunnelAsync(_body)).code == 200;
+        var _body = JsonSerializer.Serialize(requestData, App.AppJsonSerializerContext.CreateProxyRequestData);
+        var success = (await MEpiConverter.PostNewTunnelAsync(_body)).code == 200;
         if (success)
         {
             MainContainer.IsEnabled = false;
@@ -129,32 +133,50 @@ public partial class CreateProxy : UserControl
 
     private string GetHttpPlugin()
     {
-        return ProtocolCbBox.SelectedIndex switch
+        var http = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "http");
+        var https = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "https");
+        if (http == -1 || https == -1)
         {
-            2 when SameAsHttp.IsChecked == true => string.Empty,
-            2 when Http2Https.IsChecked == true => "http2https",
-            2 => string.Empty,
-            3 when SameAsHttps.IsChecked == true => "https2https",
-            3 when Https2Http.IsChecked == true => "https2http",
-            _ => string.Empty
-        };
+            return string.Empty;
+        }
+
+        if (ProtocolCbBox.SelectedIndex == https)
+        {
+            if (SameAsHttps.IsChecked == true)
+            {
+                return string.Empty;
+            }
+
+            return Https2Http.IsChecked == true ? "https2http" : string.Empty;
+        }
+
+        if (ProtocolCbBox.SelectedIndex != http || SameAsHttp.IsChecked == true)
+        {
+            return string.Empty;
+        }
+
+        return Http2Https.IsChecked == true ? "http2https" : string.Empty;
+
     }
 
     private void CreateProxy_Loaded(object sender, VisualTreeAttachmentEventArgs e)
     {
         CurrentProxyInfo.DataContext = _node;
         ProtocolCbBox.ItemsSource = _node.AllowTypes;
+        ProtocolCbBox.SelectedIndex = 0;
     }
 
     private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
     {
         Loading.IsVisible = true;
-        var data = -1;
-        var res = await Task.Run(() =>
-            MEFApiConverter.GetFreePort(_node.NodeId, ProtocolCbBox.SelectedItem.ToString()).data);
-        data = res;
+        if (ProtocolCbBox.SelectedItem?.ToString() is not "tcp" and not "udp")
+        {
+            return;
+        }
+
+        var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem?.ToString())).data;
         Loading.IsVisible = false;
-        RemotePortNudBox.Value = data;
+        RemotePortNudBox.Value = res;
     }
 
     private void ProtocolCbBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -164,14 +186,14 @@ public partial class CreateProxy : UserControl
             return;
         }
 
-        if (ProtocolCbBox.SelectedIndex is 2 or 3)
+        if (ProtocolCbBox.SelectedItem?.ToString()?.ToLower() is "http" or "https")
         {
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
             SecurityOptionsSettingsExpander.Show();
-            switch (ProtocolCbBox.SelectedIndex)
+            switch (ProtocolCbBox.SelectedItem)
             {
-                case 2:
+                case "http":
                     SourceProtocolSettingsExpanderItemForHttp.Show();
                     CustomRequestHeaderSettings.Show();
                     CustomResponseHeaderSettings.Show();
@@ -180,7 +202,7 @@ public partial class CreateProxy : UserControl
                     CertificateSettingsForPath.Hide();
                     CertificateSettingsForPrivateKey.Hide();
                     break;
-                case 3:
+                case "https":
                     SourceProtocolSettingsExpanderItemForHttp.Hide();
                     LocationSettings.Collapse();
                     SourceProtocolSettingsExpanderItemForHttps.Show();
@@ -208,6 +230,7 @@ public partial class CreateProxy : UserControl
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -223,11 +246,13 @@ public partial class CreateProxy : UserControl
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -269,7 +294,10 @@ public partial class CreateProxy : UserControl
     {
         var de = new DomainsEdit();
         if (_createProxyViewModel.RemoteAddress is not null && _createProxyViewModel.RemoteAddress.Count != 0)
+        {
             de.Domains.AddRange(_createProxyViewModel.RemoteAddress);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑绑定域名",
@@ -309,6 +337,7 @@ public partial class CreateProxy : UserControl
     {
         var he = new HeadersEdit();
         if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+        {
             he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
                 {
                     var key = kv.Key;
@@ -324,11 +353,13 @@ public partial class CreateProxy : UserControl
 
                     return new RequestHeader
                     {
-                        Name = key!,
-                        Value = val!
+                        Name = key,
+                        Value = val
                     };
                 })
                 .ToList());
+        }
+
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
         // {
         //     he.Headers.Remove(header);
@@ -370,7 +401,10 @@ public partial class CreateProxy : UserControl
     {
         var de = new DomainsEdit();
         if (_createProxyViewModel.Locations is not null && _createProxyViewModel.Locations.Count != 0)
+        {
             de.Domains.AddRange(_createProxyViewModel.Locations);
+        }
+
         var cd = new ContentDialog
         {
             Title = "编辑路径",
@@ -396,10 +430,7 @@ public class SelectIndexToVisibleConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is 1;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is 1;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -412,10 +443,7 @@ public class SelectIndexToVisibleConverterReverse : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is 2;
-    }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is 2;
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -423,10 +451,7 @@ public class SelectIndexToVisibleConverterReverse : IValueConverter
 
 public class LegalProxyNameValidator : ValidationAttribute
 {
-    public override bool IsValid(object? value)
-    {
-        return value is string name && !name.Contains('.');
-    }
+    public override bool IsValid(object? value) => value is string name && !name.Contains('.');
 }
 
 public class CreateProxyViewModel : ViewModelBase

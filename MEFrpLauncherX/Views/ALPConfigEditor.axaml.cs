@@ -18,28 +18,28 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ALPConfigEditor : Window
 {
-    private string _path;
     private string _type;
-
-    public string Path
-    {
-        get => _path;
-        set => _path = value;
-    }
 
     public ALPConfigEditor()
     {
         InitializeComponent();
     }
 
+    public string Path
+    {
+        get;
+        set;
+    }
+
     private async void OnSaveClicked(object? sender, RoutedEventArgs e)
     {
-        if (File.Exists(_path))
+        if (File.Exists(Path))
         {
-            using (var s = new FileStream(_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (var s = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 ConfigEdit.Save(s);
             }
+
             UnSavedTip.Hide();
         }
         else
@@ -59,7 +59,7 @@ public partial class ALPConfigEditor : Window
                 [
                     fpftype_toml, fpftype_json, fpftype_yml,
                     fpftype_ini
-                ],
+                ]
             });
             var configFile = string.Empty;
             try
@@ -74,10 +74,10 @@ public partial class ALPConfigEditor : Window
                 Core.App.CurrentLogger.Error(ex);
             }
 
-            _path = configFile;
-            if (File.Exists(_path))
+            Path = configFile;
+            if (File.Exists(Path))
             {
-                using (var s = new FileStream(_path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var s = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     ConfigEdit.Save(s);
                 }
@@ -125,7 +125,7 @@ public partial class ALPConfigEditor : Window
 
     private void ChangeSyntaxHighlight(object? sender, SelectionChangedEventArgs e)
     {
-        _type = ((ComboBoxItem)(((ComboBox)sender)?.SelectedItem))?.Content.ToString();
+        _type = ((ComboBoxItem)((ComboBox)sender)?.SelectedItem)?.Content.ToString();
         SetupSyntaxHighlighting();
     }
 
@@ -136,12 +136,6 @@ public partial class ALPConfigEditor : Window
 
         // Setup TextMate for the editor
         var textMateInstallation = ConfigEdit.InstallTextMate(registryOptions);
-        TextMate.RegisterExceptionHandler(ex =>
-        {
-            // Handle exceptions from TextMate
-            Core.App.CurrentLogger.Log("TextMate Error: " + ex.Message);
-            Core.App.CurrentLogger.Error(ex);
-        });
         // Get the grammar based on file type
         var scopeName = _type.ToLower() switch
         {
@@ -187,7 +181,8 @@ public partial class ALPConfigEditor : Window
 
     private async void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        if (!ConfigEdit.IsModified || await MessageBox.ShowAsync("配置文件已修改，是否返回并保存？", "提示", ButtonEnum.YesNo) != MessageBoxResult.Yes)
+        if (!ConfigEdit.IsModified || await MessageBox.ShowAsync("配置文件已修改，是否返回并保存？", "提示", ButtonEnum.YesNo) !=
+            MessageBoxResult.Yes)
         {
             e.Cancel = false;
         }

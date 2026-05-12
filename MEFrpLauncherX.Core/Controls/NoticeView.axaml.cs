@@ -6,41 +6,39 @@ namespace MEFrpLauncherX.Core.Controls;
 
 public partial class NoticeView : UserControl
 {
-    public NoticeContent? Notice
-    {
-        get;
-        set;
-    }
-
     public NoticeView()
     {
         InitializeComponent();
         if (Design.IsDesignMode)
         {
-            Notice = new NoticeContent(true, "### 测试公告\n> Hello from PML 2",
-                DateTime.Now.ToString("yyyy-MM-dd"), 114, 514, "测试公告", "notice");
+            Notice = new NoticeContent();
         }
 
-        this.DataContext = Notice;
+        DataContext = Notice;
     }
 
     public NoticeView(NoticeContent notice, string markdown)
     {
         InitializeComponent();
         Notice = notice;
-        this.DataContext = this;
+        DataContext = this;
         MarkdownRender.Value = markdown;
+    }
+
+    public NoticeContent? Notice
+    {
+        get;
+        set;
     }
 }
 
 public class TypeToReadableChineseConverter : IValueConverter
 {
-
     public static TypeToReadableChineseConverter Instance
     {
         get;
     } = new();
-    
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is string _type

@@ -56,7 +56,7 @@
                 Text="密码" />
             <Panel>
                 <TextBox
-                    PasswordChar="•" 
+                    PasswordChar="•"
                     RevealPassword="{Binding #RevealPwdToggleBtn.IsChecked}"
                     x:Name="PwdBox"
                     Margin="10,0,10,0"
@@ -65,7 +65,7 @@
                     FontFamily="{StaticResource GlobalFontFamily}" />
                 <ToggleButton x:Name="RevealPwdToggleBtn" HorizontalAlignment="Right" Margin="0 00 12 0">
                     <ToggleButton.Content>
-                        <controls:FontIcon Glyph="&#xF78D;" FontFamily="{StaticResource SymbolThemeFontFamily}"></controls:FontIcon>
+                        <controls:FontIcon Glyph="&#xF78D;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                     </ToggleButton.Content>
                 </ToggleButton>
             </Panel>
@@ -74,17 +74,18 @@
             <DockPanel HorizontalSpacing="4">
                 <StackPanel Orientation="Horizontal" Spacing="3" DockPanel.Dock="Right">
                     <TextBlock>验证方式</TextBlock>
-                    <ComboBox x:Name="AuthModeComboBox" ItemsSource="{Binding AuthModes}" SelectedIndex="{Binding AuthMode}" />
+                    <ComboBox x:Name="AuthModeComboBox" ItemsSource="{Binding AuthModes}"
+                              SelectedIndex="{Binding AuthMode}" />
                 </StackPanel>
                 <StackPanel>
-                <Button x:Name="LoginBtn" Classes="accent" HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Click="LoginBtn_Click"
-                        Content="{Binding Progress, Converter={x:Static viewModels:ProgressToTextConverter.Instance}}"
-                        FontFamily="{StaticResource GlobalFontFamily}" />
-                <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                             IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
-            </StackPanel>
+                    <Button x:Name="LoginBtn" Classes="accent" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Click="LoginBtn_Click"
+                            Content="{Binding Progress, Converter={x:Static viewModels:ProgressToTextConverter.Instance}}"
+                            FontFamily="{StaticResource GlobalFontFamily}" />
+                    <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                                 IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
+                </StackPanel>
             </DockPanel>
             <Button
                 x:Name="SignUpBtn"

@@ -8,30 +8,6 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class HeadersEdit : UserControl
 {
-    public string currentHeader_Name
-    {
-        get;
-        set;
-    }
-
-    public string currentHeader_Value
-    {
-        get;
-        set;
-    }
-
-    public RequestHeader? CurrentHeader
-    {
-        get;
-        set;
-    }
-
-    public AvaloniaList<RequestHeader> Headers
-    {
-        get;
-        set;
-    }
-
     public HeadersEdit()
     {
         InitializeComponent();
@@ -57,7 +33,7 @@ public partial class HeadersEdit : UserControl
                 new RequestHeader { Name = "X-Forwarded-Host", Value = "127.0.0.1" },
                 new RequestHeader { Name = "X-Forwarded-Port", Value = "443" },
                 new RequestHeader { Name = "X-Forwarded-Server", Value = "127.0.0.1" },
-                new RequestHeader { Name = "X-Real-IP", Value = "127.0.0.1" },
+                new RequestHeader { Name = "X-Real-IP", Value = "127.0.0.1" }
             ];
         }
 
@@ -71,6 +47,30 @@ public partial class HeadersEdit : UserControl
         DataContext = this;
     }
 
+    public string currentHeader_Name
+    {
+        get;
+        set;
+    }
+
+    public string currentHeader_Value
+    {
+        get;
+        set;
+    }
+
+    public RequestHeader? CurrentHeader
+    {
+        get;
+        set;
+    }
+
+    public AvaloniaList<RequestHeader> Headers
+    {
+        get;
+        set;
+    }
+
     private void AddHeader(object? sender, RoutedEventArgs e)
     {
         var toAdd = new RequestHeader
@@ -79,7 +79,7 @@ public partial class HeadersEdit : UserControl
             Value = currentHeader_Value
         };
         if ((CurrentHeader?.Name == toAdd.Name && CurrentHeader?.Value == toAdd.Value) ||
-            Headers.FirstOrDefault(x=>x.Name == toAdd.Name && x.Value == toAdd.Value) != null)
+            Headers.FirstOrDefault(x => x.Name == toAdd.Name && x.Value == toAdd.Value) != null)
         {
             return;
         }
@@ -87,10 +87,7 @@ public partial class HeadersEdit : UserControl
         Headers.Add(toAdd);
     }
 
-    private void RemoveHeader(object? sender, RoutedEventArgs e)
-    {
-        Headers.Remove(CurrentHeader);
-    }
+    private void RemoveHeader(object? sender, RoutedEventArgs e) => Headers.Remove(CurrentHeader);
 }
 
 public class RequestHeader

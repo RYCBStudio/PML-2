@@ -9,7 +9,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -249,7 +248,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         const string appName = "PML Ⅱ"; // 替换为你的应用名称
         var executablePath = Environment.ProcessPath;
 
-        if (string.IsNullOrEmpty(executablePath))
+        if (string.IsNullOrEmpty(executablePath) || !OperatingSystem.IsWindows())
         {
             throw new InvalidOperationException("无法获取可执行文件路径");
         }
@@ -274,7 +273,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void SetAutoStartLinux(bool enable)
     {
-        const string appName = "mefrplauncherx"; // 替换为你的应用ID
+        const string appName = "pml-2"; // 替换为你的应用ID
         var desktopFile =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.config/autostart/{appName}.desktop";
         var executablePath = Environment.ProcessPath;
@@ -332,10 +331,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         });
     }
 
-    private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e)
-    {
+    private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e) =>
         new ALPSettings().ShowDialog(Core.App.MainWindow);
-    }
 
     private void ExpireDaysSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
@@ -379,10 +376,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         Core.App.MainWindow.InvalidateVisual();
     }
 
-    private void SetProxyMonitorBar(object? sender, RoutedEventArgs e)
-    {
+    private void SetProxyMonitorBar(object? sender, RoutedEventArgs e) =>
         new ProxyFloatSettings().ShowDialog(Core.App.MainWindow);
-    }
 
     private void PMChanged(object? sender, RoutedEventArgs e)
     {
@@ -394,10 +389,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         ConfigManager.UpdateConfig(config => config.PMSettings.Enabled = (sender as ToggleButton).IsChecked.Value);
     }
 
-    private async void ChooseBackground(object? sender, RoutedEventArgs e)
-    {
+    private async void ChooseBackground(object? sender, RoutedEventArgs e) =>
         FooterButtonSettingsItem.SelectBackgroundImpl();
-    }
 
     private void StretchBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -412,18 +405,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         });
         if (File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
         {
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
         }
 
         Core.App.MainWindow.InvalidateVisual();
@@ -432,14 +414,13 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     private void ClearBackground(object? sender, RoutedEventArgs e)
     {
         Core.App.MainWindow.Background = null;
+        MainWindow.Instance.MainBackground.Hide();
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = "");
         Core.App.MainWindow.InvalidateVisual();
     }
 
-    private void SetAppearanceAdvanced(object? sender, RoutedEventArgs e)
-    {
+    private void SetAppearanceAdvanced(object? sender, RoutedEventArgs e) =>
         new AppearanceSettings { DataContext = new AppearanceSettingsViewModel() }.Show(Core.App.MainWindow);
-    }
 
     private void CaptchaModeChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -455,10 +436,8 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
             config.DownloadSource = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "");
     }
 
-    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
-    {
+    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e) =>
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
-    }
 }
 
 public class ValidationModeConverter : IValueConverter

@@ -4,10 +4,7 @@ public static class UrlProtocolHelper
 {
     private static readonly List<IUrlProtocolHandler> _handlers = [];
 
-    public static void RegisterHandler(IUrlProtocolHandler handler)
-    {
-        _handlers.Add(handler);
-    }
+    public static void RegisterHandler(IUrlProtocolHandler handler) => _handlers.Add(handler);
 
     public static void HandleUrl(string url)
     {
@@ -39,7 +36,7 @@ public static class UrlProtocolHelper
         {
             var uri = new Uri(url);
             command = uri.Host.ToLower();
-            
+
             // 解析路径参数
             parameters = uri.AbsolutePath
                 .Split('/', StringSplitOptions.RemoveEmptyEntries);

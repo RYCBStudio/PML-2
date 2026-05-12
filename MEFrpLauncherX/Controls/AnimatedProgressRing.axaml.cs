@@ -9,16 +9,15 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class AnimatedProgressRing : UserControl
 {
-    private readonly Ellipse _movingTop;
-    private readonly Ellipse _movingLeft;
-    private readonly Ellipse _movingRight;
-
-    private readonly Stopwatch _sw = new();
-    private readonly DispatcherTimer _timer;
-
     private const double DurTop = 2.0;
     private const double DurLeft = 2.5;
     private const double DurRight = 2.2;
+    private readonly Ellipse _movingLeft;
+    private readonly Ellipse _movingRight;
+    private readonly Ellipse _movingTop;
+
+    private readonly Stopwatch _sw = new();
+    private readonly DispatcherTimer _timer;
 
     public AnimatedProgressRing()
     {
@@ -53,7 +52,7 @@ public partial class AnimatedProgressRing : UserControl
         // 用已知的 Width/Height 做偏移（Ellipse 在 XAML 中指定了 Width/Height）
         // Top moving (cy 30 -> 50 -> 30)
         {
-            var t = (elapsed % DurTop) / DurTop;
+            var t = elapsed % DurTop / DurTop;
             var f = TwoPhaseInterp(t);
             var y = Lerp(30.0, 50.0, f);
             var half = _movingTop.Height / 2.0; // 使用 Height 而不是 Bounds
@@ -63,7 +62,7 @@ public partial class AnimatedProgressRing : UserControl
 
         // Left moving (cx 30 -> 50 -> 30)
         {
-            var t = (elapsed % DurLeft) / DurLeft;
+            var t = elapsed % DurLeft / DurLeft;
             var f = TwoPhaseInterp(t);
             var x = Lerp(30.0, 50.0, f);
             var half = _movingLeft.Width / 2.0;
@@ -73,7 +72,7 @@ public partial class AnimatedProgressRing : UserControl
 
         // Right moving (cx 90 -> 70 -> 90)
         {
-            var t = (elapsed % DurRight) / DurRight;
+            var t = elapsed % DurRight / DurRight;
             var f = TwoPhaseInterp(t);
             var x = Lerp(90.0, 70.0, f);
             var half = _movingRight.Width / 2.0;

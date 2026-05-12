@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Web;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using ReactiveUI;
 
@@ -15,17 +19,162 @@ namespace MEFrpLauncherX.Views.Appearance;
 
 public partial class AppearanceSettings : Window
 {
-    private bool _init;
+    private readonly bool _init;
 
     public AppearanceSettings()
     {
         InitializeComponent();
+        OpacitySlider.Value = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity * 100;
+        FillModeBox.SelectedIndex = ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar ? 0 : 1;
+        ShowSoftwareNotice.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
+        ShowSystemNotice.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice;
+        ShowSystemInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo;
+        ShowUserInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo;
+        ShowStatistics.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowStatistics;
+        _init = true;
     }
+
+    private bool CanDeCheck => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSystemNotice ||
+                               ConfigManager.CurrentConfig.HomeSettings.ShowSoftwareNotice;
 
     private void ColorView_OnColorChanged(object? sender, ColorChangedEventArgs e)
     {
         App.FATheme?.CustomAccentColor = e.NewColor;
         ConfigManager.UpdateConfig(cfg => cfg.AccentColor = e.NewColor.ToString());
+    }
+
+    private void UpdateOpacity(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        var o = e.NewValue / 100;
+        ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.LayerOpacity = o);
+        MainWindow.Instance.MainLayer.Opacity = o;
+    }
+
+    private void UpdateBackgroundFillMode(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!_init || sender == null)
+        {
+            return;
+        }
+
+        var sft = FillModeBox.SelectedIndex == 0;
+        ConfigManager.UpdateConfig(cfg => cfg.BackgroundSettings.ShouldFillTitleBar = sft);
+        UpdateBackground(sft);
+    }
+
+    public static void UpdateBackground(bool sft)
+    {
+        if (!File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
+        {
+            Core.App.CurrentLogger.Log(
+                "背景图片不存在，无法加载。错误路径: " + ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage,
+                EnumLogType.Error);
+            return;
+        }
+
+        if (!sft)
+        {
+            MainWindow.Instance.MainBackground.Show();
+            MainWindow.Instance.MainBackground.Source =
+                new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
+            MainWindow.Instance.MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+            {
+                "None" => Stretch.None,
+                "Stretch" => Stretch.Fill,
+                "Uniform" => Stretch.Uniform,
+                "UniformToFill" => Stretch.UniformToFill,
+                _ => Stretch.None
+            };
+        }
+        else
+        {
+            MainWindow.Instance.MainBackground.Hide();
+            MainWindow.Instance.Background =
+                new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
+                {
+                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+                    {
+                        "None" => Stretch.None,
+                        "Stretch" => Stretch.Fill,
+                        "Uniform" => Stretch.Uniform,
+                        "UniformToFill" => Stretch.UniformToFill,
+                        _ => Stretch.None
+                    }
+                };
+            MainWindow.Instance.InvalidateVisual();
+        }
+    }
+
+    private void UpdateVisibilityForStatistics(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowStatistics = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForUserInfo(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowUserInfo = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSystemInfo(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemInfo = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSystemNotice(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.ShowSystemNotice = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void UpdateVisibilityForSoftwareNotice(object? sender, RoutedEventArgs e)
+    {
+        if (!CanDeCheck)
+        {
+            (sender as CheckBox)?.IsChecked = !(sender as CheckBox)?.IsChecked;
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg =>
+            cfg.HomeSettings.ShowSoftwareNotice = (sender as CheckBox)?.IsChecked ?? false);
+    }
+
+    private void RestoreDefaultColors(object? sender, RoutedEventArgs e)
+    {
+        App.FATheme?.CustomAccentColor = null;
+        App.FATheme?.PreferUserAccentColor = true;
+        MainWindow.Instance.InvalidateVisual();
+        ConfigManager.UpdateConfig(cfg => cfg.AccentColor = string.Empty);
     }
 }
 
@@ -37,7 +186,7 @@ public class AppearanceSettingsViewModel : ViewModelBase
         [
             new RecentImagesSettingsItem
             {
-                Header = "最近的图片",
+                Header = "最近的图片"
             },
 
             new FooterButtonSettingsItem
@@ -64,6 +213,43 @@ public class SettingsItemBase : ViewModelBase
 
 public class RecentImagesSettingsItem : SettingsItemBase
 {
+    public RecentImagesSettingsItem()
+    {
+        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", ".photos")))
+        {
+            var cnt = File.ReadAllLines(Path.Combine(Core.App.StartupPath, "Cache", ".photos"));
+            ImagePaths = cnt.ToList();
+
+            if (ImagePaths.Count <= 1)
+            {
+                goto FINAL;
+            }
+
+            foreach (var image in ImagePaths.ToList())
+            {
+                if (!File.Exists(image))
+                {
+                    ImagePaths.Remove(image);
+                    continue;
+                }
+
+                var img = new Bitmap(image);
+                Images.Add(img);
+                Imgs.Add(image, img);
+            }
+
+            if (ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage.IsNullOrEmpty())
+            {
+                goto FINAL;
+            }
+
+            SelectedImage = Imgs[ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage];
+        }
+
+        FINAL:
+        Instance = this;
+    }
+
     public static RecentImagesSettingsItem Instance
     {
         get;
@@ -89,18 +275,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
             var img = Imgs.FirstOrDefault(x => x.Value == field);
             var file = HttpUtility.UrlDecode(img.Key);
             ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(file))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
             Core.App.MainWindow.InvalidateVisual();
         }
     }
@@ -108,50 +283,12 @@ public class RecentImagesSettingsItem : SettingsItemBase
     public List<string> ImagePaths
     {
         get;
-        private set;
     } = [];
 
     public Dictionary<string, IImage> Imgs
     {
         get;
-        private set;
     } = [];
-
-    public RecentImagesSettingsItem()
-    {
-        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", ".photos")))
-        {
-            var cnt = File.ReadAllLines(Path.Combine(Core.App.StartupPath, "Cache", ".photos"));
-            ImagePaths = cnt.ToList();
-
-            if (ImagePaths.Count <= 1)
-            {
-                goto FINAL;
-            }
-
-            foreach (var image in ImagePaths.ToList())
-            {
-                if (!File.Exists(image))
-                {
-                    ImagePaths.Remove(image);
-                    continue;
-                }
-                var img = new Bitmap(image);
-                Images.Add(img);
-                Imgs.Add(image, img);
-            }
-
-            if (ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage.IsNullOrEmpty())
-            {
-                goto FINAL;
-            }
-
-            SelectedImage = Imgs[ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage];
-        }
-
-        FINAL:
-        Instance = this;
-    }
 
     public AvaloniaList<IImage> Images
     {
@@ -159,7 +296,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
     } = [];
 }
 
-public class FooterButtonSettingsItem : SettingsItemBase
+public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
 {
     public FooterButtonSettingsItem()
     {
@@ -172,16 +309,25 @@ public class FooterButtonSettingsItem : SettingsItemBase
         set;
     }
 
-    public void SelectFile()
-    {
-        SelectBackgroundImpl();
-    }
-
-    public void ClearFile()
+    public static void ClearFile()
     {
         File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), string.Empty);
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = string.Empty);
-        Core.App.MainWindow?.Background = null;
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            Core.App.MainWindow?.Background = null;
+            MainWindow.Instance.MainLayer.Background = null;
+            MainWindow.Instance.MainBackground.Hide();
+            Core.App.MainWindow?.InvalidateVisual();
+        });
+    }
+
+    public ReactiveCommand<Unit, Unit> ClearFileCommand => ReactiveCommand.Create(ClearFileImpl);
+    public ReactiveCommand<Unit, Unit> SelectBackgroundCommand => ReactiveCommand.Create(SelectBackgroundImpl);
+
+    public void ClearFileImpl()
+    {
+        ClearFile();
         RecentImagesSettingsItem.Instance?.Images?.Clear();
         RecentImagesSettingsItem.Instance?.Imgs?.Clear();
     }
@@ -210,24 +356,14 @@ public class FooterButtonSettingsItem : SettingsItemBase
                 await File.AppendAllLinesAsync(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), [file]);
             }
 
-            ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = file);
+            await ConfigManager.UpdateConfigAsync(config => config.BackgroundSettings.BackgroundImage = file);
             var img = new Bitmap(file);
             RecentImagesSettingsItem.Instance?.Images?.Add(img);
             RecentImagesSettingsItem.Instance?.Imgs?.Add(file, img);
             RecentImagesSettingsItem.Instance?.ImagePaths?.Add(file);
             RecentImagesSettingsItem.Instance?.SelectedImage = img;
-            Core.App.MainWindow.Background =
-                new ImageBrush(new Bitmap(file))
-                {
-                    Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                    {
-                        "None" => Stretch.None,
-                        "Stretch" => Stretch.Fill,
-                        "Uniform" => Stretch.Uniform,
-                        "UniformToFill" => Stretch.UniformToFill,
-                        _ => Stretch.None
-                    },
-                };
+
+            AppearanceSettings.UpdateBackground(ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar);
         }
 
         Core.App.MainWindow.InvalidateVisual();

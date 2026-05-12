@@ -2,44 +2,44 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace MEFrpLauncherX.Views
+namespace MEFrpLauncherX.Views;
+
+public class InputControl : UserControl
 {
-    public class InputControl : UserControl
+    public InputControl(string prompt)
     {
-        public string CaptchaResult
+        CaptchaResult = string.Empty;
+
+        var stackPanel = new StackPanel
         {
-            get; private set;
-        }
+            Margin = new Thickness(15)
+        };
 
-        public InputControl(string prompt)
+        var promptText = new SelectableTextBlock
         {
-            CaptchaResult = string.Empty;
+            Text = prompt,
+            TextWrapping = TextWrapping.Wrap,
+            Margin = new Thickness(0, 0, 0, 15)
+        };
 
-            var stackPanel = new StackPanel
-            {
-                Margin = new Thickness(15)
-            };
+        var inputBox = new TextBox
+        {
+            Margin = new Thickness(0, 0, 0, 15)
+        };
 
-            var promptText = new SelectableTextBlock
-            {
-                Text = prompt,
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0, 0, 0, 15)
-            };
+        inputBox.TextChanged += (s, e) =>
+        {
+            CaptchaResult = inputBox.Text;
+        };
+        stackPanel.Children.Add(promptText);
+        stackPanel.Children.Add(inputBox);
 
-            var inputBox = new TextBox
-            {
-                Margin = new Thickness(0, 0, 0, 15)
-            };
+        Content = stackPanel;
+    }
 
-            inputBox.TextChanged += (s, e) =>
-            {
-                CaptchaResult = inputBox.Text;
-            };
-            stackPanel.Children.Add(promptText);
-            stackPanel.Children.Add(inputBox);
-
-            Content = stackPanel;
-        }
+    public string CaptchaResult
+    {
+        get;
+        private set;
     }
 }

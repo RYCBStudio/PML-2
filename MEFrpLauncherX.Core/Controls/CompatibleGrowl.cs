@@ -52,7 +52,6 @@ public class Growl
     {
         try
         {
-
             App.PML2MsgMnger.ShowErrorMessage(message, new MessageOptions
             {
                 Title = title,

@@ -7,7 +7,6 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:pml2="clr-namespace:MEFrpLauncherX"
-             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.NodesMonitoringPage"
              FontFamily="{StaticResource GlobalFontFamily}"
@@ -65,10 +64,10 @@
                     <local:RollingNumberDoubleTextBlock
                         VerticalAlignment="Center"
                         FontFamily="{StaticResource GlobalFontFamily}"
-                        TargetNumber="{Binding TotalInTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                        TargetNumber="{Binding TotalInTraffic, Converter={x:Static core:TrafficToTargetNumberConverter.Instance}}" />
 
                     <TextBlock DockPanel.Dock="Right" VerticalAlignment="Bottom"
-                               Text="{Binding TotalInTraffic, Converter={x:Static views:TrafficToSizeLevelConverter.Instance}}" />
+                               Text="{Binding TotalInTraffic, Converter={x:Static core:TrafficToSizeLevelConverter.Instance}}" />
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="5" RowDefinitions="auto,*" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -79,10 +78,10 @@
                     <local:RollingNumberDoubleTextBlock
                         VerticalAlignment="Center"
                         FontFamily="{StaticResource GlobalFontFamily}"
-                        TargetNumber="{Binding TotalOutTraffic, Converter={x:Static views:TrafficToTargetNumberConverter.Instance}}" />
+                        TargetNumber="{Binding TotalOutTraffic, Converter={x:Static core:TrafficToTargetNumberConverter.Instance}}" />
 
                     <TextBlock DockPanel.Dock="Right" VerticalAlignment="Bottom"
-                               Text="{Binding TotalOutTraffic, Converter={x:Static views:TrafficToSizeLevelConverter.Instance}}" />
+                               Text="{Binding TotalOutTraffic, Converter={x:Static core:TrafficToSizeLevelConverter.Instance}}" />
                 </StackPanel>
             </Grid>
         </Grid>
@@ -108,34 +107,25 @@
         </Grid>
 
         <!-- 现代化节点列表 -->
+        <local:NoData Grid.Row="2" IsVisible="{Binding IsNoData}" />
         <ScrollViewer Grid.Row="2">
             <ItemsControl
-                FontFamily="{StaticResource GlobalFontFamily}" ItemsSource="{Binding FilteredNodes}">
+                FontFamily="{StaticResource GlobalFontFamily}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemsSource>
+                    <Binding Path="FilteredNodes">
+                        <Binding.FallbackValue>
+                            <local:NoData />
+                        </Binding.FallbackValue>
+                    </Binding>
+                </ItemsControl.ItemsSource>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="0,5" Padding="15" CornerRadius="8">
-                            <Border.Styles>
-                                <Style>
-                                    <Style.Animations>
-                                        <Animation Duration="0:0:0.75" FillMode="Both"
-                                                   Easing="QuarticEaseInOut">
-                                            <KeyFrame Cue="0%">
-                                                <Setter Property="TranslateTransform.X" Value="25" />
-                                                <Setter Property="Opacity" Value="0" />
-                                            </KeyFrame>
-                                            <KeyFrame Cue="100%">
-                                                <Setter Property="TranslateTransform.X" Value="0" />
-                                                <Setter Property="Opacity" Value="1" />
-                                            </KeyFrame>
-                                        </Animation>
-                                    </Style.Animations>
-                                </Style>
-                            </Border.Styles>
                             <Grid ColumnDefinitions="3*,4*,3*">
                                 <!-- 节点基本信息 -->
                                 <StackPanel Grid.Column="0">

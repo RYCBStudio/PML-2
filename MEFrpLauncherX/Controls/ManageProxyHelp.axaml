@@ -90,15 +90,15 @@
         <WrapPanel Grid.Row="5" ItemSpacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <Image Width="200" Stretch="Uniform" Source="../Assets/psh_1.png" />
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道在线"></TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道在线" />
             </StackPanel>
             <StackPanel>
                 <Image Width="200" Stretch="Uniform" Source="../Assets/psh_2.png" />
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线"></TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线" />
             </StackPanel>
             <StackPanel>
                 <Image Width="200" Stretch="Uniform" Source="../Assets/psh_3.png" />
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线且被禁用"></TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="隧道离线且被禁用" />
             </StackPanel>
         </WrapPanel>
     </Grid>

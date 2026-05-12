@@ -1,0 +1,119 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:MEFrpLauncherX.ViewModels"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Views.ThemesPage"
+             x:DataType="vm:ThemesPageViewModel">
+    <Design.DataContext>
+        <vm:ThemesPageViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="10" Spacing="10" Classes="animated-intro">
+        <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="主题设置" />
+
+        <TabControl Classes="compact">
+            <TabItem Header="本地主题">
+                <Grid RowDefinitions="Auto, *">
+                    <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
+                        <controls:CommandBar.PrimaryCommands>
+                            <controls:CommandBarButton IconSource="Refresh" Label="刷新"
+                                                       Command="{Binding RefreshLocalThemesCommand}" />
+                            <controls:CommandBarButton IconSource="Add" Label="新建"
+                                                       Command="{Binding AddLocalThemeCommand}" />
+                            <controls:CommandBarButton IconSource="Checkmark" Label="应用所选"
+                                                       Command="{Binding ApplyLocalThemeCommand}" />
+                            <controls:CommandBarButton IconSource="Edit" Label="编辑所选"
+                                                       Command="{Binding EditLocalThemeCommand}" />
+                            <controls:CommandBarButton IconSource="Delete" Label="删除所选"
+                                                       Command="{Binding DeleteLocalThemeCommand}" />
+                            <controls:CommandBarButton IconSource="OpenFile" Label="打包所选"
+                                                       Command="{Binding PackageLocalThemeCommand}" />
+                            <controls:CommandBarButton Label="导入" IconSource="Import"
+                                                       Command="{Binding ImportThemeCommand}" />
+                            <controls:CommandBarButton Label="访问文档" IconSource="Help"
+                                                       Command="{Binding OpenDocumentationCommand}" />
+                        </controls:CommandBar.PrimaryCommands>
+                    </controls:CommandBar>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding LocalThemes}"
+                             SelectedItem="{Binding SelectedLocalTheme}"
+                             Margin="0,0,0,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto, *" Classes="animated">
+                                    <Image Grid.Column="0" Width="64" Height="64" Source="{Binding PreviewImage}"
+                                           Margin="0,0,10,0" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Author}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Text="{Binding Version}" FontSize="10"
+                                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="在线主题">
+                <Grid RowDefinitions="Auto, Auto, *">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10">
+                        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoadingOnlineThemes}" Width="100" />
+                        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsDownloading}" Width="100" />
+                    </StackPanel>
+                    <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
+                        <controls:CommandBar.PrimaryCommands>
+                            <controls:CommandBarButton Label="刷新" IconSource="Refresh"
+                                                       Command="{Binding FetchOnlineThemesCommand}"
+                                                       IsEnabled="{Binding !IsLoadingOnlineThemes}" />
+                            <controls:CommandBarButton Label="下载所选" IconSource="Download"
+                                                       Command="{Binding DownloadThemeCommand}"
+                                                       IsEnabled="{Binding !IsDownloading}" />
+                            <controls:CommandBarElementContainer>
+                                <TextBox Watermark="搜索..." MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
+                            </controls:CommandBarElementContainer>
+                        </controls:CommandBar.PrimaryCommands>
+                    </controls:CommandBar>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding FilteredOnlineThemes}"
+                             SelectedItem="{Binding SelectedOnlineTheme}"
+                             Margin="0,0,0,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto, *" Classes="animated">
+                                    <Image Grid.Column="0" Width="64" Height="64"
+                                           asyncImageLoader:ImageLoader.Source="{Binding PreviewImageUrl}"
+                                           Margin="0,0,10,0" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Author}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Version}" FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>

@@ -20,30 +20,30 @@
                 <TextBlock Text="修改未保存。" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Spacing="5">
-            <Button VerticalAlignment="Center" Click="OnPasteClicked" Classes="accent">
-                <Button.Content>
-                    <DockPanel HorizontalSpacing="3">
-                        <controls:SymbolIcon Symbol="Paste" DockPanel.Dock="Left" />
-                        <TextBlock Text="粘贴" />
-                    </DockPanel>
-                </Button.Content>
-            </Button>
-            <Button VerticalAlignment="Center" Click="OnSaveClicked">
-                <Button.Content>
-                    <DockPanel HorizontalSpacing="3">
-                        <controls:SymbolIcon Symbol="Save" DockPanel.Dock="Left" />
-                        <TextBlock Text="保存" />
-                    </DockPanel>
-                </Button.Content>
-            </Button>
-            <Button VerticalAlignment="Center" Click="OnCancelClicked">
-                <Button.Content>
-                    <DockPanel HorizontalSpacing="3">
-                        <controls:SymbolIcon Symbol="Cancel" DockPanel.Dock="Left" />
-                        <TextBlock Text="取消" />
-                    </DockPanel>
-                </Button.Content>
-            </Button>
+                <Button VerticalAlignment="Center" Click="OnPasteClicked" Classes="accent">
+                    <Button.Content>
+                        <DockPanel HorizontalSpacing="3">
+                            <controls:SymbolIcon Symbol="Paste" DockPanel.Dock="Left" />
+                            <TextBlock Text="粘贴" />
+                        </DockPanel>
+                    </Button.Content>
+                </Button>
+                <Button VerticalAlignment="Center" Click="OnSaveClicked">
+                    <Button.Content>
+                        <DockPanel HorizontalSpacing="3">
+                            <controls:SymbolIcon Symbol="Save" DockPanel.Dock="Left" />
+                            <TextBlock Text="保存" />
+                        </DockPanel>
+                    </Button.Content>
+                </Button>
+                <Button VerticalAlignment="Center" Click="OnCancelClicked">
+                    <Button.Content>
+                        <DockPanel HorizontalSpacing="3">
+                            <controls:SymbolIcon Symbol="Cancel" DockPanel.Dock="Left" />
+                            <TextBlock Text="取消" />
+                        </DockPanel>
+                    </Button.Content>
+                </Button>
                 <StackPanel Orientation="Horizontal" Spacing="3">
                     <TextBlock Text="配置文件类型: " />
                     <ComboBox x:Name="FileTypeComboBox" SelectionChanged="ChangeSyntaxHighlight">
@@ -53,7 +53,7 @@
                         <ComboBoxItem Content="INI" />
                     </ComboBox>
                 </StackPanel>
-        </StackPanel>
+            </StackPanel>
         </DockPanel>
         <avaloniaEdit:TextEditor ShowLineNumbers="True" x:Name="ConfigEdit" Grid.Row="1" />
     </Grid>

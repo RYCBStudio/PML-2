@@ -4,9 +4,9 @@ using Avalonia.Controls.Templates;
 using MEFrpLauncherX.Core;
 
 namespace MEFrpLauncherX;
+
 public class ViewLocator : IDataTemplate
 {
-
     public Control? Build(object? param)
     {
         if (param is null)
@@ -14,11 +14,11 @@ public class ViewLocator : IDataTemplate
             return null;
         }
 
-        try 
+        try
         {
             var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
             var type = Type.GetType(name);
-        
+
             return type != null ? (Control)Activator.CreateInstance(type)! : new TextBlock { Text = "View Not Found" };
         }
         catch (Exception ex)
@@ -28,8 +28,5 @@ public class ViewLocator : IDataTemplate
         }
     }
 
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
-    }
+    public bool Match(object? data) => data is ViewModelBase;
 }

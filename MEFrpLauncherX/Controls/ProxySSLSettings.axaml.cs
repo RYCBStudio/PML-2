@@ -11,6 +11,12 @@ public partial class ProxySSLSettings : UserControl
 {
     private UserProxyViewModel _proxy;
 
+    public ProxySSLSettings(UserProxyViewModel vm)
+    {
+        InitializeComponent();
+        _proxy = vm;
+    }
+
     public bool Finished
     {
         get;
@@ -33,12 +39,6 @@ public partial class ProxySSLSettings : UserControl
     {
         get;
         private set;
-    }
-
-    public ProxySSLSettings(UserProxyViewModel vm)
-    {
-        InitializeComponent();
-        _proxy = vm;
     }
 
     private async void OpenFile(object? sender, RoutedEventArgs e)

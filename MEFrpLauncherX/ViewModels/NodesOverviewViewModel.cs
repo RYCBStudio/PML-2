@@ -12,6 +12,12 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class NodesOverviewViewModel : INotifyPropertyChanged
 {
+    public NodesOverviewViewModel()
+    {
+        SelectedSortOption = SortOptions[0];
+        LoadData();
+    }
+
     public AvaloniaList<InfoClasses.NodeStatus> AllNodes
     {
         get;
@@ -82,7 +88,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     public int TotalOnlineProxies => AllNodes?.Sum(n => n.onlineProxy) ?? 0;
     public long TotalInTraffic => AllNodes?.Sum(n => n.totalTrafficIn) ?? 0;
     public long TotalOutTraffic => AllNodes?.Sum(n => n.totalTrafficOut) ?? 0;
-    
+
     public bool IsLoading
     {
         get;
@@ -93,21 +99,28 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
     }
 
-    public NodesOverviewViewModel()
+    public bool IsNoData
     {
-        SelectedSortOption = SortOptions[0];
-        LoadData();
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 
     private async void LoadData()
     {
         IsLoading = true;
-        var res = await Task.Run(MEFApiConverter.GetNodesStatusAsync);
+        var res = await Task.Run(MEpiConverter.GetNodesStatusAsync);
         if (res.code != 200)
         {
             IsLoading = false;
             return;
         }
+
         var result = new InfoClasses.NodesStatusInfo
         {
             NodesStatus = res.data
@@ -176,6 +189,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
                 FilteredNodes.Add(node);
             }
         });
+        IsNoData = !query.Any();
         IsLoading = false;
     }
 
@@ -189,16 +203,18 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(TotalOutTraffic));
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
 
 public class SortOption
 {
+    public SortOption(string displayName, string propertyName)
+    {
+        DisplayName = displayName;
+        PropertyName = propertyName;
+    }
+
     public string DisplayName
     {
         get;
@@ -209,11 +225,5 @@ public class SortOption
     {
         get;
         set;
-    }
-
-    public SortOption(string displayName, string propertyName)
-    {
-        DisplayName = displayName;
-        PropertyName = propertyName;
     }
 }

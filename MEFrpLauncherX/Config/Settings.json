@@ -1,4 +1,6 @@
 {
+  "IsTelemetryEnabled": false,
+  "PrivacyAgreed": false,
   "Skin": "None",
   "KickWithoutDisable": true,
   "HideInsteadOfClose": true,
@@ -10,16 +12,18 @@
   "ExpireDays": 180,
   "Theme": "Dark",
   "BackgroundSettings": {
+    "LayerOpacity": 0.6,
     "BackgroundImage": "",
     "Stretch": "Uniform",
-    "TileMode": "disabled"
+    "TileMode": "disabled",
+    "ShouldFillTitleBar": false
   },
   "CaptchaMode": "implicit",
-  "UpdateSettings":{
+  "UpdateSettings": {
     "AutoCheck": true,
-    "Channel": "Stable",
+    "Channel": "Preview",
     "Method": "ds",
-    "KeepProfile": true
+    "KeepProfile": false
   },
   "DownloadSource": "TPCA",
   "AccentColor": "",
@@ -27,5 +31,12 @@
     "Position": "lt",
     "Enabled": false
   },
-  "DoNotShowSuccessMsg": false
+  "HomeSettings": {
+    "ShowStatistics": true,
+    "ShowUserInfo": true,
+    "ShowSystemInfo": true,
+    "ShowSystemNotice": true,
+    "ShowSoftwareNotice": true
+  },
+  "DoNotShowSuccessMsg": true
 }

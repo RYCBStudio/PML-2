@@ -105,15 +105,15 @@
                                              Width="250"
                                              Height="240"
                                              DataContext="{Binding}"
-                                             IsEnabled="{Binding IsNotOverloaded, DataType=ctrls:TunnelNodeViewModel}" />
+                                             IsEnabled="{Binding IsNotOverloaded}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.Styles>
                 <Style Selector="ListBoxItem">
                     <!-- 关键点：将样式绑定到当前项（TunnelNodeViewModel） -->
-                    <Setter Property="IsEnabled" Value="{Binding IsNotOverloaded, DataType=ctrls:TunnelNodeViewModel}" />
+                    <Setter Property="IsEnabled" Value="{Binding SelectedNode.IsNotOverloaded}" />
                     <Setter Property="IsSelected"
-                            Value="{Binding IsSelected, Mode=TwoWay, DataType=ctrls:TunnelNodeViewModel}" />
+                            Value="{Binding SelectedNode.IsSelected, Mode=TwoWay}" />
                 </Style>
 
             </ListBox.Styles>

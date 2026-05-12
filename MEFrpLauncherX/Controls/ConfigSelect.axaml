@@ -31,7 +31,8 @@
                     <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}" Glyph="只读" />
                 </controls:InfoBadge.IconSource>
             </controls:InfoBadge>
-            <avaloniaEdit:TextEditor FontFamily="{StaticResource Jbm}" IsReadOnly="True" x:Name="ConfigPresenter" ShowLineNumbers="True" />
+            <avaloniaEdit:TextEditor FontFamily="{StaticResource Jbm}" IsReadOnly="True" x:Name="ConfigPresenter"
+                                     ShowLineNumbers="True" />
         </Panel>
         <!-- <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="3" Spacing="10"> -->
         <!--     <Button Classes="accent" x:Name="SaveBtn"> -->

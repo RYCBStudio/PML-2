@@ -11,12 +11,41 @@ public enum ReleaseFlag
 
 public class VersionInfo
 {
-    public int Major { get; set; }
-    public int Minor { get; set; }
-    public int Patch { get; set; }
-    public int? Build { get; set; }
-    public ReleaseFlag Flag { get; set; }
-    public int? FlagNumber { get; set; }
+    public int Major
+    {
+        get;
+        set;
+    }
+
+    public int Minor
+    {
+        get;
+        set;
+    }
+
+    public int Patch
+    {
+        get;
+        set;
+    }
+
+    public int? Build
+    {
+        get;
+        set;
+    }
+
+    public ReleaseFlag Flag
+    {
+        get;
+        set;
+    }
+
+    public int? FlagNumber
+    {
+        get;
+        set;
+    }
 }
 
 public static class VersionComparer
@@ -27,7 +56,7 @@ public static class VersionComparer
     );
 
     /// <summary>
-    /// 解析版本字符串
+    ///     解析版本字符串
     /// </summary>
     /// <param name="versionString">版本字符串（格式：x.y.z.a(-FLAGn) 或 x.y.z(-FLAGn)）</param>
     /// <returns>解析后的VersionInfo对象</returns>
@@ -82,14 +111,14 @@ public static class VersionComparer
     }
 
     /// <summary>
-    /// 比较两个版本号的大小
+    ///     比较两个版本号的大小
     /// </summary>
     /// <param name="version1">第一个版本字符串</param>
     /// <param name="version2">第二个版本字符串</param>
     /// <returns>
-    /// -1: version1 &lt; version2<p/>
-    /// <p>0: version1 = version2</p>
-    /// 1: version1 > version2<p/>
+    ///     -1: version1 &lt; version2<p />
+    ///     <p>0: version1 = version2</p>
+    ///     1: version1 > version2<p />
     /// </returns>
     public static int CompareVersions(string version1, string version2)
     {
@@ -137,7 +166,7 @@ public static class VersionComparer
     }
 
     /// <summary>
-    /// 比较可空整数
+    ///     比较可空整数
     /// </summary>
     private static int CompareNullableInt(int? a, int? b)
     {
@@ -160,7 +189,7 @@ public static class VersionComparer
     }
 
     /// <summary>
-    /// 比较发布标志（正式版 > RC > Preview）
+    ///     比较发布标志（正式版 > RC > Preview）
     /// </summary>
     private static int CompareReleaseFlags(ReleaseFlag flag1, ReleaseFlag flag2)
     {
@@ -174,7 +203,6 @@ public static class VersionComparer
         {
             ReleaseFlag.None => 2,
             ReleaseFlag.RC => 1,
-            ReleaseFlag.Preview => 0,
             _ => 0
         };
 
@@ -182,7 +210,6 @@ public static class VersionComparer
         {
             ReleaseFlag.None => 2,
             ReleaseFlag.RC => 1,
-            ReleaseFlag.Preview => 0,
             _ => 0
         };
 
@@ -190,26 +217,17 @@ public static class VersionComparer
     }
 
     /// <summary>
-    /// 判断版本1是否大于版本2
+    ///     判断版本1是否大于版本2
     /// </summary>
-    public static bool IsGreaterThan(string version1, string version2)
-    {
-        return CompareVersions(version1, version2) > 0;
-    }
+    public static bool IsGreaterThan(string version1, string version2) => CompareVersions(version1, version2) > 0;
 
     /// <summary>
-    /// 判断版本1是否小于版本2
+    ///     判断版本1是否小于版本2
     /// </summary>
-    public static bool IsLessThan(string version1, string version2)
-    {
-        return CompareVersions(version1, version2) < 0;
-    }
+    public static bool IsLessThan(string version1, string version2) => CompareVersions(version1, version2) < 0;
 
     /// <summary>
-    /// 判断版本1是否等于版本2
+    ///     判断版本1是否等于版本2
     /// </summary>
-    public static bool IsEqualTo(string version1, string version2)
-    {
-        return CompareVersions(version1, version2) == 0;
-    }
+    public static bool IsEqualTo(string version1, string version2) => CompareVersions(version1, version2) == 0;
 }

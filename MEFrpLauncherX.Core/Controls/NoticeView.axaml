@@ -16,6 +16,6 @@
             <Label Content="{Binding Summary}" />
         </DockPanel>
         <TextBlock Grid.Row="1" Text="{Binding Date, StringFormat='发布日期: {0}'}" />
-        <MarkdownAIRender:MarkdownRender Grid.Row="2" Value="{Binding ContentOfNotice}" x:Name="MarkdownRender"/>
+        <MarkdownAIRender:MarkdownRender Grid.Row="2" Value="{Binding ContentOfNotice}" x:Name="MarkdownRender" />
     </Grid>
 </UserControl>

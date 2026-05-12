@@ -1,23 +1,25 @@
-﻿namespace MEFrpLauncherX.Core.MEFIntergrated;
+﻿using System.Text.Json.Serialization;
+
+namespace MEFrpLauncherX.Core.MEFIntergrated;
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 public class InfoClasses
 {
     /// <summary>
-    /// 统计信息
+    ///     统计信息
     /// </summary>
     public class ApiInfo<T>
     {
         /// <summary>
-        /// 数据
+        ///     数据
         /// </summary>
-        public T data
+        public T? data
         {
             get;
             set;
         }
 
         /// <summary>
-        /// 消息
+        ///     消息
         /// </summary>
         public string message
         {
@@ -26,9 +28,182 @@ public class InfoClasses
         }
 
         /// <summary>
-        /// 状态码
+        ///     状态码
         /// </summary>
         public int code
+        {
+            get;
+            set;
+        }
+    }
+
+    public class DatePeriod
+    {
+        public int datePeriod
+        {
+            get;
+            set;
+        }
+    }
+
+    public class SignPost
+    {
+        public string captchaToken
+        {
+            get;
+            set;
+        }
+    }
+
+    public class CreateProxyRequestData
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string proxyName
+        {
+            get;
+            set;
+        }
+
+        public string localIp
+        {
+            get;
+            set;
+        }
+
+        public int localPort
+        {
+            get;
+            set;
+        }
+
+        public int? remotePort
+        {
+            get;
+            set;
+        }
+
+        public string domain
+        {
+            get;
+            set;
+        }
+
+        public string proxyType
+        {
+            get;
+            set;
+        }
+
+        public string accessKey
+        {
+            get;
+            set;
+        }
+
+        public string hostHeaderRewrite
+        {
+            get;
+            set;
+        }
+
+        public string httpPlugin
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, string> requestHeaders
+        {
+            get;
+            set;
+        }
+        public Dictionary<string, string> responseHeaders
+        {
+            get;
+            set;
+        }
+
+        public string httpUser
+        {
+            get;
+            set;
+        }
+
+        public string httpPassword
+        {
+            get;
+            set;
+        }
+
+        public string crtPath
+        {
+            get;
+            set;
+        }
+
+        public string keyPath
+        {
+            get;
+            set;
+        }
+
+        public string proxyProtocolVersion
+        {
+            get;
+            set;
+        }
+
+        public bool useEncryption
+        {
+            get;
+            set;
+        }
+
+        public bool useCompression
+        {
+            get;
+            set;
+        }
+        public string transportProtocol
+        {
+            get;
+            set;
+        }
+        public string locations
+        {
+            get;
+            set;
+        }
+    }
+
+    public class LaunchConfigRequest
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public string format
+        {
+            get;
+            set;
+        }
+    }
+
+    public class DeleteProxyInfo
+    {
+        public int proxyId
         {
             get;
             set;
@@ -67,19 +242,19 @@ public class InfoClasses
             set;
         }
 
-        public ulong[] trafficIn
+        public long[] trafficIn
         {
             get;
             set;
         }
 
-        public ulong[] trafficOut
+        public long[] trafficOut
         {
             get;
             set;
         }
 
-        public ulong[] totalTraffic
+        public long[] totalTraffic
         {
             get;
             set;
@@ -95,53 +270,264 @@ public class InfoClasses
             set;
         }
     }
-public class ProxyInfo
-{
-    public Nodes[] nodes { get; set; }
-    public Proxies[] proxies { get; set; }
-}
 
-public class Nodes
-{
-    public int nodeId { get; set; }
-    public string name { get; set; }
-    public string hostname { get; set; }
-}
+    public class ProxyInfo
+    {
+        public Nodes[] nodes
+        {
+            get;
+            set;
+        }
 
-public class Proxies
-{
-    public int proxyId { get; set; }
-    public string username { get; set; }
-    public string proxyName { get; set; }
-    public string proxyType { get; set; }
-    public bool isBanned { get; set; }
-    public bool isDisabled { get; set; }
-    public string localIp { get; set; }
-    public int localPort { get; set; }
-    public int remotePort { get; set; }
-    public int nodeId { get; set; }
-    public string runId { get; set; }
-    public bool isOnline { get; set; }
-    public string domain { get; set; }
-    public int lastStartTime { get; set; }
-    public int lastCloseTime { get; set; }
-    public string clientVersion { get; set; }
-    public string proxyProtocolVersion { get; set; }
-    public bool useEncryption { get; set; }
-    public bool useCompression { get; set; }
-    public string locations { get; set; }
-    public string accessKey { get; set; }
-    public string hostHeaderRewrite { get; set; }
-    public string httpPlugin { get; set; }
-    public string crtPath { get; set; }
-    public string keyPath { get; set; }
-    public string requestHeaders { get; set; }
-    public string responseHeaders { get; set; }
-    public string httpUser { get; set; }
-    public string httpPassword { get; set; }
-    public string transportProtocol { get; set; }
-}
+        public Proxies[] proxies
+        {
+            get;
+            set;
+        }
+    }
 
+    public class Nodes
+    {
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string name
+        {
+            get;
+            set;
+        }
+
+        public string hostname
+        {
+            get;
+            set;
+        }
+    }
+
+    public class Proxies
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public string username
+        {
+            get;
+            set;
+        }
+
+        public string proxyName
+        {
+            get;
+            set;
+        }
+
+        public string proxyType
+        {
+            get;
+            set;
+        }
+
+        public bool isBanned
+        {
+            get;
+            set;
+        }
+
+        public bool isDisabled
+        {
+            get;
+            set;
+        }
+
+        public string localIp
+        {
+            get;
+            set;
+        }
+
+        public int localPort
+        {
+            get;
+            set;
+        }
+
+        public int remotePort
+        {
+            get;
+            set;
+        }
+
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string runId
+        {
+            get;
+            set;
+        }
+
+        public bool isOnline
+        {
+            get;
+            set;
+        }
+
+        public string domain
+        {
+            get;
+            set;
+        }
+
+        public int lastStartTime
+        {
+            get;
+            set;
+        }
+
+        public int lastCloseTime
+        {
+            get;
+            set;
+        }
+
+        public string clientVersion
+        {
+            get;
+            set;
+        }
+
+        public string proxyProtocolVersion
+        {
+            get;
+            set;
+        }
+
+        public bool useEncryption
+        {
+            get;
+            set;
+        }
+
+        public bool useCompression
+        {
+            get;
+            set;
+        }
+
+        public string locations
+        {
+            get;
+            set;
+        }
+
+        public string accessKey
+        {
+            get;
+            set;
+        }
+
+        public string hostHeaderRewrite
+        {
+            get;
+            set;
+        }
+
+        public string httpPlugin
+        {
+            get;
+            set;
+        }
+
+        public string crtPath
+        {
+            get;
+            set;
+        }
+
+        public string keyPath
+        {
+            get;
+            set;
+        }
+
+        public string requestHeaders
+        {
+            get;
+            set;
+        }
+
+        public string responseHeaders
+        {
+            get;
+            set;
+        }
+
+        public string httpUser
+        {
+            get;
+            set;
+        }
+
+        public string httpPassword
+        {
+            get;
+            set;
+        }
+
+        public string transportProtocol
+        {
+            get;
+            set;
+        }
+    }
+
+    public class KickProxyInfo
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+    }
+
+    public class ToggleProxyInfo
+    {
+        public int proxyId
+        {
+            get;
+            set;
+        }
+
+        public bool isDisabled
+        {
+            get;
+            set;
+        }
+    }
+
+    public class FreePortBody
+    {
+        public int nodeId
+        {
+            get;
+            set;
+        }
+
+        public string protocol
+        {
+            get;
+            set;
+        }
+    }
 
 
     public class NodesListInfo
@@ -156,7 +542,7 @@ public class Proxies
     public class NodesList
     {
         /// <summary>
-        /// 节点ID
+        ///     节点ID
         /// </summary>
         public int nodeId
         {
@@ -165,7 +551,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 节点名称
+        ///     节点名称
         /// </summary>
         public string name
         {
@@ -174,7 +560,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 节点主机名
+        ///     节点主机名
         /// </summary>
         public string hostname
         {
@@ -183,7 +569,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 描述
+        ///     描述
         /// </summary>
         public string description
         {
@@ -217,7 +603,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 允许的分组
+        ///     允许的分组
         /// </summary>
         public string allowGroup
         {
@@ -226,7 +612,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 允许的端口
+        ///     允许的端口
         /// </summary>
         public string allowPort
         {
@@ -235,7 +621,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 允许的协议
+        ///     允许的协议
         /// </summary>
         public string allowType
         {
@@ -244,7 +630,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 地区
+        ///     地区
         /// </summary>
         public string region
         {
@@ -253,7 +639,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 带宽
+        ///     带宽
         /// </summary>
         public string bandwidth
         {
@@ -262,7 +648,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 是否在线
+        ///     是否在线
         /// </summary>
         public bool isOnline
         {
@@ -271,7 +657,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 是否禁用
+        ///     是否禁用
         /// </summary>
         public bool isDisabled
         {
@@ -280,7 +666,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 总入站流量
+        ///     总入站流量
         /// </summary>
         public int totalTrafficIn
         {
@@ -289,7 +675,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 总出站流量
+        ///     总出站流量
         /// </summary>
         public int totalTrafficOut
         {
@@ -298,7 +684,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 在线/离线时间
+        ///     在线/离线时间
         /// </summary>
         public int upTime
         {
@@ -307,7 +693,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 运行的MEFRPS版本
+        ///     运行的MEFRPS版本
         /// </summary>
         public string version
         {
@@ -323,6 +709,7 @@ public class Proxies
             get;
             set;
         }
+
         public string name
         {
             get;
@@ -349,7 +736,7 @@ public class Proxies
     public class NodeStatus
     {
         /// <summary>
-        /// 节点ID
+        ///     节点ID
         /// </summary>
         public int nodeId
         {
@@ -358,7 +745,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 节点名称
+        ///     节点名称
         /// </summary>
         public string name
         {
@@ -367,7 +754,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 入站流量
+        ///     入站流量
         /// </summary>
         public long totalTrafficIn
         {
@@ -376,7 +763,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 出站流量
+        ///     出站流量
         /// </summary>
         public long totalTrafficOut
         {
@@ -385,7 +772,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 连接数
+        ///     连接数
         /// </summary>
         public int onlineClient
         {
@@ -394,7 +781,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 在线隧道数
+        ///     在线隧道数
         /// </summary>
         public int onlineProxy
         {
@@ -403,7 +790,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 是否在线
+        ///     是否在线
         /// </summary>
         public bool isOnline
         {
@@ -412,7 +799,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 运行的MEFRPS版本
+        ///     运行的MEFRPS版本
         /// </summary>
         public string version
         {
@@ -421,7 +808,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 运行时间/离线时间
+        ///     运行时间/离线时间
         /// </summary>
         public int uptime
         {
@@ -430,7 +817,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 当前连接数？
+        ///     当前连接数？
         /// </summary>
         public int curConns
         {
@@ -439,7 +826,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 负载百分数
+        ///     负载百分数
         /// </summary>
         public int loadPercent
         {
@@ -452,7 +839,7 @@ public class Proxies
     public class PublicData
     {
         /// <summary>
-        /// 用户数
+        ///     用户数
         /// </summary>
         public int users
         {
@@ -461,7 +848,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 节点数
+        ///     节点数
         /// </summary>
         public int nodes
         {
@@ -470,7 +857,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 隧道数
+        ///     隧道数
         /// </summary>
         public int proxies
         {
@@ -479,7 +866,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 流量
+        ///     流量
         /// </summary>
         public long traffic
         {
@@ -491,8 +878,8 @@ public class Proxies
     public class SystemStatus
     {
         /// <summary>
-        /// 状态简码
-        /// 0 正常 1 降级 2 离线
+        ///     状态简码
+        ///     0 正常 1 降级 2 离线
         /// </summary>
         public int status
         {
@@ -501,7 +888,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 状态说明
+        ///     状态说明
         /// </summary>
         public string remark
         {
@@ -513,7 +900,7 @@ public class Proxies
     public class UserInfo4Login
     {
         /// <summary>
-        /// 用户名
+        ///     用户名
         /// </summary>
         public string username
         {
@@ -522,7 +909,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 密码
+        ///     密码
         /// </summary>
         public string password
         {
@@ -534,7 +921,7 @@ public class Proxies
     public class UserInfo
     {
         /// <summary>
-        /// 用户组
+        ///     用户组
         /// </summary>
         public string group
         {
@@ -550,9 +937,16 @@ public class Proxies
         }
 
         /// <summary>
-        /// 用户名
+        ///     用户名
         /// </summary>
         public string username
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
+        public string Email
         {
             get;
             set;
@@ -598,7 +992,7 @@ public class Proxies
     public class ExtraUserInfo
     {
         /// <summary>
-        /// 注册邮箱
+        ///     注册邮箱
         /// </summary>
         public string email
         {
@@ -607,7 +1001,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 语义化用户组
+        ///     语义化用户组
         /// </summary>
         public string friendlyGroup
         {
@@ -616,7 +1010,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 用户组ID
+        ///     用户组ID
         /// </summary>
         public string group
         {
@@ -625,7 +1019,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 入站带宽
+        ///     入站带宽
         /// </summary>
         public int inBound
         {
@@ -634,7 +1028,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 是否已实名
+        ///     是否已实名
         /// </summary>
         public bool isRealname
         {
@@ -643,7 +1037,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 最大隧道数
+        ///     最大隧道数
         /// </summary>
         public int maxProxies
         {
@@ -652,7 +1046,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 出站带宽
+        ///     出站带宽
         /// </summary>
         public int outBound
         {
@@ -661,7 +1055,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 注册时间
+        ///     注册时间
         /// </summary>
         public int regTime
         {
@@ -670,7 +1064,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 账户状态<br/>0-正常 1-封禁 2-流量超限
+        ///     账户状态<br />0-正常 1-封禁 2-流量超限
         /// </summary>
         public int status
         {
@@ -679,7 +1073,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 是否已签到
+        ///     是否已签到
         /// </summary>
         public bool todaySigned
         {
@@ -688,7 +1082,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 总流量
+        ///     总流量
         /// </summary>
         public int traffic
         {
@@ -697,7 +1091,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 已使用隧道数
+        ///     已使用隧道数
         /// </summary>
         public int usedProxies
         {
@@ -706,7 +1100,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 用户ID
+        ///     用户ID
         /// </summary>
         public int userId
         {
@@ -715,7 +1109,7 @@ public class Proxies
         }
 
         /// <summary>
-        /// 用户名
+        ///     用户名
         /// </summary>
         public string username
         {

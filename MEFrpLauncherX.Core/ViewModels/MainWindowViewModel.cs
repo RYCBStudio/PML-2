@@ -7,6 +7,23 @@ namespace MEFrpLauncherX.Core;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    // public InfoBarSeverity Type
+// {
+//     get;
+//     set => this.RaiseAndSetIfChanged(ref field, value);
+// }
+//
+// public string MsgTitle
+// {
+//     get;
+//     set => this.RaiseAndSetIfChanged(ref field, value);
+// }
+
+    public MainWindowViewModel()
+    {
+        Instance = this;
+    }
+
     public static MainWindowViewModel Instance
     {
         get;
@@ -17,7 +34,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "";
+    }
 
     public double Progress
     {
@@ -36,29 +53,15 @@ public class MainWindowViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = false;
-
-    // public InfoBarSeverity Type
-// {
-//     get;
-//     set => this.RaiseAndSetIfChanged(ref field, value);
-// }
-//
-// public string MsgTitle
-// {
-//     get;
-//     set => this.RaiseAndSetIfChanged(ref field, value);
-// }
-
-    public MainWindowViewModel()
-    {
-        Instance = this;
-    }
 }
 
 public class ThemeToBackgroundBrushConverter : IValueConverter
 {
-    public static ThemeToBackgroundBrushConverter Instance { get; } = new();
-    
+    public static ThemeToBackgroundBrushConverter Instance
+    {
+        get;
+    } = new();
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is true

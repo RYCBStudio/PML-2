@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
@@ -19,7 +20,6 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
-using Newtonsoft.Json;
 using ReactiveUI;
 using MessageBox = MEFrpLauncherX.Core.Controls.MessageBox;
 
@@ -27,16 +27,9 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ManageProxyPage : UserControl
 {
-    private bool _isLoadingProxies;
-    private bool _isFirstLoad = true;
-
-    public static ManageProxyPage Instance
-    {
-        get;
-        set;
-    }
-
     private readonly ProxyViewModel proxyViewModel;
+    private bool _isFirstLoad = true;
+    private bool _isLoadingProxies;
 
     public ManageProxyPage()
     {
@@ -45,6 +38,12 @@ public partial class ManageProxyPage : UserControl
         DataContext = proxyViewModel;
         AttachedToVisualTree += ManageProxyPage_Loaded;
         SearchBox.ItemsSource = new List<string> { "/pid:", "/nid:", "/n:" }.OrderBy(x => x);
+    }
+
+    public static ManageProxyPage Instance
+    {
+        get;
+        set;
     }
 
     private void ManageProxyPage_Loaded(object sender, VisualTreeAttachmentEventArgs e)
@@ -72,18 +71,78 @@ public partial class ManageProxyPage : UserControl
             proxyViewModel.FilteredProxies.Clear();
             await Task.Run(async () =>
             {
-                var userProxies = (await MEFApiConverter.GetProxiesAsync()).data;
-                // var currentNodesListInfo = MEFApiConverter.CurrentNodesListInfo;
+                InfoClasses.ProxyInfo userProxies = null;
+                try
+                {
+                    userProxies = (await MEpiConverter.GetProxiesAsync()).data;
+                }
+                catch
+                {
+                }
+                // var currentNodesListInfo = MEpiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
                 //
                 // if (currentNodesListInfo?.NodesList is null)
                 // {
-                //     currentNodesList = (await MEFApiConverter.GetNodesInfoAsync()).data;
+                //     currentNodesList = (await MEpiConverter.GetNodesInfoAsync()).data;
                 // }
                 // else
                 // {
                 //     currentNodesList = currentNodesListInfo.NodesList;
                 // }
+
+#if DEBUG
+                var db_nodes = new List<InfoClasses.Nodes>
+                {
+                    new()
+                    {
+                        nodeId = 0,
+                        name = "DEBUG",
+                        hostname = "114.514.191.810"
+                    }
+                };
+                var db_proxy = new List<InfoClasses.Proxies>
+                {
+                    new()
+                    {
+                        proxyId = -114,
+                        username = "111",
+                        proxyName = "DEBUG_Proxy1",
+                        proxyType = "tcp",
+                        isBanned = false,
+                        isDisabled = false,
+                        localIp = "127.0.0.1",
+                        localPort = 1145,
+                        remotePort = 11451,
+                        nodeId = 0,
+                        runId = "",
+                        isOnline = false,
+                        domain = "",
+                        lastStartTime = 0,
+                        lastCloseTime = 0,
+                        clientVersion = "",
+                        proxyProtocolVersion = "",
+                        useEncryption = false,
+                        useCompression = false,
+                        locations = "",
+                        accessKey = "",
+                        hostHeaderRewrite = "",
+                        httpPlugin = "",
+                        crtPath = "",
+                        keyPath = "",
+                        requestHeaders = "",
+                        responseHeaders = "",
+                        httpUser = "",
+                        httpPassword = "",
+                        transportProtocol = ""
+                    }
+                };
+                userProxies ??= new InfoClasses.ProxyInfo
+                {
+                    nodes = db_nodes.ToArray(),
+                    proxies = db_proxy.ToArray()
+                };
+#endif
 
                 Core.App.CurrentLogger.LogDebug("Loading user proxies");
                 foreach (var item in userProxies.proxies)
@@ -124,10 +183,18 @@ public partial class ManageProxyPage : UserControl
                         httpPlugin = item.httpPlugin,
                         httpUser = item.httpUser,
                         httpPassword = item.httpPassword,
-                        RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, string>>(item.requestHeaders),
-                        ResponseHeaders =
-                            JsonConvert.DeserializeObject<Dictionary<string, string>>(item.responseHeaders),
-                        Locations = JsonConvert.DeserializeObject<List<string>>(item.locations),
+                        RequestHeaders = item.requestHeaders.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<Dictionary<string, string>>(item.requestHeaders,
+                                App.AppJsonSerializerContext.DictionaryStringString),
+                        ResponseHeaders = item.responseHeaders.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<Dictionary<string, string>>(item.responseHeaders,
+                                App.AppJsonSerializerContext.DictionaryStringString),
+                        Locations = item.locations.IsNullOrEmpty()
+                            ? null
+                            : JsonSerializer.Deserialize<List<string>>(item.locations,
+                                App.AppJsonSerializerContext.ListString)
                     });
                 }
             });
@@ -206,10 +273,7 @@ public partial class ManageProxyPage : UserControl
         }
     }
 
-    private void RefreshProxies(object sender, RoutedEventArgs e)
-    {
-        LoadProxies();
-    }
+    private void RefreshProxies(object sender, RoutedEventArgs e) => LoadProxies();
 
     private void Entry(object sender, RoutedEventArgs e)
     {
@@ -217,10 +281,7 @@ public partial class ManageProxyPage : UserControl
         BatchOperationArea.IsVisible = true;
     }
 
-    private void UnEntry(object sender, RoutedEventArgs e)
-    {
-        BatchOperationArea.IsVisible = false;
-    }
+    private void UnEntry(object sender, RoutedEventArgs e) => BatchOperationArea.IsVisible = false;
 
     private void BatchOperationArea_IsVisibleChanged(object sender, RoutedEventArgs e)
     {
@@ -261,6 +322,16 @@ public partial class ManageProxyPage : UserControl
 
 public sealed class ProxyViewModel : ViewModelBase
 {
+    public ProxyViewModel()
+    {
+        SelectedProxies = [];
+        SwitchViewCommand = new RelayCommand<ViewMode>(mode => CurrentViewMode = mode);
+        SelectProxyCommand = new RelayCommand<UserProxyViewModel>(SelectProxy);
+        DeselectProxyCommand = new RelayCommand<UserProxyViewModel>(DeselectProxy);
+        ToggleSelectProxyCommand = new RelayCommand<UserProxyViewModel>(ToggleSelectProxy);
+        ClearSelectionCommand = new RelayCommand(ClearSelection);
+    }
+
     public string SearchText
     {
         get;
@@ -271,36 +342,6 @@ public sealed class ProxyViewModel : ViewModelBase
         }
     } = string.Empty;
 
-    public async void FilterProxies()
-    {
-        MainPageFrameViewModel.Instance.IsLoading = true;
-        Core.App.CurrentLogger.LogDebug("开始筛选隧道");
-        FilteredProxies.Clear();
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            var filtered = AllProxies.Where(proxy =>
-                string.IsNullOrEmpty(SearchText) ||
-                proxy.proxyName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                PinYinHelper.ConvertToAllSpell(proxy.proxyName)
-                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/pid:") &&
-                 proxy.proxyId.ToString().Contains(SearchText[5..])) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/n:") &&
-                 (proxy.node.Contains(SearchText[3..]) ||
-                  PinYinHelper.ConvertToAllSpell(proxy.node)
-                      .Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/nid:") &&
-                 proxy.nodeId.ToString().Contains(SearchText[5..])));
-            foreach (var proxy in filtered)
-            {
-                FilteredProxies.Add(proxy);
-            }
-        });
-
-        MainPageFrameViewModel.Instance.IsLoading = false;
-        Core.App.CurrentLogger.LogDebug("筛选完成，数量: " + FilteredProxies.Count);
-    }
-
     public bool IsDetailedMode
     {
         get;
@@ -309,14 +350,6 @@ public sealed class ProxyViewModel : ViewModelBase
             this.RaiseAndSetIfChanged(ref field, value);
             // 当详细模式改变时，更新所有代理的详细状态
             UpdateAllProxiesDetailedStatus(value);
-        }
-    }
-
-    private void UpdateAllProxiesDetailedStatus(bool isDetailed)
-    {
-        foreach (var proxy in FilteredProxies)
-        {
-            proxy.Detailed = isDetailed;
         }
     }
 
@@ -377,13 +410,6 @@ public sealed class ProxyViewModel : ViewModelBase
         get;
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     public ViewMode CurrentViewMode
     {
         get;
@@ -419,15 +445,81 @@ public sealed class ProxyViewModel : ViewModelBase
         get;
     }
 
-    public ProxyViewModel()
+    public NotifyingCollection<UserProxyViewModel> SelectedProxies
     {
-        SelectedProxies = [];
-        SwitchViewCommand = new RelayCommand<ViewMode>(mode => CurrentViewMode = mode);
-        SelectProxyCommand = new RelayCommand<UserProxyViewModel>(SelectProxy);
-        DeselectProxyCommand = new RelayCommand<UserProxyViewModel>(DeselectProxy);
-        ToggleSelectProxyCommand = new RelayCommand<UserProxyViewModel>(ToggleSelectProxy);
-        ClearSelectionCommand = new RelayCommand(ClearSelection);
+        get;
+        set
+        {
+            if (field != null)
+            {
+                field.CollectionChangedWithNotification -= OnSelectionChanged;
+            }
+
+            field = value;
+
+            if (field != null)
+            {
+                field.CollectionChangedWithNotification += OnSelectionChanged;
+            }
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsAnyProxySelected));
+        }
     }
+
+    public bool IsAnyProxySelected => SelectedProxies?.Count > 1;
+
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase);
+
+    public bool IsNoData
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public async void FilterProxies()
+    {
+        MainPageFrameViewModel.Instance.IsLoading = true;
+        Core.App.CurrentLogger.LogDebug("开始筛选隧道");
+        FilteredProxies.Clear();
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            var filtered = AllProxies.Where(proxy =>
+                string.IsNullOrEmpty(SearchText) ||
+                proxy.proxyName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                PinYinHelper.ConvertToAllSpell(proxy.proxyName)
+                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                (SearchText.Replace(" ", string.Empty).StartsWith("/pid:") &&
+                 proxy.proxyId.ToString().Contains(SearchText[5..])) ||
+                (SearchText.Replace(" ", string.Empty).StartsWith("/n:") &&
+                 (proxy.node.Contains(SearchText[3..]) ||
+                  PinYinHelper.ConvertToAllSpell(proxy.node)
+                      .Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
+                (SearchText.Replace(" ", string.Empty).StartsWith("/nid:") &&
+                 proxy.nodeId.ToString().Contains(SearchText[5..])));
+            foreach (var proxy in filtered)
+            {
+                FilteredProxies.Add(proxy);
+            }
+        });
+        IsNoData = FilteredProxies.Count == 0;
+
+        MainPageFrameViewModel.Instance.IsLoading = false;
+        Core.App.CurrentLogger.LogDebug("筛选完成，数量: " + FilteredProxies.Count);
+    }
+
+    private void UpdateAllProxiesDetailedStatus(bool isDetailed)
+    {
+        foreach (var proxy in FilteredProxies)
+        {
+            proxy.Detailed = isDetailed;
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void SelectProxy(UserProxyViewModel proxy)
     {
@@ -484,36 +576,7 @@ public sealed class ProxyViewModel : ViewModelBase
         SelectedProxies.Clear();
     }
 
-    public NotifyingCollection<UserProxyViewModel> SelectedProxies
-    {
-        get;
-        set
-        {
-            if (field != null)
-            {
-                field.CollectionChangedWithNotification -= OnSelectionChanged;
-            }
-
-            field = value;
-
-            if (field != null)
-            {
-                field.CollectionChangedWithNotification += OnSelectionChanged;
-            }
-
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsAnyProxySelected));
-        }
-    }
-
-    private void OnSelectionChanged(object sender, EventArgs e)
-    {
-        OnPropertyChanged(nameof(IsAnyProxySelected));
-    }
-
-    public bool IsAnyProxySelected => SelectedProxies?.Count > 1;
-
-    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase);
+    private void OnSelectionChanged(object sender, EventArgs e) => OnPropertyChanged(nameof(IsAnyProxySelected));
 }
 
 public class NotifyingCollection<T> : ObservableCollection<T>
@@ -529,8 +592,8 @@ public class NotifyingCollection<T> : ObservableCollection<T>
 
 public class RelayCommand<T> : ICommand
 {
-    private readonly Action<T> _execute;
     private readonly Predicate<T> _canExecute;
+    private readonly Action<T> _execute;
 
     public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
     {

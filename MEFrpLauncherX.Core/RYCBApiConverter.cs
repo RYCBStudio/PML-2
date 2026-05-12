@@ -1,19 +1,48 @@
-﻿using System.Net;
+using System.Net;
+using System.Reactive;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
-using Newtonsoft.Json;
+using ReactiveUI;
 using RestSharp;
+
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
+#pragma warning disable CS8603 // 可能返回 null 引用。
 
 namespace MEFrpLauncherX.Core;
 
 public class RYCBApiConverter
 {
-    public const string BaseApiUrl = "https://api.rycb.mxj.pub/api/";
+    public static string BaseApiUrl = "https://api.rycb.mxj.pub/api/";
 
     public static RestClient? CurrentClient
     {
         get;
         set;
+    }
+
+    public static async Task<bool> InitializeAsync()
+    {
+            App.CurrentLogger.Log("正在初始化API客户端", port: EnumLogPort.Client, module: EnumLogModule.Net);
+            CurrentClient = CreateClient("api/health");
+            var res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+            if (!res.IsSuccessful)
+            {
+                App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
+                BaseApiUrl = "https://api.rycb.tech/api/";
+                CurrentClient = CreateClient("api/health");
+                res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+                CurrentClient.Dispose();
+                if (!res.IsSuccessful)
+                {
+                    App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
+                    return false;
+                }
+            }
+            CurrentClient.Dispose();
+            App.CurrentLogger.Log("API客户端初始化完成", port: EnumLogPort.Client, module: EnumLogModule.Net);
+            return true;
     }
 
     private static RestRequest CreateRequest(Method method = Method.Get, bool withAuthorization = true)
@@ -28,7 +57,7 @@ public class RYCBApiConverter
     }
 
     /// <summary>
-    /// 发送反馈请求
+    ///     发送反馈请求
     /// </summary>
     /// <param name="mail">用户邮箱</param>
     /// <param name="feedback">反馈内容</param>
@@ -39,12 +68,12 @@ public class RYCBApiConverter
 
         var request = CreateRequest(Method.Post);
 
-        var body = JsonConvert.SerializeObject(new FeedbackBody
+        var body = JsonSerializer.Serialize(new FeedbackBody
         {
             user = mail,
             comment = feedback,
-            time = DateTime.Now.ToString("O"),
-        }, Formatting.Indented);
+            time = DateTime.Now.ToString("O")
+        }, App.AppJsonSerializerContext.FeedbackBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -52,12 +81,13 @@ public class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var res = JsonConvert.DeserializeObject<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
+            App.AppJsonSerializerContext.FeedbackResponse);
         return res;
     }
 
     /// <summary>
-    /// 发送邮箱
+    ///     发送邮箱
     /// </summary>
     /// <param name="mode">发送模式，目前有: html, vcode, warn</param>
     /// <param name="receiver">发送对象</param>
@@ -71,13 +101,13 @@ public class RYCBApiConverter
 
         var request = CreateRequest(Method.Post);
 
-        var body = JsonConvert.SerializeObject(new EmailBody
+        var body = JsonSerializer.Serialize(new EmailBody
         {
             mode = mode,
             receiver = receiver,
             body = mailBody,
             subject = subject
-        }, Formatting.Indented);
+        }, App.AppJsonSerializerContext.EmailBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
 
@@ -85,19 +115,25 @@ public class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        if (!response.IsSuccessful || !response.IsSuccessStatusCode)
+        if (!response.IsSuccessful || !response.IsSuccessStatusCode || response.Content is null)
         {
             App.CurrentLogger.Log(response.Content, EnumLogType.Warn, module: EnumLogModule.Net);
+            return new FeedbackResponse
+            {
+                success = false,
+                message = "发送失败"
+            };
         }
 
-        var res = JsonConvert.DeserializeObject<FeedbackResponse>(response.Content);
+        var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
+            App.AppJsonSerializerContext.FeedbackResponse);
         return res;
     }
 
     public static async Task<SingleVersionInfo> GetLatestVersionInfoAsync()
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/latest"}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/latest"}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = "正在获取最新版本";
 
@@ -117,12 +153,14 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonConvert.DeserializeObject<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
-        {
-            success = false,
-            version = "0.0.0",
-            data = default
-        };
+        var result =
+            JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
+                App.AppJsonSerializerContext.SingleVersionInfo) ?? new SingleVersionInfo
+            {
+                success = false,
+                version = "0.0.0",
+                data = default
+            };
 
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
         return result;
@@ -130,8 +168,8 @@ public class RYCBApiConverter
 
     public static async Task<SingleVersionInfo> GetLatestPreviewVersionInfoAsync()
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/preview/latest"}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/preview/latest"}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = "正在获取最新版本";
 
@@ -151,12 +189,14 @@ public class RYCBApiConverter
             return fallBack;
         }
 
-        var result = JsonConvert.DeserializeObject<SingleVersionInfo>(response.Content) ?? new SingleVersionInfo
-        {
-            success = false,
-            version = "0.0.0",
-            data = default
-        };
+        var result =
+            JsonSerializer.Deserialize<SingleVersionInfo>(response.Content,
+                App.AppJsonSerializerContext.SingleVersionInfo) ?? new SingleVersionInfo
+            {
+                success = false,
+                version = "0.0.0",
+                data = default
+            };
 
         MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
         return result;
@@ -164,40 +204,68 @@ public class RYCBApiConverter
 
     public static async Task<TunnelErrorInfosShell?> GetTunnelErrorInfoAsync()
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "tpca/errors"}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "tpca/errors"}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取错误信息", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = "正在获取错误信息";
         using var client = CreateClient("tpca/errors");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<TunnelErrorInfosShell>(res.Content);
+        var result =
+            JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content,
+                App.AppJsonSerializerContext.TunnelErrorInfosShell);
         return result;
     }
 
     public static async Task<SingleApiInfo<TunnelErrorInfo>?> GetTunnelErrorInfoAsync(string flag)
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + $"tpca/errors/{flag}"}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + $"tpca/errors/{flag}"}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取错误信息", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = "正在获取错误信息";
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<SingleApiInfo<TunnelErrorInfo>>(res.Content);
+        if (res.StatusCode != HttpStatusCode.OK || res.Content is null)
+        {
+            return new SingleApiInfo<TunnelErrorInfo>
+            {
+                success = false,
+                data = default,
+                count = 0,
+                timestamp = DateTimeOffset.Now.ToString("O")
+            };
+            ;
+        }
+
+        var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content,
+            App.AppJsonSerializerContext.SingleApiInfoTunnelErrorInfo);
         return result;
     }
 
     public static async Task<SingleApiInfo<NoticeContent[]>> GetAllNoticeAsync()
     {
-        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "notice"}", port: EnumLogPort.Server,
-            module: EnumLogModule.Custom, customModuleName: "API");
+        App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "notice"}", EnumLogPort.Server,
+            EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取软件公告", port: EnumLogPort.Client, module: EnumLogModule.Net);
         MainWindowViewModel.Instance?.AppMessage = "正在获取软件公告";
         using var client = CreateClient("notice");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        var result = JsonConvert.DeserializeObject<SingleApiInfo<NoticeContent[]>>(res.Content);
+        if (res.StatusCode != HttpStatusCode.OK || res.Content is null)
+        {
+            return new SingleApiInfo<NoticeContent[]>
+            {
+                success = false,
+                data = default,
+                count = 0,
+                timestamp = DateTimeOffset.Now.ToString("O")
+            };
+            ;
+        }
+
+        var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content,
+            App.AppJsonSerializerContext.SingleApiInfoNoticeContentArray);
         return result;
     }
 
@@ -208,73 +276,75 @@ public class RYCBApiConverter
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.2" : "RYCB-PML2/Desktop 2.1.0",
-            Timeout = TimeSpan.FromSeconds(10),
+            Timeout = TimeSpan.FromSeconds(10)
         });
     }
 }
 
-public class NoticeContent(
-    bool active,
-    string content,
-    string date,
-    int id,
-    int priority,
-    string summary,
-    string type
-)
+public class NoticeContent:ReactiveObject
 {
+    [JsonPropertyName("active")]
     public bool Active
     {
         get;
         set;
-    } = active;
+    }
 
+    [JsonPropertyName("content")]
     public string ContentOfNotice
     {
         get;
         set;
-    } = content;
-    
+    }
 
+
+    [JsonPropertyName("date")]
     public string Date
     {
         get;
         set;
-    } = date;
+    }
 
+    [JsonPropertyName("id")]
     public int Id
     {
         get;
         set;
-    } = id;
+    }
 
+    [JsonPropertyName("priority")]
     public int Priority
     {
         get;
         set;
-    } = priority;
+    }
 
+    [JsonPropertyName("summary")]
     public string Summary
     {
         get;
         set;
-    } = summary;
+    }
 
+    [JsonPropertyName("type")]
     public string Type
     {
         get;
         set;
-    } = type;
+    }
 
+
+    public ReactiveCommand<Unit, Unit> ShowNoticeCommand => ReactiveCommand.Create(ShowNotice);
+    
     public void ShowNotice()
     {
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Content = new NoticeView(this, ContentOfNotice),
-            Title = summary,
+            Title = Summary,
             PrimaryButtonText = "确定",
             CloseButtonText = "关闭",
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = ContentDialogButton.Primary
         };
         cd.ShowAsync();
     }

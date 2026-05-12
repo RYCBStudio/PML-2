@@ -9,19 +9,19 @@ public class AboutViewModel : ViewModelBase
 {
     public string? Hitokoto
     {
-        get;
+        get => field.IsNullOrEmpty() ? string.Empty : $"{field}";
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public string? From
     {
-        get;
+        get => field.IsNullOrEmpty() ? string.Empty : $"「{field}」";
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public string? Author
     {
-        get;
+        get => field.IsNullOrEmpty() ? string.Empty : $"  —— {field}";
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 

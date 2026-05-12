@@ -10,38 +10,6 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class DomainsEdit : UserControl, INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    public string currentDomain
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string? CurrentDomain
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public AvaloniaList<string> Domains
-    {
-        get;
-        set;
-    }
-
     public DomainsEdit()
     {
         InitializeComponent();
@@ -79,6 +47,37 @@ public partial class DomainsEdit : UserControl, INotifyPropertyChanged
         DataContext = this;
     }
 
+    public string currentDomain
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string? CurrentDomain
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public AvaloniaList<string> Domains
+    {
+        get;
+        set;
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     private void AddDomain(object? sender, RoutedEventArgs e)
     {
         if (CurrentDomain == currentDomain ||
@@ -90,8 +89,5 @@ public partial class DomainsEdit : UserControl, INotifyPropertyChanged
         Domains.Add(currentDomain);
     }
 
-    private void RemoveDomain(object? sender, RoutedEventArgs e)
-    {
-        Domains.Remove(CurrentDomain);
-    }
+    private void RemoveDomain(object? sender, RoutedEventArgs e) => Domains.Remove(CurrentDomain);
 }

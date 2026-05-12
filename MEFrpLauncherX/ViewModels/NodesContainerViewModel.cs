@@ -16,9 +16,8 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
 {
-    private readonly DispatcherTimer _debounceTimer;
     private const int DEBOUNCE_DELAY_MS = 300;
-    private bool _isLoading;
+    private readonly DispatcherTimer _debounceTimer;
     private DispatcherTimer _loadingDebounceTimer;
 
 // 在构造函数中初始化
@@ -36,23 +35,16 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         };
     }
 
-// 添加防抖触发方法
-    private void TriggerFilterWithDebounce()
-    {
-        _debounceTimer.Stop();
-        _debounceTimer.Start();
-    }
-
     public bool IsLoading
     {
-        get => _isLoading;
+        get;
         set
         {
-            if (_isLoading != value)
+            if (field != value)
             {
-                _isLoading = value;
+                field = value;
                 OnPropertyChanged();
-            
+
                 // 添加防抖，避免频繁切换
                 _loadingDebounceTimer?.Stop();
                 if (value)
@@ -76,12 +68,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
                 }
             }
         }
-    }
-
-    private void UpdateLoadingUI(bool isLoading)
-    {
-        // 分别更新各个loading状态
-        OnPropertyChanged(nameof(IsLoading));
     }
 
     public AvaloniaList<TunnelNodeViewModel> AllNodes
@@ -173,6 +159,49 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
+    public TunnelNodeViewModel SelectedNode
+    {
+        get;
+        set
+        {
+            field?.IsSelected = false;
+
+            this.RaiseAndSetIfChanged(ref field, value);
+            // if (field is { IsOverloaded: true })
+            // {
+            //     field.IsSelected = false;
+            //     var tmplsi = (NodesContainer.Instance.Nodes.ContainerFromItem(field) as
+            //         ListBoxItem)!;
+            //     if (tmplsi != null)
+            //     {
+            //         tmplsi.IsEnabled = false;
+            //     }
+            //
+            //     NodesContainer.Instance.Nodes.SelectedIndex = -1;
+            //     return;
+            // }
+
+            field?.IsSelected = true;
+
+            NodeSelected?.Invoke(field);
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+// 添加防抖触发方法
+    private void TriggerFilterWithDebounce()
+    {
+        _debounceTimer.Stop();
+        _debounceTimer.Start();
+    }
+
+    private void UpdateLoadingUI(bool isLoading)
+    {
+        // 分别更新各个loading状态
+        OnPropertyChanged(nameof(IsLoading));
+    }
+
     public async Task LoadNodesAsync(InfoClasses.NodesListInfo listInfo, InfoClasses.NodesStatusInfo statusInfo)
     {
         try
@@ -186,7 +215,7 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
                 var s = statusInfo.NodesStatus;
                 if (s is null || s.Length < 1)
                 {
-                    s = (await MEFApiConverter.GetNodesStatusAsync()).data;
+                    s = (await MEpiConverter.GetNodesStatusAsync()).data;
                 }
 
                 foreach (var node in listInfo.NodesList)
@@ -257,46 +286,17 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         return false;
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 
     public event Action<TunnelNodeViewModel> NodeSelected;
 
-    public TunnelNodeViewModel SelectedNode
-    {
-        get;
-        set
-        {
-            field?.IsSelected = false;
-
-            this.RaiseAndSetIfChanged(ref field, value);
-            // if (field is { IsOverloaded: true })
-            // {
-            //     field.IsSelected = false;
-            //     var tmplsi = (NodesContainer.Instance.Nodes.ContainerFromItem(field) as
-            //         ListBoxItem)!;
-            //     if (tmplsi != null)
-            //     {
-            //         tmplsi.IsEnabled = false;
-            //     }
-            //
-            //     NodesContainer.Instance.Nodes.SelectedIndex = -1;
-            //     return;
-            // }
-
-            field?.IsSelected = true;
-
-            NodeSelected?.Invoke(field);
-        }
-    }
-
     private async void FilterNodes(bool force = false)
     {
-        if (IsLoading && !force) return;
+        if (IsLoading && !force)
+        {
+            return;
+        }
 
         IsLoading = true;
         try
@@ -339,7 +339,10 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
 // 提取搜索逻辑到单独方法
     private bool MeetsSearchCriteria(TunnelNodeViewModel node)
     {
-        if (string.IsNullOrEmpty(SearchText)) return true;
+        if (string.IsNullOrEmpty(SearchText))
+        {
+            return true;
+        }
 
         return SearchText.StartsWith("/d:")
             ? node.Description.Contains(SearchText.Remove(0, 3), StringComparison.OrdinalIgnoreCase)
@@ -359,7 +362,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
     private bool IsRegionMeets(TunnelNodeViewModel vm, out string region)
     {
         var _tmpRegion = "all";
-        var _ = SelectedRegion.GetType();
         if (SelectedRegion is TabStripItem item)
         {
             Dispatcher.UIThread.Invoke(() =>

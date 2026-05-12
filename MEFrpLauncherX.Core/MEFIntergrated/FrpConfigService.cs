@@ -1,8 +1,7 @@
-﻿using System.Text;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core.Models;
-using Newtonsoft.Json;
-using Tomlyn;
-using Tomlyn.Model;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -10,19 +9,44 @@ namespace MEFrpLauncherX.Core.MEFIntergrated;
 
 public class FrpConfigService
 {
-    private readonly JsonSerializerSettings _jsonSettings = new()
+    private readonly JsonSerializerOptions _jsonSettings = new()
     {
-        Formatting = Formatting.Indented,
-        NullValueHandling = NullValueHandling.Ignore
+        WriteIndented = true
     };
+
+    private readonly IDeserializer _yamlDeserializer = new DeserializerBuilder()
+        .WithNamingConvention(CamelCaseNamingConvention.Instance)
+        .Build();
 
     private readonly ISerializer _yamlSerializer = new SerializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build();
 
-    private readonly IDeserializer _yamlDeserializer = new DeserializerBuilder()
-        .WithNamingConvention(CamelCaseNamingConvention.Instance)
-        .Build();
+    // 添加 HTTPS 代理的便捷方法（保持不变）
+    public void AddHttpsProxy(FrpConfig config, string name, string domain,
+        string localAddr, string crtPath, string keyPath)
+    {
+        var proxy = new ProxyConfig
+        {
+            Name = name,
+            Type = "https",
+            CustomDomains = [domain],
+            Plugin = new PluginConfig
+            {
+                Type = "https2http",
+                LocalAddr = localAddr,
+                CrtPath = crtPath,
+                KeyPath = keyPath
+            },
+            Transport = new TransportConfig
+            {
+                UseEncryption = true,
+                UseCompression = true
+            }
+        };
+
+        config.Proxies.Add(proxy);
+    }
 
     #region 加载配置 - 多格式支持
 
@@ -33,7 +57,7 @@ public class FrpConfigService
 
         return extension switch
         {
-            ".toml" => LoadConfigFromToml(content),
+            //".toml" => LoadConfigFromToml(content),
             ".json" => LoadConfigFromJson(content),
             ".yaml" or ".yml" => LoadConfigFromYaml(content),
             ".ini" => LoadConfigFromIni(content),
@@ -41,75 +65,75 @@ public class FrpConfigService
         };
     }
 
-    public FrpConfig LoadConfigFromToml(string tomlContent)
-    {
-        var model = Toml.ToModel(tomlContent);
-        var config = new FrpConfig();
-
-        // 解析基础配置
-        config.ServerAddr = model["serverAddr"]?.ToString() ?? string.Empty;
-        config.ServerPort = Convert.ToInt32(model["serverPort"]);
-        config.User = model["user"]?.ToString() ?? string.Empty;
-
-        // 解析认证配置
-        if (model["auth"] is TomlTable authTable)
-        {
-            config.Auth.Method = authTable["method"]?.ToString() ?? "token";
-            config.Auth.Token = authTable["token"]?.ToString() ?? string.Empty;
-        }
-
-        // 解析代理配置
-        if (model["proxies"] is TomlTableArray proxiesArray)
-        {
-            foreach (var proxyTable in proxiesArray)
-            {
-                var proxy = new ProxyConfig
-                {
-                    Name = proxyTable["name"]?.ToString() ?? string.Empty,
-                    Type = proxyTable["type"]?.ToString() ?? "tcp",
-                    LocalIP = proxyTable["localIP"]?.ToString() ?? "127.0.0.1",
-                    LocalPort = Convert.ToInt32(proxyTable["localPort"]),
-                    RemotePort = Convert.ToInt32(proxyTable["remotePort"])
-                };
-
-                // 解析自定义域名（HTTPS 代理需要）
-                if (proxyTable["customDomains"] is TomlArray domainsArray)
-                {
-                    proxy.CustomDomains = domainsArray.Select(d => d.ToString()).ToList();
-                }
-
-                // 解析插件配置
-                if (proxyTable["plugin"] is TomlTable pluginTable)
-                {
-                    proxy.Plugin = new PluginConfig
-                    {
-                        Type = pluginTable["type"]?.ToString() ?? string.Empty,
-                        LocalAddr = pluginTable["localAddr"]?.ToString() ?? string.Empty,
-                        CrtPath = pluginTable["crtPath"]?.ToString() ?? string.Empty,
-                        KeyPath = pluginTable["keyPath"]?.ToString() ?? string.Empty
-                    };
-                }
-
-                // 解析传输配置
-                if (proxyTable["transport"] is TomlTable transportTable)
-                {
-                    proxy.Transport = new TransportConfig
-                    {
-                        UseEncryption = Convert.ToBoolean(transportTable["useEncryption"]),
-                        UseCompression = Convert.ToBoolean(transportTable["useCompression"])
-                    };
-                }
-
-                config.Proxies.Add(proxy);
-            }
-        }
-
-        return config;
-    }
+    // public FrpConfig LoadConfigFromToml(string tomlContent)
+    // {
+    //     var model = TomlReader.Create()
+    //     var config = new FrpConfig();
+    //
+    //     // 解析基础配置
+    //     config.ServerAddr = model["serverAddr"]?.ToString() ?? string.Empty;
+    //     config.ServerPort = Convert.ToInt32(model["serverPort"]);
+    //     config.User = model["user"]?.ToString() ?? string.Empty;
+    //
+    //     // 解析认证配置
+    //     if (model["auth"] is TomlTable authTable)
+    //     {
+    //         config.Auth.Method = authTable["method"]?.ToString() ?? "token";
+    //         config.Auth.Token = authTable["token"]?.ToString() ?? string.Empty;
+    //     }
+    //
+    //     // 解析代理配置
+    //     if (model["proxies"] is TomlTableArray proxiesArray)
+    //     {
+    //         foreach (var proxyTable in proxiesArray)
+    //         {
+    //             var proxy = new ProxyConfig
+    //             {
+    //                 Name = proxyTable["name"]?.ToString() ?? string.Empty,
+    //                 Type = proxyTable["type"]?.ToString() ?? "tcp",
+    //                 LocalIP = proxyTable["localIP"]?.ToString() ?? "127.0.0.1",
+    //                 LocalPort = Convert.ToInt32(proxyTable["localPort"]),
+    //                 RemotePort = Convert.ToInt32(proxyTable["remotePort"])
+    //             };
+    //
+    //             // 解析自定义域名（HTTPS 代理需要）
+    //             if (proxyTable["customDomains"] is TomlArray domainsArray)
+    //             {
+    //                 proxy.CustomDomains = domainsArray.Select(d => d.ToString()).ToList();
+    //             }
+    //
+    //             // 解析插件配置
+    //             if (proxyTable["plugin"] is TomlTable pluginTable)
+    //             {
+    //                 proxy.Plugin = new PluginConfig
+    //                 {
+    //                     Type = pluginTable["type"]?.ToString() ?? string.Empty,
+    //                     LocalAddr = pluginTable["localAddr"]?.ToString() ?? string.Empty,
+    //                     CrtPath = pluginTable["crtPath"]?.ToString() ?? string.Empty,
+    //                     KeyPath = pluginTable["keyPath"]?.ToString() ?? string.Empty
+    //                 };
+    //             }
+    //
+    //             // 解析传输配置
+    //             if (proxyTable["transport"] is TomlTable transportTable)
+    //             {
+    //                 proxy.Transport = new TransportConfig
+    //                 {
+    //                     UseEncryption = Convert.ToBoolean(transportTable["useEncryption"]),
+    //                     UseCompression = Convert.ToBoolean(transportTable["useCompression"])
+    //                 };
+    //             }
+    //
+    //             config.Proxies.Add(proxy);
+    //         }
+    //     }
+    //
+    //     return config;
+    // }
 
     public FrpConfig LoadConfigFromJson(string jsonContent)
     {
-        var jsonModel = JsonConvert.DeserializeObject<JsonFrpConfig>(jsonContent, _jsonSettings);
+        var jsonModel = JsonSerializer.Deserialize<JsonFrpConfig>(jsonContent, _jsonSettings);
         return ConvertFromJsonModel(jsonModel);
     }
 
@@ -133,87 +157,87 @@ public class FrpConfigService
     {
         return format.ToLower() switch
         {
-            "toml" => SaveAsToml(config),
+            //"toml" => SaveAsToml(config),
             "json" => SaveAsJson(config),
             "yaml" => SaveAsYaml(config),
-            "ini" => SaveAsIni(config),
-            _ => SaveAsToml(config)
+            "ini" => SaveAsIni(config)
+            // _ => SaveAsToml(config)
         };
     }
 
-    private string SaveAsToml(FrpConfig config)
-    {
-        var table = new TomlTable
-        {
-            ["serverAddr"] = config.ServerAddr,
-            ["serverPort"] = config.ServerPort,
-            ["user"] = config.User
-        };
-
-        // 认证配置
-        var authTable = new TomlTable
-        {
-            ["method"] = config.Auth.Method,
-            ["token"] = config.Auth.Token
-        };
-        table.Add("auth", authTable);
-
-        // 代理配置
-        var proxiesArray = new TomlTableArray();
-        foreach (var proxy in config.Proxies)
-        {
-            var proxyTable = new TomlTable
-            {
-                ["name"] = proxy.Name,
-                ["type"] = proxy.Type,
-                ["localIP"] = proxy.LocalIP,
-                ["localPort"] = proxy.LocalPort,
-                ["remotePort"] = proxy.RemotePort
-            };
-
-            // 自定义域名
-            if (proxy.CustomDomains.Any())
-            {
-                proxyTable["customDomains"] = new TomlArray
-                {
-                    proxy.CustomDomains.Select(object (d) => d).ToList()
-                };
-            }
-
-            // 插件配置
-            if (!string.IsNullOrEmpty(proxy.Plugin.Type))
-            {
-                var pluginTable = new TomlTable
-                {
-                    ["type"] = proxy.Plugin.Type,
-                    ["localAddr"] = proxy.Plugin.LocalAddr,
-                    ["crtPath"] = proxy.Plugin.CrtPath,
-                    ["keyPath"] = proxy.Plugin.KeyPath
-                };
-                proxyTable.Add("plugin", pluginTable);
-            }
-
-            // 传输配置
-            var transportTable = new TomlTable
-            {
-                ["useEncryption"] = proxy.Transport.UseEncryption,
-                ["useCompression"] = proxy.Transport.UseCompression
-            };
-            proxyTable.Add("transport", transportTable);
-
-            proxiesArray.Add(proxyTable);
-        }
-
-        table.Add("proxies", proxiesArray);
-
-        return Toml.FromModel(table);
-    }
+    // private string SaveAsToml(FrpConfig config)
+    // {
+    //     var table = new TomlTable
+    //     {
+    //         ["serverAddr"] = config.ServerAddr,
+    //         ["serverPort"] = config.ServerPort,
+    //         ["user"] = config.User
+    //     };
+    //
+    //     // 认证配置
+    //     var authTable = new TomlTable
+    //     {
+    //         ["method"] = config.Auth.Method,
+    //         ["token"] = config.Auth.Token
+    //     };
+    //     table.Add("auth", authTable);
+    //
+    //     // 代理配置
+    //     var proxiesArray = new TomlTableArray();
+    //     foreach (var proxy in config.Proxies)
+    //     {
+    //         var proxyTable = new TomlTable
+    //         {
+    //             ["name"] = proxy.Name,
+    //             ["type"] = proxy.Type,
+    //             ["localIP"] = proxy.LocalIP,
+    //             ["localPort"] = proxy.LocalPort,
+    //             ["remotePort"] = proxy.RemotePort
+    //         };
+    //
+    //         // 自定义域名
+    //         if (proxy.CustomDomains.Any())
+    //         {
+    //             proxyTable["customDomains"] = new TomlArray
+    //             {
+    //                 proxy.CustomDomains.Select(object (d) => d).ToList()
+    //             };
+    //         }
+    //
+    //         // 插件配置
+    //         if (!string.IsNullOrEmpty(proxy.Plugin.Type))
+    //         {
+    //             var pluginTable = new TomlTable
+    //             {
+    //                 ["type"] = proxy.Plugin.Type,
+    //                 ["localAddr"] = proxy.Plugin.LocalAddr,
+    //                 ["crtPath"] = proxy.Plugin.CrtPath,
+    //                 ["keyPath"] = proxy.Plugin.KeyPath
+    //             };
+    //             proxyTable.Add("plugin", pluginTable);
+    //         }
+    //
+    //         // 传输配置
+    //         var transportTable = new TomlTable
+    //         {
+    //             ["useEncryption"] = proxy.Transport.UseEncryption,
+    //             ["useCompression"] = proxy.Transport.UseCompression
+    //         };
+    //         proxyTable.Add("transport", transportTable);
+    //
+    //         proxiesArray.Add(proxyTable);
+    //     }
+    //
+    //     table.Add("proxies", proxiesArray);
+    //
+    //     return Toml.FromModel(table);
+    // }
 
 
     private string SaveAsJson(FrpConfig config)
     {
         var jsonModel = ConvertToJsonModel(config);
-        return JsonConvert.SerializeObject(jsonModel, _jsonSettings);
+        return JsonSerializer.Serialize(jsonModel, _jsonSettings);
     }
 
     private string SaveAsYaml(FrpConfig config)
@@ -222,10 +246,7 @@ public class FrpConfigService
         return _yamlSerializer.Serialize(yamlModel);
     }
 
-    private string SaveAsIni(FrpConfig config)
-    {
-        return GenerateIniContent(config);
-    }
+    private string SaveAsIni(FrpConfig config) => GenerateIniContent(config);
 
     #endregion
 
@@ -234,35 +255,35 @@ public class FrpConfigService
     // JSON 数据模型
     public class JsonFrpConfig
     {
-        [JsonProperty("serverAddr")]
+        [JsonPropertyName("serverAddr")]
         public string ServerAddr
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("serverPort")]
+        [JsonPropertyName("serverPort")]
         public int ServerPort
         {
             get;
             set;
         }
 
-        [JsonProperty("user")]
+        [JsonPropertyName("user")]
         public string User
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("auth")]
+        [JsonPropertyName("auth")]
         public JsonAuthConfig Auth
         {
             get;
             set;
         } = new();
 
-        [JsonProperty("proxies")]
+        [JsonPropertyName("proxies")]
         public List<JsonProxyConfig> Proxies
         {
             get;
@@ -272,14 +293,14 @@ public class FrpConfigService
 
     public class JsonAuthConfig
     {
-        [JsonProperty("method")]
+        [JsonPropertyName("method")]
         public string Method
         {
             get;
             set;
         } = "token";
 
-        [JsonProperty("token")]
+        [JsonPropertyName("token")]
         public string Token
         {
             get;
@@ -289,56 +310,56 @@ public class FrpConfigService
 
     public class JsonProxyConfig
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type
         {
             get;
             set;
         } = "tcp";
 
-        [JsonProperty("localIP")]
+        [JsonPropertyName("localIP")]
         public string LocalIP
         {
             get;
             set;
         } = "127.0.0.1";
 
-        [JsonProperty("localPort")]
+        [JsonPropertyName("localPort")]
         public int LocalPort
         {
             get;
             set;
         }
 
-        [JsonProperty("remotePort")]
+        [JsonPropertyName("remotePort")]
         public int RemotePort
         {
             get;
             set;
         }
 
-        [JsonProperty("customDomains")]
+        [JsonPropertyName("customDomains")]
         public List<string> CustomDomains
         {
             get;
             set;
         } = [];
 
-        [JsonProperty("plugin")]
+        [JsonPropertyName("plugin")]
         public JsonPluginConfig Plugin
         {
             get;
             set;
         } = new();
 
-        [JsonProperty("transport")]
+        [JsonPropertyName("transport")]
         public JsonTransportConfig Transport
         {
             get;
@@ -348,28 +369,28 @@ public class FrpConfigService
 
     public class JsonPluginConfig
     {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("localAddr")]
+        [JsonPropertyName("localAddr")]
         public string LocalAddr
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("crtPath")]
+        [JsonPropertyName("crtPath")]
         public string CrtPath
         {
             get;
             set;
         } = string.Empty;
 
-        [JsonProperty("keyPath")]
+        [JsonPropertyName("keyPath")]
         public string KeyPath
         {
             get;
@@ -379,14 +400,14 @@ public class FrpConfigService
 
     public class JsonTransportConfig
     {
-        [JsonProperty("useEncryption")]
+        [JsonPropertyName("useEncryption")]
         public bool UseEncryption
         {
             get;
             set;
         } = true;
 
-        [JsonProperty("useCompression")]
+        [JsonPropertyName("useCompression")]
         public bool UseCompression
         {
             get;
@@ -864,30 +885,4 @@ public class FrpConfigService
     }
 
     #endregion
-
-    // 添加 HTTPS 代理的便捷方法（保持不变）
-    public void AddHttpsProxy(FrpConfig config, string name, string domain,
-        string localAddr, string crtPath, string keyPath)
-    {
-        var proxy = new ProxyConfig
-        {
-            Name = name,
-            Type = "https",
-            CustomDomains = [domain],
-            Plugin = new PluginConfig
-            {
-                Type = "https2http",
-                LocalAddr = localAddr,
-                CrtPath = crtPath,
-                KeyPath = keyPath
-            },
-            Transport = new TransportConfig
-            {
-                UseEncryption = true,
-                UseCompression = true
-            }
-        };
-
-        config.Proxies.Add(proxy);
-    }
 }

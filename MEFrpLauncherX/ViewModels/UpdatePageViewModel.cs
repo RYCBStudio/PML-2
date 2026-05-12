@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Animation;
@@ -13,20 +13,32 @@ using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MsBox.Avalonia.Enums;
-using Newtonsoft.Json;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
+
+// ReSharper disable EmptyGeneralCatchClause
 
 namespace MEFrpLauncherX.ViewModels;
 
 public class UpdatePageViewModel : ViewModelBase
 {
-    private class ICONS
+    internal DownloadService downloader;
+
+    public UpdatePageViewModel()
     {
-        public const string UPDATE = "\xe68a";
-        public const string DOWNLOAD = "\xe72b";
-        public const string LATEST = "\xe653";
-        public const string ERROR = "\xed27";
+        UpdateChannel = ConfigManager.CurrentConfig.UpdateSettings.Channel switch
+        {
+            "Stable" => 0,
+            "Preview" => 1,
+            _ => 0
+        };
+        UpdateMethod = ConfigManager.CurrentConfig.UpdateSettings.Method switch
+        {
+            "ds" => 0,
+            "dd" => 1,
+            "md" => 2,
+            _ => 0
+        };
     }
 
     public bool HasNewVersion
@@ -63,7 +75,7 @@ public class UpdatePageViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = App.Version;
+    } = Core.App.Version;
 
     public AvaloniaList<string> Changelog
     {
@@ -95,7 +107,7 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public string CurrentSpeed
+    public string? CurrentSpeed
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -108,8 +120,8 @@ public class UpdatePageViewModel : ViewModelBase
     } = App.Codename;
 
     /// <summary>
-    /// 0 - 稳定通道
-    /// 1 - 预览通道
+    ///     0 - 稳定通道
+    ///     1 - 预览通道
     /// </summary>
     public int UpdateChannel
     {
@@ -118,9 +130,9 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 0 - 自动下载并安装
-    /// 1 - 自动下载
-    /// 2 - 手动下载
+    ///     0 - 自动下载并安装
+    ///     1 - 自动下载
+    ///     2 - 手动下载
     /// </summary>
     public int UpdateMethod
     {
@@ -128,25 +140,11 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public UpdatePageViewModel()
-    {
-        UpdateChannel = ConfigManager.CurrentConfig.UpdateSettings.Channel switch
-        {
-            "Stable" => 0,
-            "Preview" => 1,
-            _ => 0
-        };
-        UpdateMethod = ConfigManager.CurrentConfig.UpdateSettings.Method switch
-        {
-            "ds" => 0,
-            "dd" => 1,
-            "md" => 2,
-            _ => 0
-        };
-    }
+    public ReactiveCommand<Unit, Unit> CheckUpdateCommand =>
+        ReactiveCommand.Create(CheckUpdate);
 
     /// <summary>
-    /// 检查更新
+    ///     检查更新
     /// </summary>
     /// <returns>(是否最新, 最新版本)</returns>
     public static async Task<(bool, string)> GetNewVersionAsync()
@@ -164,7 +162,7 @@ public class UpdatePageViewModel : ViewModelBase
             latestVersion = updateInfo.version;
         }
 
-        return (VersionComparer.IsGreaterThan(latestVersion, App.Version), latestVersion);
+        return (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version), latestVersion);
     }
 
     public async void CheckUpdate()
@@ -175,13 +173,15 @@ public class UpdatePageViewModel : ViewModelBase
         LatestCheckTime = DateTime.Now;
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
-        }catch{
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+        }
+        catch
+        {
             // Platform not support
         }
 
         IterationCount = new IterationCount(100000, IterationType.Many);
-        Core.App.CurrentLogger.Log("正在检查更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在检查更新", module: EnumLogModule.Update);
         Status = "正在检查更新";
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
         SingleVersionInfo updateInfo = new()
@@ -194,7 +194,7 @@ public class UpdatePageViewModel : ViewModelBase
                     description = "获取更新失败"
                 },
                 success = false,
-                version = App.Version
+                version = Core.App.Version
             },
             preiewUpdateInfo = new()
             {
@@ -206,7 +206,7 @@ public class UpdatePageViewModel : ViewModelBase
                     description = "获取更新失败"
                 },
                 success = false,
-                version = App.Version
+                version = Core.App.Version
             };
         try
         {
@@ -215,8 +215,12 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Log("获取更新信息失败", type: EnumLogType.Error, module: EnumLogModule.Update);
-            Core.App.CurrentLogger.Error(ex);
+            Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Error(ex);
+            Status = "获取更新信息失败";
+            Icon = ICONS.ERROR;
+            IsIdle = false;
+            return;
         }
 
         string latestVersion;
@@ -235,14 +239,16 @@ public class UpdatePageViewModel : ViewModelBase
 // #endif
         // var versionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
         // var version = versionRegex.Match(App.Version);
-        if (latestVersion == preiewUpdateInfo.version)
+        if (VersionComparer.IsLessThan(updateInfo.version, preiewUpdateInfo.version) ||
+            VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.version) ||
+            latestVersion == preiewUpdateInfo.version)
         {
             updateInfo = preiewUpdateInfo;
         }
 
-        if (VersionComparer.IsGreaterThan(latestVersion, App.Version))
+        if (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version))
         {
-            Core.App.CurrentLogger.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
             IterationCount = new IterationCount(0);
             Icon = ICONS.DOWNLOAD;
             if (latestVersion == preiewUpdateInfo.version)
@@ -261,21 +267,36 @@ public class UpdatePageViewModel : ViewModelBase
         }
         else
         {
-            Core.App.CurrentLogger.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
             Status = "当前版本已经是最新版本";
             IsLoading = false;
             IsIdle = true;
         }
 
-        LatestVersion = latestVersion;
-        Changelog.Clear();
-        Changelog.AddRange(updateInfo.data.changes);
+        if (updateInfo is { success: true, data.changes.Length: > 0 })
+        {
+            LatestVersion = latestVersion;
+            Changelog.Clear();
+            Changelog.AddRange(updateInfo.data.changes);
+        }
+        else
+        {
+            Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
+            Status = "获取更新信息失败";
+            Icon = ICONS.ERROR;
+            IsIdle = false;
+            return;
+        }
+
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
-        }catch{}
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+        }
+        catch
+        {
+        }
 
-        Core.App.CurrentLogger.Log("检查更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("检查更新完成", module: EnumLogModule.Update);
         IterationCount = new IterationCount(0);
     }
 
@@ -288,20 +309,18 @@ public class UpdatePageViewModel : ViewModelBase
             1 => updateInfo.version,
             _ => preiewUpdateInfo.version
         };
-        var res1 = VersionComparer.CompareVersions(App.Version, cd);
+        var res1 = VersionComparer.CompareVersions(Core.App.Version, cd);
         return res1 switch
         {
             -1 => cd,
-            1 => App.Version,
+            1 => Core.App.Version,
             _ => cd
         };
     }
 
-    internal DownloadService downloader;
-
     public async void DownloadUpdate()
     {
-        Core.App.CurrentLogger.Log("正在下载更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = "正在下载更新";
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
@@ -351,7 +370,7 @@ public class UpdatePageViewModel : ViewModelBase
             MaxTryAgainOnFailure = 5,
             ParallelDownload = ConfigManager.CurrentConfig.ParallelDownload,
             ParallelCount = ConfigManager.CurrentConfig.ParallelCount,
-            Timeout = 5000,
+            BlockTimeout = 5000,
             RequestConfiguration =
             {
                 Accept = "*/*",
@@ -362,7 +381,7 @@ public class UpdatePageViewModel : ViewModelBase
                 ProtocolVersion = HttpVersion.Version11,
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "RYCB/PML Desktop",
+                    "RYCB/PML Desktop"
             }
         };
 
@@ -372,11 +391,11 @@ public class UpdatePageViewModel : ViewModelBase
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
 
-        string savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
+        var savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
         await downloader.DownloadFileTaskAsync(downloadUrl, savePath);
 
         // ===== 4. 下载完成后处理 =====
-        Core.App.CurrentLogger.Log("下载更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
@@ -384,7 +403,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         try
         {
-            Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
         }
         catch
         {
@@ -399,10 +418,25 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
+        try
+        {
+            if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
+            {
+                File.Copy(ConfigManager.ConfigPath, ConfigManager.BackupConfigPath, true);
+                await File.WriteAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"),
+                    $"{ConfigManager.CurrentConfig.Skin}");
+            }
+        }
+        catch
+        {
+            Icon = ICONS.ERROR;
+            Status = "备份配置文件失败, 请手动备份配置文件";
+        }
+
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {
-            Core.App.CurrentLogger.Log("正在安装更新", module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
             await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
             Process.Start(
                 new ProcessStartInfo(savePath)
@@ -427,7 +461,7 @@ public class UpdatePageViewModel : ViewModelBase
             return;
         }
 
-        Core.App.CurrentLogger.Log("正在下载更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = "正在下载更新";
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
@@ -440,7 +474,7 @@ public class UpdatePageViewModel : ViewModelBase
             MaxTryAgainOnFailure = 5, // 失败的最大次数
             ParallelDownload = ConfigManager.CurrentConfig.ParallelDownload, // 下载文件是否为并行的。默认值为false
             ParallelCount = ConfigManager.CurrentConfig.ParallelCount,
-            Timeout = 5000, // 每个 stream reader  的超时（毫秒），默认值是1000
+            BlockTimeout = 5000, // 每个 stream reader  的超时（毫秒），默认值是1000
 
             RequestConfiguration = // 定制请求头文件
             {
@@ -452,7 +486,7 @@ public class UpdatePageViewModel : ViewModelBase
                 ProtocolVersion = HttpVersion.Version11, // Default value is HTTP 1.1
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "RYCB/PML Desktop",
+                    "RYCB/PML Desktop"
             }
         };
         downloader = new DownloadService(DownloadOpt);
@@ -463,7 +497,7 @@ public class UpdatePageViewModel : ViewModelBase
             $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
             $"{LatestVersion}/pml2_setup%20{LatestVersion}.exe",
             Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
-        Core.App.CurrentLogger.Log("下载更新完成", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
@@ -477,7 +511,7 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
-        Core.App.CurrentLogger.Log("正在安装更新", module: EnumLogModule.Update);
+        Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
         await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
         Process.Start(
             new ProcessStartInfo(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"))
@@ -485,7 +519,7 @@ public class UpdatePageViewModel : ViewModelBase
         App.Desktop.Shutdown();
     }
 
-    void OpenFileInExplorer(string filePath)
+    private void OpenFileInExplorer(string filePath)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -547,7 +581,7 @@ public class UpdatePageViewModel : ViewModelBase
 
     private void DownloaderOnDownloadStarted(object? sender, DownloadStartedEventArgs e)
     {
-        Core.App.CurrentLogger.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
+        Core.App.CurrentLogger?.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
         MaxValue = e.TotalBytesToReceive;
     }
 
@@ -560,7 +594,7 @@ public class UpdatePageViewModel : ViewModelBase
                 $"{ProcessFileSize(e.ReceivedBytesSize)}/{ProcessFileSize(MaxValue)} {ProcessSpeed(e.BytesPerSecondSpeed)}";
             try
             {
-                Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
+                Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
                     (ulong)e.TotalBytesToReceive);
             }
             catch
@@ -574,10 +608,10 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -597,10 +631,10 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 根据<paramref name="fileSize"/>的大小自动返回对应的文件大小值。
-    /// <br/>
-    /// 如：若<paramref name="fileSize"/>32743879328,则返回30.50GB；
-    /// 返回值的数值范围为1~1000。
+    ///     根据<paramref name="fileSize" />的大小自动返回对应的文件大小值。
+    ///     <br />
+    ///     如：若<paramref name="fileSize" />32743879328,则返回30.50GB；
+    ///     返回值的数值范围为1~1000。
     /// </summary>
     /// <param name="fileSize">文件大小，单位为Bytes</param>
     /// <returns>处理后的文件大小值。</returns>
@@ -623,29 +657,21 @@ public class UpdatePageViewModel : ViewModelBase
     {
         if (e.Error != null)
         {
-            Core.App.CurrentLogger.Error(e.Error, module: EnumLogModule.Net);
-            Core.App.CurrentLogger.Log("下载失败");
+            Core.App.CurrentLogger?.Error(e.Error, module: EnumLogModule.Net);
+            Core.App.CurrentLogger?.Log("下载失败");
         }
         else
         {
             CurrentSpeed = "";
-            Core.App.CurrentLogger.Log("下载完成");
+            Core.App.CurrentLogger?.Log("下载完成");
         }
     }
-}
 
-/// <summary>
-/// 更新清单模型，用于描述更新包中的文件及其对应的SHA256哈希值
-/// </summary>
-public class UpdateManifest
-{
-    /// <summary>
-    /// 文件路径与SHA256哈希值的映射集合
-    /// </summary>
-    [JsonProperty("files")]
-    public Dictionary<string, string> Files
+    private class ICONS
     {
-        get;
-        set;
-    } = new();
+        public const string UPDATE = "\xe68a";
+        public const string DOWNLOAD = "\xe72b";
+        public const string LATEST = "\xe653";
+        public const string ERROR = "\xed27";
+    }
 }

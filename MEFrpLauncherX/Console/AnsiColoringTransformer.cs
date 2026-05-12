@@ -173,10 +173,7 @@ public class PreprocessedAnsiColorizer : DocumentColorizingTransformer
         }
     }
 
-    public void ClearColorMap()
-    {
-        _colorMap.Clear();
-    }
+    public void ClearColorMap() => _colorMap.Clear();
 
     protected override void ColorizeLine(DocumentLine line)
     {
@@ -253,21 +250,6 @@ public class PreprocessedAnsiColorizer : DocumentColorizingTransformer
 
 public class AnsiTextProcessor
 {
-    public class ColoredTextSegment
-    {
-        public string Text
-        {
-            get;
-            set;
-        }
-
-        public IBrush Color
-        {
-            get;
-            set;
-        }
-    }
-
     public static List<ColoredTextSegment> ParseAnsiText(string text)
     {
         var segments = new List<ColoredTextSegment>();
@@ -362,5 +344,20 @@ public class AnsiTextProcessor
         }
 
         return foreground;
+    }
+
+    public class ColoredTextSegment
+    {
+        public string Text
+        {
+            get;
+            set;
+        }
+
+        public IBrush Color
+        {
+            get;
+            set;
+        }
     }
 }

@@ -9,18 +9,31 @@ namespace MEFrpLauncherX.Controls;
 
 public class RollingNumberDoubleTextBlock : TextBlock
 {
-    private readonly DispatcherTimer _timer;
-    private Stopwatch _stopwatch;
-    private double _currentValue;
-    private double _targetValue;
-
-    private DateTime _startTime;
     private const double AnimationDuration = 1.0; // 秒
 
     public static readonly StyledProperty<double> TargetNumberProperty =
         AvaloniaProperty.Register<RollingNumberDoubleTextBlock, double>(
             nameof(TargetNumber),
             coerce: OnTargetNumberChanged);
+
+    public static readonly StyledProperty<string> NumberFormatProperty =
+        AvaloniaProperty.Register<RollingNumberTextBlock, string>(
+            nameof(NumberFormat),
+            "F2");
+
+    private readonly DispatcherTimer _timer;
+    private double _currentValue;
+
+    private DateTime _startTime;
+    private Stopwatch _stopwatch;
+    private double _targetValue;
+
+    public RollingNumberDoubleTextBlock()
+    {
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) }; // ~60fps
+        _timer.Tick += OnTimerTick;
+        HorizontalAlignment = HorizontalAlignment.Center;
+    }
 
 
     public double TargetNumber
@@ -29,11 +42,10 @@ public class RollingNumberDoubleTextBlock : TextBlock
         set => SetValue(TargetNumberProperty, value);
     }
 
-    public RollingNumberDoubleTextBlock()
+    public string NumberFormat
     {
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) }; // ~60fps
-        _timer.Tick += OnTimerTick;
-        HorizontalAlignment = HorizontalAlignment.Center;
+        get => GetValue(NumberFormatProperty);
+        set => SetValue(NumberFormatProperty, value);
     }
 
     private static double OnTargetNumberChanged(AvaloniaObject d, double value)
@@ -58,17 +70,6 @@ public class RollingNumberDoubleTextBlock : TextBlock
 
         _timer.Stop();
         _timer.Start();
-    }
-
-    public static readonly StyledProperty<string> NumberFormatProperty =
-        AvaloniaProperty.Register<RollingNumberTextBlock, string>(
-            nameof(NumberFormat),
-            defaultValue: "F2");
-
-    public string NumberFormat
-    {
-        get => GetValue(NumberFormatProperty);
-        set => SetValue(NumberFormatProperty, value);
     }
 
 

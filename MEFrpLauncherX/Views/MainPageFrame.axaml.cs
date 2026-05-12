@@ -30,6 +30,8 @@ public partial class MainPageFrame : UserControl
 
 public static class Extensions
 {
+    public static bool ContainsAny(this string str, params string[] tokens) => tokens.Any(str.Contains);
+
     extension(Control ctrl)
     {
         public void Show()
@@ -49,10 +51,5 @@ public static class Extensions
             Dispatcher.UIThread.Invoke((Action)(() =>
                 ctrl.IsVisible = false));
         }
-    }
-
-    public static bool ContainsAny(this string str, params string[] tokens)
-    {
-        return tokens.Any(str.Contains);
     }
 }

@@ -6,15 +6,15 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class TunnelErrorPresenter : UserControl
 {
-    public AvaloniaList<string> Errors
-    {
-        get;
-    } = [];
-
     public TunnelErrorPresenter(IEnumerable<string> errors)
     {
         InitializeComponent();
         DataContext = this;
         Errors.AddRange(errors);
     }
+
+    public AvaloniaList<string> Errors
+    {
+        get;
+    } = [];
 }

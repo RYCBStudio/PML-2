@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -12,7 +13,6 @@ using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using Newtonsoft.Json;
 
 namespace MEFrpLauncherX.Views;
 
@@ -24,10 +24,7 @@ public partial class UserCenterPage : UserControl
         DataContext = null;
     }
 
-    public bool IsDark
-    {
-        get => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-    }
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
 
     private void OpenWeb(object sender, RoutedEventArgs e)
     {
@@ -40,7 +37,11 @@ public partial class UserCenterPage : UserControl
 
     private async void UserControl_Loaded(object? s, VisualTreeAttachmentEventArgs? e)
     {
-        if (Design.IsDesignMode) return;
+        if (Design.IsDesignMode)
+        {
+            return;
+        }
+
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         // Show loading mask
@@ -48,9 +49,9 @@ public partial class UserCenterPage : UserControl
 
         try
         {
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
-                var res = await MEFApiConverter.GetExtraUserInfoAsync();
+                var res = await MEpiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
                 if (res.code != 200)
@@ -115,12 +116,11 @@ public partial class UserCenterPage : UserControl
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
-                var trafficStatusData = await Task.Run(() => MEFApiConverter.GetTrafficStatusAsync(7));
+                var trafficStatusData = await Task.Run(() => MEpiConverter.GetTrafficStatusAsync(7));
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
                     trafficControl.IsVisible = true;
-                    Loading.IsVisible = false;
                 });
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
             });
@@ -143,9 +143,10 @@ public partial class UserCenterPage : UserControl
         // 执行签到
         try
         {
-            var (success, message) = await MEFApiConverter.SendSignRequestAsync(captchaResult.Trim());
+            var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonConvert.DeserializeObject<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
+                    App.AppJsonSerializerContext.ApiInfoSignInfo);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
@@ -218,13 +219,13 @@ public partial class UserCenterPage : UserControl
         {
             // 使用独立的重启器进程（避免文件占用问题）
             var tempBat = Path.Combine(Path.GetTempPath(), "restart.bat");
-            File.WriteAllText(tempBat, $"""
+            await File.WriteAllTextAsync(tempBat, $"""
 
-                                        @echo off
-                                        timeout /t 1 /nobreak >nul
-                                        start "" "{Environment.ProcessPath}"
-                                        del "%~f0"
-                                        """);
+                                                   @echo off
+                                                   timeout /t 1 /nobreak >nul
+                                                   start "" "{Environment.ProcessPath}"
+                                                   del "%~f0"
+                                                   """);
 
             Process.Start(new ProcessStartInfo
             {

@@ -1131,14 +1131,14 @@ namespace MEFrpLauncherX.Console
 
         private async void ViewErrorDetails(object? sender, RoutedEventArgs e)
         {
-            var cd = new TaskDialog
+            var cd = new FATaskDialog
             {
                 Title = "错误详情",
                 SubHeader = $"{_tunnelErrorInfoShell.data.Flag}: {_tunnelErrorInfoShell.data.Info}",
                 Content = _tunnelErrorInfoShell.data.Solution[0],
                 Buttons =
                 {
-                    TaskDialogButton.OKButton
+                    FATaskDialogButton.OKButton
                 },
                 IconSource = new SymbolIconSource { Symbol = Symbol.Admin },
                 XamlRoot = Core.App.MainWindow

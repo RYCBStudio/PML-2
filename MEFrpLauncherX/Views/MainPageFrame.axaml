@@ -15,135 +15,62 @@
     </Design.DataContext>
     <Grid Margin="10">
         <controls:NavigationView PaneDisplayMode="Auto" CompactPaneLength="33" IsPaneOpen="{Binding IsMenuOpen}"
-                                 IsSettingsVisible="False" ItemInvoked="OnNavigationViewItemInvoked">
+                                 IsSettingsVisible="False" ItemInvoked="OnNavigationViewItemInvoked"
+                                 Background="Transparent">
             <controls:NavigationView.MenuItems>
-                <controls:NavigationViewItem x:Name="HomeBtn" Tag="Home" IsSelected="True">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="-8.5,0,8,0" VerticalAlignment="Center"
-                                   FontFamily="{StaticResource IconFont}"
-                                   Text="&#xe60b;" />
-                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                   Text="面板首页" />
-                    </StackPanel>
-                </controls:NavigationViewItem>
+                <controls:NavigationViewItem x:Name="HomeBtn" Tag="Home" IsSelected="True" IconSource="Home"
+                                             Content="主页" />
 
                 <controls:NavigationViewItem
-                    x:Name="CreateProxyBtn" Tag="Create">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xe602;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="创建隧道" />
-                    </StackPanel>
-                </controls:NavigationViewItem>
+                    x:Name="CreateProxyBtn" Tag="Create" IconSource="Add" Content="创建隧道" />
                 <controls:NavigationViewItem Tag="Manage"
-                                             x:Name="ManageProxyPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xeb6c;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="隧道管理" />
-                    </StackPanel>
-                </controls:NavigationViewItem>
+                                             x:Name="ManageProxyPageBtn" IconSource="AllApps" Content="隧道管理" />
                 <controls:NavigationViewItem Tag="Monitoring"
-                                             x:Name="NodesMonitoringPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xead4;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="节点监控" />
-                    </StackPanel>
+                                             x:Name="NodesMonitoringPageBtn" Content="节点监控">
+                    <controls:NavigationViewItem.IconSource>
+                        <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;"
+                                                 FontSize="16" />
+                    </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="User"
-                                             x:Name="UserCenterPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xe629;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="用户中心" />
-                    </StackPanel>
-                </controls:NavigationViewItem>
+                                             x:Name="UserCenterPageBtn" IconSource="ContactInfo" Content="用户中心" />
                 <controls:NavigationViewItemSeparator />
                 <controls:NavigationViewItem Tag="Settings"
-                                             x:Name="SettingsPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xe603;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="设置" />
-                    </StackPanel>
-                </controls:NavigationViewItem>
+                                             x:Name="SettingsPageBtn" IconSource="Setting" Content="设置" />
+                <controls:NavigationViewItem Tag="Theme"
+                                             x:Name="ThemesPageBtn" IconSource="Library" Content="主题" />
                 <controls:NavigationViewItem Tag="About"
-                                             x:Name="AboutPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
-                            FontFamily="{StaticResource IconFont}"
-                            Text="&#xe60a;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="关于" />
-                    </StackPanel>
+                                             x:Name="AboutPageBtn" Content="关于">
+                    <controls:NavigationViewItem.IconSource>
+                        <controls:FontIconSource
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xE946;" />
+                    </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="Update"
-                                             x:Name="UpdatePageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-8.5,0,8,0"
-                            VerticalAlignment="Center"
+                                             x:Name="UpdatePageBtn" Content="更新">
+                    <controls:NavigationViewItem.IconSource>
+                        <controls:FontIconSource
                             FontFamily="{StaticResource IconFont}"
-                            Text="&#xe68a;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="更新" />
-                    </StackPanel>
+                            Glyph="&#xe68a;" />
+                    </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItemSeparator />
                 <controls:NavigationViewItem Tag="Terminal"
-                                             x:Name="TerminalPageBtn">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="-7.2,0,8,0"
-                            VerticalAlignment="Center"
+                                             x:Name="TerminalPageBtn" Content="终端">
+                    <controls:NavigationViewItem.IconSource>
+                        <controls:FontIconSource
                             FontFamily="{StaticResource IconFont}"
-                            FontSize="10"
-                            Text="&#xf0f9;" />
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Text="控制台" />
-                    </StackPanel>
+                            FontSize="0.8"
+                            Glyph="&#xf0f9;" />
+                    </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
             </controls:NavigationView.MenuItems>
-            <ContentControl Content="{Binding CurrentPage}" />
+            <TransitioningContentControl Content="{Binding CurrentPage}">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade FadeInEasing="CubicEaseIn" FadeOutEasing="CubicEaseOut" Duration="0:0:0.3"></CrossFade>
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
         </controls:NavigationView>
 
         <controls:ProgressRing
