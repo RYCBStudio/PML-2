@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Views;

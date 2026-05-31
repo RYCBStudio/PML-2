@@ -263,7 +263,7 @@ public class CrashHandler
             _ex?.Message,
             _ex?.StackTrace,
             Environment.OSVersion,
-            "2.3.0", // 替换为实际版本号
+            App.Version, // 替换为实际版本号
             "0", // 启动参数数量
             "", // 启动参数
             "", // 正常运行时间

@@ -1,20 +1,55 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:Class="MEFrpLauncherX.Views.CreateProxyPage"
              mc:Ignorable="d"
-             x:DataType="views:CreateProxyPage">
-    <Grid RowDefinitions="Auto,*,Auto">
+             x:DataType="viewModels:CreateProxyPageViewModel">
+    <Design.DataContext>
+        <viewModels:CreateProxyPageViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto,*,Auto" x:DataType="viewModels:CreateProxyPageViewModel">
 
-        <TextBlock Margin="10"
-                   FontFamily="{StaticResource GlobalFontFamily}"
-                   Text="创建隧道" />
+        <StackPanel Orientation="Horizontal" Spacing="3">
+            <TextBlock Margin="10" Theme="{StaticResource SubtitleTextBlockStyle}"
+                       FontFamily="{StaticResource GlobalFontFamily}"
+                       Text="创建隧道" />
+            <TabStrip
+                Theme="{StaticResource AlternateTabStripTheme}"
+                ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}" SelectedIndex="{Binding SelectedType}"
+                HorizontalAlignment="Right" Classes="compact">
+                <TabStripItem>引导版</TabStripItem>
+                <TabStripItem>专家版</TabStripItem>
+                <TabStripItem>嘉豪版</TabStripItem>
+                <!-- <TabStripItem>嘉豪版</TabStripItem> -->
+            </TabStrip>
+        </StackPanel>
 
-        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}" />
+        <Grid Grid.Row="1">
+            <fa:Frame x:Name="ContentFrame" Content="{Binding CurrentPage}" />
+
+            <!-- Tab 切换加载遮罩 -->
+            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Opacity="0.85"
+                    IsVisible="{Binding IsPageLoading}">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Spacing="12">
+                    <fa:ProgressRing IsIndeterminate="True"
+                                           HorizontalAlignment="Center"
+                                           Width="48" Height="48" />
+                    <TextBlock Text="正在加载..."
+                               HorizontalAlignment="Center"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Border>
+        </Grid>
 
         <StackPanel Grid.Row="2"
                     Spacing="5"

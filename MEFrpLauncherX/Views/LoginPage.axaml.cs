@@ -49,7 +49,7 @@ public partial class LoginPage : UserControl
             var input = new TextBox();
             cd.Content = input;
             return await cd.ShowAsync() == ContentDialogResult.Primary
-                ? MEpiConverter.GetCaptchaResult(input.Text).Split("||")[0]
+                ? MEFrpApiConverter.GetCaptchaResult(input.Text).Split("||")[0]
                 : nil;
         }
 
@@ -58,7 +58,7 @@ public partial class LoginPage : UserControl
         MainWindowViewModel.Instance.Progress = 20.0;
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤2/5";
-        var ci = await MEpiConverter.PostChallengeAsync(c);
+        var ci = await MEFrpApiConverter.PostChallengeAsync(c);
 
         MainWindowViewModel.Instance.Progress = 40.0;
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤3/5";
@@ -75,7 +75,7 @@ public partial class LoginPage : UserControl
         }
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
-        var (ri, _err) = await MEpiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
+        var (ri, _err) = await MEFrpApiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
 
         MainWindowViewModel.Instance.Progress = 80.0;
         if (!ri.success)
@@ -124,7 +124,7 @@ public partial class LoginPage : UserControl
             var usr = UsrNameBox.Text;
             var pwd = PwdBox.Text;
 
-            var (success, message) = MEpiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
+            var (success, message) = MEFrpApiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
 
             Core.App.CurrentLogger.LogDebug($"API响应: {success}, {message}");
 
@@ -136,7 +136,7 @@ public partial class LoginPage : UserControl
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    MEpiConverter.CurrentUserInfo = userInfo;
+                    MEFrpApiConverter.CurrentUserInfo = userInfo;
                     UserCache.CurrentUser = new InfoClasses.UserInfo
                     {
                         username = userInfo.data.username,

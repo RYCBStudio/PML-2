@@ -17,6 +17,7 @@
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <SuppressTrimWarnings>true</SuppressTrimWarnings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <NoWarn>1701;1702;IL2121;CS8902;CS8603;CS8604;CS0169;CS8618;CS8600;CS8604;CS8762</NoWarn>
@@ -63,16 +64,23 @@
         <PackageReference Include="Avalonia.Desktop" Version="11.3.14"/>
         <PackageReference Include="Avalonia.Diagnostics" Version="11.3.14"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.14"/>
+        <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1"/>
         <PackageReference Include="Downloader" Version="5.4.0"/>
         <PackageReference Include="FluentAvaloniaUI" Version="2.5.1"/>
+        <PackageReference Include="IconPacks.Avalonia" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.FileIcons" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.Material" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.SimpleIcons" Version="2.0.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.2"/>
+        <PackageReference Include="Mapsui.Avalonia" Version="5.0.2" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
         <PackageReference Include="ReactiveUI.Avalonia" Version="11.4.12"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.3-preview.1.1"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.3-preview.1.1"/>
+        <PackageReference Include="Svg.Model" Version="3.3.0" />
         <PackageReference Include="System.Runtime.Caching" Version="10.0.6"/>
         <PackageReference Update="Packaging.Targets">
             <Version>0.1.232</Version>

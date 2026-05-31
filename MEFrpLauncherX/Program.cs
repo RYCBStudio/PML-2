@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using ReactiveUI.Avalonia;
 using Sentry;
@@ -17,7 +21,7 @@ using static MEFrpLauncherX.Core.StringUtils;
 
 namespace MEFrpLauncherX;
 
-internal sealed class Program
+internal partial class Program
 {
     public static Process SplashProcess
     {
@@ -25,15 +29,28 @@ internal sealed class Program
         private set;
     }
 
-    internal static ITransactionTracer StartupTransaction;
-
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
-        StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
+        //StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
+        // 1. 定义一个全局唯一的Mutex名称（推荐使用反向域名格式）
+        // const string mutexName = "tech.rycb.pml2";
+        // bool createdNew;
+        //
+        // // 2. 尝试创建或打开已存在的命名Mutex
+        // using var mutex = new Mutex(true, mutexName, out createdNew);
+        //
+        // if (!createdNew)
+        // {
+        //     // 已有实例在运行，尝试激活它
+        //     ActivateExistingInstance();
+        //     Environment.Exit(0); // 退出当前进程
+        //     return; // 退出当前进程
+        // }
+
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
         // {
@@ -42,10 +59,16 @@ internal sealed class Program
         // };
 
         var file = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
-        if (!DownloadHelper.ValidateFileSimple(file,
-                "0180aeb78b091ba60891b5635c218b14|803dff910453f2bcde6d114acb082cd5|" +
-                "f4ee9156ffb37e77f6cdc822d7acbd7c|85a6ad0adbab937851c13345127a3489|" +
-                "f699e44cce5056e68d1c03620ad80016|86efbb015589a98cc5fe10d08c0747ef"))
+
+        if (!File.Exists(file))
+        {
+            System.Console.WriteLine("\e[33m[WARNING] The Splash file is missing. May need to reinstall.\e[0m");
+            Core.App.CurrentLogger.Log("启动画面文件缺失。", EnumLogType.Warn);
+        }
+        else if (!DownloadHelper.ValidateFileSimple(file,
+                     "0180aeb78b091ba60891b5635c218b14|803dff910453f2bcde6d114acb082cd5|" +
+                     "f4ee9156ffb37e77f6cdc822d7acbd7c|85a6ad0adbab937851c13345127a3489|" +
+                     "f699e44cce5056e68d1c03620ad80016|86efbb015589a98cc5fe10d08c0747ef"))
         {
             System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
             System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
@@ -66,13 +89,13 @@ internal sealed class Program
         try
         {
 #endif
-        if (args.Length > 0)
-        {
-            ProcessStartupArguments(args[0]);
-        }
+            if (args.Length > 0)
+            {
+                ProcessStartupArguments(args[0]);
+            }
 
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
 #if !DEBUG
         }
         catch (Exception ex)
@@ -85,7 +108,68 @@ internal sealed class Program
                 HandleException(ex);
             }
         }
+        finally
+        {
+            //mutex.ReleaseMutex();
+        }
 #endif
+    }
+
+    private static void ActivateExistingInstance()
+    {
+        var currentProcess = Process.GetCurrentProcess();
+        var processes = Process.GetProcessesByName(currentProcess.ProcessName);
+
+        foreach (var process in processes)
+        {
+            if (process.Id == currentProcess.Id) continue;
+
+            // 获取主窗口句柄
+            IntPtr hWnd = process.MainWindowHandle;
+            if (hWnd == IntPtr.Zero) continue;
+
+            // Windows平台：直接调用Win32 API激活窗口
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                SetForegroundWindow(hWnd);
+                ShowWindow(hWnd, ShowWindowCommands.Restore);
+            }
+            // macOS/Linux平台：使用系统命令激活窗口
+            else if (OperatingSystem.IsMacOS())
+            {
+                // macOS: 使用osascript将应用置于前台
+                Process.Start("osascript", $"-e 'tell application \"{process.ProcessName}\" to activate'");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // Linux: 尝试使用wmctrl或xdg-activate（可能需要预先安装）
+                // 简单方案：重新启动应用会让它自动前置（依赖桌面环境行为）
+                try
+                {
+                    Process.Start("bash", $"-c \"wmctrl -a '{process.ProcessName}' || true\"");
+                }
+                catch
+                {
+                }
+            }
+
+            break;
+        }
+    }
+
+
+    // Windows API 导入（仅Windows平台需要）
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool SetForegroundWindow(IntPtr hWnd);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
+
+    private enum ShowWindowCommands
+    {
+        Restore = 9
     }
 
     private static string GetBackground()
@@ -199,6 +283,18 @@ internal sealed class Program
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
+        var exception = e.Exception;
+
+        // Avalonia crashes at Ubuntu.
+        if ((exception.Message is not null &&
+             exception.Message.Contains("org.freedesktop.DBus.Error.ServiceUnknown")) ||
+            exception.InnerExceptions.Any(x =>
+                x.Message is not null && x.Message.Contains("org.freedesktop.DBus.Error.ServiceUnknown")))
+        {
+            e.SetObserved();
+            return;
+        }
+
         HandleException(e.Exception);
         e.SetObserved();
     }

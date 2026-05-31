@@ -1,8 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls.Primitives;
@@ -14,7 +12,7 @@ using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
+public class NodesContainerViewModel : ViewModelBase
 {
     private const int DEBOUNCE_DELAY_MS = 300;
     private readonly DispatcherTimer _debounceTimer;
@@ -28,7 +26,7 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         {
             Interval = TimeSpan.FromMilliseconds(DEBOUNCE_DELAY_MS)
         };
-        _debounceTimer.Tick += (s, e) =>
+        _debounceTimer.Tick += (_, _) =>
         {
             _debounceTimer.Stop();
             FilterNodes();
@@ -42,8 +40,7 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         {
             if (field != value)
             {
-                field = value;
-                OnPropertyChanged();
+                this.RaiseAndSetIfChanged(ref field, value);
 
                 // 添加防抖，避免频繁切换
                 _loadingDebounceTimer?.Stop();
@@ -59,7 +56,7 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
                     {
                         Interval = TimeSpan.FromMilliseconds(100)
                     };
-                    _loadingDebounceTimer.Tick += (s, e) =>
+                    _loadingDebounceTimer.Tick += (_, _) =>
                     {
                         _loadingDebounceTimer.Stop();
                         UpdateLoadingUI(false);
@@ -70,9 +67,10 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    public AvaloniaList<TunnelNodeViewModel> AllNodes
+    public List<TunnelNodeViewModel> AllNodes
     {
         get;
+        set;
     } = [];
 
     public AvaloniaList<TunnelNodeViewModel> FilteredNodes
@@ -91,6 +89,8 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         { "oversea", "海外" }
     };
 
+    private string _selectedRegionString = "all";
+
     public object SelectedRegion
     {
         get;
@@ -99,10 +99,17 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
             if (field != value)
             {
                 this.RaiseAndSetIfChanged(ref field, value);
+                // Update the string representation
+                if (value is TabStripItem item)
+                {
+                    _selectedRegionString = item.Tag?.ToString() ?? "all";
+                }
+                else
+                {
+                    _selectedRegionString = value?.ToString() ?? "all";
+                }
+
                 TriggerFilterWithDebounce();
-                // field = value;
-                // OnPropertyChanged();
-                //FilterNodes();
             }
         }
     } = "all";
@@ -159,7 +166,7 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    public TunnelNodeViewModel SelectedNode
+    public TunnelNodeViewModel? SelectedNode
     {
         get;
         set
@@ -187,8 +194,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
 // 添加防抖触发方法
     private void TriggerFilterWithDebounce()
     {
@@ -196,10 +201,10 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         _debounceTimer.Start();
     }
 
-    private void UpdateLoadingUI(bool isLoading)
+    private void UpdateLoadingUI(bool _)
     {
         // 分别更新各个loading状态
-        OnPropertyChanged(nameof(IsLoading));
+        this.RaisePropertyChanged(nameof(IsLoading));
     }
 
     public async Task LoadNodesAsync(InfoClasses.NodesListInfo listInfo, InfoClasses.NodesStatusInfo statusInfo)
@@ -208,44 +213,53 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         {
             IsLoading = true;
             AllNodes.Clear();
-            FilteredNodes.Clear(); // 提前清空
+            FilteredNodes.Clear();
 
-            await Task.Run(async () =>
+            var statusArray = statusInfo.NodesStatus;
+            if (statusArray is null || statusArray.Length < 1)
             {
-                var s = statusInfo.NodesStatus;
-                if (s is null || s.Length < 1)
-                {
-                    s = (await MEpiConverter.GetNodesStatusAsync()).data;
-                }
+                statusArray = (await MEFrpApiConverter.GetNodesStatusAsync()).data;
+            }
 
+            // 预构建状态字典，O(1) 查找
+            var statusDict = statusArray?.ToDictionary(s => s.nodeId) ?? [];
+
+            var nodesList = await Task.Run(() =>
+            {
+                var list = new List<TunnelNodeViewModel>(listInfo.NodesList.Length);
                 foreach (var node in listInfo.NodesList)
                 {
-                    var status = s?.FirstOrDefault(s => s.nodeId == node.nodeId);
+                    statusDict.TryGetValue(node.nodeId, out var status);
+                    var allowTypes = node.allowType?.Split(';')
+                        ?.Select(t => t.ToUpperInvariant())
+                        .ToList() ?? [];
+
                     var vm = new TunnelNodeViewModel
                     {
                         NodeId = node.nodeId,
                         Name = node.name,
                         Description = node.description,
-                        AllowTypes = node.allowType?.Split(';')
-                            ?.Select(type => type.ToUpper())
-                            ?.ToArray() ?? [],
+                        AllowTypes = allowTypes,
                         Bandwidth = node.bandwidth,
                         LoadPercent = status?.loadPercent ?? 0,
                         IsOnline = status?.isOnline ?? false,
                         AllowPorts = node.allowPort,
-                        CanBuildSite = (node.allowType?.Split(';')
-                            ?.Select(type => type.ToUpper())
-                            ?.ToArray() ?? []).Any(s =>
-                            s.Equals("http", StringComparison.OrdinalIgnoreCase) ||
-                            s.Equals("https", StringComparison.OrdinalIgnoreCase)),
+                        CanBuildSite = allowTypes.Any(t =>
+                            t is "HTTP" or "HTTPS"),
                         Region = node.region,
-                        AllowGroup = node.allowGroup.Split(';')
+                        AllowGroup = node.allowGroup?.Split(';') ?? []
                     };
                     vm.AllowHighTraffic = CalculateAllowHighTraffic(vm.Bandwidth);
-                    AllNodes.Add(vm);
+                    list.Add(vm);
                 }
+                return list;
             });
-            await Dispatcher.UIThread.InvokeAsync(() => FilterNodes(true), DispatcherPriority.Background);
+
+            AllNodes = nodesList;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                FilterNodes(true);
+            }, DispatcherPriority.Background);
         }
         catch (Exception ex)
         {
@@ -286,9 +300,6 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         return false;
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
     public event Action<TunnelNodeViewModel> NodeSelected;
 
     private async void FilterNodes(bool force = false)
@@ -298,33 +309,37 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
             return;
         }
 
-        IsLoading = true;
         try
         {
-            await Task.Run(async () =>
+            // 只在初次加载时显示 loading
+            if (force)
+                IsLoading = true;
+
+            var allNodes = AllNodes;
+            var searchText = SearchText;
+            var regionString = _selectedRegionString;
+            var filterSite = FilterCanBuildSite;
+            var filterTraffic = FilterAllowHighTraffic;
+            var filterOverload = FilterNotOverLoaded;
+
+            var filteredNodes = await Task.Run(() =>
             {
-                var realRegion = "all";
-                var filteredNodes = AllNodes.Where(node =>
-                        MeetsSearchCriteria(node) &&
-                        IsRegionMeets(node, out realRegion) &&
-                        (!FilterCanBuildSite || node.CanBuildSite) &&
-                        (!FilterAllowHighTraffic || node.AllowHighTraffic) &&
-                        (!FilterNotOverLoaded || node.IsNotOverloaded))
+                return allNodes.Where(node =>
+                        MeetsSearchCriteriaCore(node, searchText) &&
+                        IsRegionMeetsCore(node, regionString) &&
+                        (!filterSite || node.CanBuildSite) &&
+                        (!filterTraffic || node.AllowHighTraffic) &&
+                        (!filterOverload || node.IsNotOverloaded))
                     .ToList();
-
-                // 在UI线程上更新集合
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    // 一次性替换整个集合并暂停通知
-                    FilteredNodes.Clear();
-                    foreach (var node in filteredNodes)
-                    {
-                        FilteredNodes.Add(node);
-                    }
-                }, DispatcherPriority.Background);
-
-                Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
             });
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                FilteredNodes.Clear();
+                FilteredNodes.AddRange(filteredNodes);
+            }, DispatcherPriority.Background);
+
+            Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);
         }
         catch (Exception ex)
         {
@@ -332,47 +347,46 @@ public class NodesContainerViewModel : ViewModelBase, INotifyPropertyChanged
         }
         finally
         {
-            IsLoading = false;
+            if (force)
+                IsLoading = false;
         }
+
+        NodesChanged?.Invoke();
     }
 
+    public event Action? NodesChanged;
+
 // 提取搜索逻辑到单独方法
-    private bool MeetsSearchCriteria(TunnelNodeViewModel node)
+    public bool MeetsSearchCriteria(TunnelNodeViewModel node)
+        => MeetsSearchCriteriaCore(node, SearchText);
+
+    private static bool MeetsSearchCriteriaCore(TunnelNodeViewModel node, string? searchText)
     {
-        if (string.IsNullOrEmpty(SearchText))
+        if (string.IsNullOrEmpty(searchText))
         {
             return true;
         }
 
-        return SearchText.StartsWith("/d:")
-            ? node.Description.Contains(SearchText.Remove(0, 3), StringComparison.OrdinalIgnoreCase)
-            : SearchText.StartsWith("/pd:")
+        return searchText.StartsWith("/d:")
+            ? node.Description.Contains(searchText.Remove(0, 3), StringComparison.OrdinalIgnoreCase)
+            : searchText.StartsWith("/pd:")
                 ? PinYinHelper.ConvertToAllSpellWithCache(node.Description).Contains(
-                    PinYinHelper.ConvertToAllSpellWithCache(SearchText.Remove(0, 4)),
+                    PinYinHelper.ConvertToAllSpellWithCache(searchText.Remove(0, 4)),
                     StringComparison.OrdinalIgnoreCase)
-                : SearchText.StartsWith("/pn:")
+                : searchText.StartsWith("/pn:")
                     ? PinYinHelper.ConvertToAllSpellWithCache(node.Name).Contains(
-                        PinYinHelper.ConvertToAllSpellWithCache(SearchText.Remove(0, 4)),
+                        PinYinHelper.ConvertToAllSpellWithCache(searchText.Remove(0, 4)),
                         StringComparison.OrdinalIgnoreCase)
-                    : node.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                      node.NodeId.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+                    : node.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                      node.NodeId.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 
 
-    private bool IsRegionMeets(TunnelNodeViewModel vm, out string region)
-    {
-        var _tmpRegion = "all";
-        if (SelectedRegion is TabStripItem item)
-        {
-            Dispatcher.UIThread.Invoke(() =>
-                _tmpRegion = item.Tag.ToString());
-        }
-        else
-        {
-            _tmpRegion = SelectedRegion.ToString();
-        }
+    public bool IsRegionMeets(TunnelNodeViewModel vm)
+        => IsRegionMeetsCore(vm, _selectedRegionString);
 
-        region = _tmpRegion;
-        return _tmpRegion == "all" || vm.Region == _tmpRegion;
+    private static bool IsRegionMeetsCore(TunnelNodeViewModel vm, string regionString)
+    {
+        return regionString == "all" || vm.Region == regionString;
     }
 }

@@ -24,25 +24,26 @@ public class RYCBApiConverter
 
     public static async Task<bool> InitializeAsync()
     {
-            App.CurrentLogger.Log("正在初始化API客户端", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        App.CurrentLogger.Log("正在初始化API客户端", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        CurrentClient = CreateClient("api/health");
+        var res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+        if (!res.IsSuccessful)
+        {
+            App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            BaseApiUrl = "https://api.rycb.tech/api/";
             CurrentClient = CreateClient("api/health");
-            var res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+            res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
+            CurrentClient.Dispose();
             if (!res.IsSuccessful)
             {
                 App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
-                BaseApiUrl = "https://api.rycb.tech/api/";
-                CurrentClient = CreateClient("api/health");
-                res = await CurrentClient.ExecuteAsync(new RestRequest { Method = Method.Options });
-                CurrentClient.Dispose();
-                if (!res.IsSuccessful)
-                {
-                    App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
-                    return false;
-                }
+                return false;
             }
-            CurrentClient.Dispose();
-            App.CurrentLogger.Log("API客户端初始化完成", port: EnumLogPort.Client, module: EnumLogModule.Net);
-            return true;
+        }
+
+        CurrentClient.Dispose();
+        App.CurrentLogger.Log("API客户端初始化完成", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        return true;
     }
 
     private static RestRequest CreateRequest(Method method = Method.Get, bool withAuthorization = true)
@@ -84,6 +85,35 @@ public class RYCBApiConverter
         var res = JsonSerializer.Deserialize<FeedbackResponse>(response.Content,
             App.AppJsonSerializerContext.FeedbackResponse);
         return res;
+    }
+
+    public static async Task<LocationNameInfo[]> GetLocationNameAsync(LocationCoordinate locationCoordinate)
+    {
+        var request = CreateRequest(withAuthorization: false);
+        App.CurrentLogger.LogDebug($"GET Location", port: EnumLogPort.Server,
+            module: EnumLogModule.Custom, customModuleName: "API");
+
+        var endpoint = "https://weatherapi.market.xiaomi.com/wtr-v3/location/city/geo?" +
+                       $"longitude={locationCoordinate.Longitude}" +
+                       $"&latitude={locationCoordinate.Latitude}&locale=zh_cn";
+        using var client = new RestClient(new RestClientOptions(endpoint)
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.2" : "RYCB-PML2/Desktop 2.1.0",
+            Timeout = TimeSpan.FromSeconds(10)
+        });
+
+        var response = await client.ExecuteAsync(request);
+
+        if (string.IsNullOrEmpty(response.Content))
+        {
+            return default;
+        }
+
+        var result =
+            JsonSerializer.Deserialize<LocationNameInfo[]>(response.Content,
+                App.AppJsonSerializerContext.LocationNameInfoArray) ?? default;
+        return result;
     }
 
     /// <summary>
@@ -281,7 +311,7 @@ public class RYCBApiConverter
     }
 }
 
-public class NoticeContent:ReactiveObject
+public class NoticeContent : ReactiveObject
 {
     [JsonPropertyName("active")]
     public bool Active
@@ -335,7 +365,7 @@ public class NoticeContent:ReactiveObject
 
 
     public ReactiveCommand<Unit, Unit> ShowNoticeCommand => ReactiveCommand.Create(ShowNotice);
-    
+
     public void ShowNotice()
     {
         var cd = new ContentDialog

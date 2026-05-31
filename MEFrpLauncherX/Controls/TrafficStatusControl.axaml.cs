@@ -186,7 +186,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
             return;
         }
 
-        data ??= (await MEpiConverter.GetTrafficStatusAsync(period)).data;
+        data ??= (await MEFrpApiConverter.GetTrafficStatusAsync(period)).data;
 //
 #if DEBUG
         data ??= new InfoClasses.TrafficStatus();
@@ -196,7 +196,7 @@ public class TrafficStatusControlViewModel : ViewModelBase
 #endif
         if (shouldLoadNew)
         {
-            var r = await MEpiConverter.GetTrafficStatusAsync(period);
+            var r = await MEFrpApiConverter.GetTrafficStatusAsync(period);
             if (r.code == 200)
             {
                 data = r.data;

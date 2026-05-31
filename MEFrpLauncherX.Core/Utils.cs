@@ -23,6 +23,11 @@ public static class StringUtils
         var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
         return Encoding.UTF8.GetString(base64EncodedBytes);
     }
+
+    public static string ReplaceAnyToOne(this string text, IEnumerable<string> candicates, string replacement = "")
+    {
+        return candicates.Aggregate(text, (current, candicate) => current.Replace(candicate, replacement));
+    }
 }
 
 public static class IEnumerableUtils

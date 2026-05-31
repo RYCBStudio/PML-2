@@ -532,14 +532,14 @@ public class InfoClasses
 
     public class NodesListInfo
     {
-        public NodesList[] NodesList
+        public NodeInfo[]? NodesList
         {
             get;
             set;
         }
     }
 
-    public class NodesList
+    public class NodeInfo
     {
         /// <summary>
         ///     节点ID
@@ -1084,7 +1084,7 @@ public class InfoClasses
         /// <summary>
         ///     总流量
         /// </summary>
-        public int traffic
+        public ulong traffic
         {
             get;
             set;

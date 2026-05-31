@@ -22,14 +22,7 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using RYCB.PML2.Mixin.TerminalHelper;
 
-// ReSharper disable InconsistentNaming
-
 // ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedParameter.Local
-// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-// ReSharper disable PossibleUnintendedReferenceComparison
-#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
-#pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
 
 namespace MEFrpLauncherX.Console;
 
@@ -372,7 +365,7 @@ public partial class TerminalControl : UserControl, IDisposable
             return "powershell.exe";
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || OperatingSystem.IsMacOS())
         {
             return GetMacOSDefaultShell();
         }
@@ -423,7 +416,7 @@ public partial class TerminalControl : UserControl, IDisposable
                 }
 
                 // 非阻塞读取（移除1秒超时，改用流的DataAvailable判断）
-                var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                var bytesRead = await stream.ReadAsync(buffer, ct);
                 LogDebug($"读取到 {bytesRead} 字节输出");
                 if (bytesRead == 0)
                 {
@@ -936,7 +929,12 @@ public partial class TerminalControl : UserControl, IDisposable
                                 ErrorIcon.Symbol = Symbol.ReportHacked;
                                 ErrorText.Text = onlineSolution?.data.Info;
                                 SolutionBox.Text = onlineSolution?.data.Solution[0];
-                                _tunnelErrorInfoShell = onlineSolution?.data;
+                                _tunnelErrorInfoShell = onlineSolution?.data ?? new TunnelErrorInfo()
+                                {
+                                    Flag = "MT-1",
+                                    Info = "无法获取错误信息",
+                                    Solution = ["请检查网络连接"]
+                                };
                             }
 
                             OutputBox.ScrollToEnd();
@@ -1027,7 +1025,7 @@ public partial class TerminalControl : UserControl, IDisposable
         }
     }
 
-    private void InputBox_KeyDown(object sender, KeyEventArgs e)
+    private void InputBox_KeyDown(object? sender, KeyEventArgs e)
     {
         _ctrlPressed = e.KeyModifiers.HasFlag(KeyModifiers.Control);
         if (e.Key == Key.Enter)
@@ -1195,7 +1193,7 @@ public partial class TerminalControl : UserControl, IDisposable
         }
     }
 
-    private void InputBox_KeyUp(object sender, KeyEventArgs e)
+    private void InputBox_KeyUp(object? sender, KeyEventArgs e)
     {
         if (e.Key is Key.LeftCtrl or Key.RightCtrl)
         {

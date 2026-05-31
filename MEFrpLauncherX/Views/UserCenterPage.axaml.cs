@@ -51,7 +51,7 @@ public partial class UserCenterPage : UserControl
         {
             await Task.Run(async () =>
             {
-                var res = await MEpiConverter.GetExtraUserInfoAsync();
+                var res = await MEFrpApiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
                 if (res.code != 200)
@@ -116,7 +116,7 @@ public partial class UserCenterPage : UserControl
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
-                var trafficStatusData = await Task.Run(() => MEpiConverter.GetTrafficStatusAsync(7));
+                var trafficStatusData = await Task.Run(() => MEFrpApiConverter.GetTrafficStatusAsync(7));
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
@@ -143,7 +143,7 @@ public partial class UserCenterPage : UserControl
         // 执行签到
         try
         {
-            var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
+            var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
                 JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
                     App.AppJsonSerializerContext.ApiInfoSignInfo);
@@ -175,9 +175,9 @@ public partial class UserCenterPage : UserControl
         }
     }
 
-    private static string ProcessFileSize(long size)
+    private static string ProcessFileSize(ulong size)
     {
-        string[] units = ["MB", "GB", "TB"];
+        string[] units = ["MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
         var unitIndex = 0;
         double adjustedSize = size;
         while (adjustedSize >= 1024 && unitIndex < units.Length - 1)

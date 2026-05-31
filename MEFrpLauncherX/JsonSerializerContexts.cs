@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Services;
-using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
+using MEFrpLauncherX.Models;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
 using RYCB.PML.MEFrpCaptchaLib;
@@ -32,7 +32,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(InfoClasses.Nodes))]
 [JsonSerializable(typeof(InfoClasses.Proxies))]
 [JsonSerializable(typeof(InfoClasses.NodesListInfo))]
-[JsonSerializable(typeof(InfoClasses.NodesList))]
+[JsonSerializable(typeof(InfoClasses.NodeInfo))]
 [JsonSerializable(typeof(InfoClasses.NodeNameList))]
 [JsonSerializable(typeof(InfoClasses.NodesStatusInfo))]
 [JsonSerializable(typeof(InfoClasses.NodeStatus))]
@@ -66,6 +66,8 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ThemeManifest))]
 [JsonSerializable(typeof(RedeemInfo))]
 [JsonSerializable(typeof(InfoClasses.CreateProxyRequestData))]
+[JsonSerializable(typeof(GeoJsonRoot))]
+[JsonSerializable(typeof(GeoJsonFeature))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

@@ -1,16 +1,11 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="MEFrpLauncherX.App"
-             xmlns:local="using:MEFrpLauncherX"
              xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
              xmlns:primitives="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator />
-    </Application.DataTemplates>
 
     <Application.Resources>
         <ResourceDictionary>
@@ -28,13 +23,9 @@
     </Application.Resources>
 
     <Application.Styles>
-        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
-        <msg:Theme />
         <styling:FluentAvaloniaTheme PreferUserAccentColor="True" />
         <StyleInclude Source="Styles/_generic.axaml" />
         <StyleInclude Source="Styles/StackPanelIntroAnimation.axaml" />
-
 
         <Style Selector="primitives|NavigationViewItemPresenter /template/ Border#SelectionIndicator">
             <Setter Property="BorderThickness" Value="1" />
@@ -45,8 +36,8 @@
         </Style>
         <Style Selector=":is(Control).r2l">
             <Style.Animations>
-                <Animation Duration="0:0:0.75" FillMode="Both"
-                           Easing="QuarticEaseInOut">
+                <Animation Duration="0:0:0.75" FillMode="Forward"
+                           Easing="QuarticEaseIn">
                     <KeyFrame Cue="0%">
                         <Setter Property="TranslateTransform.X" Value="25" />
                         <Setter Property="Opacity" Value="0" />
@@ -58,6 +49,10 @@
                 </Animation>
             </Style.Animations>
         </Style>
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia/Icons.axaml" />
+        <msg:Theme />
         <Style Selector="controls|InfoBar.animated-bar">
             <Style.Animations>
                 <Animation Duration="0:0:1" Delay="0:0:0.25" FillMode="Both" Easing="QuarticEaseInOut">

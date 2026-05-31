@@ -110,7 +110,7 @@ public class TunnelNodeViewModel : ProxyBase, INotifyPropertyChanged
         set;
     }
 
-    public string[] AllowTypes
+    public List<string> AllowTypes
     {
         get;
         set;

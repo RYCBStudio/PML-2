@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -9,7 +9,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
-using DynamicData;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -22,7 +21,15 @@ namespace MEFrpLauncherX.Controls;
 public partial class CreateProxy : UserControl
 {
     private readonly CreateProxyViewModel _createProxyViewModel;
+
     private readonly TunnelNodeViewModel _node;
+
+    // 当由引导模式创建时，外部可以通过此属性指定首选协议(例如 "tcp", "udp", "http", "https")
+    public string? PreferredProtocol
+    {
+        get;
+        set;
+    }
 
     public CreateProxy()
     {
@@ -70,59 +77,75 @@ public partial class CreateProxy : UserControl
         OperationPanel.DataContext = _createProxyViewModel;
     }
 
+    // 对外暴露 ViewModel 以便页面可以设置默认值
+    public CreateProxyViewModel ViewModel => _createProxyViewModel;
+
+    // 暴露当前节点
+    public TunnelNodeViewModel Node => _node;
+
     private async Task<bool> CreateProxy_OnCreateProxy()
     {
-        var requestData = new InfoClasses.CreateProxyRequestData
-        {
-            nodeId = _node.NodeId,
-            proxyName = _createProxyViewModel.ProxyName,
-            localIp = _createProxyViewModel.LocalAddress,
-            localPort = _createProxyViewModel.LocalPort,
-            remotePort = ProtocolCbBox.SelectedIndex is 0 or 1 ? _createProxyViewModel.RemotePort : null,
-            domain = "[\"" + string.Join("\", \"", _createProxyViewModel.RemoteAddress) + "\"]",
-            requestHeaders = _createProxyViewModel.RequestHeaders,
-            responseHeaders = _createProxyViewModel.ResponseHeaders,
-            proxyType = ProtocolCbBox.SelectedItem?.ToString()?.ToLower() ?? "",
-            accessKey = SecurityOptionsSelect.SelectedIndex == 2 ? AccessKeyBox.Text : string.Empty,
-            httpPlugin = GetHttpPlugin(),
-            httpUser = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthNameBox.Text : string.Empty,
-            httpPassword = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthPwdBox.Text : string.Empty,
-            hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
-            crtPath = ProtocolCbBox.SelectedIndex == 3 ? SslPathBox.Text : string.Empty,
-            keyPath = ProtocolCbBox.SelectedIndex == 3 ? SslKeyBox.Text : string.Empty,
-            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains("不启用")
-                ? ""
-                : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
-            useEncryption = EnableCryptoCBox.IsChecked ?? false,
-            useCompression = EnableCompressCBox.IsChecked ?? false,
-            transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
-            locations = "[\"" + string.Join("\", \"", _createProxyViewModel.Locations) + "\"]"
-        };
-        if (requestData.proxyName.IsNullOrEmpty())
+        // 提前提取常用值，避免多次重复计算
+        var proxyName = _createProxyViewModel.ProxyName;
+        var localIp = _createProxyViewModel.LocalAddress;
+        var proxyType = ProtocolCbBox.SelectedItem?.ToString()?.ToLower() ?? "";
+        var httpPlugin = GetHttpPlugin(proxyType);
+
+        // 验证前置：先做轻量校验，避免在失败时构造完整 requestData
+        if (proxyName.IsNullOrEmpty())
         {
             await MessageBox.ShowAsync(message: "请输入隧道名");
             return false;
         }
 
-        if (requestData.localIp.IsNullOrEmpty())
+        if (localIp.IsNullOrEmpty())
         {
             await MessageBox.ShowAsync(message: "请输入本地地址");
             return false;
         }
 
-        var allowRange = _node.AllowPorts.Split('-');
-        if (requestData.proxyType is "tcp" or "udp")
+        if (proxyType is "tcp" or "udp")
         {
-            if (!(requestData.remotePort >= Convert.ToInt32(allowRange[0]) &&
-                  requestData.remotePort <= Convert.ToInt32(allowRange[1])))
+            var allowRange = _node.AllowPorts.Split('-');
+            var remotePort = _createProxyViewModel.RemotePort;
+            if (!(remotePort >= Convert.ToInt32(allowRange[0]) &&
+                  remotePort <= Convert.ToInt32(allowRange[1])))
             {
                 await MessageBox.ShowAsync(message: "请输入合法的端口号");
                 return false;
             }
         }
 
+        var requestData = new InfoClasses.CreateProxyRequestData
+        {
+            nodeId = _node.NodeId,
+            proxyName = proxyName,
+            localIp = localIp,
+            localPort = _createProxyViewModel.LocalPort,
+            remotePort = proxyType is "tcp" or "udp" ? _createProxyViewModel.RemotePort : null,
+            domain = JsonSerializer.Serialize(_createProxyViewModel.RemoteAddress, App.AppJsonSerializerContext.ListString),
+            requestHeaders = _createProxyViewModel.RequestHeaders,
+            responseHeaders = _createProxyViewModel.ResponseHeaders,
+            proxyType = proxyType,
+            accessKey = SecurityOptionsSelect.SelectedIndex == 2 ? AccessKeyBox.Text : string.Empty,
+            httpPlugin = httpPlugin,
+            httpUser = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthNameBox.Text : string.Empty,
+            httpPassword = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthPwdBox.Text : string.Empty,
+            hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
+            crtPath = proxyType == "https" ? SslPathBox.Text : string.Empty,
+            keyPath = proxyType == "https" ? SslKeyBox.Text : string.Empty,
+            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains("不启用")
+                ? ""
+                : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
+            useEncryption = EnableCryptoCBox.IsChecked ?? false,
+            useCompression = EnableCompressCBox.IsChecked ?? false,
+            transportProtocol = TpTcpRb.IsChecked == true ? "tcp" : "quic",
+            locations = JsonSerializer.Serialize(_createProxyViewModel.Locations, App.AppJsonSerializerContext.ListString)
+        };
+        CreateProxyPage.Instance._targetRequest = requestData;
+
         var _body = JsonSerializer.Serialize(requestData, App.AppJsonSerializerContext.CreateProxyRequestData);
-        var success = (await MEpiConverter.PostNewTunnelAsync(_body)).code == 200;
+        var success = (await MEFrpApiConverter.PostNewTunnelAsync(_body)).code == 200;
         if (success)
         {
             MainContainer.IsEnabled = false;
@@ -131,50 +154,54 @@ public partial class CreateProxy : UserControl
         return success;
     }
 
-    private string GetHttpPlugin()
+    private string GetHttpPlugin(string? protoType)
     {
-        var http = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "http");
-        var https = ProtocolCbBox.Items.ToList().FindIndex(item => item.ToString()?.ToLower() is "https");
-        if (http == -1 || https == -1)
-        {
-            return string.Empty;
-        }
-
-        if (ProtocolCbBox.SelectedIndex == https)
+        if (protoType == "https")
         {
             if (SameAsHttps.IsChecked == true)
-            {
                 return string.Empty;
-            }
-
             return Https2Http.IsChecked == true ? "https2http" : string.Empty;
         }
 
-        if (ProtocolCbBox.SelectedIndex != http || SameAsHttp.IsChecked == true)
+        if (protoType == "http")
         {
-            return string.Empty;
+            if (SameAsHttp.IsChecked == true)
+                return string.Empty;
+            return Http2Https.IsChecked == true ? "http2https" : string.Empty;
         }
 
-        return Http2Https.IsChecked == true ? "http2https" : string.Empty;
-
+        return string.Empty;
     }
 
     private void CreateProxy_Loaded(object sender, VisualTreeAttachmentEventArgs e)
     {
         CurrentProxyInfo.DataContext = _node;
         ProtocolCbBox.ItemsSource = _node.AllowTypes;
-        ProtocolCbBox.SelectedIndex = 0;
+        // 如果外部指定了首选协议，则尝试选择该协议
+        if (!string.IsNullOrEmpty(PreferredProtocol))
+        {
+            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? new List<object?>();
+            var idx = items.FindIndex(item =>
+                string.Equals(item?.ToString(), PreferredProtocol, StringComparison.OrdinalIgnoreCase));
+            ProtocolCbBox.SelectedIndex = idx >= 0 ? idx : 0;
+        }
+        else
+        {
+            ProtocolCbBox.SelectedIndex = 0;
+        }
     }
 
-    private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
+    public async void GetRemotePort_Click(object sender, RoutedEventArgs e)
     {
         Loading.IsVisible = true;
-        if (ProtocolCbBox.SelectedItem?.ToString() is not "tcp" and not "udp")
+        if (ProtocolCbBox.SelectedItem?.ToString()?.ToLower() is not "tcp" and not "udp" && sender is not string)
         {
+            Loading.IsVisible = false;
             return;
         }
 
-        var res = (await MEpiConverter.GetFreePortAsync(_node.NodeId, ProtocolCbBox.SelectedItem?.ToString())).data;
+        var type = sender is string t ? t : ProtocolCbBox.SelectedItem?.ToString();
+        var res = (await MEFrpApiConverter.GetFreePortAsync(_node.NodeId, type)).data;
         Loading.IsVisible = false;
         RemotePortNudBox.Value = res;
     }
@@ -229,43 +256,11 @@ public partial class CreateProxy : UserControl
     private async void EditRequestHeaders(object? sender, RoutedEventArgs e)
     {
         var he = new HeadersEdit();
-        if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
+        if (_createProxyViewModel.RequestHeaders is { Count: > 0 })
         {
-            he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
-                {
-                    var key = kv.Key;
-                    var val = kv.Value;
-                    if (key is null || val is null)
-                    {
-                        return new RequestHeader
-                        {
-                            Name = "NOTFOUND",
-                            Value = "NOTFOUND"
-                        };
-                    }
-
-                    return new RequestHeader
-                    {
-                        Name = key,
-                        Value = val
-                    };
-                })
-                .ToList());
-        }
-
-        // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
-        // {
-        //     he.Headers.Remove(header);
-        // }
-        for (var i = 0; i < he.Headers.Count; i++)
-        {
-            if (he.Headers[i].Name != "NOTFOUND")
-            {
-                continue;
-            }
-
-            he.Headers.RemoveAt(i);
-            i--;
+            he.Headers.AddRange(_createProxyViewModel.RequestHeaders
+                .Where(kv => kv.Key is not null && kv.Value is not null)
+                .Select(kv => new RequestHeader { Name = kv.Key, Value = kv.Value }));
         }
 
         var cd = new ContentDialog
@@ -277,16 +272,13 @@ public partial class CreateProxy : UserControl
             IsSecondaryButtonEnabled = false,
             CloseButtonText = "取消"
         };
-        var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
-            he.Headers.ToList().ForEach(h =>
+            foreach (var h in he.Headers)
             {
                 if (!_createProxyViewModel.RequestHeaders.ContainsKey(h.Name))
-                {
-                    _createProxyViewModel.RequestHeaders?.Add(h.Name, h.Value);
-                }
-            });
+                    _createProxyViewModel.RequestHeaders.Add(h.Name, h.Value);
+            }
         }
     }
 
@@ -336,43 +328,11 @@ public partial class CreateProxy : UserControl
     private async void EditResponseHeaders(object? sender, RoutedEventArgs e)
     {
         var he = new HeadersEdit();
-        if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
+        if (_createProxyViewModel.ResponseHeaders is { Count: > 0 })
         {
-            he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
-                {
-                    var key = kv.Key;
-                    var val = kv.Value;
-                    if (key is null || val is null)
-                    {
-                        return new RequestHeader
-                        {
-                            Name = "NOTFOUND",
-                            Value = "NOTFOUND"
-                        };
-                    }
-
-                    return new RequestHeader
-                    {
-                        Name = key,
-                        Value = val
-                    };
-                })
-                .ToList());
-        }
-
-        // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
-        // {
-        //     he.Headers.Remove(header);
-        // }
-        for (var i = 0; i < he.Headers.Count; i++)
-        {
-            if (he.Headers[i].Name != "NOTFOUND")
-            {
-                continue;
-            }
-
-            he.Headers.RemoveAt(i);
-            i--;
+            he.Headers.AddRange(_createProxyViewModel.ResponseHeaders
+                .Where(kv => kv.Key is not null && kv.Value is not null)
+                .Select(kv => new RequestHeader { Name = kv.Key, Value = kv.Value }));
         }
 
         var cd = new ContentDialog
@@ -384,16 +344,13 @@ public partial class CreateProxy : UserControl
             IsSecondaryButtonEnabled = false,
             CloseButtonText = "取消"
         };
-        var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
-            he.Headers.ToList().ForEach(h =>
+            foreach (var h in he.Headers)
             {
                 if (!_createProxyViewModel.ResponseHeaders.ContainsKey(h.Name))
-                {
-                    _createProxyViewModel.ResponseHeaders?.Add(h.Name, h.Value);
-                }
-            });
+                    _createProxyViewModel.ResponseHeaders.Add(h.Name, h.Value);
+            }
         }
     }
 

@@ -10,6 +10,9 @@
              mc:Ignorable="d"
              x:Class="MEFrpLauncherX.Views.NodesContainer"
              x:DataType="viewModels:NodesContainerViewModel">
+    <Design.DataContext>
+        <viewModels:NodesContainerViewModel></viewModels:NodesContainerViewModel>
+    </Design.DataContext>
     <Grid RowDefinitions="Auto,Auto,*" Classes="animated">
 
         <!-- Search and filter bar -->

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,9 +20,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
-using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.ViewModels;
-using MEFrpLauncherX.Views.Appearance;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
@@ -159,6 +156,7 @@ public partial class MainWindow : AppWindow, IDisposable
 
     private async void OnLoaded(object? sender, RoutedEventArgs e)
     {
+        App.SplashService?.UpdateProgress(40, "正在加载配置");
         Core.App.StorageProvider = StorageProvider;
         _vm = new MainWindowViewModel();
         DataContext = _vm;
@@ -196,6 +194,7 @@ public partial class MainWindow : AppWindow, IDisposable
             _vm.Progress = progress;
         });
         var menu = CreateContextMenu();
+        App.SplashService?.UpdateProgress(60, "正在初始化系统托盘");
         _notifyIcon = new TrayIcon
         {
             Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://MEFrpLauncherX/Assets/meflx.png"))),
@@ -260,7 +259,6 @@ public partial class MainWindow : AppWindow, IDisposable
 
         await CheckPolicy();
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
-        Program.StartupTransaction.Finish(SpanStatus.Ok);
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性
         if (
@@ -278,7 +276,7 @@ public partial class MainWindow : AppWindow, IDisposable
             App.AppJsonSerializerContext.StartupData);
         if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
         {
-            var _frpt = await MEpiConverter.GetFrpTokenAsync();
+            var _frpt = await MEFrpApiConverter.GetFrpTokenAsync();
             var cmd = $"{{mefrpc}} -t {_frpt.data?.token} -p {data?.StartProxyId}";
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd,
                 data?.StartProxyName);
@@ -292,7 +290,7 @@ public partial class MainWindow : AppWindow, IDisposable
         }
 
         Hide();
-        var frpt = await MEpiConverter.GetFrpTokenAsync();
+        var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
         foreach (var alp in ConfigManager.CurrentConfig.AutoLaunchProxies)
         {
             if (alp.UseConfig)
@@ -311,6 +309,11 @@ public partial class MainWindow : AppWindow, IDisposable
 
     private static async Task CheckPolicy()
     {
+        if (ConfigManager.CurrentConfig.PrivacyAgreed)
+        {
+            return;
+        }
+
         var cd = new ContentDialog
         {
             Content = new MarkdownRender
@@ -346,11 +349,7 @@ public partial class MainWindow : AppWindow, IDisposable
             CloseButtonText = "拒绝",
             IsPrimaryButtonEnabled = true
         };
-        if (ConfigManager.CurrentConfig.PrivacyAgreed)
-        {
-            return;
-        }
-
+        App.SplashService?.Close();
         var res = await cd.ShowAsync();
         switch (res)
         {
@@ -434,8 +433,7 @@ public partial class MainWindow : AppWindow, IDisposable
             _updateChecked = true;
         }
 
-        App.splash?.Close();
-        App.splash = null;
+        App.SplashService?.Close();
     }
 
     private NativeMenu CreateContextMenu()

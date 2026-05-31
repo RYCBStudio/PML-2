@@ -52,7 +52,7 @@ public partial class ManageProxyPage : UserControl
         Instance = this;
     }
 
-    public async void LoadProxies()
+    public async Task LoadProxies()
     {
         if (_isLoadingProxies)
         {
@@ -74,17 +74,17 @@ public partial class ManageProxyPage : UserControl
                 InfoClasses.ProxyInfo userProxies = null;
                 try
                 {
-                    userProxies = (await MEpiConverter.GetProxiesAsync()).data;
+                    userProxies = (await MEFrpApiConverter.GetProxiesAsync()).data;
                 }
                 catch
                 {
                 }
-                // var currentNodesListInfo = MEpiConverter.CurrentNodesListInfo;
+                // var currentNodesListInfo = MEFrpApiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
                 //
                 // if (currentNodesListInfo?.NodesList is null)
                 // {
-                //     currentNodesList = (await MEpiConverter.GetNodesInfoAsync()).data;
+                //     currentNodesList = (await MEFrpApiConverter.GetNodesInfoAsync()).data;
                 // }
                 // else
                 // {

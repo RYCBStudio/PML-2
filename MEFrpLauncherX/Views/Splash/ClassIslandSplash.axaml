@@ -1,0 +1,57 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:splash="clr-namespace:MEFrpLauncherX.ViewModels.Splash"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="150"
+        Width="600" Height="150"
+        WindowStartupLocation="CenterScreen"
+        x:Class="MEFrpLauncherX.Views.Splash.ClassIslandSplash"
+        TransparencyLevelHint="AcrylicBlur, Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        SystemDecorations="None"
+        Background="{DynamicResource LayerOnAcrylicFillColorDefaultBrush}"
+        x:DataType="splash:ClassIslandSplashViewModel"
+        Title="ClassIslandSplash">
+    <Design.DataContext>
+        <splash:ClassIslandSplashViewModel />
+    </Design.DataContext>
+    <Grid ColumnDefinitions="1*, 9*" RowDefinitions="3*, 7*" Margin="2 15 5 5">
+        <DockPanel Grid.ColumnSpan="2" HorizontalSpacing="10" Margin="18 0 0 0">
+            <DockPanel.Styles>
+                <Style>
+                    <Style.Animations>
+                        <Animation Duration="0:0:0.75" FillMode="Both"
+                                   Easing="QuarticEaseInOut">
+                            <KeyFrame Cue="0%">
+                                <Setter Property="TranslateTransform.X" Value="25" />
+                                <Setter Property="Opacity" Value="0" />
+                            </KeyFrame>
+                            <KeyFrame Cue="100%">
+                                <Setter Property="TranslateTransform.X" Value="0" />
+                                <Setter Property="Opacity" Value="1" />
+                            </KeyFrame>
+                        </Animation>
+                    </Style.Animations>
+                </Style>
+            </DockPanel.Styles>
+            <Image Source="/Assets/meflx.png" DockPanel.Dock="Left" />
+            <TextBlock Text="PML 2" Theme="{StaticResource TitleTextBlockStyle}" />
+        </DockPanel>
+        <controls:ProgressRing Grid.Row="1" IsIndeterminate="True" />
+        <ProgressBar Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="-4 0 -8 -10"
+                     Height="10" VerticalAlignment="Bottom" Background="Transparent"
+                     HorizontalAlignment="Stretch" Maximum="100"
+                     Value="{Binding Progress}">
+            <ProgressBar.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Value" Duration="0:0:0.1" Easing="LinearEasing" />
+                </Transitions>
+            </ProgressBar.Transitions>
+        </ProgressBar>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ProgressText}"
+                   Theme="{StaticResource SubtitleTextBlockStyle}" />
+    </Grid>
+</Window>

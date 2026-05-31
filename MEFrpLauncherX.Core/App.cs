@@ -59,7 +59,7 @@ public class App : IDisposable
 
     public void Dispose() => CurrentLogger?.Dispose();
 
-    public static async void Initialize()
+    public static async Task Initialize()
     {
         Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
         Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));

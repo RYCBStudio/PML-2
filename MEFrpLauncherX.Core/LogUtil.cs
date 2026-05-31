@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Runtime.CompilerServices;
+using Avalonia.Controls;
 
 namespace MEFrpLauncherX.Core;
 
@@ -104,7 +105,7 @@ public class LogUtil : IDisposable
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
     {
-        if (_disposed)
+        if (_disposed || Design.IsDesignMode)
         {
             return;
         }
