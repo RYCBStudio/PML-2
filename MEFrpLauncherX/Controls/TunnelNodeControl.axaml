@@ -20,7 +20,7 @@
     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{Binding AllowGroup, Converter={x:Static local:AllowGroupToBorderBrushConverter.Instance}}"
             CornerRadius="8" BorderThickness="1">
-        <Grid Classes="animated">
+        <Grid>
             <controls:InfoBadge Margin="0,10,10,0" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Background="OrangeRed"
@@ -89,9 +89,6 @@
                                Classes="Blue" FontFamily="{StaticResource GlobalFontFamily}"
                                Theme="{StaticResource TagLabel}"
                                Content="{Binding Bandwidth}" />
-                        <!-- <Label Classes="Indigo" FontFamily="{StaticResource GlobalFontFamily}" -->
-                        <!--        Theme="{StaticResource TagLabel}" VerticalAlignment="Center" -->
-                        <!--        Content="{Binding RegionDisplay}" /> -->
                     </WrapPanel>
 
                     <!-- Load progress bar -->

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 namespace MEFrpLauncherX;

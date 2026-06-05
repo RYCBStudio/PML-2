@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -23,19 +24,23 @@ public class CreateProxyPageViewModel : ViewModelBase
     /// </summary>
     public string? GetSelectedAreaFromMap()
     {
-        if (SelectedType == 2 && pages.TryGetValue("MapLegacy", out var legacyMap) && legacyMap is MappedNodesContainerLegacy legacy)
+        if (SelectedType == 2 && pages.TryGetValue("MapLegacy", out var legacyMap) &&
+            legacyMap is MappedNodesContainerLegacy legacy)
         {
             return legacy.SelectedAreaName;
         }
-        else if (SelectedType == 3 && pages.TryGetValue("Map", out var newMap) && newMap is MappedNodesContainer newMapControl)
+        else if (SelectedType == 3 && pages.TryGetValue("Map", out var newMap) &&
+                 newMap is MappedNodesContainer newMapControl)
         {
             // 如果新的地图控件也有类似的属性，可以在这里添加
             // return newMapControl.SelectedAreaName;
         }
+
         return null;
     }
 
     private bool _isPageLoading;
+
     public bool IsPageLoading
     {
         get => _isPageLoading;
@@ -47,7 +52,16 @@ public class CreateProxyPageViewModel : ViewModelBase
         get;
         set
         {
+            var sw = Stopwatch.StartNew();
             this.RaiseAndSetIfChanged(ref field, value);
+            Dispatcher.UIThread.Post(() =>
+            {
+                System.Console.WriteLine($"{DateTime.Now:HH:mm:ss} Loaded: {sw.ElapsedMilliseconds}");
+            }, DispatcherPriority.Loaded);
+            Dispatcher.UIThread.Post(() =>
+            {
+                System.Console.WriteLine($"{DateTime.Now:HH:mm:ss} Render: {sw.ElapsedMilliseconds}");
+            }, DispatcherPriority.Render);
         }
     }
 
@@ -64,8 +78,13 @@ public class CreateProxyPageViewModel : ViewModelBase
             // 先让 UI 渲染 loading 状态
             await Task.Yield();
 
-            var nc = new NodesContainer();
-            pages["Create"] = nc;
+            // 复用已有的 NodesContainer，避免重复创建控件
+            if (!pages.TryGetValue("Create", out var existing) || existing is not NodesContainer nc)
+            {
+                nc = new NodesContainer();
+                pages["Create"] = nc;
+                (nc.DataContext as NodesContainerViewModel)!.NodeSelected += CreateProxyPage_NodeSelected;
+            }
 
             // 立即显示节点容器（带 loading）
             await Dispatcher.UIThread.InvokeAsync(() =>
@@ -82,16 +101,15 @@ public class CreateProxyPageViewModel : ViewModelBase
             var listInfo = listInfoTask.Result;
 
             await nc.LoadNodesAsync(listInfo, status);
-            (nc.DataContext as NodesContainerViewModel)!.NodeSelected += CreateProxyPage_NodeSelected;
         }
         finally
         {
             IsPageLoading = false;
-            MainPageFrameViewModel.Instance.IsLoading = false;
         }
     }
 
     private int _selectedType = 1;
+
     public int SelectedType
     {
         get => _selectedType;
@@ -152,6 +170,7 @@ public class CreateProxyPageViewModel : ViewModelBase
                         IsPageLoading = false;
                     }
                 }
+
                 break;
 
             case 2: // 嘉豪版（旧地图）

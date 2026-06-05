@@ -19,24 +19,8 @@
         <splash:ClassIslandSplashViewModel />
     </Design.DataContext>
     <Grid ColumnDefinitions="1*, 9*" RowDefinitions="3*, 7*" Margin="2 15 5 5">
-        <DockPanel Grid.ColumnSpan="2" HorizontalSpacing="10" Margin="18 0 0 0">
-            <DockPanel.Styles>
-                <Style>
-                    <Style.Animations>
-                        <Animation Duration="0:0:0.75" FillMode="Both"
-                                   Easing="QuarticEaseInOut">
-                            <KeyFrame Cue="0%">
-                                <Setter Property="TranslateTransform.X" Value="25" />
-                                <Setter Property="Opacity" Value="0" />
-                            </KeyFrame>
-                            <KeyFrame Cue="100%">
-                                <Setter Property="TranslateTransform.X" Value="0" />
-                                <Setter Property="Opacity" Value="1" />
-                            </KeyFrame>
-                        </Animation>
-                    </Style.Animations>
-                </Style>
-            </DockPanel.Styles>
+        <DockPanel Grid.ColumnSpan="2" HorizontalSpacing="10" Margin="18 0 0 0" Classes="r2l">
+            
             <Image Source="/Assets/meflx.png" DockPanel.Dock="Left" />
             <TextBlock Text="PML 2" Theme="{StaticResource TitleTextBlockStyle}" />
         </DockPanel>

@@ -454,12 +454,6 @@ public partial class CreateProxyPage : UserControl
 
     private async void Back(object sender, RoutedEventArgs e)
     {
-        // 如果 Frame 有导航历史，优先使用 GoBack
-        if (ContentFrame.CanGoBack && _index == 0)
-        {
-            ContentFrame.GoBack();
-            return;
-        }
 
         if (_index > 0)
         {
@@ -515,7 +509,15 @@ public partial class CreateProxyPage : UserControl
             }
             else
             {
-                await _createProxyPageViewModel.LoadDataAsync();
+                // 如果已有缓存的节点列表，直接切换，避免不必要的重新加载
+                if (_createProxyPageViewModel.pages.TryGetValue("Create", out var existing))
+                {
+                    _createProxyPageViewModel.CurrentPage = existing;
+                }
+                else
+                {
+                    await _createProxyPageViewModel.LoadDataAsync();
+                }
             }
         }
 

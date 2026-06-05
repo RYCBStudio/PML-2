@@ -438,6 +438,17 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e) =>
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
+
+    private void TerminalEngineTypeBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        if (!isInit)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config =>
+            config.TerminalEngineType = ((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString() ?? "");
+    }
 }
 
 public class ValidationModeConverter : IValueConverter

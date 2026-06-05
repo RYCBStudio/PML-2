@@ -52,6 +52,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
+        <ProjectReference Include="G:\VSProj\RYCB.PML2.MEFrpCaptchaLib\RYCB.PML2.MEFrpCaptchaLib.csproj" />
     </ItemGroup>
 
 </Project>

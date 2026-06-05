@@ -170,7 +170,7 @@
             Background="{DynamicResource ControlFillColorDefaultBrush}"
             BorderBrush="{Binding isBanned, Converter={StaticResource BannedToBrushConverter}}"
             BorderThickness="1"
-            Classes="r2l">
+            Classes="animated">
         <Border.Styles>
             <Style Selector="Border:pointerover">
                 <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightLowBrush}" />

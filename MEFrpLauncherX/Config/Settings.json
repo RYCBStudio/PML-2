@@ -38,5 +38,6 @@
     "ShowSystemNotice": true,
     "ShowSoftwareNotice": true
   },
-  "DoNotShowSuccessMsg": true
+  "DoNotShowSuccessMsg": true,
+  "TerminalEngineType": "XTerm"
 }

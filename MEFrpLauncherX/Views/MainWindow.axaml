@@ -12,9 +12,12 @@
     Width="960"
     Height="540"
     Background="#2f000000"
+    SystemDecorations="Full"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaChromeHints="PreferSystemChrome"
     x:Name="Window"
     Closing="Window_Closing"
-    FontFamily="{StaticResource GlobalFontFamily}"
+    FontFamily="{DynamicResource GlobalFontFamily}"
 
     WindowStartupLocation="CenterScreen"
     x:DataType="core:MainWindowViewModel"
@@ -40,7 +43,7 @@
                     <views:LoginPage
                         MinWidth="200"
                         Background="Transparent"
-                        FontFamily="{StaticResource GlobalFontFamily}" />
+                        FontFamily="{DynamicResource GlobalFontFamily}" />
                 </Border>
             </ContentControl>
 

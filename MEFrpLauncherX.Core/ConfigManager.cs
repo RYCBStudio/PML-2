@@ -673,6 +673,12 @@ public class AppConfig
         get;
         set;
     }
+
+    public string TerminalEngineType
+    {
+        get;
+        set;
+    }
 }
 
 public class HomeConfig

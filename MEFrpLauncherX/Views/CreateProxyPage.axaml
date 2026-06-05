@@ -31,7 +31,7 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
-            <fa:Frame x:Name="ContentFrame" Content="{Binding CurrentPage}" />
+            <ContentControl x:Name="ContentFrame" Content="{Binding CurrentPage}" />
 
             <!-- Tab 切换加载遮罩 -->
             <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"

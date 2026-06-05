@@ -1245,6 +1245,16 @@
         "runtime": {
           "bin/placeholder/MarkdownAIRender.dll": {}
         }
+      },
+      "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
+        }
       }
     }
   },
@@ -3010,6 +3020,11 @@
       "type": "project",
       "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
       "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
+    },
+    "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
+      "type": "project",
+      "path": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj",
+      "msbuildProject": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3024,6 +3039,7 @@
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
+      "RYCB.PML2.MEFrpCaptchaLib >= 26.1.0",
       "ReactiveUI >= 23.2.1",
       "RestSharp >= 114.0.0",
       "Sentry >= 6.4.0",
@@ -3071,6 +3087,9 @@
           "projectReferences": {
             "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+            },
+            "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj": {
+              "projectPath": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
             }
           }
         }

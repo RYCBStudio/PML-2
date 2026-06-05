@@ -8,7 +8,7 @@ using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX;
 
@@ -68,6 +68,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(InfoClasses.CreateProxyRequestData))]
 [JsonSerializable(typeof(GeoJsonRoot))]
 [JsonSerializable(typeof(GeoJsonFeature))]
+[JsonSerializable(typeof(ChallengeInfo))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

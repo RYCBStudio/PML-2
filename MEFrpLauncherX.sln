@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Mixin.TerminalHel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.Extensions.MinecraftExtension", "RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj", "{DB43B627-87FE-429D-9F4E-01E2E1095467}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RYCB.PML2.MEFrpCaptchaLib", "G:\VSProj\RYCB.PML2.MEFrpCaptchaLib\RYCB.PML2.MEFrpCaptchaLib.csproj", "{A29523A4-B25A-4737-84B4-CC874654151C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iciclecreek.Avalonia.Terminal", "Iciclecreek.Avalonia.TerminalWindow\Iciclecreek.Avalonia.Terminal.csproj", "{B9FBC6E7-82DB-4CF0-ADA1-6BEADA3D55C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB43B627-87FE-429D-9F4E-01E2E1095467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A29523A4-B25A-4737-84B4-CC874654151C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A29523A4-B25A-4737-84B4-CC874654151C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A29523A4-B25A-4737-84B4-CC874654151C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A29523A4-B25A-4737-84B4-CC874654151C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9FBC6E7-82DB-4CF0-ADA1-6BEADA3D55C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9FBC6E7-82DB-4CF0-ADA1-6BEADA3D55C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9FBC6E7-82DB-4CF0-ADA1-6BEADA3D55C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9FBC6E7-82DB-4CF0-ADA1-6BEADA3D55C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

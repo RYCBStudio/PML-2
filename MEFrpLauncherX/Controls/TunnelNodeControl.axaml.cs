@@ -37,7 +37,7 @@ public partial class TunnelNodeControl : UserControl
 
     private async void PerformAnimation(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(150));
+        await Task.Delay(TimeSpan.FromMilliseconds(300));
         var pg = sender as ProgressBar;
         if (pg == null)
         {

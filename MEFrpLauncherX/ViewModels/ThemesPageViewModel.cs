@@ -267,6 +267,8 @@ public class ThemesPageViewModel : ViewModelBase
             {
                 OnlineThemes.Add(theme);
             }
+            FilteredOnlineThemes.Clear();
+            FilteredOnlineThemes.AddRange(OnlineThemes);
         }
         catch (Exception ex)
         {

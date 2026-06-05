@@ -33,15 +33,6 @@
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="背景" IconSource="Image"
-                                               Description="设置窗口的背景&#x0009;注意: 过大的图片体积可能会降低性能。&#x0009;“选择背景”功能已迁移至下方“自定义”中。">
-                    <controls:SettingsExpanderItem.Footer>
-                        <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5">
-                            <Button Content="选择背景" IsEnabled="False" Click="ChooseBackground" />
-                            <Button Content="清除背景" Click="ClearBackground" />
-                        </WrapPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Content="自定义"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
@@ -211,6 +202,16 @@
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="DoNotShowResponseSettings"
                                       IsCheckedChanged="DoNotShowResponseSettings_OnIsCheckedChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="终端引擎"
+                                               Description="设置软件应该使用哪个终端引擎。在某些情况下, 特定的终端引擎可能会导致软件崩溃。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="TerminalEngineTypeBox"
+                                      SelectionChanged="TerminalEngineTypeBox_OnIsCheckedChanged" >
+                            <ComboBoxItem Tag="Original">原版</ComboBoxItem>
+                            <ComboBoxItem Tag="XTerm">XTerm</ComboBoxItem>
+                        </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>

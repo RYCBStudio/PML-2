@@ -6,7 +6,7 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
 using RestSharp;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 // ReSharper disable SuspiciousLockOverSynchronizationPrimitive

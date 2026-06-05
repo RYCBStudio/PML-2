@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
@@ -16,7 +16,8 @@
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <SuppressTrimWarnings>true</SuppressTrimWarnings>
+        <!-- 开启后可见 AOT 裁剪警告，调试完再改回 true -->
+        <SuppressTrimWarnings>false</SuppressTrimWarnings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,7 +28,7 @@
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
-<!--        <PublishAot>true</PublishAot>-->
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
     <PropertyGroup>
         <AppId>tech.rycb.mefrplauncherx</AppId>
@@ -53,10 +54,15 @@
         <None Include="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Remove="Assets\splash.png"/>
         <AvaloniaResource Include="Assets\splash.png"/>
 
         <TrimmerRootDescriptor Include="TrimmerRoots.xml"/>
+
+        <None Remove="Assets\splash.png" />
+
+        <AvaloniaResource Include="Assets\splash.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </AvaloniaResource>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>
@@ -92,11 +98,13 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Iciclecreek.Avalonia.TerminalWindow\Iciclecreek.Avalonia.Terminal.csproj" />
         <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
         <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj"/>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
+        <ProjectReference Include="G:\VSProj\RYCB.PML2.MEFrpCaptchaLib\RYCB.PML2.MEFrpCaptchaLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Views\ConfigEditor.axaml.cs">

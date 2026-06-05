@@ -5,8 +5,11 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
+using HarfBuzzSharp;
 using MEFrpLauncherX.Console;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.ViewModels;
@@ -51,20 +54,23 @@ public partial class TerminalPage : UserControl
         }
     }
 
-    public void SendCtrlCCommandToSelected()
+    private async Task SendCtrlCCommandToSelected()
     {
         if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
         {
             terminalControl.SendCtrlCCommand();
             ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
         }
-        else
+        else if (MainTabCtrl.SelectedItem is TabItem
+                 {
+                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                 })
         {
-            throw new EntryPointNotFoundException();
+            await alternativeTerminalView.SendToPtyAsync("\\003 \r");
         }
     }
 
-    public void SendCtrlCCommandToSelected(string header)
+    public async Task SendCtrlCCommandToSelected(string header)
     {
         if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
         {
@@ -76,19 +82,34 @@ public partial class TerminalPage : UserControl
             terminalControl.SendCtrlCCommand();
             ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
         }
-        else
+        else if (MainTabCtrl.SelectedItem is TabItem
+                 {
+                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                 })
         {
-            throw new EntryPointNotFoundException();
+            if (alternativeTerminalView.Terminal.Title != header)
+            {
+                return;
+            }
+
+            await alternativeTerminalView.SendToPtyAsync("\\003 \r");
         }
     }
 
-    public void SendCtrlCCommandAll()
+    public async Task SendCtrlCCommandAll()
     {
         foreach (var item in MainTabCtrl.Items)
         {
             if (item is TabItem { Content: TerminalControl terminalControl })
             {
                 terminalControl.SendCtrlCCommand();
+            }
+            else if (item is TabItem
+                     {
+                         Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                     })
+            {
+                await alternativeTerminalView.SendToPtyAsync("\\003 \r");
             }
         }
     }
@@ -99,9 +120,16 @@ public partial class TerminalPage : UserControl
         {
             await terminalControl.SendCommandAsync("clear");
         }
+        else if (MainTabCtrl.SelectedItem is TabItem
+                 {
+                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                 })
+        {
+            await alternativeTerminalView.SendToPtyAsync("clear \r");
+        }
     }
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    private async void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         var index = MainTabCtrl.SelectedIndex;
         if (index >= 0 && index < MainTabCtrl.Items.Count)
@@ -111,6 +139,14 @@ public partial class TerminalPage : UserControl
             {
                 terminalControl.SendCtrlCCommand();
                 terminalControl.Dispose(); // 显式释放资源
+            }
+            else if (MainTabCtrl.Items[index] is TabItem
+                     {
+                         Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                     })
+            {
+                await alternativeTerminalView.SendToPtyAsync("exit \r");
+                alternativeTerminalView.Terminal.Dispose();
             }
 
             MainTabCtrl.Items.RemoveAt(index);
@@ -153,11 +189,29 @@ public partial class TerminalPage : UserControl
                 return;
             }
 
-            var newTab = new TabItem
+            TabItem newTab;
+            if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
             {
-                Header = "控制台" + MainTabCtrl.Items.Count,
-                Content = new TerminalControl()
-            };
+                newTab = new TabItem
+                {
+                    Header = "控制台" + MainTabCtrl.Items.Count,
+                    Content = new TerminalControl()
+                };
+            }
+            else
+            {
+                newTab = new TabItem
+                {
+                    Header = "控制台" + MainTabCtrl.Items.Count,
+                    Content = new Iciclecreek.Terminal.TerminalView
+                    {
+                        Process = "pwsh.exe",
+                        FontFamily = App.Current.TryGetResource("Jbm", out var value)
+                            ? value as FontFamily
+                            : new FontFamily("Consolas")
+                    }
+                };
+            }
 
             MainTabCtrl.Items.Add(newTab);
             MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
@@ -192,11 +246,29 @@ public partial class TerminalPage : UserControl
 
     public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "")
     {
-        var newTab = new TabItem
+        TabItem newTab;
+        if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
         {
-            Header = consoleTitle.IsNullOrEmpty() ? "控制台" + (MainTabCtrl.Items.Count + 1) : consoleTitle,
-            Content = new TerminalControl()
-        };
+            newTab = new TabItem
+            {
+                Header = "控制台" + MainTabCtrl.Items.Count,
+                Content = new TerminalControl()
+            };
+        }
+        else
+        {
+            newTab = new TabItem
+            {
+                Header = "控制台" + MainTabCtrl.Items.Count,
+                Content = new Iciclecreek.Terminal.TerminalView
+                {
+                    Process = "pwsh.exe",
+                    FontFamily = App.Current.TryGetResource("Jbm", out var value)
+                        ? value as FontFamily
+                        : new FontFamily("Consolas")
+                }
+            };
+        }
 
         MainTabCtrl.Items.Add(newTab);
         MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
@@ -216,6 +288,14 @@ public partial class TerminalPage : UserControl
                     // 修改5: 移除CurrentConhostId检查，直接发送命令
 
                     await terminal.SendCommandAsync(res);
+                }
+            }
+            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            {
+                if (isMEFrpCExe)
+                {
+                    await Task.Delay(500); // 确保终端初始化完成
+                    await terminal1.SendToPtyAsync(res + " \r");
                 }
             }
         }
@@ -247,6 +327,18 @@ public partial class TerminalPage : UserControl
                     await terminal.SendCommandAsync(res);
                 }
             }
+            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            {
+                await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + " \r");
+                await terminal1.SendToPtyAsync(""" 
+                                               echo -e "\e[33m解压文件...\e[0m" 
+                                               """ + " \r");
+                await terminal1.SendToPtyAsync("tar -xvf " +
+                                               Path.Combine(Core.App.StartupPath, "bin",
+                                                   "mefrpc.tar") +
+                                               $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
+                                               " \r");
+            }
         }
         else if (OperatingSystem.IsMacOS())
         {
@@ -275,6 +367,18 @@ public partial class TerminalPage : UserControl
                     Core.App.CurrentLogger.Log(res, EnumLogType.Debug);
                     await terminal.SendCommandAsync(res);
                 }
+            }
+            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            {
+                await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + " \r");
+                await terminal1.SendToPtyAsync(""" 
+                                               echo -e "\e[33m解压文件...\e[0m" 
+                                               """ + " \r");
+                await terminal1.SendToPtyAsync("tar -xvf " +
+                                               Path.Combine(Core.App.StartupPath, "bin",
+                                                   "mefrpc.tar") +
+                                               $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
+                                               " \r");
             }
         }
     }

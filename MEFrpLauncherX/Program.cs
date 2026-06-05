@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Web;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.MEFIntergrated;
@@ -23,6 +25,10 @@ namespace MEFrpLauncherX;
 
 internal partial class Program
 {
+    private const string AppPipeName = "tech.rycb.pml2";
+    private static Mutex? _mutex;
+    private static CancellationTokenSource? _pipeServerCts;
+
     public static Process SplashProcess
     {
         get;
@@ -37,19 +43,21 @@ internal partial class Program
     {
         //StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
         // 1. 定义一个全局唯一的Mutex名称（推荐使用反向域名格式）
-        // const string mutexName = "tech.rycb.pml2";
-        // bool createdNew;
-        //
-        // // 2. 尝试创建或打开已存在的命名Mutex
-        // using var mutex = new Mutex(true, mutexName, out createdNew);
-        //
-        // if (!createdNew)
-        // {
-        //     // 已有实例在运行，尝试激活它
-        //     ActivateExistingInstance();
-        //     Environment.Exit(0); // 退出当前进程
-        //     return; // 退出当前进程
-        // }
+
+        // 2. 尝试创建或打开已存在的命名Mutex
+        // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
+        _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
+
+        if (!createdNew)
+        {
+            // 已有实例在运行，尝试激活它
+            ActivateExistingInstance();
+            Environment.Exit(0); // 退出当前进程
+            return; // 退出当前进程
+        }
+
+        // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"请求
+        StartPipeServer();
 
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
@@ -110,12 +118,104 @@ internal partial class Program
         }
         finally
         {
-            //mutex.ReleaseMutex();
+            _pipeServerCts?.Cancel();
+            _pipeServerCts?.Dispose();
+            _mutex?.ReleaseMutex();
+            _mutex?.Close();
         }
 #endif
     }
 
+    /// <summary>
+    ///     启动 Named Pipe 服务器，在后台线程上监听第二个实例的"激活窗口"请求
+    /// </summary>
+    private static void StartPipeServer()
+    {
+        _pipeServerCts = new CancellationTokenSource();
+        var token = _pipeServerCts.Token;
+
+        Task.Run(async () =>
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    await using var server = new NamedPipeServerStream(
+                        AppPipeName,
+                        PipeDirection.In,
+                        1,
+                        PipeTransmissionMode.Byte,
+                        PipeOptions.Asynchronous);
+
+                    // 等待客户端连接（第二个实例）
+                    await server.WaitForConnectionAsync(token);
+
+                    // 读取激活信号
+                    using var reader = new StreamReader(server, Encoding.UTF8);
+                    var signal = await reader.ReadLineAsync(token);
+
+                    if (signal == "SHOW")
+                    {
+                        // 在 UI 线程上显示主窗口
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            if (Core.App.MainWindow is not null)
+                            {
+                                Core.App.MainWindow.Show();
+                                Core.App.MainWindow.Activate();
+                                Core.App.MainWindow.WindowState = Avalonia.Controls.WindowState.Normal;
+                            }
+                        });
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (IOException)
+                {
+                    // 客户端断开连接，继续监听下一个
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger?.Log(
+                        $"Named Pipe 服务器异常: {ex.Message}",
+                        EnumLogType.Debug);
+                }
+            }
+        }, token);
+    }
+
     private static void ActivateExistingInstance()
+    {
+        try
+        {
+            // 首选：通过 Named Pipe 通知第一个实例显示窗口
+            using var client = new NamedPipeClientStream(".", AppPipeName, PipeDirection.Out);
+            // 给第一个实例一点时间响应，最多等 2 秒
+            client.Connect(2000);
+
+            using var writer = new StreamWriter(client, Encoding.UTF8) { AutoFlush = true };
+            writer.WriteLine("SHOW");
+            return; // 成功发送信号，直接返回
+        }
+        catch (TimeoutException)
+        {
+            // Named Pipe 超时，可能是旧版本第一个实例不支持 Pipe，回退到 Win32 API
+        }
+        catch (IOException)
+        {
+            // Pipe 连接失败
+        }
+
+        // 回退方案：Win32 API 方式（兼容旧版本或 Pipe 不可用时）
+        ActivateExistingInstanceViaWin32();
+    }
+
+    /// <summary>
+    ///     回退方案：通过 Win32 API 激活已存在的实例窗口
+    /// </summary>
+    private static void ActivateExistingInstanceViaWin32()
     {
         var currentProcess = Process.GetCurrentProcess();
         var processes = Process.GetProcessesByName(currentProcess.ProcessName);
@@ -137,13 +237,10 @@ internal partial class Program
             // macOS/Linux平台：使用系统命令激活窗口
             else if (OperatingSystem.IsMacOS())
             {
-                // macOS: 使用osascript将应用置于前台
                 Process.Start("osascript", $"-e 'tell application \"{process.ProcessName}\" to activate'");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                // Linux: 尝试使用wmctrl或xdg-activate（可能需要预先安装）
-                // 简单方案：重新启动应用会让它自动前置（依赖桌面环境行为）
                 try
                 {
                     Process.Start("bash", $"-c \"wmctrl -a '{process.ProcessName}' || true\"");

@@ -25,7 +25,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 using Sentry;
 using Color = Avalonia.Media.Color;
 
