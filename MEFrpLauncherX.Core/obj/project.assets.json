@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "Avalonia/11.3.14": {
+      "Avalonia/11.3.17": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "11.3.14",
+          "Avalonia.Remote.Protocol": "11.3.17",
           "MicroCom.Runtime": "0.11.0"
         },
         "compile": {
@@ -135,7 +135,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.3.14": {
+      "Avalonia.Remote.Protocol/11.3.17": {
         "type": "package",
         "compile": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -1227,7 +1227,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "Avalonia": "11.3.14",
+          "Avalonia": "11.3.17",
           "Avalonia.Skia": "11.3.14",
           "Avalonia.Svg": "11.2.0.2",
           "FluentAvaloniaUI": "2.5.1",
@@ -1259,10 +1259,10 @@
     }
   },
   "libraries": {
-    "Avalonia/11.3.14": {
-      "sha512": "RcGp0iXRBqMrDRXOTUOn9OaUTx8NlukTdhuBmY9w5JmVreDtZRRErKwwiHPw+YjkbTHvhfFFNsu3Hhd+oJGIZQ==",
+    "Avalonia/11.3.17": {
+      "sha512": "CyInPSdfighRNpso1vZfQLMNsXz1GMe+1EPbxLfnNTmu7F3uB6w/BBmvJGkCUiRyeE/HMB0SKp7DNo5AJXR78A==",
       "type": "package",
-      "path": "avalonia/11.3.14",
+      "path": "avalonia/11.3.17",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1270,7 +1270,7 @@
         "Icon.png",
         "analyzers/dotnet/cs/Avalonia.Analyzers.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.11.3.14.nupkg.sha512",
+        "avalonia.11.3.17.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1496,15 +1496,15 @@
         "readme.md"
       ]
     },
-    "Avalonia.Remote.Protocol/11.3.14": {
-      "sha512": "P4QPwf9VQt4CjntmfGo8uL+S1RaVbTlcFgECSFIWN3AWc/IbKs76tbZ6ibpdFg1C+IKubBPQ+hUeUq7MrBIWDA==",
+    "Avalonia.Remote.Protocol/11.3.17": {
+      "sha512": "w0UZSPj2z1EjVQ7VI1i+8wO1nK+XCMMlweXFv9axHVBhRYgIuy/35sgNxbyuuldt6LGOqg2wFcYZ4jEGwfCC9A==",
       "type": "package",
-      "path": "avalonia.remote.protocol/11.3.14",
+      "path": "avalonia.remote.protocol/11.3.17",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.remote.protocol.11.3.14.nupkg.sha512",
+        "avalonia.remote.protocol.11.3.17.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net6.0/Avalonia.Remote.Protocol.dll",
         "lib/net6.0/Avalonia.Remote.Protocol.xml",
@@ -3029,7 +3029,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 11.3.14",
+      "Avalonia >= 11.3.17",
       "Downloader >= 5.4.0",
       "FluentAvaloniaUI >= 2.5.1",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.2",
@@ -3112,7 +3112,7 @@
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[11.3.14, )"
+            "version": "[11.3.17, )"
           },
           "Downloader": {
             "target": "Package",

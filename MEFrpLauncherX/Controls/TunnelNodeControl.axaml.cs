@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.Styling;
 using MEFrpLauncherX.Core;
@@ -37,7 +38,7 @@ public partial class TunnelNodeControl : UserControl
 
     private async void PerformAnimation(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(300));
+        await Task.Delay(TimeSpan.FromMilliseconds(100));
         var pg = sender as ProgressBar;
         if (pg == null)
         {
@@ -55,17 +56,17 @@ public partial class TunnelNodeControl : UserControl
             {
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, 0d) },
+                    Setters = { new Setter(RangeBase.ValueProperty, 0d) },
                     Cue = new Cue(0d)
                 },
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value * 0.3) },
+                    Setters = { new Setter(RangeBase.ValueProperty, pg.Value * 0.3) },
                     Cue = new Cue(0.3d)
                 },
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value) },
+                    Setters = { new Setter(RangeBase.ValueProperty, pg.Value) },
                     Cue = new Cue(1d)
                 }
             },

@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
 
@@ -14,7 +13,7 @@ namespace MEFrpLauncherX.ViewModels;
 
 public class CreateProxyPageViewModel : ViewModelBase
 {
-    internal Dictionary<string, Control> pages = new();
+    internal Dictionary<string, object> pages = new();
 
     internal TunnelNodeViewModel? selectedNode;
     private void CreateProxyPage_NodeSelected(TunnelNodeViewModel? obj) => selectedNode = obj;
@@ -39,36 +38,22 @@ public class CreateProxyPageViewModel : ViewModelBase
         return null;
     }
 
-    private bool _isPageLoading;
-
     public bool IsPageLoading
     {
-        get => _isPageLoading;
-        set => this.RaiseAndSetIfChanged(ref _isPageLoading, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public Control? CurrentPage
     {
         get;
-        set
-        {
-            var sw = Stopwatch.StartNew();
-            this.RaiseAndSetIfChanged(ref field, value);
-            Dispatcher.UIThread.Post(() =>
-            {
-                System.Console.WriteLine($"{DateTime.Now:HH:mm:ss} Loaded: {sw.ElapsedMilliseconds}");
-            }, DispatcherPriority.Loaded);
-            Dispatcher.UIThread.Post(() =>
-            {
-                System.Console.WriteLine($"{DateTime.Now:HH:mm:ss} Render: {sw.ElapsedMilliseconds}");
-            }, DispatcherPriority.Render);
-        }
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     /// <summary>
     /// 异步加载专家版数据：先显示 ProgressRing，再加载数据
     /// </summary>
-    public async Task LoadDataAsync()
+    public async Task LoadDataAsync(bool isVirtualizationDiabled = false)
     {
         if (Design.IsDesignMode) return;
 
@@ -78,18 +63,44 @@ public class CreateProxyPageViewModel : ViewModelBase
             // 先让 UI 渲染 loading 状态
             await Task.Yield();
 
-            // 复用已有的 NodesContainer，避免重复创建控件
-            if (!pages.TryGetValue("Create", out var existing) || existing is not NodesContainer nc)
+            INodeContainer nc;
+            if (!isVirtualizationDiabled)
             {
-                nc = new NodesContainer();
-                pages["Create"] = nc;
-                (nc.DataContext as NodesContainerViewModel)!.NodeSelected += CreateProxyPage_NodeSelected;
+                // 复用已有的 NodesContainer，避免重复创建控件
+                if (!pages.TryGetValue("Create", out var existing) || existing is not NodesContainer value)
+                {
+                    nc = new NodesContainer();
+                    pages["Create"] = nc;
+                    (nc.DataContext as NodesContainerViewModel)!.NodeSelected += CreateProxyPage_NodeSelected;
+                }
+                else
+                {
+                    nc = value;
+                }
+            }
+            else
+            {
+                if (!pages.TryGetValue("CreateVirtual", out var existing) || existing is not NodesContainerCompact value)
+                {
+
+                    // 不复用旧的 NodesContainer，始终重新创建并加载，避免虚拟化面板复用导致的布局问题
+                    nc = new NodesContainerCompact(
+                        pages.TryGetValue("Create", out var existing1) && existing1 is NodesContainer oldNc
+                            ? oldNc.ViewModel
+                            : null);
+                    pages["CreateVirtual"] = nc;
+                    (nc.DataContext as NodesContainerViewModel)!.NodeSelected += CreateProxyPage_NodeSelected;
+                }
+                else
+                {
+                    nc = value;
+                }
             }
 
             // 立即显示节点容器（带 loading）
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                CurrentPage = nc;
+                CurrentPage = nc as Control;
             }, DispatcherPriority.Render);
 
             // 并行加载状态和列表数据
@@ -136,7 +147,7 @@ public class CreateProxyPageViewModel : ViewModelBase
                 {
                     if (pages.TryGetValue("Guide", out var control))
                     {
-                        CurrentPage = control;
+                        CurrentPage = control as Control;
                     }
                     else
                     {
@@ -151,24 +162,15 @@ public class CreateProxyPageViewModel : ViewModelBase
                 break;
 
             case 1: // 专家版
-                if (pages.TryGetValue("Create", out var existingCreate))
+                // 不复用旧的 NodesContainer，始终重新创建并加载，避免虚拟化面板复用导致的布局问题
+                IsPageLoading = true;
+                try
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        CurrentPage = existingCreate;
-                    }, DispatcherPriority.Render);
+                    await LoadDataAsync();
                 }
-                else
+                finally
                 {
-                    IsPageLoading = true;
-                    try
-                    {
-                        await LoadDataAsync();
-                    }
-                    finally
-                    {
-                        IsPageLoading = false;
-                    }
+                    IsPageLoading = false;
                 }
 
                 break;
@@ -178,7 +180,7 @@ public class CreateProxyPageViewModel : ViewModelBase
                 {
                     if (pages.TryGetValue("MapLegacy", out var control))
                     {
-                        CurrentPage = control;
+                        CurrentPage = control as Control;
                     }
                     else
                     {
@@ -201,7 +203,7 @@ public class CreateProxyPageViewModel : ViewModelBase
                 {
                     if (pages.TryGetValue("Map", out var control))
                     {
-                        CurrentPage = control;
+                        CurrentPage = control as Control;
                     }
                     else
                     {

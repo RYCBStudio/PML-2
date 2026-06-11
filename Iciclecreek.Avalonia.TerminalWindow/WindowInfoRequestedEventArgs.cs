@@ -1,5 +1,4 @@
 using Avalonia.Interactivity;
-using System;
 using XT = global::XTerm;
 
 namespace Iciclecreek.Terminal

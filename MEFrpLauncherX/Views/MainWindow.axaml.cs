@@ -26,7 +26,6 @@ using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
 using RYCB.PML2.MEFrpCaptchaLib;
-using Sentry;
 using Color = Avalonia.Media.Color;
 
 #pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。

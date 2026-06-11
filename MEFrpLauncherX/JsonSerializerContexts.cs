@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Services;

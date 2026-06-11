@@ -54,7 +54,7 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.14, )"
+              "version": "[11.3.17, )"
             },
             "Avalonia.Skia": {
               "target": "Package",
@@ -448,7 +448,7 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.14, )"
+              "version": "[11.3.17, )"
             },
             "Downloader": {
               "target": "Package",

@@ -381,7 +381,7 @@ public class UpdatePageViewModel : ViewModelBase
                 ProtocolVersion = HttpVersion.Version11,
                 UseDefaultCredentials = false,
                 UserAgent =
-                    "RYCB/PML Desktop"
+                    $"RYCB/PML {Core.App.Version} Desktop"
             }
         };
 
@@ -440,7 +440,7 @@ public class UpdatePageViewModel : ViewModelBase
             await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
             Process.Start(
                 new ProcessStartInfo(savePath)
-                    { UseShellExecute = true, Arguments = "/silent /sp- /nocancel" });
+                    { UseShellExecute = true, Arguments = "/silent /sp- /nocancel /nocleanup" });
             App.Desktop.Shutdown();
         }
     }

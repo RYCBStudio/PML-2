@@ -34,6 +34,10 @@
         <DockPanel Grid.Row="1"
                    Margin="10,0,10,5"
                    LastChildFill="True">
+            <DockPanel DockPanel.Dock="Right" HorizontalSpacing="5">
+                <TextBlock VerticalAlignment="Center">以后自动登录</TextBlock>
+                <ToggleSwitch x:Name="AutoLoginSwitch" IsCheckedChanged="AutoLogin" VerticalAlignment="Top" />
+            </DockPanel>
             <TextBlock
                 Margin="0,0,10,0"
                 VerticalAlignment="Center"
@@ -79,10 +83,10 @@
         </DockPanel>
         <StackPanel Spacing="5" Margin="10,0,10,0" Grid.Row="4">
             <DockPanel HorizontalSpacing="4">
-                <StackPanel Orientation="Horizontal" Spacing="3" DockPanel.Dock="Right">
-                    <TextBlock>验证方式</TextBlock>
+                <StackPanel Orientation="Horizontal" Spacing="5" DockPanel.Dock="Right" VerticalAlignment="Top">
+                    <TextBlock VerticalAlignment="Center">验证方式</TextBlock>
                     <controls:FAComboBox x:Name="AuthModeComboBox" ItemsSource="{Binding AuthModes}"
-                              SelectedIndex="{Binding AuthMode}" />
+                                         SelectedIndex="{Binding AuthMode}" />
                 </StackPanel>
                 <StackPanel>
                     <Button x:Name="LoginBtn" Classes="accent" HorizontalAlignment="Stretch"

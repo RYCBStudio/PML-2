@@ -679,6 +679,18 @@ public class AppConfig
         get;
         set;
     }
+
+    public string TerminalCli
+    {
+        get;
+        set;
+    }
+
+    public bool AutoLogin
+    {
+        get;
+        set;
+    }
 }
 
 public class HomeConfig

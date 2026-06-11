@@ -204,6 +204,25 @@ public class LogUtil : IDisposable
         [CallerLineNumber] int sourceLineNumber = 0) =>
         Log(message, EnumLogType.Fatal, port, module, customModuleName, memberName, sourceFilePath, sourceLineNumber);
 
+    /// <summary>
+    ///     记录调试日志，只在Debug模式下起作用。
+    /// </summary>
+    /// <param name="message">要记录的值</param>
+    /// <param name="port">端类型</param>
+    /// <param name="module">模块</param>
+    /// <param name="customModuleName">若<paramref name="module" />为<see cref="EnumLogModule.Custom" />(自定义模块), 则需要传入该值。</param>
+    /// <param name="memberName">[自动生成] 调用的方法名</param>
+    /// <param name="sourceFilePath">[自动生成] 调用的文件名</param>
+    /// <param name="sourceLineNumber">[自动生成] 调用该方法的行号</param>
+    public void Debug(
+        object message,
+        EnumLogPort port = EnumLogPort.Client,
+        EnumLogModule module = EnumLogModule.Main,
+        string customModuleName = "",
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0) => LogDebug(message, port, module, customModuleName, memberName,
+        sourceFilePath, sourceLineNumber);
 
     /// <summary>
     ///     记录调试日志，只在Debug模式下起作用。

@@ -12,6 +12,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Services;
+using MEFrpLauncherX.Models;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -50,6 +51,7 @@ public partial class CreateProxyPage : UserControl
 
     public event Func<Task<bool>>? OnCreateProxy;
     private bool _isMap;
+
     private async void Next(object sender, RoutedEventArgs e)
     {
         _index++;
@@ -93,7 +95,7 @@ public partial class CreateProxyPage : UserControl
 
                     // 尝试获取已加载的节点容器
                     if (_createProxyPageViewModel.pages.TryGetValue("Create", out var ctrl) &&
-                        ctrl is NodesContainer nc)
+                        ctrl is INodeContainer nc)
                     {
                         var vm = nc.ViewModel;
 
@@ -108,29 +110,56 @@ public partial class CreateProxyPage : UserControl
                             break;
                         }
 
-                        // 将候选节点排序放到列表前面
+                        // 将候选节点排序放到列表前面，并在 UI 渲染后切换回节点列表页
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
-                            vm.FilteredNodes.Clear();
-                            vm.FilteredNodes.AddRange(candidates);
-                        }, DispatcherPriority.Background);
+                            try
+                            {
+                                vm.FilteredNodes.Clear();
+                                vm.FilteredNodes.AddRange(candidates);
 
-                        // 自动选择第一个节点
-                        var chosen = candidates.First();
-                        _createProxyPageViewModel.selectedNode = chosen;
+                                // 自动选择第一个节点
+                                var chosen = candidates.First();
+                                _createProxyPageViewModel.selectedNode = chosen;
 
-                        if (chosen.IsOverloaded)
+                                if (chosen.IsOverloaded)
+                                {
+                                    // Show message outside of the UI invoke to avoid blocking layout; mark to handle after
+                                    return Task.CompletedTask;
+                                }
+
+                                nc = new NodesContainerCompact(vm);
+                                // 切换页面并确保使用 Render 优先级以触发布局测量/排列
+                                _createProxyPageViewModel.CurrentPage = nc as Control;
+                                _isMap = true;
+
+                                // 确保虚拟化 WrapPanel 已实际实现第一个项：滚动到该项会触发面板创建并测量
+                                try
+                                {
+                                    //await nc.EnsureItemVisibleAsync(chosen);
+                                }
+                                catch
+                                {
+                                    // 忽略
+                                }
+
+                                return Task.CompletedTask;
+                            }
+                            catch (Exception exception)
+                            {
+                                return Task.FromException(exception);
+                            }
+                        }, DispatcherPriority.Render);
+
+                        // 检查已选节点是否过载（在 UI 线程的操作后判断）
+                        var chosenCheck = candidates.First();
+                        if (chosenCheck.IsOverloaded)
                         {
                             await MessageBox.ShowAsync("节点已过载，无法再创建隧道", buttons: [TaskDialogButton.OKButton]);
                             _index--;
                             break;
                         }
 
-                        _createProxyPageViewModel.CurrentPage = nc;
-                        _isMap = true;
-                        //
-                        // var cp = new CreateProxy(chosen);
-                        // _createProxyPageViewModel.CurrentPage = cp;
                         _index--;
                     }
                     else
@@ -454,7 +483,6 @@ public partial class CreateProxyPage : UserControl
 
     private async void Back(object sender, RoutedEventArgs e)
     {
-
         if (_index > 0)
         {
             _index--;
@@ -469,7 +497,7 @@ public partial class CreateProxyPage : UserControl
             {
                 if (_createProxyPageViewModel.pages.TryGetValue("Guide", out var control))
                 {
-                    _createProxyPageViewModel.CurrentPage = control;
+                    _createProxyPageViewModel.CurrentPage = control as CreateProxyGuide;
                 }
                 else
                 {
@@ -485,7 +513,7 @@ public partial class CreateProxyPage : UserControl
             {
                 if (_createProxyPageViewModel.pages.TryGetValue("MapLegacy", out var control))
                 {
-                    _createProxyPageViewModel.CurrentPage = control;
+                    _createProxyPageViewModel.CurrentPage = control as MappedNodesContainerLegacy;
                 }
                 else
                 {
@@ -498,7 +526,7 @@ public partial class CreateProxyPage : UserControl
             {
                 if (_createProxyPageViewModel.pages.TryGetValue("Map", out var control))
                 {
-                    _createProxyPageViewModel.CurrentPage = control;
+                    _createProxyPageViewModel.CurrentPage = control as MappedNodesContainer;
                 }
                 else
                 {
@@ -509,15 +537,8 @@ public partial class CreateProxyPage : UserControl
             }
             else
             {
-                // 如果已有缓存的节点列表，直接切换，避免不必要的重新加载
-                if (_createProxyPageViewModel.pages.TryGetValue("Create", out var existing))
-                {
-                    _createProxyPageViewModel.CurrentPage = existing;
-                }
-                else
-                {
-                    await _createProxyPageViewModel.LoadDataAsync();
-                }
+                // 为避免虚拟化面板复用带来的布局问题，始终创建新的 NodesContainer 并加载数据
+                await _createProxyPageViewModel.LoadDataAsync(true);
             }
         }
 
@@ -526,15 +547,50 @@ public partial class CreateProxyPage : UserControl
 
     private async void Refresh(object? sender, RoutedEventArgs e)
     {
-        MEFrpApiConverter.CurrentNodesStatusInfo = new InfoClasses.NodesStatusInfo
+        await MEFrpApiConverter.EnsureNodesListInfoAsync();
+        await MEFrpApiConverter.EnsureNodesStatusInfoAsync();
+        switch (_index)
         {
-            NodesStatus = (await MEFrpApiConverter.GetNodesStatusAsync()).data
-        };
-        MEFrpApiConverter.CurrentNodesListInfo = new InfoClasses.NodesListInfo
-        {
-            NodesList = (await MEFrpApiConverter.GetNodesInfoAsync()).data
-        };
-        await _createProxyPageViewModel.LoadDataAsync();
+            case 0: 
+                await _createProxyPageViewModel.LoadDataAsync();
+                break;
+            case 1:
+                switch (_createProxyPageViewModel.SelectedType)
+                {
+                    //专家模式(原版)
+                    case 1:
+                    {
+                        if (_createProxyPageViewModel.pages.TryGetValue("Create", out var ctrl) &&
+                            ctrl is NodesContainer nc)
+                        {
+                            await nc.ViewModel.LoadNodesAsync(MEFrpApiConverter.CurrentNodesListInfo,
+                                MEFrpApiConverter.CurrentNodesStatusInfo);
+                        }
+
+                        break;
+                    }
+                    //地图模式（嘉豪原版/嘉豪版）
+                    case 2 or 3:
+                    {
+                        if (_createProxyPageViewModel.pages.TryGetValue("Create", out var ctrl) &&
+                            ctrl is INodeContainer nc)
+                        {
+                            await nc.ViewModel.LoadNodesAsync(MEFrpApiConverter.CurrentNodesListInfo,
+                                MEFrpApiConverter.CurrentNodesStatusInfo);
+                        }
+
+                        break;
+                    }
+                    default:
+                        await _createProxyPageViewModel.LoadDataAsync(true);
+                        break;
+                }
+
+                break;
+            case 2:
+                break;
+        }
+        //await _createProxyPageViewModel.LoadDataAsync();
     }
 
     /// <summary>

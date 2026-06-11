@@ -57,7 +57,7 @@ public partial class MappedNodesContainer : UserControl
         {
             Latitude = latitude, Longitude = longitude
         });
-        System.Console.WriteLine(
+        Core.App.CurrentLogger.Debug(
             $"Map Info: ({mapInfo.ScreenPosition.X}, {mapInfo.ScreenPosition.Y}), ({longitude}, {latitude}), {location.FirstOrDefault()?.name}");
     }
 

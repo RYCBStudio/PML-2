@@ -485,6 +485,30 @@ namespace Iciclecreek.Terminal
         public void Kill() => _ptyConnection!.Kill();
 
         /// <summary>
+        /// Sends Ctrl+C (SIGINT) to the process running in the terminal.
+        /// On Windows with Win32 input mode, generates the proper Win32
+        /// INPUT_RECORD sequence; otherwise sends the ETX (0x03) character.
+        /// </summary>
+        public async Task SendCtrlC()
+        {
+            if (_ptyConnection == null)
+                return;
+
+            if (_terminal.Win32InputMode && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Win32 INPUT_RECORD format for Ctrl+C:
+                //   ESC [ Vk ; Sc ; Uc ; Kd ; Cs ; Rc _
+                //   Vk=0x43(C), Sc=0, Uc=0x03(ETX), Kd=1/0, Cs=LEFT_CTRL_PRESSED(8), Rc=1
+                await SendToPtyAsync("\u001b[67;0;3;1;8;1_");
+                await SendToPtyAsync("\u001b[67;0;3;0;8;1_");
+            }
+            else
+            {
+                await SendToPtyAsync("\u0003");
+            }
+        }
+
+        /// <summary>
         /// Pastes text from the clipboard into the terminal.
         /// </summary>
         public async Task PasteAsync()
@@ -711,7 +735,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnKeyDown(KeyEventArgs e)
+        protected async override void OnKeyDown(KeyEventArgs e)
         {
             // Only process input if this terminal has focus
             if (!IsFocused)
@@ -846,7 +870,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnKeyUp(KeyEventArgs e)
+        protected async override void OnKeyUp(KeyEventArgs e)
         {
             // Only process input if this terminal has focus
             if (!IsFocused)
@@ -886,7 +910,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnTextInput(TextInputEventArgs e)
+        protected async override void OnTextInput(TextInputEventArgs e)
         {
             // Only process input if this terminal has focus
             if (!IsFocused)
@@ -931,7 +955,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnPointerPressed(PointerPressedEventArgs e)
+        protected async override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
 
@@ -1010,7 +1034,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnPointerReleased(PointerReleasedEventArgs e)
+        protected async override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
 
@@ -1048,7 +1072,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnPointerMoved(PointerEventArgs e)
+        protected async override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
 
@@ -1091,7 +1115,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnPointerWheelChanged(PointerWheelEventArgs e)
+        protected async override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
 
@@ -1141,7 +1165,7 @@ namespace Iciclecreek.Terminal
             }
         }
 
-        protected override async void OnGotFocus(GotFocusEventArgs e)
+        protected async override void OnGotFocus(GotFocusEventArgs e)
         {
             base.OnGotFocus(e);
 
@@ -1166,7 +1190,7 @@ namespace Iciclecreek.Terminal
             this.RequestInvalidate();
         }
 
-        protected override async void OnLostFocus(RoutedEventArgs e)
+        protected async override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
 

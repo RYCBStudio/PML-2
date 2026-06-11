@@ -26,12 +26,14 @@ public partial class LoginPage : UserControl
     private const string nil = "nil";
 
     private readonly LoginViewModel _loginViewModel;
+    private bool _autoLogin;
 
     public LoginPage()
     {
         InitializeComponent();
         _loginViewModel = new LoginViewModel();
         DataContext = _loginViewModel;
+        _autoLogin = ConfigManager.CurrentConfig.AutoLogin;
 
         // 当用户从下拉选择已存账号（非"<使用新账号>"占位项）时，直接使用本地存储的 token 登录并跳转
         var __os = _loginViewModel
@@ -40,6 +42,7 @@ public partial class LoginPage : UserControl
         ExtensionMethods.Subscribe(__os, idx =>
         {
             _ = TryLocalLoginAsync(idx);
+            _autoLogin = true;
         });
     }
 
@@ -47,14 +50,14 @@ public partial class LoginPage : UserControl
     {
         try
         {
-            var username = _loginViewModel.SelectedStoredUsername ?? UsrNameBox.SelectedItem.ToString();
+            var username = _loginViewModel.SelectedStoredUsername.IsNullOrEmpty()? UsrNameBox.Text : _loginViewModel.SelectedStoredUsername;
             if (string.IsNullOrEmpty(username))
             {
                 return;
             }
 
             var stored = UserCache.GetUserInfo(username);
-            if (stored == null)
+            if (stored == null || !_autoLogin)
             {
                 return;
             }
@@ -248,7 +251,7 @@ public partial class LoginPage : UserControl
             return;
         }
 
-        if (!UserCache.IsLoggedIn())
+        if (!UserCache.IsLoggedIn() || !ConfigManager.CurrentConfig.AutoLogin)
         {
             return;
         }
@@ -277,4 +280,10 @@ public partial class LoginPage : UserControl
 
     private void SignUpBtn_OnClick(object? sender, RoutedEventArgs e) =>
         Core.Extensions.OpenUrl("https://www.mefrp.com/auth/register");
+
+    private void AutoLogin(object? sender, RoutedEventArgs e)
+    {
+        ConfigManager.UpdateConfig(cfg =>
+            cfg.AutoLogin = AutoLoginSwitch.IsChecked ?? false);
+    }
 }

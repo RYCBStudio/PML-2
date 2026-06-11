@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
@@ -335,19 +334,10 @@ public class NodesContainerViewModel : ViewModelBase
                     .ToList();
             });
 
-            await Dispatcher.UIThread.InvokeAsync(async () =>
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 FilteredNodes.Clear();
                 FilteredNodes.AddRange(filteredNodes);
-                // const int batch = 10;
-                //
-                // for (int i = 0; i < filteredNodes.Count; i += 5)
-                // {
-                //     FilteredNodes.AddRange(
-                //         filteredNodes.Skip(i).Take(batch));
-                //
-                //     await Task.Yield();
-                // }
             }, DispatcherPriority.Background);
 
             Core.App.CurrentLogger.Log($"{FilteredNodes.Count} nodes added.", EnumLogType.Debug);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -327,7 +326,7 @@ public partial class MappedNodesContainerLegacy : UserControl
                 SelectedArea.Text = areaName;
                 SelectedAreaName = areaName;
                 _selectedArea = path;
-                System.Console.WriteLine($"Locked on {areaName}");
+                Core.App.CurrentLogger.Debug($"Locked on {areaName}");
             }
             else
             {
@@ -349,7 +348,7 @@ public partial class MappedNodesContainerLegacy : UserControl
 
                 SelectedArea.Text = string.Empty;
                 SelectedAreaName = null;
-                System.Console.WriteLine($"Unlocked {areaName}");
+                Core.App.CurrentLogger.Debug($"Unlocked {areaName}");
             }
         }
     }

@@ -12,7 +12,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;

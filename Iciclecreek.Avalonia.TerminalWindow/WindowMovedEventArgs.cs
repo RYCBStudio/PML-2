@@ -1,5 +1,4 @@
 using Avalonia.Interactivity;
-using System;
 
 namespace Iciclecreek.Terminal
 {

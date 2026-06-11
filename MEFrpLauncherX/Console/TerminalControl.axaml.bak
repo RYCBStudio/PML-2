@@ -222,7 +222,7 @@ namespace MEFrpLauncherX.Console
         // 新增日志辅助方法
         private void LogDebug(string msg)
         {
-            System.Console.WriteLine($"[TerminalControl] {DateTime.Now:HH:mm:ss} {msg}");
+            Core.App.CurrentLogger.Debug($"[TerminalControl] {DateTime.Now:HH:mm:ss} {msg}");
             Dispatcher.UIThread.Post(() => AppendOutput($"[调试] {msg}\n", Brushes.Gray));
         }
 

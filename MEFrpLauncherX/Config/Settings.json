@@ -10,6 +10,7 @@
   "AutoLaunch": false,
   "AutoLaunchProxies": [],
   "ExpireDays": 180,
+  "AutoLogin": false,
   "Theme": "Dark",
   "BackgroundSettings": {
     "LayerOpacity": 0.6,
@@ -39,5 +40,6 @@
     "ShowSoftwareNotice": true
   },
   "DoNotShowSuccessMsg": true,
-  "TerminalEngineType": "XTerm"
+  "TerminalEngineType": "Original",
+  "TerminalCli": "pwsh"
 }

@@ -16,7 +16,6 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
-using MEFrpLauncherX.Views.Splash;
 
 namespace MEFrpLauncherX;
 

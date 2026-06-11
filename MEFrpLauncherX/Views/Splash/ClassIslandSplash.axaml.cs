@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels.Splash;
 

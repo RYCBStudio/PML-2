@@ -5,11 +5,9 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
-using HarfBuzzSharp;
 using MEFrpLauncherX.Console;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.ViewModels;
@@ -66,7 +64,7 @@ public partial class TerminalPage : UserControl
                      Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
                  })
         {
-            await alternativeTerminalView.SendToPtyAsync("\\003 \r");
+            await alternativeTerminalView.SendCtrlC();
         }
     }
 
@@ -92,7 +90,7 @@ public partial class TerminalPage : UserControl
                 return;
             }
 
-            await alternativeTerminalView.SendToPtyAsync("\\003 \r");
+            await alternativeTerminalView.SendCtrlC();
         }
     }
 
@@ -109,7 +107,7 @@ public partial class TerminalPage : UserControl
                          Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
                      })
             {
-                await alternativeTerminalView.SendToPtyAsync("\\003 \r");
+                await alternativeTerminalView.SendCtrlC();
             }
         }
     }
@@ -205,7 +203,7 @@ public partial class TerminalPage : UserControl
                     Header = "控制台" + MainTabCtrl.Items.Count,
                     Content = new Iciclecreek.Terminal.TerminalView
                     {
-                        Process = "pwsh.exe",
+                        Process = ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty() ? "powershell.exe" : ConfigManager.CurrentConfig.TerminalCli,
                         FontFamily = App.Current.TryGetResource("Jbm", out var value)
                             ? value as FontFamily
                             : new FontFamily("Consolas")
@@ -262,7 +260,7 @@ public partial class TerminalPage : UserControl
                 Header = "控制台" + MainTabCtrl.Items.Count,
                 Content = new Iciclecreek.Terminal.TerminalView
                 {
-                    Process = "pwsh.exe",
+                    Process = ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty() ? "powershell.exe" : ConfigManager.CurrentConfig.TerminalCli,
                     FontFamily = App.Current.TryGetResource("Jbm", out var value)
                         ? value as FontFamily
                         : new FontFamily("Consolas")

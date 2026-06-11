@@ -719,15 +719,14 @@ public class UserProxyViewModel : ViewModelBase
 
     private async void GenerateLaunchConfig(object obj)
     {
-        if (obj is not IList<object?>)
+        if (obj is not IList<object?> list)
         {
             return;
         }
 
         IsLoading = true;
-        var _obj = obj as IList<object?>;
-        var proxy = _obj[0] as UserProxyViewModel;
-        var s = _obj[1] as ComboBox;
+        var proxy = list[0] as UserProxyViewModel;
+        var s = list[1] as ComboBox;
         var type = s.SelectionBoxItem.ToString().ToLower();
         Core.App.CurrentLogger.Log($"正在生成隧道 {proxy.proxyName} 的{type}启动配置", port: EnumLogPort.Client,
             module: EnumLogModule.Main);

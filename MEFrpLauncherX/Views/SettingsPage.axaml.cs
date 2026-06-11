@@ -10,6 +10,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
+using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.ViewModels;
@@ -26,7 +27,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     public SettingsPage()
     {
         InitializeComponent();
-        Loaded += (s, e) =>
+        AttachedToVisualTree += (s, e) =>
         {
             MainPageFrameViewModel.Instance?.IsLoading = true;
             Skin.SelectedIndex = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
@@ -82,6 +83,23 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
                 TooMoreThreadWarning.IsOpen = false;
                 TooMoreThreadWarningExpanderItem.IsVisible = false;
             }
+
+            TerminalEngineTypeBox.SelectedIndex =
+                ConfigManager.CurrentConfig.TerminalEngineType.ToUpper() switch
+                {
+                    "XTERM" => 1,
+                    _ => 0
+                };
+            TerminalCliComboBox.SelectedIndex =
+                ConfigManager.CurrentConfig.TerminalCli.ToLower() switch
+                {
+                    "pwsh" => 1,
+                    "cmd" => 2,
+                    "bash" => 3,
+                    "zsh" => 4,
+                    _ => 0
+                };
+            AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
 
             MainPageFrameViewModel.Instance?.IsLoading = false;
         };
@@ -334,7 +352,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e) =>
         new ALPSettings().ShowDialog(Core.App.MainWindow);
 
-    private void ExpireDaysSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    private void ExpireDaysChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (!isInit)
         {
@@ -392,7 +410,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
     private async void ChooseBackground(object? sender, RoutedEventArgs e) =>
         FooterButtonSettingsItem.SelectBackgroundImpl();
 
-    private void StretchBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void StretchChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (!isInit)
         {
@@ -436,10 +454,10 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
             config.DownloadSource = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "");
     }
 
-    private void DoNotShowResponseSettings_OnIsCheckedChanged(object? sender, RoutedEventArgs e) =>
+    private void DoNotShowResponseSettingsChanged(object? sender, RoutedEventArgs e) =>
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
 
-    private void TerminalEngineTypeBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    private void TerminalEngineTypeChanged(object? sender, RoutedEventArgs e)
     {
         if (!isInit)
         {
@@ -449,6 +467,30 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         ConfigManager.UpdateConfig(config =>
             config.TerminalEngineType = ((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString() ?? "");
     }
+
+    private void SetTerminalCli(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!isInit)
+        {
+            return;
+        }
+
+        var cb = sender as FAComboBox;
+        ConfigManager.UpdateConfig(config =>
+            config.TerminalCli = cb?.SelectedItem is FAComboBoxItem item
+                ? item.Tag.ToString() ?? "powershell"
+                : cb?.SelectedValue.ToString() ?? "powershell");
+    }
+
+    private void AutoLoginChanged(object? sender, RoutedEventArgs e)
+    {
+        if (!isInit)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config => config.AutoLogin = (sender as ToggleSwitch).IsChecked.Value);
+    }
 }
 
 public class ValidationModeConverter : IValueConverter
@@ -457,12 +499,12 @@ public class ValidationModeConverter : IValueConverter
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not int)
+        if (value is not int i)
         {
             return null;
         }
 
-        return (int)value switch
+        return i switch
         {
             0 => "在软件内验证, 无需其他操作, 对于x64系列处理器友好, 对于Arm架构处理器可能会耗费大量时间。",
             1 => "通过浏览器打开验证网页, 并手动复制验证结果, 对于Arm处理器友好。",
