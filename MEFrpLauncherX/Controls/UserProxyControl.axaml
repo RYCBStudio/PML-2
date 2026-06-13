@@ -9,6 +9,7 @@
              xmlns:debug="clr-namespace:MEFrpLauncherX.ViewModels.Debug"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.UserProxyControl"
+             x:CompileBindings="True"
              IsEnabled="{Binding !isBanned}"
              FontFamily="{StaticResource GlobalFontFamily}"
              x:DataType="viewModels:UserProxyViewModel">

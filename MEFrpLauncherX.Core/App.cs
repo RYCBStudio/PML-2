@@ -12,13 +12,19 @@ namespace MEFrpLauncherX.Core;
 public class App : IDisposable
 {
     public const string Version = "26.1.0-preview2";
-
     public const string MEFrpVersion = "0.67.0_20260302_f1907e56";
+
     public static string Flag = "Desktop";
-    public static string ReleaseFlag = "Release";
+#if AOT
+    public const string ReleaseFlag = "AOT";
+#endif
+#if !AOT
+    public const string ReleaseFlag = "Common";
+#endif
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
 
     internal static AppJsonSerializerContext AppJsonSerializerContext;
+
     public static string? SelectedTheme
     {
         get;
@@ -59,17 +65,20 @@ public class App : IDisposable
 
     public void Dispose() => CurrentLogger?.Dispose();
 
-    public static async Task Initialize()
+    public static async Task Initialize(bool externalUse = false)
     {
-        Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
-        Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
+        if (!externalUse)
+        {
+            Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
+            Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
+        }
+
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions()
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             WriteIndented = true,
             PropertyNameCaseInsensitive = true
         });
-
         // 使用 Path.Combine 处理跨平台路径
         var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
@@ -86,11 +95,14 @@ public class App : IDisposable
         CurrentLogger.Log("Core App init");
         CurrentLogger.Log("Current OS: " + Environment.OSVersion.Platform);
 
-        ConfigManager.Initialize();
-        SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
-            ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
-            : null;
-        await RYCBApiConverter.InitializeAsync();
+        if (!externalUse)
+        {
+            ConfigManager.Initialize();
+            SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
+                ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
+                : null;
+            await RYCBApiConverter.InitializeAsync();
+        }
     }
 }
 

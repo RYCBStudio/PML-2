@@ -51,7 +51,10 @@
         </Style>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
-        <StyleInclude Source="avares://IconPacks.Avalonia/Icons.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia.Lucide/Lucide.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia.FileIcons/FileIcons.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia.Material/Material.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia.SimpleIcons/SimpleIcons.axaml" />
         <msg:Theme />
         <Style Selector="controls|InfoBar.animated-bar">
             <Style.Animations>

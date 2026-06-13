@@ -627,7 +627,7 @@ public class MEFrpApiConverter
                              "traffic": 0
                              }
                          }
-                         """, App.AppJsonSerializerContext.Options) ??
+                         """, App.AppJsonSerializerContext.ApiInfoConfigInfo) ??
                      new ApiInfo<ConfigInfo>();
         HandleResponse(result);
         return result;
@@ -662,7 +662,7 @@ public class MEFrpApiConverter
                          "message": "无法获取api信息",
                          "data": null
                          }
-                         """, App.AppJsonSerializerContext.Options) ??
+                         """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;

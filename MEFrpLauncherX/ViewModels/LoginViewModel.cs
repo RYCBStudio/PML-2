@@ -143,7 +143,24 @@ public class LoginViewModel : ViewModelBase
             }
 
             var idx = StoredUsernames.IndexOf(value);
-            SelectedStoredIndex = idx >= 0 ? idx : -1;
+            if (idx >= 0)
+            {
+                SelectedStoredIndex = idx;
+            }
+            else
+            {
+                // User typed a username not in the stored list; reset index to 0 (new account)
+                // but preserve the text by suppressing the propagation back to SelectedStoredUsername
+                try
+                {
+                    _suppressSelectionPropagation = true;
+                    SelectedStoredIndex = 0;
+                }
+                finally
+                {
+                    _suppressSelectionPropagation = false;
+                }
+            }
         }
     }
 

@@ -743,7 +743,7 @@
           }
         }
       },
-      "Sentry/6.4.0": {
+      "Sentry/6.6.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -2334,10 +2334,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.4.0": {
-      "sha512": "0YOQfECCEpR+oRG0nTBZhdVrP6/7SP+WTA/JsP6Na43+c8zsgbgxRDe0H6dQiJR92FnwA2S0Qyw2MSSE3fTUQg==",
+    "Sentry/6.6.0": {
+      "sha512": "1D3xo3P9Y94VQN3RoV/86XqgtylHp1pdeEml3/UB649BrzJeZ/pqO/o8YgJ5g+GqpMQiGI09yjAI7s5ff2A1IA==",
       "type": "package",
-      "path": "sentry/6.4.0",
+      "path": "sentry/6.6.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2386,7 +2386,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.4.0.nupkg.sha512",
+        "sentry.6.6.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -3042,7 +3042,7 @@
       "RYCB.PML2.MEFrpCaptchaLib >= 26.1.0",
       "ReactiveUI >= 23.2.1",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.4.0",
+      "Sentry >= 6.6.0",
       "SkiaSharp >= 3.119.3-preview.1.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.3-preview.1.1",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.3-preview.1.1",
@@ -3156,7 +3156,7 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.4.0, )"
+            "version": "[6.6.0, )"
           },
           "SkiaSharp": {
             "target": "Package",

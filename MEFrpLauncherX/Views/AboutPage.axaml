@@ -29,8 +29,14 @@
                             <TextBlock
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                PointerPressed="EnableDebugMode"
-                                Text="{Binding Source={x:Static core:App.Version}, StringFormat='PML {0}'}" />
+                                PointerPressed="EnableDebugMode">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="PML {0} ({1})">
+                                        <Binding Source="{x:Static core:App.Version}" />
+                                        <Binding Source="{x:Static core:App.ReleaseFlag}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </controls1:SettingsExpander.Header>
                     <controls1:SettingsExpanderItem Content="Copyright (c) 2026 RYCB Studio, All Rights Reserved."

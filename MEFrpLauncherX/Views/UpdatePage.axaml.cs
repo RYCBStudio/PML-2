@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.ViewModels;
+using App = MEFrpLauncherX.Core.App;
 
 namespace MEFrpLauncherX.Views;
 
@@ -31,6 +32,12 @@ public partial class UpdatePage : UserControl
             _ => 0
         };
         KeepProfileSwitch.IsChecked = ConfigManager.CurrentConfig.UpdateSettings.KeepProfile;
+        CompileTypeBox.SelectedIndex = ConfigManager.CurrentConfig.UpdateSettings.CompileType switch
+        {
+            "AOT" => 0,
+            "Common" => 1,
+            _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
+        };
 
         _init = true;
         MainPageFrameViewModel.UpdatePage = this;
@@ -73,6 +80,20 @@ public partial class UpdatePage : UserControl
 
         ConfigManager.UpdateConfig(cfg =>
             cfg.UpdateSettings.KeepProfile = (sender as ToggleSwitch)?.IsChecked ?? false);
+    }
+
+    private void CompileTypeChange(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg =>
+        {
+            cfg.UpdateSettings.CompileType = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag?.ToString()
+                                             ?? Core.App.ReleaseFlag;
+        });
     }
 }
 

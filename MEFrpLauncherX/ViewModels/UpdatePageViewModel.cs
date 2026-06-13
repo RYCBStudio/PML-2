@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -38,6 +38,12 @@ public class UpdatePageViewModel : ViewModelBase
             "dd" => 1,
             "md" => 2,
             _ => 0
+        };
+        TargetCompileType = ConfigManager.CurrentConfig.UpdateSettings.CompileType switch
+        {
+            "AOT" => 0,
+            "Common" => 1,
+            _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
         };
     }
 
@@ -140,6 +146,16 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    /// <summary>
+    ///     0 - AOT（预编译）
+    ///     1 - Common（常规）
+    /// </summary>
+    public int TargetCompileType
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public ReactiveCommand<Unit, Unit> CheckUpdateCommand =>
         ReactiveCommand.Create(CheckUpdate);
 
@@ -152,15 +168,7 @@ public class UpdatePageViewModel : ViewModelBase
         var updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync();
         var preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync();
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
-        string latestVersion;
-        if (isPreview)
-        {
-            latestVersion = GetLatestVersion(updateInfo, preiewUpdateInfo);
-        }
-        else
-        {
-            latestVersion = updateInfo.version;
-        }
+        var latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.version;
 
         return (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version), latestVersion);
     }
@@ -224,14 +232,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         string latestVersion;
-        if (isPreview)
-        {
-            latestVersion = GetLatestVersion(updateInfo, preiewUpdateInfo);
-        }
-        else
-        {
-            latestVersion = updateInfo.version;
-        }
+        latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.version;
 
 // #if !DEBUG
 //         Core.App.CurrentLogger.LogDebug("[DEBUG] 模拟更新", module: EnumLogModule.Update);
@@ -334,8 +335,10 @@ public class UpdatePageViewModel : ViewModelBase
 
         if (OperatingSystem.IsWindows())
         {
+            var targetIsAot = ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT";
+            var urlSuffix = targetIsAot ? "%20AOT%20Experimental" : "";
             downloadUrl = $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
-                          $"{LatestVersion}/pml2_setup%20{LatestVersion}.exe";
+                          $"{LatestVersion}/pml2_setup%20{LatestVersion}{urlSuffix}.exe";
             tempFileName = $"update_tmp_{LatestVersion}.exe";
             systemTip = "点击确认打开安装文件所在目录，双击 exe 文件完成安装";
         }
@@ -438,9 +441,20 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
             await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
+
+            // 当当前运行时编译类型与目标编译类型一致时，传入 /nocleanup 参数
+            var currentType = Core.App.ReleaseFlag;
+            var targetType = ConfigManager.CurrentConfig.UpdateSettings.CompileType;
+            var sameType = string.Equals(currentType, targetType, StringComparison.OrdinalIgnoreCase);
+            var installArgs = sameType ? "/silent /sp- /nocancel /nocleanup" : "/silent /sp- /nocancel";
+            installArgs += " /nodownload";
+
+            Core.App.CurrentLogger?.Log($"更新安装参数: 当前类型={currentType}, 目标类型={targetType}, 参数={installArgs}",
+                module: EnumLogModule.Update);
+
             Process.Start(
                 new ProcessStartInfo(savePath)
-                    { UseShellExecute = true, Arguments = "/silent /sp- /nocancel /nocleanup" });
+                    { UseShellExecute = true, Arguments = installArgs });
             App.Desktop.Shutdown();
         }
     }

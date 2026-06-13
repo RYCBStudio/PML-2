@@ -1,10 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net10.0</TargetFrameworks>
         <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
+        <!-- AOT 条件编译符号：在 Release 配置（PublishAot=true）时定义 AOT 宏 -->
+<!--        <DefineConstants Condition="'$(Configuration)' != 'Debug'">$(DefineConstants);AOT</DefineConstants>-->
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +21,7 @@
         <PackageReference Include="NPinyin.Core" Version="3.0.0"/>
         <PackageReference Include="ReactiveUI" Version="23.2.1"/>
         <PackageReference Include="RestSharp" Version="114.0.0"/>
-        <PackageReference Include="Sentry" Version="6.4.0"/>
+        <PackageReference Include="Sentry" Version="6.6.0" />
         <PackageReference Include="SkiaSharp" Version="3.119.3-preview.1.1"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.3-preview.1.1"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.3-preview.1.1"/>
