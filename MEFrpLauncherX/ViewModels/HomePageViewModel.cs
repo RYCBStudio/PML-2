@@ -96,6 +96,12 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    public string? LongTraffic
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
     public string? InBound
     {
         get;
@@ -267,7 +273,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         IsLoading = true;
-        var ss = await MEpiConverter.GetSystemStatusAsync();
+        var ss = await MEFrpApiConverter.GetSystemStatusAsync();
         SystemStatus = ss.data?.status ?? -1;
         SystemStatusRemark = ss.data?.remark ?? $"网络服务不可用，返回代码: {ss.code}";
         var networkOk = ss.code == 200;
@@ -277,7 +283,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             IsLoadingNotice = false;
         }
 
-        var platform = await MEpiConverter.GetPublicInfoAsync();
+        var platform = await MEFrpApiConverter.GetPublicInfoAsync();
         if (platform.code == 200)
         {
             PlatformNodes = platform.data.nodes;
@@ -291,7 +297,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             if (networkOk)
             {
-                var res = await MEpiConverter.GetExtraUserInfoAsync();
+                var res = await MEFrpApiConverter.GetExtraUserInfoAsync();
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
 
@@ -300,6 +306,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 RegisterTime = DateTimeOffset.FromUnixTimeSeconds(data.regTime).LocalDateTime
                     .ToString("yyyy-MM-dd HH:mm:ss");
                 Traffic = ProcessFileSize(data.traffic);
+                LongTraffic = ProcessFileSize(data.traffic, 1);
                 InBound = ProcessBoundSize(data.inBound);
                 OutBound = ProcessBoundSize(data.outBound);
                 UserId = $"# {data.userId}";
@@ -351,7 +358,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEpiConverter.GetNoticeAsync()).data));
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFrpApiConverter.GetNoticeAsync())
+                        .data));
 
                 if (NoticeContent.IsNullOrEmpty())
                 {
@@ -360,7 +368,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 IsLoading = false;
 
-                var popUp = await MEpiConverter.GetPopupNoticeAsync();
+                var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
 
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
                 MainPageFrameViewModel.Instance?.IsLoading = false;
@@ -498,31 +506,32 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         // 执行签到
         try
         {
-            var (success, message) = await MEpiConverter.SendSignRequestAsync(captchaResult.Trim());
+            var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
-                    App.AppJsonSerializerContext.ApiInfoSignInfo);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ?? 
+                        """
+                        {
+                            "code": -1,
+                            "data": null,
+                            "message": "未知错误"
+                        }
+                        """,
+                    App.AppJsonSerializerContext.ApiInfoObject);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
             {
-                await MessageBoxManager
-                    .GetMessageBoxStandard("签到成功", signInfo?.message)
-                    .ShowAsync();
+                Growl.Success(signInfo?.message ?? "签到成功", "签到成功");
             }
             else
             {
-                await MessageBoxManager
-                    .GetMessageBoxStandard("签到失败", signInfo?.message)
-                    .ShowAsync();
+                Growl.Error(signInfo?.message ?? "签到失败", "签到失败");
             }
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"签到过程中发生错误: {ex.Message}")
-                .ShowAsync();
+            Growl.Error(ex.Message, "签到失败");
         }
         finally
         {
@@ -530,12 +539,12 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private static string ProcessFileSize(long size)
+    private static string ProcessFileSize(ulong size, int maxUnitIndex = -1)
     {
-        string[] units = ["MB", "GB", "TB"];
+        string[] units = ["MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
         var unitIndex = 0;
         double adjustedSize = size;
-        while (adjustedSize >= 1024 && unitIndex < units.Length - 1)
+        while (adjustedSize >= 1024 && unitIndex < (maxUnitIndex == -1 ? units.Length - 1 : maxUnitIndex))
         {
             adjustedSize /= 1024;
             unitIndex++;
@@ -551,7 +560,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         double adjustedSize = size;
 
         // 自定义换算：1 Mbps = 128 Kbps
-        while (adjustedSize >= 128 && unitIndex < units.Length - 1)
+        while (adjustedSize >= 128 && unitIndex < units.Length - 2)
         {
             adjustedSize /= 128;
             unitIndex++;

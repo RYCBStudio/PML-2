@@ -114,7 +114,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     private async void LoadData()
     {
         IsLoading = true;
-        var res = await Task.Run(MEpiConverter.GetNodesStatusAsync);
+        var res = await Task.Run(MEFrpApiConverter.GetNodesStatusAsync);
         if (res.code != 200)
         {
             IsLoading = false;

@@ -1,16 +1,15 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 namespace MEFrpLauncherX;
 
 [JsonSerializable(typeof(ApiInfo<UserInfo>))]
-[JsonSerializable(typeof(ApiInfo<SignInfo>))]
+[JsonSerializable(typeof(ApiInfo<object>))]
 [JsonSerializable(typeof(ApiInfo<ConfigInfo>))]
 [JsonSerializable(typeof(ApiInfo<TrafficStatus>))]
 [JsonSerializable(typeof(ApiInfo<FrpTokenInfo>))]
@@ -26,10 +25,9 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ApiInfo<int>))]
 [JsonSerializable(typeof(ApiInfo<object>))]
 [JsonSerializable(typeof(ApiInfo<NodeStatus[]>))]
-[JsonSerializable(typeof(ApiInfo<NodesList[]>))]
+[JsonSerializable(typeof(ApiInfo<NodeInfo[]>))]
 [JsonSerializable(typeof(ApiInfo<NodeNameList[]>))]
 [JsonSerializable(typeof(ApiInfo<SystemStatus?>))]
-[JsonSerializable(typeof(SignInfo))]
 [JsonSerializable(typeof(ConfigInfo))]
 [JsonSerializable(typeof(TrafficStatus))]
 [JsonSerializable(typeof(FrpTokenInfo))]
@@ -37,7 +35,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(Nodes))]
 [JsonSerializable(typeof(Proxies))]
 [JsonSerializable(typeof(NodesListInfo))]
-[JsonSerializable(typeof(NodesList))]
+[JsonSerializable(typeof(NodeInfo))]
 [JsonSerializable(typeof(NodeNameList))]
 [JsonSerializable(typeof(NodesStatusInfo))]
 [JsonSerializable(typeof(NodeStatus))]
@@ -77,6 +75,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(LaunchConfigRequest))]
 [JsonSerializable(typeof(DeleteProxyInfo))]
 [JsonSerializable(typeof(SecureUserInfo))]
+[JsonSerializable(typeof(LocationNameInfo[]))]
 [JsonSourceGenerationOptions(IncludeFields = true, PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

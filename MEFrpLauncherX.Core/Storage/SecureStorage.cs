@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using System.Security.Cryptography;
@@ -171,14 +171,8 @@ internal static class SecureStorage
         }
 
         var files = Directory.GetFiles(StorageDirectory, "*.dat");
-        var usernames = new List<string>();
 
-        foreach (var file in files)
-        {
-            usernames.Add(Path.GetFileNameWithoutExtension(file));
-        }
-
-        return usernames;
+        return files.Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
     }
 
     private static byte[] GetOrCreateSecureKey(string username)
@@ -298,8 +292,12 @@ public static class UserCache
 
     public static InfoClasses.UserInfo? CurrentUser
     {
-        get => GetUserInfo();
-        set => SetUserInfo(value);
+        get => GetUserInfo(field?.username);
+        set
+        {
+            field = value;
+            SetUserInfo(value, value?.username);
+        }
     }
 
     [return: DynamicallyAccessedMembers(PreserveUserInfoMembers)]

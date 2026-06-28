@@ -6,7 +6,7 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
 using RestSharp;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 // ReSharper disable SuspiciousLockOverSynchronizationPrimitive
@@ -21,7 +21,7 @@ using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 
 namespace MEFrpLauncherX.Core.MEFIntergrated;
 
-public class MEpiConverter
+public class MEFrpApiConverter
 {
     public const string BaseApiUrl = "https://api.mefrp.com/api/";
 
@@ -292,7 +292,7 @@ public class MEpiConverter
         App.CurrentLogger.Log("正在发送签到请求", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
         var cr = GetCaptchaResult(code);
-        var body = JsonSerializer.Serialize(new
+        var body = JsonSerializer.Serialize(new SignPost
         {
             captchaToken = cr
         }, App.AppJsonSerializerContext.SignPost);
@@ -365,12 +365,12 @@ public class MEpiConverter
     ///     获取节点信息
     /// </summary>
     /// <returns>一个"单个节点信息"数组。</returns>
-    public static async Task<ApiInfo<NodesList[]>> GetNodesInfoAsync()
+    public static async Task<ApiInfo<NodeInfo[]>> GetNodesInfoAsync()
     {
-        ApiInfo<NodesList[]> result = null;
+        ApiInfo<NodeInfo[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.info", async () =>
         {
-            result = await ExecuteRequestAsync<NodesList[]>(CreateRequest(), "auth/node/list", "节点信息");
+            result = await ExecuteRequestAsync<NodeInfo[]>(CreateRequest(), "auth/node/list", "节点信息");
         });
         return result;
     }
@@ -627,7 +627,7 @@ public class MEpiConverter
                              "traffic": 0
                              }
                          }
-                         """, App.AppJsonSerializerContext.Options) ??
+                         """, App.AppJsonSerializerContext.ApiInfoConfigInfo) ??
                      new ApiInfo<ConfigInfo>();
         HandleResponse(result);
         return result;
@@ -662,7 +662,7 @@ public class MEpiConverter
                          "message": "无法获取api信息",
                          "data": null
                          }
-                         """, App.AppJsonSerializerContext.Options) ??
+                         """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
         return result;

@@ -598,7 +598,7 @@ public class UserProxyViewModel : ViewModelBase
             return;
         }
 
-        var frpt = await MEpiConverter.GetFrpTokenAsync();
+        var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
 
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {
@@ -649,7 +649,7 @@ public class UserProxyViewModel : ViewModelBase
     {
         Core.App.CurrentLogger.Log($"正在删除隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         IsLoading = true;
-        await Task.Run(() => MEpiConverter.DeleteProxy(proxy.proxyId));
+        await Task.Run(() => MEFrpApiConverter.DeleteProxy(proxy.proxyId));
         Growl.Success($"删除隧道: {proxy.proxyName} 成功");
         ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
@@ -684,10 +684,10 @@ public class UserProxyViewModel : ViewModelBase
 
         await Task.Run(() =>
         {
-            MEpiConverter.KickProxy(proxy.proxyId);
+            MEFrpApiConverter.KickProxy(proxy.proxyId);
             if (ConfigManager.CurrentConfig.KickWithoutDisable)
             {
-                MEpiConverter.ToggleProxyStatus(proxy.proxyId, false);
+                MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false);
             }
 
             ManageProxyPage.Instance.LoadProxies();
@@ -701,7 +701,7 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在禁用隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         // 禁用隧道逻辑
         await Task.Run(() =>
-            MEpiConverter.ToggleProxyStatus(proxy.proxyId, true));
+            MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, true));
         ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
     }
@@ -712,26 +712,25 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在启用隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         // 启用隧道逻辑
         await Task.Run(() =>
-            MEpiConverter.ToggleProxyStatus(proxy.proxyId, false));
+            MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false));
         ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
     }
 
     private async void GenerateLaunchConfig(object obj)
     {
-        if (obj is not IList<object?>)
+        if (obj is not IList<object?> list)
         {
             return;
         }
 
         IsLoading = true;
-        var _obj = obj as IList<object?>;
-        var proxy = _obj[0] as UserProxyViewModel;
-        var s = _obj[1] as ComboBox;
+        var proxy = list[0] as UserProxyViewModel;
+        var s = list[1] as ComboBox;
         var type = s.SelectionBoxItem.ToString().ToLower();
         Core.App.CurrentLogger.Log($"正在生成隧道 {proxy.proxyName} 的{type}启动配置", port: EnumLogPort.Client,
             module: EnumLogModule.Main);
-        var res = await Task.Run(() => MEpiConverter.GetLaunchConfig(proxy.proxyId, type));
+        var res = await Task.Run(() => MEFrpApiConverter.GetLaunchConfig(proxy.proxyId, type));
         var cfg = res.data.config;
         Growl.Success($"已为隧道 {proxy.proxyName} 生成启动配置");
         IsLoading = false;
@@ -825,7 +824,7 @@ public class UserProxyViewModel : ViewModelBase
     private async void CopyInfo(UserProxyViewModel obj)
     {
         var clipboard = Core.App.MainWindow.Clipboard;
-        //var nameList = await MEpiConverter.GetNodesNameListAsync();
+        //var nameList = await MEFrpApiConverter.GetNodesNameListAsync();
         await clipboard.SetTextAsync(obj.proxyType.Equals("http", StringComparison.OrdinalIgnoreCase) ||
                                      obj.proxyType.Equals("https", StringComparison.OrdinalIgnoreCase)
             ? obj.domain

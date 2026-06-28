@@ -9,12 +9,15 @@
     xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Title="PML 2"
-    Width="960"
-    Height="540"
+    Width="980"
+    Height="600"
     Background="#2f000000"
+    SystemDecorations="Full"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaChromeHints="PreferSystemChrome"
     x:Name="Window"
     Closing="Window_Closing"
-    FontFamily="{StaticResource GlobalFontFamily}"
+    FontFamily="{DynamicResource GlobalFontFamily}"
 
     WindowStartupLocation="CenterScreen"
     x:DataType="core:MainWindowViewModel"
@@ -26,9 +29,9 @@
     </Design.DataContext>
 
     <Panel>
-        <Border x:Name="MainLayer" ZIndex="1" Background="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
-        <Image x:Name="MainBackground" ZIndex="0" IsVisible="False" />
-        <Image x:Name="LoginBackground" ZIndex="-1"
+        <Border x:Name="MainLayer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  ZIndex="1" Background="{DynamicResource CardStrokeColorDefaultSolidBrush}" />
+        <Image x:Name="MainBackground" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ZIndex="0" IsVisible="False" />
+        <Image x:Name="LoginBackground" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  ZIndex="-1"
                IsVisible="True"
                Source="/Assets/splash.png"
                Stretch="UniformToFill" />
@@ -40,7 +43,7 @@
                     <views:LoginPage
                         MinWidth="200"
                         Background="Transparent"
-                        FontFamily="{StaticResource GlobalFontFamily}" />
+                        FontFamily="{DynamicResource GlobalFontFamily}" />
                 </Border>
             </ContentControl>
 

@@ -118,13 +118,13 @@ public class ALPSettingsViewModel : ViewModelBase
             await Task.Run(async () =>
             {
                 var autoLaunchProxies = ConfigManager.CurrentConfig.AutoLaunchProxies;
-                var userProxies = (await MEpiConverter.GetProxiesAsync()).data;
-                var currentNodesListInfo = await MEpiConverter.EnsureNodesListInfoAsync();
-                InfoClasses.NodesList[] currentNodesList;
+                var userProxies = (await MEFrpApiConverter.GetProxiesAsync()).data;
+                var currentNodesListInfo = await MEFrpApiConverter.EnsureNodesListInfoAsync();
+                InfoClasses.NodeInfo[] currentNodesList;
 
                 if (currentNodesListInfo?.NodesList is null)
                 {
-                    currentNodesList = (await MEpiConverter.GetNodesInfoAsync()).data;
+                    currentNodesList = (await MEFrpApiConverter.GetNodesInfoAsync()).data;
                 }
                 else
                 {
@@ -205,8 +205,8 @@ public class ALPSettingsViewModel : ViewModelBase
             {
                 var userProxies = AllProxies;
                 var autoLaunchProxies = ConfigManager.CurrentConfig.AutoLaunchProxies;
-                var currentNodesListInfo = MEpiConverter.CurrentNodesListInfo;
-                //var currentNodesStatusInfo = MEpiConverter.CurrentNodesStatusInfo;
+                var currentNodesListInfo = MEFrpApiConverter.CurrentNodesListInfo;
+                //var currentNodesStatusInfo = MEFrpApiConverter.CurrentNodesStatusInfo;
                 var currentNodesList = currentNodesListInfo.NodesList;
 
 

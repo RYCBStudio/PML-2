@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AsyncImageLoader;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Styling;
@@ -146,7 +146,8 @@ public partial class MainWindow
                     try
                     {
                         await _accentAnimationCts?.CancelAsync();
-                    }catch (NullReferenceException e)
+                    }
+                    catch (NullReferenceException e)
                     {
                         System.Console.WriteLine(e);
                     }
@@ -182,10 +183,16 @@ public partial class MainWindow
 
             if (themeManifest.FontFamily is not null)
             {
-                var ff = new FontFamily(new Uri(Path.Combine(themePath, themeManifest.FontFamily.ToString())),
-                    Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
-                App.Current.Resources["GlobalFontFamily"] = ff;
-                App.Current.Resources["ContentControlThemeFontFamily"] = ff;
+                var fontFamily = themeManifest.FontFamily;
+                var ff = ThemeProcessor.IsFontFilePath(fontFamily)
+                    ? new FontFamily(new Uri(Path.Combine(themePath, fontFamily)),
+                        Path.GetFileNameWithoutExtension(fontFamily))
+                    : new FontFamily(fontFamily);
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    App.Current.Resources["GlobalFontFamily"] = ff;
+                    App.Current.Resources["ContentControlThemeFontFamily"] = ff;
+                });
                 //InvalidateVisual();
             }
         }
@@ -229,7 +236,6 @@ public partial class MainWindow
 
         var imageBrush = new ImageBrush
         {
-            Source = new Bitmap(background.Image),
             Stretch = background.FillMode switch
             {
                 "Uniform" => Stretch.Uniform,
@@ -237,6 +243,7 @@ public partial class MainWindow
                 _ => Stretch.Fill
             }
         };
+        ImageBrushLoader.SetSource(imageBrush, background.Image);
         //imageBrush.Opacity = background.LayerOpacity;
         return imageBrush;
     }

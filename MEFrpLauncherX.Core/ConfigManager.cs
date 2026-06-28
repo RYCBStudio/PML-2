@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
@@ -329,6 +329,13 @@ public static class ConfigManager
         {
             source.KeepProfile = target.KeepProfile;
         }
+
+        App.CurrentLogger?.Log($"正在合并配置项 Update>CompileType: {source.CompileType} -> {target.CompileType}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        if (string.IsNullOrEmpty(source.CompileType) && !string.IsNullOrEmpty(target.CompileType))
+        {
+            source.CompileType = target.CompileType;
+        }
     }
 
     private static void MergeBackgroundSettings(BackgroundSettings source, BackgroundSettings target)
@@ -521,7 +528,8 @@ public static class ConfigManager
                 AutoCheck = true,
                 Channel = "Preview",
                 Method = "ds",
-                KeepProfile = true
+                KeepProfile = true,
+                CompileType = App.ReleaseFlag
             },
             HomeSettings = new HomeConfig
             {
@@ -673,6 +681,30 @@ public class AppConfig
         get;
         set;
     }
+
+    public string TerminalEngineType
+    {
+        get;
+        set;
+    }
+
+    public string TerminalCli
+    {
+        get;
+        set;
+    }
+
+    public bool AutoLogin
+    {
+        get;
+        set;
+    }
+
+    public bool AutoSign
+    {
+        get;
+        set;
+    }
 }
 
 public class HomeConfig
@@ -738,6 +770,15 @@ public class UpdateSettings
         get;
         set;
     }
+
+    /// <summary>
+    ///     目标安装包的编译类型：<c>AOT</c> 或 <c>Common</c>
+    /// </summary>
+    public string CompileType
+    {
+        get;
+        set;
+    } = App.ReleaseFlag;
 }
 
 public class BackgroundSettings

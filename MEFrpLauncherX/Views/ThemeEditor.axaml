@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -238,6 +238,65 @@
                                    VerticalAlignment="Center" HorizontalAlignment="Center"
                                    IsVisible="{Binding !CanEdit}" />
 
+                    </Grid>
+                </Expander>
+
+                <!-- 字体设置 -->
+                <Expander IsExpanded="True">
+                    <Expander.Header>
+                        <controls1:IconContent Label="字体设置" Symbol="FontSize" />
+                    </Expander.Header>
+                    <Grid ColumnDefinitions="*,4, *" Margin="10" ColumnSpacing="10">
+                        <Grid RowDefinitions="Auto,Auto,Auto">
+                            <StackPanel Orientation="Horizontal" Spacing="20">
+                                <RadioButton Content="系统字体" GroupName="FontTypes"
+                                             IsChecked="{Binding IsSystemFont}" />
+                                <RadioButton Content="自定义字体文件" GroupName="FontTypes"
+                                             IsChecked="{Binding IsCustomFont}" />
+                            </StackPanel>
+
+                            <!-- 系统字体选择 -->
+                            <StackPanel Grid.Row="1" IsVisible="{Binding IsSystemFont}" Orientation="Horizontal"
+                                        Spacing="5">
+                                <TextBlock Text="选择字体：" VerticalAlignment="Center" />
+                                <ComboBox ItemsSource="{Binding AvailableSystemFonts}"
+                                          SelectedItem="{Binding SelectedSystemFont}"
+                                          Width="250">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       FontFamily="{Binding $parent[UserControl].DataContext?.PreviewFontFamily}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- 自定义字体文件 -->
+                            <StackPanel Grid.Row="1" IsVisible="{Binding IsCustomFont}" Spacing="5">
+                                <TextBlock Text="字体文件：" />
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0" Text="{Binding CustomFontFileName}" IsReadOnly="True" />
+                                    <Button Grid.Column="1" Command="{Binding BrowseFontCommand}" Content="浏览..."
+                                            Margin="5,0,0,0" />
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- 预览 -->
+                            <TextBlock Grid.Row="2" FontFamily="{Binding PreviewFontFamily}"
+                                       Text="{Binding FontFamilyPreview}" Margin="0,5"
+                                       FontStyle="Italic" Opacity="0.7" />
+                        </Grid>
+                        <GridSplitter Grid.Column="1" />
+                        <Border Grid.Column="2" Margin="5" Padding="10" CornerRadius="8"
+                                BorderBrush="{DynamicResource CardStrokeFillColorDefaultBrush}"
+                                BorderThickness="1"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                            <TextBox x:Name="FontPreviewBox" FontFamily="{Binding PreviewFontFamily}"
+                                     Background="Transparent" BorderThickness="0"
+                                     TextWrapping="Wrap" AcceptsReturn="True"
+                                     FontSize="14">
+                            </TextBox>
+                        </Border>
                     </Grid>
                 </Expander>
             </StackPanel>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="350"
              x:Class="MEFrpLauncherX.Views.SettingsPage">
     <ScrollViewer>
@@ -33,15 +34,6 @@
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="背景" IconSource="Image"
-                                               Description="设置窗口的背景&#x0009;注意: 过大的图片体积可能会降低性能。&#x0009;“选择背景”功能已迁移至下方“自定义”中。">
-                    <controls:SettingsExpanderItem.Footer>
-                        <WrapPanel Orientation="Horizontal" ItemSpacing="5" LineSpacing="5">
-                            <Button Content="选择背景" IsEnabled="False" Click="ChooseBackground" />
-                            <Button Content="清除背景" Click="ClearBackground" />
-                        </WrapPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Content="自定义"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
@@ -50,7 +42,7 @@
                                                Description="设置窗口背景的拉伸模式">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <ComboBox x:Name="StretchBox" SelectionChanged="StretchBox_OnSelectionChanged">
+                            <ComboBox x:Name="StretchBox" SelectionChanged="StretchChanged">
                                 <ComboBoxItem Content="无" Tag="None" />
                                 <ComboBoxItem Content="填充" Tag="Stretch" />
                                 <ComboBoxItem Content="均匀" Tag="Uniform" />
@@ -83,6 +75,7 @@
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}" Content="设置要启动的隧道">
                     <controls:SettingsExpanderItem.Footer>
+                        <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                         <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
                             <controls:SymbolIcon Symbol="Settings" />
                         </Button>
@@ -179,7 +172,7 @@
                                 Maximum="366"
                                 Minimum="1"
                                 VerticalAlignment="Center"
-                                ValueChanged="ExpireDaysSlider_OnValueChanged"
+                                ValueChanged="ExpireDaysChanged"
                                 Value="30" />
                             <controls:NumberBox SpinButtonPlacementMode="Inline"
                                                 VerticalAlignment="Center"
@@ -192,6 +185,20 @@
                                 Text="天"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
                         </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="自动登录" Description="设置软件启动时自动登录。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="AutoLogin"
+                            IsCheckedChanged="AutoLoginChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="自动签到" Description="设置软件启动时自动签到。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="AutoSign"
+                            IsCheckedChanged="AutoSignChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Description="设置登录时人机验证的方式。" Content="验证方式">
@@ -210,8 +217,42 @@
                                                Description="设置软件是否应该在界面上显示请求的响应。请注意: 该设置项只对成功的请求有效。">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="DoNotShowResponseSettings"
-                                      IsCheckedChanged="DoNotShowResponseSettings_OnIsCheckedChanged" />
+                                      IsCheckedChanged="DoNotShowResponseSettingsChanged" />
                     </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="终端引擎"
+                                               Description="设置软件应该使用哪个终端引擎。在某些情况下, 特定的终端引擎可能会导致软件崩溃。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <StackPanel Orientation="Horizontal" Spacing="3">
+                            <ComboBox x:Name="TerminalEngineTypeBox"
+                                      SelectionChanged="TerminalEngineTypeChanged">
+                                <ComboBoxItem Tag="Original">默认</ComboBoxItem>
+                                <ComboBoxItem Tag="XTerm">XTerm</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem
+                    IsVisible="{Binding #TerminalEngineTypeBox.SelectedIndex, Converter={x:Static meFrpLauncherX:VisibilityConverter.Instance}}"
+                    Content="终端设置"
+                    Description="设置软件的默认CLI。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <controls:FAComboBox IsEditable="True" x:Name="TerminalCliComboBox"
+                                             SelectionChanged="SetTerminalCli">
+                            <controls:FAComboBoxItem Tag="powershell"
+                                                     IsEnabled="{OnPlatform Windows=True, Default=False}">
+                                PowerShell 2.0
+                            </controls:FAComboBoxItem>
+                            <controls:FAComboBoxItem Tag="pwsh">PowerShell 7.0</controls:FAComboBoxItem>
+                            <controls:FAComboBoxItem Tag="cmd" IsEnabled="{OnPlatform Windows=True, Default=False}">CMD</controls:FAComboBoxItem>
+                            <controls:FAComboBoxItem Tag="bash" IsEnabled="{OnPlatform Windows=False, Default=True}">Bash</controls:FAComboBoxItem>
+                            <controls:FAComboBoxItem Tag="zsh" IsEnabled="{OnPlatform Windows=False, Default=True}">Zsh</controls:FAComboBoxItem>
+                        </controls:FAComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
+                    <controls:InfoBar IsOpen="True" IsClosable="False" Severity="Warning"
+                                      Message="在 Linux 下，为确保兼容性，默认模式将始终使用 sh。" />
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
         </StackPanel>

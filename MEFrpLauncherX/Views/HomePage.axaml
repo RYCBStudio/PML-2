@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -329,6 +329,7 @@
                             </TextBlock>
                             <DockPanel HorizontalSpacing="8">
                                 <TextBlock Text="{Binding Traffic}"
+                                           ToolTip.Tip="{Binding LongTraffic}"
                                            FontSize="16"
                                            FontWeight="SemiBold" />
                                 <Button Command="{Binding SignCommand}" DockPanel.Dock="Right"
@@ -407,44 +408,39 @@
                                             Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                             IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
                                             FontFamily="{StaticResource GlobalFontFamily}">
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding SoftwareNotice}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Classes="animated" Margin="0, 3, 0 ,3" RowDefinitions="Auto, *"
-                                              ColumnSpacing="10" ColumnDefinitions="*, Auto">
-                                            <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                                       Text="{Binding Summary}"
-                                                       TextTrimming="PrefixCharacterEllipsis" />
-                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Date}" />
-                                            <WrapPanel Grid.Row="1" ItemSpacing="5">
+                        <ListBox ItemsSource="{Binding SoftwareNotice}" Background="Transparent" BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="0,0,0,1">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                            <!-- 摘要 + 日期 -->
+                                            <TextBlock Text="{Binding Summary}" FontWeight="SemiBold" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Date}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <!-- 标签行 -->
+                                            <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,0"
+                                                       ItemSpacing="8">
                                                 <controls:InfoBadge>
                                                     <controls:InfoBadge.IconSource>
                                                         <controls:FontIconSource
-                                                            FontFamily="{StaticResource GlobalFontFamily}"
                                                             Glyph="{Binding Id, StringFormat='# {0}'}" />
                                                     </controls:InfoBadge.IconSource>
                                                 </controls:InfoBadge>
                                                 <Label Classes="Indigo"
                                                        Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
                                             </WrapPanel>
-
-                                            <Button Command="{Binding ShowNoticeCommand}" Grid.RowSpan="2"
-                                                    Grid.Column="1">
-                                                <Button.Content>
-                                                    <controls:SymbolIcon Symbol="View" />
-                                                </Button.Content>
+                                            <!-- 查看按钮（可改为超链接按钮） -->
+                                            <Button Grid.RowSpan="2" Grid.Column="1" Command="{Binding ShowNoticeCommand}"
+                                                    Theme="{StaticResource SubtleButtonStyle}">
+                                                <controls:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                                   Glyph="&#xE8A7;" />
                                             </Button>
                                         </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </HeaderedContentControl>
                     <HeaderedContentControl
                         Grid.Row="{Binding SystemNoticeSpan2, Converter={x:Static core:IsVisibleToRowConverter.Instance}, FallbackValue=1}"

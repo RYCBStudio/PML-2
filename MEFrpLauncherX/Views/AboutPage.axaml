@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -29,8 +29,14 @@
                             <TextBlock
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                PointerPressed="EnableDebugMode"
-                                Text="{Binding Source={x:Static core:App.Version}, StringFormat='PML {0}'}" />
+                                PointerPressed="EnableDebugMode">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="PML {0} ({1})">
+                                        <Binding Source="{x:Static core:App.Version}" />
+                                        <Binding Source="{x:Static core:App.ReleaseFlag}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                     </controls1:SettingsExpander.Header>
                     <controls1:SettingsExpanderItem Content="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
@@ -68,6 +74,17 @@
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
                                             Text="帮助文档" />
+                                    </HyperlinkButton>
+                                    <HyperlinkButton
+                                        BorderBrush="Transparent"
+                                        BorderThickness="-1"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                        Click="OpenSource_Click"
+                                        Classes="Danger"
+                                        FontFamily="{StaticResource GlobalFontFamily}">
+                                        <TextBlock
+                                            Text="开源软件" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         BorderBrush="Transparent"

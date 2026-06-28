@@ -9,6 +9,7 @@
              xmlns:debug="clr-namespace:MEFrpLauncherX.ViewModels.Debug"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.UserProxyControl"
+             x:CompileBindings="True"
              IsEnabled="{Binding !isBanned}"
              FontFamily="{StaticResource GlobalFontFamily}"
              x:DataType="viewModels:UserProxyViewModel">
@@ -170,7 +171,7 @@
             Background="{DynamicResource ControlFillColorDefaultBrush}"
             BorderBrush="{Binding isBanned, Converter={StaticResource BannedToBrushConverter}}"
             BorderThickness="1"
-            Classes="r2l">
+            Classes="animated">
         <Border.Styles>
             <Style Selector="Border:pointerover">
                 <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightLowBrush}" />

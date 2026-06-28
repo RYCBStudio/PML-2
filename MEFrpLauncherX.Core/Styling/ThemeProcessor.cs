@@ -1,9 +1,25 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
 namespace MEFrpLauncherX.Core.Styling;
 
 public class ThemeProcessor
 {
+    /// <summary>
+    ///     判断字体名称是否为文件路径（而非系统字体名）
+    /// </summary>
+    public static bool IsFontFilePath(string? fontFamily)
+    {
+        if (string.IsNullOrEmpty(fontFamily))
+            return false;
+
+        // 如果以 .ttf、.otf、.ttc 结尾，或者包含路径分隔符，则认为是文件路径
+        return fontFamily.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase) ||
+               fontFamily.EndsWith(".otf", StringComparison.OrdinalIgnoreCase) ||
+               fontFamily.EndsWith(".ttc", StringComparison.OrdinalIgnoreCase) ||
+               fontFamily.Contains('/') ||
+               fontFamily.Contains('\\');
+    }
+
     public static ThemeManifest? LoadTheme(string themeFilePath)
     {
         if (!File.Exists(themeFilePath))

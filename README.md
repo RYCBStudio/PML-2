@@ -2,7 +2,7 @@
 
 ## 📖 项目简介
 
-**MEFrpLauncherX**（代号：Fluorine）是一个功能强大、跨平台的 ME Frp 图形化启动工具，基于 Avalonia UI 框架开发，支持 Windows、Linux 和 macOS 平台。
+**MEFrpLauncherX**（简称: PML 2）是一个功能强大、跨平台的 ME Frp 图形化启动工具，基于 Avalonia UI 框架开发，支持 Windows、Linux 和 macOS 平台。
 
 ### 核心特性
 - 🎨 现代化的 Fluent Design 用户界面
@@ -78,7 +78,6 @@ MEFrpLauncherX.sln
 
 1. **.NET SDK**
    - .NET 10.0 SDK（主应用）
-   - .NET 9.0 SDK（可选，用于 Core 库）
 
 2. **IDE 推荐**
    - Visual Studio 2022 (v17.14+)

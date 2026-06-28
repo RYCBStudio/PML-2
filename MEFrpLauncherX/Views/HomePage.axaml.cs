@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using ReactiveUI.Avalonia;
 using static System.GC;
@@ -14,11 +17,18 @@ public partial class HomePage : ReactiveUserControl<HomePageViewModel>, IDisposa
     {
         InitializeComponent();
         DataContext = null;
-        AttachedToVisualTree += (s, e) =>
+        AttachedToVisualTree += async (s, e) =>
         {
+            var vm = new HomePageViewModel();
             if (!Design.IsDesignMode)
             {
-                DataContext = new HomePageViewModel();
+                DataContext = vm;
+            }
+
+            await Task.Delay(4000);
+            if (ConfigManager.CurrentConfig.AutoSign && vm.CanSign)
+            {
+                vm.SignCommand.Execute().Subscribe();
             }
         };
     }

@@ -3,9 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -16,6 +14,7 @@ using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Styling;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
 
 namespace MEFrpLauncherX;
@@ -23,7 +22,9 @@ namespace MEFrpLauncherX;
 public class App : Application
 {
     public const string Codename = "Neon";
-    public static SplashScreen splash;
+#pragma warning disable CA2211
+    public static ISplashService? SplashService;
+#pragma warning restore CA2211
 
     public static FluentAvaloniaTheme? FATheme;
 
@@ -38,7 +39,7 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        Core.App.Initialize();
+        _ = Core.App.Initialize();
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -51,19 +52,17 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (!Design.IsDesignMode)
+        AppAnalytics.Setup(
+            "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
+            Core.App.Version);
+        if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
         {
-            AppAnalytics.Setup(
-                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
-                Core.App.Version);
-            if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
-            {
-                AppAnalytics.EnableAnalytics();
-            }
+            AppAnalytics.EnableAnalytics();
         }
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            SplashService?.UpdateProgress(10, "正在加载主题...");
             FATheme = Current.Styles.OfType<FluentAvaloniaTheme>().First();
             var currentTheme = ConfigManager.CurrentConfig.Theme.ToLower() switch
             {
@@ -86,7 +85,7 @@ public class App : Application
                 selectedTheme =
                     File.ReadAllText(Path.Combine(Core.App.StartupPath, "Config", "Themes",
                             "selected"))
-                    .Trim();
+                        .Trim();
             }
             catch (FileNotFoundException)
             {
@@ -107,14 +106,19 @@ public class App : Application
             var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
             var themeManifest =
                 ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
-            if (themeManifest != null)
+            if (themeManifest is { FontFamily: not null })
             {
-                var ff = new FontFamily(new Uri(Path.Combine(themePath, themeManifest.FontFamily.ToString())),
-                    Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
+                var fontFamily = themeManifest.FontFamily;
+                var ff = ThemeProcessor.IsFontFilePath(fontFamily)
+                    ? new FontFamily(new Uri(Path.Combine(themePath, fontFamily)),
+                        Path.GetFileNameWithoutExtension(fontFamily))
+                    : new FontFamily(fontFamily);
                 Resources["GlobalFontFamily"] = ff;
                 Resources["ContentControlThemeFontFamily"] = ff;
             }
+
             CONTINUE:
+            SplashService?.UpdateProgress(30, "正在创建主窗口");
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

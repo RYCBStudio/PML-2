@@ -24,7 +24,7 @@ namespace MarkdownAIRender.Controls.Images;
 public class ImagesRender : UserControl
 {
     private static readonly HttpClient HttpClient = new();
-    private static readonly AvaloniaAssetLoader SvgAssetLoader = new();
+    // 不再使用 AvaloniaAssetLoader，因为它依赖过时的 API
 
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<ImagesRender, string?>(nameof(Value));
@@ -164,9 +164,9 @@ public class ImagesRender : UserControl
                 using var memStream = new MemoryStream(Encoding.UTF8.GetBytes(svgXml));
                 var document = SvgExtensions.Open(memStream);
                 var picture = document is not null
-                    ? SvgExtensions.ToModel(document, SvgAssetLoader, out _, out _)
+                    ? SvgExtensions.ToModel(document, null, out _, out _)
                     : null;
-                var svgsrc = new SvgSource { Picture = picture };
+                var svgsrc = new SvgSource() { Picture = picture };
                 var svg = (IImage)new VectorImage { Source = svgsrc };
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
@@ -227,7 +227,7 @@ public class ImagesRender : UserControl
                 // 静态 SVG
                 var document = SvgExtensions.Open(memStream);
                 var picture = document is not null
-                    ? SvgExtensions.ToModel(document, SvgAssetLoader, out _, out _)
+                    ? SvgExtensions.ToModel(document, null, out _, out _)
                     : null;
                 var svgsrc = new SvgSource { Picture = picture };
                 var svg = (IImage)new VectorImage { Source = svgsrc };

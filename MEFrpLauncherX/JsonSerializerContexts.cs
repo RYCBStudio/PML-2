@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntergrated;
-using MEFrpLauncherX.Core.Services;
-using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
+using MEFrpLauncherX.Models;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
-using RYCB.PML.MEFrpCaptchaLib;
+using RYCB.PML2.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX;
 
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.UserInfo>))]
-[JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.SignInfo>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ConfigInfo>))]
+[JsonSerializable(typeof(InfoClasses.ApiInfo<object>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.TrafficStatus>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.FrpTokenInfo>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ProxyInfo>))]
@@ -24,7 +23,6 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.PublicData>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.SystemStatus>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ExtraUserInfo>))]
-[JsonSerializable(typeof(InfoClasses.SignInfo))]
 [JsonSerializable(typeof(InfoClasses.ConfigInfo))]
 [JsonSerializable(typeof(InfoClasses.TrafficStatus))]
 [JsonSerializable(typeof(InfoClasses.FrpTokenInfo))]
@@ -32,7 +30,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(InfoClasses.Nodes))]
 [JsonSerializable(typeof(InfoClasses.Proxies))]
 [JsonSerializable(typeof(InfoClasses.NodesListInfo))]
-[JsonSerializable(typeof(InfoClasses.NodesList))]
+[JsonSerializable(typeof(InfoClasses.NodeInfo))]
 [JsonSerializable(typeof(InfoClasses.NodeNameList))]
 [JsonSerializable(typeof(InfoClasses.NodesStatusInfo))]
 [JsonSerializable(typeof(InfoClasses.NodeStatus))]
@@ -66,6 +64,9 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ThemeManifest))]
 [JsonSerializable(typeof(RedeemInfo))]
 [JsonSerializable(typeof(InfoClasses.CreateProxyRequestData))]
+[JsonSerializable(typeof(GeoJsonRoot))]
+[JsonSerializable(typeof(GeoJsonFeature))]
+[JsonSerializable(typeof(ChallengeInfo))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

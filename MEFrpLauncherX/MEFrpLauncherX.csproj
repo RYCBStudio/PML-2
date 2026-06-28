@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
@@ -16,17 +16,23 @@
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <SuppressTrimWarnings>true</SuppressTrimWarnings>
+        <!-- 开启后可见 AOT 裁剪警告，调试完再改回 true -->
+        <SuppressTrimWarnings>false</SuppressTrimWarnings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <NoWarn>1701;1702;IL2121;CS8902;CS8603;CS8604;CS0169;CS8618;CS8600;CS8604;CS8762</NoWarn>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
 <!--        <PublishAot>true</PublishAot>-->
+        <!-- AOT 条件编译符号，确保主项目和引用项目都能正确识别 AOT 发布模式 -->
+<!--        <DefineConstants>$(DefineConstants);AOT</DefineConstants>-->
+        <!-- ReadyToRun 配置（由发布脚本控制） -->
+        <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
+        <!-- <PublishReadyToRunComposite>true</PublishReadyToRunComposite> -->
     </PropertyGroup>
     <PropertyGroup>
         <AppId>tech.rycb.mefrplauncherx</AppId>
@@ -52,27 +58,39 @@
         <None Include="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Remove="Assets\splash.png"/>
         <AvaloniaResource Include="Assets\splash.png"/>
 
         <TrimmerRootDescriptor Include="TrimmerRoots.xml"/>
+
+        <None Remove="Assets\splash.png" />
+
+        <AvaloniaResource Include="Assets\splash.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </AvaloniaResource>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>
-        <PackageReference Include="Avalonia" Version="11.3.14"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.14"/>
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.14"/>
+        <PackageReference Include="Avalonia" Version="11.3.17" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.17" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.17" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.14"/>
+        <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1"/>
-        <PackageReference Include="Downloader" Version="5.4.0"/>
+        <PackageReference Include="Downloader" Version="5.9.0" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.5.1"/>
+        <PackageReference Include="IconPacks.Avalonia.FileIcons" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.Lucide" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.Material" Version="2.0.0" />
+        <PackageReference Include="IconPacks.Avalonia.SimpleIcons" Version="2.0.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.2"/>
+        <PackageReference Include="Mapsui.Avalonia" Version="5.0.2" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
         <PackageReference Include="ReactiveUI.Avalonia" Version="11.4.12"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.3-preview.1.1"/>
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.3-preview.1.1"/>
+        <PackageReference Include="Svg.Model" Version="3.3.0" />
         <PackageReference Include="System.Runtime.Caching" Version="10.0.6"/>
         <PackageReference Update="Packaging.Targets">
             <Version>0.1.232</Version>
@@ -84,11 +102,13 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Iciclecreek.Avalonia.TerminalWindow\Iciclecreek.Avalonia.Terminal.csproj" />
         <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
         <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj"/>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
+        <ProjectReference Include="G:\VSProj\RYCB.PML2.MEFrpCaptchaLib\RYCB.PML2.MEFrpCaptchaLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Views\ConfigEditor.axaml.cs">

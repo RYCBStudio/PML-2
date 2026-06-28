@@ -358,7 +358,7 @@ public partial class EditProxyWindow : Window
         };
         var _body = JsonSerializer.Serialize(requestData, App.AppJsonSerializerContext.CreateProxyRequestData);
         Core.App.CurrentLogger.LogDebug($"EditProxyWindow: {_body}");
-        var success = (await MEpiConverter.UpdateTunnelAsync(_body)).code == 200;
+        var success = (await MEFrpApiConverter.UpdateTunnelAsync(_body)).code == 200;
         if (success)
         {
             Close();
@@ -368,7 +368,7 @@ public partial class EditProxyWindow : Window
     private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close(false);
 
     private async void GetRemotePort_Click(object sender, RoutedEventArgs e) => RemotePortNudBox.Value =
-        (await MEpiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
+        (await MEFrpApiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
 
     private void InitPanels()
     {

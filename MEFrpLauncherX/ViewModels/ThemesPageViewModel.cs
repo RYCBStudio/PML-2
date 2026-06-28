@@ -10,11 +10,10 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using DynamicData;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -267,6 +266,8 @@ public class ThemesPageViewModel : ViewModelBase
             {
                 OnlineThemes.Add(theme);
             }
+            FilteredOnlineThemes.Clear();
+            FilteredOnlineThemes.AddRange(OnlineThemes);
         }
         catch (Exception ex)
         {

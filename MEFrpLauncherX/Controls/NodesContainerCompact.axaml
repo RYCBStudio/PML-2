@@ -1,0 +1,110 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.NodesContainerCompact"
+             x:DataType="viewModels:NodesContainerViewModel">
+    <Design.DataContext>
+        <viewModels:NodesContainerViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Search and filter bar -->
+        <Border Grid.Row="0"
+                Margin="0,0,0,5"
+                Padding="10">
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                    <TextBox Width="200" VerticalAlignment="Center"
+                             Watermark="搜索节点"
+                             FontFamily="{StaticResource GlobalFontFamily}"
+                             Text="{Binding SearchText}" />
+                    <ToggleButton x:Name="HelpBtn">
+                        <ToggleButton.Content>
+                            <controls:SymbolIcon Symbol="Help" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
+                                          Target="{Binding #HelpBtn}"
+                                          Title="搜索帮助"
+                                          IconSource="Help">
+                        <controls:TeachingTip.Content>
+                            <StackPanel Spacing="3">
+                                <TextBlock>无参数: 直接搜索名称</TextBlock>
+                                <TextBlock>输入/d:&lt;KEYWORD&gt;以搜索描述</TextBlock>
+                                <TextBlock>输入/pn:&lt;PINYIN&gt;以使用拼音搜索名称</TextBlock>
+                                <TextBlock>输入/pd:&lt;PINYIN&gt;以使用拼音搜索描述</TextBlock>
+                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。"
+                                                  IsOpen="True" IsClosable="False" />
+                            </StackPanel>
+                        </controls:TeachingTip.Content>
+                        <controls:TeachingTip.CloseButtonContent>
+                            <controls:SymbolIcon Symbol="Clear" />
+                        </controls:TeachingTip.CloseButtonContent>
+                    </controls:TeachingTip>
+                </StackPanel>
+
+                <CheckBox Margin="15,0,0,0"
+                          Content="仅显示可建站节点" VerticalAlignment="Center"
+                          FontFamily="{StaticResource GlobalFontFamily}"
+                          IsChecked="{Binding FilterCanBuildSite}" />
+                <CheckBox Margin="15,0,0,0"
+                          Content="仅显示允许大流量节点" VerticalAlignment="Center"
+                          FontFamily="{StaticResource GlobalFontFamily}"
+                          IsChecked="{Binding FilterAllowHighTraffic}" />
+                <CheckBox Margin="15,0,0,0"
+                          Content="仅显示未过载节点" VerticalAlignment="Center"
+                          FontFamily="{StaticResource GlobalFontFamily}"
+                          IsChecked="{Binding FilterNotOverLoaded}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Node list -->
+        <controls:ProgressRing Grid.Row="2"
+                               IsIndeterminate="True"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               RenderTransformOrigin="0.5,0.5"
+                               IsVisible="{Binding IsLoading}">
+            <controls:ProgressRing.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+            </controls:ProgressRing.RenderTransform>
+        </controls:ProgressRing>
+        <ListBox Grid.Row="2"
+                 x:Name="Nodes"
+                 Background="Transparent"
+                 ItemsSource="{Binding FilteredNodes, Mode=OneWay}"
+                 SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
+                 IsVisible="{Binding !IsLoading}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" ItemWidth="260"
+                               ItemHeight="250" ItemSpacing="2" LineSpacing="2" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls1:TunnelNodeControl x:Name="tnc"
+                                                 Margin="2" Padding="2" CornerRadius="8"
+                                                 Classes="animated"
+                                                 VerticalAlignment="Center"
+                                                 Width="250"
+                                                 Height="240"
+                                                 DataContext="{Binding}"
+                                                 IsEnabled="{Binding IsNotOverloaded}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <!-- ListBox 已通过 SelectedItem 管理选中状态，无需额外绑 Setter -->
+                    <!-- IsEnabled 已由 TunnelNodeControl 上的绑定控制 -->
+                </Style>
+            </ListBox.Styles>
+        </ListBox>
+    </Grid>
+</UserControl>

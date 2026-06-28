@@ -1,10 +1,12 @@
-﻿using System;
+using System;
+using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using AvaloniaEdit.Utils;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
@@ -14,7 +16,8 @@ using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using RYCB.PML.MEFrpCaptchaLib;
+using ReactiveUI;
+using RYCB.PML2.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX.Views;
 
@@ -23,12 +26,73 @@ public partial class LoginPage : UserControl
     private const string nil = "nil";
 
     private readonly LoginViewModel _loginViewModel;
+    private bool _autoLogin;
 
     public LoginPage()
     {
         InitializeComponent();
+        _autoLogin = ConfigManager.CurrentConfig.AutoLogin;
+        AutoLoginSwitch.IsChecked = _autoLogin;
         _loginViewModel = new LoginViewModel();
+
+        // 当用户从下拉选择已存账号（非"<使用新账号>"占位项）时，直接使用本地存储的 token 登录并跳转
+        var __os = _loginViewModel
+            .WhenAnyValue(x => x.SelectedStoredIndex)
+            .Where(idx => idx > 0);
+        ExtensionMethods.Subscribe(__os, idx =>
+        {
+            _ = TryLocalLoginAsync(idx);
+            _autoLogin = true;
+        });
         DataContext = _loginViewModel;
+    }
+
+    private async Task TryLocalLoginAsync(int selectedIndex)
+    {
+        try
+        {
+            var username = _loginViewModel.SelectedStoredUsername.IsNullOrEmpty()
+                ? UsrNameBox.Text
+                : _loginViewModel.SelectedStoredUsername;
+            if (string.IsNullOrEmpty(username) || AutoLoginSwitch.IsChecked != true)
+            {
+                return;
+            }
+
+            var stored = UserCache.GetUserInfo(username);
+            if (stored == null || !_autoLogin)
+            {
+                return;
+            }
+
+            // Use the stored user info to set current user and navigate to main page
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                MEFrpApiConverter.CurrentUserInfo = new InfoClasses.ApiInfo<InfoClasses.UserInfo>
+                {
+                    data = stored,
+                    code = 200,
+                    message = "本地已存登录"
+                };
+
+                UserCache.CurrentUser = stored;
+
+                if (stored.Email.IsNullOrEmpty() == false)
+                {
+                    AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), stored.username, stored.Email);
+                }
+
+                _loginViewModel.RefreshStoredUsernames();
+                MainWindow.Instance.LoginBackground.IsVisible = false;
+                MainWindowViewModel.Instance.IsLoggedIn = true;
+                MainWindow.Instance.MainContentControl.Content = null;
+                MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
+            });
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex);
+        }
     }
 
     public static async Task<string> GetCaptchaResultAsync()
@@ -49,7 +113,7 @@ public partial class LoginPage : UserControl
             var input = new TextBox();
             cd.Content = input;
             return await cd.ShowAsync() == ContentDialogResult.Primary
-                ? MEpiConverter.GetCaptchaResult(input.Text).Split("||")[0]
+                ? MEFrpApiConverter.GetCaptchaResult(input.Text).Split("||")[0]
                 : nil;
         }
 
@@ -58,7 +122,8 @@ public partial class LoginPage : UserControl
         MainWindowViewModel.Instance.Progress = 20.0;
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤2/5";
-        var ci = await MEpiConverter.PostChallengeAsync(c);
+        var ci = await MEFrpApiConverter.PostChallengeAsync(JsonSerializer.Serialize(c,
+            App.AppJsonSerializerContext.ChallengeInfo));
 
         MainWindowViewModel.Instance.Progress = 40.0;
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤3/5";
@@ -75,7 +140,9 @@ public partial class LoginPage : UserControl
         }
 
         MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
-        var (ri, _err) = await MEpiConverter.GetRedeemAsync(JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
+        var (ri, _err) =
+            await MEFrpApiConverter.GetRedeemAsync(
+                JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
 
         MainWindowViewModel.Instance.Progress = 80.0;
         if (!ri.success)
@@ -106,7 +173,8 @@ public partial class LoginPage : UserControl
 
         try
         {
-            UsrNameBox.IsReadOnly = true;
+            // ComboBox does not have IsReadOnly in the same way as TextBox; disable during login
+            UsrNameBox.IsEnabled = false;
             PwdBox.IsReadOnly = true;
             LoginBtn.IsEnabled = false;
             LoginBtn.Content = new LoadingTip("登录中");
@@ -124,7 +192,7 @@ public partial class LoginPage : UserControl
             var usr = UsrNameBox.Text;
             var pwd = PwdBox.Text;
 
-            var (success, message) = MEpiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
+            var (success, message) = MEFrpApiConverter.SendLoginInfo(usr, pwd, captchaResult.Trim());
 
             Core.App.CurrentLogger.LogDebug($"API响应: {success}, {message}");
 
@@ -136,13 +204,14 @@ public partial class LoginPage : UserControl
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    MEpiConverter.CurrentUserInfo = userInfo;
+                    MEFrpApiConverter.CurrentUserInfo = userInfo;
                     UserCache.CurrentUser = new InfoClasses.UserInfo
                     {
-                        username = userInfo.data.username,
+                        username = userInfo?.data?.username,
                         token = userInfo.data.token,
                         group = userInfo.data.group
                     };
+                    _loginViewModel.RefreshStoredUsernames();
                     MainWindow.Instance.LoginBackground.IsVisible = false;
                     MainWindowViewModel.Instance.IsLoggedIn = true;
                     MainWindow.Instance.MainContentControl.Content = null;
@@ -178,30 +247,37 @@ public partial class LoginPage : UserControl
     }
 
 
-    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
         if (Design.IsDesignMode)
         {
             return;
         }
 
-        if (!UserCache.IsLoggedIn())
+        // 情况1：已登录且启用自动登录 → 直接跳转主页
+        if (UserCache.IsLoggedIn() && ConfigManager.CurrentConfig.AutoLogin)
         {
+            MainWindowViewModel.Instance.IsLoggedIn = true;
+            MainWindow.Instance.LoginBackground.IsVisible = false;
+            var currentUser = UserCache.CurrentUser;
+
+            if (currentUser?.Email.IsNullOrEmpty() == false)
+            {
+                AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
+            }
+
+            Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
+            MainWindow.Instance.MainContentControl.Content = null;
+            MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
             return;
         }
 
-        MainWindowViewModel.Instance.IsLoggedIn = true;
-        MainWindow.Instance.LoginBackground.IsVisible = false;
-        var currentUser = UserCache.CurrentUser;
-
-        if (currentUser?.Email.IsNullOrEmpty() == false)
+        // 情况2：未登录但启用自动登录且有已存储用户 → 自动选择第一个用户并登录
+        if (!UserCache.IsLoggedIn() && ConfigManager.CurrentConfig.AutoLogin &&
+            _loginViewModel.StoredUsernames.Count >= 2)
         {
-            AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
+            await TryLocalLoginAsync(1);
         }
-
-        Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
-        MainWindow.Instance.MainContentControl.Content = null;
-        MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
     }
 
     private void PassWordOnKeyDown(object? sender, KeyEventArgs e)
@@ -214,4 +290,10 @@ public partial class LoginPage : UserControl
 
     private void SignUpBtn_OnClick(object? sender, RoutedEventArgs e) =>
         Core.Extensions.OpenUrl("https://www.mefrp.com/auth/register");
+
+    private void AutoLogin(object? sender, RoutedEventArgs e)
+    {
+        ConfigManager.UpdateConfig(cfg =>
+            cfg.AutoLogin = AutoLoginSwitch.IsChecked ?? false);
+    }
 }

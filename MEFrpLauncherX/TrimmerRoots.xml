@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <linker>
     <!-- 保留 MEFrpLauncherX.Fonts 程序集中的所有字体资源 -->
     <assembly fullname="MEFrpLauncherX.Fonts">
@@ -8,10 +8,41 @@
     <!-- 保留 Avalonia 相关的字体处理类型 -->
     <assembly fullname="Avalonia.Base">
         <type fullname="Avalonia.Media.*" preserve="all"/>
+        <!-- 显式保留嵌套命名空间的成像类型（AOT 下通配符可能不跨命名空间匹配） -->
+        <type fullname="Avalonia.Media.Imaging.Bitmap" preserve="all"/>
+        <type fullname="Avalonia.Media.Imaging.BitmapTypeConverter" preserve="all"/>
+        <type fullname="Avalonia.Media.Imaging.IBitmap" preserve="all"/>
+        <type fullname="Avalonia.Media.ImageBrush" preserve="all"/>
+        <!-- 保留 Avalonia 资源加载基础设施 -->
+        <type fullname="Avalonia.Platform.IAssetLoader" preserve="all"/>
+        <type fullname="Avalonia.Platform.AssetLoader" preserve="all"/>
+        <!-- 保留 XAML 类型转换器机制 -->
+        <type fullname="Avalonia.Markup.Xaml.TypeConverters.BitmapTypeConverter" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 Avalonia.Markup 程序集中的 XAML 加载相关类型 -->
+    <assembly fullname="Avalonia.Markup">
+        <type fullname="Avalonia.Markup.Xaml.*" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 Avalonia.Markup.Xaml 程序集（Avalonia 11.x 分离的程序集） -->
+    <assembly fullname="Avalonia.Markup.Xaml">
+        <type fullname="*" preserve="all"/>
     </assembly>
 
     <!-- 保留字体文件资源 -->
     <assembly fullname="MEFrpLauncherX">
         <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 MEFrpLauncherX.Core 程序集中的所有类型（含 NoticeContent、Converters 等） -->
+    <assembly fullname="MEFrpLauncherX.Core">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 ReactiveUI 相关类型，防止 AOT 裁剪导致 ReactiveCommand 创建失败 -->
+    <assembly fullname="ReactiveUI">
+        <type fullname="ReactiveUI.ReactiveCommand" preserve="all"/>
+        <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
     </assembly>
 </linker>

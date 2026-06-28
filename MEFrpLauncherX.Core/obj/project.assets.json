@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "Avalonia/11.3.14": {
+      "Avalonia/11.3.17": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "11.3.14",
+          "Avalonia.Remote.Protocol": "11.3.17",
           "MicroCom.Runtime": "0.11.0"
         },
         "compile": {
@@ -135,7 +135,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.3.14": {
+      "Avalonia.Remote.Protocol/11.3.17": {
         "type": "package",
         "compile": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -211,10 +211,10 @@
           }
         }
       },
-      "Downloader/5.4.0": {
+      "Downloader/5.9.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.7"
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Downloader.dll": {}
@@ -588,7 +588,7 @@
           "lib/net5.0/MicroCom.Runtime.dll": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.7": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.8": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -604,10 +604,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/10.0.7": {
+      "Microsoft.Extensions.Logging.Abstractions/10.0.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.7"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.8"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -743,7 +743,7 @@
           }
         }
       },
-      "Sentry/6.4.0": {
+      "Sentry/6.6.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -1227,7 +1227,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "Avalonia": "11.3.14",
+          "Avalonia": "11.3.17",
           "Avalonia.Skia": "11.3.14",
           "Avalonia.Svg": "11.2.0.2",
           "FluentAvaloniaUI": "2.5.1",
@@ -1245,14 +1245,24 @@
         "runtime": {
           "bin/placeholder/MarkdownAIRender.dll": {}
         }
+      },
+      "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
+        }
       }
     }
   },
   "libraries": {
-    "Avalonia/11.3.14": {
-      "sha512": "RcGp0iXRBqMrDRXOTUOn9OaUTx8NlukTdhuBmY9w5JmVreDtZRRErKwwiHPw+YjkbTHvhfFFNsu3Hhd+oJGIZQ==",
+    "Avalonia/11.3.17": {
+      "sha512": "CyInPSdfighRNpso1vZfQLMNsXz1GMe+1EPbxLfnNTmu7F3uB6w/BBmvJGkCUiRyeE/HMB0SKp7DNo5AJXR78A==",
       "type": "package",
-      "path": "avalonia/11.3.14",
+      "path": "avalonia/11.3.17",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1260,7 +1270,7 @@
         "Icon.png",
         "analyzers/dotnet/cs/Avalonia.Analyzers.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.11.3.14.nupkg.sha512",
+        "avalonia.11.3.17.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1486,15 +1496,15 @@
         "readme.md"
       ]
     },
-    "Avalonia.Remote.Protocol/11.3.14": {
-      "sha512": "P4QPwf9VQt4CjntmfGo8uL+S1RaVbTlcFgECSFIWN3AWc/IbKs76tbZ6ibpdFg1C+IKubBPQ+hUeUq7MrBIWDA==",
+    "Avalonia.Remote.Protocol/11.3.17": {
+      "sha512": "w0UZSPj2z1EjVQ7VI1i+8wO1nK+XCMMlweXFv9axHVBhRYgIuy/35sgNxbyuuldt6LGOqg2wFcYZ4jEGwfCC9A==",
       "type": "package",
-      "path": "avalonia.remote.protocol/11.3.14",
+      "path": "avalonia.remote.protocol/11.3.17",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.remote.protocol.11.3.14.nupkg.sha512",
+        "avalonia.remote.protocol.11.3.17.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net6.0/Avalonia.Remote.Protocol.dll",
         "lib/net6.0/Avalonia.Remote.Protocol.xml",
@@ -1567,16 +1577,16 @@
         "lib/netstandard2.0/DialogHost.Avalonia.xml"
       ]
     },
-    "Downloader/5.4.0": {
-      "sha512": "C6uuIR6XG9fbGhi1JKUInWVWGXXsRIWan5RGkMQoCjksFFRdR/wf2yqhejBrmtGmRY3QK/pe+w2xwdeg0EXS+g==",
+    "Downloader/5.9.0": {
+      "sha512": "nFwxyPIBGIsukS0Y5dsRvbTnTcw51jN1QB9nHeThR0PJkB70EMzyNdHIA09gw9SEwmCHNXJM7RtHDNf6Uf6dZA==",
       "type": "package",
-      "path": "downloader/5.4.0",
+      "path": "downloader/5.9.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "README.md",
-        "downloader.5.4.0.nupkg.sha512",
+        "downloader.5.9.0.nupkg.sha512",
         "downloader.nuspec",
         "downloader.png",
         "lib/net10.0/Downloader.dll",
@@ -2070,10 +2080,10 @@
         "microcom.runtime.nuspec"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.7": {
-      "sha512": "Z6mfFEaFcwCfSboxJwOLfu7/31npCY9q70WUamHW/vRQhDvBKOT4Vf9YkZj5J6hLvJpb0oDEYfHunQZj0xxvKw==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.8": {
+      "sha512": "21nbDV60SRPWGIivsyl6lqBeEJNG1sginhhfWgRrr3Ais7aQ12To25OAHQxgoiJkjqy1aQ6RxpZBGYuTi7Ge6A==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.7",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2096,15 +2106,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.10.0.7.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.8.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/10.0.7": {
-      "sha512": "tIEcQ2gvERrH2KiCjdsVcHGhXt9lIsuDStfOIeZWr7/fP8IXhGiYfx0/80PNI7WPO2IYuFtlZLSlnTS8+/Mchw==",
+    "Microsoft.Extensions.Logging.Abstractions/10.0.8": {
+      "sha512": "fdVadZmsC8jRP0KvKy8mO8f6GV/HyBvElfcSxEhd+5FM5boAw/01iSaCto5G3G37ApJira4A3pNaVvBv8cUiLQ==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/10.0.7",
+      "path": "microsoft.extensions.logging.abstractions/10.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2168,7 +2178,7 @@
         "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.10.0.7.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.10.0.8.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2324,10 +2334,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.4.0": {
-      "sha512": "0YOQfECCEpR+oRG0nTBZhdVrP6/7SP+WTA/JsP6Na43+c8zsgbgxRDe0H6dQiJR92FnwA2S0Qyw2MSSE3fTUQg==",
+    "Sentry/6.6.0": {
+      "sha512": "1D3xo3P9Y94VQN3RoV/86XqgtylHp1pdeEml3/UB649BrzJeZ/pqO/o8YgJ5g+GqpMQiGI09yjAI7s5ff2A1IA==",
       "type": "package",
-      "path": "sentry/6.4.0",
+      "path": "sentry/6.6.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2376,7 +2386,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.4.0.nupkg.sha512",
+        "sentry.6.6.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -3010,12 +3020,17 @@
       "type": "project",
       "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
       "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
+    },
+    "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
+      "type": "project",
+      "path": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj",
+      "msbuildProject": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 11.3.14",
-      "Downloader >= 5.4.0",
+      "Avalonia >= 11.3.17",
+      "Downloader >= 5.9.0",
       "FluentAvaloniaUI >= 2.5.1",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.2",
       "MarkdownAIRender >= 1.0.0",
@@ -3024,9 +3039,10 @@
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
+      "RYCB.PML2.MEFrpCaptchaLib >= 26.1.0",
       "ReactiveUI >= 23.2.1",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.4.0",
+      "Sentry >= 6.6.0",
       "SkiaSharp >= 3.119.3-preview.1.1",
       "SkiaSharp.NativeAssets.Linux >= 3.119.3-preview.1.1",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.3-preview.1.1",
@@ -3071,6 +3087,9 @@
           "projectReferences": {
             "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+            },
+            "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj": {
+              "projectPath": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
             }
           }
         }
@@ -3093,11 +3112,11 @@
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[11.3.14, )"
+            "version": "[11.3.17, )"
           },
           "Downloader": {
             "target": "Package",
-            "version": "[5.4.0, )"
+            "version": "[5.9.0, )"
           },
           "FluentAvaloniaUI": {
             "target": "Package",
@@ -3137,7 +3156,7 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.4.0, )"
+            "version": "[6.6.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
@@ -3180,7 +3199,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.109/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

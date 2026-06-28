@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -128,7 +128,16 @@
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
                                 </controls:SettingsExpander>
-
+                                <controls:SettingsExpander Header="目标编译类型"
+                                                           Description="选择下载安装包的编译类型（AOT 或常规）。当目标类型与当前运行时类型一致时，安装程序将不执行自动清理操作。">
+                                    <controls:SettingsExpander.Footer>
+                                        <ComboBox x:Name="CompileTypeBox" SelectedIndex="{Binding TargetCompileType}"
+                                                  SelectionChanged="CompileTypeChange">
+                                            <ComboBoxItem Tag="AOT">AOT（预编译）</ComboBoxItem>
+                                            <ComboBoxItem Tag="Common">常规</ComboBoxItem>
+                                        </ComboBox>
+                                    </controls:SettingsExpander.Footer>
+                                </controls:SettingsExpander>
                             </StackPanel>
                         </TabItem>
                     </TabControl>
