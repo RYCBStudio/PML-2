@@ -34,4 +34,15 @@
     <assembly fullname="MEFrpLauncherX">
         <type fullname="*" preserve="all"/>
     </assembly>
+
+    <!-- 保留 MEFrpLauncherX.Core 程序集中的所有类型（含 NoticeContent、Converters 等） -->
+    <assembly fullname="MEFrpLauncherX.Core">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 ReactiveUI 相关类型，防止 AOT 裁剪导致 ReactiveCommand 创建失败 -->
+    <assembly fullname="ReactiveUI">
+        <type fullname="ReactiveUI.ReactiveCommand" preserve="all"/>
+        <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
+    </assembly>
 </linker>

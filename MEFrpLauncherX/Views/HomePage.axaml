@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -431,7 +431,7 @@
                                                        Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
                                             </WrapPanel>
                                             <!-- 查看按钮（可改为超链接按钮） -->
-                                            <Button Grid.RowSpan="2" Grid.Column="1" Command="{Binding ShowNotice}"
+                                            <Button Grid.RowSpan="2" Grid.Column="1" Command="{Binding ShowNoticeCommand}"
                                                     Theme="{StaticResource SubtleButtonStyle}">
                                                 <controls:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                                    Glyph="&#xE8A7;" />

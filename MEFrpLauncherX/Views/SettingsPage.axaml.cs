@@ -100,6 +100,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
                     _ => 0
                 };
             AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
+            AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
 
             MainPageFrameViewModel.Instance?.IsLoading = false;
         };
@@ -490,6 +491,16 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         }
 
         ConfigManager.UpdateConfig(config => config.AutoLogin = (sender as ToggleSwitch).IsChecked.Value);
+    }
+
+    private void AutoSignChanged(object? sender, RoutedEventArgs e)
+    {
+        if (!isInit)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config => config.AutoSign = (sender as ToggleSwitch).IsChecked.Value);
     }
 }
 

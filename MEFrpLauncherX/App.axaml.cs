@@ -106,10 +106,13 @@ public class App : Application
             var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
             var themeManifest =
                 ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
-            if (themeManifest != null)
+            if (themeManifest is { FontFamily: not null })
             {
-                var ff = new FontFamily(new Uri(Path.Combine(themePath, themeManifest.FontFamily.ToString())),
-                    Path.GetFileNameWithoutExtension(themeManifest.FontFamily.ToString()));
+                var fontFamily = themeManifest.FontFamily;
+                var ff = ThemeProcessor.IsFontFilePath(fontFamily)
+                    ? new FontFamily(new Uri(Path.Combine(themePath, fontFamily)),
+                        Path.GetFileNameWithoutExtension(fontFamily))
+                    : new FontFamily(fontFamily);
                 Resources["GlobalFontFamily"] = ff;
                 Resources["ContentControlThemeFontFamily"] = ff;
             }

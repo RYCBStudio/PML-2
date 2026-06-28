@@ -190,9 +190,35 @@ public class TrafficStatusControlViewModel : ViewModelBase
 //
 #if DEBUG
         data ??= new InfoClasses.TrafficStatus();
-        data.trafficIn = [21423423, 2606203265, 236, 2346, 2346, 232528914, 44];
-        data.trafficOut = [21227994, 2606203265, 26, 346, 234, 24, 44];
-        data.totalTraffic = [2320923638, 2606203265, 262, 2372, 2580, 232528938, 88];
+        data.trafficIn = [
+            15242871936,        // 14.2 GB
+            452890,             // 452 KB
+            1024,               // 1 KB
+            26843545600,        // 25 GB
+            8912,               // 8.7 KB
+            1099511627776,      // 1 TB（超大）
+            64                  // 64 Bytes（极小）
+        ];
+
+        data.trafficOut = [
+            8765432112,         // 8.16 GB
+            2310456,            // 2.2 MB
+            512,                // 512 Bytes
+            52428800,           // 50 MB
+            102400,             // 100 KB
+            549755813888,       // 512 GB
+            128                 // 128 Bytes
+        ];
+
+        data.totalTraffic = [
+            24008304048,        // 22.36 GB (14.2+8.16)
+            2763346,            // 2.64 MB
+            1536,               // 1.5 KB
+            26895974400,        // 25.05 GB
+            111312,             // 108.7 KB
+            1649267441664,      // 1.5 TB (1TB+512GB)
+            192                 // 192 Bytes
+        ];
 #endif
         if (shouldLoadNew)
         {

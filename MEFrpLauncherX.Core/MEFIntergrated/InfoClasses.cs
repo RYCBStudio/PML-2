@@ -210,15 +210,6 @@ public class InfoClasses
         }
     }
 
-    public class SignInfo
-    {
-        public int extraTraffic
-        {
-            get;
-            set;
-        }
-    }
-
     public class ConfigInfo
     {
         public string config

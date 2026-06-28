@@ -9,7 +9,7 @@ using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 namespace MEFrpLauncherX;
 
 [JsonSerializable(typeof(ApiInfo<UserInfo>))]
-[JsonSerializable(typeof(ApiInfo<SignInfo>))]
+[JsonSerializable(typeof(ApiInfo<object>))]
 [JsonSerializable(typeof(ApiInfo<ConfigInfo>))]
 [JsonSerializable(typeof(ApiInfo<TrafficStatus>))]
 [JsonSerializable(typeof(ApiInfo<FrpTokenInfo>))]
@@ -28,7 +28,6 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ApiInfo<NodeInfo[]>))]
 [JsonSerializable(typeof(ApiInfo<NodeNameList[]>))]
 [JsonSerializable(typeof(ApiInfo<SystemStatus?>))]
-[JsonSerializable(typeof(SignInfo))]
 [JsonSerializable(typeof(ConfigInfo))]
 [JsonSerializable(typeof(TrafficStatus))]
 [JsonSerializable(typeof(FrpTokenInfo))]

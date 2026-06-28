@@ -12,8 +12,8 @@ using RYCB.PML2.MEFrpCaptchaLib;
 namespace MEFrpLauncherX;
 
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.UserInfo>))]
-[JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.SignInfo>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ConfigInfo>))]
+[JsonSerializable(typeof(InfoClasses.ApiInfo<object>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.TrafficStatus>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.FrpTokenInfo>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ProxyInfo>))]
@@ -23,7 +23,6 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.PublicData>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.SystemStatus>))]
 [JsonSerializable(typeof(InfoClasses.ApiInfo<InfoClasses.ExtraUserInfo>))]
-[JsonSerializable(typeof(InfoClasses.SignInfo))]
 [JsonSerializable(typeof(InfoClasses.ConfigInfo))]
 [JsonSerializable(typeof(InfoClasses.TrafficStatus))]
 [JsonSerializable(typeof(InfoClasses.FrpTokenInfo))]

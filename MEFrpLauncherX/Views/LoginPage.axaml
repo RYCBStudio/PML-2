@@ -9,6 +9,9 @@
              x:DataType="viewModels:LoginViewModel"
              Loaded="Control_OnLoaded"
              x:Class="MEFrpLauncherX.Views.LoginPage">
+    <Design.DataContext>
+        <viewModels:LoginViewModel />
+    </Design.DataContext>
     <Grid VerticalAlignment="Center" RowDefinitions="*, Auto,Auto,Auto,Auto">
 
         <DockPanel Margin="0,0,0,10">
@@ -50,7 +53,7 @@
                 IsEditable="True"
                 Text="{Binding SelectedStoredUsername, Mode=TwoWay}"
                 ItemsSource="{Binding StoredUsernames}"
-                SelectedIndex="{Binding SelectedStoredIndex}"
+                SelectedIndex="{Binding SelectedStoredIndex, Mode=OneWayToSource}"
                 VerticalAlignment="Center"
                 Margin="10,0,10,0"
                 FontFamily="{StaticResource GlobalFontFamily}" />

@@ -699,6 +699,12 @@ public class AppConfig
         get;
         set;
     }
+
+    public bool AutoSign
+    {
+        get;
+        set;
+    }
 }
 
 public class HomeConfig

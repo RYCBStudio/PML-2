@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -439,14 +439,19 @@ public partial class TerminalControl : UserControl, IDisposable
                         {
                             _ = RYCBApiConverter.GetTunnelErrorInfoAsync(solution.Flag).ContinueWith(t =>
                             {
-                                if (t is { IsCompletedSuccessfully: true, Result: not null })
+                                if (t is { IsCompletedSuccessfully: true, Result: not null }
+                                    && t.Result.data is not null
+                                    && t.Result.data.Solution is { Length: > 0 })
                                 {
+                                    var data = t.Result.data;
                                     Dispatcher.UIThread.Post(() =>
                                     {
+                                        if (_disposed || ErrorIcon is null || ErrorText is null || SolutionBox is null)
+                                            return;
                                         ErrorIcon.Symbol = Symbol.ReportHacked;
-                                        ErrorText.Text = t.Result.data.Info;
-                                        SolutionBox.Text = t.Result.data.Solution[0];
-                                        _tunnelErrorInfoShell = t.Result.data;
+                                        ErrorText.Text = data.Info ?? string.Empty;
+                                        SolutionBox.Text = data.Solution[0];
+                                        _tunnelErrorInfoShell = data;
                                     });
                                 }
                             }, ct);

@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
 namespace MEFrpLauncherX.Core.Styling;
 
 public class ThemeManifest
@@ -49,9 +49,12 @@ public class ThemeManifest
     }
 
     /// <summary>
-    ///     字体名称，支持系统已安装的字体和相对路径（相对于主题文件）的字体文件（.ttf或.otf）。如果指定了字体文件，应用程序将优先使用该字体文件而不是系统字体。
+    ///     字体名称或相对路径。支持两种格式：
+    ///     1. 系统字体名称，如 "Arial"、"Microsoft YaHei" 等
+    ///     2. 相对路径（相对于主题文件）的字体文件，如 "fonts/MyFont.ttf"、"CustomFont.otf" 等
+    ///     如果指定了字体文件路径，应用程序将优先使用该字体文件而不是系统字体。
     /// </summary>
-    public object? FontFamily
+    public string? FontFamily
     {
         get;
         set;

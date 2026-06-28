@@ -194,6 +194,13 @@
                             IsCheckedChanged="AutoLoginChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="自动签到" Description="设置软件启动时自动签到。">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch
+                            x:Name="AutoSign"
+                            IsCheckedChanged="AutoSignChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem Description="设置登录时人机验证的方式。" Content="验证方式">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox x:Name="CaptchaModeCBox" SelectionChanged="CaptchaModeChanged">

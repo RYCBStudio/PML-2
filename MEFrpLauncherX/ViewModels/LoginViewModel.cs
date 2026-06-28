@@ -31,7 +31,7 @@ public class LoginViewModel : ViewModelBase
         };
 
         RefreshStoredUsernames();
-        if (StoredUsernames.Count == 2)
+        if (StoredUsernames.Count >= 2)
         {
             SelectedStoredIndex = 1;
             SelectedStoredUsername = StoredUsernames[1];

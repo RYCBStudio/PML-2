@@ -5,7 +5,7 @@
              FontFamily="{StaticResource GlobalFontFamily}">
     <UserControl.Styles>
         <Style Selector="Path">
-            <Setter Property="Stroke" Value="{DynamicResource SurfaceStrokeColorDefaultBrush}" />
+            <Setter Property="Stroke" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
             <Setter Property="StrokeThickness" Value="1" />
             <Setter Property="Fill" Value="Transparent" />
         </Style>
@@ -16,6 +16,12 @@
         <!-- </Style> -->
         <Style Selector="Path:pointerover">
             <Setter Property="Fill" Value="{DynamicResource ControlAltFillColorTertiaryBrush}" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Stroke" Duration="0:0:0.1" Easing="CircularEaseInOut" />
+                    <BrushTransition Property="Fill" Duration="0:0:0.1" Easing="CircularEaseInOut" />
+                </Transitions>
+            </Setter>
         </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="1*, 9*" ColumnDefinitions="8*,4, 2*">

@@ -11,6 +11,7 @@
   "AutoLaunchProxies": [],
   "ExpireDays": 180,
   "AutoLogin": false,
+  "AutoSign": true,
   "Theme": "Dark",
   "BackgroundSettings": {
     "LayerOpacity": 0.6,
@@ -24,6 +25,7 @@
     "AutoCheck": true,
     "Channel": "Preview",
     "Method": "ds",
+    "CompileType": "Common",
     "KeepProfile": false
   },
   "DownloadSource": "TPCA",
@@ -41,5 +43,5 @@
   },
   "DoNotShowSuccessMsg": true,
   "TerminalEngineType": "Original",
-  "TerminalCli": "pwsh"
+  "TerminalCli": "powershell"
 }

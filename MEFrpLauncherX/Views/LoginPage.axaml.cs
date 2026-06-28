@@ -31,9 +31,9 @@ public partial class LoginPage : UserControl
     public LoginPage()
     {
         InitializeComponent();
-        _loginViewModel = new LoginViewModel();
-        DataContext = _loginViewModel;
         _autoLogin = ConfigManager.CurrentConfig.AutoLogin;
+        AutoLoginSwitch.IsChecked = _autoLogin;
+        _loginViewModel = new LoginViewModel();
 
         // 当用户从下拉选择已存账号（非"<使用新账号>"占位项）时，直接使用本地存储的 token 登录并跳转
         var __os = _loginViewModel
@@ -44,14 +44,17 @@ public partial class LoginPage : UserControl
             _ = TryLocalLoginAsync(idx);
             _autoLogin = true;
         });
+        DataContext = _loginViewModel;
     }
 
     private async Task TryLocalLoginAsync(int selectedIndex)
     {
         try
         {
-            var username = _loginViewModel.SelectedStoredUsername.IsNullOrEmpty()? UsrNameBox.Text : _loginViewModel.SelectedStoredUsername;
-            if (string.IsNullOrEmpty(username))
+            var username = _loginViewModel.SelectedStoredUsername.IsNullOrEmpty()
+                ? UsrNameBox.Text
+                : _loginViewModel.SelectedStoredUsername;
+            if (string.IsNullOrEmpty(username) || AutoLoginSwitch.IsChecked != true)
             {
                 return;
             }
@@ -244,30 +247,37 @@ public partial class LoginPage : UserControl
     }
 
 
-    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    private async void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
         if (Design.IsDesignMode)
         {
             return;
         }
 
-        if (!UserCache.IsLoggedIn() || !ConfigManager.CurrentConfig.AutoLogin)
+        // 情况1：已登录且启用自动登录 → 直接跳转主页
+        if (UserCache.IsLoggedIn() && ConfigManager.CurrentConfig.AutoLogin)
         {
+            MainWindowViewModel.Instance.IsLoggedIn = true;
+            MainWindow.Instance.LoginBackground.IsVisible = false;
+            var currentUser = UserCache.CurrentUser;
+
+            if (currentUser?.Email.IsNullOrEmpty() == false)
+            {
+                AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
+            }
+
+            Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
+            MainWindow.Instance.MainContentControl.Content = null;
+            MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
             return;
         }
 
-        MainWindowViewModel.Instance.IsLoggedIn = true;
-        MainWindow.Instance.LoginBackground.IsVisible = false;
-        var currentUser = UserCache.CurrentUser;
-
-        if (currentUser?.Email.IsNullOrEmpty() == false)
+        // 情况2：未登录但启用自动登录且有已存储用户 → 自动选择第一个用户并登录
+        if (!UserCache.IsLoggedIn() && ConfigManager.CurrentConfig.AutoLogin &&
+            _loginViewModel.StoredUsernames.Count >= 2)
         {
-            AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), currentUser.username, currentUser.Email);
+            await TryLocalLoginAsync(1);
         }
-
-        Core.App.CurrentLogger.Log($"用户: {currentUser.username}, 组: {currentUser.group}");
-        MainWindow.Instance.MainContentControl.Content = null;
-        MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
     }
 
     private void PassWordOnKeyDown(object? sender, KeyEventArgs e)

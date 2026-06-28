@@ -77,7 +77,7 @@
         <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.1"/>
-        <PackageReference Include="Downloader" Version="5.4.0"/>
+        <PackageReference Include="Downloader" Version="5.9.0" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.5.1"/>
         <PackageReference Include="IconPacks.Avalonia.FileIcons" Version="2.0.0" />
         <PackageReference Include="IconPacks.Avalonia.Lucide" Version="2.0.0" />

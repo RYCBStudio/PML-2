@@ -45,6 +45,8 @@ public class UpdatePageViewModel : ViewModelBase
             "Common" => 1,
             _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
         };
+
+        CheckUpdateCommand = ReactiveCommand.Create(CheckUpdate);
     }
 
     public bool HasNewVersion
@@ -156,8 +158,7 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<Unit, Unit> CheckUpdateCommand =>
-        ReactiveCommand.Create(CheckUpdate);
+    public ReactiveCommand<Unit, Unit> CheckUpdateCommand { get; }
 
     /// <summary>
     ///     检查更新

@@ -313,6 +313,11 @@ public class RYCBApiConverter
 
 public class NoticeContent : ReactiveObject
 {
+    public NoticeContent()
+    {
+        ShowNoticeCommand = ReactiveCommand.Create(ShowNotice);
+    }
+
     [JsonPropertyName("active")]
     public bool Active
     {
@@ -363,8 +368,7 @@ public class NoticeContent : ReactiveObject
         set;
     }
 
-
-    public ReactiveCommand<Unit, Unit> ShowNoticeCommand => ReactiveCommand.Create(ShowNotice);
+    public ReactiveCommand<Unit, Unit> ShowNoticeCommand { get; }
 
     public void ShowNotice()
     {

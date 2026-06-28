@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AsyncImageLoader;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
@@ -407,8 +408,7 @@ public partial class MainWindow : AppWindow, IDisposable
             {
                 Background = null;
                 MainBackground.Show();
-                MainBackground.Source =
-                    new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
+                ImageLoader.SetSource(MainBackground, ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
                 MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
                 {
                     "None" => Stretch.None,

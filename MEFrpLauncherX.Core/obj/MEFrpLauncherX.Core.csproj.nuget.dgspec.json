@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.108/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.109/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -452,7 +452,7 @@
             },
             "Downloader": {
               "target": "Package",
-              "version": "[5.4.0, )"
+              "version": "[5.9.0, )"
             },
             "FluentAvaloniaUI": {
               "target": "Package",
@@ -535,7 +535,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.108/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.109/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -875,7 +875,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.108/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.109/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
@@ -145,33 +146,34 @@ public partial class UserCenterPage : UserControl
         {
             var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<InfoClasses.SignInfo>>(message,
-                    App.AppJsonSerializerContext.ApiInfoSignInfo);
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ?? 
+                                                                        """
+                                                                        {
+                                                                            "code": -1,
+                                                                            "data": null,
+                                                                            "message": "未知错误"
+                                                                        }
+                                                                        """,
+                    App.AppJsonSerializerContext.ApiInfoObject);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
             {
-                await MessageBoxManager
-                    .GetMessageBoxStandard("签到成功", signInfo?.message)
-                    .ShowAsync();
+                Growl.Success(signInfo?.message ?? "签到成功", "签到成功");
             }
             else
             {
-                await MessageBoxManager
-                    .GetMessageBoxStandard("签到失败", signInfo?.message)
-                    .ShowAsync();
+                Growl.Error(signInfo?.message ?? "签到失败", "签到失败");
             }
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"签到过程中发生错误: {ex.Message}")
-                .ShowAsync();
+            Growl.Error(ex.Message, "签到失败");
         }
         finally
         {
-            UserControl_Loaded(sender, null);
+            UserControl_Loaded(sender, null); // 刷新用户数据
         }
     }
 
