@@ -60,15 +60,21 @@ public class ThemeService
                         var manifest = ThemeProcessor.LoadTheme(indexPath);
                         if (manifest != null)
                         {
-                            localThemes.Add(new LocalTheme
+                            var nt = new LocalTheme
                             {
                                 Name = manifest.Name,
                                 Author = manifest.Author,
                                 Description = manifest.Description,
                                 Version = manifest.Version,
-                                Path = dir,
-                                PreviewImage = new Bitmap(Path.Combine(dir, manifest.PreviewImage ?? "preview.png"))
-                            });
+                                Path = dir
+                            };
+                            if (manifest.PreviewImage != null)
+                            {
+                                // 加载预览图片
+                                nt.PreviewImage = new Bitmap(Path.Combine(dir, manifest.PreviewImage));
+                            }
+
+                            localThemes.Add(nt);
                         }
                     }
                     catch (Exception ex)

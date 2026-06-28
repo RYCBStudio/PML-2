@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -157,6 +158,59 @@ public partial class AboutPage : UserControl
     }
 
     #region 帮助/支持相关
+
+    private async void OpenSource_Click(object? sender, RoutedEventArgs e)
+    {
+        var stackPanel = new StackPanel { Spacing = 8, Margin = new Avalonia.Thickness(0, 8) };
+        foreach (var lib in vm.OpenSourceLibraries)
+        {
+            var row = new StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 8 };
+            var link = new HyperlinkButton
+            {
+                Content = lib.Name,
+                FontFamily = (Avalonia.Media.FontFamily)Application.Current?.FindResource("GlobalFontFamily")!,
+                BorderBrush = Avalonia.Media.Brushes.Transparent,
+                Background = Avalonia.Media.Brushes.Transparent,
+                BorderThickness = new Avalonia.Thickness(-1),
+                Padding = new Avalonia.Thickness(0),
+            };
+            link.Click += (_, _) =>
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = lib.Url,
+                    UseShellExecute = true
+                });
+            };
+            var license = new TextBlock
+            {
+                Text = lib.License,
+                FontFamily = (Avalonia.Media.FontFamily)Application.Current?.FindResource("GlobalFontFamily")!,
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                Foreground = Avalonia.Media.Brushes.Gray,
+                FontSize = 12,
+            };
+            row.Children.Add(link);
+            row.Children.Add(license);
+            stackPanel.Children.Add(row);
+        }
+
+        var scrollViewer = new ScrollViewer
+        {
+            Content = stackPanel,
+            MaxHeight = 450,
+        };
+
+        var cd = new ContentDialog
+        {
+            Title = "开源软件",
+            Content = scrollViewer,
+            PrimaryButtonText = "关闭",
+            DefaultButton = ContentDialogButton.Primary,
+            IsSecondaryButtonEnabled = false,
+        };
+        await cd.ShowAsync();
+    }
 
     private void OS_Click(object sender, RoutedEventArgs e)
     {

@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -74,6 +74,17 @@
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
                                             Text="帮助文档" />
+                                    </HyperlinkButton>
+                                    <HyperlinkButton
+                                        BorderBrush="Transparent"
+                                        BorderThickness="-1"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                        Click="OpenSource_Click"
+                                        Classes="Danger"
+                                        FontFamily="{StaticResource GlobalFontFamily}">
+                                        <TextBlock
+                                            Text="开源软件" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         BorderBrush="Transparent"

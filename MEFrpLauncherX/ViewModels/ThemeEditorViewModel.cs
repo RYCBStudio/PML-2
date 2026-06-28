@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Views;
@@ -15,6 +15,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Web;
+using Avalonia;
 using Avalonia.Controls.Converters;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -57,12 +58,120 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
-    
+
     public string PreviewImagePath
     {
-        get;
+        get => HttpUtility.UrlDecode(field ?? "");
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
+
+    // 字体设置
+    public string FontFamilyType
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(IsSystemFont));
+            this.RaisePropertyChanged(nameof(IsCustomFont));
+        }
+    } = "System";
+
+    public bool IsSystemFont
+    {
+        get => FontFamilyType == "System";
+        set
+        {
+            FontFamilyType = value ? "System" : "CustomFile";
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(IsCustomFont));
+            this.RaisePropertyChanged(nameof(PreviewFontFamily));
+            this.RaisePropertyChanged(nameof(FontFamilyPreview));
+        }
+    }
+
+    public bool IsCustomFont
+    {
+        get => FontFamilyType == "CustomFile";
+        set
+        {
+            FontFamilyType = value ? "CustomFile" : "System";
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(IsSystemFont));
+            this.RaisePropertyChanged(nameof(PreviewFontFamily));
+            this.RaisePropertyChanged(nameof(FontFamilyPreview));
+        }
+    }
+
+    public string SelectedSystemFont
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(PreviewFontFamily));
+            this.RaisePropertyChanged(nameof(FontFamilyPreview));
+        }
+    } = "Default";
+
+    public string CustomFontPath
+    {
+        get => HttpUtility.UrlDecode(field ?? "");
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(PreviewFontFamily));
+            this.RaisePropertyChanged(nameof(FontFamilyPreview));
+        }
+    } = "";
+
+    public string CustomFontFileName
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(PreviewFontFamily));
+            this.RaisePropertyChanged(nameof(FontFamilyPreview));
+        }
+    } = "";
+
+    public string FontFamilyPreview
+    {
+        get
+        {
+            if (IsSystemFont)
+                return $"系统字体: {SelectedSystemFont}";
+            if (!string.IsNullOrEmpty(CustomFontFileName))
+                return $"自定义字体: {CustomFontFileName}";
+            return "未选择字体";
+        }
+    }
+
+    public FontFamily PreviewFontFamily
+    {
+        get
+        {
+            if (SelectedSystemFont == "Default")
+            {
+                return App.Current.TryGetResource("GlobalFontFamily", out var defaultFont) &&
+                       defaultFont is FontFamily ff
+                    ? ff
+                    : new FontFamily("HarmonyOS Sans SC");
+            }
+
+            if (IsSystemFont)
+                return new FontFamily(SelectedSystemFont);
+            if (!string.IsNullOrEmpty(CustomFontFileName))
+                return new FontFamily(new Uri(CustomFontPath), CustomFontFileName);
+            return null;
+        }
+    }
+
+    public ObservableCollection<string> AvailableSystemFonts
+    {
+        get;
+    } = [];
 
     // 背景设置
     public string BackgroundType
@@ -263,6 +372,11 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> BrowseFontCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<string, Unit> SetColorCommand
     {
         get;
@@ -282,6 +396,9 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
     {
         _editFilePath = themeFilePath;
 
+        // 初始化系统字体列表
+        LoadSystemFonts();
+
         // 初始化默认颜色
         AddDefaultColors();
 
@@ -296,6 +413,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
         BrowseBackgroundCommand = ReactiveCommand.Create(BrowseBackground);
         SetColorCommand = ReactiveCommand.Create<string>(SetColor);
         BrowsePreviewImageCommand = ReactiveCommand.Create(BrowsePreviewImage);
+        BrowseFontCommand = ReactiveCommand.Create(BrowseFont);
 
         // 如果是编辑现有主题，加载数据
         if (!string.IsNullOrEmpty(themeFilePath) && File.Exists(Path.Combine(themeFilePath, "index.json")))
@@ -328,6 +446,55 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
             catch (Exception ex)
             {
                 Growl.Error($"加载预览图片失败: {ex.Message}");
+            }
+        }
+    }
+
+    private void LoadSystemFonts()
+    {
+        try
+        {
+            AvailableSystemFonts.Clear();
+            AvailableSystemFonts.Add("Default");
+            foreach (var font in FontManager.Current.SystemFonts)
+            {
+                var name = font.Name;
+                if (!string.IsNullOrEmpty(name) && !AvailableSystemFonts.Contains(name))
+                    AvailableSystemFonts.Add(name);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Warning($"加载系统字体列表失败: {ex.Message}");
+            AvailableSystemFonts.Add("Default");
+        }
+    }
+
+    private async void BrowseFont()
+    {
+        var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "选择字体文件",
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType("字体文件")
+                {
+                    Patterns = ["*.ttf", "*.otf", "*.ttc"]
+                }
+            ]
+        });
+        if (res.Count > 0)
+        {
+            try
+            {
+                CustomFontPath = res[0].Path.IsFile ? res[0].Path.AbsolutePath : res[0].Path.AbsoluteUri;
+                CustomFontFileName = Path.GetFileName(CustomFontPath);
+                this.RaisePropertyChanged(nameof(FontFamilyPreview));
+            }
+            catch (Exception ex)
+            {
+                Growl.Error($"加载字体文件失败: {ex.Message}");
             }
         }
     }
@@ -410,6 +577,110 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
     {
         try
         {
+            // 确定保存路径
+            string savePath;
+            string themeDir;
+            if (!string.IsNullOrEmpty(_editFilePath) &&
+                Path.GetExtension(_editFilePath).Equals(".json", StringComparison.OrdinalIgnoreCase))
+            {
+                savePath = _editFilePath;
+                themeDir = Path.GetDirectoryName(savePath) ??
+                           Path.Combine(Core.App.StartupPath, "Config", "Themes", SanitizeFileName(Name));
+            }
+            else
+            {
+                themeDir = Path.Combine(Core.App.StartupPath, "Config", "Themes", SanitizeFileName(Name));
+                Directory.CreateDirectory(themeDir);
+                savePath = Path.Combine(themeDir, "index.json");
+            }
+
+            // 处理预览图：复制到主题目录并记录相对路径
+            string? previewRelativePath = null;
+            if (PreviewImage != null && !string.IsNullOrEmpty(PreviewImagePath) && File.Exists(PreviewImagePath))
+            {
+                var previewFileName = $"preview{Path.GetExtension(PreviewImagePath)}";
+                var previewDestPath = Path.Combine(themeDir, previewFileName);
+                try
+                {
+                    File.Copy(PreviewImagePath, previewDestPath, true);
+                    previewRelativePath = previewFileName;
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger.Warning($"复制预览图失败: {ex.Message}");
+                    // 如果复制失败，尝试使用相对路径（如果原文件已在主题目录内）
+                    try
+                    {
+                        previewRelativePath = Path.GetRelativePath(themeDir, PreviewImagePath);
+                    }
+                    catch
+                    {
+                        previewRelativePath = null;
+                    }
+                }
+            }
+            else if (PreviewImage == null)
+            {
+                previewRelativePath = null;
+            }
+
+            // 处理字体
+            string? fontFamilyValue = null;
+            if (IsSystemFont && SelectedSystemFont != "Default")
+            {
+                fontFamilyValue = SelectedSystemFont;
+            }
+            else if (IsCustomFont && !string.IsNullOrEmpty(CustomFontPath) && File.Exists(CustomFontPath))
+            {
+                // 复制字体文件到主题目录
+                var fontFileName = Path.GetFileName(CustomFontPath);
+                var fontDestPath = Path.Combine(themeDir, fontFileName);
+                try
+                {
+                    File.Copy(CustomFontPath, fontDestPath, true);
+                    fontFamilyValue = fontFileName;
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger.Warning($"复制字体文件失败: {ex.Message}");
+                    try
+                    {
+                        fontFamilyValue = Path.GetRelativePath(themeDir, CustomFontPath);
+                    }
+                    catch
+                    {
+                        fontFamilyValue = Path.GetFileName(CustomFontPath);
+                    }
+                }
+            }
+
+            // 处理背景图片路径：如果图片在主题目录外，复制进去
+            string? backgroundImageRelativePath = BackgroundImagePath;
+            if (BackgroundType == "Image" && !string.IsNullOrEmpty(BackgroundImagePath) &&
+                File.Exists(BackgroundImagePath))
+            {
+                try
+                {
+                    var bgFullPath = Path.GetFullPath(BackgroundImagePath);
+                    var themeDirFull = Path.GetFullPath(themeDir);
+                    if (!bgFullPath.StartsWith(themeDirFull, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var bgFileName = $"background{Path.GetExtension(BackgroundImagePath)}";
+                        var bgDestPath = Path.Combine(themeDir, bgFileName);
+                        File.Copy(BackgroundImagePath, bgDestPath, true);
+                        backgroundImageRelativePath = bgFileName;
+                    }
+                    else
+                    {
+                        backgroundImageRelativePath = Path.GetRelativePath(themeDir, BackgroundImagePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger.Warning($"复制背景图片失败: {ex.Message}");
+                }
+            }
+
             var manifest = new ThemeManifest
             {
                 Name = Name,
@@ -420,7 +691,7 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                 {
                     Type = BackgroundType,
                     Color = BackgroundType == "SolidColor" ? BackgroundColor : null,
-                    Image = BackgroundType == "Image" ? BackgroundImagePath : null,
+                    Image = BackgroundType == "Image" ? backgroundImageRelativePath : null,
                     FillMode = BackgroundFillMode,
                     LayerOpacity = LayerOpacity
                 },
@@ -429,25 +700,9 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                     Color = c.Color,
                     Duration = c.Duration
                 }).ToList(),
-                FontFamily = null,
-                PreviewImage = null
+                FontFamily = fontFamilyValue,
+                PreviewImage = previewRelativePath
             };
-
-            // 确定保存路径
-            string savePath;
-            if (!string.IsNullOrEmpty(_editFilePath) &&
-                Path.GetExtension(_editFilePath).Equals(".json", StringComparison.OrdinalIgnoreCase))
-            {
-                savePath = _editFilePath;
-            }
-            else
-            {
-                var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes", SanitizeFileName(Name));
-                Directory.CreateDirectory(themesDir);
-                savePath = Path.Combine(themesDir, "index.json");
-            }
-            
-            manifest.PreviewImage = PreviewImage != null ? Path.GetRelativePath(Path.GetDirectoryName(savePath), PreviewImagePath) : null;
 
             var json = JsonSerializer.Serialize(manifest, App.AppJsonSerializerContext.ThemeManifest);
             File.WriteAllText(savePath, json);
@@ -565,12 +820,45 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
             var manifest = ThemeProcessor.LoadTheme(themeFilePath);
             if (manifest == null) return;
 
+            var themeDir = Path.GetDirectoryName(themeFilePath) ?? "";
+
             Name = manifest.Name;
             Author = manifest.Author;
             Description = manifest.Description;
             Version = manifest.Version;
-            PreviewImage = new Bitmap(Path.Combine(Path.GetDirectoryName(themeFilePath) ?? "",
-                manifest.PreviewImage ?? "preview.png"));
+
+            // 加载预览图
+            if (!string.IsNullOrEmpty(manifest.PreviewImage))
+            {
+                var previewFullPath = Path.Combine(themeDir, manifest.PreviewImage);
+                if (File.Exists(previewFullPath))
+                {
+                    PreviewImage = new Bitmap(previewFullPath);
+                    PreviewImagePath = previewFullPath;
+                }
+            }
+
+            // 加载字体设置
+            if (!string.IsNullOrEmpty(manifest.FontFamily))
+            {
+                var fontFamily = manifest.FontFamily;
+                if (ThemeProcessor.IsFontFilePath(fontFamily))
+                {
+                    // 自定义字体文件
+                    IsCustomFont = true;
+                    var fontFullPath = Path.Combine(themeDir, fontFamily);
+                    CustomFontPath = fontFullPath;
+                    CustomFontFileName = Path.GetFileName(fontFamily);
+                }
+                else
+                {
+                    // 系统字体
+                    IsSystemFont = true;
+                    SelectedSystemFont = fontFamily;
+                }
+
+                this.RaisePropertyChanged(nameof(FontFamilyPreview));
+            }
 
             BackgroundType = manifest.Background.Type;
             IsSolidColorBackground = manifest.Background.Type == "SolidColor";
@@ -584,7 +872,14 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
             AccentColors.Clear();
             foreach (var accent in manifest.AccentColor)
             {
-                AccentColors.Add(new AccentColorItem { Color = accent.Color, Duration = accent.Duration });
+                AccentColors.Add(new AccentColorItem
+                {
+                    Color = accent.Color.ToLower() is "accent" or "default" or "primary"
+                        ? ColorToHexConverter.ToHexString(App.FATheme.CustomAccentColor.Value,
+                            AlphaComponentPosition.Leading)
+                        : accent.Color,
+                    Duration = accent.Duration
+                });
             }
 
             if (AccentColors.Count == 0)
