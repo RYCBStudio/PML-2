@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core.MEFIntergrated;
+using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -15,8 +17,11 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     public NodesOverviewViewModel()
     {
         SelectedSortOption = SortOptions[0];
-        LoadData();
+        RefreshCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
+        LoadDataAsync();
     }
+
+    public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
 
     public AvaloniaList<InfoClasses.NodeStatus> AllNodes
     {
@@ -99,6 +104,16 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
     }
 
+    public string? ErrorMessage
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     public bool IsNoData
     {
         get;
@@ -111,27 +126,39 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private async void LoadData()
+    private async Task LoadDataAsync()
     {
         IsLoading = true;
-        var res = await Task.Run(MEFrpApiConverter.GetNodesStatusAsync);
-        if (res.code != 200)
+        ErrorMessage = null;
+        try
+        {
+            var res = await Task.Run(MEFrpApiConverter.GetNodesStatusAsync);
+            if (res.code != 200)
+            {
+                ErrorMessage = $"获取节点状态失败 (code={res.code})";
+                IsLoading = false;
+                return;
+            }
+
+            var result = new InfoClasses.NodesStatusInfo
+            {
+                NodesStatus = res.data
+            };
+
+            AllNodes = new AvaloniaList<InfoClasses.NodeStatus>(result.NodesStatus);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"获取节点状态失败: {ex.Message}";
+        }
+        finally
         {
             IsLoading = false;
-            return;
         }
-
-        var result = new InfoClasses.NodesStatusInfo
-        {
-            NodesStatus = res.data
-        };
-
-        AllNodes = new AvaloniaList<InfoClasses.NodeStatus>(result.NodesStatus);
     }
 
     private async void UpdateFilteredNodes()
     {
-        IsLoading = true;
         if (AllNodes == null)
         {
             return;
@@ -142,14 +169,11 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         // 应用搜索过滤
         if (!string.IsNullOrWhiteSpace(SearchText))
         {
-            var searchText = SearchText.ToLower();
+            var searchText = SearchText.Trim();
             query = query.Where(n =>
                 n.nodeId.ToString().Contains(searchText) ||
-                (n.name?.ToLower().Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ??
-                 false) ||
-                (n.version?.ToLower().Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ??
-                 false) ||
-                $"{n.totalTrafficIn + n.totalTrafficOut}".Contains(searchText));
+                (n.name?.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ?? false) ||
+                (n.version?.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ?? false));
         }
 
         await Task.Run(() =>
@@ -190,7 +214,6 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
             }
         });
         IsNoData = !query.Any();
-        IsLoading = false;
     }
 
     private void UpdateSummary()

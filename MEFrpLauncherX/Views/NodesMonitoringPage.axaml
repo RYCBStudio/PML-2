@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -20,8 +20,17 @@
         <core:OnlineStatusColorConverter x:Key="OnlineStatusColorConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10" RowDefinitions="Auto,Auto,*" Classes="animated">
-        <fa:ProgressRing IsIndeterminate="True" Grid.RowSpan="3" IsVisible="{Binding IsLoading}" />
+    <Grid Margin="10" RowDefinitions="Auto,Auto,Auto,*" Classes="animated">
+        <fa:ProgressRing IsIndeterminate="True" Grid.RowSpan="4" IsVisible="{Binding IsLoading}" />
+
+        <!-- 错误提示 -->
+        <Border Grid.Row="0" Margin="0,0,0,10" Padding="12" CornerRadius="8"
+                Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
+                IsVisible="{Binding ErrorMessage, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}">
+            <TextBlock Text="{Binding ErrorMessage}" 
+                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                       TextWrapping="Wrap" />
+        </Border>
 
         <Grid ColumnDefinitions="*,*,*,*,*,*">
             <Grid RowDefinitions="auto,*" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -87,7 +96,7 @@
         </Grid>
 
         <!-- 现代化搜索栏 -->
-        <Grid Grid.Row="1" Margin="0,0,0,15" ColumnDefinitions="*,Auto,Auto">
+        <Grid Grid.Row="1" Margin="0,0,0,15" ColumnDefinitions="*,Auto,Auto,Auto">
 
             <TextBox Grid.Column="0" Watermark="搜索节点..."
                      VerticalAlignment="Center"
@@ -104,11 +113,22 @@
                           Content="倒序"
                           VerticalAlignment="Center"
                           IsChecked="{Binding IsDescending}" />
+
+            <Button Grid.Column="3" Margin="10,0,0,0" Width="80"
+                    Content="刷新"
+                    VerticalAlignment="Center"
+                    Command="{Binding RefreshCommand}" />
         </Grid>
 
+        <!-- 节点列表提示 -->
+        <TextBlock Grid.Row="2" Margin="0,0,0,5" FontSize="12"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                   Text="{Binding FilteredNodes.Count, StringFormat='共 {0} 个节点'}"
+                   IsVisible="{Binding !IsLoading}" />
+
         <!-- 现代化节点列表 -->
-        <local:NoData Grid.Row="2" IsVisible="{Binding IsNoData}" />
-        <ScrollViewer Grid.Row="2">
+        <local:NoData Grid.Row="3" IsVisible="{Binding IsNoData}" />
+        <ScrollViewer Grid.Row="3">
             <ItemsControl
                 FontFamily="{StaticResource GlobalFontFamily}">
                 <ItemsControl.ItemsPanel>
@@ -125,14 +145,19 @@
                 </ItemsControl.ItemsSource>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Margin="0,5" Padding="15" CornerRadius="8">
-                            <Grid ColumnDefinitions="3*,4*,3*">
+                        <Border Margin="0,5" Padding="15" CornerRadius="8"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                            <Grid ColumnDefinitions="3*,4*,3*" RowDefinitions="Auto">
                                 <!-- 节点基本信息 -->
-                                <StackPanel Grid.Column="0">
+                                <StackPanel Grid.Column="0" Spacing="3">
                                     <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <!-- 在线状态指示点 -->
+                                        <Ellipse Width="10" Height="10" VerticalAlignment="Center"
+                                                 Fill="{Binding isOnline, Converter={StaticResource OnlineStatusColorConverter}}" />
                                         <Label Content="{Binding nodeId, StringFormat='# {0}'}" Classes="Blue"
                                                FontWeight="Bold" />
-                                        <TextBlock Text="{Binding name}" Margin="5,0,0,0" />
+                                        <TextBlock Text="{Binding name}" Margin="5,0,0,0"
+                                                   VerticalAlignment="Center" />
                                     </StackPanel>
 
 
@@ -140,6 +165,10 @@
                                         Margin="0,5,0,0"
                                         Foreground="{Binding isOnline, Converter={StaticResource OnlineStatusColorConverter}}"
                                         Text="{Binding Converter={StaticResource OnlineStatusTextConverter}}" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                        Text="{Binding version, StringFormat='版本: {0}'}" />
                                 </StackPanel>
 
                                 <!-- 流量信息 -->

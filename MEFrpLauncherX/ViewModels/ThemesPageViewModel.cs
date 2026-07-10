@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -117,6 +117,11 @@ public class ThemesPageViewModel : ViewModelBase
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> RestoreDefaultThemeCommand
+    {
+        get;
+    }
+
     public string? SearchText
     {
         get;
@@ -147,6 +152,7 @@ public class ThemesPageViewModel : ViewModelBase
                 UseShellExecute = true
             });
         });
+        RestoreDefaultThemeCommand = ReactiveCommand.CreateFromTask(RestoreDefaultThemeAsync);
         FetchOnlineThemesCommand.Execute();
         this.WhenAnyValue(x => x.SearchText).Throttle(TimeSpan.FromMilliseconds(300)).Subscribe(text =>
         {
@@ -400,5 +406,40 @@ public class ThemesPageViewModel : ViewModelBase
                 })
             }
         ]);
+    }
+
+    private async Task RestoreDefaultThemeAsync()
+    {
+        var result = await MessageBoxManager
+            .GetMessageBoxStandard("恢复默认主题",
+                "确定要恢复默认主题吗？\n\n这将删除当前选择的主题配置文件，需要重启程序后生效。",
+                ButtonEnum.YesNo, Icon.Question)
+            .ShowAsync();
+
+        if (result != ButtonResult.Yes) return;
+
+        var selectedPath = Path.Combine(Core.App.StartupPath, "Config", "Themes", "selected");
+        try
+        {
+            if (File.Exists(selectedPath))
+            {
+                File.Delete(selectedPath);
+            }
+
+            Core.App.SelectedTheme = null;
+            RefreshLocalThemes();
+
+            await MessageBoxManager
+                .GetMessageBoxStandard("提示",
+                    "默认主题已恢复，请重启程序以生效。",
+                    ButtonEnum.Ok, Icon.Info)
+                .ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            await MessageBoxManager
+                .GetMessageBoxStandard("错误", $"恢复默认主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .ShowAsync();
+        }
     }
 }
