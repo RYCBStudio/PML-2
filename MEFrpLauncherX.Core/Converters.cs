@@ -1068,3 +1068,73 @@ public class NotNullOrEmptyToBoolConverter : IValueConverter
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
+
+/// <summary>
+/// 插件状态布尔值转颜色主题转换器
+/// </summary>
+public class BoolToThemeConverter : IValueConverter
+{
+    public static BoolToThemeConverter Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled && isEnabled)
+            return new SolidColorBrush(Color.Parse("#2E7D32"));
+        return new SolidColorBrush(Color.Parse("#757575"));
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 插件启用状态转背景色
+/// </summary>
+public class StatusToBackgroundConverter : IValueConverter
+{
+    public static StatusToBackgroundConverter Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled && isEnabled)
+            return new SolidColorBrush(Color.Parse("#1B5E20"));
+        return new SolidColorBrush(Color.Parse("#424242"));
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 插件启用状态转文本
+/// </summary>
+public class StatusToTextConverter : IValueConverter
+{
+    public static StatusToTextConverter Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled)
+            return isEnabled ? "已启用" : "已禁用";
+        return "未知";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 非空字符串转可见性
+/// </summary>
+public class NotNullToVisConverter : IValueConverter
+{
+    public static NotNullToVisConverter Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is string s && !string.IsNullOrEmpty(s);
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}

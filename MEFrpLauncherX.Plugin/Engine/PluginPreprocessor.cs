@@ -1,0 +1,51 @@
+﻿using System.Text;
+using MEFrpLauncherX.Plugin.Core;
+using YamlDotNet.Serialization;
+
+namespace MEFrpLauncherX.Plugin.Engine;
+
+
+public class PluginPreprocessor
+{
+    private readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
+
+    public PluginDefinition Process(string pluginFilePath, FunctionRegistry funcRegistry)
+    {
+        var raw = PreprocessAndDeserialize(pluginFilePath);
+        // 注册函数
+        foreach (var kv in raw.Functions)
+            funcRegistry.Define(kv.Key, kv.Value);
+
+        return new PluginDefinition
+        {
+            Id = raw.Id,
+            Name = raw.Name,
+            Triggers = raw.Triggers
+        };
+    }
+
+    private RawPlugin PreprocessAndDeserialize(string path)
+    {
+        var content = File.ReadAllText(path);
+        var lines = content.Split('\n');
+        var sb = new StringBuilder();
+        var baseDir = Path.GetDirectoryName(path)!;
+
+        foreach (var line in lines)
+        {
+            if (line.TrimStart().StartsWith("#include:"))
+            {
+                var includePath = line.Split(':')[1].Trim().Trim('"', '\'');
+                var fullPath = Path.Combine(baseDir, includePath);
+                if (File.Exists(fullPath))
+                    sb.AppendLine(File.ReadAllText(fullPath));
+            }
+            else
+            {
+                sb.AppendLine(line);
+            }
+        }
+
+        return _deserializer.Deserialize<RawPlugin>(sb.ToString());
+    }
+}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -216,6 +218,13 @@ public partial class LoginPage : UserControl
                     MainWindowViewModel.Instance.IsLoggedIn = true;
                     MainWindow.Instance.MainContentControl.Content = null;
                     MainWindow.Instance.MainContentControl.Content = new MainPageFrame();
+
+                    // 触发插件事件：用户登录
+                    _ = PluginService.Instance.TriggerAsync("user.login", new Dictionary<string, object>
+                    {
+                        ["username"] = userInfo?.data?.username ?? "",
+                        ["group"] = userInfo?.data?.group ?? ""
+                    });
                 });
             }
             else

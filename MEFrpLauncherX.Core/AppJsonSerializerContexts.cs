@@ -64,6 +64,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(List<ALPConfig>))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
+[JsonSerializable(typeof(Dictionary<string, object>))]
 [JsonSerializable(typeof(JsonElement))]
 [JsonSerializable(typeof(KickProxyInfo))]
 [JsonSerializable(typeof(ToggleProxyInfo))]

@@ -46,6 +46,9 @@ public class App : Application
             WriteIndented = true,
             PropertyNameCaseInsensitive = true,
         });
+
+        // 初始化插件系统
+        PluginService.Instance.LoadPlugins();
     }
 
     public override void RegisterServices() => base.RegisterServices();

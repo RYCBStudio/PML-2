@@ -105,6 +105,7 @@
         <ProjectReference Include="..\Iciclecreek.Avalonia.TerminalWindow\Iciclecreek.Avalonia.Terminal.csproj" />
         <ProjectReference Include="..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj"/>
         <ProjectReference Include="..\MEFrpLauncherX.Fonts\MEFrpLauncherX.Fonts.csproj"/>
+        <ProjectReference Include="..\MEFrpLauncherX.Plugin\MEFrpLauncherX.Plugin.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj"/>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
@@ -160,6 +161,10 @@
         <None Remove="artifacts\**"/>
         <None Update="Config\Settings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Plugins\*.yaml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Config\Plugins\%(Filename)%(Extension)</TargetPath>
         </None>
     </ItemGroup>
     <ItemGroup>

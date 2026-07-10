@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Views.PluginListPage"
+             x:DataType="vm:PluginListViewModel">
+    <Design.DataContext>
+        <vm:PluginListViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="10">
+        <!-- 工具栏 -->
+        <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
+            <controls:CommandBar.PrimaryCommands>
+                <controls:CommandBarButton Label="重新加载" IconSource="Refresh"
+                                           Command="{Binding ReloadCommand}" />
+                <controls:CommandBarButton Label="安装插件" IconSource="Add"
+                                           Command="{Binding InstallCommand}" />
+                <controls:CommandBarButton Label="启用" IconSource="Play"
+                                           Command="{Binding EnableCommand}" />
+                <controls:CommandBarButton Label="禁用" IconSource="Pause"
+                                           Command="{Binding DisableCommand}" />
+                <controls:CommandBarButton Label="查看详情" IconSource="Code"
+                                           Command="{Binding ViewDetailCommand}" />
+                <controls:CommandBarButton Label="卸载" IconSource="Delete"
+                                           Command="{Binding UninstallCommand}" />
+                <controls:CommandBarElementContainer>
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding PluginCountText}"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="10,0" />
+                </controls:CommandBarElementContainer>
+            </controls:CommandBar.PrimaryCommands>
+        </controls:CommandBar>
+
+        <!-- 插件列表 -->
+        <ListBox Grid.Row="1" ItemsSource="{Binding Plugins}"
+                 SelectedItem="{Binding SelectedPlugin}"
+                 Margin="0,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="Auto,*,Auto" Classes="animated">
+                        <!-- 状态图标 -->
+                        <Grid  Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0">
+                            <Border Width="40" Height="40" CornerRadius="20"
+                                    Background="{Binding IsEnabled, 
+                                        Converter={x:Static core:BoolToThemeConverter.Instance}}">
+                                <TextBlock Text="🔌" FontSize="18"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
+
+                        <!-- 插件信息 -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" />
+                                <Border Padding="4,1" CornerRadius="4"
+                                        Background="{DynamicResource AccentFillColorDefaultBrush}">
+                                    <TextBlock Text="{Binding Version, StringFormat='v{0}'}"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                </Border>
+                                <Border Padding="4,1" CornerRadius="4"
+                                        Background="{Binding IsEnabled,
+                                            Converter={x:Static core:StatusToBackgroundConverter.Instance}}">
+                                    <TextBlock Text="{Binding IsEnabled,
+                                            Converter={x:Static core:StatusToTextConverter.Instance}}"
+                                               FontSize="10" />
+                                </Border>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Description}" FontSize="12"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap" />
+                            <StackPanel Orientation="Horizontal" Spacing="15">
+                                <TextBlock Text="{Binding Author, StringFormat='作者: {0}'}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                <TextBlock Text="{Binding TriggerCount, StringFormat='触发数: {0}'}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                <TextBlock Text="{Binding FunctionCount, StringFormat='函数数: {0}'}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- ID -->
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                   Text="{Binding Id}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+        <!-- 详情面板 -->
+        <Border Grid.Row="2" Padding="10" CornerRadius="8" MaxHeight="200"
+                IsVisible="{Binding PluginDetailYaml, Converter={x:Static core:NotNullToVisConverter.Instance}}"
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+            <ScrollViewer>
+                <TextBlock Text="{Binding PluginDetailYaml}"
+                           FontFamily="Consolas, monospace" FontSize="12"
+                           TextWrapping="NoWrap" />
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>
