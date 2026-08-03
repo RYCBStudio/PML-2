@@ -147,7 +147,7 @@ A: 查看崩溃日志 `[应用目录]/Logs/Crash/crash_*.log`。
 
 ## 联系与致谢
 
-- 官方网站：https://rycb.mxj.pub/mefl
+- 官方网站：https://www.rycb.tech/pml-2/
 - 开发者：RYCB Studio
 
 感谢以下开源项目：
