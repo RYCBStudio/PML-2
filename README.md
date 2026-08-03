@@ -1,5 +1,8 @@
 # MEFrpLauncherX (PML 2)
 
+> [!INFO]
+> 我们正在提高本存储库的代码质量。开发者在开发本软件时对 .NET 和 Avalonia 并不是很熟悉。请见谅。
+
 **MEFrpLauncherX**（简称 PML 2）是一个功能强大的跨平台 ME Frp 图形化启动工具，基于 Avalonia UI 开发，支持 Windows、Linux 和 macOS。
 
 ## 核心特性
