@@ -1,0 +1,155 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ---------- Windows ----------
+          - os: windows-latest
+            rid: win-x64
+            mode: aot
+          - os: windows-latest
+            rid: win-x64
+            mode: r2r
+          - os: windows-latest
+            rid: win-arm64
+            mode: aot
+          - os: windows-latest
+            rid: win-arm64
+            mode: r2r
+
+          # ---------- Linux ----------
+          - os: ubuntu-latest
+            rid: linux-x64
+            mode: aot
+          - os: ubuntu-latest
+            rid: linux-x64
+            mode: r2r
+          - os: ubuntu-latest
+            rid: linux-arm64
+            mode: aot
+          - os: ubuntu-latest
+            rid: linux-arm64
+            mode: r2r
+
+          # ---------- macOS ----------
+          - os: macos-latest
+            rid: osx-x64
+            mode: aot
+          - os: macos-latest
+            rid: osx-x64
+            mode: r2r
+          - os: macos-latest
+            rid: osx-arm64
+            mode: aot
+          - os: macos-latest
+            rid: osx-arm64
+            mode: r2r
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish (AOT)
+        if: matrix.mode == 'aot'
+        run: |
+          dotnet publish ${{ env.PROJECT }} \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishAot=true \
+            -p:StripSymbols=true \
+            -o ./publish/${{ matrix.rid }}-aot
+
+      - name: Publish (ReadyToRun)
+        if: matrix.mode == 'r2r'
+        run: |
+          dotnet publish ${{ env.PROJECT }} \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishReadyToRun=true \
+            -p:PublishSingleFile=true \
+            -o ./publish/${{ matrix.rid }}-r2r
+
+      # ========== 注入 Sentry DSN ==========
+      - name: Inject Sentry DSN
+        shell: bash
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          OUT_DIR="./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}"
+          if [ -z "$SENTRY_DSN" ]; then
+            echo "SENTRY_DSN is empty, skip injection"
+            exit 0
+          fi
+          # 使用 jq 更安全，没有 jq 就用 heredoc
+          if command -v jq >/dev/null 2>&1; then
+            jq -n --arg dsn "$SENTRY_DSN" '{SentryDsn: $dsn}' > "$OUT_DIR/sentry.json"
+          else
+            printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT_DIR/sentry.json"
+          fi
+          echo "Injected sentry.json into $OUT_DIR"
+
+      # ---------- 打包 ----------
+      - name: Pack (Windows zip)
+        if: startsWith(matrix.rid, 'win-')
+        shell: pwsh
+        run: |
+          \( name = "PML2- \){{ matrix.rid }}-${{ matrix.mode }}.zip"
+          Compress-Archive -Path "./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}/*" -DestinationPath $name
+          echo "PACK_NAME=$name" >> $env:GITHUB_ENV
+
+      - name: Pack (Linux / macOS tar.gz)
+        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-')
+        shell: bash
+        run: |
+          NAME="PML2-\( {{ matrix.rid }}- \){{ matrix.mode }}.tar.gz"
+          tar -czf "\( NAME" -C "./publish/ \){{ matrix.rid }}-${{ matrix.mode }}" .
+          echo "PACK_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PML2-\( {{ matrix.rid }}- \){{ matrix.mode }}
+          path: ${{ env.PACK_NAME }}
+          if-no-files-found: error
+
+  # 可选：自动创建 GitHub Release 并上传所有产物
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
