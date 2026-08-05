@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Views;

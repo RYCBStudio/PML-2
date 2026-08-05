@@ -1,11 +1,12 @@
 ﻿using System.Text.Json.Serialization;
+// ReSharper disable InconsistentNaming
 
-namespace MEFrpLauncherX.Core.MEFIntergrated;
+namespace MEFrpLauncherX.Core.MEFIntegrated;
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 public class InfoClasses
 {
     /// <summary>
-    ///     统计信息
+    ///     API 返回结果
     /// </summary>
     public class ApiInfo<T>
     {
@@ -55,6 +56,15 @@ public class InfoClasses
         }
     }
 
+    public class ToEditIcpDomainInfo
+    {
+        public string domain
+        {
+            get;
+            set;
+        }
+    }
+
     public class CreateProxyRequestData
     {
         public int proxyId
@@ -62,6 +72,7 @@ public class InfoClasses
             get;
             set;
         }
+
         public int nodeId
         {
             get;
@@ -127,6 +138,7 @@ public class InfoClasses
             get;
             set;
         }
+
         public Dictionary<string, string> responseHeaders
         {
             get;
@@ -174,11 +186,13 @@ public class InfoClasses
             get;
             set;
         }
+
         public string transportProtocol
         {
             get;
             set;
         }
+
         public string locations
         {
             get;
@@ -224,6 +238,40 @@ public class InfoClasses
             set;
         }
     }
+
+    public class IcpDomain
+    {
+        public string domain
+        {
+            get;
+            set;
+        }
+
+        public string natureName
+        {
+            get;
+            set;
+        }
+
+        public string username
+        {
+            get;
+            set;
+        }
+
+        public string icpId
+        {
+            get;
+            set;
+        }
+
+        public string unitName
+        {
+            get;
+            set;
+        }
+    }
+
 
     public class TrafficStatus
     {

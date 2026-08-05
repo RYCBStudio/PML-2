@@ -86,14 +86,11 @@
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.5" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
-        <PackageReference Include="ReactiveUI.Avalonia" Version="11.4.12"/>
+        <PackageReference Include="ReactiveUI.Avalonia" Version="11.4.13" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.4" />
-        <PackageReference Include="Svg.Model" Version="3.3.0" />
-        <PackageReference Include="System.Runtime.Caching" Version="10.0.6"/>
-        <PackageReference Update="Packaging.Targets">
-            <Version>0.1.232</Version>
-        </PackageReference>
+        <PackageReference Include="Svg.Model" Version="5.1.1" />
+        <PackageReference Include="System.Runtime.Caching" Version="10.0.10" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.9.6" />
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.9.6" />
     </ItemGroup>
@@ -110,7 +107,6 @@
         <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj"/>
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj"/>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
-        <ProjectReference Include="G:\VSProj\RYCB.PML2.MEFrpCaptchaLib\RYCB.PML2.MEFrpCaptchaLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Views\ConfigEditor.axaml.cs">
@@ -170,8 +166,8 @@
     </ItemGroup>
     <ItemGroup>
         <Reference Include="mscorlib"/>
-        <Reference Include="RYCB.PML.MEFrpCaptchaLib">
-            <HintPath>RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
+        <Reference Include="RYCB.PML2.MEFrpCaptchaLib">
+          <HintPath>RYCB.PML2.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="SecretLib">
             <HintPath>SecretLib.dll</HintPath>

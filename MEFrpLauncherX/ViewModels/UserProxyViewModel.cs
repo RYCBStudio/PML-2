@@ -12,6 +12,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia.ViewModels.Commands;
@@ -514,7 +515,7 @@ public class UserProxyViewModel : ViewModelBase
                 Md5Hash:
                 "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce|" + //v0.67.0_20260214_7d549bc1
                 "e2d4e8cd4fbd4f14d8101aaf4baaacec|a2b4fa6b50b05c3ebf5b888e2e07590c|" + //v0.67.0_20260302_f1907e56
-                "dfc656a83be01e772770b24a9e5447f6|5fd47701afa5c9fd2c1978a58dadc12c"    //v0.67.1_20260626_af59eefd
+                "aef147c9899db111714f60396e4b28a5|8255cc73f6ddf23be05de69e75f80aee"    //v0.67.1_20260626_af59eefd
             )
             : OperatingSystem.IsLinux()
                 ? (FileName: "mefrpc.tar",
@@ -549,7 +550,7 @@ public class UserProxyViewModel : ViewModelBase
 
         // 文件校验失败，提示用户
         var res = await MessageBox.ShowAsync(
-            $"{clientConfig.FileName} 文件校验失败，需要重新下载客户端。关闭此窗口以取消启动; 点击“否”尝试直接启动。" +
+            $"{clientConfig.FileName} 文件校验失败，需要重新下载客户端。关闭此窗口尝试直接启动; 点击“否”以取消启动。" +
             "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。",
             "警告",
             "",

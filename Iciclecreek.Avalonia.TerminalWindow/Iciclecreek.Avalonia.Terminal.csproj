@@ -29,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.18" />
-    <PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="4.0.2" />
+    <PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="4.0.4" />
     <PackageReference Include="Porta.Pty" Version="1.0.7" />
     <PackageReference Include="Unicode.net" Version="2.0.0" />
     <PackageReference Include="Wcwidth" Version="4.0.1" />

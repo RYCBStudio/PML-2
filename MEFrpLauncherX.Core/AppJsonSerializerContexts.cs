@@ -4,7 +4,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
 using RYCB.PML2.MEFrpCaptchaLib;
-using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
+using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 
 namespace MEFrpLauncherX;
 
@@ -77,6 +77,9 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(DeleteProxyInfo))]
 [JsonSerializable(typeof(SecureUserInfo))]
 [JsonSerializable(typeof(LocationNameInfo[]))]
+[JsonSerializable(typeof(ToEditIcpDomainInfo))]
+[JsonSerializable(typeof(List<IcpDomain>))]
+[JsonSerializable(typeof(ApiInfo<List<IcpDomain>>))]
 [JsonSourceGenerationOptions(IncludeFields = true, PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

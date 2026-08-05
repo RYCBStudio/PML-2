@@ -1,28 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reactive;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Threading;
+using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ReactiveUI;
 
 namespace MEFrpLauncherX.Views;
 
 public partial class UserCenterPage : UserControl
 {
+    private UserCenterViewModel _vm;
+
     public UserCenterPage()
     {
         InitializeComponent();
-        DataContext = null;
+        _vm = new UserCenterViewModel();
+        DataContext = _vm;
+        _vm.IcpDomainsChanged += (s, e) =>
+        {
+            UserControl_Loaded(null, null);
+        };
     }
 
     public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
@@ -123,6 +139,21 @@ public partial class UserCenterPage : UserControl
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
                     trafficControl.IsVisible = true;
                 });
+                var domains = await MEFrpApiConverter.GetIcpDomainListAsync();
+                if (domains.code == 200)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        _vm.IcpDomains.Clear();
+                        foreach (var domain in domains.data ?? [])
+                        {
+                            _vm.IcpDomains.Add(domain);
+                        }
+
+                        _vm.AddedDomains = _vm.IcpDomains.Count;
+                    });
+                }
+
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
             });
         }
@@ -146,7 +177,7 @@ public partial class UserCenterPage : UserControl
         {
             var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ?? 
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ??
                                                                         """
                                                                         {
                                                                             "code": -1,
@@ -243,4 +274,132 @@ public partial class UserCenterPage : UserControl
             Environment.Exit(0); // 最简化的强制退出
         }
     }
+}
+
+public partial class UserCenterViewModel : ViewModelBase
+{
+    public event EventHandler? IcpDomainsChanged;
+
+    public int AddedDomains
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public AvaloniaList<InfoClasses.IcpDomain> IcpDomains
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public ReactiveCommand<InfoClasses.IcpDomain, Unit> DeleteIcpDomainCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> AddDomainCommand
+    {
+        get;
+    }
+
+    public bool IsWorking
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public UserCenterViewModel()
+    {
+        IcpDomains = [];
+        DeleteIcpDomainCommand = ReactiveCommand.CreateFromTask<InfoClasses.IcpDomain>(async (domain) =>
+        {
+            try
+            {
+                IsWorking = true;
+                await MEFrpApiConverter.DeleteIcpDomainAsync(domain.domain);
+                IcpDomains.Remove(domain);
+                AddedDomains--;
+                Growl.Success($"删除成功: {domain.domain}");
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger.Error(ex);
+                Growl.Error(ex.Message, "删除失败");
+            }
+            finally
+            {
+                IsWorking = false;
+            }
+        }, this.WhenAnyValue(x => x.IsWorking, (working) => !working));
+        AddDomainCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var domainBox = new TextBox()
+            {
+                Watermark = "请输入备案域名",
+                Margin = new Thickness(10),
+            };
+            var inputDialog = new ContentDialog()
+            {
+                Title = "添加备案域名",
+                Content = domainBox,
+                PrimaryButtonText = "添加",
+                CloseButtonText = "取消",
+                IsPrimaryButtonEnabled = true,
+                DefaultButton = ContentDialogButton.Primary,
+            };
+            var res = await inputDialog.ShowAsync();
+            if (res != ContentDialogResult.Primary || domainBox.Text.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            if (IcpDomains.Any(d => d.domain == domainBox.Text))
+            {
+                Growl.Info("该备案域名已存在", "添加失败");
+                return;
+            }
+
+            var domainRegex = DomainRegex();
+            if (!domainRegex.IsMatch(domainBox.Text))
+            {
+                Growl.Warning("请输入正确的备案域名", "添加失败");
+                return;
+            }
+
+            var result = domainBox.Text;
+
+            try
+            {
+                IsWorking = true;
+                await MEFrpApiConverter.AddIcpDomainAsync(result.Trim());
+                var domains = await MEFrpApiConverter.GetIcpDomainListAsync();
+                IcpDomains.Clear();
+                if (domains.data == null || domains.data?.Count == 0)
+                {
+                    Growl.Warning("没有备案域名", "添加失败");
+                    return;
+                }
+
+                foreach (var domain in domains.data)
+                {
+                    IcpDomains.Add(domain);
+                }
+
+                AddedDomains = IcpDomains.Count;
+                Growl.Success($"添加成功: {result.Trim()}");
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger.Error(ex);
+                Growl.Warning(ex.Message, "添加失败");
+            }
+            finally
+            {
+                IsWorking = false;
+            }
+        }, this.WhenAnyValue(x => x.IsWorking, (working) => !working));
+    }
+
+    [GeneratedRegex(@"^(?=.{1,255}$)([0-9A-Za-z](?:[0-9A-Za-z-]{0,61}[0-9A-Za-z])?\.)+[A-Za-z]{2,}$")]
+    private static partial Regex DomainRegex();
 }

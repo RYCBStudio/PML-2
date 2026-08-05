@@ -645,7 +645,7 @@
           }
         }
       },
-      "Onigwrap/1.0.10": {
+      "Onigwrap/1.0.11": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Onigwrap.dll": {}
@@ -712,11 +712,11 @@
           }
         }
       },
-      "ReactiveUI/23.2.1": {
+      "ReactiveUI/23.2.28": {
         "type": "package",
         "dependencies": {
           "DynamicData": "9.4.31",
-          "Splat": "19.3.1",
+          "Splat": "19.4.1",
           "System.Reactive": "6.1.0"
         },
         "compile": {
@@ -743,7 +743,7 @@
           }
         }
       },
-      "Sentry/6.6.0": {
+      "Sentry/6.8.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -990,12 +990,11 @@
           }
         }
       },
-      "Splat/19.3.1": {
+      "Splat/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Builder": "19.3.1",
-          "Splat.Logging": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Builder": "19.4.1",
+          "Splat.Logging": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.dll": {
@@ -1008,11 +1007,10 @@
           }
         }
       },
-      "Splat.Builder/19.3.1": {
+      "Splat.Builder/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Core": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Core": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.Builder.dll": {
@@ -1025,11 +1023,8 @@
           }
         }
       },
-      "Splat.Core/19.3.1": {
+      "Splat.Core/19.4.1": {
         "type": "package",
-        "dependencies": {
-          "System.Reactive": "6.1.0"
-        },
         "compile": {
           "lib/net10.0/Splat.Core.dll": {
             "related": ".xml"
@@ -1041,11 +1036,10 @@
           }
         }
       },
-      "Splat.Logging/19.3.1": {
+      "Splat.Logging/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Core": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Core": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.Logging.dll": {
@@ -1083,11 +1077,11 @@
           "lib/net8.0/Svg.Model.dll": {}
         }
       },
-      "System.Configuration.ConfigurationManager/10.0.6": {
+      "System.Configuration.ConfigurationManager/10.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Diagnostics.EventLog": "10.0.6",
-          "System.Security.Cryptography.ProtectedData": "10.0.6"
+          "System.Diagnostics.EventLog": "10.0.10",
+          "System.Security.Cryptography.ProtectedData": "10.0.10"
         },
         "compile": {
           "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
@@ -1103,7 +1097,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "System.Diagnostics.EventLog/10.0.6": {
+      "System.Diagnostics.EventLog/10.0.10": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Diagnostics.EventLog.dll": {
@@ -1145,10 +1139,10 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.Runtime.Caching/10.0.6": {
+      "System.Runtime.Caching/10.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Configuration.ConfigurationManager": "10.0.6"
+          "System.Configuration.ConfigurationManager": "10.0.10"
         },
         "compile": {
           "lib/net10.0/System.Runtime.Caching.dll": {
@@ -1170,7 +1164,7 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/10.0.6": {
+      "System.Security.Cryptography.ProtectedData/10.0.10": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
@@ -1186,10 +1180,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "TextMateSharp/2.0.3": {
+      "TextMateSharp/2.0.4": {
         "type": "package",
         "dependencies": {
-          "Onigwrap": "1.0.10"
+          "Onigwrap": "1.0.11"
         },
         "compile": {
           "lib/netstandard2.0/TextMateSharp.dll": {}
@@ -1198,32 +1192,16 @@
           "lib/netstandard2.0/TextMateSharp.dll": {}
         }
       },
-      "TextMateSharp.Grammars/2.0.3": {
+      "TextMateSharp.Grammars/2.0.4": {
         "type": "package",
         "dependencies": {
-          "TextMateSharp": "2.0.3"
+          "TextMateSharp": "2.0.4"
         },
         "compile": {
           "lib/netstandard2.0/TextMateSharp.Grammars.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/TextMateSharp.Grammars.dll": {}
-        }
-      },
-      "Tomlyn/2.2.1": {
-        "type": "package",
-        "compile": {
-          "lib/net10.0/Tomlyn.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net10.0/Tomlyn.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/Tomlyn.targets": {}
         }
       },
       "Vecc.YamlDotNet.Analyzers.StaticGenerator/18.1.0": {
@@ -1255,24 +1233,14 @@
           "SkiaSharp": "3.119.4",
           "SkiaSharp.NativeAssets.Linux": "3.119.4",
           "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.4",
-          "TextMateSharp": "2.0.3",
-          "TextMateSharp.Grammars": "2.0.3"
+          "TextMateSharp": "2.0.4",
+          "TextMateSharp.Grammars": "2.0.4"
         },
         "compile": {
           "bin/placeholder/MarkdownAIRender.dll": {}
         },
         "runtime": {
           "bin/placeholder/MarkdownAIRender.dll": {}
-        }
-      },
-      "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "compile": {
-          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
         }
       }
     }
@@ -2239,10 +2207,10 @@
         "npinyin.core.nuspec"
       ]
     },
-    "Onigwrap/1.0.10": {
-      "sha512": "eujNEpEhCl4UiqHTG0CeG/sWS8v/iYXGqUpaVkgBmYRZp3Utmz/aw38fuFL2rcnhj1FNfHwHaxGDeLY34a3nEA==",
+    "Onigwrap/1.0.11": {
+      "sha512": "5/WAxSYWfiiPzp1X13qqdqjFmYLKDD/U7Vh3WCkKxWG9BjqdrXnQE5fCKCFJX+xWvuYLTxwZIVWBwBWObViE8g==",
       "type": "package",
-      "path": "onigwrap/1.0.10",
+      "path": "onigwrap/1.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2261,7 +2229,7 @@
         "buildTransitive/netstandard1.0/wasm/3.1.56/st/libonigwrap.a",
         "lib/net471/Onigwrap.dll",
         "lib/netstandard2.0/Onigwrap.dll",
-        "onigwrap.1.0.10.nupkg.sha512",
+        "onigwrap.1.0.11.nupkg.sha512",
         "onigwrap.nuspec",
         "runtimes/linux-arm64/native/libonigwrap.so",
         "runtimes/linux-bionic-arm64/native/libonigwrap.so",
@@ -2278,10 +2246,10 @@
         "runtimes/win-x86/native/libonigwrap.dll"
       ]
     },
-    "ReactiveUI/23.2.1": {
-      "sha512": "gSvc1Qe85eNroHpzmOlYar8x768QcbZ2YliXZ6D5QsKrsvhvRTnCM40aKlFeuqny4ldXoGCeo3+QP0HW2R7XKA==",
+    "ReactiveUI/23.2.28": {
+      "sha512": "9sSuHnMcLTLhgMTQpQO6Jhz9Cbub3Pg44i6FS4Ot4UtbV8dpwMH3JGzGjT72oav4aSrJlmzbFyI87gX55oPzLA==",
       "type": "package",
-      "path": "reactiveui/23.2.1",
+      "path": "reactiveui/23.2.28",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2326,7 +2294,7 @@
         "lib/net9.0/ReactiveUI.dll",
         "lib/net9.0/ReactiveUI.xml",
         "logo.png",
-        "reactiveui.23.2.1.nupkg.sha512",
+        "reactiveui.23.2.28.nupkg.sha512",
         "reactiveui.nuspec"
       ]
     },
@@ -2355,10 +2323,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.6.0": {
-      "sha512": "1D3xo3P9Y94VQN3RoV/86XqgtylHp1pdeEml3/UB649BrzJeZ/pqO/o8YgJ5g+GqpMQiGI09yjAI7s5ff2A1IA==",
+    "Sentry/6.8.0": {
+      "sha512": "amUjwslDtdx1p8r6z4APCxM8vHCKG4CBamPpSTwxmTMoBQ2CLwx2m3CaIttJXRT/hw9S5rNfXgjol2OqADytLQ==",
       "type": "package",
-      "path": "sentry/6.6.0",
+      "path": "sentry/6.8.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2407,7 +2375,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.6.0.nupkg.sha512",
+        "sentry.6.8.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -2722,10 +2690,10 @@
         "skiasharp.nativeassets.win32.nuspec"
       ]
     },
-    "Splat/19.3.1": {
-      "sha512": "at6uM1+KfkjyjfYRIiiUjTBUTEwxBysoLOE4zuxGCy6kqNAG9mpSGliTkZtsPe8WqJuU6+Jup7oOoNdjz5R8FQ==",
+    "Splat/19.4.1": {
+      "sha512": "3VJOloRQA3bgbAxyNAi4mvLAR/mKH3h1agN5pIrUXvp9lAA2/rvUgxOYjt+GZ4suouLfXxkeKcS/bRjSclo1LQ==",
       "type": "package",
-      "path": "splat/19.3.1",
+      "path": "splat/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2744,14 +2712,14 @@
         "lib/net9.0/Splat.dll",
         "lib/net9.0/Splat.xml",
         "logo.png",
-        "splat.19.3.1.nupkg.sha512",
+        "splat.19.4.1.nupkg.sha512",
         "splat.nuspec"
       ]
     },
-    "Splat.Builder/19.3.1": {
-      "sha512": "FR9ISOBiEV/wXTq0oU+VrGZmsWVEE/yWkI79oeXF7luvr9P6GKRzZD+acjl+5T8oAJdXPWnBhFTJ/XDpAEW35Q==",
+    "Splat.Builder/19.4.1": {
+      "sha512": "9i0RLWEwfheI8aI17WaW8AJmNlFVi7LaX3XQwAavGqUaJJi7Vp5Eh9umWqVQYBLjs87ztVLmax/OMzMyW2igKQ==",
       "type": "package",
-      "path": "splat.builder/19.3.1",
+      "path": "splat.builder/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2770,14 +2738,14 @@
         "lib/net9.0/Splat.Builder.dll",
         "lib/net9.0/Splat.Builder.xml",
         "logo.png",
-        "splat.builder.19.3.1.nupkg.sha512",
+        "splat.builder.19.4.1.nupkg.sha512",
         "splat.builder.nuspec"
       ]
     },
-    "Splat.Core/19.3.1": {
-      "sha512": "MrRbpO/wdWtAfH5c2Nys8Bm7EQ5yi+IAJD3AJsCUMyaRssImIhqmbC7QwfXRnpC2EXOdGENRi0NCTf6y5ODWxQ==",
+    "Splat.Core/19.4.1": {
+      "sha512": "fOjcUDP9YzJPZnSDI2eBO+NwRoEJVFEkTGlh/tFa7GUXc5mtMcQdwak60Ju4DWvPSAfsxlu2geObmhZAQe1VLg==",
       "type": "package",
-      "path": "splat.core/19.3.1",
+      "path": "splat.core/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2796,14 +2764,14 @@
         "lib/net9.0/Splat.Core.dll",
         "lib/net9.0/Splat.Core.xml",
         "logo.png",
-        "splat.core.19.3.1.nupkg.sha512",
+        "splat.core.19.4.1.nupkg.sha512",
         "splat.core.nuspec"
       ]
     },
-    "Splat.Logging/19.3.1": {
-      "sha512": "u4MCO7dFKCX9+dnxNhbAWB9GmtY70fvVGexqr3YoesevExijpYoMiPpsCSYk36bJyKpq9XVgyJBxdg4ChrPS3A==",
+    "Splat.Logging/19.4.1": {
+      "sha512": "bvudJQxxMnHIa9dtZaUUCpvmd96rQxA0yjrZLoB4OSiAJpIxMCDCwnDmG6RhDyW2pS3O0xef2e1STY/oL1PqRw==",
       "type": "package",
-      "path": "splat.logging/19.3.1",
+      "path": "splat.logging/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2822,7 +2790,7 @@
         "lib/net9.0/Splat.Logging.dll",
         "lib/net9.0/Splat.Logging.xml",
         "logo.png",
-        "splat.logging.19.3.1.nupkg.sha512",
+        "splat.logging.19.4.1.nupkg.sha512",
         "splat.logging.nuspec"
       ]
     },
@@ -2855,10 +2823,10 @@
         "svg.model.nuspec"
       ]
     },
-    "System.Configuration.ConfigurationManager/10.0.6": {
-      "sha512": "NQyzNGPPKUf5ykuPcUl1oKiY/gS+r9iASQmc8ITcwC6jBC20C9aFMIrBznpirpkoRev6I+p9n11u5QcqTfr+vg==",
+    "System.Configuration.ConfigurationManager/10.0.10": {
+      "sha512": "64jtHt9yLYi6VHMF5AwDj6BGM/MZrygv55SXl0MOIkFsFjGwRuxV3/QgEm7NTp3TQIx+YNX4S6dNpY08fJ3+3g==",
       "type": "package",
-      "path": "system.configuration.configurationmanager/10.0.6",
+      "path": "system.configuration.configurationmanager/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2879,15 +2847,15 @@
         "lib/net9.0/System.Configuration.ConfigurationManager.xml",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.xml",
-        "system.configuration.configurationmanager.10.0.6.nupkg.sha512",
+        "system.configuration.configurationmanager.10.0.10.nupkg.sha512",
         "system.configuration.configurationmanager.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.EventLog/10.0.6": {
-      "sha512": "RMe4gRBwSVd1O6HVRjNwLgcH2jjrT8sHyNRJegZLX68voA+HzMf1xZPvFxMMDpyW86B9U2pYslgl4DFCE61WyA==",
+    "System.Diagnostics.EventLog/10.0.10": {
+      "sha512": "OvGz3PrzuAI/Sj7LTcXcCe3FClRI1IyRMZjNONcZtFh+Ww7nAtSh4kh08r8KVe/xxkXJPjR0Y1jF7H+N42d4xQ==",
       "type": "package",
-      "path": "system.diagnostics.eventlog/10.0.6",
+      "path": "system.diagnostics.eventlog/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2917,7 +2885,7 @@
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.Messages.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.xml",
-        "system.diagnostics.eventlog.10.0.6.nupkg.sha512",
+        "system.diagnostics.eventlog.10.0.10.nupkg.sha512",
         "system.diagnostics.eventlog.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2949,10 +2917,10 @@
         "system.reactive.nuspec"
       ]
     },
-    "System.Runtime.Caching/10.0.6": {
-      "sha512": "mvFC/4dX845IFW1fYN2TEqN2WeZ0ut1uNImwAcCm81bTw1Sj/n7tkdL++CdgEq9X5kecMEoe4g82TtANAjCbVQ==",
+    "System.Runtime.Caching/10.0.10": {
+      "sha512": "qXPub77NXudQuVMilGBNlLkgKacwVwubIiSGsGFKQna6GbNNr2HBtQ6DyzWms3JNfPnR7/GJ+ZETFhcMrqNYaw==",
       "type": "package",
-      "path": "system.runtime.caching/10.0.6",
+      "path": "system.runtime.caching/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2982,15 +2950,15 @@
         "runtimes/win/lib/net8.0/System.Runtime.Caching.xml",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.dll",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.xml",
-        "system.runtime.caching.10.0.6.nupkg.sha512",
+        "system.runtime.caching.10.0.10.nupkg.sha512",
         "system.runtime.caching.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Security.Cryptography.ProtectedData/10.0.6": {
-      "sha512": "XsGj3pcZ4PIqz9Vhk7ymbL9iNQzOAnDzHmMBqK1rzjjfQBJ4AUZVJQWbDmTKUS8BIXX53QBDRrdiCpwdWfZM9A==",
+    "System.Security.Cryptography.ProtectedData/10.0.10": {
+      "sha512": "BKt0SQgq2lq3ESE68jkeLwv95ypANrPDtkTOIFGcnhg2aRUeUUBDrQlkVDZctrg1WenVcvn5P5XZnuYI7q6rFQ==",
       "type": "package",
-      "path": "system.security.cryptography.protecteddata/10.0.6",
+      "path": "system.security.cryptography.protecteddata/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3017,54 +2985,33 @@
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
-        "system.security.cryptography.protecteddata.10.0.6.nupkg.sha512",
+        "system.security.cryptography.protecteddata.10.0.10.nupkg.sha512",
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "TextMateSharp/2.0.3": {
-      "sha512": "w0wGeqlBi9SYrzxpS1DBcEfiVCs5NY18Yl5YBIsHzXTXQd0OLOh3mP4LRuFvcktR/1MG8nSBHSMJj0rFvrPk+A==",
+    "TextMateSharp/2.0.4": {
+      "sha512": "5Pvn+A4zb1IF+ACAVhgw1aGf9kTyx6j7v5hdup7nCS89Nzby8KQAlCfQ54VC/GAsEoQwh4zKa5MKlAaql8nkPg==",
       "type": "package",
-      "path": "textmatesharp/2.0.3",
+      "path": "textmatesharp/2.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/TextMateSharp.dll",
-        "textmatesharp.2.0.3.nupkg.sha512",
+        "textmatesharp.2.0.4.nupkg.sha512",
         "textmatesharp.nuspec"
       ]
     },
-    "TextMateSharp.Grammars/2.0.3": {
-      "sha512": "qkI1ogusuyGCGTgeyhljDM+GEfATOexoUTqLIgSb5P0ojmfhRXWfSTRXXJRpZkLDErShJ7RWOb+p10lHfhhO+Q==",
+    "TextMateSharp.Grammars/2.0.4": {
+      "sha512": "jzOY00q5u5Vs4L9n2m2PnRZDGwWt2uwkOLh7qlVdCx1kkGSn5eaW5XgnYCyTzEbsCwLV2xlEolnNkr/wuIMAbA==",
       "type": "package",
-      "path": "textmatesharp.grammars/2.0.3",
+      "path": "textmatesharp.grammars/2.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/TextMateSharp.Grammars.dll",
-        "textmatesharp.grammars.2.0.3.nupkg.sha512",
+        "textmatesharp.grammars.2.0.4.nupkg.sha512",
         "textmatesharp.grammars.nuspec"
-      ]
-    },
-    "Tomlyn/2.2.1": {
-      "sha512": "pCdh5Y2o6PBt+6puOPxUVnlW0CgzeZjqYsfx7oFHFuvg5snTvNFHrjwsSDnnXy/4Wu0KK5xniH52JJqrrVo5dg==",
-      "type": "package",
-      "path": "tomlyn/2.2.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Tomlyn.png",
-        "analyzers/dotnet/cs/Tomlyn.SourceGeneration.dll",
-        "buildTransitive/Tomlyn.targets",
-        "lib/net10.0/Tomlyn.dll",
-        "lib/net10.0/Tomlyn.xml",
-        "lib/net8.0/Tomlyn.dll",
-        "lib/net8.0/Tomlyn.xml",
-        "lib/netstandard2.0/Tomlyn.dll",
-        "lib/netstandard2.0/Tomlyn.xml",
-        "readme.md",
-        "tomlyn.2.2.1.nupkg.sha512",
-        "tomlyn.nuspec"
       ]
     },
     "Vecc.YamlDotNet.Analyzers.StaticGenerator/18.1.0": {
@@ -3108,11 +3055,6 @@
       "type": "project",
       "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
       "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
-    },
-    "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
-      "type": "project",
-      "path": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj",
-      "msbuildProject": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3127,15 +3069,13 @@
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
-      "RYCB.PML2.MEFrpCaptchaLib >= 26.1.0",
-      "ReactiveUI >= 23.2.1",
+      "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.6.0",
+      "Sentry >= 6.8.0",
       "SkiaSharp >= 3.119.4",
       "SkiaSharp.NativeAssets.Linux >= 3.119.4",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.4",
-      "System.Runtime.Caching >= 10.0.6",
-      "Tomlyn >= 2.2.1",
+      "System.Runtime.Caching >= 10.0.10",
       "Vecc.YamlDotNet.Analyzers.StaticGenerator >= 18.1.0",
       "YamlDotNet >= 18.1.0"
     ]
@@ -3172,13 +3112,11 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
             "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
-            },
-            "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj": {
-              "projectPath": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
             }
           }
         }
@@ -3197,6 +3135,7 @@
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Avalonia": {
@@ -3237,7 +3176,7 @@
           },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[23.2.1, )"
+            "version": "[23.2.28, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -3245,7 +3184,7 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.6.0, )"
+            "version": "[6.8.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
@@ -3261,11 +3200,7 @@
           },
           "System.Runtime.Caching": {
             "target": "Package",
-            "version": "[10.0.6, )"
-          },
-          "Tomlyn": {
-            "target": "Package",
-            "version": "[2.2.1, )"
+            "version": "[10.0.10, )"
           },
           "Vecc.YamlDotNet.Analyzers.StaticGenerator": {
             "target": "Package",

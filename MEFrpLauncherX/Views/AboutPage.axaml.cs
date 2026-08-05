@@ -445,11 +445,13 @@ public partial class AboutPage : UserControl
             Content = feedbackForm,
             IsPrimaryButtonEnabled = true,
             PrimaryButtonText = "确定",
-            MinHeight = 200
+            MinHeight = 200,
+            DefaultButton = ContentDialogButton.Primary,
+            CloseButtonText = "取消",
         };
-        await cd.ShowAsync();
+        var res = await cd.ShowAsync();
         if (!(feedbackForm.Email.IsNullOrEmpty() ||
-              feedbackForm.Feedback.IsNullOrEmpty()))
+              feedbackForm.Feedback.IsNullOrEmpty()) || res == ContentDialogResult.Primary)
         {
             //var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
             //if (res.success)

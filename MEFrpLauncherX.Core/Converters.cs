@@ -6,7 +6,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
-using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
+using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;
 #pragma warning disable CS8604 // 引用类型参数可能为 null。

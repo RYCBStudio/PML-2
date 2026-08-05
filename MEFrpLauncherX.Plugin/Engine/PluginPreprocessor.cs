@@ -14,7 +14,9 @@ public class PluginPreprocessor
         var raw = PreprocessAndDeserialize(pluginFilePath);
         // 注册函数
         foreach (var kv in raw.Functions)
+        {
             funcRegistry.Define(kv.Key, kv.Value);
+        }
 
         return new PluginDefinition
         {
