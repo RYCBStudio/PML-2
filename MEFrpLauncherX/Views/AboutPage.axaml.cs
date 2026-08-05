@@ -464,6 +464,7 @@ public partial class AboutPage : UserControl
             vm.SubmitProgress = 2.6;
             Growl.Success("反馈提交成功");
             vm.SubmitProgress = 3;
+            await Task.Delay(500);
             vm.IsSubmittingFeedback = false;
             //}
             //else

@@ -58,7 +58,6 @@ public class AboutViewModel : ViewModelBase
         new() { Name = "FluentAvaloniaUI", Url = "https://github.com/amwx/FluentAvalonia", License = "MIT" },
         new() { Name = "ReactiveUI", Url = "https://github.com/reactiveui/ReactiveUI", License = "MIT" },
         new() { Name = "LiveCharts2", Url = "https://github.com/beto-rodriguez/LiveCharts2", License = "MIT" },
-        new() { Name = "Mapsui", Url = "https://github.com/Mapsui/Mapsui", License = "MIT" },
         new()
         {
             Name = "MessageBox.Avalonia", Url = "https://github.com/AvaloniaCommunity/MessageBox.Avalonia",
@@ -98,12 +97,6 @@ public class AboutViewModel : ViewModelBase
     public double SubmitProgress
     {
         get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            this.RaisePropertyChanged(nameof(IsEndless));
-        }
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
-
-    public bool IsEndless => SubmitProgress is < 0 or > 4;
 }

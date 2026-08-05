@@ -108,7 +108,7 @@
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <DockPanel HorizontalSpacing="4">
                                             <controls1:ProgressRing IsVisible="{Binding IsSubmittingFeedback}"
-                                                                    Maximum="3" Value="{Binding SubmitProgress}"
+                                                                    Maximum="3" Value="{Binding SubmitProgress, Mode=OneWay}"
                                                                     IsIndeterminate="False"
                                                                     DockPanel.Dock="Right" VerticalAlignment="Top"
                                                                     Height="12">
