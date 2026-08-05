@@ -119,7 +119,7 @@ dotnet publish MEFrpLauncherX/MEFrpLauncherX.csproj -c Release -r osx-x64 --self
 
 ## 常见问题
 
-**Q: 编译时提示找不到 RYCB.PML.MEFrpCaptchaLib 或 SecretLib？**  
+**Q: 编译时提示找不到 RYCB.PML2.MEFrpCaptchaLib 或 SecretLib？**  
 A: 这些是专有闭源库，需要自行获取并放置到项目引用路径。详见上方「处理专有依赖」。
 
 **Q: Linux 下中文字体显示异常？**  
