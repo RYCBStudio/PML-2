@@ -13,6 +13,9 @@
     x:Class="MEFrpLauncherX.Views.UserCenterPage"
     FontFamily="{StaticResource GlobalFontFamily}"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <views:UserCenterViewModel />
+    </Design.DataContext>
     <ScrollViewer x:Name="MainViewer">
         <StackPanel Margin="20" Spacing="16" Classes="animated">
 
@@ -118,12 +121,61 @@
                 Header="流量统计"
                 IconSource="MapDrive"
                 Description="查看近期流量使用趋势"
-                IsExpanded="True">
+                IsExpanded="False">
                 <controls1:SettingsExpanderItem>
                     <Panel MinHeight="300">
                         <controls:TrafficStatusControl x:Name="trafficControl" />
                     </Panel>
                 </controls1:SettingsExpanderItem>
+            </controls1:SettingsExpander>
+
+            <controls1:SettingsExpander IsExpanded="True"
+                                        Header="域名白名单"
+                                        IconSource="CloudSyncComplete"
+                                        Description="查看您的用于「中国大陆(不含港澳台)」节点创建 HTTP/HTTPS 隧道的域名白名单">
+                <StackPanel Spacing="5">
+                    <controls1:InfoBar Severity="Informational" IsOpen="True"
+                                       Message="这里是用于「中国大陆(不含港澳台)」节点创建 HTTP/HTTPS 隧道的域名白名单，您的域名需要拥有工业和信息化部的备案记录才可添加。 非中国大陆节点建站，域名无需过白。" />
+                    <controls1:InfoBar Severity="Warning" IsOpen="True"
+                                       Message="在填写时，请直接填写根域名，例如 mefrp.com, 不要填写 www.mefrp.com 等子域名，免费子域名请勿在此处填写。我们使用实时数据自动过白，提交无效的域名可能导致您被通报！" />
+                    <controls1:InfoBar Severity="Error" IsOpen="True" Message="幻缘映射不提供任何的域名备案服务，请自行根据服务商要求备案。" />
+                    <Panel>
+                        <controls1:SettingsExpanderItem Content="添加域名" Command="{Binding AddDomainCommand}"
+                                                        Description="{Binding AddedDomains, StringFormat='已添加 {0} 个域名'}"
+                                                        ActionIconSource="ChevronRight" IsClickEnabled="True" />
+                        <controls1:ProgressRing HorizontalAlignment="Right" Margin="0 0 25 0" Height="20" IsVisible="{Binding IsWorking}" />
+                    </Panel>
+                    <ListBox ItemsSource="{Binding IcpDomains}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Classes="Danger"
+                                            Command="{Binding $parent[UserControl].DataContext?.DeleteIcpDomainCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <controls1:SymbolIcon Symbol="Delete" />
+                                        </Button.Content>
+                                    </Button>
+                                    <StackPanel Spacing="5">
+                                        <TextBlock Text="{Binding domain}"
+                                                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                            <TextBlock.Text>
+                                                <MultiBinding>
+                                                    <MultiBinding.StringFormat>
+                                                        {0} | {1}
+                                                    </MultiBinding.StringFormat>
+                                                    <Binding Path="icpId" />
+                                                    <Binding Path="unitName" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </controls1:SettingsExpander>
 
             <!-- 操作区域 -->

@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -39,6 +39,14 @@
                                              x:Name="SettingsPageBtn" IconSource="Setting" Content="设置" />
                 <controls:NavigationViewItem Tag="Theme"
                                              x:Name="ThemesPageBtn" IconSource="Library" Content="主题" />
+                <controls:NavigationViewItem Tag="Plugin" 
+                                             x:Name="PluginListPageBtn" Content="插件">
+                    <controls:NavigationViewItem.IconSource>
+                        <controls:FontIconSource
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xEA86;" />
+                    </controls:NavigationViewItem.IconSource>
+                </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="About"
                                              x:Name="AboutPageBtn" Content="关于">
                     <controls:NavigationViewItem.IconSource>

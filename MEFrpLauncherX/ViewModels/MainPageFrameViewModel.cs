@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive;
 using Avalonia.Controls;
 using MEFrpLauncherX.Core;
@@ -22,6 +22,7 @@ public class MainPageFrameViewModel : ViewModelBase
         NavigateToTerminalCommand = CreateNavigationCommand(() => TerminalPage ?? new TerminalPage());
         NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
         NavigateToThemeCommand = CreateNavigationCommand(() => new ThemesPage());
+        NavigateToPluginCommand = CreateNavigationCommand(() => new PluginListPage());
     }
 
     public bool IsMenuOpen
@@ -95,6 +96,11 @@ public class MainPageFrameViewModel : ViewModelBase
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> NavigateToPluginCommand
+    {
+        get;
+    }
+
     // 静态页面实例
     public static AboutPage AboutPage
     {
@@ -153,6 +159,9 @@ public class MainPageFrameViewModel : ViewModelBase
                 break;
             case "Theme":
                 NavigateToThemeCommand.Execute().Subscribe();
+                break;
+            case "Plugin":
+                NavigateToPluginCommand.Execute().Subscribe();
                 break;
             default:
                 NavigateToHomeCommand.Execute().Subscribe();

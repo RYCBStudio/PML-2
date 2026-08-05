@@ -10,6 +10,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Models;
@@ -522,19 +523,19 @@ public partial class CreateProxyPage : UserControl
                     _createProxyPageViewModel.CurrentPage = page;
                 }
             }
-            else if (_createProxyPageViewModel.SelectedType is 3) //地图模式
-            {
-                if (_createProxyPageViewModel.pages.TryGetValue("Map", out var control))
-                {
-                    _createProxyPageViewModel.CurrentPage = control as MappedNodesContainer;
-                }
-                else
-                {
-                    var page = new MappedNodesContainer();
-                    _createProxyPageViewModel.pages["Map"] = page;
-                    _createProxyPageViewModel.CurrentPage = page;
-                }
-            }
+            // else if (_createProxyPageViewModel.SelectedType is 3) //地图模式
+            // {
+            //     if (_createProxyPageViewModel.pages.TryGetValue("Map", out var control))
+            //     {
+            //         _createProxyPageViewModel.CurrentPage = control as MappedNodesContainer;
+            //     }
+            //     else
+            //     {
+            //         var page = new MappedNodesContainer();
+            //         _createProxyPageViewModel.pages["Map"] = page;
+            //         _createProxyPageViewModel.CurrentPage = page;
+            //     }
+            // }
             else
             {
                 // 为避免虚拟化面板复用带来的布局问题，始终创建新的 NodesContainer 并加载数据

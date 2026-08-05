@@ -6,9 +6,10 @@ using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
-using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
+using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
 
 namespace MEFrpLauncherX.Core;
 
@@ -29,14 +30,14 @@ public class BoolToVerifiedBackgroundConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isVerified && isVerified)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#00A67E")); // 成功绿
         return new SolidColorBrush(Color.Parse("#424242"));    // 中性灰
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -46,14 +47,14 @@ public class BoolToVerifiedForegroundConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isVerified && isVerified)
+        if (value is true)
             return new SolidColorBrush(Colors.White);
         return new SolidColorBrush(Color.Parse("#E0E0E0"));
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 public class BoolToVerifiedIconConverter : IValueConverter
@@ -63,14 +64,14 @@ public class BoolToVerifiedIconConverter : IValueConverter
         get;
     } = new();
     
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isVerified && isVerified)
+        if (value is true)
             return Symbol.Accept;
         return Symbol.Dismiss;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -81,14 +82,14 @@ public class BoolToStatusBackgroundConverter : IValueConverter
         get;
     } = new();
     
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isBanned && isBanned)
             return new SolidColorBrush(Color.Parse("#D32F2F")); // 危险红
         return new SolidColorBrush(Color.Parse("#2E7D32"));    // 成功绿
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 public class BoolToStatusForegroundConverter : IValueConverter
@@ -97,12 +98,12 @@ public class BoolToStatusForegroundConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new SolidColorBrush(Colors.White);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -112,14 +113,14 @@ public class BoolToStatusIconConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isBanned && isBanned)
             return Symbol.ClosedCaption;
         return Symbol.Accept;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -129,14 +130,14 @@ public class BoolToGroupBackgroundConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isAdmin && isAdmin)
             return new SolidColorBrush(Color.Parse("#6C4DFF")); // 紫色（管理组）
         return new SolidColorBrush(Color.Parse("#3C3C3C"));    // 普通组
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -146,12 +147,12 @@ public class BoolToGroupForegroundConverter : IValueConverter
     {
         get;
     } = new();
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new SolidColorBrush(Colors.White);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
 
@@ -162,12 +163,12 @@ public class IsNotNull : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is not null;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -178,12 +179,12 @@ public class IsNull : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is null;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -194,10 +195,10 @@ public class IsVisibleToRowSpanConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is true ? 2 : 1;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -208,10 +209,10 @@ public class IsVisibleToRowConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is true ? 0 : 1;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -222,10 +223,10 @@ public class ProgressToVisibilityConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         double.TryParse(value?.ToString(), out var progress) && progress is > 0 and < 100;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -250,7 +251,7 @@ public class StatusNumToTextConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -268,7 +269,7 @@ public class StatusNumToVisibilityConverter : IValueConverter
         return status != -2;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -276,7 +277,7 @@ public class StatusNumToSeveritryConverter : IValueConverter
 {
     public static StatusNumToSeveritryConverter Instance => new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not int status)
         {
@@ -291,7 +292,7 @@ public class StatusNumToSeveritryConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -309,7 +310,7 @@ public class StatusNumToSuccessBackgroundConverter : IValueConverter
         return status == 0;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -327,7 +328,7 @@ public class StatusNumToWarningBackgroundConverter : IValueConverter
         return status == 1;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -345,7 +346,7 @@ public class StatusNumToErrorBackgroundConverter : IValueConverter
         return status == 2;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -363,7 +364,7 @@ public class StatusNumToFatalBackgroundConverter : IValueConverter
         return status == -1;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -371,10 +372,10 @@ public class ThemeToBackgroundConverter : IValueConverter
 {
     public static ThemeToBackgroundConverter Instance => new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is true ? Color.FromArgb(63, 0, 0, 0) : Color.FromArgb(63, 255, 255, 255);
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -388,13 +389,13 @@ public class ObjectEqualityConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         Equals(value, parameter);
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         (bool)value ? parameter : null;
 }
 
 public class SelectedToBrushConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var trueBrush = Application.Current.FindResource("CardBackgroundFillColorDefaultBrush") as Brush;
 
@@ -417,7 +418,7 @@ public class Int32ToProgressBarSuccessConvertor : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         int.TryParse(value?.ToString(), out var val) && val < 60;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -431,7 +432,7 @@ public class Int32ToProgressBarWarnConvertor : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         int.TryParse(value?.ToString(), out var val) && val >= 60;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -445,7 +446,7 @@ public class Int32ToProgressBarDangerConvertor : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         int.TryParse(value?.ToString(), out var val) && val >= 85;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -485,7 +486,7 @@ public class NodeNotFoundToBoolConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is string nodeNotFound)
         {
@@ -495,7 +496,7 @@ public class NodeNotFoundToBoolConverter : IValueConverter
         return false;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -516,7 +517,7 @@ public class NodeNotFoundToBoolConverterReverse : IValueConverter
         return true;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -597,10 +598,10 @@ public class ProxyTypeToBoolConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is string proxyType && (proxyType.ToLower().Equals("http") || proxyType.ToLower().Equals("https"));
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -617,7 +618,7 @@ public class ProxyTypeToBoolReverseConverter : IValueConverter
                !(proxyType.ToLower().Equals("http") || proxyType.ToLower().Equals("https"));
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -626,7 +627,7 @@ public class LowerCaseToUpperCaseConverter : ConverterBase
     public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value?.ToString()?.ToUpper();
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -664,7 +665,7 @@ public class MultiBindingConverter : IMultiValueConverter
         get;
     } = new();
 
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture) => values;
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture) => values;
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -750,10 +751,10 @@ public class TrafficToTargetNumberConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is long traffic ? ProcessFileSize(traffic) /*.ToString("######.## TB") : "- TB";*/ : 0;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 
     /// <summary>
@@ -786,7 +787,7 @@ public class TrafficToSizeLevelConverter : IValueConverter
         get;
     } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var res = value is long traffic ? ProcessFileSizeIndex(traffic) : 0;
         try
@@ -799,7 +800,7 @@ public class TrafficToSizeLevelConverter : IValueConverter
         }
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 
     /// <summary>
@@ -1065,6 +1066,76 @@ public class NotNullOrEmptyToBoolConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 插件状态布尔值转颜色主题转换器
+/// </summary>
+public class BoolToThemeConverter : IValueConverter
+{
+    public static BoolToThemeConverter Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled && isEnabled)
+            return new SolidColorBrush(Color.Parse("#2E7D32"));
+        return new SolidColorBrush(Color.Parse("#757575"));
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 插件启用状态转背景色
+/// </summary>
+public class StatusToBackgroundConverter : IValueConverter
+{
+    public static StatusToBackgroundConverter Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled && isEnabled)
+            return new SolidColorBrush(Color.Parse("#1B5E20"));
+        return new SolidColorBrush(Color.Parse("#424242"));
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 插件启用状态转文本
+/// </summary>
+public class StatusToTextConverter : IValueConverter
+{
+    public static StatusToTextConverter Instance { get; } = new();
+
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isEnabled)
+            return isEnabled ? "已启用" : "已禁用";
+        return "未知";
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+/// 非空字符串转可见性
+/// </summary>
+public class NotNullToVisConverter : IValueConverter
+{
+    public static NotNullToVisConverter Instance { get; } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is string s && !string.IsNullOrEmpty(s);
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }

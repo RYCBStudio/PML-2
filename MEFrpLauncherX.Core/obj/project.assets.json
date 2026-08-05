@@ -2,11 +2,11 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "Avalonia/11.3.17": {
+      "Avalonia/11.3.18": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "11.3.17",
+          "Avalonia.Remote.Protocol": "11.3.18",
           "MicroCom.Runtime": "0.11.0"
         },
         "compile": {
@@ -135,7 +135,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.3.17": {
+      "Avalonia.Remote.Protocol/11.3.18": {
         "type": "package",
         "compile": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -148,10 +148,10 @@
           }
         }
       },
-      "Avalonia.Skia/11.3.14": {
+      "Avalonia.Skia/11.3.18": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "11.3.14",
+          "Avalonia": "11.3.18",
           "HarfBuzzSharp": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "8.3.1.1",
@@ -170,11 +170,11 @@
           }
         }
       },
-      "Avalonia.Svg/11.2.0.2": {
+      "Avalonia.Svg/11.3.0": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "11.2.0",
-          "Svg.Model": "2.0.0.4"
+          "Avalonia": "11.3.0",
+          "Svg.Model": "3.0.2"
         },
         "compile": {
           "lib/net8.0/Avalonia.Svg.dll": {}
@@ -211,7 +211,7 @@
           }
         }
       },
-      "Downloader/5.9.0": {
+      "Downloader/5.9.5": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "10.0.8"
@@ -239,13 +239,13 @@
           }
         }
       },
-      "ExCSS/4.2.3": {
+      "ExCSS/4.3.0": {
         "type": "package",
         "compile": {
-          "lib/net7.0/ExCSS.dll": {}
+          "lib/net8.0/ExCSS.dll": {}
         },
         "runtime": {
-          "lib/net7.0/ExCSS.dll": {}
+          "lib/net8.0/ExCSS.dll": {}
         }
       },
       "FluentAvaloniaUI/2.5.1": {
@@ -404,7 +404,7 @@
           }
         }
       },
-      "LiveChartsCore/2.0.2": {
+      "LiveChartsCore/2.0.5": {
         "type": "package",
         "compile": {
           "lib/net8.0/LiveChartsCore.dll": {
@@ -417,10 +417,10 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView/2.0.2": {
+      "LiveChartsCore.SkiaSharpView/2.0.5": {
         "type": "package",
         "dependencies": {
-          "LiveChartsCore": "2.0.2",
+          "LiveChartsCore": "2.0.5",
           "SkiaSharp": "2.88.9",
           "SkiaSharp.HarfBuzz": "2.88.9"
         },
@@ -435,12 +435,12 @@
           }
         }
       },
-      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.2": {
+      "LiveChartsCore.SkiaSharpView.Avalonia/2.0.5": {
         "type": "package",
         "dependencies": {
           "Avalonia": "11.0.0",
           "Avalonia.Skia": "11.0.0",
-          "LiveChartsCore.SkiaSharpView": "2.0.2"
+          "LiveChartsCore.SkiaSharpView": "2.0.5"
         },
         "compile": {
           "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.dll": {
@@ -453,7 +453,7 @@
           }
         }
       },
-      "Markdig/1.1.3": {
+      "Markdig/1.3.2": {
         "type": "package",
         "compile": {
           "lib/net10.0/Markdig.dll": {
@@ -645,7 +645,7 @@
           }
         }
       },
-      "Onigwrap/1.0.10": {
+      "Onigwrap/1.0.11": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Onigwrap.dll": {}
@@ -712,11 +712,11 @@
           }
         }
       },
-      "ReactiveUI/23.2.1": {
+      "ReactiveUI/23.2.28": {
         "type": "package",
         "dependencies": {
           "DynamicData": "9.4.31",
-          "Splat": "19.3.1",
+          "Splat": "19.4.1",
           "System.Reactive": "6.1.0"
         },
         "compile": {
@@ -743,7 +743,7 @@
           }
         }
       },
-      "Sentry/6.6.0": {
+      "Sentry/6.8.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -760,7 +760,7 @@
           "buildTransitive/Sentry.targets": {}
         }
       },
-      "ShimSkiaSharp/2.0.0.4": {
+      "ShimSkiaSharp/3.0.2": {
         "type": "package",
         "compile": {
           "lib/net8.0/ShimSkiaSharp.dll": {}
@@ -769,17 +769,17 @@
           "lib/net8.0/ShimSkiaSharp.dll": {}
         }
       },
-      "SkiaSharp/3.119.3-preview.1.1": {
+      "SkiaSharp/3.119.4": {
         "type": "package",
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "3.119.3-preview.1.1",
-          "SkiaSharp.NativeAssets.macOS": "3.119.3-preview.1.1"
+          "SkiaSharp.NativeAssets.Win32": "3.119.4",
+          "SkiaSharp.NativeAssets.macOS": "3.119.4"
         },
         "compile": {
-          "ref/net8.0/SkiaSharp.dll": {}
+          "ref/net10.0/SkiaSharp.dll": {}
         },
         "runtime": {
-          "lib/net8.0/SkiaSharp.dll": {
+          "lib/net10.0/SkiaSharp.dll": {
             "related": ".pdb"
           }
         }
@@ -801,13 +801,13 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux/3.119.3-preview.1.1": {
+      "SkiaSharp.NativeAssets.Linux/3.119.4": {
         "type": "package",
         "compile": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtime": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/linux-arm/native/libSkiaSharp.so": {
@@ -817,6 +817,14 @@
           "runtimes/linux-arm64/native/libSkiaSharp.so": {
             "assetType": "native",
             "rid": "linux-arm64"
+          },
+          "runtimes/linux-bionic-arm64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-bionic-arm64"
+          },
+          "runtimes/linux-bionic-x64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-bionic-x64"
           },
           "runtimes/linux-loongarch64/native/libSkiaSharp.so": {
             "assetType": "native",
@@ -856,13 +864,13 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.3-preview.1.1": {
+      "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.4": {
         "type": "package",
         "compile": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtime": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/linux-arm/native/libSkiaSharp.so": {
@@ -872,6 +880,14 @@
           "runtimes/linux-arm64/native/libSkiaSharp.so": {
             "assetType": "native",
             "rid": "linux-arm64"
+          },
+          "runtimes/linux-bionic-arm64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-bionic-arm64"
+          },
+          "runtimes/linux-bionic-x64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-bionic-x64"
           },
           "runtimes/linux-loongarch64/native/libSkiaSharp.so": {
             "assetType": "native",
@@ -911,13 +927,13 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/3.119.3-preview.1.1": {
+      "SkiaSharp.NativeAssets.macOS/3.119.4": {
         "type": "package",
         "compile": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtime": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/osx/native/libSkiaSharp.dylib": {
@@ -939,13 +955,13 @@
           "buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets": {}
         }
       },
-      "SkiaSharp.NativeAssets.Win32/3.119.3-preview.1.1": {
+      "SkiaSharp.NativeAssets.Win32/3.119.4": {
         "type": "package",
         "compile": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtime": {
-          "lib/net8.0/_._": {}
+          "lib/net10.0/_._": {}
         },
         "runtimeTargets": {
           "runtimes/win-arm64/native/libSkiaSharp.dll": {
@@ -974,12 +990,11 @@
           }
         }
       },
-      "Splat/19.3.1": {
+      "Splat/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Builder": "19.3.1",
-          "Splat.Logging": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Builder": "19.4.1",
+          "Splat.Logging": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.dll": {
@@ -992,11 +1007,10 @@
           }
         }
       },
-      "Splat.Builder/19.3.1": {
+      "Splat.Builder/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Core": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Core": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.Builder.dll": {
@@ -1009,11 +1023,8 @@
           }
         }
       },
-      "Splat.Core/19.3.1": {
+      "Splat.Core/19.4.1": {
         "type": "package",
-        "dependencies": {
-          "System.Reactive": "6.1.0"
-        },
         "compile": {
           "lib/net10.0/Splat.Core.dll": {
             "related": ".xml"
@@ -1025,11 +1036,10 @@
           }
         }
       },
-      "Splat.Logging/19.3.1": {
+      "Splat.Logging/19.4.1": {
         "type": "package",
         "dependencies": {
-          "Splat.Core": "19.3.1",
-          "System.Reactive": "6.1.0"
+          "Splat.Core": "19.4.1"
         },
         "compile": {
           "lib/net10.0/Splat.Logging.dll": {
@@ -1042,10 +1052,10 @@
           }
         }
       },
-      "Svg.Custom/2.0.0.4": {
+      "Svg.Custom/3.0.2": {
         "type": "package",
         "dependencies": {
-          "ExCSS": "4.2.3"
+          "ExCSS": "4.3.0"
         },
         "compile": {
           "lib/net8.0/Svg.Custom.dll": {}
@@ -1054,11 +1064,11 @@
           "lib/net8.0/Svg.Custom.dll": {}
         }
       },
-      "Svg.Model/2.0.0.4": {
+      "Svg.Model/3.0.2": {
         "type": "package",
         "dependencies": {
-          "ShimSkiaSharp": "2.0.0.4",
-          "Svg.Custom": "2.0.0.4"
+          "ShimSkiaSharp": "3.0.2",
+          "Svg.Custom": "3.0.2"
         },
         "compile": {
           "lib/net8.0/Svg.Model.dll": {}
@@ -1067,11 +1077,11 @@
           "lib/net8.0/Svg.Model.dll": {}
         }
       },
-      "System.Configuration.ConfigurationManager/10.0.6": {
+      "System.Configuration.ConfigurationManager/10.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Diagnostics.EventLog": "10.0.6",
-          "System.Security.Cryptography.ProtectedData": "10.0.6"
+          "System.Diagnostics.EventLog": "10.0.10",
+          "System.Security.Cryptography.ProtectedData": "10.0.10"
         },
         "compile": {
           "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
@@ -1087,7 +1097,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "System.Diagnostics.EventLog/10.0.6": {
+      "System.Diagnostics.EventLog/10.0.10": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Diagnostics.EventLog.dll": {
@@ -1129,10 +1139,10 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.Runtime.Caching/10.0.6": {
+      "System.Runtime.Caching/10.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Configuration.ConfigurationManager": "10.0.6"
+          "System.Configuration.ConfigurationManager": "10.0.10"
         },
         "compile": {
           "lib/net10.0/System.Runtime.Caching.dll": {
@@ -1154,7 +1164,7 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/10.0.6": {
+      "System.Security.Cryptography.ProtectedData/10.0.10": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
@@ -1170,10 +1180,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "TextMateSharp/2.0.3": {
+      "TextMateSharp/2.0.4": {
         "type": "package",
         "dependencies": {
-          "Onigwrap": "1.0.10"
+          "Onigwrap": "1.0.11"
         },
         "compile": {
           "lib/netstandard2.0/TextMateSharp.dll": {}
@@ -1182,10 +1192,10 @@
           "lib/netstandard2.0/TextMateSharp.dll": {}
         }
       },
-      "TextMateSharp.Grammars/2.0.3": {
+      "TextMateSharp.Grammars/2.0.4": {
         "type": "package",
         "dependencies": {
-          "TextMateSharp": "2.0.3"
+          "TextMateSharp": "2.0.4"
         },
         "compile": {
           "lib/netstandard2.0/TextMateSharp.Grammars.dll": {}
@@ -1194,31 +1204,18 @@
           "lib/netstandard2.0/TextMateSharp.Grammars.dll": {}
         }
       },
-      "Tomlyn/2.2.1": {
-        "type": "package",
-        "compile": {
-          "lib/net10.0/Tomlyn.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net10.0/Tomlyn.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/Tomlyn.targets": {}
-        }
+      "Vecc.YamlDotNet.Analyzers.StaticGenerator/18.1.0": {
+        "type": "package"
       },
-      "YamlDotNet/16.3.0": {
+      "YamlDotNet/18.1.0": {
         "type": "package",
         "compile": {
-          "lib/net8.0/YamlDotNet.dll": {
+          "lib/net10.0/YamlDotNet.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/YamlDotNet.dll": {
+          "lib/net10.0/YamlDotNet.dll": {
             "related": ".xml"
           }
         }
@@ -1227,42 +1224,32 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "Avalonia": "11.3.17",
-          "Avalonia.Skia": "11.3.14",
-          "Avalonia.Svg": "11.2.0.2",
+          "Avalonia": "11.3.18",
+          "Avalonia.Skia": "11.3.18",
+          "Avalonia.Svg": "11.3.0",
           "FluentAvaloniaUI": "2.5.1",
-          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.2",
-          "Markdig": "1.1.3",
-          "SkiaSharp": "3.119.3-preview.1.1",
-          "SkiaSharp.NativeAssets.Linux": "3.119.3-preview.1.1",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.3-preview.1.1",
-          "TextMateSharp": "2.0.3",
-          "TextMateSharp.Grammars": "2.0.3"
+          "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.5",
+          "Markdig": "1.3.2",
+          "SkiaSharp": "3.119.4",
+          "SkiaSharp.NativeAssets.Linux": "3.119.4",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.4",
+          "TextMateSharp": "2.0.4",
+          "TextMateSharp.Grammars": "2.0.4"
         },
         "compile": {
           "bin/placeholder/MarkdownAIRender.dll": {}
         },
         "runtime": {
           "bin/placeholder/MarkdownAIRender.dll": {}
-        }
-      },
-      "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "compile": {
-          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/RYCB.PML2.MEFrpCaptchaLib.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Avalonia/11.3.17": {
-      "sha512": "CyInPSdfighRNpso1vZfQLMNsXz1GMe+1EPbxLfnNTmu7F3uB6w/BBmvJGkCUiRyeE/HMB0SKp7DNo5AJXR78A==",
+    "Avalonia/11.3.18": {
+      "sha512": "2C4UxhWUObWGgYKWic1x5BMMWGJP6SElb91WeOxs+X/iR26rtkqpxFFwwo50FXS9AyYnHfk8QKXDEfe7oT/kZA==",
       "type": "package",
-      "path": "avalonia/11.3.17",
+      "path": "avalonia/11.3.18",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1270,7 +1257,7 @@
         "Icon.png",
         "analyzers/dotnet/cs/Avalonia.Analyzers.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.11.3.17.nupkg.sha512",
+        "avalonia.11.3.18.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1496,15 +1483,15 @@
         "readme.md"
       ]
     },
-    "Avalonia.Remote.Protocol/11.3.17": {
-      "sha512": "w0UZSPj2z1EjVQ7VI1i+8wO1nK+XCMMlweXFv9axHVBhRYgIuy/35sgNxbyuuldt6LGOqg2wFcYZ4jEGwfCC9A==",
+    "Avalonia.Remote.Protocol/11.3.18": {
+      "sha512": "vw+6ZfgTuu72dA9aVWn6u56t2nrBd5MoMU0wo/qI9XJAl/c0oYYphIvwLvJP1JorubQY4UE3d0ac8ULBhrGBiA==",
       "type": "package",
-      "path": "avalonia.remote.protocol/11.3.17",
+      "path": "avalonia.remote.protocol/11.3.18",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.remote.protocol.11.3.17.nupkg.sha512",
+        "avalonia.remote.protocol.11.3.18.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net6.0/Avalonia.Remote.Protocol.dll",
         "lib/net6.0/Avalonia.Remote.Protocol.xml",
@@ -1514,15 +1501,15 @@
         "lib/netstandard2.0/Avalonia.Remote.Protocol.xml"
       ]
     },
-    "Avalonia.Skia/11.3.14": {
-      "sha512": "ksUk0PRTSjzYajk3aFpGvg+LotLe/pZj1K7B0b8As2ssDxFXFDPUnRvRZmw7f6jBBcfsYI6/LlFJZ93T8YAI2w==",
+    "Avalonia.Skia/11.3.18": {
+      "sha512": "/B4aXmNRNjG8I5U/a1xJI+bIi0XO6DDzS3mBrIKlVnJRY2CyZiUeESRQXLnIU77Z9TvqkUROs+D47s085YjFtA==",
       "type": "package",
-      "path": "avalonia.skia/11.3.14",
+      "path": "avalonia.skia/11.3.18",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.skia.11.3.14.nupkg.sha512",
+        "avalonia.skia.11.3.18.nupkg.sha512",
         "avalonia.skia.nuspec",
         "lib/net6.0/Avalonia.Skia.dll",
         "lib/net6.0/Avalonia.Skia.xml",
@@ -1532,14 +1519,14 @@
         "lib/netstandard2.0/Avalonia.Skia.xml"
       ]
     },
-    "Avalonia.Svg/11.2.0.2": {
-      "sha512": "6BdUl2w3p/+3S3+Dqn6HEwJ8O/8yfyfd54haVAvdk71LD+UkmWcVqqiLLAmq6yi1qdsf5ax1V3cEkd6dtcweSg==",
+    "Avalonia.Svg/11.3.0": {
+      "sha512": "hlTTpPDpaS78QD5neVSfaE+l7p38Vp2A8eTtm8WVfh7/04cWDQGGjIGLzJMzNk9Lss9ah7LaxnkWC5ThLhC1Sw==",
       "type": "package",
-      "path": "avalonia.svg/11.2.0.2",
+      "path": "avalonia.svg/11.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "avalonia.svg.11.2.0.2.nupkg.sha512",
+        "avalonia.svg.11.3.0.nupkg.sha512",
         "avalonia.svg.nuspec",
         "lib/net461/Avalonia.Svg.dll",
         "lib/net6.0/Avalonia.Svg.dll",
@@ -1577,19 +1564,20 @@
         "lib/netstandard2.0/DialogHost.Avalonia.xml"
       ]
     },
-    "Downloader/5.9.0": {
-      "sha512": "nFwxyPIBGIsukS0Y5dsRvbTnTcw51jN1QB9nHeThR0PJkB70EMzyNdHIA09gw9SEwmCHNXJM7RtHDNf6Uf6dZA==",
+    "Downloader/5.9.5": {
+      "sha512": "Ng4jdJ+v+R7q21gygRdEcOyYQA0M3I0SaiBEsK6XVWW8Xo16NuODEUSSwC1R45aPp7mvXCQRO6oM/SiTNwHSRA==",
       "type": "package",
-      "path": "downloader/5.9.0",
+      "path": "downloader/5.9.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "README.md",
-        "downloader.5.9.0.nupkg.sha512",
+        "downloader.5.9.5.nupkg.sha512",
         "downloader.nuspec",
         "downloader.png",
         "lib/net10.0/Downloader.dll",
+        "lib/net11.0/Downloader.dll",
         "lib/net8.0/Downloader.dll",
         "lib/net9.0/Downloader.dll"
       ]
@@ -1622,18 +1610,19 @@
         "logo.png"
       ]
     },
-    "ExCSS/4.2.3": {
-      "sha512": "SyeAfu2wL5247sipJoPUzQfjiwQtfSd8hN4IbgoyVcDx4PP6Dud4znwPRibWQzLtTlUxYYcbf5f4p+EfFC7KtQ==",
+    "ExCSS/4.3.0": {
+      "sha512": "LyVZ925Cl6Z4TJrbogt3+DkvanYWZcJs0tzKg8lWHAY9PgniVMluNy+l5vXDMmvt5gBgekULasEnUqVAavPuZw==",
       "type": "package",
-      "path": "excss/4.2.3",
+      "path": "excss/4.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "excss.4.2.3.nupkg.sha512",
+        "excss.4.3.0.nupkg.sha512",
         "excss.nuspec",
         "lib/net48/ExCSS.dll",
         "lib/net6.0/ExCSS.dll",
         "lib/net7.0/ExCSS.dll",
+        "lib/net8.0/ExCSS.dll",
         "lib/netcoreapp3.1/ExCSS.dll",
         "lib/netstandard2.0/ExCSS.dll",
         "lib/netstandard2.1/ExCSS.dll",
@@ -1861,10 +1850,10 @@
         "lib/uap10.0/HtmlAgilityPack.pri"
       ]
     },
-    "LiveChartsCore/2.0.2": {
-      "sha512": "UL1f9H0eypkaSMqSm74BhyvdvDqxe+LplIqPfn/UiLmuS8yK6mGwm4qzI9YNsRaF0uQs4Hcivl67MOajH8Rqtg==",
+    "LiveChartsCore/2.0.5": {
+      "sha512": "cbGiOyGxO+fsWLvrQ4R6Rd8QHfkRGyhxyD6nBSk8/ZwKKtU+vWSqlC4ESgwKSUbrzvK8ooU/yfFJpjHXzPd+vA==",
       "type": "package",
-      "path": "livechartscore/2.0.2",
+      "path": "livechartscore/2.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1878,14 +1867,14 @@
         "lib/net8.0/LiveChartsCore.xml",
         "lib/netstandard2.0/LiveChartsCore.dll",
         "lib/netstandard2.0/LiveChartsCore.xml",
-        "livechartscore.2.0.2.nupkg.sha512",
+        "livechartscore.2.0.5.nupkg.sha512",
         "livechartscore.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView/2.0.2": {
-      "sha512": "O84AQUIQ7iL+cF77ulnYv6zhIcA5kyU6KY8veJxFP4Kbb58pRNxF97ZDIjbGs15AH4m/tj2FcsW+FmBw+MPXmw==",
+    "LiveChartsCore.SkiaSharpView/2.0.5": {
+      "sha512": "YgRhisuVev2RocHqq7d9juSBGBlMLKYQA5ijEuD/sWeV39dCBInBK4RSfqBYTuNNWs5Fe+NA+F0TCIWJ2t1Cew==",
       "type": "package",
-      "path": "livechartscore.skiasharpview/2.0.2",
+      "path": "livechartscore.skiasharpview/2.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1899,14 +1888,14 @@
         "lib/net8.0/LiveChartsCore.SkiaSharpView.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.xml",
-        "livechartscore.skiasharpview.2.0.2.nupkg.sha512",
+        "livechartscore.skiasharpview.2.0.5.nupkg.sha512",
         "livechartscore.skiasharpview.nuspec"
       ]
     },
-    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.2": {
-      "sha512": "UtClVhAXA77slLUd33Ehe5nTDGUupvL3n1V91RNJhPWs4Y1YS1KgpcnbmN+BbViDCCzEwPBUaZ209Q+Y3qs2Lg==",
+    "LiveChartsCore.SkiaSharpView.Avalonia/2.0.5": {
+      "sha512": "gwqV/H5EWhk8KIwc8/4sdPVjsdJ5RpOC5Pfmd1lKIYltCntJQeZTcn1kC4mKykN+eU+BlT0W/grA3xioXdP7iA==",
       "type": "package",
-      "path": "livechartscore.skiasharpview.avalonia/2.0.2",
+      "path": "livechartscore.skiasharpview.avalonia/2.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1918,14 +1907,14 @@
         "lib/net8.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.dll",
         "lib/netstandard2.0/LiveChartsCore.SkiaSharpView.Avalonia.xml",
-        "livechartscore.skiasharpview.avalonia.2.0.2.nupkg.sha512",
+        "livechartscore.skiasharpview.avalonia.2.0.5.nupkg.sha512",
         "livechartscore.skiasharpview.avalonia.nuspec"
       ]
     },
-    "Markdig/1.1.3": {
-      "sha512": "wboYc6YToID7koq+onej7rjd/kv4urZaZ4QMiJoF/jXt/ZlXe2Af9gWG4nOe5tk654UaOPYvKL64iFum7qWEYA==",
+    "Markdig/1.3.2": {
+      "sha512": "fZgOC/3CswUrndjDTac70aQpYdtxbW5+5bRumR7vzvI2HJbkmgKisB1c9oT+GA6v0jB/JDR9BLa9FiPzQmaK6A==",
       "type": "package",
-      "path": "markdig/1.1.3",
+      "path": "markdig/1.3.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1939,7 +1928,7 @@
         "lib/netstandard2.0/Markdig.xml",
         "lib/netstandard2.1/Markdig.dll",
         "lib/netstandard2.1/Markdig.xml",
-        "markdig.1.1.3.nupkg.sha512",
+        "markdig.1.3.2.nupkg.sha512",
         "markdig.nuspec",
         "markdig.png",
         "readme.md"
@@ -2218,10 +2207,10 @@
         "npinyin.core.nuspec"
       ]
     },
-    "Onigwrap/1.0.10": {
-      "sha512": "eujNEpEhCl4UiqHTG0CeG/sWS8v/iYXGqUpaVkgBmYRZp3Utmz/aw38fuFL2rcnhj1FNfHwHaxGDeLY34a3nEA==",
+    "Onigwrap/1.0.11": {
+      "sha512": "5/WAxSYWfiiPzp1X13qqdqjFmYLKDD/U7Vh3WCkKxWG9BjqdrXnQE5fCKCFJX+xWvuYLTxwZIVWBwBWObViE8g==",
       "type": "package",
-      "path": "onigwrap/1.0.10",
+      "path": "onigwrap/1.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2240,7 +2229,7 @@
         "buildTransitive/netstandard1.0/wasm/3.1.56/st/libonigwrap.a",
         "lib/net471/Onigwrap.dll",
         "lib/netstandard2.0/Onigwrap.dll",
-        "onigwrap.1.0.10.nupkg.sha512",
+        "onigwrap.1.0.11.nupkg.sha512",
         "onigwrap.nuspec",
         "runtimes/linux-arm64/native/libonigwrap.so",
         "runtimes/linux-bionic-arm64/native/libonigwrap.so",
@@ -2257,10 +2246,10 @@
         "runtimes/win-x86/native/libonigwrap.dll"
       ]
     },
-    "ReactiveUI/23.2.1": {
-      "sha512": "gSvc1Qe85eNroHpzmOlYar8x768QcbZ2YliXZ6D5QsKrsvhvRTnCM40aKlFeuqny4ldXoGCeo3+QP0HW2R7XKA==",
+    "ReactiveUI/23.2.28": {
+      "sha512": "9sSuHnMcLTLhgMTQpQO6Jhz9Cbub3Pg44i6FS4Ot4UtbV8dpwMH3JGzGjT72oav4aSrJlmzbFyI87gX55oPzLA==",
       "type": "package",
-      "path": "reactiveui/23.2.1",
+      "path": "reactiveui/23.2.28",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2305,7 +2294,7 @@
         "lib/net9.0/ReactiveUI.dll",
         "lib/net9.0/ReactiveUI.xml",
         "logo.png",
-        "reactiveui.23.2.1.nupkg.sha512",
+        "reactiveui.23.2.28.nupkg.sha512",
         "reactiveui.nuspec"
       ]
     },
@@ -2334,10 +2323,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.6.0": {
-      "sha512": "1D3xo3P9Y94VQN3RoV/86XqgtylHp1pdeEml3/UB649BrzJeZ/pqO/o8YgJ5g+GqpMQiGI09yjAI7s5ff2A1IA==",
+    "Sentry/6.8.0": {
+      "sha512": "amUjwslDtdx1p8r6z4APCxM8vHCKG4CBamPpSTwxmTMoBQ2CLwx2m3CaIttJXRT/hw9S5rNfXgjol2OqADytLQ==",
       "type": "package",
-      "path": "sentry/6.6.0",
+      "path": "sentry/6.8.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2386,7 +2375,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.6.0.nupkg.sha512",
+        "sentry.6.8.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -2397,10 +2386,10 @@
         "tools/sentry-cli-Windows-x86_64.exe"
       ]
     },
-    "ShimSkiaSharp/2.0.0.4": {
-      "sha512": "7UDQA2c0k56I8yvgHWoRTq4JUOLU9alajszvixR4IDhXgTJaEHqXqzu618Dh26K31zvKMR4ndc9y+OhtuDdhqQ==",
+    "ShimSkiaSharp/3.0.2": {
+      "sha512": "VRLaZRQ7llIgQXf6H6Bjpt47RG/9UQvWZdJz97ReFlb4PHwjoId6HkoO84ETyqS/8J2GNT2fDnzmdVBMr5YXOg==",
       "type": "package",
-      "path": "shimskiasharp/2.0.0.4",
+      "path": "shimskiasharp/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2408,14 +2397,14 @@
         "lib/net6.0/ShimSkiaSharp.dll",
         "lib/net8.0/ShimSkiaSharp.dll",
         "lib/netstandard2.0/ShimSkiaSharp.dll",
-        "shimskiasharp.2.0.0.4.nupkg.sha512",
+        "shimskiasharp.3.0.2.nupkg.sha512",
         "shimskiasharp.nuspec"
       ]
     },
-    "SkiaSharp/3.119.3-preview.1.1": {
-      "sha512": "+3ndwD845G4jfuyhtg5rrjryh2mEOr2QfAPFtncvAsRLzGX0ferSJ0223av6Sbw9zsEL6Wk0sk/DrXtEpJoo5A==",
+    "SkiaSharp/3.119.4": {
+      "sha512": "53NOSUZ1Us+91Sm0uCkIivh/k7jOowRErZT2sIWwPFN9mLUvdxnE6rS4sWo4255+Rd2MWUSF+j0NMZHD6Cke+Q==",
       "type": "package",
-      "path": "skiasharp/3.119.3-preview.1.1",
+      "path": "skiasharp/3.119.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2423,44 +2412,75 @@
         "README.md",
         "icon.png",
         "interactive-extensions/dotnet/SkiaSharp.DotNet.Interactive.dll",
+        "lib/net10.0-android36.0/SkiaSharp.dll",
+        "lib/net10.0-android36.0/SkiaSharp.pdb",
+        "lib/net10.0-android36.0/SkiaSharp.xml",
+        "lib/net10.0-ios26.2/SkiaSharp.dll",
+        "lib/net10.0-ios26.2/SkiaSharp.pdb",
+        "lib/net10.0-maccatalyst26.2/SkiaSharp.dll",
+        "lib/net10.0-maccatalyst26.2/SkiaSharp.pdb",
+        "lib/net10.0-macos26.2/SkiaSharp.dll",
+        "lib/net10.0-macos26.2/SkiaSharp.pdb",
+        "lib/net10.0-tizen10.0/SkiaSharp.dll",
+        "lib/net10.0-tizen10.0/SkiaSharp.pdb",
+        "lib/net10.0-tvos26.2/SkiaSharp.dll",
+        "lib/net10.0-tvos26.2/SkiaSharp.pdb",
+        "lib/net10.0-windows10.0.19041/SkiaSharp.dll",
+        "lib/net10.0-windows10.0.19041/SkiaSharp.pdb",
+        "lib/net10.0/SkiaSharp.dll",
+        "lib/net10.0/SkiaSharp.pdb",
         "lib/net462/SkiaSharp.dll",
         "lib/net462/SkiaSharp.pdb",
+        "lib/net48/SkiaSharp.dll",
+        "lib/net48/SkiaSharp.pdb",
+        "lib/net6.0-tizen8.0/SkiaSharp.dll",
+        "lib/net6.0-tizen8.0/SkiaSharp.pdb",
         "lib/net6.0/SkiaSharp.dll",
         "lib/net6.0/SkiaSharp.pdb",
-        "lib/net8.0-android34.0/SkiaSharp.dll",
-        "lib/net8.0-android34.0/SkiaSharp.pdb",
-        "lib/net8.0-android34.0/SkiaSharp.xml",
-        "lib/net8.0-ios17.0/SkiaSharp.dll",
-        "lib/net8.0-ios17.0/SkiaSharp.pdb",
-        "lib/net8.0-maccatalyst17.0/SkiaSharp.dll",
-        "lib/net8.0-maccatalyst17.0/SkiaSharp.pdb",
-        "lib/net8.0-macos14.0/SkiaSharp.dll",
-        "lib/net8.0-macos14.0/SkiaSharp.pdb",
-        "lib/net8.0-tizen7.0/SkiaSharp.dll",
-        "lib/net8.0-tizen7.0/SkiaSharp.pdb",
-        "lib/net8.0-tvos17.0/SkiaSharp.dll",
-        "lib/net8.0-tvos17.0/SkiaSharp.pdb",
-        "lib/net8.0-windows10.0.19041/SkiaSharp.dll",
-        "lib/net8.0-windows10.0.19041/SkiaSharp.pdb",
-        "lib/net8.0/SkiaSharp.dll",
-        "lib/net8.0/SkiaSharp.pdb",
+        "lib/net9.0-android35.0/SkiaSharp.dll",
+        "lib/net9.0-android35.0/SkiaSharp.pdb",
+        "lib/net9.0-android35.0/SkiaSharp.xml",
+        "lib/net9.0-ios18.0/SkiaSharp.dll",
+        "lib/net9.0-ios18.0/SkiaSharp.pdb",
+        "lib/net9.0-maccatalyst18.0/SkiaSharp.dll",
+        "lib/net9.0-maccatalyst18.0/SkiaSharp.pdb",
+        "lib/net9.0-macos15.0/SkiaSharp.dll",
+        "lib/net9.0-macos15.0/SkiaSharp.pdb",
+        "lib/net9.0-tizen8.0/SkiaSharp.dll",
+        "lib/net9.0-tizen8.0/SkiaSharp.pdb",
+        "lib/net9.0-tvos18.0/SkiaSharp.dll",
+        "lib/net9.0-tvos18.0/SkiaSharp.pdb",
+        "lib/net9.0-windows10.0.19041/SkiaSharp.dll",
+        "lib/net9.0-windows10.0.19041/SkiaSharp.pdb",
+        "lib/net9.0/SkiaSharp.dll",
+        "lib/net9.0/SkiaSharp.pdb",
         "lib/netstandard2.0/SkiaSharp.dll",
         "lib/netstandard2.0/SkiaSharp.pdb",
         "lib/netstandard2.1/SkiaSharp.dll",
         "lib/netstandard2.1/SkiaSharp.pdb",
+        "ref/net10.0-android36.0/SkiaSharp.dll",
+        "ref/net10.0-ios26.2/SkiaSharp.dll",
+        "ref/net10.0-maccatalyst26.2/SkiaSharp.dll",
+        "ref/net10.0-macos26.2/SkiaSharp.dll",
+        "ref/net10.0-tizen10.0/SkiaSharp.dll",
+        "ref/net10.0-tvos26.2/SkiaSharp.dll",
+        "ref/net10.0-windows10.0.19041/SkiaSharp.dll",
+        "ref/net10.0/SkiaSharp.dll",
         "ref/net462/SkiaSharp.dll",
+        "ref/net48/SkiaSharp.dll",
+        "ref/net6.0-tizen8.0/SkiaSharp.dll",
         "ref/net6.0/SkiaSharp.dll",
-        "ref/net8.0-android34.0/SkiaSharp.dll",
-        "ref/net8.0-ios17.0/SkiaSharp.dll",
-        "ref/net8.0-maccatalyst17.0/SkiaSharp.dll",
-        "ref/net8.0-macos14.0/SkiaSharp.dll",
-        "ref/net8.0-tizen7.0/SkiaSharp.dll",
-        "ref/net8.0-tvos17.0/SkiaSharp.dll",
-        "ref/net8.0-windows10.0.19041/SkiaSharp.dll",
-        "ref/net8.0/SkiaSharp.dll",
+        "ref/net9.0-android35.0/SkiaSharp.dll",
+        "ref/net9.0-ios18.0/SkiaSharp.dll",
+        "ref/net9.0-maccatalyst18.0/SkiaSharp.dll",
+        "ref/net9.0-macos15.0/SkiaSharp.dll",
+        "ref/net9.0-tizen8.0/SkiaSharp.dll",
+        "ref/net9.0-tvos18.0/SkiaSharp.dll",
+        "ref/net9.0-windows10.0.19041/SkiaSharp.dll",
+        "ref/net9.0/SkiaSharp.dll",
         "ref/netstandard2.0/SkiaSharp.dll",
         "ref/netstandard2.1/SkiaSharp.dll",
-        "skiasharp.3.119.3-preview.1.1.nupkg.sha512",
+        "skiasharp.3.119.4.nupkg.sha512",
         "skiasharp.nuspec"
       ]
     },
@@ -2494,10 +2514,10 @@
         "skiasharp.harfbuzz.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux/3.119.3-preview.1.1": {
-      "sha512": "ZvpglyfQzhVIUmnPGngliPYcg6ROJNs0BV7XwJ+kktdqY0qe8jifP+UUgaMqTlOTjvuvyCbV7AI4qIBUfRe3Vw==",
+    "SkiaSharp.NativeAssets.Linux/3.119.4": {
+      "sha512": "UAyVzbqNfZsZbKbzj68zXLyUyF/SbTKmzTfOO6qDu++dtIUMMTzPBe8oOuzU/DiewpfKoUUlOSsJmqWc6blxBw==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux/3.119.3-preview.1.1",
+      "path": "skiasharp.nativeassets.linux/3.119.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2505,15 +2525,21 @@
         "README.md",
         "THIRD-PARTY-NOTICES.txt",
         "build/net462/SkiaSharp.NativeAssets.Linux.targets",
+        "build/net48/SkiaSharp.NativeAssets.Linux.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.Linux.targets",
+        "buildTransitive/net48/SkiaSharp.NativeAssets.Linux.targets",
         "icon.png",
+        "lib/net10.0/_._",
         "lib/net462/_._",
+        "lib/net48/_._",
         "lib/net6.0/_._",
-        "lib/net8.0/_._",
+        "lib/net9.0/_._",
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/linux-arm/native/libSkiaSharp.so",
         "runtimes/linux-arm64/native/libSkiaSharp.so",
+        "runtimes/linux-bionic-arm64/native/libSkiaSharp.so",
+        "runtimes/linux-bionic-x64/native/libSkiaSharp.so",
         "runtimes/linux-loongarch64/native/libSkiaSharp.so",
         "runtimes/linux-musl-arm/native/libSkiaSharp.so",
         "runtimes/linux-musl-arm64/native/libSkiaSharp.so",
@@ -2523,14 +2549,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.3.119.3-preview.1.1.nupkg.sha512",
+        "skiasharp.nativeassets.linux.3.119.4.nupkg.sha512",
         "skiasharp.nativeassets.linux.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.3-preview.1.1": {
-      "sha512": "zNez41P9kCuDsJTLKAZcexVKlhbIlXBuEzHQULJGS9b8Nvc3r/ozNMNE8tDgQiAKARxbhCBMtccQXRyOxuGx1w==",
+    "SkiaSharp.NativeAssets.Linux.NoDependencies/3.119.4": {
+      "sha512": "iFnpOfZoim2SwhSPy0EJNZtQAaWM7D0A6Q1YvquwOXUdQAFrSy81Tfb1I4c0IHrrQnoVjcZPcwOc1+VM2ja77w==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux.nodependencies/3.119.3-preview.1.1",
+      "path": "skiasharp.nativeassets.linux.nodependencies/3.119.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2538,15 +2564,21 @@
         "README.md",
         "THIRD-PARTY-NOTICES.txt",
         "build/net462/SkiaSharp.NativeAssets.Linux.NoDependencies.targets",
+        "build/net48/SkiaSharp.NativeAssets.Linux.NoDependencies.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.Linux.NoDependencies.targets",
+        "buildTransitive/net48/SkiaSharp.NativeAssets.Linux.NoDependencies.targets",
         "icon.png",
+        "lib/net10.0/_._",
         "lib/net462/_._",
+        "lib/net48/_._",
         "lib/net6.0/_._",
-        "lib/net8.0/_._",
+        "lib/net9.0/_._",
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/linux-arm/native/libSkiaSharp.so",
         "runtimes/linux-arm64/native/libSkiaSharp.so",
+        "runtimes/linux-bionic-arm64/native/libSkiaSharp.so",
+        "runtimes/linux-bionic-x64/native/libSkiaSharp.so",
         "runtimes/linux-loongarch64/native/libSkiaSharp.so",
         "runtimes/linux-musl-arm/native/libSkiaSharp.so",
         "runtimes/linux-musl-arm64/native/libSkiaSharp.so",
@@ -2556,14 +2588,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.nodependencies.3.119.3-preview.1.1.nupkg.sha512",
+        "skiasharp.nativeassets.linux.nodependencies.3.119.4.nupkg.sha512",
         "skiasharp.nativeassets.linux.nodependencies.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.macOS/3.119.3-preview.1.1": {
-      "sha512": "rv8B3OxG5PGQVxudIPV+ppjqUkt98VRzczNV3qNtearHebWXIcelpHEWzCtMSAYBm1rIsTs+KKAQv8/1exr0kQ==",
+    "SkiaSharp.NativeAssets.macOS/3.119.4": {
+      "sha512": "fgBOWEqbY012x7gMfJU4ezgz6dfhJb30Z6YdW35h85Zoe39+a8YNbAAwL29ihPfWoppg5AjvyKNzD1oCvlqWwA==",
       "type": "package",
-      "path": "skiasharp.nativeassets.macos/3.119.3-preview.1.1",
+      "path": "skiasharp.nativeassets.macos/3.119.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2571,17 +2603,23 @@
         "README.md",
         "THIRD-PARTY-NOTICES.txt",
         "build/net462/SkiaSharp.NativeAssets.macOS.targets",
+        "build/net48/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net10.0-macos26.2/SkiaSharp.NativeAssets.macOS.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.macOS.targets",
-        "buildTransitive/net8.0-macos14.0/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net48/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net9.0-macos15.0/SkiaSharp.NativeAssets.macOS.targets",
         "icon.png",
+        "lib/net10.0-macos26.2/_._",
+        "lib/net10.0/_._",
         "lib/net462/_._",
+        "lib/net48/_._",
         "lib/net6.0/_._",
-        "lib/net8.0-macos14.0/_._",
-        "lib/net8.0/_._",
+        "lib/net9.0-macos15.0/_._",
+        "lib/net9.0/_._",
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/osx/native/libSkiaSharp.dylib",
-        "skiasharp.nativeassets.macos.3.119.3-preview.1.1.nupkg.sha512",
+        "skiasharp.nativeassets.macos.3.119.4.nupkg.sha512",
         "skiasharp.nativeassets.macos.nuspec"
       ]
     },
@@ -2618,10 +2656,10 @@
         "skiasharp.nativeassets.webassembly.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Win32/3.119.3-preview.1.1": {
-      "sha512": "PkMb1pGPBSW3ZL0IVKP9DZs+w065HVs4jGQELsbkmKzKSL5P8KHLkrrmnv2XpFpXtx2njOllB8243N1dBMK+CQ==",
+    "SkiaSharp.NativeAssets.Win32/3.119.4": {
+      "sha512": "XOpbx/4CReO2wYsq2s6rbvdauc6dntG4Zv499sHGTJ87bwZaFXszFkwql3+FIZMc8kUPeaj3Mx2ezIJmo8a1Kg==",
       "type": "package",
-      "path": "skiasharp.nativeassets.win32/3.119.3-preview.1.1",
+      "path": "skiasharp.nativeassets.win32/3.119.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2629,13 +2667,17 @@
         "README.md",
         "THIRD-PARTY-NOTICES.txt",
         "build/net462/SkiaSharp.NativeAssets.Win32.targets",
+        "build/net48/SkiaSharp.NativeAssets.Win32.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.Win32.targets",
+        "buildTransitive/net48/SkiaSharp.NativeAssets.Win32.targets",
         "icon.png",
+        "lib/net10.0-windows10.0.19041/_._",
+        "lib/net10.0/_._",
         "lib/net462/_._",
-        "lib/net6.0-windows10.0.19041/_._",
+        "lib/net48/_._",
         "lib/net6.0/_._",
-        "lib/net8.0-windows10.0.19041/_._",
-        "lib/net8.0/_._",
+        "lib/net9.0-windows10.0.19041/_._",
+        "lib/net9.0/_._",
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/win-arm64/native/libSkiaSharp.dll",
@@ -2644,14 +2686,14 @@
         "runtimes/win-x64/native/libSkiaSharp.pdb",
         "runtimes/win-x86/native/libSkiaSharp.dll",
         "runtimes/win-x86/native/libSkiaSharp.pdb",
-        "skiasharp.nativeassets.win32.3.119.3-preview.1.1.nupkg.sha512",
+        "skiasharp.nativeassets.win32.3.119.4.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
       ]
     },
-    "Splat/19.3.1": {
-      "sha512": "at6uM1+KfkjyjfYRIiiUjTBUTEwxBysoLOE4zuxGCy6kqNAG9mpSGliTkZtsPe8WqJuU6+Jup7oOoNdjz5R8FQ==",
+    "Splat/19.4.1": {
+      "sha512": "3VJOloRQA3bgbAxyNAi4mvLAR/mKH3h1agN5pIrUXvp9lAA2/rvUgxOYjt+GZ4suouLfXxkeKcS/bRjSclo1LQ==",
       "type": "package",
-      "path": "splat/19.3.1",
+      "path": "splat/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2670,14 +2712,14 @@
         "lib/net9.0/Splat.dll",
         "lib/net9.0/Splat.xml",
         "logo.png",
-        "splat.19.3.1.nupkg.sha512",
+        "splat.19.4.1.nupkg.sha512",
         "splat.nuspec"
       ]
     },
-    "Splat.Builder/19.3.1": {
-      "sha512": "FR9ISOBiEV/wXTq0oU+VrGZmsWVEE/yWkI79oeXF7luvr9P6GKRzZD+acjl+5T8oAJdXPWnBhFTJ/XDpAEW35Q==",
+    "Splat.Builder/19.4.1": {
+      "sha512": "9i0RLWEwfheI8aI17WaW8AJmNlFVi7LaX3XQwAavGqUaJJi7Vp5Eh9umWqVQYBLjs87ztVLmax/OMzMyW2igKQ==",
       "type": "package",
-      "path": "splat.builder/19.3.1",
+      "path": "splat.builder/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2696,14 +2738,14 @@
         "lib/net9.0/Splat.Builder.dll",
         "lib/net9.0/Splat.Builder.xml",
         "logo.png",
-        "splat.builder.19.3.1.nupkg.sha512",
+        "splat.builder.19.4.1.nupkg.sha512",
         "splat.builder.nuspec"
       ]
     },
-    "Splat.Core/19.3.1": {
-      "sha512": "MrRbpO/wdWtAfH5c2Nys8Bm7EQ5yi+IAJD3AJsCUMyaRssImIhqmbC7QwfXRnpC2EXOdGENRi0NCTf6y5ODWxQ==",
+    "Splat.Core/19.4.1": {
+      "sha512": "fOjcUDP9YzJPZnSDI2eBO+NwRoEJVFEkTGlh/tFa7GUXc5mtMcQdwak60Ju4DWvPSAfsxlu2geObmhZAQe1VLg==",
       "type": "package",
-      "path": "splat.core/19.3.1",
+      "path": "splat.core/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2722,14 +2764,14 @@
         "lib/net9.0/Splat.Core.dll",
         "lib/net9.0/Splat.Core.xml",
         "logo.png",
-        "splat.core.19.3.1.nupkg.sha512",
+        "splat.core.19.4.1.nupkg.sha512",
         "splat.core.nuspec"
       ]
     },
-    "Splat.Logging/19.3.1": {
-      "sha512": "u4MCO7dFKCX9+dnxNhbAWB9GmtY70fvVGexqr3YoesevExijpYoMiPpsCSYk36bJyKpq9XVgyJBxdg4ChrPS3A==",
+    "Splat.Logging/19.4.1": {
+      "sha512": "bvudJQxxMnHIa9dtZaUUCpvmd96rQxA0yjrZLoB4OSiAJpIxMCDCwnDmG6RhDyW2pS3O0xef2e1STY/oL1PqRw==",
       "type": "package",
-      "path": "splat.logging/19.3.1",
+      "path": "splat.logging/19.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2748,28 +2790,28 @@
         "lib/net9.0/Splat.Logging.dll",
         "lib/net9.0/Splat.Logging.xml",
         "logo.png",
-        "splat.logging.19.3.1.nupkg.sha512",
+        "splat.logging.19.4.1.nupkg.sha512",
         "splat.logging.nuspec"
       ]
     },
-    "Svg.Custom/2.0.0.4": {
-      "sha512": "RTA2brxnCbPi+hR8Z6qRGNA0aB7CGR2dBn57xmK3KXbuZPmiV1OUEjuI5++oMN6HcnEMIXSa8UkHTanjNt3eMA==",
+    "Svg.Custom/3.0.2": {
+      "sha512": "I5QtMsOPdZpR2YsKc3WcLsW2S1YptyGr0MqyXTD4gotZIQtGinY8ZICMrNRTtJBRWeVn352Xdf7lYUtQQABodg==",
       "type": "package",
-      "path": "svg.custom/2.0.0.4",
+      "path": "svg.custom/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/net6.0/Svg.Custom.dll",
         "lib/net8.0/Svg.Custom.dll",
         "lib/netstandard2.0/Svg.Custom.dll",
-        "svg.custom.2.0.0.4.nupkg.sha512",
+        "svg.custom.3.0.2.nupkg.sha512",
         "svg.custom.nuspec"
       ]
     },
-    "Svg.Model/2.0.0.4": {
-      "sha512": "u3O0EW7w4PUI7hyYKeH9F5hm1KDgRnz3KRutwTyRwGia/MqCuYF6nf9HeNiw7rOuX0tR14wa8peQ/rw9RpWSOQ==",
+    "Svg.Model/3.0.2": {
+      "sha512": "a/EfBT3WGPgEnKybHl2B6pqKkxL64I25k+ozY+zF7YvQp/0v0vqR/KVGacpcv8hFGMINXIGDccxR8boqXJj5Zw==",
       "type": "package",
-      "path": "svg.model/2.0.0.4",
+      "path": "svg.model/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2777,14 +2819,14 @@
         "lib/net6.0/Svg.Model.dll",
         "lib/net8.0/Svg.Model.dll",
         "lib/netstandard2.0/Svg.Model.dll",
-        "svg.model.2.0.0.4.nupkg.sha512",
+        "svg.model.3.0.2.nupkg.sha512",
         "svg.model.nuspec"
       ]
     },
-    "System.Configuration.ConfigurationManager/10.0.6": {
-      "sha512": "NQyzNGPPKUf5ykuPcUl1oKiY/gS+r9iASQmc8ITcwC6jBC20C9aFMIrBznpirpkoRev6I+p9n11u5QcqTfr+vg==",
+    "System.Configuration.ConfigurationManager/10.0.10": {
+      "sha512": "64jtHt9yLYi6VHMF5AwDj6BGM/MZrygv55SXl0MOIkFsFjGwRuxV3/QgEm7NTp3TQIx+YNX4S6dNpY08fJ3+3g==",
       "type": "package",
-      "path": "system.configuration.configurationmanager/10.0.6",
+      "path": "system.configuration.configurationmanager/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2805,15 +2847,15 @@
         "lib/net9.0/System.Configuration.ConfigurationManager.xml",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.xml",
-        "system.configuration.configurationmanager.10.0.6.nupkg.sha512",
+        "system.configuration.configurationmanager.10.0.10.nupkg.sha512",
         "system.configuration.configurationmanager.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.EventLog/10.0.6": {
-      "sha512": "RMe4gRBwSVd1O6HVRjNwLgcH2jjrT8sHyNRJegZLX68voA+HzMf1xZPvFxMMDpyW86B9U2pYslgl4DFCE61WyA==",
+    "System.Diagnostics.EventLog/10.0.10": {
+      "sha512": "OvGz3PrzuAI/Sj7LTcXcCe3FClRI1IyRMZjNONcZtFh+Ww7nAtSh4kh08r8KVe/xxkXJPjR0Y1jF7H+N42d4xQ==",
       "type": "package",
-      "path": "system.diagnostics.eventlog/10.0.6",
+      "path": "system.diagnostics.eventlog/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2843,7 +2885,7 @@
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.Messages.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.xml",
-        "system.diagnostics.eventlog.10.0.6.nupkg.sha512",
+        "system.diagnostics.eventlog.10.0.10.nupkg.sha512",
         "system.diagnostics.eventlog.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2875,10 +2917,10 @@
         "system.reactive.nuspec"
       ]
     },
-    "System.Runtime.Caching/10.0.6": {
-      "sha512": "mvFC/4dX845IFW1fYN2TEqN2WeZ0ut1uNImwAcCm81bTw1Sj/n7tkdL++CdgEq9X5kecMEoe4g82TtANAjCbVQ==",
+    "System.Runtime.Caching/10.0.10": {
+      "sha512": "qXPub77NXudQuVMilGBNlLkgKacwVwubIiSGsGFKQna6GbNNr2HBtQ6DyzWms3JNfPnR7/GJ+ZETFhcMrqNYaw==",
       "type": "package",
-      "path": "system.runtime.caching/10.0.6",
+      "path": "system.runtime.caching/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2908,15 +2950,15 @@
         "runtimes/win/lib/net8.0/System.Runtime.Caching.xml",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.dll",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.xml",
-        "system.runtime.caching.10.0.6.nupkg.sha512",
+        "system.runtime.caching.10.0.10.nupkg.sha512",
         "system.runtime.caching.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Security.Cryptography.ProtectedData/10.0.6": {
-      "sha512": "XsGj3pcZ4PIqz9Vhk7ymbL9iNQzOAnDzHmMBqK1rzjjfQBJ4AUZVJQWbDmTKUS8BIXX53QBDRrdiCpwdWfZM9A==",
+    "System.Security.Cryptography.ProtectedData/10.0.10": {
+      "sha512": "BKt0SQgq2lq3ESE68jkeLwv95ypANrPDtkTOIFGcnhg2aRUeUUBDrQlkVDZctrg1WenVcvn5P5XZnuYI7q6rFQ==",
       "type": "package",
-      "path": "system.security.cryptography.protecteddata/10.0.6",
+      "path": "system.security.cryptography.protecteddata/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2943,76 +2985,69 @@
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
-        "system.security.cryptography.protecteddata.10.0.6.nupkg.sha512",
+        "system.security.cryptography.protecteddata.10.0.10.nupkg.sha512",
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "TextMateSharp/2.0.3": {
-      "sha512": "w0wGeqlBi9SYrzxpS1DBcEfiVCs5NY18Yl5YBIsHzXTXQd0OLOh3mP4LRuFvcktR/1MG8nSBHSMJj0rFvrPk+A==",
+    "TextMateSharp/2.0.4": {
+      "sha512": "5Pvn+A4zb1IF+ACAVhgw1aGf9kTyx6j7v5hdup7nCS89Nzby8KQAlCfQ54VC/GAsEoQwh4zKa5MKlAaql8nkPg==",
       "type": "package",
-      "path": "textmatesharp/2.0.3",
+      "path": "textmatesharp/2.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/TextMateSharp.dll",
-        "textmatesharp.2.0.3.nupkg.sha512",
+        "textmatesharp.2.0.4.nupkg.sha512",
         "textmatesharp.nuspec"
       ]
     },
-    "TextMateSharp.Grammars/2.0.3": {
-      "sha512": "qkI1ogusuyGCGTgeyhljDM+GEfATOexoUTqLIgSb5P0ojmfhRXWfSTRXXJRpZkLDErShJ7RWOb+p10lHfhhO+Q==",
+    "TextMateSharp.Grammars/2.0.4": {
+      "sha512": "jzOY00q5u5Vs4L9n2m2PnRZDGwWt2uwkOLh7qlVdCx1kkGSn5eaW5XgnYCyTzEbsCwLV2xlEolnNkr/wuIMAbA==",
       "type": "package",
-      "path": "textmatesharp.grammars/2.0.3",
+      "path": "textmatesharp.grammars/2.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/TextMateSharp.Grammars.dll",
-        "textmatesharp.grammars.2.0.3.nupkg.sha512",
+        "textmatesharp.grammars.2.0.4.nupkg.sha512",
         "textmatesharp.grammars.nuspec"
       ]
     },
-    "Tomlyn/2.2.1": {
-      "sha512": "pCdh5Y2o6PBt+6puOPxUVnlW0CgzeZjqYsfx7oFHFuvg5snTvNFHrjwsSDnnXy/4Wu0KK5xniH52JJqrrVo5dg==",
+    "Vecc.YamlDotNet.Analyzers.StaticGenerator/18.1.0": {
+      "sha512": "LCS3M8xDJUoeSkKCi8i7mN/L0ODIrxLfF1Qy+PgkpxScBx1GLntgb+grV8f2byKnjoRwybJDc00nqEfvw4fX4g==",
       "type": "package",
-      "path": "tomlyn/2.2.1",
+      "path": "vecc.yamldotnet.analyzers.staticgenerator/18.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Tomlyn.png",
-        "analyzers/dotnet/cs/Tomlyn.SourceGeneration.dll",
-        "buildTransitive/Tomlyn.targets",
-        "lib/net10.0/Tomlyn.dll",
-        "lib/net10.0/Tomlyn.xml",
-        "lib/net8.0/Tomlyn.dll",
-        "lib/net8.0/Tomlyn.xml",
-        "lib/netstandard2.0/Tomlyn.dll",
-        "lib/netstandard2.0/Tomlyn.xml",
-        "readme.md",
-        "tomlyn.2.2.1.nupkg.sha512",
-        "tomlyn.nuspec"
+        "LICENSE.txt",
+        "analyzers/dotnet/cs/netstandard2.0/YamlDotNet.Analyzers.StaticGenerator.dll",
+        "images/yamldotnet.png",
+        "vecc.yamldotnet.analyzers.staticgenerator.18.1.0.nupkg.sha512",
+        "vecc.yamldotnet.analyzers.staticgenerator.nuspec"
       ]
     },
-    "YamlDotNet/16.3.0": {
-      "sha512": "SgMOdxbz8X65z8hraIs6hOEdnkH6hESTAIUa7viEngHOYaH+6q5XJmwr1+yb9vJpNQ19hCQY69xbFsLtXpobQA==",
+    "YamlDotNet/18.1.0": {
+      "sha512": "5K+9KFg2TdTl7VXv88Qzi/0lqK6JFoNP3lRuImPYGRV7K/QYklDyTrj4+A+KAki1JsQi6qKY+hDyY7d6WRqjrw==",
       "type": "package",
-      "path": "yamldotnet/16.3.0",
+      "path": "yamldotnet/18.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
         "images/yamldotnet.png",
+        "lib/net10.0/YamlDotNet.dll",
+        "lib/net10.0/YamlDotNet.xml",
         "lib/net47/YamlDotNet.dll",
         "lib/net47/YamlDotNet.xml",
-        "lib/net6.0/YamlDotNet.dll",
-        "lib/net6.0/YamlDotNet.xml",
         "lib/net8.0/YamlDotNet.dll",
         "lib/net8.0/YamlDotNet.xml",
         "lib/netstandard2.0/YamlDotNet.dll",
         "lib/netstandard2.0/YamlDotNet.xml",
         "lib/netstandard2.1/YamlDotNet.dll",
         "lib/netstandard2.1/YamlDotNet.xml",
-        "yamldotnet.16.3.0.nupkg.sha512",
+        "yamldotnet.18.1.0.nupkg.sha512",
         "yamldotnet.nuspec"
       ]
     },
@@ -3020,35 +3055,29 @@
       "type": "project",
       "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
       "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
-    },
-    "RYCB.PML2.MEFrpCaptchaLib/26.1.0": {
-      "type": "project",
-      "path": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj",
-      "msbuildProject": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 11.3.17",
-      "Downloader >= 5.9.0",
+      "Avalonia >= 11.3.18",
+      "Downloader >= 5.9.5",
       "FluentAvaloniaUI >= 2.5.1",
-      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.2",
+      "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.5",
       "MarkdownAIRender >= 1.0.0",
       "Message.Avalonia >= 1.1.0",
       "MessageBox.Avalonia >= 3.3.1.1",
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
-      "RYCB.PML2.MEFrpCaptchaLib >= 26.1.0",
-      "ReactiveUI >= 23.2.1",
+      "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.6.0",
-      "SkiaSharp >= 3.119.3-preview.1.1",
-      "SkiaSharp.NativeAssets.Linux >= 3.119.3-preview.1.1",
-      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.3-preview.1.1",
-      "System.Runtime.Caching >= 10.0.6",
-      "Tomlyn >= 2.2.1",
-      "YamlDotNet >= 16.3.0"
+      "Sentry >= 6.8.0",
+      "SkiaSharp >= 3.119.4",
+      "SkiaSharp.NativeAssets.Linux >= 3.119.4",
+      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.4",
+      "System.Runtime.Caching >= 10.0.10",
+      "Vecc.YamlDotNet.Analyzers.StaticGenerator >= 18.1.0",
+      "YamlDotNet >= 18.1.0"
     ]
   },
   "packageFolders": {
@@ -3083,13 +3112,11 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
             "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
-            },
-            "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj": {
-              "projectPath": "G:\\VSProj\\RYCB.PML2.MEFrpCaptchaLib\\RYCB.PML2.MEFrpCaptchaLib.csproj"
             }
           }
         }
@@ -3108,15 +3135,16 @@
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[11.3.17, )"
+            "version": "[11.3.18, )"
           },
           "Downloader": {
             "target": "Package",
-            "version": "[5.9.0, )"
+            "version": "[5.9.5, )"
           },
           "FluentAvaloniaUI": {
             "target": "Package",
@@ -3124,7 +3152,7 @@
           },
           "LiveChartsCore.SkiaSharpView.Avalonia": {
             "target": "Package",
-            "version": "[2.0.2, )"
+            "version": "[2.0.5, )"
           },
           "Message.Avalonia": {
             "target": "Package",
@@ -3148,7 +3176,7 @@
           },
           "ReactiveUI": {
             "target": "Package",
-            "version": "[23.2.1, )"
+            "version": "[23.2.28, )"
           },
           "RestSharp": {
             "target": "Package",
@@ -3156,31 +3184,31 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.6.0, )"
+            "version": "[6.8.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
-            "version": "[3.119.3-preview.1.1, )"
+            "version": "[3.119.4, )"
           },
           "SkiaSharp.NativeAssets.Linux": {
             "target": "Package",
-            "version": "[3.119.3-preview.1.1, )"
+            "version": "[3.119.4, )"
           },
           "SkiaSharp.NativeAssets.Linux.NoDependencies": {
             "target": "Package",
-            "version": "[3.119.3-preview.1.1, )"
+            "version": "[3.119.4, )"
           },
           "System.Runtime.Caching": {
             "target": "Package",
-            "version": "[10.0.6, )"
+            "version": "[10.0.10, )"
           },
-          "Tomlyn": {
+          "Vecc.YamlDotNet.Analyzers.StaticGenerator": {
             "target": "Package",
-            "version": "[2.2.1, )"
+            "version": "[18.1.0, )"
           },
           "YamlDotNet": {
             "target": "Package",
-            "version": "[16.3.0, )"
+            "version": "[18.1.0, )"
           }
         },
         "imports": [
@@ -3199,7 +3227,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.109/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.110/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

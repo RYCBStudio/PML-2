@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Models;
 using MEFrpLauncherX.ViewModels;

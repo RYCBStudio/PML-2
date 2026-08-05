@@ -7,7 +7,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
 using RestSharp;
 using RYCB.PML2.MEFrpCaptchaLib;
-using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
+using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 
 // ReSharper disable SuspiciousLockOverSynchronizationPrimitive
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -19,9 +19,9 @@ using static MEFrpLauncherX.Core.MEFIntergrated.InfoClasses;
 #pragma warning disable CS8602 // 解引用可能出现空引用。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
 
-namespace MEFrpLauncherX.Core.MEFIntergrated;
+namespace MEFrpLauncherX.Core.MEFIntegrated;
 
-public class MEFrpApiConverter
+public static class MEFrpApiConverter
 {
     public const string BaseApiUrl = "https://api.mefrp.com/api/";
 
@@ -208,6 +208,52 @@ public class MEFrpApiConverter
     }
 
     /// <summary>
+    ///    获取ICP备案域名列表
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<ApiInfo<List<IcpDomain>>> GetIcpDomainListAsync()
+    {
+        ApiInfo<List<IcpDomain>> result = null;
+        await AppAnalytics.TrackCostAsync("api.icp.domain-list", async () =>
+        {
+            result = await ExecuteRequestAsync<List<IcpDomain>>(CreateRequest(), "auth/user/icpDomain/list",
+                "ICP备案域名列表");
+        });
+        return result;
+    }
+
+    public static async Task<ApiInfo<object>> DeleteIcpDomainAsync(string domain)
+    {
+        var request = CreateRequest(Method.Post);
+        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo()
+        {
+            domain = domain
+        }, App.AppJsonSerializerContext.ToEditIcpDomainInfo);
+        request.AddParameter("application/json", body, ParameterType.RequestBody);
+        using var client = CreateClient("auth/user/icpDomain/delete");
+
+        var response = await client.ExecuteAsync(request);
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        return JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "", App.AppJsonSerializerContext.ApiInfoObject);
+    }
+    
+    public static async Task<ApiInfo<object>> AddIcpDomainAsync(string domain)
+    {
+        var request = CreateRequest(Method.Post);
+        request.Timeout = TimeSpan.FromSeconds(6); // 接口延迟较大, 需要延长超时时间
+        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo()
+        {
+            domain = domain
+        }, App.AppJsonSerializerContext.ToEditIcpDomainInfo);
+        request.AddParameter("application/json", body, ParameterType.RequestBody);
+        using var client = CreateClient("auth/user/icpDomain/add");
+
+        var response = await client.ExecuteAsync(request);
+        App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        return JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "", App.AppJsonSerializerContext.ApiInfoObject);
+    }
+
+    /// <summary>
     ///     获取系统状态
     /// </summary>
     /// <returns></returns>
@@ -228,8 +274,7 @@ public class MEFrpApiConverter
     /// <returns></returns>
     public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
     {
-        ApiInfo<string?> result = null;
-        result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
+        var result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
         return result;
     }
 
@@ -248,8 +293,7 @@ public class MEFrpApiConverter
     /// <returns>公共信息</returns>
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
     {
-        ApiInfo<PublicData> result = null;
-        result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
+        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
         CurrentPublicInfo = result;
         return result;
     }

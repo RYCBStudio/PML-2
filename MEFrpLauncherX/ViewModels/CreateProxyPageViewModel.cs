@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Views;
@@ -28,12 +29,12 @@ public class CreateProxyPageViewModel : ViewModelBase
         {
             return legacy.SelectedAreaName;
         }
-        else if (SelectedType == 3 && pages.TryGetValue("Map", out var newMap) &&
-                 newMap is MappedNodesContainer newMapControl)
-        {
-            // 如果新的地图控件也有类似的属性，可以在这里添加
-            // return newMapControl.SelectedAreaName;
-        }
+        // else if (SelectedType == 3 && pages.TryGetValue("Map", out var newMap) &&
+        //          newMap is MappedNodesContainer newMapControl)
+        // {
+        //     // 如果新的地图控件也有类似的属性，可以在这里添加
+        //     // return newMapControl.SelectedAreaName;
+        // }
 
         return null;
     }
@@ -198,27 +199,27 @@ public class CreateProxyPageViewModel : ViewModelBase
                 }, DispatcherPriority.Render);
                 break;
 
-            case 3: // 嘉豪版（新地图）
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    if (pages.TryGetValue("Map", out var control))
-                    {
-                        CurrentPage = control as Control;
-                    }
-                    else
-                    {
-                        IsPageLoading = true;
-                        Dispatcher.UIThread.Post(async () =>
-                        {
-                            await Task.Yield();
-                            var page = new MappedNodesContainer();
-                            pages["Map"] = page;
-                            CurrentPage = page;
-                            IsPageLoading = false;
-                        }, DispatcherPriority.Background);
-                    }
-                }, DispatcherPriority.Render);
-                break;
+            // case 3: // 嘉豪版（新地图）
+            //     await Dispatcher.UIThread.InvokeAsync(() =>
+            //     {
+            //         if (pages.TryGetValue("Map", out var control))
+            //         {
+            //             CurrentPage = control as Control;
+            //         }
+            //         else
+            //         {
+            //             IsPageLoading = true;
+            //             Dispatcher.UIThread.Post(async () =>
+            //             {
+            //                 await Task.Yield();
+            //                 var page = new MappedNodesContainer();
+            //                 pages["Map"] = page;
+            //                 CurrentPage = page;
+            //                 IsPageLoading = false;
+            //             }, DispatcherPriority.Background);
+            //         }
+            //     }, DispatcherPriority.Render);
+            //     break;
         }
     }
 

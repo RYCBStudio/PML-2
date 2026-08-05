@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
@@ -19,8 +20,10 @@ using FluentAvalonia.UI.Windowing;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -258,6 +261,14 @@ public partial class MainWindow : AppWindow, IDisposable
         }
 
         await CheckPolicy();
+
+        // 触发插件事件：应用启动
+        await PluginService.Instance.TriggerAsync("app.startup", new Dictionary<string, object>
+        {
+            ["version"] = Core.App.Version,
+            ["os"] = Environment.OSVersion.Platform.ToString()
+        });
+
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
         //判断URL协议临时文件的时效性

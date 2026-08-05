@@ -10,9 +10,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Svg;
 using Avalonia.Threading;
 using SkiaSharp;
-using Svg.Model;
-// <-- 关键
-// <-- 关键
 using Color = Avalonia.Media.Color;
 using Point = Avalonia.Point;
 using Size = Avalonia.Size;
@@ -24,7 +21,6 @@ namespace MarkdownAIRender.Controls.Images;
 public class ImagesRender : UserControl
 {
     private static readonly HttpClient HttpClient = new();
-    // 不再使用 AvaloniaAssetLoader，因为它依赖过时的 API
 
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<ImagesRender, string?>(nameof(Value));
@@ -154,7 +150,7 @@ public class ImagesRender : UserControl
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    var animatedCtrl = new AnimatedSvgTextControl(animInfo);
+                    var animatedCtrl = new AnimatedSvgTextControl(animInfo!);
                     Content = animatedCtrl;
                 });
             }
@@ -162,20 +158,19 @@ public class ImagesRender : UserControl
             {
                 // 静态 SVG
                 using var memStream = new MemoryStream(Encoding.UTF8.GetBytes(svgXml));
-                var document = SvgExtensions.Open(memStream);
-                var picture = document is not null
-                    ? SvgExtensions.ToModel(document, null, out _, out _)
-                    : null;
-                var svgsrc = new SvgSource() { Picture = picture };
-                var svg = (IImage)new VectorImage { Source = svgsrc };
-
+                var svgSource = SvgSource.Load(memStream);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Content = new Border
                     {
                         Child = new Image
                         {
-                            Source = svg, Stretch = Stretch.Uniform, Margin = new Thickness(10)
+                            Source = new SvgImage()
+                            {
+                                Source = svgSource
+                            },
+                            Stretch = Stretch.Uniform,
+                            Margin = new Thickness(10)
                         }
                     };
                 });
@@ -218,27 +213,27 @@ public class ImagesRender : UserControl
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    var animatedCtrl = new AnimatedSvgTextControl(animInfo);
+                    var animatedCtrl = new AnimatedSvgTextControl(animInfo!);
                     Content = new Border { Child = animatedCtrl };
                 });
             }
             else
             {
                 // 静态 SVG
-                var document = SvgExtensions.Open(memStream);
-                var picture = document is not null
-                    ? SvgExtensions.ToModel(document, null, out _, out _)
-                    : null;
-                var svgsrc = new SvgSource { Picture = picture };
-                var svg = (IImage)new VectorImage { Source = svgsrc };
-
+                memStream.Seek(0, SeekOrigin.Begin);
+                var svgSource = SvgSource.Load(memStream);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Content = new Border
                     {
                         Child = new Image
                         {
-                            Source = svg, Stretch = Stretch.Uniform, Margin = new Thickness(10)
+                            Source = new SvgImage()
+                            {
+                                Source = svgSource
+                            },
+                            Stretch = Stretch.Uniform,
+                            Margin = new Thickness(10)
                         }
                     };
                 });
@@ -259,16 +254,9 @@ public class ImagesRender : UserControl
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        // 如果你希望固定默认大小，比如 600×400
-        // 若外部给的空间更大，则实际可扩展，但至少不会是 0×0
+        base.MeasureOverride(availableSize);
         var desiredWidth = 600;
         var desiredHeight = 400;
-
-        // 可以先让base测量子控件
-        base.MeasureOverride(availableSize);
-
-        // 你可以根据 baseSize 做些计算
-        // 这里简单：返回一个 (600, 400) 以内的大小即可
         return new Size(
             Math.Min(desiredWidth, availableSize.Width),
             Math.Min(desiredHeight, availableSize.Height)
@@ -277,9 +265,7 @@ public class ImagesRender : UserControl
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        // 给子控件安排布局
-        var arranged = base.ArrangeOverride(finalSize);
-        return arranged;
+        return base.ArrangeOverride(finalSize);
     }
 
     private static Image CreateImageControl(Bitmap bitmap)
@@ -298,7 +284,6 @@ public class ImagesRender : UserControl
             var doc = new XmlDocument();
             doc.LoadXml(svgXml);
 
-            // 1. 找 <animateMotion>
             var animateMotionNode = doc.GetElementsByTagName("animateMotion")
                 .Cast<XmlNode>()
                 .FirstOrDefault();
@@ -318,26 +303,19 @@ public class ImagesRender : UserControl
                 .Cast<XmlNode>()
                 .FirstOrDefault();
 
-            // 取 stroke
-            var strokeAttr = pathNode?.Attributes?["stroke"]?.Value; // "#cd0000"
-            // 取 stroke-width
+            var strokeAttr = pathNode?.Attributes?["stroke"]?.Value;
             double.TryParse(pathNode?.Attributes?["stroke-width"]?.Value, out var strokeWidth);
-            // 取 fill
             var fillAttr = pathNode?.Attributes?["fill"]?.Value;
-            // dur="3s" 
             var durAttr = animateMotionNode.Attributes?["dur"]?.Value ?? "3s";
             var durSeconds = ParseDurToSeconds(durAttr);
-
             var repeatCountAttr = animateMotionNode.Attributes?["repeatCount"]?.Value ?? "indefinite";
 
-            // 2. 找 <animate attributeName="fill"> 来解析颜色动画
-            //    (假定只有一个, 你可自行扩展多个)
             var animateColorNode = doc.GetElementsByTagName("animate")
                 .Cast<XmlNode>()
                 .FirstOrDefault(n => n.Attributes?["attributeName"]?.Value == "fill");
 
             string? fromColor = null, toColor = null;
-            var colorDurSeconds = durSeconds; // 如果没写dur,默认和 move动画时长一样
+            var colorDurSeconds = durSeconds;
             var colorRepeat = repeatCountAttr;
 
             if (animateColorNode != null)
@@ -358,7 +336,6 @@ public class ImagesRender : UserControl
                 }
             }
 
-            // 拿父节点 <text> 文字
             var textNode = animateMotionNode.ParentNode;
             var textContent = textNode?.InnerText?.Trim() ?? "SVG";
 
@@ -403,31 +380,21 @@ public class AnimatedSvgTextControl : Control
 {
     private readonly double _colorDuration;
     private readonly string? _colorRepeatCount;
-
-    // 颜色动画
     private readonly string? _fromColor;
-
-    // 移动动画
     private readonly double _moveDuration;
     private readonly string? _moveRepeatCount;
     private readonly string? _pathData;
-    private readonly IBrush? _pathFillBrush; // 可能暂时用不到
+    private readonly IBrush? _pathFillBrush;
     private readonly IBrush? _pathStrokeBrush;
     private readonly double _pathStrokeThickness = 1.0;
     private readonly string? _text;
     private readonly string? _toColor;
 
-    // 路径数据
     private PathGeometry? _avaloniaPathGeo;
-
     private double _colorProgress;
     private DispatcherTimer? _colorTimer;
     private SolidColorBrush _currentBrush = new(Colors.Red);
-
-    // 绘制文本
     private FormattedText? _formattedText;
-
-    // 进度
     private double _moveProgress;
     private DispatcherTimer? _moveTimer;
     private SKPath? _skPath;
@@ -437,14 +404,13 @@ public class AnimatedSvgTextControl : Control
     {
         _text = info.Text;
         _pathData = info.PathData;
-
         _moveDuration = info.MoveDuration;
         _moveRepeatCount = info.MoveRepeatCount;
-
         _fromColor = info.FromColor;
         _toColor = info.ToColor;
         _colorDuration = info.ColorDuration;
         _colorRepeatCount = info.ColorRepeatCount;
+
         if (!string.IsNullOrEmpty(info.PathStroke))
         {
             var c = ParseColor(info.PathStroke);
@@ -469,10 +435,8 @@ public class AnimatedSvgTextControl : Control
     {
         base.OnInitialized();
 
-        // 1) 解析路径
         if (!string.IsNullOrEmpty(_pathData))
         {
-            // Avalonia 几何(仅用来画可视的Path)
             try
             {
                 _avaloniaPathGeo = PathGeometry.Parse(_pathData);
@@ -481,7 +445,6 @@ public class AnimatedSvgTextControl : Control
             {
             }
 
-            // Skia Path(用来测量长度 & 获取插值点)
             try
             {
                 _skPath = SKPath.ParseSvgPathData(_pathData);
@@ -496,7 +459,6 @@ public class AnimatedSvgTextControl : Control
             }
         }
 
-        // 2) 生成文字
         if (!string.IsNullOrEmpty(_text))
         {
             _formattedText = new FormattedText(
@@ -505,11 +467,10 @@ public class AnimatedSvgTextControl : Control
                 FlowDirection.LeftToRight,
                 new Typeface("Microsoft YaHei"),
                 40,
-                _currentBrush // 先用初始笔刷
+                _currentBrush
             );
         }
 
-        // 3) 启动移动动画
         if (_skPath != null && _totalLength > 0 && _moveDuration > 0)
         {
             _moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16.7) };
@@ -517,7 +478,6 @@ public class AnimatedSvgTextControl : Control
             _moveTimer.Start();
         }
 
-        // 4) 启动颜色动画(若 from->to 都有值)
         if (!string.IsNullOrEmpty(_fromColor) && !string.IsNullOrEmpty(_toColor))
         {
             _currentBrush = new SolidColorBrush(ParseColor(_fromColor) ?? Colors.Red);
@@ -563,7 +523,6 @@ public class AnimatedSvgTextControl : Control
             }
         }
 
-        // 插值颜色
         if (!string.IsNullOrEmpty(_fromColor) && !string.IsNullOrEmpty(_toColor))
         {
             var c1 = ParseColor(_fromColor) ?? Colors.Red;
@@ -573,11 +532,8 @@ public class AnimatedSvgTextControl : Control
             _currentBrush.Color = lerped;
         }
 
-
-        // 同步到 FormattedText 的前景色
         if (_formattedText != null)
         {
-            // Avalonia 11 通常可以直接改 Foreground，但若不行就重新 new 一个
             _formattedText = new FormattedText(
                 _text ?? "SVG",
                 CultureInfo.CurrentCulture,
@@ -595,14 +551,12 @@ public class AnimatedSvgTextControl : Control
     {
         base.Render(context);
 
-        // 画路径(可视)
         if (_avaloniaPathGeo != null)
         {
             var pen = new Pen(Brushes.Gray, 2);
             context.DrawGeometry(null, pen, _avaloniaPathGeo);
         }
 
-        // 画文字
         if (_formattedText == null || _skPath == null || _totalLength <= 0)
         {
             return;
@@ -634,7 +588,6 @@ public class AnimatedSvgTextControl : Control
             return;
         }
 
-        // 转换为 Avalonia 坐标
         var avaloniaPoint = new Point(position.X, position.Y);
 
         var offsetY = _formattedText.Height / 2;
@@ -642,28 +595,22 @@ public class AnimatedSvgTextControl : Control
 
         context.DrawText(_formattedText, correctedPoint);
 
-        // if applied rotate transform, remember to pop it:
-        // context.Pop();
         if (_avaloniaPathGeo != null)
         {
             var pen = new Pen(_pathStrokeBrush ?? Brushes.Gray, _pathStrokeThickness);
-            // 如果真的需要 fill，可以用 _pathFillBrush，否则null
             context.DrawGeometry(_pathFillBrush, pen, _avaloniaPathGeo);
         }
     }
 
-    // 解析颜色字符串 (#RRGGBB / #RGB / red / blue …)
     private Color? ParseColor(string colorStr)
     {
         try
         {
-            // Avalonia 11 通用用法: Color.TryParse(string, out Color c)
             if (Color.TryParse(colorStr, out var c))
             {
                 return c;
             }
 
-            // 再尝试一下 .NET 内置 KnownColors
             return (Color)new ColorConverter().ConvertFromString(colorStr)!;
         }
         catch
@@ -672,7 +619,6 @@ public class AnimatedSvgTextControl : Control
         }
     }
 
-    // 线性插值颜色
     private static Color LerpColor(Color c1, Color c2, float t)
     {
         var a = (byte)(c1.A + (c2.A - c1.A) * t);

@@ -23,7 +23,7 @@ public class App : IDisposable
 #endif
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
 
-    internal static AppJsonSerializerContext AppJsonSerializerContext;
+    public static AppJsonSerializerContext AppJsonSerializerContext;
 
     public static string? SelectedTheme
     {

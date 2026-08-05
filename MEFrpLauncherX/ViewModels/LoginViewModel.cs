@@ -187,6 +187,21 @@ public class LoginViewModel : ViewModelBase
     /// 是否有已存储的账号
     /// </summary>
     public bool HasStoredUsernames => StoredUsernames.Count > 0;
+
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.ToLower() == "dark";
+    public bool IsLight => !IsDark;
+
+    public int SelectedLoginMode
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(IsMEFrp));
+        }
+    }
+    
+    public bool IsMEFrp => SelectedLoginMode == 0;
 }
 
 public class ProgressToTextConverter : IValueConverter

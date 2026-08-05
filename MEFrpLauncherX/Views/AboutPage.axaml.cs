@@ -437,32 +437,42 @@ public partial class AboutPage : UserControl
 
     private async void Support_Click(object sender, RoutedEventArgs e)
     {
+        vm.SubmitProgress = 0;
+        vm.IsSubmittingFeedback = true;
         var feedbackForm = new FeedbackForm();
         var cd = new ContentDialog
         {
             Content = feedbackForm,
             IsPrimaryButtonEnabled = true,
             PrimaryButtonText = "确定",
-            MinHeight = 200
+            MinHeight = 200,
+            DefaultButton = ContentDialogButton.Primary,
+            CloseButtonText = "取消",
         };
-        await cd.ShowAsync();
+        var res = await cd.ShowAsync();
         if (!(feedbackForm.Email.IsNullOrEmpty() ||
-              feedbackForm.Feedback.IsNullOrEmpty()))
+              feedbackForm.Feedback.IsNullOrEmpty()) || res == ContentDialogResult.Primary)
         {
-            var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
-            if (res.success)
-            {
-                await RYCBApiConverter.SendEmailAsync("html", "rycbqyf@163.com",
-                    $"收到反馈: {feedbackForm.Feedback} <br>用户邮箱:{feedbackForm.Email} <br>时间:{DateTime.Now:O}",
-                    "收到反馈 | RYCB 内部通知");
-                await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email, "您的反馈已提交成功。我们将尽快处理您的反馈。",
-                    "反馈已提交成功 | RYCB Studio");
-                Growl.Success("反馈提交成功");
-            }
-            else
-            {
-                Growl.Error(res.message, "反馈提交失败");
-            }
+            //var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
+            //if (res.success)
+            //{
+            vm.SubmitProgress = 0.4;
+            await RYCBApiConverter.SendEmailAsync("html", "rycbqyf@163.com",
+                $"收到反馈: {feedbackForm.Feedback} <br>用户邮箱:{feedbackForm.Email} <br>时间:{DateTime.Now:O}",
+                "收到反馈 | RYCB 内部通知");
+            vm.SubmitProgress = 1.5;
+            await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email, "您的反馈已提交成功。我们将尽快处理您的反馈。",
+                "反馈已提交成功 | RYCB Studio");
+            vm.SubmitProgress = 2.6;
+            Growl.Success("反馈提交成功");
+            vm.SubmitProgress = 3;
+            await Task.Delay(500);
+            vm.IsSubmittingFeedback = false;
+            //}
+            //else
+            //{
+            //    Growl.Error(res.message, "反馈提交失败");
+            //}
         }
     }
 

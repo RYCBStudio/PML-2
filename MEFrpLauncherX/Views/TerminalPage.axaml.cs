@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +11,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Console;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;
@@ -379,6 +381,13 @@ public partial class TerminalPage : UserControl
                                                " \r");
             }
         }
+
+        // 触发插件事件：代理启动
+        _ = PluginService.Instance.TriggerAsync("proxy.start", new Dictionary<string, object>
+        {
+            ["proxyName"] = consoleTitle,
+            ["command"] = rs
+        });
     }
 
     private string GetArchiveFileName()

@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.MEFIntergrated;
 using ReactiveUI;
 

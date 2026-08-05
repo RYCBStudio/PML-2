@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace MEFrpLauncherX.Core.MEFIntergrated;
+namespace MEFrpLauncherX.Core.MEFIntegrated;
 
 public class NetworkSpeedTester
 {
