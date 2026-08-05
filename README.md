@@ -23,7 +23,7 @@
 
 以下组件为**专有闭源/混淆库**，不提供源代码，不受本项目 MIT 许可证约束：
 
-- `RYCB.PML.MEFrpCaptchaLib`（验证码识别）
+- `RYCB.PML2.MEFrpCaptchaLib`（验证码识别）
 - `SecretLib`（安全存储）
 
 详细说明请查看 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
@@ -114,12 +114,12 @@ dotnet publish MEFrpLauncherX/MEFrpLauncherX.csproj -c Release -r osx-x64 --self
 
 - 配置文件位置：`[应用目录]/Config/Settings.json`
 - 日志位置：
-    - 日常日志：`[应用目录]/Logs/[日期].log`
-    - 崩溃日志：`[应用目录]/Logs/Crash/crash_*.log`
+  - 日常日志：`[应用目录]/Logs/[日期].log`
+  - 崩溃日志：`[应用目录]/Logs/Crash/crash_*.log`
 
 ## 常见问题
 
-**Q: 编译时提示找不到 RYCB.PML.MEFrpCaptchaLib 或 SecretLib？**  
+**Q: 编译时提示找不到 RYCB.PML2.MEFrpCaptchaLib 或 SecretLib？**  
 A: 这些是专有闭源库，需要自行获取并放置到项目引用路径。详见上方「处理专有依赖」。
 
 **Q: Linux 下中文字体显示异常？**  

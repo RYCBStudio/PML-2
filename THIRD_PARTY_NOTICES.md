@@ -11,7 +11,7 @@
 
 | 组件名称 | 用途 | 状态 | 说明 |
 |----------|------|------|------|
-| RYCB.PML.MEFrpCaptchaLib | 验证码识别 | 闭源 + 混淆 (Dotfuscated) | 不提供源码，仅二进制分发 |
+| RYCB.PML2.MEFrpCaptchaLib | 验证码识别 | 闭源 + 混淆 (Dotfuscated) | 不提供源码，仅二进制分发 |
 | SecretLib | 敏感数据加密存储 | 闭源 | 不提供源码，仅二进制分发 |
 
 ### 使用须知
