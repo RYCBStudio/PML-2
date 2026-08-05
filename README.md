@@ -23,7 +23,7 @@
 
 以下组件为**专有闭源/混淆库**，不提供源代码，不受本项目 MIT 许可证约束：
 
-- `RYCB.PML.MEFrpCaptchaLib`（验证码识别）
+- `RYCB.PML2.MEFrpCaptchaLib`（验证码识别）
 - `SecretLib`（安全存储）
 
 详细说明请查看 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
