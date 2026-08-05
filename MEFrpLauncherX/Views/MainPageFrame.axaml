@@ -39,12 +39,12 @@
                                              x:Name="SettingsPageBtn" IconSource="Setting" Content="设置" />
                 <controls:NavigationViewItem Tag="Theme"
                                              x:Name="ThemesPageBtn" IconSource="Library" Content="主题" />
-                <controls:NavigationViewItem Tag="Plugin"
+                <controls:NavigationViewItem Tag="Plugin" 
                                              x:Name="PluginListPageBtn" Content="插件">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            Glyph="&#xE86C;" />
+                            Glyph="&#xEA86;" />
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="About"

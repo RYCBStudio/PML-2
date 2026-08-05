@@ -1,16 +1,16 @@
-﻿using MEFrpLauncherX.Plugin.Condition;
+using System.IO;
+using MEFrpLauncherX.Plugin.Condition;
 using MEFrpLauncherX.Plugin.Core;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
 namespace MEFrpLauncherX.Plugin.Engine;
 
-
-public class PluginEngine
+public class PluginEngine : IAction
 {
     private readonly Dictionary<string, List<PluginDefinition>> _triggerMap = new();
     private readonly FunctionRegistry _funcRegistry = new();
     private readonly Dictionary<string, IAction> _builtinActions;
-    private readonly IAction _callFuncAction;
+    private readonly CallFunctionAction _callFuncAction;
 
     public PluginEngine()
     {
@@ -21,12 +21,26 @@ public class PluginEngine
             ["http_request"] = new HttpRequestAction(),
             ["python_run"] = new PythonAction(),
         };
-        // 递归执行指令（可注入其他 action）
-        _callFuncAction = new CallFunctionAction(_funcRegistry, this._callFuncAction);
-        // 将 call_function 注册为内置指令
+        // call_function 指令：通过 this (IAction) 作为子动作分发器
+        _callFuncAction = new CallFunctionAction(_funcRegistry, this);
         _builtinActions["call_function"] = _callFuncAction;
         // 条件指令包裹
-        _builtinActions["conditional"] = new ConditionalAction(this._callFuncAction);
+        _builtinActions["conditional"] = new ConditionalAction(this);
+    }
+
+    /// <summary>
+    /// IAction 实现：作为子动作分发器，args 中需包含 "__actionName" 键用于查找内置指令
+    /// </summary>
+    Task IAction.ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        if (args == null || !args.TryGetValue("__actionName", out var nameObj))
+            return Task.CompletedTask;
+        var def = new ActionDefinition
+        {
+            Name = nameObj.ToString() ?? "",
+            Params = args
+        };
+        return ExecuteAction(def, ctx);
     }
 
     public void LoadAll(string pluginsFolder)
@@ -75,6 +89,23 @@ public class PluginEngine
             var resolved = ResolveTemplates(def.Params, ctx);
             await action.ExecuteAsync(ctx, resolved);
         }
+    }
+
+    /// <summary>
+    /// 卸载所有已加载的插件（保留内置指令）
+    /// </summary>
+    public void Unload()
+    {
+        _triggerMap.Clear();
+    }
+
+    /// <summary>
+    /// 重新加载插件（先卸载再加载）
+    /// </summary>
+    public void Reload(string pluginsFolder)
+    {
+        Unload();
+        LoadAll(pluginsFolder);
     }
 
     private Dictionary<string, object> ResolveTemplates(Dictionary<string, object> args, ExecutionContext ctx)

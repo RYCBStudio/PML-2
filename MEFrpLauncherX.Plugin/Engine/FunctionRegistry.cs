@@ -1,4 +1,4 @@
-﻿using MEFrpLauncherX.Plugin.Core;
+using MEFrpLauncherX.Plugin.Core;
 
 namespace MEFrpLauncherX.Plugin.Engine;
 
@@ -8,4 +8,6 @@ public class FunctionRegistry
 
     public void Define(string name, List<ActionDefinition> actions) => _functions[name] = actions;
     public List<ActionDefinition>? Get(string name) => _functions.GetValueOrDefault(name);
+    public void Clear() => _functions.Clear();
+    public int Count => _functions.Count;
 }

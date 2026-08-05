@@ -10,6 +10,18 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.AboutPage"
              x:DataType="viewModels:AboutViewModel">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Bitmap x:Key="MEFrpLogo">/Assets/mefrp-new.jpg</Bitmap>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Bitmap x:Key="MEFrpLogo">/Assets/mefrp-new-dark.jpg</Bitmap>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Design.DataContext>
         <viewModels:AboutViewModel />
     </Design.DataContext>
@@ -94,8 +106,23 @@
                                         Click="Support_Click"
                                         Classes="Danger"
                                         FontFamily="{StaticResource GlobalFontFamily}">
-                                        <TextBlock
-                                            Text="反馈软件问题" />
+                                        <DockPanel HorizontalSpacing="4">
+                                            <controls1:ProgressRing IsVisible="{Binding IsSubmittingFeedback}"
+                                                                    Maximum="3" Value="{Binding SubmitProgress}"
+                                                                    IsIndeterminate="False"
+                                                                    DockPanel.Dock="Right" VerticalAlignment="Top"
+                                                                    Height="12">
+                                                <controls1:ProgressRing.Transitions>
+                                                    <Transitions>
+                                                        <DoubleTransition Property="Value" Easing="QuarticEaseIn"
+                                                                          Duration="0:0:0.1">
+                                                        </DoubleTransition>
+                                                    </Transitions>
+                                                </controls1:ProgressRing.Transitions>
+                                            </controls1:ProgressRing>
+                                            <TextBlock
+                                                Text="反馈软件问题" />
+                                        </DockPanel>
                                     </HyperlinkButton>
                                 </StackPanel>
                                 <WrapPanel ItemSpacing="5" x:Name="DebugPanel" IsVisible="False">
@@ -115,14 +142,8 @@
                             <Image
                                 Width="20"
                                 Margin="5,0,5,0"
-                                Source="/Assets/mefrp-new.jpg"
+                                Source="{DynamicResource MEFrpLogo}"
                                 IsVisible="{Binding !IsDark}"
-                                Stretch="UniformToFill" />
-                            <Image
-                                Width="20"
-                                Margin="5,0,5,0"
-                                Source="/Assets/mefrp-new-dark.jpg"
-                                IsVisible="{Binding IsDark}"
                                 Stretch="UniformToFill" />
                             <TextBlock
                                 FontFamily="{StaticResource GlobalFontFamily}"

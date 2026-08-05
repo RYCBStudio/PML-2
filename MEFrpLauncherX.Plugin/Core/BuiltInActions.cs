@@ -102,7 +102,12 @@ public class CallFunctionAction : IAction
         var newCtx = ctx.CloneWithArgs(funcArgs);
         foreach (var actionDef in funcActions)
         {
-            await _subActionExecutor.ExecuteAsync(newCtx, actionDef.Params);
+            // 将 action name 注入 params 以便 PluginEngine 分发
+            var dispatchArgs = new Dictionary<string, object>(actionDef.Params)
+            {
+                ["__actionName"] = actionDef.Name
+            };
+            await _subActionExecutor.ExecuteAsync(newCtx, dispatchArgs);
         }
     }
 }

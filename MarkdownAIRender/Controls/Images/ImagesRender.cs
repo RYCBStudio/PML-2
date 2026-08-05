@@ -162,12 +162,8 @@ public class ImagesRender : UserControl
             {
                 // 静态 SVG
                 using var memStream = new MemoryStream(Encoding.UTF8.GetBytes(svgXml));
-                var document = SvgExtensions.Open(memStream);
-                var picture = document is not null
-                    ? SvgExtensions.ToModel(document, null, out _, out _)
-                    : null;
-                var svgsrc = new SvgSource() { Picture = picture };
-                var svg = (IImage)new VectorImage { Source = svgsrc };
+                var svgsrc = new SvgSource() { Picture = SvgSourceTypeConverter };
+                IImage svg = new VectorImage { Source = svgsrc };
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {

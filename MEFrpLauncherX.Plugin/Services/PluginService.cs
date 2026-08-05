@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Plugin;
 using MEFrpLauncherX.Plugin.Engine;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 using YamlDotNet.Serialization;
@@ -194,8 +195,8 @@ public class PluginService
         try
         {
             var content = File.ReadAllText(filePath);
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            var deserializer = new StaticDeserializerBuilder(new YamlModelStaticContext())
+                .WithCaseInsensitivePropertyMatching()
                 .IgnoreUnmatchedProperties()
                 .Build();
             var raw = deserializer.Deserialize<RawPluginMeta>(content);
