@@ -71,6 +71,7 @@ jobs:
       - name: Publish (ReadyToRun)
         shell: bash
         run: |
+          set -euo pipefail
           OUT="./publish/${{ matrix.rid }}"
           mkdir -p "$OUT"
           dotnet publish "${{ env.PROJECT }}" \
@@ -81,11 +82,10 @@ jobs:
             -p:PublishTrimmed=true \
             -o "$OUT" \
             --nologo -v q
-          # 确保可执行权限（Linux/macOS）
           if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
             chmod +x "$OUT/${{ env.APP_EXE }}"
           fi
-          ls -la "$OUT" | head -30
+          echo "Publish OK, file count: $(find "$OUT" -type f | wc -l)"
 
       - name: Inject Sentry DSN
         shell: bash
