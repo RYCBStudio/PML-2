@@ -14,7 +14,6 @@ using Avalonia.Data.Converters;
 using Avalonia.Styling;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Models;
-using MEFrpLauncherX.ViewModels.Debug;
 
 namespace MEFrpLauncherX.Controls;
 
@@ -31,7 +30,7 @@ public partial class TunnelNodeControl : UserControl
         InitializeComponent();
         if (Design.IsDesignMode)
         {
-            DataContext = new Debug_TunnelNodeViewModel();
+            DataContext = new TunnelNodeViewModel();
         }
     }
 

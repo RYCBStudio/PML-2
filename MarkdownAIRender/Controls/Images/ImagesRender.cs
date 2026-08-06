@@ -252,16 +252,16 @@ public class ImagesRender : UserControl
         });
     }
 
-    protected override Size MeasureOverride(Size availableSize)
-    {
-        base.MeasureOverride(availableSize);
-        var desiredWidth = 600;
-        var desiredHeight = 400;
-        return new Size(
-            Math.Min(desiredWidth, availableSize.Width),
-            Math.Min(desiredHeight, availableSize.Height)
-        );
-    }
+    // protected override Size MeasureOverride(Size availableSize)
+    // {
+    //     base.MeasureOverride(availableSize);
+    //     var desiredWidth = 600;
+    //     var desiredHeight = 400;
+    //     return new Size(
+    //         Math.Min(desiredWidth, availableSize.Width),
+    //         Math.Min(desiredHeight, availableSize.Height)
+    //     );
+    // }
 
     protected override Size ArrangeOverride(Size finalSize)
     {

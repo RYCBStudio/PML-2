@@ -21,7 +21,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public const string Codename = "Neon";
+    public const string Codename = "Sodium";
 #pragma warning disable CA2211
     public static ISplashService? SplashService;
 #pragma warning restore CA2211

@@ -49,6 +49,7 @@ public class PluginEngine : IAction
         foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
         {
             var plugin = preprocessor.Process(file, _funcRegistry);
+            if (plugin.Id == "错误") continue;
             foreach (var trigger in plugin.Triggers)
             {
                 if (!_triggerMap.ContainsKey(trigger.On))

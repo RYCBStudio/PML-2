@@ -334,7 +334,7 @@ public partial class MainWindow : AppWindow, IDisposable
                         **重要提示：** 我们使用 [Sentry](https://sentry.io) 进行错误跟踪和性能监控，以改善软件稳定性。数据存储在 Sentry 位于欧盟的服务器上。  
                         ### 1. 信息收集范围
                         - **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
-                        - **设备数据**：设备标识符、IP 地址、操作系统版本、崩溃堆栈和错误日志
+                        - **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
                         - **使用行为**：功能点击、会话时长、错误日志
                         ___
                         **注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。  
@@ -350,15 +350,16 @@ public partial class MainWindow : AppWindow, IDisposable
                         ___
                         ### 4. 您的权利
                         您有权访问、更正或删除个人信息，可通过设置禁用遥测数据收集。  
-                        **联系方式：** [邮件](mailto://rycbstudio@163.com) | [官网](https://rycb.mxj.pub/)  
+                        **联系方式：** [邮件](mailto:im@rycb.tech) | [官网](https://www.rycb.tech/)  
                         ___
-                        详细隐私政策请查看：[PML 2 隐私政策](https://rycb.mxj.pub/mefl/privacy)
+                        详细隐私政策请查看：[PML 2 隐私政策](https://docs.rycb.tech/pml-2/policy)
                         """
             },
             PrimaryButtonText = "同意",
-            SecondaryButtonText = "同意, 但禁用遥测",
             CloseButtonText = "拒绝",
-            IsPrimaryButtonEnabled = true
+            IsPrimaryButtonEnabled = true,
+            IsSecondaryButtonEnabled = false,
+            DefaultButton = ContentDialogButton.Primary
         };
         App.SplashService?.Close();
         var res = await cd.ShowAsync();
@@ -370,10 +371,6 @@ public partial class MainWindow : AppWindow, IDisposable
                 break;
             case ContentDialogResult.Primary:
                 ConfigManager.CurrentConfig.IsTelemetryEnabled = true;
-                ConfigManager.CurrentConfig.PrivacyAgreed = true;
-                break;
-            case ContentDialogResult.Secondary:
-                ConfigManager.CurrentConfig.IsTelemetryEnabled = false;
                 ConfigManager.CurrentConfig.PrivacyAgreed = true;
                 break;
         }

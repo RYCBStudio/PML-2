@@ -12,6 +12,12 @@ public class PluginPreprocessor
     public PluginDefinition Process(string pluginFilePath, FunctionRegistry funcRegistry)
     {
         var raw = PreprocessAndDeserialize(pluginFilePath);
+        if (raw.Id == "错误")
+            return new PluginDefinition()
+            {
+                Id = "错误",
+                Name = "无法找到文件"
+            };
         // 注册函数
         foreach (var kv in raw.Functions)
         {
@@ -28,7 +34,36 @@ public class PluginPreprocessor
 
     private RawPlugin PreprocessAndDeserialize(string path)
     {
-        var content = File.ReadAllText(path);
+        string content;
+        try
+        {
+            content = File.ReadAllText(path);
+        }
+        catch (FileNotFoundException e)
+        {
+            return new RawPlugin()
+            {
+                Id = "错误",
+                Name = "无法找到文件",
+            };
+        }
+        catch (IOException e)
+        {
+            return new RawPlugin()
+            {
+                Id = "错误",
+                Name = "无法读取文件",
+            };
+        }
+        catch (Exception e)
+        {
+            return new RawPlugin()
+            {
+                Id = "错误",
+                Name = "读取文件时发生错误",
+            };
+        }
+
         var lines = content.Split('\n');
         var sb = new StringBuilder();
         var baseDir = Path.GetDirectoryName(path)!;
