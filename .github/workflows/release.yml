@@ -106,7 +106,7 @@ jobs:
 
       - name: Install zstd (macOS)
         if: matrix.os_name == 'macos'
-        run: brew install zstd
+        run: brew list zstd &>/dev/null || brew install zstd
 
       - name: Pack tar.gz + tar.zst
         id: pack
@@ -120,22 +120,27 @@ jobs:
           OUT="./publish/${RID}"
           mkdir -p dist
 
+          if [ ! -d "$OUT" ]; then
+            echo "Publish dir missing: $OUT"
+            exit 1
+          fi
+
           TGZ="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.gz"
           TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
 
-          tar -czf "dist/${TGZ}" -C "$OUT" .
+          # tar.gz：先 tar 再 gzip（避免 -czf 和 -C 组合踩坑）
+          tar -C "$OUT" -cf - . | gzip -9 > "dist/${TGZ}"
 
-          if [ "${{ matrix.os_name }}" = "linux" ]; then
-            # GNU tar
-            tar -C "$OUT" -I 'zstd -T0 -19' -cf "dist/${TZST}" .
-          else
-            # BSD tar (macOS)
-            tar -C "$OUT" --use-compress-program='zstd -T0 -19' -cf "dist/${TZST}" .
-          fi
+          # tar.zst：先 tar 再 zstd（Linux/macOS 通用，不依赖 GNU -I）
+          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "dist/${TZST}"
+
+          # 完整性检查（失败会直接退出）
+          gzip -t "dist/${TGZ}"
+          zstd -t "dist/${TZST}"
 
           ls -lh dist/ || true
-          echo "tgz=${TGZ}" >> $GITHUB_OUTPUT
-          echo "tzst=${TZST}" >> $GITHUB_OUTPUT
+          echo "tgz=${TGZ}" >> "$GITHUB_OUTPUT"
+          echo "tzst=${TZST}" >> "$GITHUB_OUTPUT"
 
       # ---------- deb + rpm（仅 Linux）----------
       - name: Install nFPM
