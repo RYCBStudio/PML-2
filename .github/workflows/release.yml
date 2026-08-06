@@ -124,9 +124,16 @@ jobs:
           TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
 
           tar -czf "dist/${TGZ}" -C "$OUT" .
-          tar -C "$OUT" -I 'zstd -T0 -19' -cf "dist/${TZST}" .
 
-          ls -lh dist/
+          if [ "${{ matrix.os_name }}" = "linux" ]; then
+            # GNU tar
+            tar -C "$OUT" -I 'zstd -T0 -19' -cf "dist/${TZST}" .
+          else
+            # BSD tar (macOS)
+            tar -C "$OUT" --use-compress-program='zstd -T0 -19' -cf "dist/${TZST}" .
+          fi
+
+          ls -lh dist/ || true
           echo "tgz=${TGZ}" >> $GITHUB_OUTPUT
           echo "tzst=${TZST}" >> $GITHUB_OUTPUT
 
