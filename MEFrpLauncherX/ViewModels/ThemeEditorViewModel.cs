@@ -26,7 +26,7 @@ using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
+public class ThemeEditorViewModel : ViewModelBase
 {
     // 主题基本信息
     public string Name
@@ -875,7 +875,10 @@ public class ThemeEditorViewModel : ViewModelBase, INotifyPropertyChanged
                 AccentColors.Add(new AccentColorItem
                 {
                     Color = accent.Color.ToLower() is "accent" or "default" or "primary"
-                        ? ColorToHexConverter.ToHexString(App.FATheme.CustomAccentColor.Value,
+                        ? ColorToHexConverter.ToHexString(
+                            App.Current.TryGetResource("AccentFillColorDefaultBrush", out var color)
+                                ? (Color)(color ?? Color.FromArgb(255, 0, 120, 215))
+                                : Color.FromArgb(255, 0, 120, 215),
                             AlphaComponentPosition.Leading)
                         : accent.Color,
                     Duration = accent.Duration

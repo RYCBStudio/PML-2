@@ -6,7 +6,6 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
-             xmlns:debug="clr-namespace:MEFrpLauncherX.ViewModels.Debug"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.UserProxyControl"
              x:CompileBindings="True"
@@ -15,7 +14,7 @@
              x:DataType="viewModels:UserProxyViewModel">
     <!-- TODO: 记得换回去-->
     <Design.DataContext>
-        <debug:Debug_UserProxyViewModel />
+        <viewModels:UserProxyViewModel />
     </Design.DataContext>
     <UserControl.Resources>
         <!-- Converters -->

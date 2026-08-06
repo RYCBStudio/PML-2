@@ -9,10 +9,10 @@
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
-        <AssemblyVersion>2.3.0</AssemblyVersion>
+        <AssemblyVersion>26.2.0</AssemblyVersion>
         <NeutralLanguage>zh-Hans</NeutralLanguage>
-        <Version>2.3.0</Version>
-        <ApplicationVersion>2.3.0</ApplicationVersion>
+        <Version>26.2.0</Version>
+        <ApplicationVersion>26.2.0</ApplicationVersion>
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -65,6 +65,10 @@
         <None Remove="Assets\splash.png" />
 
         <AvaloniaResource Include="Assets\splash.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <AvaloniaResource Update="Assets\splash.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
     </ItemGroup>

@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:services="clr-namespace:MEFrpLauncherX.Services;assembly=MEFrpLauncherX.Plugin"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.PluginListPage"
              x:DataType="vm:PluginListViewModel">
@@ -26,135 +28,265 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto, *" Margin="10" DragDrop.AllowDrop="True">
-        <Interaction.Behaviors>
-            <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragEnterEvent}">
-                <RoutedEventTriggerBehavior.Actions>
-                    <InvokeCommandAction Command="{Binding DragEnterCommand}" />
-                </RoutedEventTriggerBehavior.Actions>
-            </RoutedEventTriggerBehavior>
-            <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragLeaveEvent}">
-                <RoutedEventTriggerBehavior.Actions>
-                    <InvokeCommandAction Command="{Binding DragLeaveCommand}" />
-                </RoutedEventTriggerBehavior.Actions>
-            </RoutedEventTriggerBehavior>
-            <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DropEvent}">
-                <RoutedEventTriggerBehavior.Actions>
-                    <InvokeCommandAction Command="{Binding DropCommand}" PassEventArgsToCommand="True" />
-                </RoutedEventTriggerBehavior.Actions>
-            </RoutedEventTriggerBehavior>
-        </Interaction.Behaviors>
-        <Border IsVisible="{Binding IsDragOver}" Grid.RowSpan="2"
-                Background="{DynamicResource SmokeFillColorDefaultBrush}">
-            <Border.Transitions>
-                <Transitions>
-                    <BrushTransition Property="Background" Easing="SineEaseIn" Duration="0:0:0.5" />
-                </Transitions>
-            </Border.Transitions>
-            <Grid RowDefinitions="8* 2*" RowSpacing="3" MaxHeight="100">
-                <controls:FontIcon Glyph="&#xF8AA;" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="40" />
-                <TextBlock Grid.Row="1" Text="拖拽插件文件到此处" FontSize="16" VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-            </Grid>
-        </Border>
-        <controls:CommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
-            <controls:CommandBar.PrimaryCommands>
-                <controls:CommandBarButton IconSource="Add" Label="安装插件"
-                                           Command="{Binding InstallPluginCommand}" />
-                <controls:CommandBarButton IconSource="Refresh" Label="刷新"
-                                           Command="{Binding ReloadPluginsCommand}" />
-                <controls:CommandBarButton IconSource="OpenFile" Label="打开目录"
-                                           Command="{Binding OpenPluginFolderCommand}"
-                                           CommandParameter="plugins" />
-                <controls:CommandBarSeparator />
-                <controls:CommandBarButton IconSource="Code" Label="查看源码"
-                                           Command="{Binding ViewYamlCommand}"
-                                           IsEnabled="{Binding !!SelectedPlugin}" />
-                <controls:CommandBarButton IconSource="Accept" Label="启用/禁用"
-                                           Command="{Binding TogglePluginCommand}"
-                                           IsEnabled="{Binding !!SelectedPlugin}" />
-                <controls:CommandBarButton IconSource="Delete" Label="卸载"
-                                           Command="{Binding UninstallPluginCommand}"
-                                           IsEnabled="{Binding !!SelectedPlugin}" />
-            </controls:CommandBar.PrimaryCommands>
-        </controls:CommandBar>
+    <TabControl Classes="compact">
+        <TabItem Classes="compact">
+            <TabItem.Header>
+                <controls1:IconContent Symbol="Folder" Label="本地插件" />
+            </TabItem.Header>
+            <Grid RowDefinitions="Auto, *" Margin="10" DragDrop.AllowDrop="True">
+                <Interaction.Behaviors>
+                    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragEnterEvent}">
+                        <RoutedEventTriggerBehavior.Actions>
+                            <InvokeCommandAction Command="{Binding DragEnterCommand}" />
+                        </RoutedEventTriggerBehavior.Actions>
+                    </RoutedEventTriggerBehavior>
+                    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragLeaveEvent}">
+                        <RoutedEventTriggerBehavior.Actions>
+                            <InvokeCommandAction Command="{Binding DragLeaveCommand}" />
+                        </RoutedEventTriggerBehavior.Actions>
+                    </RoutedEventTriggerBehavior>
+                    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DropEvent}">
+                        <RoutedEventTriggerBehavior.Actions>
+                            <InvokeCommandAction Command="{Binding DropCommand}" PassEventArgsToCommand="True" />
+                        </RoutedEventTriggerBehavior.Actions>
+                    </RoutedEventTriggerBehavior>
+                </Interaction.Behaviors>
+                <Border IsVisible="{Binding IsDragOver}" Grid.RowSpan="2"
+                        Background="{DynamicResource SmokeFillColorDefaultBrush}">
+                    <Border.Transitions>
+                        <Transitions>
+                            <BrushTransition Property="Background" Easing="SineEaseIn" Duration="0:0:0.5" />
+                        </Transitions>
+                    </Border.Transitions>
+                    <Grid RowDefinitions="8* 2*" RowSpacing="3" MaxHeight="100">
+                        <controls:FontIcon Glyph="&#xF8AA;" FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                           FontSize="40" />
+                        <TextBlock Grid.Row="1" Text="拖拽插件文件到此处" FontSize="16" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <controls:CommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
+                    <controls:CommandBar.PrimaryCommands>
+                        <controls:CommandBarButton IconSource="Add" Label="安装插件"
+                                                   Command="{Binding InstallPluginCommand}" />
+                        <controls:CommandBarButton IconSource="Refresh" Label="刷新"
+                                                   Command="{Binding ReloadPluginsCommand}" />
+                        <controls:CommandBarButton IconSource="OpenFile" Label="打开目录"
+                                                   Command="{Binding OpenPluginFolderCommand}"
+                                                   CommandParameter="plugins" />
+                        <controls:CommandBarSeparator />
+                        <controls:CommandBarButton IconSource="Code" Label="查看源码"
+                                                   Command="{Binding ViewYamlCommand}"
+                                                   IsEnabled="{Binding !!SelectedPlugin}" />
+                        <controls:CommandBarButton IconSource="Accept" Label="启用/禁用"
+                                                   Command="{Binding TogglePluginCommand}"
+                                                   IsEnabled="{Binding !!SelectedPlugin}" />
+                        <controls:CommandBarButton IconSource="Delete" Label="卸载"
+                                                   Command="{Binding UninstallPluginCommand}"
+                                                   IsEnabled="{Binding !!SelectedPlugin}" />
+                    </controls:CommandBar.PrimaryCommands>
+                </controls:CommandBar>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding Plugins}"
-                 SelectedItem="{Binding SelectedPlugin}"
-                 Margin="0,0,0,10">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto"
-                          Margin="8,6" Classes="animated">
-                        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                Width="6" CornerRadius="3" Margin="0,0,12,0"
-                                VerticalAlignment="Stretch"
-                                Background="{DynamicResource SystemFillColorSuccessBrush}" />
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
-                                    Spacing="8" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" />
-                            <Border CornerRadius="4" Padding="4,1"
-                                    Background="{DynamicResource AccentFillColorDefaultBrush}">
-                                <TextBlock Text="{Binding Version}" FontSize="11"
-                                           Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
-                            </Border>
-                            <Border CornerRadius="4" Padding="6,1"
-                                    Classes.Enabled="{Binding IsEnabled}"
-                                    Classes.Disabled="{Binding !IsEnabled}">
-                                <TextBlock FontSize="11" Classes.Enabled="{Binding IsEnabled}"
-                                           Classes.Disabled="{Binding !IsEnabled}" />
-                            </Border>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal"
-                                    Spacing="12" Margin="0,4,0,0">
-                            <TextBlock Text="{Binding Description}" FontSize="12"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       MaxWidth="300" />
-                            <Border Padding="6,1" CornerRadius="4"
-                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-                                <StackPanel Orientation="Horizontal" Spacing="10">
+                <ListBox Grid.Row="1" ItemsSource="{Binding Plugins}"
+                         SelectedItem="{Binding SelectedPlugin}"
+                         Margin="0,0,0,10">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto"
+                                  Margin="8,6" Classes="animated">
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                        Width="6" CornerRadius="3" Margin="0,0,12,0"
+                                        VerticalAlignment="Stretch"
+                                        Background="{DynamicResource SystemFillColorSuccessBrush}" />
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="8" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" />
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource AccentFillColorDefaultBrush}">
+                                        <TextBlock Text="{Binding Version}" FontSize="11"
+                                                   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                    </Border>
+                                    <Border CornerRadius="4" Padding="6,1"
+                                            Classes.Enabled="{Binding IsEnabled}"
+                                            Classes.Disabled="{Binding !IsEnabled}">
+                                        <TextBlock FontSize="11" Classes.Enabled="{Binding IsEnabled}"
+                                                   Classes.Disabled="{Binding !IsEnabled}" />
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="12" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Description}" FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               MaxWidth="300" />
+                                    <Border Padding="6,1" CornerRadius="4"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                        <StackPanel Orientation="Horizontal" Spacing="10">
+                                            <TextBlock FontSize="11"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <Run Text="触发器: " />
+                                                <Run Text="{Binding TriggerCount}"
+                                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                            </TextBlock>
+                                            <TextBlock FontSize="11"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <Run Text="函数: " />
+                                                <Run Text="{Binding FunctionCount}"
+                                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
                                     <TextBlock FontSize="11"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                        <Run Text="触发器: " />
-                                        <Run Text="{Binding TriggerCount}"
-                                             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                                    </TextBlock>
-                                    <TextBlock FontSize="11"
-                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                        <Run Text="函数: " />
-                                        <Run Text="{Binding FunctionCount}"
-                                             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               VerticalAlignment="Center">
+                                        <Run Text="作者: " />
+                                        <Run Text="{Binding Author}" />
                                     </TextBlock>
                                 </StackPanel>
-                            </Border>
-                            <TextBlock FontSize="11"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       VerticalAlignment="Center">
-                                <Run Text="作者: " />
-                                <Run Text="{Binding Author}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
 
-        <Border Grid.Row="1" IsHitTestVisible="False" IsVisible="{Binding IsEmpty}"
-                VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Spacing="12" HorizontalAlignment="Center">
-                <TextBlock Text="暂无插件" FontSize="18"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           HorizontalAlignment="Center" />
-                <TextBlock Text="点击上方安装插件按钮添加 YAML 插件文件"
-                           FontSize="13"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                           HorizontalAlignment="Center" />
-            </StackPanel>
-        </Border>
-    </Grid>
+                <Border Grid.Row="1" IsHitTestVisible="False" IsVisible="{Binding IsEmpty}"
+                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Spacing="12" HorizontalAlignment="Center">
+                        <TextBlock Text="暂无插件" FontSize="18"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Text="点击上方安装插件按钮添加 YAML 插件文件"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <controls1:IconContent Symbol="Globe" Label="插件市场" />
+            </TabItem.Header>
+            <Grid RowDefinitions="Auto, *" Margin="10">
+                <controls:CommandBar DefaultLabelPosition="Right">
+                    <controls:CommandBar.PrimaryCommands>
+                        <controls:CommandBarElementContainer>
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                            <AutoCompleteBox VerticalAlignment="Center" FilterMode="StartsWith"
+                                             MinimumPopulateDelay="0:0:0:0.3" MinimumPrefixLength="1" MinWidth="200"
+                                             Watermark="搜索插件" Text="{Binding OnlineSearchText}" />
+                            <ToggleButton x:Name="HelpBtn">
+                                <ToggleButton.Content>
+                                    <controls:SymbolIcon Symbol="Help" />
+                                </ToggleButton.Content>
+                            </ToggleButton>
+                            <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
+                                                  Target="{Binding #HelpBtn}"
+                                                  Title="搜索帮助"
+                                                  IconSource="Help">
+                                <controls:TeachingTip.Content>
+                                    <StackPanel Spacing="3">
+                                        <TextBlock>无参数:直接搜索包含输入文本的ID/名称/作者的插件</TextBlock>
+                                        <TextBlock>输入/desc:&lt;KEYWORD&gt;以搜索描述</TextBlock>
+                                        <TextBlock>输入/author:&lt;KEYWORD&gt;以搜索作者</TextBlock>
+                                        <TextBlock>输入/id:&lt;KEYWORD&gt;以搜索id</TextBlock>
+                                        <TextBlock>输入/name:&lt;KEYWORD&gt;以搜索名称</TextBlock>
+                                        <TextBlock>所有参数均忽略大小写。</TextBlock>
+                                    </StackPanel>
+                                </controls:TeachingTip.Content>
+                                <controls:TeachingTip.CloseButtonContent>
+                                    <controls:SymbolIcon Symbol="Clear" />
+                                </controls:TeachingTip.CloseButtonContent>
+                            </controls:TeachingTip>
+                            </StackPanel>
+                        </controls:CommandBarElementContainer>
+                        <controls:CommandBarSeparator />
+                        <controls:CommandBarButton Label="刷新" IconSource="Refresh"
+                                                   Command="{Binding RefreshOnlinePluginsCommand}" />
+                        <controls:CommandBarButton Label="下载所选插件" IconSource="Download"
+                                                   Command="{Binding DownloadSelectedPluginsCommand}" />
+                    </controls:CommandBar.PrimaryCommands>
+                </controls:CommandBar>
+                <controls:ProgressRing HorizontalAlignment="Right" IsVisible="{Binding IsBusy}"></controls:ProgressRing>
+                <ListBox ItemsSource="{Binding FilteredOnlinePlugins}"
+                         x:Name="OnlinePluginsList"
+                         SelectionChanged="OnlinePluginsList_OnSelectionChanged"
+                         SelectionMode="Multiple"
+                         Grid.Row="1"
+                         Margin="10,0,10,10">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="services:PluginInfo">
+                            <Grid ColumnDefinitions="Auto, *"
+                                  RowDefinitions="Auto, Auto"
+                                  Margin="8,6"
+                                  Classes="animated">
+                                <!-- 左侧色条 -->
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                        Width="6" CornerRadius="3" Margin="0,0,12,0"
+                                        VerticalAlignment="Stretch"
+                                        Background="{DynamicResource AccentFillColorDefaultBrush}" />
+
+                                <!-- 标题行：名称 + 版本 + 作者 -->
+                                <StackPanel Grid.Row="0" Grid.Column="1"
+                                            Orientation="Horizontal" Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="Bold" FontSize="15" />
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource AccentFillColorDefaultBrush}">
+                                        <TextBlock Text="{Binding Version}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
+                                    </Border>
+                                    <TextBlock FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               VerticalAlignment="Center">
+                                        <Run Text="作者: " />
+                                        <Run Text="{Binding Author}" />
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <!-- 描述 + 统计 -->
+                                <StackPanel Grid.Row="1" Grid.Column="1"
+                                            Orientation="Horizontal" Spacing="12"
+                                            Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="420" />
+                                    <Border Padding="6,1" CornerRadius="4"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                            VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" Spacing="10">
+                                            <TextBlock FontSize="11"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <Run Text="触发器: " />
+                                                <Run Text="{Binding TriggerCount}"
+                                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                            </TextBlock>
+                                            <TextBlock FontSize="11"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <Run Text="函数: " />
+                                                <Run Text="{Binding FunctionCount}"
+                                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </UserControl>

@@ -72,6 +72,22 @@ public class PluginService
     }
 
     /// <summary>
+    /// 禁用热重载
+    /// </summary>
+    public void DisableHotReload()
+    {
+        _hotReload?.Stop();
+    }
+    
+    /// <summary>
+    /// 启用热重载
+    /// </summary>
+    public void EnableHotReload()
+    {
+        _hotReload?.Start(_pluginsFolder);
+    }
+
+    /// <summary>
     /// 重新加载所有插件
     /// </summary>
     public void ReloadPlugins()
@@ -128,14 +144,14 @@ public class PluginService
     /// <summary>
     /// 安装插件文件
     /// </summary>
-    public bool InstallPlugin(string sourcePath)
+    public bool InstallPlugin(string sourcePath, bool backup = true, bool overwrite = false)
     {
         try
         {
             var destFileName = Path.GetFileName(sourcePath);
             var destPath = Path.Combine(_pluginsFolder, destFileName);
 
-            if (File.Exists(destPath))
+            if (File.Exists(destPath) && backup)
             {
                 // 备份旧文件
                 var bakPath = destPath + ".bak";
@@ -143,7 +159,7 @@ public class PluginService
                 File.Move(destPath, bakPath);
             }
 
-            File.Copy(sourcePath, destPath);
+            File.Copy(sourcePath, destPath, overwrite);
             ReloadPlugins();
             return true;
         }
@@ -188,6 +204,28 @@ public class PluginService
         var info = _plugins.FirstOrDefault(p => p.Id == pluginId);
         if (info == null || !File.Exists(info.FilePath)) return null;
         return File.ReadAllText(info.FilePath);
+    }
+
+    public PluginInfo ExtractPluginInfoFromContent(string content)
+    {
+        var deserializer = new StaticDeserializerBuilder(new YamlModelStaticContext())
+            .WithCaseInsensitivePropertyMatching()
+            .IgnoreUnmatchedProperties()
+            .Build();
+        var raw = deserializer.Deserialize<RawPluginMeta>(content);
+
+        return new PluginInfo
+        {
+            Id = raw.Id ?? "unknown",
+            Name = raw.Name ?? "",
+            Description = raw.Description ?? "",
+            Author = raw.Author ?? "",
+            Version = raw.Version ?? "1.0",
+            FilePath = "",
+            TriggerCount = raw.Triggers?.Count ?? 0,
+            FunctionCount = raw.Functions?.Count ?? 0,
+            IsEnabled = true
+        };
     }
 
     private PluginInfo? ExtractPluginInfo(string filePath)
