@@ -1,14 +1,21 @@
-name: Release
+name: Release (Linux / macOS)
 
 on:
   push:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（不带 v），例如 26.1.1'
+        required: true
+        type: string
 
 env:
   DOTNET_VERSION: '10.0.x'
   PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
+  # publish 目录里的实际可执行文件名，若不同请改这里
+  APP_EXE: MEFrpLauncherX
 
 jobs:
   build:
@@ -17,47 +24,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # ---------- Windows ----------
-          - os: windows-latest
-            rid: win-x64
-            mode: aot
-          - os: windows-latest
-            rid: win-x64
-            mode: r2r
-          - os: windows-latest
-            rid: win-arm64
-            mode: aot
-          - os: windows-latest
-            rid: win-arm64
-            mode: r2r
-
-          # ---------- Linux ----------
-          - os: ubuntu-latest
-            rid: linux-x64
-            mode: aot
-          - os: ubuntu-latest
-            rid: linux-x64
-            mode: r2r
-          - os: ubuntu-latest
-            rid: linux-arm64
-            mode: aot
-          - os: ubuntu-latest
-            rid: linux-arm64
-            mode: r2r
-
-          # ---------- macOS ----------
-          - os: macos-latest
-            rid: osx-x64
-            mode: aot
-          - os: macos-latest
-            rid: osx-x64
-            mode: r2r
-          - os: macos-latest
-            rid: osx-arm64
-            mode: aot
-          - os: macos-latest
-            rid: osx-arm64
-            mode: r2r
+          - rid: linux-x64
+            os: ubuntu-latest
+            os_name: linux
+            arch: x64
+            pkg_arch: amd64
+          - rid: linux-arm64
+            os: ubuntu-latest
+            os_name: linux
+            arch: arm64
+            pkg_arch: arm64
+          - rid: osx-x64
+            os: macos-latest
+            os_name: macos
+            arch: x64
+            pkg_arch: x64
+          - rid: osx-arm64
+            os: macos-latest
+            os_name: macos
+            arch: arm64
+            pkg_arch: arm64
 
     steps:
       - name: Checkout
@@ -68,76 +54,172 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Publish (AOT)
-        if: matrix.mode == 'aot'
+      - name: Resolve version
+        id: ver
+        shell: bash
         run: |
-          dotnet publish ${{ env.PROJECT }} \
-            -c Release \
-            -r ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishAot=true \
-            -p:StripSymbols=true \
-            -o ./publish/${{ matrix.rid }}-aot
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          # 去掉可能的前导 v
+          V="${V#v}"
+          echo "version=$V" >> $GITHUB_OUTPUT
+          echo "Resolved version: $V"
 
       - name: Publish (ReadyToRun)
-        if: matrix.mode == 'r2r'
+        shell: bash
         run: |
-          dotnet publish ${{ env.PROJECT }} \
+          OUT="./publish/${{ matrix.rid }}"
+          mkdir -p "$OUT"
+          dotnet publish "${{ env.PROJECT }}" \
             -c Release \
-            -r ${{ matrix.rid }} \
+            -r "${{ matrix.rid }}" \
             --self-contained true \
             -p:PublishReadyToRun=true \
-            -p:PublishSingleFile=true \
-            -o ./publish/${{ matrix.rid }}-r2r
+            -p:PublishTrimmed=true \
+            -o "$OUT" \
+            --nologo -v q
+          # 确保可执行权限（Linux/macOS）
+          if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
+            chmod +x "$OUT/${{ env.APP_EXE }}"
+          fi
+          ls -la "$OUT" | head -30
 
-      # ========== 注入 Sentry DSN ==========
       - name: Inject Sentry DSN
         shell: bash
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
-          OUT_DIR="./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}"
-          if [ -z "$SENTRY_DSN" ]; then
-            echo "SENTRY_DSN is empty, skip injection"
-            exit 0
-          fi
-          # 使用 jq 更安全，没有 jq 就用 heredoc
-          if command -v jq >/dev/null 2>&1; then
-            jq -n --arg dsn "$SENTRY_DSN" '{SentryDsn: $dsn}' > "$OUT_DIR/sentry.json"
+          OUT="./publish/${{ matrix.rid }}"
+          if [ -n "$SENTRY_DSN" ]; then
+            printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
+            echo "sentry.json injected"
           else
-            printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT_DIR/sentry.json"
+            echo "No SENTRY_DSN secret, skip"
           fi
-          echo "Injected sentry.json into $OUT_DIR"
 
-      # ---------- 打包 ----------
-      - name: Pack (Windows zip)
-        if: startsWith(matrix.rid, 'win-')
-        shell: pwsh
-        run: |
-          \( name = "PML2- \){{ matrix.rid }}-${{ matrix.mode }}.zip"
-          Compress-Archive -Path "./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}/*" -DestinationPath $name
-          echo "PACK_NAME=$name" >> $env:GITHUB_ENV
+      - name: Install zstd (Ubuntu)
+        if: matrix.os_name == 'linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y zstd
 
-      - name: Pack (Linux / macOS tar.gz)
-        if: startsWith(matrix.rid, 'linux-') || startsWith(matrix.rid, 'osx-')
+      - name: Install zstd (macOS)
+        if: matrix.os_name == 'macos'
+        run: brew install zstd
+
+      - name: Pack tar.gz + tar.zst
+        id: pack
         shell: bash
         run: |
-          NAME="PML2-\( {{ matrix.rid }}- \){{ matrix.mode }}.tar.gz"
-          tar -czf "\( NAME" -C "./publish/ \){{ matrix.rid }}-${{ matrix.mode }}" .
-          echo "PACK_NAME=$NAME" >> $GITHUB_ENV
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          RID="${{ matrix.rid }}"
+          OS_NAME="${{ matrix.os_name }}"
+          ARCH="${{ matrix.arch }}"
+          OUT="./publish/${RID}"
+          mkdir -p dist
 
-      - name: Upload artifact
+          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.gz"
+          TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
+
+          tar -czf "dist/${TGZ}" -C "$OUT" .
+          tar -C "$OUT" -I 'zstd -T0 -19' -cf "dist/${TZST}" .
+
+          ls -lh dist/
+          echo "tgz=${TGZ}" >> $GITHUB_OUTPUT
+          echo "tzst=${TZST}" >> $GITHUB_OUTPUT
+
+      # ---------- deb + rpm（仅 Linux）----------
+      - name: Install nFPM
+        if: matrix.os_name == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          NFPM_VER="2.41.3"
+          curl -sL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VER}/nfpm_${NFPM_VER}_linux_amd64.tar.gz" \
+            | tar -xz nfpm
+          sudo mv nfpm /usr/local/bin/nfpm
+          nfpm --version
+
+      - name: Build deb + rpm
+        if: matrix.os_name == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          RID="${{ matrix.rid }}"
+          ARCH="${{ matrix.arch }}"
+          PKG_ARCH="${{ matrix.pkg_arch }}"
+          OUT="./publish/${RID}"
+          ROOT="pkgroot"
+          EXE="${{ env.APP_EXE }}"   # publish 里的真实二进制，如 MEFrpLauncherX
+
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
+          cp -a "$OUT/." "$ROOT/opt/pml-2/"
+
+          # /usr/bin/pml-2 → 启动 /opt/pml-2 下主程序
+          cat > "$ROOT/usr/bin/pml-2" << EOF
+          #!/bin/sh
+          exec /opt/pml-2/${EXE} "\$@"
+          EOF
+          chmod +x "$ROOT/usr/bin/pml-2"
+          chmod +x "$ROOT/opt/pml-2/${EXE}" 2>/dev/null || true
+
+          cat > "$ROOT/usr/share/applications/pml-2.desktop" << 'EOF'
+          [Desktop Entry]
+          Name=PML 2
+          Comment=Cross-platform ME Frp graphical launcher
+          Exec=pml-2
+          Icon=pml-2
+          Terminal=false
+          Type=Application
+          Categories=Network;Utility;
+          StartupNotify=true
+          EOF
+
+          cat > nfpm.yaml << EOF
+          name: pml-2
+          arch: ${PKG_ARCH}
+          platform: linux
+          version: ${V}
+          section: utils
+          priority: optional
+          maintainer: RYCB Studio <im@rycb.tech>
+          description: |
+            PML 2 is a cross-platform graphical launcher for ME Frp.
+          vendor: RYCB Studio
+          homepage: https://www.rycb.tech/pml-2
+          license: MIT
+          contents:
+            - src: ${ROOT}/opt/pml-2
+              dst: /opt/pml-2
+              type: tree
+            - src: ${ROOT}/usr/bin/pml-2
+              dst: /usr/bin/pml-2
+              file_info:
+                mode: 0755
+            - src: ${ROOT}/usr/share/applications/pml-2.desktop
+              dst: /usr/share/applications/pml-2.desktop
+          EOF
+
+          mkdir -p dist
+          nfpm package -f nfpm.yaml -p deb -t "dist/pml2-${V}-linux-${ARCH}.deb"
+          nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-${V}-linux-${ARCH}.rpm"
+          ls -lh dist/*.deb dist/*.rpm
+          
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: PML2-\( {{ matrix.rid }}- \){{ matrix.mode }}
-          path: ${{ env.PACK_NAME }}
+          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}
+          path: dist/*
           if-no-files-found: error
 
-  # 可选：自动创建 GitHub Release 并上传所有产物
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
     steps:
@@ -146,10 +228,20 @@ jobs:
         with:
           path: artifacts
 
-      - name: Create Release
+      - name: Flatten files
+        run: |
+          mkdir -p upload
+          find artifacts -type f -exec cp -v {} upload/ \;
+          echo "======== Release files ========"
+          ls -lh upload/
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
+          name: PML 2 ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+          files: upload/*
           generate_release_notes: true
+          draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
