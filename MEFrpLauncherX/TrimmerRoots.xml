@@ -53,23 +53,6 @@
         <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
     </assembly>
 
-    <!-- 保留 Vanara 扩展与互操作支持（Write/Marshal 使用到的类型） -->
-    <assembly fullname="Vanara.Extensions">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-    <assembly fullname="Vanara.InteropServices">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-    <assembly fullname="Vanara.Core">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-    <assembly fullname="Vanara.PInvoke.Kernel32">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-    <assembly fullname="Vanara.PInvoke.Shared">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-
     <!-- 保留可能被 Iciclecreek / Porta.Pty 调用到的程序集 -->
     <assembly fullname="Iciclecreek.Avalonia.Terminal">
         <type fullname="*" preserve="all"/>
@@ -99,21 +82,6 @@
         <type fullname="System.ComponentModel.DataAnnotations.MaxLengthAttribute" preserve="all" />
     </assembly>
 
-    <!-- Vanara 相关：你的 Dump 显示 InteropExtensions 与 SafeHGlobalHandle 在 Vanara.Core 中 -->
-    <assembly fullname="Vanara.Core">
-        <type fullname="Vanara.Extensions.InteropExtensions" preserve="all" />
-        <type fullname="Vanara.InteropServices.SafeHGlobalHandle" preserve="all" />
-        <!-- 也可暂时保留全部 -->
-        <!--<type fullname="*" preserve="all" />-->
-    </assembly>
-
-    <!-- Vanara.PInvoke.Kernel32（确保 JOBOBJECT 相关结构被保留） -->
-    <assembly fullname="Vanara.PInvoke.Kernel32">
-        <type fullname="Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION" preserve="all" />
-        <type fullname="Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION" preserve="all" />
-        <!-- 如还有其它 JOBOBJECT_* 类型，可以一并加入 -->
-    </assembly>
-
     <!-- Porta.Pty（你已经有但再确认） -->
     <assembly fullname="Porta.Pty">
         <type fullname="*" preserve="all" />
@@ -124,5 +92,4 @@
         <type fullname="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" preserve="all" />
     </assembly>
 
-    <!-- 如果 Vanara.PInvoke 下还有其它程序集，按需添加，如 Vanara.PInvoke.User32 等 -->
 </linker>

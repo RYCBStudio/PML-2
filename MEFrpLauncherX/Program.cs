@@ -43,12 +43,6 @@ internal partial class Program
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All,
-        "Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION", "Vanara.PInvoke.Kernel32")]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION",
-        "Vanara.PInvoke.Kernel32")]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.Extensions.InteropExtensions", "Vanara.Core")]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.InteropServices.SafeHGlobalHandle", "Vanara.Core")]
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.DataAnnotations.MaxLengthAttribute",
         "System.ComponentModel.Annotations")]
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.TypeDescriptor",
@@ -153,10 +147,6 @@ internal partial class Program
     // 列表里加上你要强制保留的类型（根据之前 dump 的结果）
     Type[] typesToKeep = new[]
     {
-        typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION),
-        typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION),
-        typeof(Vanara.Extensions.InteropExtensions),
-        typeof(Vanara.InteropServices.SafeHGlobalHandle),
         typeof(Porta.Pty.PtyOptions),
         typeof(System.ComponentModel.TypeDescriptor),
         typeof(System.ComponentModel.TypeConverter),
@@ -197,45 +187,8 @@ internal partial class Program
             try { var c = TypeDescriptor.GetConverter(t); } catch { }
         }
         catch { }
-
-        try
-        {
-            // 如果 Vanara 提供 CanMarshal API，尝试调用（触发保留 Vanara marshaler 相关元数据）
-            var vanaraMarshalerType =
- Type.GetType("Vanara.Marshaler, Vanara.Core") ?? Type.GetType("VanaraMarshaler, Vanara.Core");
-            if (vanaraMarshalerType != null)
-            {
-                // 只是触碰类型，反射调用也会让裁剪器保留元数据
-            }
-        }
-        catch { }
     }
 
-    // 额外：显式使用 Marshal.StructureToPtr 写一次典型 JOBOBJECT 结构（在受控内存，立即释放）
-    try
-    {
-        var jobType = typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION);
-        if (jobType != null)
-        {
-            int sz = 0;
-            try { sz = Marshal.SizeOf(jobType); } catch { sz = 0; }
-            if (sz > 0)
-            {
-                IntPtr p = Marshal.AllocHGlobal(sz);
-                try
-                {
-                    var inst = Activator.CreateInstance(jobType);
-                    if (inst != null)
-                    {
-                        try { Marshal.StructureToPtr(inst, p, false); } catch { }
-                    }
-                }
-                catch { }
-                finally { Marshal.FreeHGlobal(p); }
-            }
-        }
-    }
-    catch { }
 #endif
     }
 

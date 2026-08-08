@@ -391,6 +391,11 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "F:\\VSProj\\repos\\MEFrpLauncherX\\MEFrpLauncherX.Core\\MEFrpLauncherX.Core.csproj": {
@@ -811,6 +816,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }
