@@ -1,10 +1,10 @@
-﻿using Avalonia.Controls;
-using Avalonia.Threading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Threading;
 
-namespace Iciclecreek.Terminal
+namespace Iciclecreek.TerminalWindow
 {
 
     /// <summary>

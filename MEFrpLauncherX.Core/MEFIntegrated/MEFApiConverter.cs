@@ -5,6 +5,7 @@ using System.Text.Json;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Core.ViewModels;
 using RestSharp;
 using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;

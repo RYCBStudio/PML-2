@@ -1,5 +1,5 @@
 ﻿using MEFrpLauncherX.Plugin.Core;
-using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Plugin.Services;
 using YamlDotNet.Serialization;
 
 namespace MEFrpLauncherX.Plugin;

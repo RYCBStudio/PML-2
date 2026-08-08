@@ -1,15 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Controls;
@@ -60,6 +59,12 @@ public partial class AboutPage : UserControl
             }
             catch (Exception ex)
             {
+                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
+                Hitokoto = null;
+            }
+
+            if (Hitokoto == null)
+            {
                 if (Random.Shared.Next() % 2 == 0)
                 {
                     Hitokoto = new HitokotoResource
@@ -71,8 +76,8 @@ public partial class AboutPage : UserControl
                 }
 
                 Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
-                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
             }
+
 
             vm.Hitokoto = Hitokoto.hitokoto;
             vm.From = Hitokoto.from;
@@ -376,7 +381,7 @@ public partial class AboutPage : UserControl
     {
         Process.Start(new ProcessStartInfo
         {
-            FileName = "https://rycb.mxj.pub/mefl/useragreement.html",
+            FileName = "https://docs.rycb.tech/pml-2/user_agreement",
             UseShellExecute = true
         });
     }
@@ -385,7 +390,7 @@ public partial class AboutPage : UserControl
     {
         Process.Start(new ProcessStartInfo
         {
-            FileName = "https://rycb.mxj.pub/mefl/privacy.html",
+            FileName = "https://docs.rycb.tech/pml-2/privacy",
             UseShellExecute = true
         });
     }
@@ -395,7 +400,7 @@ public partial class AboutPage : UserControl
         Process.Start(new ProcessStartInfo
         {
             FileName =
-                "https://docs.rycb.mxj.pub/pml-2/intro",
+                "https://docs.rycb.mxj.pub/pml-2",
             UseShellExecute = true
         });
         await MessageBox.ShowAsync("已打开文档。若无法访问, 请选择以下备用源: ", buttons:
@@ -407,7 +412,7 @@ public partial class AboutPage : UserControl
                     Process.Start(new ProcessStartInfo
                     {
                         FileName =
-                            "https://docs.rycb.tech/pml-2/intro",
+                            "https://docs.rycb.tech/pml-2",
                         UseShellExecute = true
                     });
                 })
@@ -418,7 +423,7 @@ public partial class AboutPage : UserControl
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = "https://docs.rycb.mxj.pub/pml-2/intro",
+                        FileName = "https://docs.rycb.tech/pml-2/user_guide",
                         UseShellExecute = true
                     });
                 })
@@ -516,6 +521,12 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
+            return null;
+        }
+
         var result =
             JsonSerializer.Deserialize<HitokotoResource>(response.Content,
                 App.AppJsonSerializerContext.HitokotoResource);
@@ -525,52 +536,6 @@ public partial class AboutPage : UserControl
     #endregion
 
     #region 一言相关
-
-    private async Task FadeOutAsync(Control control)
-    {
-        var animation = new Animation
-        {
-            Duration = TimeSpan.FromSeconds(0.3),
-            Children =
-            {
-                new KeyFrame
-                {
-                    Cue = new Cue(0),
-                    Setters = { new Setter(OpacityProperty, 1.0) }
-                },
-                new KeyFrame
-                {
-                    Cue = new Cue(1),
-                    Setters = { new Setter(OpacityProperty, 0.0) }
-                }
-            }
-        };
-
-        await animation.RunAsync(control);
-    }
-
-    private async Task FadeInAsync(Control control)
-    {
-        var animation = new Animation
-        {
-            Duration = TimeSpan.FromSeconds(0.3),
-            Children =
-            {
-                new KeyFrame
-                {
-                    Cue = new Cue(0),
-                    Setters = { new Setter(OpacityProperty, 0.0) }
-                },
-                new KeyFrame
-                {
-                    Cue = new Cue(1),
-                    Setters = { new Setter(OpacityProperty, 1.0) }
-                }
-            }
-        };
-
-        await animation.RunAsync(control);
-    }
 
     private async void RefreshHitokoto_Click(object sender, RoutedEventArgs e)
     {
@@ -602,18 +567,23 @@ public partial class AboutPage : UserControl
         }
         catch (Exception ex)
         {
+            Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
+            Hitokoto = null;
+        }
+
+        if (Hitokoto == null)
+        {
             if (Random.Shared.Next() % 2 == 0)
             {
                 Hitokoto = new HitokotoResource
                 {
                     hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
                     from = "微软式中文",
-                    from_who = "Microsoft"
+                    creator = "Microsoft"
                 };
             }
 
             Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
-            Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server);
         }
 
         vm.Hitokoto = Hitokoto.hitokoto;
@@ -642,7 +612,7 @@ public partial class AboutPage : UserControl
 
     private async void Debug_TestSolve(object? sender, RoutedEventArgs e) => await LoginPage.GetCaptchaResultAsync();
 
-    private void OpenProxyFloat(object? sender, RoutedEventArgs e) => new ProxyFloat().Show();
+    private void OpenProxyFloat(object? sender, RoutedEventArgs e) => new ProxyMonitor.ProxyFloat().Show();
 
     #endregion
 }

@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 
-namespace MEFrpLauncherX.Controls;
+namespace MEFrpLauncherX.Core.Controls;
 
 public partial class LoadingTip : UserControl
 {

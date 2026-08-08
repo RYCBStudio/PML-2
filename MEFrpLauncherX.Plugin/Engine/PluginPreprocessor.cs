@@ -7,7 +7,7 @@ namespace MEFrpLauncherX.Plugin.Engine;
 
 public class PluginPreprocessor
 {
-    private readonly IDeserializer _deserializer = new DeserializerBuilder().Build();
+    private readonly IDeserializer _deserializer = new StaticDeserializerBuilder(new YamlModelStaticContext()).Build();
 
     public PluginDefinition Process(string pluginFilePath, FunctionRegistry funcRegistry)
     {

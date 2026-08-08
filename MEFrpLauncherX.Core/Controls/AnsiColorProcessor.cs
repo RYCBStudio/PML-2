@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using Avalonia.Media;
 
+namespace MEFrpLauncherX.Core.Controls;
+
 public static class AnsiColorProcessor
 {
     public static readonly Regex AnsiColorRegex = new(

@@ -98,6 +98,10 @@ public class App : IDisposable
         if (!externalUse)
         {
             ConfigManager.Initialize();
+            if (!Directory.Exists(Path.Combine(StartupPath, "Config", "Themes")))
+            {
+                Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "Themes"));
+            }
             SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
                 ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
                 : null;

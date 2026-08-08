@@ -1,6 +1,6 @@
 using System;
 
-namespace Iciclecreek.Terminal
+namespace Iciclecreek.TerminalWindow
 {
     /// <summary>
     /// Win32 control key state flags for INPUT_RECORD.

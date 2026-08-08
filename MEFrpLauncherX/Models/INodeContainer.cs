@@ -1,15 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Input;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Models;
 
 public interface INodeContainer : IDataContextProvider
 {
-    NodesContainerViewModel ViewModel
+    NodesContainerViewModel? ViewModel
     {
         get;
         set;

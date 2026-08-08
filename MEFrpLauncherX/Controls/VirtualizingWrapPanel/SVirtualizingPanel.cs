@@ -1,13 +1,13 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
 
-namespace SVirtualizingWrapPanel
+namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
 {
     public abstract class SVirtualizingPanel : VirtualizingPanel, IScrollSnapPointsInfo
     {

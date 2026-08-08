@@ -13,7 +13,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.ViewModels.Controls;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
 
@@ -219,7 +219,7 @@ public partial class CreateProxy : UserControl
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
             SecurityOptionsSettingsExpander.Show();
-            switch (ProtocolCbBox.SelectedItem)
+            switch (ProtocolCbBox.SelectedItem?.ToString()?.ToLower())
             {
                 case "http":
                     SourceProtocolSettingsExpanderItemForHttp.Show();

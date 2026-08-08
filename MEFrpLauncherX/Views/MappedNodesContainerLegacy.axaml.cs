@@ -10,7 +10,6 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Services;
 
 namespace MEFrpLauncherX.Views;

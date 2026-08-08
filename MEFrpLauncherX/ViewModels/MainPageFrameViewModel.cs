@@ -114,7 +114,7 @@ public class MainPageFrameViewModel : ViewModelBase
         set;
     }
 
-    public static MainPageFrameViewModel? Instance
+    public static MainPageFrameViewModel Instance
     {
         get;
         set;

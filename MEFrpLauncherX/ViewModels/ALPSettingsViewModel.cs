@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
 

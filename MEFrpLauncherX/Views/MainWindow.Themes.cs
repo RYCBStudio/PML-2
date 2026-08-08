@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AsyncImageLoader;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Styling;
@@ -190,8 +189,8 @@ public partial class MainWindow
                     : new FontFamily(fontFamily);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    App.Current.Resources["GlobalFontFamily"] = ff;
-                    App.Current.Resources["ContentControlThemeFontFamily"] = ff;
+                    Application.Current.Resources["GlobalFontFamily"] = ff;
+                    Application.Current.Resources["ContentControlThemeFontFamily"] = ff;
                 });
                 //InvalidateVisual();
             }

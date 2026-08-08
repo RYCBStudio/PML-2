@@ -1,6 +1,6 @@
 using Avalonia.Interactivity;
 
-namespace Iciclecreek.Terminal
+namespace Iciclecreek.TerminalWindow
 {
     /// <summary>
     /// EventArgs for the WindowResized event.

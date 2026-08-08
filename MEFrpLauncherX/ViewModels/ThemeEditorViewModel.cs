@@ -6,7 +6,6 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
@@ -154,7 +153,7 @@ public class ThemeEditorViewModel : ViewModelBase
         {
             if (SelectedSystemFont == "Default")
             {
-                return App.Current.TryGetResource("GlobalFontFamily", out var defaultFont) &&
+                return Application.Current.TryGetResource("GlobalFontFamily", out var defaultFont) &&
                        defaultFont is FontFamily ff
                     ? ff
                     : new FontFamily("HarmonyOS Sans SC");
@@ -876,9 +875,9 @@ public class ThemeEditorViewModel : ViewModelBase
                 {
                     Color = accent.Color.ToLower() is "accent" or "default" or "primary"
                         ? ColorToHexConverter.ToHexString(
-                            App.Current.TryGetResource("AccentFillColorDefaultBrush", out var color)
-                                ? (Color)(color ?? Color.FromArgb(255, 0, 120, 215))
-                                : Color.FromArgb(255, 0, 120, 215),
+                            Application.Current.TryGetResource("AccentFillColorDefaultBrush", out var color)
+                                ? (((SolidColorBrush)color)?.Color ?? Color.FromArgb(255, 0, 120, 215))
+                                : Color.FromArgb(255, 0, 120, 215), 
                             AlphaComponentPosition.Leading)
                         : accent.Color,
                     Duration = accent.Duration

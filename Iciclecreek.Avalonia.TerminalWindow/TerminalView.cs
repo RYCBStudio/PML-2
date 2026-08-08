@@ -1,11 +1,3 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-using Avalonia.Threading;
-using Iciclecreek.Avalonia.Terminal;
-using Porta.Pty;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,10 +7,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
+using Porta.Pty;
 using XTerm.Buffer;
 using XT = global::XTerm;
 
-namespace Iciclecreek.Terminal
+namespace Iciclecreek.TerminalWindow
 {
 
     public class TerminalView : Control
@@ -1604,14 +1603,14 @@ namespace Iciclecreek.Terminal
         private async void LaunchProcess()
         {
             CleanupProcess();
-
+            string processToLaunch = null!;
             try
             {
                 _processCts = new CancellationTokenSource();
                 _processExitHandled = false;  // Reset flag for new process
 
                 // Determine the process to launch based on OS if not explicitly set
-                string processToLaunch = Process;
+                processToLaunch = Process;
                 if (string.IsNullOrEmpty(processToLaunch))
                 {
                     processToLaunch = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd.exe" : "bash";
@@ -1644,7 +1643,7 @@ namespace Iciclecreek.Terminal
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    _terminal.WriteLine($"Error launching process: {ex.Message}\n");
+                    _terminal.WriteLine($"Error launching process: [{ex.GetType()}]{ex.Message}\nSuspect: {ex.StackTrace}\nFilename: {processToLaunch}");
                 });
             }
         }

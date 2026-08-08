@@ -40,9 +40,89 @@
         <type fullname="*" preserve="all"/>
     </assembly>
 
+    <!-- 保留 MEFrpLauncherX.Plugin 程序集中的所有类型（含 PluginInfo、RawPluginMeta 等）。
+         否则 AOT 裁剪会删除仅被 XAML 反射绑定使用的属性（如 Version、TriggerCount、FunctionCount），
+         导致插件市场列表只能显示名字/作者。 -->
+    <assembly fullname="MEFrpLauncherX.Plugin">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
     <!-- 保留 ReactiveUI 相关类型，防止 AOT 裁剪导致 ReactiveCommand 创建失败 -->
     <assembly fullname="ReactiveUI">
         <type fullname="ReactiveUI.ReactiveCommand" preserve="all"/>
         <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
     </assembly>
+
+    <!-- 保留 Vanara 扩展与互操作支持（Write/Marshal 使用到的类型） -->
+    <assembly fullname="Vanara.Extensions">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Vanara.InteropServices">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Vanara.Core">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Vanara.PInvoke.Kernel32">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Vanara.PInvoke.Shared">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 保留可能被 Iciclecreek / Porta.Pty 调用到的程序集 -->
+    <assembly fullname="Iciclecreek.Avalonia.Terminal">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Iciclecreek.TerminalWindow">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 已有 Porta.Pty，但保底再保留 Porta.Pty 中所有类型 -->
+    <assembly fullname="Porta.Pty">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
+    <!-- 尝试保留 BinaryFormatter 相关类型（如果在运行时存在并被用到） -->
+    <assembly fullname="System.Runtime.Serialization.Formatters">
+        <type fullname="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" preserve="all"/>
+    </assembly>
+
+    <!-- 保留 TypeDescriptor / TypeConverter（TypeDescriptor 在 System.ComponentModel.TypeConverter 程序集中） -->
+    <assembly fullname="System.ComponentModel.TypeConverter">
+        <type fullname="System.ComponentModel.TypeDescriptor" preserve="all" />
+        <type fullname="System.ComponentModel.TypeConverter" preserve="all" />
+    </assembly>
+
+    <!-- 保留 DataAnnotations 的 MaxLengthAttribute（assembly 名为 System.ComponentModel.Annotations） -->
+    <assembly fullname="System.ComponentModel.Annotations">
+        <type fullname="System.ComponentModel.DataAnnotations.MaxLengthAttribute" preserve="all" />
+    </assembly>
+
+    <!-- Vanara 相关：你的 Dump 显示 InteropExtensions 与 SafeHGlobalHandle 在 Vanara.Core 中 -->
+    <assembly fullname="Vanara.Core">
+        <type fullname="Vanara.Extensions.InteropExtensions" preserve="all" />
+        <type fullname="Vanara.InteropServices.SafeHGlobalHandle" preserve="all" />
+        <!-- 也可暂时保留全部 -->
+        <!--<type fullname="*" preserve="all" />-->
+    </assembly>
+
+    <!-- Vanara.PInvoke.Kernel32（确保 JOBOBJECT 相关结构被保留） -->
+    <assembly fullname="Vanara.PInvoke.Kernel32">
+        <type fullname="Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION" preserve="all" />
+        <type fullname="Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION" preserve="all" />
+        <!-- 如还有其它 JOBOBJECT_* 类型，可以一并加入 -->
+    </assembly>
+
+    <!-- Porta.Pty（你已经有但再确认） -->
+    <assembly fullname="Porta.Pty">
+        <type fullname="*" preserve="all" />
+    </assembly>
+
+    <!-- BinaryFormatter（过时/可能在运行时不存在；添加仅为保底） -->
+    <assembly fullname="System.Runtime.Serialization.Formatters">
+        <type fullname="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" preserve="all" />
+    </assembly>
+
+    <!-- 如果 Vanara.PInvoke 下还有其它程序集，按需添加，如 Vanara.PInvoke.User32 等 -->
 </linker>

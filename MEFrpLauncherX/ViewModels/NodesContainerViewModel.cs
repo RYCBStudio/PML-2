@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
-using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.ViewModels.Controls;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;

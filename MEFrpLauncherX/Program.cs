@@ -1,6 +1,8 @@
+#define AOT
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -14,10 +16,15 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI.Avalonia;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MEFrpLauncherX;
 
@@ -36,6 +43,20 @@ internal partial class Program
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All,
+        "Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION", "Vanara.PInvoke.Kernel32")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION",
+        "Vanara.PInvoke.Kernel32")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.Extensions.InteropExtensions", "Vanara.Core")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Vanara.InteropServices.SafeHGlobalHandle", "Vanara.Core")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.DataAnnotations.MaxLengthAttribute",
+        "System.ComponentModel.Annotations")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.TypeDescriptor",
+        "System.ComponentModel.TypeConverter")]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Porta.Pty.PtyOptions", "Porta.Pty")]
+// BinaryFormatter（过时，仅作保底；若不存在可能无效）
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All,
+        "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "System.Runtime.Serialization.Formatters")]
     [STAThread]
     public static void Main(string[] args)
     {
@@ -46,6 +67,7 @@ internal partial class Program
         // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
         _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
 
+        PreserveAtStartup();
         if (!createdNew)
         {
             // 已有实例在运行，尝试激活它
@@ -95,13 +117,13 @@ internal partial class Program
         try
         {
 #endif
-            if (args.Length > 0)
-            {
-                ProcessStartupArguments(args[0]);
-            }
+        if (args.Length > 0)
+        {
+            ProcessStartupArguments(args[0]);
+        }
 
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
 #if !DEBUG
         }
         catch (Exception ex)
@@ -121,6 +143,99 @@ internal partial class Program
             _mutex?.ReleaseMutex();
             _mutex?.Close();
         }
+#endif
+    }
+
+
+    private static void PreserveAtStartup()
+    {
+#if AOT
+    // 列表里加上你要强制保留的类型（根据之前 dump 的结果）
+    Type[] typesToKeep = new[]
+    {
+        typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION),
+        typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION),
+        typeof(Vanara.Extensions.InteropExtensions),
+        typeof(Vanara.InteropServices.SafeHGlobalHandle),
+        typeof(Porta.Pty.PtyOptions),
+        typeof(System.ComponentModel.TypeDescriptor),
+        typeof(System.ComponentModel.TypeConverter),
+        typeof(System.ComponentModel.DataAnnotations.MaxLengthAttribute),
+        //typeof(System.Runtime.Serialization.Formatters.Binary.BinaryFormatter) // 若存在
+    };
+
+    foreach (var t in typesToKeep)
+    {
+        try
+        {
+            // 触发类型初始化（静态构造函数）
+            RuntimeHelpers.RunClassConstructor(t.TypeHandle);
+        }
+        catch { }
+
+        try
+        {
+            // 尝试创建实例（如果可实例化）
+            if (!t.IsAbstract && !t.IsInterface)
+            {
+                if (t.IsValueType)
+                {
+                    // 若为值类型，可尝试 SizeOf
+                    try { var s = Marshal.SizeOf(t); } catch { }
+                }
+                else
+                {
+                    try { Activator.CreateInstance(t); } catch { }
+                }
+            }
+        }
+        catch { }
+
+        try
+        {
+            // 若为可序列化/可 marshal 的值，尝试 SizeOf，或调用 TypeDescriptor.GetConverter
+            try { var c = TypeDescriptor.GetConverter(t); } catch { }
+        }
+        catch { }
+
+        try
+        {
+            // 如果 Vanara 提供 CanMarshal API，尝试调用（触发保留 Vanara marshaler 相关元数据）
+            var vanaraMarshalerType =
+ Type.GetType("Vanara.Marshaler, Vanara.Core") ?? Type.GetType("VanaraMarshaler, Vanara.Core");
+            if (vanaraMarshalerType != null)
+            {
+                // 只是触碰类型，反射调用也会让裁剪器保留元数据
+            }
+        }
+        catch { }
+    }
+
+    // 额外：显式使用 Marshal.StructureToPtr 写一次典型 JOBOBJECT 结构（在受控内存，立即释放）
+    try
+    {
+        var jobType = typeof(Vanara.PInvoke.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION);
+        if (jobType != null)
+        {
+            int sz = 0;
+            try { sz = Marshal.SizeOf(jobType); } catch { sz = 0; }
+            if (sz > 0)
+            {
+                IntPtr p = Marshal.AllocHGlobal(sz);
+                try
+                {
+                    var inst = Activator.CreateInstance(jobType);
+                    if (inst != null)
+                    {
+                        try { Marshal.StructureToPtr(inst, p, false); } catch { }
+                    }
+                }
+                catch { }
+                finally { Marshal.FreeHGlobal(p); }
+            }
+        }
+    }
+    catch { }
 #endif
     }
 

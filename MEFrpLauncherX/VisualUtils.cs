@@ -128,21 +128,21 @@ public class LoadPercentToForegroundConverter : IValueConverter
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return (int)value switch
+        return (int)(value ?? 50) switch
         {
-            >= 85 => App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant,
+            >= 85 => Application.Current.TryGetResource("SystemFillColorCriticalBrush", Application.Current.ActualThemeVariant,
                 out var o)
                 ? o
                 : null,
-            < 85 and >= 60 => App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant,
+            < 85 and >= 60 => Application.Current.TryGetResource("SystemFillColorCautionBrush", Application.Current.ActualThemeVariant,
                 out var o1)
                 ? o1
                 : null,
-            < 60 and >= 40 => App.Current.TryGetResource("SystemFillColorAttentionBrush",
-                App.Current.ActualThemeVariant, out var o3)
+            < 60 and >= 40 => Application.Current.TryGetResource("SystemFillColorAttentionBrush",
+                Application.Current.ActualThemeVariant, out var o3)
                 ? o3
                 : null,
-            < 40 => App.Current.TryGetResource("SystemFillColorSuccessBrush", App.Current.ActualThemeVariant,
+            < 40 => Application.Current.TryGetResource("SystemFillColorSuccessBrush", Application.Current.ActualThemeVariant,
                 out var o2)
                 ? o2
                 : null

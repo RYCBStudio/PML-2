@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
-using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;

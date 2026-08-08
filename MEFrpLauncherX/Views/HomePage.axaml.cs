@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using ReactiveUI.Avalonia;
 using static System.GC;

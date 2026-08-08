@@ -21,10 +21,11 @@ using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
-using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Core.ViewModels;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
+using MEFrpLauncherX.Views.ProxyMonitor;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
@@ -189,7 +190,7 @@ public partial class MainWindow : AppWindow, IDisposable
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {
             var _vm = new ProxyFloatViewModel();
-            new ProxyFloat(_vm);
+            new ProxyMonitor.ProxyFloat(_vm);
         }
 
         CaptchaHelper.Init((progress, current, completed, nonce) =>

@@ -5,7 +5,7 @@ using MEFrpLauncherX.Core.Models;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace MEFrpLauncherX.Core.MEFIntergrated;
+namespace MEFrpLauncherX.Core.MEFIntegrated;
 
 public class FrpConfigService
 {
