@@ -35,7 +35,7 @@
     <PackageReference Include="XTerm.NET" Version="1.0.15" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Porta.Pty\src\Porta.Pty\Porta.Pty.csproj" />
+    <ProjectReference Include="..\Porta.Pty\Porta.Pty.csproj" />
   </ItemGroup>
 <!--  <ItemGroup>-->
 <!--    <ProjectReference Include="..\..\..\XTerm.NET\src\XTerm.NET\XTerm.NET.csproj" />-->

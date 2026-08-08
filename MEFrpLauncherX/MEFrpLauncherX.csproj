@@ -19,11 +19,15 @@
         <!-- 开启后可见 AOT 裁剪警告，调试完再改回 true -->
         <SuppressTrimWarnings>true</SuppressTrimWarnings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
+      <PublishReadyToRun>true</PublishReadyToRun>
+  <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+</PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <NoWarn>1701;1702;IL2121;CS8902;CS8603;CS8604;CS0169;CS8618;CS8600;CS8604;CS8762</NoWarn>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    </PropertyGroup>
+      <PublishReadyToRun>true</PublishReadyToRun>
+  <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+</PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
@@ -34,14 +38,11 @@
         <MetricsSupport>false</MetricsSupport>
         <IlcGenerateStackTraceData>true</IlcGenerateStackTraceData>
         <IlcGenerateCompleteTypeMetadata>true</IlcGenerateCompleteTypeMetadata>
-
-        <PublishAot>true</PublishAot>
         <!-- AOT 条件编译符号，确保主项目和引用项目都能正确识别 AOT 发布模式 -->
-        <DefineConstants>$(DefineConstants);AOT</DefineConstants>
         <!-- ReadyToRun 配置（由发布脚本控制） -->
-        <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
-        <!-- <PublishReadyToRunComposite>true</PublishReadyToRunComposite> -->
-    </PropertyGroup>
+      <PublishReadyToRun>true</PublishReadyToRun>
+  <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+</PropertyGroup>
     <PropertyGroup>
         <AppId>tech.rycb.mefrplauncherx</AppId>
         <AppName>PML 2</AppName>
@@ -56,7 +57,9 @@
         <InfoPermissions>autostart;notification;trayicon;clipboard</InfoPermissions>
         <DesktopExec>/opt/pml-2/mefrplauncherx</DesktopExec>
         <DebControlDepends>libx11-6, libice6, libsm6, libfontconfig1, ca-certificates, tzdata, libc6, libgcc1 | libgcc-s1, libgssapi-krb5-2, libstdc++6, zlib1g, libssl1.0.0 | libssl1.0.2 | libssl1.1 | libssl3, libicu | libicu74 | libicu72 | libicu71 | libicu70 | libicu69 | libicu68 | libicu67 | libicu66 | libicu65 | libicu63 | libicu60 | libicu57 | libicu55 | libicu52</DebControlDepends>
-    </PropertyGroup>
+      <PublishReadyToRun>true</PublishReadyToRun>
+  <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+</PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
         <AvaloniaResource Remove="artifacts\**"/>

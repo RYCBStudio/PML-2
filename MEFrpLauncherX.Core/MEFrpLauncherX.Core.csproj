@@ -6,8 +6,9 @@
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
         <!-- AOT 条件编译符号：在 Release 配置（PublishAot=true）时定义 AOT 宏 -->
-<!--        <DefineConstants Condition="'$(Configuration)' != 'Debug'">$(DefineConstants);AOT</DefineConstants>-->
-    </PropertyGroup>
+      <PublishReadyToRun>true</PublishReadyToRun>
+  <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+</PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.18" />

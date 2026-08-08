@@ -632,6 +632,12 @@
           "lib/ChnCharInfo.dll": {}
         }
       },
+      "Microsoft.NET.ILLink.Tasks/10.0.9": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
+        }
+      },
       "NPinyin.Core/3.0.0": {
         "type": "package",
         "compile": {
@@ -1244,7 +1250,7 @@
         }
       }
     },
-    "net10.0/win-x64": {
+    "net10.0/osx-arm64": {
       "Avalonia/11.3.18": {
         "type": "package",
         "dependencies": {
@@ -1544,6 +1550,9 @@
         },
         "runtime": {
           "lib/net8.0/_._": {}
+        },
+        "native": {
+          "runtimes/osx/native/libHarfBuzzSharp.dylib": {}
         }
       },
       "HarfBuzzSharp.NativeAssets.WebAssembly/8.3.1.1": {
@@ -1566,9 +1575,6 @@
         },
         "runtime": {
           "lib/net8.0/_._": {}
-        },
-        "native": {
-          "runtimes/win-x64/native/libHarfBuzzSharp.dll": {}
         }
       },
       "HtmlAgilityPack/1.11.42": {
@@ -1812,6 +1818,12 @@
           "lib/ChnCharInfo.dll": {}
         }
       },
+      "Microsoft.NET.ILLink.Tasks/10.0.9": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
+        }
+      },
       "NPinyin.Core/3.0.0": {
         "type": "package",
         "compile": {
@@ -1834,7 +1846,7 @@
           "lib/netstandard2.0/Onigwrap.dll": {}
         },
         "native": {
-          "runtimes/win-x64/native/libonigwrap.dll": {}
+          "runtimes/osx-arm64/native/libonigwrap.dylib": {}
         },
         "build": {
           "buildTransitive/netstandard1.0/Onigwrap.props": {},
@@ -1955,6 +1967,9 @@
         },
         "runtime": {
           "lib/net10.0/_._": {}
+        },
+        "native": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {}
         }
       },
       "SkiaSharp.NativeAssets.WebAssembly/2.88.9": {
@@ -1977,10 +1992,6 @@
         },
         "runtime": {
           "lib/net10.0/_._": {}
-        },
-        "native": {
-          "runtimes/win-x64/native/libSkiaSharp.dll": {},
-          "runtimes/win-x64/native/libSkiaSharp.pdb": {}
         }
       },
       "Splat/19.4.1": {
@@ -2098,8 +2109,7 @@
           }
         },
         "runtime": {
-          "runtimes/win/lib/net10.0/System.Diagnostics.EventLog.Messages.dll": {},
-          "runtimes/win/lib/net10.0/System.Diagnostics.EventLog.dll": {
+          "lib/net10.0/System.Diagnostics.EventLog.dll": {
             "related": ".xml"
           }
         },
@@ -2134,7 +2144,7 @@
           }
         },
         "runtime": {
-          "runtimes/win/lib/net10.0/System.Runtime.Caching.dll": {
+          "lib/net10.0/System.Runtime.Caching.dll": {
             "related": ".xml"
           }
         },
@@ -3162,6 +3172,56 @@
         "microsoft.international.converters.pinyinconverter.nuspec"
       ]
     },
+    "Microsoft.NET.ILLink.Tasks/10.0.9": {
+      "sha512": "4Iw41e2h7I4t70SJcX2GCmbyKJIlA273Cfm9RJMM050/3VBejGAG1KcthP5Z2L6SQcbfbf6BhNWO26+ZG+GzMg==",
+      "type": "package",
+      "path": "microsoft.net.illink.tasks/10.0.9",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "Sdk/Sdk.props",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/cs/ILLink.CodeFixProvider.dll",
+        "analyzers/dotnet/cs/ILLink.RoslynAnalyzer.dll",
+        "build/Microsoft.NET.ILLink.Analyzers.props",
+        "build/Microsoft.NET.ILLink.Tasks.props",
+        "build/Microsoft.NET.ILLink.targets",
+        "microsoft.net.illink.tasks.10.0.9.nupkg.sha512",
+        "microsoft.net.illink.tasks.nuspec",
+        "tools/net/ILLink.Tasks.deps.json",
+        "tools/net/ILLink.Tasks.dll",
+        "tools/net/Mono.Cecil.Mdb.dll",
+        "tools/net/Mono.Cecil.Pdb.dll",
+        "tools/net/Mono.Cecil.Rocks.dll",
+        "tools/net/Mono.Cecil.dll",
+        "tools/net/Sdk/Sdk.props",
+        "tools/net/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/net/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/net/build/Microsoft.NET.ILLink.targets",
+        "tools/net/illink.deps.json",
+        "tools/net/illink.dll",
+        "tools/net/illink.runtimeconfig.json",
+        "tools/netframework/ILLink.Tasks.dll",
+        "tools/netframework/ILLink.Tasks.dll.config",
+        "tools/netframework/Mono.Cecil.Mdb.dll",
+        "tools/netframework/Mono.Cecil.Pdb.dll",
+        "tools/netframework/Mono.Cecil.Rocks.dll",
+        "tools/netframework/Mono.Cecil.dll",
+        "tools/netframework/Sdk/Sdk.props",
+        "tools/netframework/System.Buffers.dll",
+        "tools/netframework/System.Collections.Immutable.dll",
+        "tools/netframework/System.Memory.dll",
+        "tools/netframework/System.Numerics.Vectors.dll",
+        "tools/netframework/System.Reflection.Metadata.dll",
+        "tools/netframework/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/netframework/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/netframework/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/netframework/build/Microsoft.NET.ILLink.targets",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "NPinyin.Core/3.0.0": {
       "sha512": "l4RuTh0JEJBc23u6SCmpu2k9I7ph+Q2snoqrkYS9IlkM/VeTl+hvHKvrPnPlflmVaIi1lmVVs/NZZYbM2ILqJw==",
       "type": "package",
@@ -4046,6 +4106,7 @@
       "MessageBox.Avalonia >= 3.3.1.1",
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
+      "Microsoft.NET.ILLink.Tasks >= 10.0.9",
       "NPinyin.Core >= 3.0.0",
       "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
@@ -4148,6 +4209,12 @@
             "target": "Package",
             "version": "[1.0.0, )"
           },
+          "Microsoft.NET.ILLink.Tasks": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.0.9, )",
+            "autoReferenced": true
+          },
           "NPinyin.Core": {
             "target": "Package",
             "version": "[3.0.0, )"
@@ -4200,6 +4267,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Runtime.osx-arm64",
+            "version": "[10.0.9, 10.0.9]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
+            "version": "[10.0.9, 10.0.9]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Runtime.osx-arm64",
+            "version": "[10.0.9, 10.0.9]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -4483,7 +4564,7 @@
       }
     },
     "runtimes": {
-      "win-x64": {
+      "osx-arm64": {
         "#import": []
       }
     }

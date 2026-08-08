@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iciclecreek.Avalonia.Termin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MEFrpLauncherX.Plugin", "MEFrpLauncherX.Plugin\MEFrpLauncherX.Plugin.csproj", "{639DE448-5312-441A-8851-61C3DE80EEB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Porta.Pty", "Porta.Pty\src\Porta.Pty\Porta.Pty.csproj", "{46129013-3700-458C-958A-393B485BB051}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Porta.Pty", "Porta.Pty\Porta.Pty.csproj", "{46129013-3700-458C-958A-393B485BB051}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

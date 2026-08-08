@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -20,11 +19,6 @@ using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI.Avalonia;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
-using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MEFrpLauncherX;
 
@@ -43,14 +37,6 @@ internal partial class Program
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.DataAnnotations.MaxLengthAttribute",
-        "System.ComponentModel.Annotations")]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "System.ComponentModel.TypeDescriptor",
-        "System.ComponentModel.TypeConverter")]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, "Porta.Pty.PtyOptions", "Porta.Pty")]
-// BinaryFormatter（过时，仅作保底；若不存在可能无效）
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All,
-        "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "System.Runtime.Serialization.Formatters")]
     [STAThread]
     public static void Main(string[] args)
     {
@@ -60,8 +46,6 @@ internal partial class Program
         // 2. 尝试创建或打开已存在的命名Mutex
         // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
         _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
-
-        PreserveAtStartup();
         if (!createdNew)
         {
             // 已有实例在运行，尝试激活它
@@ -139,58 +123,7 @@ internal partial class Program
         }
 #endif
     }
-
-
-    private static void PreserveAtStartup()
-    {
-#if AOT
-    // 列表里加上你要强制保留的类型（根据之前 dump 的结果）
-    Type[] typesToKeep = new[]
-    {
-        typeof(Porta.Pty.PtyOptions),
-        typeof(System.ComponentModel.TypeDescriptor),
-        typeof(System.ComponentModel.TypeConverter),
-        typeof(System.ComponentModel.DataAnnotations.MaxLengthAttribute),
-        //typeof(System.Runtime.Serialization.Formatters.Binary.BinaryFormatter) // 若存在
-    };
-
-    foreach (var t in typesToKeep)
-    {
-        try
-        {
-            // 触发类型初始化（静态构造函数）
-            RuntimeHelpers.RunClassConstructor(t.TypeHandle);
-        }
-        catch { }
-
-        try
-        {
-            // 尝试创建实例（如果可实例化）
-            if (!t.IsAbstract && !t.IsInterface)
-            {
-                if (t.IsValueType)
-                {
-                    // 若为值类型，可尝试 SizeOf
-                    try { var s = Marshal.SizeOf(t); } catch { }
-                }
-                else
-                {
-                    try { Activator.CreateInstance(t); } catch { }
-                }
-            }
-        }
-        catch { }
-
-        try
-        {
-            // 若为可序列化/可 marshal 的值，尝试 SizeOf，或调用 TypeDescriptor.GetConverter
-            try { var c = TypeDescriptor.GetConverter(t); } catch { }
-        }
-        catch { }
-    }
-
-#endif
-    }
+    
 
     /// <summary>
     ///     启动 Named Pipe 服务器，在后台线程上监听第二个实例的"激活窗口"请求
