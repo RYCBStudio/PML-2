@@ -1,7 +1,7 @@
 name: Build CrashDisplayer & Splash (AOT + SingleFile + SelfContained)
 
 on:
-  workflow_dispatch:          # 手动触发
+  workflow_dispatch:
   push:
     paths:
       - 'MEFrpLauncherX.CrashDisplayer/**'
@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Windows
+          # ---------- Windows ----------
           - rid: win-x64
             os: windows-latest
             app: CrashDisplayer
@@ -34,7 +34,16 @@ jobs:
             app: Splash
             project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
 
-          # Linux
+          - rid: win-arm64
+            os: windows-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: win-arm64
+            os: windows-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
+          # ---------- Linux ----------
           - rid: linux-x64
             os: ubuntu-latest
             app: CrashDisplayer
@@ -44,7 +53,16 @@ jobs:
             app: Splash
             project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
 
-          # macOS
+          - rid: linux-arm64
+            os: ubuntu-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: linux-arm64
+            os: ubuntu-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
+          # ---------- macOS ----------
           - rid: osx-x64
             os: macos-latest
             app: CrashDisplayer
@@ -53,6 +71,7 @@ jobs:
             os: macos-latest
             app: Splash
             project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
           - rid: osx-arm64
             os: macos-latest
             app: CrashDisplayer
@@ -78,8 +97,6 @@ jobs:
           OUT="publish/${{ matrix.app }}/${{ matrix.rid }}"
           mkdir -p "$OUT"
 
-          # 强制 AOT + 单文件 + 自包含（带框架）
-          # 额外加了一些常用优化参数
           dotnet publish "${{ matrix.project }}" \
             -c Release \
             -r "${{ matrix.rid }}" \
@@ -95,17 +112,37 @@ jobs:
 
           # Linux / macOS 给可执行文件加执行权限
           if [[ "${{ matrix.rid }}" != win-* ]]; then
-            find "$OUT" -type f -executable -exec chmod +x {} \; || true
-            # 常见输出文件名兜底
-            for f in "$OUT"/*; do
-              if [[ -f "$f" && ! -x "$f" ]]; then
-                chmod +x "$f" || true
-              fi
-            done
+            find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+            find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+            chmod +x "$OUT"/* 2>/dev/null || true
           fi
 
-          echo "===== Publish result ====="
-          ls -lh "$OUT"
+          echo "===== Publish result (${{ matrix.app }} / ${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Remove debug / symbol files
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="publish/${{ matrix.app }}/${{ matrix.rid }}"
+
+          # 删除常见调试符号文件
+          find "$OUT" -type f \( \
+            -name "*.pdb"  -o \
+            -name "*.dbg"  -o \
+            -name "*.mdb"  -o \
+            -name "*.dSYM" -o \
+            -name "*.ilk"  -o \
+            -name "*.exp"  -o \
+            -name "*.lib"  -o \
+            -name "*.map"  -o \
+          \) -print -delete 2>/dev/null || true
+
+          # 再扫一遍空目录（可选）
+          find "$OUT" -type d -empty -delete 2>/dev/null || true
+
+          echo "===== After cleanup ====="
+          ls -lh "$OUT" || true
           echo "File count: $(find "$OUT" -type f | wc -l)"
 
       - name: Upload artifact
