@@ -15,7 +15,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Porta.Pty;
 using XTerm.Buffer;
-using XT = global::XTerm;
+using XT = XTerm;
 
 namespace Iciclecreek.TerminalWindow
 {
@@ -1759,7 +1759,7 @@ namespace Iciclecreek.TerminalWindow
             var typeface = new Typeface(FontFamily, FontStyle, FontWeight);
             _measureText = new FormattedText(
                 "W",
-                System.Globalization.CultureInfo.CurrentCulture,
+                CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 typeface,
                 FontSize,
@@ -1926,15 +1926,15 @@ namespace Iciclecreek.TerminalWindow
                 var startX = Snap(runStartX * _charWidth, scale);
                 var endX = Snap((runStartX + cellCount) * _charWidth, scale);
                 var rect = new Rect(startX, startYPos, Math.Max(0, endX - startX), rowHeight);
-                var background = cell.GetBackgroundBrush(this.Background);
-                var foreground = cell.GetForegroundBrush(this.Foreground);
+                var background = cell.GetBackgroundBrush(Background);
+                var foreground = cell.GetForegroundBrush(Foreground);
                 // Apply cell-level inverse attribute
                 if (cell.Attributes.IsInverse())
                     (foreground, background) = (background, foreground);
                 // Apply terminal-wide reverse video mode (DECSCNM)
                 if (_terminal.ReverseVideo)
                     (foreground, background) = (background, foreground);
-                if (cell.Attributes.IsBlink() && this._cursorBlinkOn)
+                if (cell.Attributes.IsBlink() && _cursorBlinkOn)
                     (foreground, background) = (background, foreground);
 
                 var typeface = new Typeface(FontFamily, cell.GetFontStyle(), cell.GetFontWeight());
@@ -2037,15 +2037,15 @@ namespace Iciclecreek.TerminalWindow
                         var startX = Snap(runStartX * _charWidth, scale);
                         var endX = Snap((runStartX + cellCount) * _charWidth, scale);
                         var rect = new Rect(startX, startYPos, Math.Max(0, endX - startX), rowHeight);
-                        var background = cell.GetBackgroundBrush(this.Background);
-                        var foreground = cell.GetForegroundBrush(this.Foreground);
+                        var background = cell.GetBackgroundBrush(Background);
+                        var foreground = cell.GetForegroundBrush(Foreground);
                         // Apply cell-level inverse attribute
                         if (cell.Attributes.IsInverse())
                             (foreground, background) = (background, foreground);
                         // Apply terminal-wide reverse video mode (DECSCNM)
                         if (_terminal.ReverseVideo)
                             (foreground, background) = (background, foreground);
-                        if (cell.Attributes.IsBlink() && this._cursorBlinkOn)
+                        if (cell.Attributes.IsBlink() && _cursorBlinkOn)
                             (foreground, background) = (background, foreground);
 
                         var typeface = new Typeface(FontFamily, cell.GetFontStyle(), cell.GetFontWeight());
@@ -2165,7 +2165,7 @@ namespace Iciclecreek.TerminalWindow
                             var cell = line[cursorX];
                             var charContent = cell.Content ?? " ";
                             var typeface = new Typeface(FontFamily, FontStyle, FontWeight);
-                            var invertedBrush = cell.GetBackgroundBrush(this.Background);
+                            var invertedBrush = cell.GetBackgroundBrush(Background);
                             var formattedText = new FormattedText(
                                 charContent,
                                 CultureInfo.CurrentCulture,

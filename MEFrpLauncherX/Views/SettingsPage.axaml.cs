@@ -339,7 +339,7 @@ public partial class SettingsPage : UserControl
     private async void ShowErrorMessage(string message)
     {
         // 使用Avalonia的MessageBox或自定义对话框
-        await MessageBox.ShowAsync(message, "错误", MessageBoxIcon.Error);
+        await MessageBox.ShowAsync(message, Core.Languages.Languages.Caption_Error, MessageBoxIcon.Error);
     }
 
     private void AutoLaunchChanged(object? sender, RoutedEventArgs e)

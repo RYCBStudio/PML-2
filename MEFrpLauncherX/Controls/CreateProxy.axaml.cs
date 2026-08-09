@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels.Controls;
 using MEFrpLauncherX.Views;
@@ -268,10 +269,10 @@ public partial class CreateProxy : UserControl
         {
             Title = "编辑请求头",
             Content = he,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
@@ -295,10 +296,10 @@ public partial class CreateProxy : UserControl
         {
             Title = "编辑绑定域名",
             Content = de,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
@@ -315,10 +316,10 @@ public partial class CreateProxy : UserControl
         {
             Title = "查找 Minecraft 端口",
             Content = psv,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
@@ -340,10 +341,10 @@ public partial class CreateProxy : UserControl
         {
             Title = "编辑响应头",
             Content = he,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         if (await cd.ShowAsync() == ContentDialogResult.Primary)
         {
@@ -367,10 +368,10 @@ public partial class CreateProxy : UserControl
         {
             Title = "编辑路径",
             Content = de,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)

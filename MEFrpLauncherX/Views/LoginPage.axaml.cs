@@ -12,6 +12,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
@@ -108,10 +109,10 @@ public partial class LoginPage : UserControl
             var cd = new ContentDialog
             {
                 Title = "请输入验证码",
-                PrimaryButtonText = "确定",
+                PrimaryButtonText = Languages.Text_Global_Confirm,
                 DefaultButton = ContentDialogButton.Primary,
                 IsSecondaryButtonEnabled = false,
-                CloseButtonText = "取消"
+                CloseButtonText = Languages.Text_Global_Cancel
             };
             var input = new TextBox();
             cd.Content = input;
@@ -247,12 +248,14 @@ public partial class LoginPage : UserControl
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"验证失败: {ex.Message}", icon: Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, $"验证失败: {ex.Message}", icon: Icon.Error)
                 .ShowAsync();
         }
         finally
         {
             LoginBtn.IsEnabled = true;
+            UsrNameBox.IsEnabled = true;
+            PwdBox.IsReadOnly = false;
         }
     }
 

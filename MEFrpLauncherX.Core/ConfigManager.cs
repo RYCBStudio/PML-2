@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
@@ -701,6 +702,12 @@ public class AppConfig
     }
 
     public bool AutoSign
+    {
+        get;
+        set;
+    }
+
+    public string Language
     {
         get;
         set;

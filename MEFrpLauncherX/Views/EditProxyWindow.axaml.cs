@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels;
 
@@ -124,10 +125,10 @@ public partial class EditProxyWindow : Window
         {
             Title = "编辑响应头",
             Content = he,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
@@ -154,10 +155,10 @@ public partial class EditProxyWindow : Window
         {
             Title = "编辑路径",
             Content = de,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
@@ -230,10 +231,10 @@ public partial class EditProxyWindow : Window
         {
             Title = "编辑请求头",
             Content = he,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)
@@ -263,10 +264,10 @@ public partial class EditProxyWindow : Window
         {
             Title = "编辑绑定域名",
             Content = de,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
         if (res == ContentDialogResult.Primary)

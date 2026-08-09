@@ -10,9 +10,9 @@ public class ExecutionContext
     {
         var clone = new ExecutionContext
         {
-            PluginId = this.PluginId,
-            Variables = new Dictionary<string, object>(this.Variables),
-            Data = new Dictionary<string, object>(this.Data)
+            PluginId = PluginId,
+            Variables = new Dictionary<string, object>(Variables),
+            Data = new Dictionary<string, object>(Data)
         };
         if (args != null)
             foreach (var kv in args) clone.Variables[kv.Key] = kv.Value;

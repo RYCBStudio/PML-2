@@ -213,18 +213,18 @@ namespace Porta.Pty.Mac
                 TermSpeed speed,
                 IDictionary<TermSpecialControlCharacter, sbyte> controlCharacters)
             {
-                this.IFlag = (uint)inputFlag;
-                this.OFlag = (uint)outputFlag;
-                this.CFlag = (uint)controlFlag;
-                this.LFlag = (uint)localFlag;
-                this.CC = new byte[32];
+                IFlag = (uint)inputFlag;
+                OFlag = (uint)outputFlag;
+                CFlag = (uint)controlFlag;
+                LFlag = (uint)localFlag;
+                CC = new byte[32];
                 foreach (var kvp in controlCharacters)
                 {
-                    this.CC[(int)kvp.Key] = (byte)kvp.Value;
+                    CC[(int)kvp.Key] = (byte)kvp.Value;
                 }
 
-                this.ISpeed = (uint)speed;
-                this.OSpeed = (uint)speed;
+                ISpeed = (uint)speed;
+                OSpeed = (uint)speed;
             }
         }
 
@@ -241,10 +241,10 @@ namespace Porta.Pty.Mac
 
             public PtyWinSize(ushort rows, ushort cols)
             {
-                this.Rows = rows;
-                this.Cols = cols;
-                this.XPixel = 0;
-                this.YPixel = 0;
+                Rows = rows;
+                Cols = cols;
+                XPixel = 0;
+                YPixel = 0;
             }
         }
 

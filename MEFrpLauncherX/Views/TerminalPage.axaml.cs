@@ -12,6 +12,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using Iciclecreek.TerminalWindow;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.ProxyMonitor;
@@ -177,10 +178,10 @@ public partial class TerminalPage : UserControl
                 {
                     Title = "输入命令行及参数",
                     Content = iw,
-                    PrimaryButtonText = "确定",
+                    PrimaryButtonText = Languages.Text_Global_Confirm,
                     DefaultButton = ContentDialogButton.Primary,
                     IsSecondaryButtonEnabled = false,
-                    CloseButtonText = "取消"
+                    CloseButtonText = Languages.Text_Global_Cancel
                 };
                 var captchaWindow = await cd.ShowAsync(Core.App.MainWindow);
 

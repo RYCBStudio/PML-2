@@ -322,7 +322,7 @@ public class PluginListViewModel : ViewModelBase
         {
             Core.App.CurrentLogger.Error(ex, "刷新在线插件失败");
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"刷新在线插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"刷新在线插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -389,7 +389,7 @@ public class PluginListViewModel : ViewModelBase
         {
             Core.App.CurrentLogger.Error(ex, "下载在线插件失败");
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"下载安装失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"下载安装失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -460,7 +460,7 @@ public class PluginListViewModel : ViewModelBase
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"安装插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"安装插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -489,7 +489,7 @@ public class PluginListViewModel : ViewModelBase
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"卸载插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"卸载插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -545,7 +545,7 @@ public class PluginListViewModel : ViewModelBase
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"读取插件 YAML 失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"读取插件 YAML 失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }

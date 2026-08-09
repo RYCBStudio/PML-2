@@ -40,7 +40,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
         }
         public SVirtualizingStackPanel()
         {
-            this.EffectiveViewportChanged += SVirtualizingStackPanel_EffectiveViewportChanged;
+            EffectiveViewportChanged += SVirtualizingStackPanel_EffectiveViewportChanged;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -200,7 +200,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                     _currentLineHeight = 0;
                 }
                 _currentLineWidth = 0;
-                var _boundsWidth = this.Bounds.Width;
+                var _boundsWidth = Bounds.Width;
                 for (int i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
@@ -265,7 +265,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                     _currentLineWidth = 0;
                 }
                 _currentLineHeight = 0;
-                var _boundsHeight = this.Bounds.Height;
+                var _boundsHeight = Bounds.Height;
                 for (int i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];

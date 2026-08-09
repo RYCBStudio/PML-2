@@ -54,7 +54,7 @@ public class Growl
         {
             App.PML2MsgMnger.ShowErrorMessage(message, new MessageOptions
             {
-                Title = title,
+                Title = title == "错误" ? Languages.Languages.Caption_Error : title,
                 HideClose = !ShowClose,
                 HideIcon = !ShowIcon
             });

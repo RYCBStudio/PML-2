@@ -12,6 +12,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Views;
 using MEFrpLauncherX.Views.ProxyMonitor;
@@ -429,8 +430,8 @@ public class UserProxyViewModel : ViewModelBase
             {
                 Title = "请选择配置文件",
                 Content = cs,
-                PrimaryButtonText = "确定",
-                CloseButtonText = "取消"
+                PrimaryButtonText = Languages.Text_Global_Confirm,
+                CloseButtonText = Languages.Text_Global_Cancel
             };
             ShowExtraMenu = false;
             if (await cd.ShowAsync(TopLevel.GetTopLevel(Core.App.MainWindow)) == ContentDialogResult.Primary)
@@ -807,11 +808,11 @@ public class UserProxyViewModel : ViewModelBase
         {
             Title = "SSL证书配置",
             Content = pss,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             PrimaryButtonCommand = new RelayCommand(_obj =>
             {
             }),
-            CloseButtonText = "取消"
+            CloseButtonText = Languages.Text_Global_Cancel
         };
         if (await cd.ShowAsync() != ContentDialogResult.Primary || !pss.Finished)
         {

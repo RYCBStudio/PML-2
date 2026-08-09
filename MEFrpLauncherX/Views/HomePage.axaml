@@ -8,6 +8,7 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:controls2="clr-namespace:MEFrpLauncherX.Core.Controls;assembly=MEFrpLauncherX.Core"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.HomePage"
              x:DataType="viewModels:HomePageViewModel">
@@ -19,14 +20,14 @@
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
     </UserControl.Styles>
-    <Grid ColumnDefinitions="*,Auto, *">
+    <Grid ColumnDefinitions="5.5*,Auto, 4.5*">
         <Border Grid.ColumnSpan="3" Background="#2f000000">
             <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}" />
         </Border>
         <Grid RowDefinitions="Auto, *"
               MaxHeight="650" RowSpacing="10"
               Margin="10">
-            <HeaderedContentControl Header="统计信息" IsVisible="{Binding ShowStatistics}" Background="Transparent"
+            <HeaderedContentControl Header="{x:Static languages:Languages.Text_Main_PlatformStatistics_Title}" IsVisible="{Binding ShowStatistics}" Background="Transparent"
                                     Classes="animated FluentCard"
                                     Grid.RowSpan="{Binding StatisticsSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                     FontFamily="{StaticResource GlobalFontFamily}">
@@ -49,7 +50,7 @@
                             <InlineUIContainer>
                                 <controls:SymbolIcon Symbol="Earth" />
                             </InlineUIContainer>
-                            <Run>节点数</Run>
+                            <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Nodes}"/>
                         </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
@@ -70,7 +71,7 @@
                             <InlineUIContainer>
                                 <controls:SymbolIcon Symbol="People" />
                             </InlineUIContainer>
-                            <Run>用户数</Run>
+                            <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Users}"/>
                         </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
@@ -91,7 +92,7 @@
                             <InlineUIContainer>
                                 <controls:FontIcon Glyph="&#xE74C;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                             </InlineUIContainer>
-                            <Run>在线隧道</Run>
+                            <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_OnlineProxies}"/>
                         </TextBlock>
                     </Grid>
                     <Grid RowDefinitions="Auto,*">
@@ -116,7 +117,7 @@
                             <InlineUIContainer>
                                 <controls:FontIcon Glyph="&#xEAFC;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                             </InlineUIContainer>
-                            <Run>流量</Run>
+                            <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Traffic}"/>
                         </TextBlock>
                     </Grid>
                 </WrapPanel>
@@ -124,7 +125,7 @@
             <!-- ========== 用户信息卡片（重新设计） ========== -->
             <HeaderedContentControl Classes="FluentCard"
                                     Grid.Row="1"
-                                    Header="用户信息"
+                                    Header="{x:Static languages:Languages.Text_Main_UserInfo_Title}"
                                     Grid.RowSpan="{Binding !UserInfoRow1, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                     IsVisible="{Binding ShowUserInfo}">
                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
@@ -141,7 +142,7 @@
                                         <controls:SymbolIcon Symbol="Contact" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="用户名" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Name}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <SelectableTextBlock FontSize="16"
@@ -159,7 +160,7 @@
                                     <controls:SymbolIcon Symbol="Tag" FontSize="12" Margin="0,0,4,0"
                                                          VerticalAlignment="Center" />
                                 </InlineUIContainer>
-                                <Run Text="用户ID" />
+                                <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Id}" />
                             </TextBlock>
                             <DockPanel HorizontalSpacing="8">
                                 <Button DockPanel.Dock="Right"
@@ -188,7 +189,7 @@
                                         <controls:SymbolIcon Symbol="Mail" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="注册邮箱" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Email}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <DockPanel HorizontalSpacing="8">
@@ -215,7 +216,7 @@
                                         <controls:SymbolIcon Symbol="People" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="用户组" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Group}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <Border CornerRadius="4"
@@ -243,7 +244,7 @@
                                                            FontSize="12" Margin="0,0,4,0"
                                                            VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="实名状态" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_RealNameAuthenticationStatus}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <Border CornerRadius="4"
@@ -273,7 +274,7 @@
                                         <controls:SymbolIcon Symbol="ContactInfo" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="账户状态" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_AccountStatus}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <Border CornerRadius="4"
@@ -304,7 +305,7 @@
                                         <controls:SymbolIcon Symbol="AllApps" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="隧道数量" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_ProxyCount}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <TextBlock Text="{Binding ProxiesCount}"
@@ -324,7 +325,7 @@
                                         <controls:SymbolIcon Symbol="Cloud" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="剩余流量" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_RemainingTraffic}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <DockPanel HorizontalSpacing="8">
@@ -355,7 +356,7 @@
                                         <controls:SymbolIcon Symbol="Download" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="入站带宽" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_InboundBandwidth}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <TextBlock Text="{Binding InBound}"
@@ -374,7 +375,7 @@
                                         <controls:SymbolIcon Symbol="Upload" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
-                                    <Run Text="出站带宽" />
+                                    <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_OutboundBandwidth}" />
                                 </TextBlock.Inlines>
                             </TextBlock>
                             <TextBlock Text="{Binding OutBound}"
@@ -406,7 +407,7 @@
                     <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
                     <HeaderedContentControl Classes="FluentCard"
                                             Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
-                                            IsVisible="{Binding ShowSoftwareNotice}" Header="软件公告"
+                                            IsVisible="{Binding ShowSoftwareNotice}" Header="{x:Static languages:Languages.Text_Main_SoftwareNotice_Title}"
                                             FontFamily="{StaticResource GlobalFontFamily}">
                         <ListBox ItemsSource="{Binding SoftwareNotice}" Background="Transparent" BorderThickness="0">
                             <ListBox.ItemTemplate>
@@ -444,7 +445,7 @@
                     </HeaderedContentControl>
                     <HeaderedContentControl
                         Grid.Row="{Binding SystemNoticeSpan2, Converter={x:Static core:IsVisibleToRowConverter.Instance}, FallbackValue=1}"
-                        Classes="animated FluentCard" Header="系统公告"
+                        Classes="animated FluentCard" Header="{x:Static languages:Languages.Text_Main_PlatformNotice_Title}"
                         Grid.RowSpan="{Binding ShowSystemNotice, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                         IsVisible="{Binding ShowSystemNotice}"
                         FontFamily="{StaticResource GlobalFontFamily}">
@@ -455,11 +456,7 @@
                                 x:Name="NoticeBoard">
 
                                 <markdownAiRender:MarkdownRender.Value>
-                                    <Binding Path="NoticeContent">
-                                        <Binding.FallbackValue>
-                                            无数据
-                                        </Binding.FallbackValue>
-                                    </Binding>
+                                    <Binding Path="NoticeContent"/>
                                 </markdownAiRender:MarkdownRender.Value>
                             </markdownAiRender:MarkdownRender>
                             <!-- <mdxaml:MarkdownScrollViewer Markdown="{Binding NoticeContent}"> -->

@@ -190,7 +190,7 @@ public partial class MainWindow : AppWindow, IDisposable
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {
             var _vm = new ProxyFloatViewModel();
-            new ProxyMonitor.ProxyFloat(_vm);
+            new ProxyFloat(_vm);
         }
 
         CaptchaHelper.Init((progress, current, completed, nonce) =>

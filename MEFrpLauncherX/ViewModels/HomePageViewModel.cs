@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
@@ -15,6 +16,7 @@ using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
@@ -326,34 +328,36 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 // 用户组样式
-                IsAdmin = data.group == "管理员";
+                IsAdmin = data.group == "admin";
 
                 // 实名状态
                 if (data.isRealname)
                 {
-                    RealNameStatus = "已实名";
+                    RealNameStatus = Languages.Text_Main_UserInfo_RealNameAuthenticationStatus_Authenticated;
                     IsRealNamed = true;
                 }
                 else
                 {
-                    RealNameStatus = "未实名";
+                    RealNameStatus = Languages.Text_Main_UserInfo_RealNameAuthenticationStatus_UnAuthenticated;
                     IsRealNamed = false;
                 }
 
                 // 账户状态
                 AccountStatus = data.status switch
                 {
-                    0 => "正常",
-                    1 => "封禁",
-                    2 => "流量超限",
-                    _ => "未知状态"
+                    0 => Languages.Text_Main_UserInfo_AccountStatus_Normal,
+                    1 => Languages.Text_Main_UserInfo_AccountStatus_Banned,
+                    2 => Languages.Text_Main_UserInfo_AccountStatus_OverTraffic,
+                    _ => Languages.Text_Main_UserInfo_AccountStatus_Unknown
                 };
 
                 IsBanned = data.status == 1;
 
                 // 签到按钮状态
                 CanSign = !data.todaySigned;
-                SignButtonText = !data.todaySigned ? "签到" : "已签到";
+                SignButtonText = !data.todaySigned
+                    ? Languages.Text_Main_UserInfo_SignIn
+                    : Languages.Text_Main_UserInfo_SignedIn;
 
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
@@ -387,7 +391,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var btn = new TaskDialogButton
                 {
                     DialogResult = TaskDialogStandardResult.Cancel,
-                    Text = "取消",
+                    Text = Languages.Text_Global_Cancel,
                     Command = new RelayCommand(async _ =>
                     {
                     })
@@ -395,10 +399,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var cnt = "";
                 var td = new TaskDialog
                 {
-                    Title = "PML 2 正在初始化",
+                    Title = Languages.Text_Main_Initialize_Title,
                     ShowProgressBar = true,
                     IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-                    SubHeader = "正在解压资源文件",
+                    SubHeader = Languages.Text_Main_Initialize_Resource,
                     Content = cnt,
                     Buttons =
                     {
@@ -426,6 +430,18 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                         td.SetProgressBarState(progress, TaskDialogProgressState.Normal);
                         cnt = status;
                     }));
+                var cdFile = Path.Combine(Core.App.StartupPath, "Tools", "RYCB.MEFrpLauncherX.CrashDisplayer");
+                if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+                {
+                    if (File.Exists(cdFile))
+                    {
+                        var psi = new ProcessStartInfo("/bin/chmod", $"+x \"{cdFile}\"")
+                        {
+                            UseShellExecute = false
+                        };
+                        await Process.Start(psi)?.WaitForExitAsync();
+                    }
+                }
                 Dispatcher.UIThread.Post(() =>
                 {
                     td.Hide(TaskDialogStandardResult.OK);
@@ -439,7 +455,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var btn = new TaskDialogButton
                 {
                     DialogResult = TaskDialogStandardResult.Cancel,
-                    Text = "取消",
+                    Text = Languages.Text_Global_Cancel,
                     Command = new RelayCommand(async _ =>
                     {
                     })
@@ -447,10 +463,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var cnt = "";
                 var td = new TaskDialog
                 {
-                    Title = "PML 2 正在进行更新后清理",
+                    Title = Languages.Text_Main_PostUpdateProcess_Title,
                     ShowProgressBar = true,
                     IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-                    SubHeader = "正在清理过期更新文件",
+                    SubHeader = Languages.Text_Main_PostUpdateProcess_Cleaning,
                     Content = cnt,
                     Buttons =
                     {
@@ -465,10 +481,26 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 Dispatcher.UIThread.Post(() =>
                 {
                     Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
-                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Normal);
-                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
+                    try
+                    {
+                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState
+                            .Normal);
+                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
+                    }
+                    catch
+                    {
+                        /*Ignore*/
+                    }
+
                     td.Hide(TaskDialogStandardResult.OK);
-                    Core.App.MainWindow.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                    try
+                    {
+                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                    }
+                    catch
+                    {
+                        /*Ignore*/
+                    }
                 });
             }
 
@@ -484,7 +516,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"加载用户数据失败: {ex.Message}")
+                .GetMessageBoxStandard(Languages.Caption_Error, $"加载用户数据失败: {ex.Message}")
                 .ShowAsync();
         }
         finally
@@ -508,24 +540,26 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
-                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ?? 
-                        """
-                        {
-                            "code": -1,
-                            "data": null,
-                            "message": "未知错误"
-                        }
-                        """,
+                JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ??
+                                                                        """
+                                                                        {
+                                                                            "code": -1,
+                                                                            "data": null,
+                                                                            "message": "未知错误"
+                                                                        }
+                                                                        """,
                     App.AppJsonSerializerContext.ApiInfoObject);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
             {
-                Growl.Success(signInfo?.message ?? "签到成功", "签到成功");
+                Growl.Success(signInfo?.message ?? Languages.Text_Main_UserInfo_SignIn + Languages.Text_Global_Success,
+                    Languages.Text_Main_UserInfo_SignIn + Languages.Text_Global_Success);
             }
             else
             {
-                Growl.Error(signInfo?.message ?? "签到失败", "签到失败");
+                Growl.Error(signInfo?.message ?? Languages.Text_Main_UserInfo_SignIn + Languages.Text_Global_Failed,
+                    Languages.Text_Main_UserInfo_SignIn + Languages.Text_Global_Failed);
             }
         }
         catch (Exception ex)

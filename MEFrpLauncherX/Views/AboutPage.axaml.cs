@@ -14,6 +14,7 @@ using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
 using RestSharp;
@@ -166,7 +167,7 @@ public partial class AboutPage : UserControl
 
     private async void OpenSource_Click(object? sender, RoutedEventArgs e)
     {
-        var stackPanel = new StackPanel { Spacing = 8, Margin = new Avalonia.Thickness(0, 8) };
+        var stackPanel = new StackPanel { Spacing = 8, Margin = new Thickness(0, 8) };
         foreach (var lib in vm.OpenSourceLibraries)
         {
             var row = new StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal, Spacing = 8 };
@@ -176,8 +177,8 @@ public partial class AboutPage : UserControl
                 FontFamily = (Avalonia.Media.FontFamily)Application.Current?.FindResource("GlobalFontFamily")!,
                 BorderBrush = Avalonia.Media.Brushes.Transparent,
                 Background = Avalonia.Media.Brushes.Transparent,
-                BorderThickness = new Avalonia.Thickness(-1),
-                Padding = new Avalonia.Thickness(0),
+                BorderThickness = new Thickness(-1),
+                Padding = new Thickness(0),
             };
             link.Click += (_, _) =>
             {
@@ -234,7 +235,7 @@ public partial class AboutPage : UserControl
             [
                 new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
                 new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
-                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
 
         if (res == MessageBoxResult.Yes)
@@ -262,7 +263,7 @@ public partial class AboutPage : UserControl
             [
                 new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
                 new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
-                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
 
         if (res == MessageBoxResult.Yes)
@@ -289,7 +290,7 @@ public partial class AboutPage : UserControl
             "提示",
             [
                 new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
-                new TaskDialogButton("取消", TaskDialogStandardResult.Cancel)
+                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
         if (res == MessageBoxResult.Yes)
         {
@@ -449,10 +450,10 @@ public partial class AboutPage : UserControl
         {
             Content = feedbackForm,
             IsPrimaryButtonEnabled = true,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             MinHeight = 200,
             DefaultButton = ContentDialogButton.Primary,
-            CloseButtonText = "取消",
+            CloseButtonText = Languages.Text_Global_Cancel,
         };
         var res = await cd.ShowAsync();
         if (!(feedbackForm.Email.IsNullOrEmpty() ||

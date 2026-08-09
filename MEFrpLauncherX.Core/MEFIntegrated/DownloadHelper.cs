@@ -78,7 +78,7 @@ public partial class DownloadHelper
         var btn = new TaskDialogButton
         {
             DialogResult = TaskDialogStandardResult.Cancel,
-            Text = "取消",
+            Text = Languages.Languages.Text_Global_Cancel,
             Command = new RelayCommand(async _ =>
             {
                 downloader.CancelAsync();

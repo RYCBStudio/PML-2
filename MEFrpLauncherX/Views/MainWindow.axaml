@@ -15,7 +15,7 @@
     Background="#2f000000"
     SystemDecorations="Full"
     ExtendClientAreaToDecorationsHint="True"
-    ExtendClientAreaChromeHints="PreferSystemChrome"
+    ExtendClientAreaChromeHints="Default"
     x:Name="Window"
     Closing="Window_Closing"
     FontFamily="{DynamicResource GlobalFontFamily}"

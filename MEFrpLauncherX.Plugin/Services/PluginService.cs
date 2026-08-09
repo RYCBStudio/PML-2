@@ -26,7 +26,7 @@ public class PluginService
 
     private PluginService()
     {
-        _pluginsFolder = Path.Combine(MEFrpLauncherX.Core.App.StartupPath, "Config", "Plugins");
+        _pluginsFolder = Path.Combine(App.StartupPath, "Config", "Plugins");
         Directory.CreateDirectory(_pluginsFolder);
     }
 
@@ -56,12 +56,12 @@ public class PluginService
             _hotReload.Start(_pluginsFolder);
 
             IsLoaded = true;
-            MEFrpLauncherX.Core.App.CurrentLogger.Log($"插件系统已加载 {_plugins.Count} 个插件", module: MEFrpLauncherX.Core.EnumLogModule.Custom,
+            App.CurrentLogger.Log($"插件系统已加载 {_plugins.Count} 个插件", module: EnumLogModule.Custom,
                 customModuleName: "Plugin");
         }
         catch (Exception ex)
         {
-            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "插件加载失败");
+            App.CurrentLogger.Error(ex, "插件加载失败");
         }
     }
 
@@ -131,7 +131,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败");
+            App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败");
         }
     }
 
@@ -159,7 +159,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "安装插件失败");
+            App.CurrentLogger.Error(ex, "安装插件失败");
             return false;
         }
     }
@@ -185,7 +185,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "卸载插件失败");
+            App.CurrentLogger.Error(ex, "卸载插件失败");
             return false;
         }
     }
@@ -248,7 +248,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            MEFrpLauncherX.Core.App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}");
+            App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}");
             return null;
         }
     }

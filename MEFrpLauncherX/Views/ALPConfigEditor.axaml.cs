@@ -119,7 +119,7 @@ public partial class ALPConfigEditor : Window
         }
         else
         {
-            await MessageBox.ShowAsync("粘贴失败，请检查剪贴板内容。", "错误", MessageBoxIcon.Warning);
+            await MessageBox.ShowAsync("粘贴失败，请检查剪贴板内容。", Core.Languages.Languages.Caption_Error, MessageBoxIcon.Warning);
         }
     }
 

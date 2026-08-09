@@ -35,9 +35,9 @@
         <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
         <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
 
-        <PublishAot>true</PublishAot>
+<!--        <PublishAot>true</PublishAot>-->
         <!-- AOT 条件编译符号，确保主项目和引用项目都能正确识别 AOT 发布模式 -->
-        <DefineConstants>$(DefineConstants);AOT</DefineConstants>
+<!--        <DefineConstants>$(DefineConstants);AOT</DefineConstants>-->
         <!-- ReadyToRun 配置（由发布脚本控制） -->
         <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
         <!-- <PublishReadyToRunComposite>true</PublishReadyToRunComposite> -->

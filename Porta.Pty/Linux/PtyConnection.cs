@@ -3,7 +3,7 @@
 
 namespace Porta.Pty.Linux
 {
-    using static Porta.Pty.Linux.NativeMethods;
+    using static NativeMethods;
 
     /// <summary>
     /// A connection to a pseudoterminal on linux machines.
@@ -23,7 +23,7 @@ namespace Porta.Pty.Linux
         /// <inheritdoc/>
         protected override bool Kill(int controller)
         {
-            return pty_kill(this.Pid, SIGHUP) != -1;
+            return pty_kill(Pid, SIGHUP) != -1;
         }
 
         /// <inheritdoc/>

@@ -17,6 +17,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
@@ -310,12 +311,12 @@ public partial class ManageProxyPage : UserControl
         var cd = new ContentDialog
         {
             Title = "帮助",
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "关闭"
+            CloseButtonText = "关闭",
+            Content = new ManageProxyHelp()
         };
-        cd.Content = new ManageProxyHelp();
         await cd.ShowAsync(Core.App.MainWindow);
     }
 }

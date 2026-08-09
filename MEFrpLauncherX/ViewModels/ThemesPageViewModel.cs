@@ -13,6 +13,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
@@ -223,7 +224,7 @@ public class ThemesPageViewModel : ViewModelBase
 
     private void AddLocalTheme()
     {
-        var editor = new Views.ThemeEditor();
+        var editor = new ThemeEditor();
         try
         {
             editor.ShowDialog(Core.App.MainWindow);
@@ -238,7 +239,7 @@ public class ThemesPageViewModel : ViewModelBase
     {
         if (SelectedLocalTheme == null) return;
 
-        var editor = new Views.ThemeEditor(SelectedLocalTheme.Path);
+        var editor = new ThemeEditor(SelectedLocalTheme.Path);
         try
         {
             editor.ShowDialog(Core.App.MainWindow);
@@ -278,7 +279,7 @@ public class ThemesPageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await MessageBoxManager.GetMessageBoxStandard("错误", $"获取在线主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, $"获取在线主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -309,12 +310,12 @@ public class ThemesPageViewModel : ViewModelBase
             }
             else
             {
-                await MessageBoxManager.GetMessageBoxStandard("错误", "主题下载失败", ButtonEnum.Ok, Icon.Error).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, "主题下载失败", ButtonEnum.Ok, Icon.Error).ShowAsync();
             }
         }
         catch (Exception ex)
         {
-            await MessageBoxManager.GetMessageBoxStandard("错误", $"下载失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, $"下载失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -352,7 +353,7 @@ public class ThemesPageViewModel : ViewModelBase
         var btn = new TaskDialogButton
         {
             DialogResult = TaskDialogStandardResult.Cancel,
-            Text = "取消",
+            Text = Languages.Text_Global_Cancel,
             Command = new RelayCommand(async _ =>
             {
             })
@@ -401,7 +402,7 @@ public class ThemesPageViewModel : ViewModelBase
             },
             new TaskDialogButton
             {
-                Text = "确定",
+                Text = Languages.Text_Global_Confirm,
                 Command = new RelayCommand(_ =>
                 {
                 })
@@ -439,7 +440,7 @@ public class ThemesPageViewModel : ViewModelBase
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard("错误", $"恢复默认主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, $"恢复默认主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }

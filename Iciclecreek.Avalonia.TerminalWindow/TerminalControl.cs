@@ -35,7 +35,7 @@ namespace Iciclecreek.TerminalWindow
         public static readonly StyledProperty<IList<string>> ArgsProperty =
             AvaloniaProperty.Register<TerminalControl, IList<string>>(
                 nameof(Args),
-                defaultValue: System.Array.Empty<string>());
+                defaultValue: Array.Empty<string>());
 
         public static readonly StyledProperty<int> BufferSizeProperty =
                   AvaloniaProperty.Register<TerminalControl, int>(
