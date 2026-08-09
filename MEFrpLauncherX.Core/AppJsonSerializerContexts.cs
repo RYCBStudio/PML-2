@@ -1,12 +1,11 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
 using RYCB.PML2.MEFrpCaptchaLib;
 using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 
-namespace MEFrpLauncherX;
+namespace MEFrpLauncherX.Core;
 
 [JsonSerializable(typeof(ApiInfo<UserInfo>))]
 [JsonSerializable(typeof(ApiInfo<object>))]

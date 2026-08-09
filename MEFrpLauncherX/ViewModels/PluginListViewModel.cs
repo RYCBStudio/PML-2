@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -19,8 +18,7 @@ using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
-using MEFrpLauncherX.Plugin.Engine;
-using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -270,7 +268,8 @@ public class PluginListViewModel : ViewModelBase
         try
         {
             using var http = new HttpClient();
-            http.Timeout = TimeSpan.FromSeconds(30);
+            http.Timeout = TimeSpan.FromSeconds(10);
+            http.DefaultRequestHeaders.Add("User-Agent", $"RYCB/PML-2 {Core.App.Version}");
 
             // 1. 列目录
             var listBody = JsonSerializer.Serialize(new AlistListFileRequestBody
@@ -278,7 +277,7 @@ public class PluginListViewModel : ViewModelBase
                 Path = PluginsApiPath,
                 Page = 1,
                 PageSize = 100
-            });
+            }, App.AppJsonSerializerContext.AlistListFileRequestBody);
             using var listReq = new HttpRequestMessage(HttpMethod.Post, $"{AlistBase}/api/fs/list")
             {
                 Content = new StringContent(listBody, Encoding.UTF8, "application/json")
@@ -364,7 +363,9 @@ public class PluginListViewModel : ViewModelBase
                 var bytes = await http
                     .GetByteArrayAsync($"https://alist.yealqp.cn/download/{PluginsApiPath}/{fileName}")
                     .ConfigureAwait(true);
-                var tmp = Path.Combine(Path.Combine(Core.App.StartupPath, "Config", "Plugins"), fileName);
+                // 必须写到系统临时目录：若直接写到插件目录，InstallPlugin 内部 File.Copy 会因
+                // 源/目标为同一路径抛 IOException，导致永远安装 0 个插件。
+                var tmp = Path.Combine(Path.GetTempPath(), fileName);
                 await File.WriteAllBytesAsync(tmp, bytes).ConfigureAwait(true);
 
                 _pluginService.DisableHotReload();
@@ -406,6 +407,7 @@ public class PluginListViewModel : ViewModelBase
             {
                 Plugins.Add(plugin);
             }
+            this.RaisePropertyChanged(nameof(IsEmpty));
 
             try
             {
@@ -567,7 +569,7 @@ public class PluginListViewModel : ViewModelBase
     }
 }
 
-internal class AlistListFileRequestBody
+public class AlistListFileRequestBody
 {
     [JsonPropertyName("path")]
     public string? Path

@@ -16,7 +16,6 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
@@ -396,7 +395,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var cnt = "";
                 var td = new TaskDialog
                 {
-                    Title = "PML Ⅱ 正在初始化",
+                    Title = "PML 2 正在初始化",
                     ShowProgressBar = true,
                     IconSource = new SymbolIconSource { Symbol = Symbol.Download },
                     SubHeader = "正在解压资源文件",
@@ -448,7 +447,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 var cnt = "";
                 var td = new TaskDialog
                 {
-                    Title = "PML Ⅱ 正在进行更新后清理",
+                    Title = "PML 2 正在进行更新后清理",
                     ShowProgressBar = true,
                     IconSource = new SymbolIconSource { Symbol = Symbol.Download },
                     SubHeader = "正在清理过期更新文件",

@@ -18,7 +18,6 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;

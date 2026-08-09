@@ -11,10 +11,11 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.WindowServices;
 using MEFrpLauncherX.NetworkMonitoring;
 using ReactiveUI;
 
-namespace MEFrpLauncherX.Views;
+namespace MEFrpLauncherX.Views.ProxyMonitor;
 
 public partial class ProxyFloat : Window
 {

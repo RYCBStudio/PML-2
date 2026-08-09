@@ -6,6 +6,7 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:pml2="clr-namespace:MEFrpLauncherX"
+             xmlns:local1="clr-namespace:MEFrpLauncherX.ViewModels.Controls"
              VerticalAlignment="Center"
              Width="250"
              Height="240"
@@ -13,7 +14,7 @@
              IsEnabled="{Binding IsNotOverloaded}"
              FontFamily="{StaticResource GlobalFontFamily}"
              mc:Ignorable="d"
-             x:DataType="local:TunnelNodeViewModel">
+             x:DataType="local1:TunnelNodeViewModel">
     <UserControl.Resources>
         <core:BoolToBadgeHeaderConverter x:Key="BoolToBadgeHeaderConverter" />
     </UserControl.Resources>

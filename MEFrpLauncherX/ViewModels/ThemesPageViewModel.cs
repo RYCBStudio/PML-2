@@ -13,6 +13,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;

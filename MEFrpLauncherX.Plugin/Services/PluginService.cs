@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
+using AvaloniaEdit.Utils;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Plugin;
 using MEFrpLauncherX.Plugin.Engine;
-using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
-namespace MEFrpLauncherX.Services;
+namespace MEFrpLauncherX.Plugin.Services;
 
 public class PluginService
 {
@@ -32,7 +26,7 @@ public class PluginService
 
     private PluginService()
     {
-        _pluginsFolder = Path.Combine(Core.App.StartupPath, "Config", "Plugins");
+        _pluginsFolder = Path.Combine(MEFrpLauncherX.Core.App.StartupPath, "Config", "Plugins");
         Directory.CreateDirectory(_pluginsFolder);
     }
 
@@ -62,12 +56,12 @@ public class PluginService
             _hotReload.Start(_pluginsFolder);
 
             IsLoaded = true;
-            Core.App.CurrentLogger.Log($"插件系统已加载 {_plugins.Count} 个插件", module: Core.EnumLogModule.Custom,
+            MEFrpLauncherX.Core.App.CurrentLogger.Log($"插件系统已加载 {_plugins.Count} 个插件", module: MEFrpLauncherX.Core.EnumLogModule.Custom,
                 customModuleName: "Plugin");
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Error(ex, "插件加载失败");
+            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "插件加载失败");
         }
     }
 
@@ -137,7 +131,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败");
+            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败");
         }
     }
 
@@ -165,7 +159,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Error(ex, "安装插件失败");
+            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "安装插件失败");
             return false;
         }
     }
@@ -191,7 +185,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Error(ex, "卸载插件失败");
+            MEFrpLauncherX.Core.App.CurrentLogger.Error(ex, "卸载插件失败");
             return false;
         }
     }
@@ -254,7 +248,7 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}");
+            MEFrpLauncherX.Core.App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}");
             return null;
         }
     }
@@ -262,7 +256,7 @@ public class PluginService
     private void SaveDisabledList()
     {
         var path = Path.Combine(_pluginsFolder, ".disabled");
-        File.WriteAllText(path, JsonSerializer.Serialize(_disabledPlugins.ToList()));
+        File.WriteAllText(path, JsonSerializer.Serialize([.. _disabledPlugins], App.AppJsonSerializerContext.ListString));
     }
 
     private void LoadDisabledList()
@@ -272,11 +266,11 @@ public class PluginService
         {
             try
             {
-                var list = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(path));
+                var list = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(path), App.AppJsonSerializerContext.ListString);
                 if (list != null)
                 {
                     _disabledPlugins.Clear();
-                    foreach (var id in list) _disabledPlugins.Add(id);
+                    _disabledPlugins.AddRange(list);
                 }
             }
             catch

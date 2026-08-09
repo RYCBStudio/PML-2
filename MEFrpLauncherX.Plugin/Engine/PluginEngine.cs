@@ -1,4 +1,3 @@
-using System.IO;
 using MEFrpLauncherX.Plugin.Condition;
 using MEFrpLauncherX.Plugin.Core;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;

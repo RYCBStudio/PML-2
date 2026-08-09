@@ -1,0 +1,17 @@
+CreatePipe
+CreatePseudoConsole
+ResizePseudoConsole
+ClosePseudoConsole
+CreateJobObject
+SetInformationJobObject
+AssignProcessToJobObject
+InitializeProcThreadAttributeList
+DeleteProcThreadAttributeList
+UpdateProcThreadAttribute
+CreateProcessW
+LoadLibrary
+GetProcAddress
+STARTUPINFOEXW
+JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+JOBOBJECT_BASIC_LIMIT_INFORMATION
+JOB_OBJECT_LIMIT

@@ -5,7 +5,6 @@ using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.ViewModels;
-using App = MEFrpLauncherX.Core.App;
 
 namespace MEFrpLauncherX.Views;
 

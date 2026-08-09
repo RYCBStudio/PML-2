@@ -4,15 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
-using MEFrpLauncherX.Console;
+using Iciclecreek.TerminalWindow;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
+using MEFrpLauncherX.Views.ProxyMonitor;
+using TerminalControl = MEFrpLauncherX.Console.TerminalControl;
 
 namespace MEFrpLauncherX.Views;
 
@@ -33,7 +36,7 @@ public partial class TerminalPage : UserControl
         private set;
     }
 
-    private async void TerminalPage_Loaded(object sender, RoutedEventArgs e) =>
+    private async void TerminalPage_Loaded(object? sender, RoutedEventArgs? e) =>
         MainPageFrameViewModel.Instance?.IsLoading = false;
 
     private void VisitMEFDoc(object sender, RoutedEventArgs e)
@@ -63,7 +66,7 @@ public partial class TerminalPage : UserControl
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
-                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                     Content: TerminalView alternativeTerminalView
                  })
         {
             await alternativeTerminalView.SendCtrlC();
@@ -84,7 +87,7 @@ public partial class TerminalPage : UserControl
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
-                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                     Content: TerminalView alternativeTerminalView
                  })
         {
             if (alternativeTerminalView.Terminal.Title != header)
@@ -106,7 +109,7 @@ public partial class TerminalPage : UserControl
             }
             else if (item is TabItem
                      {
-                         Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                         Content: TerminalView alternativeTerminalView
                      })
             {
                 await alternativeTerminalView.SendCtrlC();
@@ -122,7 +125,7 @@ public partial class TerminalPage : UserControl
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
-                     Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                     Content: TerminalView alternativeTerminalView
                  })
         {
             await alternativeTerminalView.SendToPtyAsync("clear \r");
@@ -142,7 +145,7 @@ public partial class TerminalPage : UserControl
             }
             else if (MainTabCtrl.Items[index] is TabItem
                      {
-                         Content: Iciclecreek.Terminal.TerminalView alternativeTerminalView
+                         Content: TerminalView alternativeTerminalView
                      })
             {
                 await alternativeTerminalView.SendToPtyAsync("exit \r");
@@ -203,10 +206,12 @@ public partial class TerminalPage : UserControl
                 newTab = new TabItem
                 {
                     Header = "控制台" + MainTabCtrl.Items.Count,
-                    Content = new Iciclecreek.Terminal.TerminalView
+                    Content = new TerminalView
                     {
-                        Process = ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty() ? "powershell.exe" : ConfigManager.CurrentConfig.TerminalCli,
-                        FontFamily = App.Current.TryGetResource("Jbm", out var value)
+                        Process = CliUtils.GetCliWithArguments(ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty()
+                            ? "powershell.exe"
+                            : ConfigManager.CurrentConfig.TerminalCli),
+                        FontFamily = Application.Current.TryGetResource("Jbm", out var value)
                             ? value as FontFamily
                             : new FontFamily("Consolas")
                     }
@@ -259,11 +264,13 @@ public partial class TerminalPage : UserControl
         {
             newTab = new TabItem
             {
-                Header = "控制台" + MainTabCtrl.Items.Count,
-                Content = new Iciclecreek.Terminal.TerminalView
+                Header = consoleTitle.IsNullOrEmpty() ? "控制台" + MainTabCtrl.Items.Count : consoleTitle,
+                Content = new TerminalView
                 {
-                    Process = ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty() ? "powershell.exe" : ConfigManager.CurrentConfig.TerminalCli,
-                    FontFamily = App.Current.TryGetResource("Jbm", out var value)
+                    Process = CliUtils.GetCliWithArguments(ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty()
+                        ? CliUtils.GetOSSpeceficDefaultCli()
+                        : ConfigManager.CurrentConfig.TerminalCli),
+                    FontFamily = Application.Current.TryGetResource("Jbm", out var value)
                         ? value as FontFamily
                         : new FontFamily("Consolas")
                 }
@@ -274,7 +281,9 @@ public partial class TerminalPage : UserControl
         MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
         if (OperatingSystem.IsWindows())
         {
-            var res = rs.Replace("{mefrpc}", $"& \"{Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")}\"")
+            var res = rs.Replace("{mefrpc}",
+                    (ConfigManager.CurrentConfig.TerminalCli.ToLower() is "cmd" or "cmd.exe" ? "" : "& ") +
+                    $"\"{Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")}\"")
                 .Replace("{mefrpcp}", $"\"{Path.Combine(Core.App.StartupPath, "bin")}\"")
                 .Replace("{startup}", Core.App.StartupPath);
 
@@ -290,7 +299,7 @@ public partial class TerminalPage : UserControl
                     await terminal.SendCommandAsync(res);
                 }
             }
-            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            else if (newTab.Content is TerminalView terminal1)
             {
                 if (isMEFrpCExe)
                 {
@@ -327,7 +336,7 @@ public partial class TerminalPage : UserControl
                     await terminal.SendCommandAsync(res);
                 }
             }
-            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            else if (newTab.Content is TerminalView terminal1)
             {
                 await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + " \r");
                 await terminal1.SendToPtyAsync(""" 
@@ -368,7 +377,7 @@ public partial class TerminalPage : UserControl
                     await terminal.SendCommandAsync(res);
                 }
             }
-            else if (newTab.Content is Iciclecreek.Terminal.TerminalView terminal1)
+            else if (newTab.Content is TerminalView terminal1)
             {
                 await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + " \r");
                 await terminal1.SendToPtyAsync(""" 

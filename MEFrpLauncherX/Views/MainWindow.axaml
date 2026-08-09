@@ -8,6 +8,7 @@
     xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
     xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+    xmlns:viewModels="clr-namespace:MEFrpLauncherX.Core.ViewModels;assembly=MEFrpLauncherX.Core"
     Title="PML 2"
     Width="980"
     Height="600"
@@ -20,12 +21,12 @@
     FontFamily="{DynamicResource GlobalFontFamily}"
 
     WindowStartupLocation="CenterScreen"
-    x:DataType="core:MainWindowViewModel"
+    x:DataType="viewModels:MainWindowViewModel"
     Icon="/Assets/meflx.png"
     mc:Ignorable="d">
 
     <Design.DataContext>
-        <core:MainWindowViewModel />
+        <viewModels:MainWindowViewModel />
     </Design.DataContext>
 
     <Panel>

@@ -271,6 +271,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
             Status = "当前版本已经是最新版本";
+            Icon = ICONS.LATEST;
             IsLoading = false;
             IsIdle = true;
         }

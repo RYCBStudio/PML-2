@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Condition;
 using MEFrpLauncherX.Plugin.Engine;
 
@@ -67,7 +68,7 @@ public class PythonAction : IAction
             try
             {
                 var result =
-                    JsonSerializer.Deserialize<Dictionary<string, object>>(output);
+                    JsonSerializer.Deserialize<Dictionary<string, object>>(output, App.AppJsonSerializerContext.DictionaryStringObject);
                 if (result != null)
                     foreach (var kv in result)
                         ctx.Variables[kv.Key] = kv.Value;

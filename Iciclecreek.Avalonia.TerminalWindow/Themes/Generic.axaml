@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="using:Iciclecreek.Terminal">
+        xmlns:local="clr-namespace:Iciclecreek.TerminalWindow">
     
     <Style Selector="local|TerminalControl">
         <Setter Property="Background" Value="Black"/>

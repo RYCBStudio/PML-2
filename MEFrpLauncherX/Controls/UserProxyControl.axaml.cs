@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
@@ -60,7 +61,7 @@ public class OnlineAndDisabledConverter : IMultiValueConverter
     {
         if (values.Count != 2)
         {
-            return App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant, out var o)
+            return Application.Current.TryGetResource("SystemFillColorCriticalBrush", Application.Current.ActualThemeVariant, out var o)
                 ? o
                 : null;
         }
@@ -69,26 +70,26 @@ public class OnlineAndDisabledConverter : IMultiValueConverter
         var isDisabled = values[1] as bool?;
         if (isOnline == true)
         {
-            return App.Current.TryGetResource("SystemFillColorSuccessBrush", App.Current.ActualThemeVariant, out var o)
+            return Application.Current.TryGetResource("SystemFillColorSuccessBrush", Application.Current.ActualThemeVariant, out var o)
                 ? o
                 : null;
         }
 
         if (isOnline == false && isDisabled == true)
         {
-            return App.Current.TryGetResource("SystemFillColorCautionBrush", App.Current.ActualThemeVariant, out var o)
+            return Application.Current.TryGetResource("SystemFillColorCautionBrush", Application.Current.ActualThemeVariant, out var o)
                 ? o
                 : null;
         }
 
         if (isOnline == false && isDisabled == false)
         {
-            return App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant, out var o)
+            return Application.Current.TryGetResource("SystemFillColorCriticalBrush", Application.Current.ActualThemeVariant, out var o)
                 ? o
                 : null;
         }
 
-        return App.Current.TryGetResource("SystemFillColorAttentionBrush", App.Current.ActualThemeVariant, out var o1)
+        return Application.Current.TryGetResource("SystemFillColorAttentionBrush", Application.Current.ActualThemeVariant, out var o1)
             ? o1
             : null;
     }

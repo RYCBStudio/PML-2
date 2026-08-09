@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pml2="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.ViewModels.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.CreateProxy"
-             x:DataType="pml2:TunnelNodeViewModel">
+             x:DataType="controls:TunnelNodeViewModel">
     <Grid RowDefinitions="Auto,*" RowSpacing="4" Classes="animated">
         <Grid x:Name="CurrentProxyInfo" Grid.Row="0" RowDefinitions="Auto,Auto,Auto">
 

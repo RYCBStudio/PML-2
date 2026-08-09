@@ -14,6 +14,8 @@ using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Styling;
+using MEFrpLauncherX.Core.ViewModels;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Views;
 

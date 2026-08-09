@@ -1,4 +1,4 @@
-﻿namespace MEFrpLauncherX.Core.MEFIntergrated;
+﻿namespace MEFrpLauncherX.Core.MEFIntegrated;
 
 public partial class DownloadHelper
 {

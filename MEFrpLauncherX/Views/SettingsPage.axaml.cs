@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -18,14 +17,19 @@ using MEFrpLauncherX.Views.Appearance;
 using MEFrpLauncherX.Views.ProxyMonitor;
 using Microsoft.Win32;
 
+// ReSharper disable UnusedParameter.Local
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8629 // 可为 null 的值类型可为 null。
+
 namespace MEFrpLauncherX.Views;
 
-public partial class SettingsPage : UserControl, INotifyPropertyChanged
+public partial class SettingsPage : UserControl
 {
-    private bool isInit;
+    private bool _isInit;
 
     public SettingsPage()
     {
+        _isInit = true;
         InitializeComponent();
         AttachedToVisualTree += (s, e) =>
         {
@@ -72,7 +76,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
                 _ => 0
             };
             DoNotShowResponseSettings.IsChecked = ConfigManager.CurrentConfig.DoNotShowSuccessMsg;
-            isInit = true;
+            _isInit = true;
             if (ParallelDownloadThreads.Value >= 32)
             {
                 TooMoreThreadWarning.IsOpen = true;
@@ -103,6 +107,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
             AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
 
             MainPageFrameViewModel.Instance?.IsLoading = false;
+            _isInit = false;
         };
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
@@ -118,7 +123,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void SkinChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -153,7 +158,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void HideInsteadOfCloseChanged(object sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -166,7 +171,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void KickWithoutDisableChanged(object sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -179,7 +184,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void ParallelDownloadChanged(object sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -192,7 +197,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void ParallelDownloadThreadsChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -217,7 +222,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void AutoStartChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -339,7 +344,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void AutoLaunchChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -355,7 +360,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void ExpireDaysChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -366,7 +371,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void ThemeChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -400,7 +405,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void PMChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -413,7 +418,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void StretchChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -443,6 +448,11 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void CaptchaModeChanged(object? sender, SelectionChangedEventArgs e)
     {
+        if (_isInit)
+        {
+            return;
+        }
+
         ConfigManager.UpdateConfig(config =>
         {
             config.CaptchaMode = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "";
@@ -451,16 +461,28 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void DownloadSourceChanged(object? sender, SelectionChangedEventArgs e)
     {
+        if (_isInit)
+        {
+            return;
+        }
+
         ConfigManager.UpdateConfig(config =>
             config.DownloadSource = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "");
     }
 
-    private void DoNotShowResponseSettingsChanged(object? sender, RoutedEventArgs e) =>
+    private void DoNotShowResponseSettingsChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
+    }
 
     private void TerminalEngineTypeChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -471,7 +493,7 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void SetTerminalCli(object? sender, SelectionChangedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -479,13 +501,13 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
         var cb = sender as FAComboBox;
         ConfigManager.UpdateConfig(config =>
             config.TerminalCli = cb?.SelectedItem is FAComboBoxItem item
-                ? item.Tag.ToString() ?? "powershell"
-                : cb?.SelectedValue.ToString() ?? "powershell");
+                ? item.Tag?.ToString() ?? CliUtils.GetOSSpeceficDefaultCli()
+                : cb?.Text ?? CliUtils.GetOSSpeceficDefaultCli());
     }
 
     private void AutoLoginChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
@@ -495,13 +517,14 @@ public partial class SettingsPage : UserControl, INotifyPropertyChanged
 
     private void AutoSignChanged(object? sender, RoutedEventArgs e)
     {
-        if (!isInit)
+        if (_isInit)
         {
             return;
         }
 
         ConfigManager.UpdateConfig(config => config.AutoSign = (sender as ToggleSwitch).IsChecked.Value);
     }
+
 }
 
 public class ValidationModeConverter : IValueConverter
@@ -523,6 +546,6 @@ public class ValidationModeConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }

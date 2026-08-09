@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Models;
 using MEFrpLauncherX.ViewModels;
 
@@ -19,7 +16,7 @@ public partial class NodesContainerCompact : UserControl, INodeContainer
         //viewModel?.SelectedRegion = "all";
     }
 
-    public NodesContainerViewModel ViewModel
+    public NodesContainerViewModel? ViewModel
     {
         get;
         set;

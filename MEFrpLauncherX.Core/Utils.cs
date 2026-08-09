@@ -202,3 +202,30 @@ public static class DeviceIdHelper
 
     #endregion
 }
+
+public static class CliUtils
+{
+    /// <summary>
+    /// 获取当前操作系统的默认CLI
+    /// </summary>
+    /// <returns></returns>
+    public static string GetOSSpeceficDefaultCli()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            return "powershell";
+        }
+
+        if (OperatingSystem.IsLinux())
+        {
+            return "bash";
+        }
+
+        return OperatingSystem.IsMacOS() ? "zsh" : "powershell"; // 默认值
+    }
+
+    public static string GetCliWithArguments(string cli)
+    {
+        return cli;
+    }
+}

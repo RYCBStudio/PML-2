@@ -3,7 +3,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Media;
 using ReactiveUI;
 
-namespace MEFrpLauncherX.Core;
+namespace MEFrpLauncherX.Core.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {

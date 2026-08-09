@@ -1,7 +1,7 @@
 using Avalonia.Interactivity;
 using XT = global::XTerm;
 
-namespace Iciclecreek.Terminal
+namespace Iciclecreek.TerminalWindow
 {
     /// <summary>
     /// EventArgs for the WindowInfoRequested event.

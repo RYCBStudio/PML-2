@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;

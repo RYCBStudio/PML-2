@@ -1,3 +1,4 @@
+#define AOT
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +15,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.MEFIntergrated;
+using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI.Avalonia;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
@@ -45,7 +46,6 @@ internal partial class Program
         // 2. 尝试创建或打开已存在的命名Mutex
         // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
         _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
-
         if (!createdNew)
         {
             // 已有实例在运行，尝试激活它
@@ -95,13 +95,13 @@ internal partial class Program
         try
         {
 #endif
-            if (args.Length > 0)
-            {
-                ProcessStartupArguments(args[0]);
-            }
+        if (args.Length > 0)
+        {
+            ProcessStartupArguments(args[0]);
+        }
 
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
 #if !DEBUG
         }
         catch (Exception ex)
@@ -123,6 +123,7 @@ internal partial class Program
         }
 #endif
     }
+    
 
     /// <summary>
     ///     启动 Named Pipe 服务器，在后台线程上监听第二个实例的"激活窗口"请求

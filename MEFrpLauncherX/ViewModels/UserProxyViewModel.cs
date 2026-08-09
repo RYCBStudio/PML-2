@@ -13,10 +13,11 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Views;
+using MEFrpLauncherX.Views.ProxyMonitor;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
+using ProxyFloat = MEFrpLauncherX.Views.ProxyMonitor.ProxyFloat;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -409,12 +410,15 @@ public class UserProxyViewModel : ViewModelBase
     {
         Core.App.CurrentLogger.Log("使用配置文件启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = parameter as UserProxyViewModel;
-        List<string> configFiles = [];
-        configFiles.AddRange(Directory
-            .EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Config", "frp"), "*.*",
-                SearchOption.TopDirectoryOnly)
-            .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
-                .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase)));
+        List<string> configFiles =
+        [
+            .. Directory
+                .EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Config", "frp"), "*.*",
+                    SearchOption.TopDirectoryOnly)
+                .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
+                    .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase))
+
+        ];
 
         var configFile = string.Empty;
         IReadOnlyList<IStorageFile>? cfg = [];
@@ -488,6 +492,11 @@ public class UserProxyViewModel : ViewModelBase
 
 
         var cmd = $"{{mefrpc}} -c \"{configFile}\"";
+        if (await IsClientFileValidAsync() == 0) // 用户取消启动
+        {
+            IsLoading = false;
+            return;
+        }
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
@@ -496,7 +505,7 @@ public class UserProxyViewModel : ViewModelBase
         MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {
-            ProxyFloat.Instance.Show();
+            ProxyFloat.Instance?.Show();
         }
 
         Growl.Success($"启动隧道: {proxy?.proxyName} 成功");

@@ -2,9 +2,7 @@
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using MEFrpLauncherX.Core.Styling;
-using MEFrpLauncherX.Models;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
@@ -65,9 +63,8 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(ThemeManifest))]
 [JsonSerializable(typeof(RedeemInfo))]
 [JsonSerializable(typeof(InfoClasses.CreateProxyRequestData))]
-[JsonSerializable(typeof(GeoJsonRoot))]
-[JsonSerializable(typeof(GeoJsonFeature))]
 [JsonSerializable(typeof(ChallengeInfo))]
+[JsonSerializable(typeof(AlistListFileRequestBody))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

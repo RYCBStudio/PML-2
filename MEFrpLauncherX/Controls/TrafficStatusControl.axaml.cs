@@ -7,7 +7,6 @@ using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
-using MEFrpLauncherX.Core.MEFIntergrated;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.Controls;

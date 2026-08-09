@@ -53,10 +53,31 @@
             <DependentUpon>LoadingTip.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Resources\Languages.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Resources1resx.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Languages.en-US.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Languages.en-US.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Languages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources1resx.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Languages.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Languages.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

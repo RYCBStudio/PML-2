@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <SelfContained>true</SelfContained>
         <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;win-arm64;linux-arm64;osx-arm64</RuntimeIdentifiers>
-        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
@@ -17,7 +17,7 @@
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <!-- 开启后可见 AOT 裁剪警告，调试完再改回 true -->
-        <SuppressTrimWarnings>false</SuppressTrimWarnings>
+        <SuppressTrimWarnings>true</SuppressTrimWarnings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,9 +27,17 @@
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
-<!--        <PublishAot>true</PublishAot>-->
+        <OptimizationPreference>Size</OptimizationPreference>
+        <IlcDisableReflection>true</IlcDisableReflection>
+        <UseSizeOptimizedLinq>true</UseSizeOptimizedLinq>
+        <TrimmerSingleWarn>true</TrimmerSingleWarn>
+        <MetricsSupport>false</MetricsSupport>
+        <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+        <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+
+        <PublishAot>true</PublishAot>
         <!-- AOT 条件编译符号，确保主项目和引用项目都能正确识别 AOT 发布模式 -->
-<!--        <DefineConstants>$(DefineConstants);AOT</DefineConstants>-->
+        <DefineConstants>$(DefineConstants);AOT</DefineConstants>
         <!-- ReadyToRun 配置（由发布脚本控制） -->
         <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
         <!-- <PublishReadyToRunComposite>true</PublishReadyToRunComposite> -->
@@ -76,7 +84,7 @@
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>
         <PackageReference Include="Avalonia" Version="11.3.18" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.18" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.17" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.18" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.14"/>
         <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -97,6 +105,7 @@
         <PackageReference Include="System.Runtime.Caching" Version="10.0.10" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.9.6" />
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.9.6" />
+        <PackageReference Remove="Packaging.Targets" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="mefrplauncherx.desktop" CopyToPublishDirectory="PreserveNewest">

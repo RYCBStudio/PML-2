@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.ViewModels;
 using ReactiveUI;
 using RestSharp;
 

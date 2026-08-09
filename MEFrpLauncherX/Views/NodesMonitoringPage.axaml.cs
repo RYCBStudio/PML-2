@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 using MEFrpLauncherX.ViewModels;
 
@@ -47,17 +48,17 @@ public partial class NodesMonitoringPage : UserControl
             {
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, 0d) },
+                    Setters = { new Setter(RangeBase.ValueProperty, 0d) },
                     Cue = new Cue(0d)
                 },
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value * 0.3) },
+                    Setters = { new Setter(RangeBase.ValueProperty, pg.Value * 0.3) },
                     Cue = new Cue(0.3d)
                 },
                 new KeyFrame
                 {
-                    Setters = { new Setter(ProgressBar.ValueProperty, pg.Value) },
+                    Setters = { new Setter(RangeBase.ValueProperty, pg.Value) },
                     Cue = new Cue(1d)
                 }
             },

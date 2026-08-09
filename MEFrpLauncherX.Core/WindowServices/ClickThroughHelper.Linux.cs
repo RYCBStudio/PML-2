@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Avalonia.Controls;
 
-namespace MEFrpLauncherX.Core;
+namespace MEFrpLauncherX.Core.WindowServices;
 
 public static partial class ClickThroughHelper
 {

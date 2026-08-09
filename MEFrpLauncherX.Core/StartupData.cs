@@ -1,4 +1,4 @@
-﻿namespace MEFrpLauncherX;
+﻿namespace MEFrpLauncherX.Core;
 
 public record StartupData
 {

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -75,7 +76,7 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
     private void SetupSyntaxHighlighting(string type)
     {
         // Create registry with default themes
-        var registryOptions = new RegistryOptions(App.Current?.ActualThemeVariant == ThemeVariant.Dark
+        var registryOptions = new RegistryOptions(Application.Current?.ActualThemeVariant == ThemeVariant.Dark
             ? ThemeName.DarkPlus
             : ThemeName.LightPlus);
 
