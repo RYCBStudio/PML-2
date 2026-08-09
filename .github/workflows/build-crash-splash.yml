@@ -1,0 +1,117 @@
+name: Build CrashDisplayer & Splash (AOT + SingleFile + SelfContained)
+
+on:
+  workflow_dispatch:          # 手动触发
+  push:
+    paths:
+      - 'MEFrpLauncherX.CrashDisplayer/**'
+      - 'RYCB.PML2.Splash/**'
+      - '.github/workflows/build-crash-splash.yml'
+  pull_request:
+    paths:
+      - 'MEFrpLauncherX.CrashDisplayer/**'
+      - 'RYCB.PML2.Splash/**'
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows
+          - rid: win-x64
+            os: windows-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: win-x64
+            os: windows-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
+          # Linux
+          - rid: linux-x64
+            os: ubuntu-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: linux-x64
+            os: ubuntu-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
+          # macOS
+          - rid: osx-x64
+            os: macos-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: osx-x64
+            os: macos-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+          - rid: osx-arm64
+            os: macos-latest
+            app: CrashDisplayer
+            project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+          - rid: osx-arm64
+            os: macos-latest
+            app: Splash
+            project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish (AOT + SingleFile + SelfContained)
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="publish/${{ matrix.app }}/${{ matrix.rid }}"
+          mkdir -p "$OUT"
+
+          # 强制 AOT + 单文件 + 自包含（带框架）
+          # 额外加了一些常用优化参数
+          dotnet publish "${{ matrix.project }}" \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishAot=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # Linux / macOS 给可执行文件加执行权限
+          if [[ "${{ matrix.rid }}" != win-* ]]; then
+            find "$OUT" -type f -executable -exec chmod +x {} \; || true
+            # 常见输出文件名兜底
+            for f in "$OUT"/*; do
+              if [[ -f "$f" && ! -x "$f" ]]; then
+                chmod +x "$f" || true
+              fi
+            done
+          fi
+
+          echo "===== Publish result ====="
+          ls -lh "$OUT"
+          echo "File count: $(find "$OUT" -type f | wc -l)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}-${{ matrix.rid }}
+          path: publish/${{ matrix.app }}/${{ matrix.rid }}/**
+          if-no-files-found: error
+          retention-days: 14
