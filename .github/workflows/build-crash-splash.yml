@@ -1,4 +1,4 @@
-﻿name: Build CrashDisplayer & Splash (AOT + SingleFile + SelfContained)
+name: Build CrashDisplayer & Splash (AOT + SingleFile + SelfContained)
 
 on:
   workflow_dispatch:
@@ -141,10 +141,9 @@ jobs:
             -name "*.exp"  -o \
             -name "*.lib"  -o \
             -name "*.map"  -o \
-            -name "*.xml"  -o \
-            -name "*.deps.json" \
           \) -print -delete 2>/dev/null || true
 
+          # 再扫一遍空目录（可选）
           find "$OUT" -type d -empty -delete 2>/dev/null || true
 
           echo "===== After cleanup ====="
