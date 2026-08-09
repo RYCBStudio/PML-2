@@ -54,11 +54,11 @@ jobs:
             project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
 
           - rid: linux-arm64
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             app: CrashDisplayer
             project: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
           - rid: linux-arm64
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             app: Splash
             project: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
 
@@ -89,6 +89,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install native AOT toolchain (Linux)
+        if: startsWith(matrix.rid, 'linux-')
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y clang zlib1g-dev
 
       - name: Publish (AOT + SingleFile + SelfContained)
         shell: bash
@@ -126,7 +132,6 @@ jobs:
           set -euo pipefail
           OUT="publish/${{ matrix.app }}/${{ matrix.rid }}"
 
-          # 删除常见调试符号文件
           find "$OUT" -type f \( \
             -name "*.pdb"  -o \
             -name "*.dbg"  -o \
@@ -150,5 +155,49 @@ jobs:
         with:
           name: ${{ matrix.app }}-${{ matrix.rid }}
           path: publish/${{ matrix.app }}/${{ matrix.rid }}/**
+          if-no-files-found: error
+          retention-days: 14
+
+  # ---------- 汇总打包，方便一次下载 ----------
+  pack-all:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Pack into one zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "===== 当前 artifacts 结构 ====="
+          find artifacts -type f | sort || true
+
+          mkdir -p release
+          for dir in artifacts/*; do
+            [ -d "$dir" ] || continue
+            name=$(basename "$dir")
+            # name 形如 CrashDisplayer-win-x64
+            app="${name%%-*}"
+            rid="${name#*-}"
+            mkdir -p "release/${app}/${rid}"
+            cp -a "$dir"/. "release/${app}/${rid}/"
+          done
+
+          echo "===== release 结构 ====="
+          find release -type f | sort
+
+          cd release
+          zip -r -9 "../PML2-CrashDisplayer-Splash-all.zip" .
+          cd ..
+          ls -lh PML2-CrashDisplayer-Splash-all.zip
+
+      - name: Upload single package
+        uses: actions/upload-artifact@v4
+        with:
+          name: PML2-CrashDisplayer-Splash-all
+          path: PML2-CrashDisplayer-Splash-all.zip
           if-no-files-found: error
           retention-days: 14
