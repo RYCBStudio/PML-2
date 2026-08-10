@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Xml;
 using Avalonia.Controls;
@@ -10,6 +10,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.TextMate;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MsBox.Avalonia.Enums;
 using TextMateSharp.Grammars;
 using static MEFrpLauncherX.Views.ConfigPreviewer;
@@ -46,7 +47,7 @@ public partial class ALPConfigEditor : Window
         {
             var cfg = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
-                Title = "请选择保存配置文件的路径",
+                Title = Languages.Text_ALPConfigEditor_SavePathTitle,
                 SuggestedFileType = _type.ToLower() switch
                 {
                     "toml" => fpftype_toml,
@@ -91,7 +92,7 @@ public partial class ALPConfigEditor : Window
     {
         if (ConfigEdit.IsModified)
         {
-            if (await MessageBox.ShowAsync("配置文件已修改，是否返回并保存？", "提示", ButtonEnum.YesNo) == MessageBoxResult.Yes)
+            if (await MessageBox.ShowAsync(Languages.Text_ALPConfigEditor_SaveConfirm, Languages.Caption_Hint, ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
                 OnSaveClicked(sender, e);
                 UnSavedTip.Hide();
@@ -119,7 +120,7 @@ public partial class ALPConfigEditor : Window
         }
         else
         {
-            await MessageBox.ShowAsync("粘贴失败，请检查剪贴板内容。", Core.Languages.Languages.Caption_Error, MessageBoxIcon.Warning);
+            await MessageBox.ShowAsync(Languages.Text_ALPConfigEditor_PasteFailed, Languages.Caption_Error, MessageBoxIcon.Warning);
         }
     }
 
@@ -181,7 +182,7 @@ public partial class ALPConfigEditor : Window
 
     private async void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        if (!ConfigEdit.IsModified || await MessageBox.ShowAsync("配置文件已修改，是否返回并保存？", "提示", ButtonEnum.YesNo) !=
+        if (!ConfigEdit.IsModified || await MessageBox.ShowAsync(Languages.Text_ALPConfigEditor_SaveConfirm, Languages.Caption_Hint, ButtonEnum.YesNo) !=
             MessageBoxResult.Yes)
         {
             e.Cancel = false;

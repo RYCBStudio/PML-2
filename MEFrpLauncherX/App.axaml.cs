@@ -31,7 +31,11 @@ public class App : Application
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
 
-    public static FluentAvaloniaTheme? FATheme;
+    public static FluentAvaloniaTheme? FATheme
+    {
+        get;
+        private set;    
+    }
 
     public static IClassicDesktopStyleApplicationLifetime Desktop
     {
@@ -64,6 +68,7 @@ public class App : Application
         {
             "zh-CN" => new CultureInfo("zh-CN"),
             "en-US" => new CultureInfo("en-US"),
+            "zh-Hant" => new CultureInfo("zh-Hant"),
             _ => CultureInfo.CurrentCulture
         };
         #if DEBUG
@@ -80,7 +85,7 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            SplashService?.UpdateProgress(10, "正在加载主题...");
+            SplashService?.UpdateProgress(10, Languages.Text_App_LoadingTheme);
             FATheme = Current.Styles.OfType<FluentAvaloniaTheme>().First();
             var currentTheme = ConfigManager.CurrentConfig.Theme.ToLower() switch
             {
@@ -136,7 +141,7 @@ public class App : Application
             }
 
             CONTINUE:
-            SplashService?.UpdateProgress(30, "正在创建主窗口");
+            SplashService?.UpdateProgress(30, Languages.Text_App_CreatingMainWindow);
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

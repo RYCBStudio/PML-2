@@ -1,9 +1,10 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:console="clr-namespace:MEFrpLauncherX.Console"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.TerminalPage">
     <Grid RowDefinitions="Auto,*" Classes="animated">
@@ -11,15 +12,15 @@
         <!-- Toolbar -->
         <controls:CommandBar DefaultLabelPosition="Right">
             <controls:CommandBar.PrimaryCommands>
-                <controls:CommandBarButton Click="NewConsoleButton_Click" Label="新建控制台" IconSource="Add" />
-                <controls:CommandBarButton Click="CloseButton_Click" Label="关闭当前选项卡" IconSource="Clear" />
-                <controls:CommandBarButton Click="CtrlCButton_Click" Label="发送CtrlC信号 (终止当前操作)"
+                <controls:CommandBarButton Click="NewConsoleButton_Click" Label="{x:Static languages:Languages.Text_Terminal_NewConsole}" IconSource="Add" />
+                <controls:CommandBarButton Click="CloseButton_Click" Label="{x:Static languages:Languages.Text_Terminal_CloseTab}" IconSource="Clear" />
+                <controls:CommandBarButton Click="CtrlCButton_Click" Label="{x:Static languages:Languages.Text_Terminal_SendCtrlC}"
                                            IconSource="StopSlideShow" />
-                <controls:CommandBarButton Click="ClearButton_Click" Label="清空输出" IconSource="Delete" />
+                <controls:CommandBarButton Click="ClearButton_Click" Label="{x:Static languages:Languages.Text_Terminal_ClearOutput}" IconSource="Delete" />
             </controls:CommandBar.PrimaryCommands>
             <controls:CommandBar.SecondaryCommands>
-                <controls:CommandBarButton Click="VisitMEFDoc" Label="访问ME Frp文档" IconSource="Globe" />
-                <controls:CommandBarButton Click="VisitRCDoc" Label="访问控制台文档" IconSource="Document" IsEnabled="False" />
+                <controls:CommandBarButton Click="VisitMEFDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitMEFDoc}" IconSource="Globe" />
+                <controls:CommandBarButton Click="VisitRCDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitConsoleDoc}" IconSource="Document" IsEnabled="False" />
             </controls:CommandBar.SecondaryCommands>
         </controls:CommandBar>
         <!-- <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5"> -->
@@ -33,7 +34,7 @@
 
         <!-- Tab Control -->
         <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact">
-            <TabItem Header="默认">
+            <TabItem Header="{x:Static languages:Languages.Text_Terminal_DefaultTab}">
                 <console:TerminalControl x:Name="Terminal" />
             </TabItem>
         </TabControl>

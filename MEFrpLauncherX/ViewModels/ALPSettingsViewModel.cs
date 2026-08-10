@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
@@ -144,7 +145,7 @@ public class ALPSettingsViewModel : ViewModelBase
                         proxyName = item.proxyName,
                         proxyId = item.proxyId,
                         proxyType = item.proxyType.ToUpper(),
-                        node = info?.name ?? "节点不存在",
+                        node = info?.name ?? Languages.Text_Nodes_NodeNotFound,
                         isBanned = item.isBanned,
                         isOnline = item.isOnline,
                         isDisabled = item.isDisabled,
@@ -228,7 +229,7 @@ public class ALPSettingsViewModel : ViewModelBase
                         proxyName = userProxy.proxyName,
                         proxyId = userProxy.proxyId,
                         proxyType = userProxy.proxyType.ToUpper(),
-                        node = info?.name ?? "节点不存在",
+                        node = info?.name ?? Languages.Text_Nodes_NodeNotFound,
                         isBanned = userProxy.isBanned,
                         isOnline = userProxy.isOnline,
                         isDisabled = userProxy.isDisabled,

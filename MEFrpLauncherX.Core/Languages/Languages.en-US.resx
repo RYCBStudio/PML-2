@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -164,5 +164,2566 @@
     </data>
     <data name="Text.Login.Register" xml:space="preserve">
         <value>Register</value>
+    </data>
+    <data name="Text.Global.NoData" xml:space="preserve">
+        <value>No data</value>
+    </data>
+    <data name="Text.Global.OperationSuccess" xml:space="preserve">
+        <value>Operation completed successfully</value>
+    </data>
+    <data name="Text.Global.Loading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="Text.Global.Copy" xml:space="preserve">
+        <value>Copy</value>
+    </data>
+    <data name="Text.Global.ReadOnly" xml:space="preserve">
+        <value>Read-only</value>
+    </data>
+    <data name="Text.Global.InputValue" xml:space="preserve">
+        <value>Enter value</value>
+    </data>
+    <data name="Text.Global.StaticHeaderTest" xml:space="preserve">
+        <value>Static Header - Test</value>
+    </data>
+    <data name="Text.Global.NotImplemented" xml:space="preserve">
+        <value>Not implemented yet</value>
+    </data>
+    <data name="Text.Global.On" xml:space="preserve">
+        <value>On</value>
+    </data>
+    <data name="Text.Global.Off" xml:space="preserve">
+        <value>Off</value>
+    </data>
+    <data name="Text.Feedback.Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Text.Feedback.EmailWatermark" xml:space="preserve">
+        <value>Please enter your email</value>
+    </data>
+    <data name="Text.Feedback.Content" xml:space="preserve">
+        <value>Feedback</value>
+    </data>
+    <data name="Text.Feedback.ContentWatermark" xml:space="preserve">
+        <value>Please enter your feedback</value>
+    </data>
+    <data name="Text.Headers.NameWatermark" xml:space="preserve">
+        <value>Header name</value>
+    </data>
+    <data name="Text.Headers.ValueWatermark" xml:space="preserve">
+        <value>Header value</value>
+    </data>
+    <data name="Text.Tunnel.Load" xml:space="preserve">
+        <value>Load: </value>
+    </data>
+    <data name="Text.Splash.ApplyingTheme" xml:space="preserve">
+        <value>Applying theme...</value>
+    </data>
+    <data name="Text.Proxy.Guide.Title" xml:space="preserve">
+        <value>Create Proxy Wizard</value>
+    </data>
+    <data name="Text.Proxy.Guide.Welcome" xml:space="preserve">
+        <value>Welcome to the Create Proxy Wizard. Please select the service you want to map.</value>
+    </data>
+    <data name="Text.Proxy.SetConfig" xml:space="preserve">
+        <value>Set config file</value>
+    </data>
+    <data name="Text.Proxy.UnsetConfig" xml:space="preserve">
+        <value>Clear config file</value>
+    </data>
+    <data name="Text.Traffic.RecentDays" xml:space="preserve">
+        <value>Last {0} days</value>
+    </data>
+    <data name="Text.Traffic.Zoom" xml:space="preserve">
+        <value>Zoom (WIP): </value>
+    </data>
+    <data name="Text.Traffic.LineChart" xml:space="preserve">
+        <value>Line chart</value>
+    </data>
+    <data name="Text.Traffic.BarChart" xml:space="preserve">
+        <value>Bar chart</value>
+    </data>
+    <data name="Text.ConfigSelect.Matches" xml:space="preserve">
+        <value>Matches: {0}</value>
+    </data>
+    <data name="Text.Global.Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Text.Global.Close" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="Text.Global.Type" xml:space="preserve">
+        <value>Type: </value>
+    </data>
+    <data name="Text.Global.Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Text.Global.Exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="Text.Global.Paste" xml:space="preserve">
+        <value>Paste</value>
+    </data>
+    <data name="Text.ConfigEditor.Title" xml:space="preserve">
+        <value>Edit config file</value>
+    </data>
+    <data name="Text.ConfigEditor.CloseAndCancelLaunch" xml:space="preserve">
+        <value>Close / Cancel launch</value>
+    </data>
+    <data name="Text.ConfigEditor.SaveAndRun" xml:space="preserve">
+        <value>Save and run</value>
+    </data>
+    <data name="Text.ConfigEditor.UnsavedChanges" xml:space="preserve">
+        <value>Unsaved changes.</value>
+    </data>
+    <data name="Text.ConfigEditor.FileType" xml:space="preserve">
+        <value>Config file type: </value>
+    </data>
+    <data name="Text.ConfigPreviewer.Title" xml:space="preserve">
+        <value>Config file preview</value>
+    </data>
+    <data name="Text.ProxyFloat.RefreshTraffic" xml:space="preserve">
+        <value>Refresh traffic</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowPosition" xml:space="preserve">
+        <value>Window position</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowPositionDescription" xml:space="preserve">
+        <value>Set the window position of the monitor bar</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopLeft" xml:space="preserve">
+        <value>Top left</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopRight" xml:space="preserve">
+        <value>Top right</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomLeft" xml:space="preserve">
+        <value>Bottom left</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomRight" xml:space="preserve">
+        <value>Bottom right</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopCenter" xml:space="preserve">
+        <value>Top center</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomCenter" xml:space="preserve">
+        <value>Bottom center</value>
+    </data>
+    <data name="Text.ALP.Title" xml:space="preserve">
+        <value>Select proxies to auto-launch</value>
+    </data>
+    <data name="Text.ALP.SearchWatermark" xml:space="preserve">
+        <value>Search proxies: Pinyin and command syntax supported</value>
+    </data>
+    <data name="Text.ALP.AddToQueue" xml:space="preserve">
+        <value>Add selected to auto-launch queue -&gt;</value>
+    </data>
+    <data name="Text.ALP.RemoveFromQueue" xml:space="preserve">
+        <value>&lt;- Remove selected from auto-launch queue</value>
+    </data>
+    <data name="Text.Nav.Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Text.Nav.CreateProxy" xml:space="preserve">
+        <value>Create Tunnel</value>
+    </data>
+    <data name="Text.Nav.ManageProxy" xml:space="preserve">
+        <value>Manage Tunnels</value>
+    </data>
+    <data name="Text.Nav.NodesMonitoring" xml:space="preserve">
+        <value>Node Monitoring</value>
+    </data>
+    <data name="Text.Nav.UserCenter" xml:space="preserve">
+        <value>User Center</value>
+    </data>
+    <data name="Text.Nav.Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Text.Nav.Themes" xml:space="preserve">
+        <value>Themes</value>
+    </data>
+    <data name="Text.Nav.Plugins" xml:space="preserve">
+        <value>Plugins</value>
+    </data>
+    <data name="Text.Nav.About" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Text.Nav.Update" xml:space="preserve">
+        <value>Update</value>
+    </data>
+    <data name="Text.Nav.Terminal" xml:space="preserve">
+        <value>Terminal</value>
+    </data>
+    <data name="Text.Global.Refresh" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="Text.Global.Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Text.Global.Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Text.Global.Help" xml:space="preserve">
+        <value>Help</value>
+    </data>
+    <data name="Text.Proxy.Mode.Guide" xml:space="preserve">
+        <value>Guided</value>
+    </data>
+    <data name="Text.Proxy.Mode.Expert" xml:space="preserve">
+        <value>Expert</value>
+    </data>
+    <data name="Text.Proxy.Mode.Jiahao" xml:space="preserve">
+        <value>Jiahao</value>
+    </data>
+    <data name="Text.Proxy.PageLoading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="Text.Proxy.DownloadMEFClient" xml:space="preserve">
+        <value>Download ME Frp Client</value>
+    </data>
+    <data name="Text.Proxy.DetailedDescription" xml:space="preserve">
+        <value>Detailed Description</value>
+    </data>
+    <data name="Text.Proxy.SelectedCount" xml:space="preserve">
+        <value>{0} tunnel(s) selected</value>
+    </data>
+    <data name="Text.Proxy.BatchLaunch" xml:space="preserve">
+        <value>Batch Launch</value>
+    </data>
+    <data name="Text.Proxy.BatchDisable" xml:space="preserve">
+        <value>Batch Disable</value>
+    </data>
+    <data name="Text.Proxy.BatchEnable" xml:space="preserve">
+        <value>Batch Enable</value>
+    </data>
+    <data name="Text.Proxy.BatchDelete" xml:space="preserve">
+        <value>Batch Delete</value>
+    </data>
+    <data name="Text.Proxy.ClearSelection" xml:space="preserve">
+        <value>Clear Selection</value>
+    </data>
+    <data name="Text.Nodes.SearchWatermark" xml:space="preserve">
+        <value>Search nodes</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.Title" xml:space="preserve">
+        <value>Search Help</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.NoParam" xml:space="preserve">
+        <value>No parameter: search by name directly</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.Description" xml:space="preserve">
+        <value>Use /d:&lt;KEYWORD&gt; to search descriptions</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PinyinName" xml:space="preserve">
+        <value>Use /pn:&lt;PINYIN&gt; to search names by pinyin</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PinyinDescription" xml:space="preserve">
+        <value>Use /pd:&lt;PINYIN&gt; to search descriptions by pinyin</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PerfWarning.Title" xml:space="preserve">
+        <value>Known Performance Warning</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PerfWarning.Message" xml:space="preserve">
+        <value>Pinyin search slows down searching and may cause the program to appear frozen.</value>
+    </data>
+    <data name="Text.Nodes.Filter.CanBuildSite" xml:space="preserve">
+        <value>Show only site-capable nodes</value>
+    </data>
+    <data name="Text.Nodes.Filter.AllowHighTraffic" xml:space="preserve">
+        <value>Show only high-traffic-allowed nodes</value>
+    </data>
+    <data name="Text.Nodes.Filter.NotOverLoaded" xml:space="preserve">
+        <value>Show only non-overloaded nodes</value>
+    </data>
+    <data name="Text.Terminal.NewConsole" xml:space="preserve">
+        <value>New Console</value>
+    </data>
+    <data name="Text.Terminal.CloseTab" xml:space="preserve">
+        <value>Close Current Tab</value>
+    </data>
+    <data name="Text.Terminal.SendCtrlC" xml:space="preserve">
+        <value>Send Ctrl+C Signal (terminate current operation)</value>
+    </data>
+    <data name="Text.Terminal.ClearOutput" xml:space="preserve">
+        <value>Clear Output</value>
+    </data>
+    <data name="Text.Terminal.VisitMEFDoc" xml:space="preserve">
+        <value>Visit ME Frp Documentation</value>
+    </data>
+    <data name="Text.Terminal.VisitConsoleDoc" xml:space="preserve">
+        <value>Visit Console Documentation</value>
+    </data>
+    <data name="Text.Terminal.DefaultTab" xml:space="preserve">
+        <value>Default</value>
+    </data>
+    <data name="Text.SSL.ConfigFile" xml:space="preserve">
+        <value>Tunnel Configuration File</value>
+    </data>
+    <data name="Text.SSL.ConfigFileDescription" xml:space="preserve">
+        <value>Configuring SSL certificates for https tunnels requires launching with a configuration file.</value>
+    </data>
+    <data name="Text.SSL.HttpTunnelSettings" xml:space="preserve">
+        <value>http(s) Tunnel Settings</value>
+    </data>
+    <data name="Text.SSL.ProxyName" xml:space="preserve">
+        <value>Proxy Name</value>
+    </data>
+    <data name="Text.SSL.ProxyNameDescription" xml:space="preserve">
+        <value>The proxy name is the unique identifier of this tunnel service, used to distinguish different proxy configurations.</value>
+    </data>
+    <data name="Text.SSL.Domain" xml:space="preserve">
+        <value>Access Domain</value>
+    </data>
+    <data name="Text.SSL.DomainDescription" xml:space="preserve">
+        <value>Set the access domain of the tunnel.</value>
+    </data>
+    <data name="Text.SSL.LocalAddress" xml:space="preserve">
+        <value>Local Address</value>
+    </data>
+    <data name="Text.SSL.LocalAddressDescription" xml:space="preserve">
+        <value>The local address to penetrate.</value>
+    </data>
+    <data name="Text.SSL.LocalAddressWatermark" xml:space="preserve">
+        <value>Local address, usually x.x.x.x:xxx</value>
+    </data>
+    <data name="Text.SSL.Title" xml:space="preserve">
+        <value>SSL Configuration</value>
+    </data>
+    <data name="Text.SSL.CertFile" xml:space="preserve">
+        <value>Certificate File</value>
+    </data>
+    <data name="Text.SSL.CertFileDescription" xml:space="preserve">
+        <value>The SSL certificate file for https tunnels.</value>
+    </data>
+    <data name="Text.SSL.CertFileWatermark" xml:space="preserve">
+        <value>Certificate file, extension usually .crt or .pem</value>
+    </data>
+    <data name="Text.SSL.KeyFile" xml:space="preserve">
+        <value>Private Key File</value>
+    </data>
+    <data name="Text.SSL.KeyFileDescription" xml:space="preserve">
+        <value>The private key file for https tunnels.</value>
+    </data>
+    <data name="Text.SSL.KeyFileWatermark" xml:space="preserve">
+        <value>Private key file, extension usually .key</value>
+    </data>
+    <data name="Text.Global.Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Text.Global.Yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="Text.Global.No" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="Caption.Warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="Text.Settings.Appearance" xml:space="preserve">
+        <value>Appearance</value>
+    </data>
+    <data name="Text.Settings.AppearanceDescription" xml:space="preserve">
+        <value>Customize the appearance of the program</value>
+    </data>
+    <data name="Text.Settings.Theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="Text.Settings.ThemeDescription" xml:space="preserve">
+        <value>Set the color theme of the program</value>
+    </data>
+    <data name="Text.Settings.Theme.Dark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
+    <data name="Text.Settings.Theme.Light" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="Text.Settings.Theme.System" xml:space="preserve">
+        <value>Follow System</value>
+    </data>
+    <data name="Text.Settings.Material" xml:space="preserve">
+        <value>Material</value>
+    </data>
+    <data name="Text.Settings.MaterialDescription" xml:space="preserve">
+        <value>Set the transparency effect and material of the window background</value>
+    </data>
+    <data name="Text.Settings.Material.Mica" xml:space="preserve">
+        <value>Mica</value>
+    </data>
+    <data name="Text.Settings.Material.Acrylic" xml:space="preserve">
+        <value>Acrylic</value>
+    </data>
+    <data name="Text.Settings.Material.Blur" xml:space="preserve">
+        <value>Blur</value>
+    </data>
+    <data name="Text.Settings.Material.Transparent" xml:space="preserve">
+        <value>Transparent</value>
+    </data>
+    <data name="Text.Settings.Material.None" xml:space="preserve">
+        <value>None</value>
+    </data>
+    <data name="Text.Settings.Custom" xml:space="preserve">
+        <value>Custom</value>
+    </data>
+    <data name="Text.Settings.Background" xml:space="preserve">
+        <value>Background Settings</value>
+    </data>
+    <data name="Text.Settings.BackgroundDescription" xml:space="preserve">
+        <value>Set the stretch mode of the window background</value>
+    </data>
+    <data name="Text.Settings.Stretch.None" xml:space="preserve">
+        <value>None</value>
+    </data>
+    <data name="Text.Settings.Stretch.Fill" xml:space="preserve">
+        <value>Fill</value>
+    </data>
+    <data name="Text.Settings.Stretch.Uniform" xml:space="preserve">
+        <value>Uniform</value>
+    </data>
+    <data name="Text.Settings.Stretch.UniformToFill" xml:space="preserve">
+        <value>Uniform To Fill</value>
+    </data>
+    <data name="Text.Settings.Startup" xml:space="preserve">
+        <value>Startup Settings</value>
+    </data>
+    <data name="Text.Settings.StartupDescription" xml:space="preserve">
+        <value>Set the startup options of the program</value>
+    </data>
+    <data name="Text.Settings.AutoStart" xml:space="preserve">
+        <value>Start on Boot</value>
+    </data>
+    <data name="Text.Settings.AutoStartDescription" xml:space="preserve">
+        <value>Set whether the software starts on boot. Note: "boot" here means user sign-in.</value>
+    </data>
+    <data name="Text.Settings.AutoLaunch" xml:space="preserve">
+        <value>Auto-launch some tunnels on startup</value>
+    </data>
+    <data name="Text.Settings.AutoLaunchDescription" xml:space="preserve">
+        <value>Set which tunnels to auto-launch on startup. Note: "startup" here means software startup.</value>
+    </data>
+    <data name="Text.Settings.SetTunnelsToLaunch" xml:space="preserve">
+        <value>Set tunnels to launch</value>
+    </data>
+    <data name="Text.Settings.MinimizeToTray" xml:space="preserve">
+        <value>Minimize to system tray on close instead of closing directly</value>
+    </data>
+    <data name="Text.Settings.MinimizeToTrayDescription" xml:space="preserve">
+        <value>Enabling this option lets the software run in the background.</value>
+    </data>
+    <data name="Text.Settings.TunnelSettings" xml:space="preserve">
+        <value>Tunnel Settings</value>
+    </data>
+    <data name="Text.Settings.TunnelSettingsDescription" xml:space="preserve">
+        <value>Set tunnel-related options</value>
+    </data>
+    <data name="Text.Settings.KickWithoutDisable" xml:space="preserve">
+        <value>Do not disable tunnels when force-kicking them</value>
+    </data>
+    <data name="Text.Settings.KickWithoutDisableDescription" xml:space="preserve">
+        <value>The ME Frp website disables tunnels when force-kicking them. With this option, we can re-enable tunnels after force-kicking.</value>
+    </data>
+    <data name="Text.Settings.ProxyMonitorBar" xml:space="preserve">
+        <value>"Tunnel Monitor" bar [BETA]</value>
+    </data>
+    <data name="Text.Settings.ProxyMonitorBarDescription" xml:space="preserve">
+        <value>"Tunnel Monitor" is a new feature we launched that can monitor the inbound and outbound traffic of running tunnels.</value>
+    </data>
+    <data name="Text.Settings.CustomProxyMonitorBar" xml:space="preserve">
+        <value>Customize "Tunnel Monitor" bar</value>
+    </data>
+    <data name="Text.Settings.Download" xml:space="preserve">
+        <value>Download Settings</value>
+    </data>
+    <data name="Text.Settings.DownloadDescription" xml:space="preserve">
+        <value>Set the download options of the software</value>
+    </data>
+    <data name="Text.Settings.ParallelDownload" xml:space="preserve">
+        <value>Enable multi-threaded download</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadDescription" xml:space="preserve">
+        <value>Enabling multi-threaded download can improve download speed to some extent.</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadSettings" xml:space="preserve">
+        <value>Multi-threaded Download Settings</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadSettingsDescription" xml:space="preserve">
+        <value>Set the number of threads for multi-threaded download.</value>
+    </data>
+    <data name="Text.Settings.Threads" xml:space="preserve">
+        <value>threads</value>
+    </data>
+    <data name="Text.Settings.TooManyThreadsWarning" xml:space="preserve">
+        <value>Too many threads may reduce download speed. The recommended number of threads is 8~32.</value>
+    </data>
+    <data name="Text.Settings.DownloadSource" xml:space="preserve">
+        <value>ME Frp Client Download Source</value>
+    </data>
+    <data name="Text.Settings.DownloadSourceDescription" xml:space="preserve">
+        <value>Set the ME Frp client download source. Default is the TPCA source.</value>
+    </data>
+    <data name="Text.Settings.DownloadSource.TPCA" xml:space="preserve">
+        <value>TPCA (default)</value>
+    </data>
+    <data name="Text.Settings.DownloadSource.Official" xml:space="preserve">
+        <value>Official source</value>
+    </data>
+    <data name="Text.Settings.Account" xml:space="preserve">
+        <value>Account Settings</value>
+    </data>
+    <data name="Text.Settings.AccountDescription" xml:space="preserve">
+        <value>Set account-related options</value>
+    </data>
+    <data name="Text.Settings.LoginExpireDays" xml:space="preserve">
+        <value>Login Expiration Days</value>
+    </data>
+    <data name="Text.Settings.LoginExpireDaysDescription" xml:space="preserve">
+        <value>Set the login expiration days. You need to sign in again after changing this.</value>
+    </data>
+    <data name="Text.Settings.Days" xml:space="preserve">
+        <value>days</value>
+    </data>
+    <data name="Text.Settings.AutoLogin" xml:space="preserve">
+        <value>Auto Login</value>
+    </data>
+    <data name="Text.Settings.AutoLoginDescription" xml:space="preserve">
+        <value>Set to log in automatically when the software starts.</value>
+    </data>
+    <data name="Text.Settings.AutoSignIn" xml:space="preserve">
+        <value>Auto Sign-in</value>
+    </data>
+    <data name="Text.Settings.AutoSignInDescription" xml:space="preserve">
+        <value>Set to sign in automatically when the software starts.</value>
+    </data>
+    <data name="Text.Settings.CaptchaMode" xml:space="preserve">
+        <value>CAPTCHA Mode</value>
+    </data>
+    <data name="Text.Settings.CaptchaModeDescription" xml:space="preserve">
+        <value>Set the CAPTCHA method when signing in.</value>
+    </data>
+    <data name="Text.Settings.Captcha.RecommendedPrefix" xml:space="preserve">
+        <value>(Recommended) </value>
+    </data>
+    <data name="Text.Settings.Other" xml:space="preserve">
+        <value>Other Settings</value>
+    </data>
+    <data name="Text.Settings.OtherDescription" xml:space="preserve">
+        <value>Set some miscellaneous options.</value>
+    </data>
+    <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
+        <value>Do not show request responses</value>
+    </data>
+    <data name="Text.Settings.DoNotShowResponseDescription" xml:space="preserve">
+        <value>Set whether the software should show request responses in the UI. Note: this option only applies to successful requests.</value>
+    </data>
+    <data name="Text.Settings.TerminalEngine" xml:space="preserve">
+        <value>Terminal Engine</value>
+    </data>
+    <data name="Text.Settings.TerminalEngineDescription" xml:space="preserve">
+        <value>Set which terminal engine the software should use. In some cases, a specific terminal engine may cause the software to crash.</value>
+    </data>
+    <data name="Text.Settings.Engine.Default" xml:space="preserve">
+        <value>Default</value>
+    </data>
+    <data name="Text.Settings.TerminalSettings" xml:space="preserve">
+        <value>Terminal Settings</value>
+    </data>
+    <data name="Text.Settings.TerminalSettingsDescription" xml:space="preserve">
+        <value>Set the default CLI of the software.</value>
+    </data>
+    <data name="Text.Settings.LinuxShNotice" xml:space="preserve">
+        <value>On Linux, sh is always used in default mode to ensure compatibility.</value>
+    </data>
+    <data name="Text.ThemeEditor.Title" xml:space="preserve">
+        <value>Theme Editor</value>
+    </data>
+    <data name="Text.ThemeEditor.SaveTheme" xml:space="preserve">
+        <value>Save Theme</value>
+    </data>
+    <data name="Text.ThemeEditor.AddColor" xml:space="preserve">
+        <value>Add Color</value>
+    </data>
+    <data name="Text.ThemeEditor.RemoveColor" xml:space="preserve">
+        <value>Remove Color</value>
+    </data>
+    <data name="Text.ThemeEditor.BasicInfo" xml:space="preserve">
+        <value>Basic Information</value>
+    </data>
+    <data name="Text.ThemeEditor.ThemeName" xml:space="preserve">
+        <value>Theme Name:</value>
+    </data>
+    <data name="Text.ThemeEditor.Author" xml:space="preserve">
+        <value>Author:</value>
+    </data>
+    <data name="Text.ThemeEditor.Version" xml:space="preserve">
+        <value>Version:</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewImage" xml:space="preserve">
+        <value>Preview Image:</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectImage" xml:space="preserve">
+        <value>Select Image</value>
+    </data>
+    <data name="Text.ThemeEditor.Description" xml:space="preserve">
+        <value>Description:</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundSettings" xml:space="preserve">
+        <value>Background Settings</value>
+    </data>
+    <data name="Text.ThemeEditor.SolidColorBackground" xml:space="preserve">
+        <value>Solid Color Background</value>
+    </data>
+    <data name="Text.ThemeEditor.ImageBackground" xml:space="preserve">
+        <value>Image Background</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundColor" xml:space="preserve">
+        <value>Background Color:</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundImage" xml:space="preserve">
+        <value>Background Image:</value>
+    </data>
+    <data name="Text.ThemeEditor.Browse" xml:space="preserve">
+        <value>Browse...</value>
+    </data>
+    <data name="Text.ThemeEditor.FillMode" xml:space="preserve">
+        <value>Fill Mode:</value>
+    </data>
+    <data name="Text.ThemeEditor.LayerOpacity" xml:space="preserve">
+        <value>Layer Opacity:</value>
+    </data>
+    <data name="Text.ThemeEditor.AccentAnimation" xml:space="preserve">
+        <value>Accent Color Animation</value>
+    </data>
+    <data name="Text.ThemeEditor.ColorSequence" xml:space="preserve">
+        <value>Color Sequence (cycles from top to bottom)</value>
+    </data>
+    <data name="Text.ThemeEditor.MoveUp" xml:space="preserve">
+        <value>Move Up</value>
+    </data>
+    <data name="Text.ThemeEditor.MoveDown" xml:space="preserve">
+        <value>Move Down</value>
+    </data>
+    <data name="Text.ThemeEditor.EditColor" xml:space="preserve">
+        <value>Edit Color</value>
+    </data>
+    <data name="Text.ThemeEditor.ColorValue" xml:space="preserve">
+        <value>Color Value:</value>
+    </data>
+    <data name="Text.ThemeEditor.Duration" xml:space="preserve">
+        <value>Duration (seconds):</value>
+    </data>
+    <data name="Text.ThemeEditor.DurationSeconds" xml:space="preserve">
+        <value>{0:N2} s</value>
+    </data>
+    <data name="Text.ThemeEditor.PresetColors" xml:space="preserve">
+        <value>Preset Colors:</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectColorHint" xml:space="preserve">
+        <value>Please select a color on the left to edit</value>
+    </data>
+    <data name="Text.ThemeEditor.FontSettings" xml:space="preserve">
+        <value>Font Settings</value>
+    </data>
+    <data name="Text.ThemeEditor.SystemFont" xml:space="preserve">
+        <value>System Font</value>
+    </data>
+    <data name="Text.ThemeEditor.CustomFontFile" xml:space="preserve">
+        <value>Custom Font File</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectFont" xml:space="preserve">
+        <value>Select Font:</value>
+    </data>
+    <data name="Text.ThemeEditor.FontFile" xml:space="preserve">
+        <value>Font File:</value>
+    </data>
+    <data name="Text.EditProxy.Title" xml:space="preserve">
+        <value>Edit Tunnel</value>
+    </data>
+    <data name="Text.CreateProxy.AllowedPortRange" xml:space="preserve">
+        <value>Allowed port range: {0}</value>
+    </data>
+    <data name="Text.CreateProxy.BasicSettings" xml:space="preserve">
+        <value>Basic Settings</value>
+    </data>
+    <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
+        <value>The following are required settings for creating a tunnel.</value>
+    </data>
+    <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
+        <value>Tunnel Name</value>
+    </data>
+    <data name="Text.CreateProxy.ProxyNamePlaceholder" xml:space="preserve">
+        <value>Please enter the tunnel name</value>
+    </data>
+    <data name="Text.CreateProxy.LocalAddress" xml:space="preserve">
+        <value>Local Address</value>
+    </data>
+    <data name="Text.CreateProxy.LocalAddressPlaceholder" xml:space="preserve">
+        <value>Please enter the local address, format example: 127.0.0.1</value>
+    </data>
+    <data name="Text.CreateProxy.LocalPort" xml:space="preserve">
+        <value>Local Port</value>
+    </data>
+    <data name="Text.CreateProxy.ProtocolType" xml:space="preserve">
+        <value>Protocol Type</value>
+    </data>
+    <data name="Text.CreateProxy.RemotePort" xml:space="preserve">
+        <value>Remote Port</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePort" xml:space="preserve">
+        <value>Get Remote Free Port</value>
+    </data>
+    <data name="Text.CreateProxy.SourceProtocol" xml:space="preserve">
+        <value>Source Protocol</value>
+    </data>
+    <data name="Text.CreateProxy.SameAsHttp" xml:space="preserve">
+        <value>Same as tunnel protocol (HTTP)</value>
+    </data>
+    <data name="Text.CreateProxy.SameAsHttps" xml:space="preserve">
+        <value>Same as tunnel protocol (HTTPS)</value>
+    </data>
+    <data name="Text.CreateProxy.SslCertPath" xml:space="preserve">
+        <value>SSL Certificate Path</value>
+    </data>
+    <data name="Text.CreateProxy.SslKeyPath" xml:space="preserve">
+        <value>SSL Key Path</value>
+    </data>
+    <data name="Text.CreateProxy.SslPathDescription" xml:space="preserve">
+        <value>The path relative to mefrpc is recommended.</value>
+    </data>
+    <data name="Text.CreateProxy.SslCertPathPlaceholder" xml:space="preserve">
+        <value>Please enter the SSL certificate path (e.g. ./server.crt)</value>
+    </data>
+    <data name="Text.CreateProxy.SslKeyPathPlaceholder" xml:space="preserve">
+        <value>Please enter the SSL key path (e.g. ./server.key)</value>
+    </data>
+    <data name="Text.CreateProxy.BindDomains" xml:space="preserve">
+        <value>Bind Domains</value>
+    </data>
+    <data name="Text.CreateProxy.BindDomainsDescription" xml:space="preserve">
+        <value>Edit the domains to bind</value>
+    </data>
+    <data name="Text.CreateProxy.AdvancedSettings" xml:space="preserve">
+        <value>Advanced Settings</value>
+    </data>
+    <data name="Text.CreateProxy.AdvancedSettingsDescription" xml:space="preserve">
+        <value>Tip: Only recommended for technical users. Please make sure your configuration is correct, otherwise the tunnel may fail to start.</value>
+    </data>
+    <data name="Text.CreateProxy.SecurityOptions" xml:space="preserve">
+        <value>Security Options</value>
+    </data>
+    <data name="Text.CreateProxy.Disabled" xml:space="preserve">
+        <value>Disabled</value>
+    </data>
+    <data name="Text.CreateProxy.AccessKey" xml:space="preserve">
+        <value>Access Key</value>
+    </data>
+    <data name="Text.CreateProxy.AccessKeyDescription" xml:space="preserve">
+        <value>Please enter the access key</value>
+    </data>
+    <data name="Text.CreateProxy.HttpBasicAuthDescription" xml:space="preserve">
+        <value>Please enter the username and password</value>
+    </data>
+    <data name="Text.CreateProxy.UsernamePlaceholder" xml:space="preserve">
+        <value>Please enter the username</value>
+    </data>
+    <data name="Text.CreateProxy.PasswordPlaceholder" xml:space="preserve">
+        <value>Please enter the password</value>
+    </data>
+    <data name="Text.CreateProxy.TransmissionProtocol" xml:space="preserve">
+        <value>Transmission Protocol</value>
+    </data>
+    <data name="Text.CreateProxy.TransmissionProtocolDescription" xml:space="preserve">
+        <value>QUIC provides TCP-like reliability while overcoming TCP's performance bottleneck, and can optimize latency in some scenarios.</value>
+    </data>
+    <data name="Text.CreateProxy.CustomRequestHeaders" xml:space="preserve">
+        <value>Custom Request Headers</value>
+    </data>
+    <data name="Text.CreateProxy.CustomResponseHeaders" xml:space="preserve">
+        <value>Custom Response Headers</value>
+    </data>
+    <data name="Text.CreateProxy.LocationsDescription" xml:space="preserve">
+        <value>Edit the path routing rules of the HTTP tunnel.</value>
+    </data>
+    <data name="Text.CreateProxy.NotEnabled" xml:space="preserve">
+        <value>Not enabled</value>
+    </data>
+    <data name="Text.CreateProxy.EnableEncryption" xml:space="preserve">
+        <value>Enable Encryption</value>
+    </data>
+    <data name="Text.CreateProxy.EnableCompression" xml:space="preserve">
+        <value>Enable Compression</value>
+    </data>
+    <data name="Text.UserCenter.UserInfo" xml:space="preserve">
+        <value>User Information</value>
+    </data>
+    <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
+        <value>View and manage your account's basic information</value>
+    </data>
+    <data name="Text.UserCenter.Username" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Text.UserCenter.UserId" xml:space="preserve">
+        <value>User ID</value>
+    </data>
+    <data name="Text.UserCenter.RegisteredEmail" xml:space="preserve">
+        <value>Registered Email</value>
+    </data>
+    <data name="Text.UserCenter.RegisteredTime" xml:space="preserve">
+        <value>Registration Time</value>
+    </data>
+    <data name="Text.UserCenter.UserGroup" xml:space="preserve">
+        <value>User Group</value>
+    </data>
+    <data name="Text.UserCenter.AccountStatus" xml:space="preserve">
+        <value>Account Status</value>
+    </data>
+    <data name="Text.UserCenter.RealNameStatus" xml:space="preserve">
+        <value>Real-name Status</value>
+    </data>
+    <data name="Text.UserCenter.DailySignIn" xml:space="preserve">
+        <value>Today's Sign-in</value>
+    </data>
+    <data name="Text.UserCenter.TrafficAndTunnels" xml:space="preserve">
+        <value>Traffic and Tunnels</value>
+    </data>
+    <data name="Text.UserCenter.TrafficAndTunnelsDescription" xml:space="preserve">
+        <value>View your traffic usage and tunnel configuration</value>
+    </data>
+    <data name="Text.UserCenter.RemainingTraffic" xml:space="preserve">
+        <value>Remaining Traffic</value>
+    </data>
+    <data name="Text.UserCenter.TunnelCount" xml:space="preserve">
+        <value>Tunnel Count</value>
+    </data>
+    <data name="Text.UserCenter.InboundBandwidth" xml:space="preserve">
+        <value>Inbound Bandwidth</value>
+    </data>
+    <data name="Text.UserCenter.OutboundBandwidth" xml:space="preserve">
+        <value>Outbound Bandwidth</value>
+    </data>
+    <data name="Text.UserCenter.TrafficStatistics" xml:space="preserve">
+        <value>Traffic Statistics</value>
+    </data>
+    <data name="Text.UserCenter.TrafficStatisticsDescription" xml:space="preserve">
+        <value>View recent traffic usage trends</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelist" xml:space="preserve">
+        <value>Domain Whitelist</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistDescription" xml:space="preserve">
+        <value>View your domain whitelist for creating HTTP/HTTPS tunnels on "Mainland China (excluding HK/MO/TW)" nodes</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistInfo" xml:space="preserve">
+        <value>This is the domain whitelist for creating HTTP/HTTPS tunnels on "Mainland China (excluding HK/MO/TW)" nodes. Your domain can only be added if it has an ICP filing record with the Ministry of Industry and Information Technology. Domains for sites hosted on non-mainland-China nodes do not need to be whitelisted.</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistWarning" xml:space="preserve">
+        <value>When filling in, please enter the root domain directly, e.g. mefrp.com. Do not enter subdomains such as www.mefrp.com, and do not enter free subdomains here. We use real-time data to automatically whitelist domains; submitting invalid domains may result in you being reported!</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistError" xml:space="preserve">
+        <value>ME Frp does not provide any domain ICP filing services. Please complete the filing yourself according to your service provider's requirements.</value>
+    </data>
+    <data name="Text.UserCenter.AddDomain" xml:space="preserve">
+        <value>Add Domain</value>
+    </data>
+    <data name="Text.UserCenter.AddedDomainsCount" xml:space="preserve">
+        <value>{0} domain(s) added</value>
+    </data>
+    <data name="Text.UserCenter.AccountOperations" xml:space="preserve">
+        <value>Account Operations</value>
+    </data>
+    <data name="Text.UserCenter.Logout" xml:space="preserve">
+        <value>Log Out</value>
+    </data>
+    <data name="Text.UserCenter.GoToWebPortal" xml:space="preserve">
+        <value>Go to the web portal to complete other operations</value>
+    </data>
+    <data name="Text.UserCenter.WebPortalTip" xml:space="preserve">
+        <value>For some reasons, certain features of the web portal cannot be implemented in the client (API not available), so you need to go to the web portal to perform them.</value>
+    </data>
+    <data name="Text.PluginList.Enabled" xml:space="preserve">
+        <value>Enabled</value>
+    </data>
+    <data name="Text.PluginList.Disabled" xml:space="preserve">
+        <value>Disabled</value>
+    </data>
+    <data name="Text.PluginList.LocalPlugins" xml:space="preserve">
+        <value>Local Plugins</value>
+    </data>
+    <data name="Text.PluginList.DropPluginFileHere" xml:space="preserve">
+        <value>Drag and drop plugin files here</value>
+    </data>
+    <data name="Text.PluginList.InstallPlugin" xml:space="preserve">
+        <value>Install Plugin</value>
+    </data>
+    <data name="Text.PluginList.OpenFolder" xml:space="preserve">
+        <value>Open Folder</value>
+    </data>
+    <data name="Text.PluginList.ViewSource" xml:space="preserve">
+        <value>View Source</value>
+    </data>
+    <data name="Text.PluginList.ToggleEnable" xml:space="preserve">
+        <value>Enable/Disable</value>
+    </data>
+    <data name="Text.PluginList.Uninstall" xml:space="preserve">
+        <value>Uninstall</value>
+    </data>
+    <data name="Text.PluginList.Triggers" xml:space="preserve">
+        <value>Triggers: </value>
+    </data>
+    <data name="Text.PluginList.Functions" xml:space="preserve">
+        <value>Functions: </value>
+    </data>
+    <data name="Text.PluginList.AuthorPrefix" xml:space="preserve">
+        <value>Author: </value>
+    </data>
+    <data name="Text.PluginList.NoPlugins" xml:space="preserve">
+        <value>No plugins</value>
+    </data>
+    <data name="Text.PluginList.NoPluginsHint" xml:space="preserve">
+        <value>Click the Install Plugin button above to add a YAML plugin file</value>
+    </data>
+    <data name="Text.PluginList.PluginMarket" xml:space="preserve">
+        <value>Plugin Market</value>
+    </data>
+    <data name="Text.PluginList.SearchPlugins" xml:space="preserve">
+        <value>Search plugins</value>
+    </data>
+    <data name="Text.PluginList.SearchHelp" xml:space="preserve">
+        <value>Search Help</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpNoParams" xml:space="preserve">
+        <value>No parameters: directly search plugins whose ID/name/author contains the entered text</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpDesc" xml:space="preserve">
+        <value>Enter /desc:&lt;KEYWORD&gt; to search descriptions</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpAuthor" xml:space="preserve">
+        <value>Enter /author:&lt;KEYWORD&gt; to search authors</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpId" xml:space="preserve">
+        <value>Enter /id:&lt;KEYWORD&gt; to search IDs</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpName" xml:space="preserve">
+        <value>Enter /name:&lt;KEYWORD&gt; to search names</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpCaseInsensitive" xml:space="preserve">
+        <value>All parameters are case-insensitive.</value>
+    </data>
+    <data name="Text.PluginList.DownloadSelected" xml:space="preserve">
+        <value>Download Selected Plugins</value>
+    </data>
+    <data name="Text.PortScanner.Title" xml:space="preserve">
+        <value>MC Port Scanner</value>
+    </data>
+    <data name="Text.PortScanner.ScanSettings" xml:space="preserve">
+        <value>Scan Settings</value>
+    </data>
+    <data name="Text.PortScanner.TargetIp" xml:space="preserve">
+        <value>Target IP:</value>
+    </data>
+    <data name="Text.PortScanner.TargetIpPlaceholder" xml:space="preserve">
+        <value>e.g., 127.0.0.1</value>
+    </data>
+    <data name="Text.PortScanner.Localhost" xml:space="preserve">
+        <value>Localhost</value>
+    </data>
+    <data name="Text.PortScanner.PortRange" xml:space="preserve">
+        <value>Port Range:</value>
+    </data>
+    <data name="Text.PortScanner.StartPort" xml:space="preserve">
+        <value>Start port</value>
+    </data>
+    <data name="Text.PortScanner.EndPort" xml:space="preserve">
+        <value>End port</value>
+    </data>
+    <data name="Text.PortScanner.CommonPorts" xml:space="preserve">
+        <value>Common Ports</value>
+    </data>
+    <data name="Text.PortScanner.StartScan" xml:space="preserve">
+        <value>Start Scan</value>
+    </data>
+    <data name="Text.PortScanner.StopScan" xml:space="preserve">
+        <value>Stop Scan</value>
+    </data>
+    <data name="Text.PortScanner.QuickScan" xml:space="preserve">
+        <value>Quick Scan MC Ports</value>
+    </data>
+    <data name="Text.PortScanner.ScanResults" xml:space="preserve">
+        <value>Scan Results</value>
+    </data>
+    <data name="Text.PortScanner.ResultCountFormat" xml:space="preserve">
+        <value>({0} open port(s) in total)</value>
+    </data>
+    <data name="Text.PortScanner.PortFormat" xml:space="preserve">
+        <value>Port: {0}</value>
+    </data>
+    <data name="Text.PortScanner.UseThisPort" xml:space="preserve">
+        <value>Use This Port</value>
+    </data>
+    <data name="Text.PortScanner.CopySelectedPort" xml:space="preserve">
+        <value>Copy Selected Port</value>
+    </data>
+    <data name="Text.PortScanner.ClearResults" xml:space="preserve">
+        <value>Clear Results</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalNodes" xml:space="preserve">
+        <value>Total Nodes</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineNodes" xml:space="preserve">
+        <value>Online Nodes</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineUsers" xml:space="preserve">
+        <value>Online Users</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineTunnels" xml:space="preserve">
+        <value>Online Tunnels</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalInboundTraffic" xml:space="preserve">
+        <value>Total Inbound Traffic</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalOutboundTraffic" xml:space="preserve">
+        <value>Total Outbound Traffic</value>
+    </data>
+    <data name="Text.NodesMonitoring.SearchNodes" xml:space="preserve">
+        <value>Search nodes...</value>
+    </data>
+    <data name="Text.NodesMonitoring.Descending" xml:space="preserve">
+        <value>Descending</value>
+    </data>
+    <data name="Text.NodesMonitoring.NodesCountFormat" xml:space="preserve">
+        <value>{0} node(s) in total</value>
+    </data>
+    <data name="Text.NodesMonitoring.VersionFormat" xml:space="preserve">
+        <value>Version: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.ConnectionCountFormat" xml:space="preserve">
+        <value>Connections: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.TunnelCountFormat" xml:space="preserve">
+        <value>Tunnels: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.Load" xml:space="preserve">
+        <value>Load:</value>
+    </data>
+    <data name="Text.Update.LastCheckTimeFormat" xml:space="preserve">
+        <value>Last checked: {0}</value>
+    </data>
+    <data name="Text.Update.DownloadAndInstall" xml:space="preserve">
+        <value>Download and Install Update</value>
+    </data>
+    <data name="Text.Update.CheckForUpdates" xml:space="preserve">
+        <value>Check for Updates</value>
+    </data>
+    <data name="Text.Update.Changelog" xml:space="preserve">
+        <value>Changelog</value>
+    </data>
+    <data name="Text.Update.VersionInfoFormat" xml:space="preserve">
+        <value>Latest in cloud: {0}           Local version: {1}               Codename:</value>
+    </data>
+    <data name="Text.Update.VersionInfoTip" xml:space="preserve">
+        <value>Tip: "Latest in cloud" may return the local version, because the local version is the latest.</value>
+    </data>
+    <data name="Text.Update.UpdateSettings" xml:space="preserve">
+        <value>Update Settings</value>
+    </data>
+    <data name="Text.Update.UpdateMode" xml:space="preserve">
+        <value>Update Mode</value>
+    </data>
+    <data name="Text.Update.UpdateModeDescription" xml:space="preserve">
+        <value>Set the app's update mode.</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.AutoInstall" xml:space="preserve">
+        <value>Automatically check for updates and install</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.AutoDownload" xml:space="preserve">
+        <value>Automatically check for updates and download</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.ManualInstall" xml:space="preserve">
+        <value>Manually check for updates and install</value>
+    </data>
+    <data name="Text.Update.KeepProfile" xml:space="preserve">
+        <value>Keep Configuration</value>
+    </data>
+    <data name="Text.Update.KeepProfileDescription" xml:space="preserve">
+        <value>Set whether the app should keep the current configuration. Note: some new versions may add or change configuration; forcing an overwrite may cause unexpected consequences.</value>
+    </data>
+    <data name="Text.Update.UpdateChannel" xml:space="preserve">
+        <value>Update Channel</value>
+    </data>
+    <data name="Text.Update.UpdateChannelDescription" xml:space="preserve">
+        <value>Control the target version for app updates. Release cadence and stability vary by channel; some channels may contain unstable features, so use with caution.</value>
+    </data>
+    <data name="Text.Update.Channel.Stable" xml:space="preserve">
+        <value>Stable Channel</value>
+    </data>
+    <data name="Text.Update.Channel.Preview" xml:space="preserve">
+        <value>Release Preview Channel</value>
+    </data>
+    <data name="Text.Update.CompileType" xml:space="preserve">
+        <value>Target Compile Type</value>
+    </data>
+    <data name="Text.Update.CompileTypeDescription" xml:space="preserve">
+        <value>Select the compile type of the installer to download (AOT or Common). When the target type matches the current runtime type, the installer will not perform the automatic cleanup.</value>
+    </data>
+    <data name="Text.Update.CompileType.AOT" xml:space="preserve">
+        <value>AOT (Precompiled)</value>
+    </data>
+    <data name="Text.Update.CompileType.Common" xml:space="preserve">
+        <value>Common</value>
+    </data>
+    <data name="Text.About.PoweredBy" xml:space="preserve">
+        <value>Powered by open-source software and ME Frp.</value>
+    </data>
+    <data name="Text.About.UserAgreement" xml:space="preserve">
+        <value>User Agreement</value>
+    </data>
+    <data name="Text.About.PrivacyPolicy" xml:space="preserve">
+        <value>Privacy Policy</value>
+    </data>
+    <data name="Text.About.HelpDocs" xml:space="preserve">
+        <value>Help Docs</value>
+    </data>
+    <data name="Text.About.OpenSource" xml:space="preserve">
+        <value>Open Source Software</value>
+    </data>
+    <data name="Text.About.ReportIssue" xml:space="preserve">
+        <value>Report an Issue</value>
+    </data>
+    <data name="Text.About.ThrowException" xml:space="preserve">
+        <value>Throw Exception</value>
+    </data>
+    <data name="Text.About.AboutMEFrp" xml:space="preserve">
+        <value>About ME Frp</value>
+    </data>
+    <data name="Text.About.MEFrpVersion" xml:space="preserve">
+        <value>ME Frp Version</value>
+    </data>
+    <data name="Text.About.OpenClientFolder" xml:space="preserve">
+        <value>Open ME Frp Client Folder</value>
+    </data>
+    <data name="Text.About.FriendlyLinks" xml:space="preserve">
+        <value>Friendly Links</value>
+    </data>
+    <data name="Text.About.OfficialQQGroup1" xml:space="preserve">
+        <value>Official QQ Group 1</value>
+    </data>
+    <data name="Text.About.OfficialQQGroup2" xml:space="preserve">
+        <value>Official QQ Group 2</value>
+    </data>
+    <data name="Text.About.OfficialFeishuGroup" xml:space="preserve">
+        <value>Official Lark Group</value>
+    </data>
+    <data name="Text.About.SupportEmail" xml:space="preserve">
+        <value>Support Email</value>
+    </data>
+    <data name="Text.About.DailyHitokoto" xml:space="preserve">
+        <value>Daily Quote</value>
+    </data>
+    <data name="Text.ManageProxyHelp.SearchCommands" xml:space="preserve">
+        <value>Search Commands</value>
+    </data>
+    <data name="Text.ManageProxyHelp.SearchSyntaxNote" xml:space="preserve">
+        <value>The search syntax is not universal. It currently only applies to this software. You can make this request to other software developers.</value>
+    </data>
+    <data name="Text.ManageProxyHelp.PidDescription" xml:space="preserve">
+        <value>n is the tunnel ID</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NidDescription" xml:space="preserve">
+        <value>n is the node ID</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NDescription" xml:space="preserve">
+        <value>x is the node name, pinyin supported</value>
+    </data>
+    <data name="Text.ManageProxyHelp.Examples" xml:space="preserve">
+        <value>Examples</value>
+    </data>
+    <data name="Text.ManageProxyHelp.PidExample" xml:space="preserve">
+        <value>Search all tunnels whose tunnel ID contains "1"</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NidExample" xml:space="preserve">
+        <value>Search all tunnels whose node ID contains "1"</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NExample" xml:space="preserve">
+        <value>Search all tunnels whose node name contains "节点1"</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ColorMeaning" xml:space="preserve">
+        <value>Color Meanings</value>
+    </data>
+    <data name="Text.ManageProxyHelp.GreenOnline" xml:space="preserve">
+        <value>Green: tunnel online</value>
+    </data>
+    <data name="Text.ManageProxyHelp.RedOffline" xml:space="preserve">
+        <value>Red: tunnel offline</value>
+    </data>
+    <data name="Text.ManageProxyHelp.YellowDisabled" xml:space="preserve">
+        <value>Yellow: tunnel disabled</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOnline" xml:space="preserve">
+        <value>Tunnel online</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOffline" xml:space="preserve">
+        <value>Tunnel offline</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOfflineDisabled" xml:space="preserve">
+        <value>Tunnel offline and disabled</value>
+    </data>
+    <data name="Caption.Hint" xml:space="preserve">
+        <value>Tip</value>
+    </data>
+    <data name="Text.NodesContainer.SearchNodes" xml:space="preserve">
+        <value>Search Nodes</value>
+    </data>
+    <data name="Text.NodesContainer.HelpNoParams" xml:space="preserve">
+        <value>No parameters: search by name directly</value>
+    </data>
+    <data name="Text.NodesContainer.HelpDescSearch" xml:space="preserve">
+        <value>Enter /d:&lt;KEYWORD&gt; to search descriptions</value>
+    </data>
+    <data name="Text.NodesContainer.HelpPinyinName" xml:space="preserve">
+        <value>Enter /pn:&lt;PINYIN&gt; to search names by pinyin</value>
+    </data>
+    <data name="Text.NodesContainer.HelpPinyinDesc" xml:space="preserve">
+        <value>Enter /pd:&lt;PINYIN&gt; to search descriptions by pinyin</value>
+    </data>
+    <data name="Text.NodesContainer.PerformanceWarningTitle" xml:space="preserve">
+        <value>Known Performance Warning</value>
+    </data>
+    <data name="Text.NodesContainer.PerformanceWarningMessage" xml:space="preserve">
+        <value>Using pinyin search will slow down searching and cause the program to appear frozen.</value>
+    </data>
+    <data name="Text.NodesContainer.OnlySiteBuildable" xml:space="preserve">
+        <value>Show only site-buildable nodes</value>
+    </data>
+    <data name="Text.NodesContainer.OnlyHighTraffic" xml:space="preserve">
+        <value>Show only high-traffic nodes</value>
+    </data>
+    <data name="Text.NodesContainer.OnlyNotOverloaded" xml:space="preserve">
+        <value>Show only non-overloaded nodes</value>
+    </data>
+    <data name="Text.NodesContainer.Region_All" xml:space="preserve">
+        <value>All</value>
+    </data>
+    <data name="Text.NodesContainer.Region_MainlandChina" xml:space="preserve">
+        <value>Mainland China</value>
+    </data>
+    <data name="Text.NodesContainer.Region_HKMOTW" xml:space="preserve">
+        <value>HK, MO &amp; TW</value>
+    </data>
+    <data name="Text.NodesContainer.Region_Overseas" xml:space="preserve">
+        <value>Overseas</value>
+    </data>
+    <data name="Text.UserProxy.LaunchViaConfig" xml:space="preserve">
+        <value>Run with Config File</value>
+    </data>
+    <data name="Text.UserProxy.ForceOffline" xml:space="preserve">
+        <value>Force Offline</value>
+    </data>
+    <data name="Text.UserProxy.GenerateConfig" xml:space="preserve">
+        <value>Generate Config File</value>
+    </data>
+    <data name="Text.UserProxy.Banned" xml:space="preserve">
+        <value>Banned</value>
+    </data>
+    <data name="Text.UserProxy.LaunchTunnel" xml:space="preserve">
+        <value>Start Tunnel</value>
+    </data>
+    <data name="Text.UserProxy.StopTunnel" xml:space="preserve">
+        <value>Stop Tunnel</value>
+    </data>
+    <data name="Text.UserProxy.DetailedInfo" xml:space="preserve">
+        <value>Detailed Info</value>
+    </data>
+    <data name="Text.UserProxy.MoreOptions" xml:space="preserve">
+        <value>More Options</value>
+    </data>
+    <data name="Text.UserProxy.CopyAddress" xml:space="preserve">
+        <value>Copy Address</value>
+    </data>
+    <data name="Text.Global.Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Text.Global.Disable" xml:space="preserve">
+        <value>Disable</value>
+    </data>
+    <data name="Text.Global.Enable" xml:space="preserve">
+        <value>Enable</value>
+    </data>
+    <data name="Text.AppearanceSettings.SelectBackground" xml:space="preserve">
+        <value>Choose a Background</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundOpacity" xml:space="preserve">
+        <value>Background Opacity</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundOpacityDescription" xml:space="preserve">
+        <value>Sometimes the background image may affect the viewing experience. Choose an opacity to adjust.</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundFillMode" xml:space="preserve">
+        <value>Background Fill Mode</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundFillModeDescription" xml:space="preserve">
+        <value>Set whether the background image should fill the entire window up to the title bar.</value>
+    </data>
+    <data name="Text.AppearanceSettings.FillToTitleBar" xml:space="preserve">
+        <value>Fill to Title Bar</value>
+    </data>
+    <data name="Text.AppearanceSettings.FillToWindowOnly" xml:space="preserve">
+        <value>Fill Window Only</value>
+    </data>
+    <data name="Text.AppearanceSettings.SelectAccentColor" xml:space="preserve">
+        <value>Choose Accent Color</value>
+    </data>
+    <data name="Text.AppearanceSettings.Restore" xml:space="preserve">
+        <value>Restore</value>
+    </data>
+    <data name="Text.AppearanceSettings.CustomizeHomePage" xml:space="preserve">
+        <value>Customize Home Page</value>
+    </data>
+    <data name="Text.AppearanceSettings.CustomizeHomePageDescription" xml:space="preserve">
+        <value>You can choose what content to display on the home page.</value>
+    </data>
+    <data name="Text.AppearanceSettings.Statistics" xml:space="preserve">
+        <value>Statistics</value>
+    </data>
+    <data name="Text.AppearanceSettings.SystemInfo" xml:space="preserve">
+        <value>System Info</value>
+    </data>
+    <data name="Text.AppearanceSettings.SoftwareNotice" xml:space="preserve">
+        <value>Software Notices</value>
+    </data>
+    <data name="Text.AppearanceSettings.SystemNotice" xml:space="preserve">
+        <value>System Notices</value>
+    </data>
+    <data name="Text.AppearanceSettings.ClearAllBackgrounds" xml:space="preserve">
+        <value>Clear All Backgrounds</value>
+    </data>
+    <data name="Text.Themes.Title" xml:space="preserve">
+        <value>Theme Settings</value>
+    </data>
+    <data name="Text.Themes.LocalThemes" xml:space="preserve">
+        <value>Local Themes</value>
+    </data>
+    <data name="Text.Themes.New" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="Text.Themes.ApplySelected" xml:space="preserve">
+        <value>Apply Selected</value>
+    </data>
+    <data name="Text.Themes.EditSelected" xml:space="preserve">
+        <value>Edit Selected</value>
+    </data>
+    <data name="Text.Themes.DeleteSelected" xml:space="preserve">
+        <value>Delete Selected</value>
+    </data>
+    <data name="Text.Themes.PackageSelected" xml:space="preserve">
+        <value>Package Selected</value>
+    </data>
+    <data name="Text.Themes.Import" xml:space="preserve">
+        <value>Import</value>
+    </data>
+    <data name="Text.Themes.RestoreDefault" xml:space="preserve">
+        <value>Restore Default</value>
+    </data>
+    <data name="Text.Themes.OpenDocs" xml:space="preserve">
+        <value>Open Documentation</value>
+    </data>
+    <data name="Text.Themes.OnlineThemes" xml:space="preserve">
+        <value>Online Themes</value>
+    </data>
+    <data name="Text.Themes.DownloadSelected" xml:space="preserve">
+        <value>Download Selected</value>
+    </data>
+    <data name="Text.Themes.Search" xml:space="preserve">
+        <value>Search...</value>
+    </data>
+    <data name="Caption.Info" xml:space="preserve">
+        <value>Info</value>
+    </data>
+    <data name="Caption.Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="Text.Notice.PublishDate" xml:space="preserve">
+        <value>Published: {0}</value>
+    </data>
+    <data name="Text.Notice.TypeMaintenance" xml:space="preserve">
+        <value>Maintenance</value>
+    </data>
+    <data name="Text.Notice.TypeNotice" xml:space="preserve">
+        <value>Notice</value>
+    </data>
+    <data name="Text.Notice.TypeUpdate" xml:space="preserve">
+        <value>New Version</value>
+    </data>
+    <data name="Text.Terminal.ViewDetails" xml:space="preserve">
+        <value>View Details</value>
+    </data>
+    <data name="Text.Terminal.CommandWatermark" xml:space="preserve">
+        <value>Enter command...</value>
+    </data>
+    <data name="Text.Settings.Captcha.Implicit" xml:space="preserve">
+        <value>Implicit Validation</value>
+    </data>
+    <data name="Text.Settings.Captcha.Explicit" xml:space="preserve">
+        <value>Browser Validation</value>
+    </data>
+    <data name="Text.Settings.Captcha.ImplicitRecommended" xml:space="preserve">
+        <value>(Recommended) Implicit Validation</value>
+    </data>
+    <data name="Text.Settings.Captcha.ExplicitRecommended" xml:space="preserve">
+        <value>(Recommended) Browser Validation</value>
+    </data>
+    <data name="Text.Settings.Captcha.ImplicitDesc" xml:space="preserve">
+        <value>Validates within the app with no extra steps. Friendly to x64 processors, but may take a long time on Arm-based processors.</value>
+    </data>
+    <data name="Text.Settings.Captcha.ExplicitDesc" xml:space="preserve">
+        <value>Opens the validation page in a browser and requires manually copying the result. Friendly to Arm processors.</value>
+    </data>
+    <data name="Text.Settings.Captcha.UnknownMode" xml:space="preserve">
+        <value>Unknown mode</value>
+    </data>
+    <data name="Text.Settings.AutoStartAdded" xml:space="preserve">
+        <value>Auto-start entry added successfully</value>
+    </data>
+    <data name="Text.Settings.AutoStartRemoved" xml:space="preserve">
+        <value>Auto-start entry removed successfully</value>
+    </data>
+    <data name="Text.Settings.AutoStartChangeFailed" xml:space="preserve">
+        <value>Failed to change auto-start settings</value>
+    </data>
+    <data name="Text.Login.LocalStoredLogin" xml:space="preserve">
+        <value>Signed in from stored account</value>
+    </data>
+    <data name="Text.Login.EnterCaptcha" xml:space="preserve">
+        <value>Enter the captcha</value>
+    </data>
+    <data name="Text.Login.CaptchaStep" xml:space="preserve">
+        <value>Verifying: step {0}/5</value>
+    </data>
+    <data name="Text.Login.ValidationFailed" xml:space="preserve">
+        <value>Validation Failed</value>
+    </data>
+    <data name="Text.Login.LoggingIn" xml:space="preserve">
+        <value>Logging in</value>
+    </data>
+    <data name="Text.Login.LoginFailed" xml:space="preserve">
+        <value>Login Failed</value>
+    </data>
+    <data name="Text.Login.Login" xml:space="preserve">
+        <value>Log In</value>
+    </data>
+    <data name="Text.Login.ValidationFailedWithMsg" xml:space="preserve">
+        <value>Validation failed: {0}</value>
+    </data>
+    <data name="Text.Login.UseNewAccount" xml:space="preserve">
+        <value>&lt;Use new account&gt;</value>
+    </data>
+    <data name="Text.Login.LoggingInProgress" xml:space="preserve">
+        <value>Logging in... {0:F2}%</value>
+    </data>
+    <data name="Text.UserCenter.RealNameVerified" xml:space="preserve">
+        <value>Verified</value>
+    </data>
+    <data name="Text.UserCenter.RealNameNotVerified" xml:space="preserve">
+        <value>Not verified</value>
+    </data>
+    <data name="Text.UserCenter.StatusNormal" xml:space="preserve">
+        <value>Normal</value>
+    </data>
+    <data name="Text.UserCenter.StatusBanned" xml:space="preserve">
+        <value>Banned</value>
+    </data>
+    <data name="Text.UserCenter.StatusTrafficExceeded" xml:space="preserve">
+        <value>Traffic exceeded</value>
+    </data>
+    <data name="Text.UserCenter.StatusUnknown" xml:space="preserve">
+        <value>Unknown status</value>
+    </data>
+    <data name="Text.UserCenter.SignIn" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
+    <data name="Text.UserCenter.SignedIn" xml:space="preserve">
+        <value>Signed in</value>
+    </data>
+    <data name="Text.UserCenter.SignInSuccess" xml:space="preserve">
+        <value>Sign-in succeeded</value>
+    </data>
+    <data name="Text.UserCenter.SignInFailed" xml:space="preserve">
+        <value>Sign-in failed</value>
+    </data>
+    <data name="Text.UserCenter.LogoutConfirm" xml:space="preserve">
+        <value>Are you sure you want to sign out? The application will restart after signing out.</value>
+    </data>
+    <data name="Text.UserCenter.DomainDeleted" xml:space="preserve">
+        <value>Deleted: {0}</value>
+    </data>
+    <data name="Text.UserCenter.DeleteFailed" xml:space="preserve">
+        <value>Delete failed</value>
+    </data>
+    <data name="Text.UserCenter.DomainWatermark" xml:space="preserve">
+        <value>Enter an ICP-filed domain</value>
+    </data>
+    <data name="Text.UserCenter.AddDomainTitle" xml:space="preserve">
+        <value>Add ICP-filed domain</value>
+    </data>
+    <data name="Text.UserCenter.DomainExists" xml:space="preserve">
+        <value>This ICP-filed domain already exists</value>
+    </data>
+    <data name="Text.UserCenter.InvalidDomain" xml:space="preserve">
+        <value>Please enter a valid ICP-filed domain</value>
+    </data>
+    <data name="Text.UserCenter.NoDomains" xml:space="preserve">
+        <value>No ICP-filed domains</value>
+    </data>
+    <data name="Text.UserCenter.AddFailed" xml:space="preserve">
+        <value>Add failed</value>
+    </data>
+    <data name="Text.UserCenter.DomainAdded" xml:space="preserve">
+        <value>Added: {0}</value>
+    </data>
+    <data name="Text.Global.Add" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="Text.Global.UnknownError" xml:space="preserve">
+        <value>Unknown error</value>
+    </data>
+    <data name="Text.About.HitokotoFallback" xml:space="preserve">
+        <value>Express the charm of words with code, and write the magnificence of mountains and rivers with code.</value>
+    </data>
+    <data name="Text.About.HitokotoSource" xml:space="preserve">
+        <value>Hitokoto "Hitokoto Developer Center"</value>
+    </data>
+    <data name="Text.About.HitokotoAuthor" xml:space="preserve">
+        <value>Hitokoto Developer</value>
+    </data>
+    <data name="Text.About.MicrosoftStyleChinese" xml:space="preserve">
+        <value>Microsoft-style Chinese</value>
+    </data>
+    <data name="Text.About.OpenSourceSoftware" xml:space="preserve">
+        <value>Open Source Software</value>
+    </data>
+    <data name="Text.About.GroupRules" xml:space="preserve">
+        <value>Please ask questions kindly and sincerely. Any provocation or illegal behavior will result in immediate removal.</value>
+    </data>
+    <data name="Text.About.AcknowledgeAndGo" xml:space="preserve">
+        <value>I understand, proceed</value>
+    </data>
+    <data name="Text.About.CopyGroupNumber" xml:space="preserve">
+        <value>Copy group number</value>
+    </data>
+    <data name="Text.About.GroupNumberCopied" xml:space="preserve">
+        <value>Group number copied to clipboard</value>
+    </data>
+    <data name="Text.About.DocOpened" xml:space="preserve">
+        <value>Documentation opened. If it is not accessible, please choose one of the following mirrors: </value>
+    </data>
+    <data name="Text.About.Source1" xml:space="preserve">
+        <value>Mirror 1</value>
+    </data>
+    <data name="Text.About.Source2" xml:space="preserve">
+        <value>Mirror 2</value>
+    </data>
+    <data name="Text.About.FeedbackEmailBody" xml:space="preserve">
+        <value>Your feedback has been submitted successfully. We will process it as soon as possible.</value>
+    </data>
+    <data name="Text.About.FeedbackEmailSubject" xml:space="preserve">
+        <value>Feedback submitted successfully | RYCB Studio</value>
+    </data>
+    <data name="Text.About.FeedbackSubmitted" xml:space="preserve">
+        <value>Feedback submitted</value>
+    </data>
+    <data name="Text.Update.NeverChecked" xml:space="preserve">
+        <value>Updates have never been checked</value>
+    </data>
+    <data name="Text.Update.Checking" xml:space="preserve">
+        <value>Checking for updates</value>
+    </data>
+    <data name="Text.Update.FetchFailed" xml:space="preserve">
+        <value>Failed to get update information</value>
+    </data>
+    <data name="Text.Update.NewVersionDetected" xml:space="preserve">
+        <value>New version detected: </value>
+    </data>
+    <data name="Text.Update.AlreadyLatest" xml:space="preserve">
+        <value>You are already on the latest version</value>
+    </data>
+    <data name="Text.Update.Downloading" xml:space="preserve">
+        <value>Downloading update</value>
+    </data>
+    <data name="Text.Update.DownloadCompleted" xml:space="preserve">
+        <value>Update downloaded</value>
+    </data>
+    <data name="Text.Update.InstallTipWindows" xml:space="preserve">
+        <value>Click OK to open the folder containing the installer, then double-click the exe file to complete the installation</value>
+    </data>
+    <data name="Text.Update.InstallTipMacOS" xml:space="preserve">
+        <value>Click OK to open the folder containing the installer, then double-click the dmg file to complete the installation</value>
+    </data>
+    <data name="Text.Update.InstallTipLinux" xml:space="preserve">
+        <value>Click OK to open the folder containing the installer, then install the deb package with the dpkg -i command</value>
+    </data>
+    <data name="Text.Update.AutoUpdateNotSupported" xml:space="preserve">
+        <value>Automatic updates are not yet supported on the current operating system. Please download the installer manually</value>
+    </data>
+    <data name="Text.Update.UnsupportedSystem" xml:space="preserve">
+        <value>Unsupported system</value>
+    </data>
+    <data name="Text.Update.BackupConfigFailed" xml:space="preserve">
+        <value>Failed to back up the configuration file. Please back it up manually</value>
+    </data>
+    <data name="Text.Update.RestartToInstall" xml:space="preserve">
+        <value>The application will close now to install the update automatically</value>
+    </data>
+    <data name="Text.Update.LinuxManualUpdate" xml:space="preserve">
+        <value>For technical reasons, automatic updates are currently only available on Windows. Please download the latest version manually and overwrite-install it, or use the install script.</value>
+    </data>
+    <data name="Text.Update.MacOSManualUpdate" xml:space="preserve">
+        <value>For technical reasons, automatic updates are currently only available on Windows. Please download the latest version manually and overwrite-install it.</value>
+    </data>
+    <data name="Text.Update.HardTimesCaption" xml:space="preserve">
+        <value>We all have hard times</value>
+    </data>
+    <data name="Text.Update.DownloadCompletedOpenDir" xml:space="preserve">
+        <value>Update downloaded! Click OK to open the folder containing the installer</value>
+    </data>
+    <data name="Text.ThemeEditor.NewTheme" xml:space="preserve">
+        <value>New Theme</value>
+    </data>
+    <data name="Text.ThemeEditor.UnknownAuthor" xml:space="preserve">
+        <value>Unknown Author</value>
+    </data>
+    <data name="Text.ThemeEditor.SystemFontFormat" xml:space="preserve">
+        <value>System font: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.CustomFontFormat" xml:space="preserve">
+        <value>Custom font: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.NoFontSelected" xml:space="preserve">
+        <value>No font selected</value>
+    </data>
+    <data name="Text.ThemeEditor.PickPreviewImage" xml:space="preserve">
+        <value>Select Preview Image</value>
+    </data>
+    <data name="Text.ThemeEditor.ImageFiles" xml:space="preserve">
+        <value>Image Files</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadPreviewImageFailed" xml:space="preserve">
+        <value>Failed to load preview image: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PickFontFile" xml:space="preserve">
+        <value>Select Font File</value>
+    </data>
+    <data name="Text.ThemeEditor.FontFiles" xml:space="preserve">
+        <value>Font Files</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadFontFailed" xml:space="preserve">
+        <value>Failed to load font file: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.ThemeSaved" xml:space="preserve">
+        <value>Theme saved to: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.SaveFailed" xml:space="preserve">
+        <value>Save failed: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewEnabled" xml:space="preserve">
+        <value>Preview mode enabled; the original theme will be restored after restarting</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewTheme" xml:space="preserve">
+        <value>Preview Theme</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewRestartPrompt" xml:space="preserve">
+        <value>The theme preview has been applied.
+The original theme will be restored automatically after restart.
+
+Restart now?</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewFailed" xml:space="preserve">
+        <value>Preview failed: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PickBackgroundImage" xml:space="preserve">
+        <value>Select Background Image</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadThemeFailed" xml:space="preserve">
+        <value>Failed to load theme: {0}</value>
+    </data>
+    <data name="Text.Home.NetworkUnavailableFormat" xml:space="preserve">
+        <value>Network service unavailable, return code: {0}</value>
+    </data>
+    <data name="Text.Home.LoadUserDataFailed" xml:space="preserve">
+        <value>Failed to load user data: {0}</value>
+    </data>
+    <data name="Text.Home.ImportantNotice" xml:space="preserve">
+        <value>Important Notice</value>
+    </data>
+    <data name="Text.PluginList.InstalledCountFormat" xml:space="preserve">
+        <value>Successfully installed {0} plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.FetchOnlineListFailed" xml:space="preserve">
+        <value>Failed to fetch the online plugin list</value>
+    </data>
+    <data name="Text.PluginList.OnlineLoadedCountFormat" xml:space="preserve">
+        <value>Loaded {0} online plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.RefreshOnlineFailedFormat" xml:space="preserve">
+        <value>Failed to refresh online plugins: {0}</value>
+    </data>
+    <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
+        <value>Successfully installed {0} online plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
+        <value>Failed to download and install: {0}</value>
+    </data>
+    <data name="Text.PluginList.ListRefreshed" xml:space="preserve">
+        <value>Plugin list refreshed</value>
+    </data>
+    <data name="Text.PluginList.YamlPluginFiles" xml:space="preserve">
+        <value>YAML Plugin Files</value>
+    </data>
+    <data name="Text.PluginList.InstallPluginTitle" xml:space="preserve">
+        <value>Install Plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.InstallFailedFormat" xml:space="preserve">
+        <value>Failed to install plugin: {0}</value>
+    </data>
+    <data name="Text.PluginList.ConfirmUninstallCaption" xml:space="preserve">
+        <value>Confirm Uninstall</value>
+    </data>
+    <data name="Text.PluginList.UninstallConfirmFormat" xml:space="preserve">
+        <value>Are you sure you want to uninstall plugin '{0}'?
+
+This operation will delete the plugin file and cannot be undone.</value>
+    </data>
+    <data name="Text.PluginList.Uninstalled" xml:space="preserve">
+        <value>Plugin uninstalled</value>
+    </data>
+    <data name="Text.PluginList.UninstallFailedFormat" xml:space="preserve">
+        <value>Failed to uninstall plugin: {0}</value>
+    </data>
+    <data name="Text.PluginList.CannotReadPluginContent" xml:space="preserve">
+        <value>Unable to read the plugin file content.</value>
+    </data>
+    <data name="Text.PluginList.PluginSourceTitleFormat" xml:space="preserve">
+        <value>Plugin source: {0}</value>
+    </data>
+    <data name="Text.PluginList.ReadYamlFailedFormat" xml:space="preserve">
+        <value>Failed to read plugin YAML: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeFiles" xml:space="preserve">
+        <value>Theme Files</value>
+    </data>
+    <data name="Text.Themes.ImportThemeTitle" xml:space="preserve">
+        <value>Import Theme(s)</value>
+    </data>
+    <data name="Text.Themes.ImportingThemeFormat" xml:space="preserve">
+        <value>Importing theme {0}</value>
+    </data>
+    <data name="Text.Themes.FetchOnlineFailedFormat" xml:space="preserve">
+        <value>Failed to fetch online themes: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeDownloaded" xml:space="preserve">
+        <value>Theme download completed</value>
+    </data>
+    <data name="Text.Themes.ThemeDownloadFailed" xml:space="preserve">
+        <value>Failed to download the theme</value>
+    </data>
+    <data name="Text.Themes.DownloadFailedFormat" xml:space="preserve">
+        <value>Download failed: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeApplied" xml:space="preserve">
+        <value>Theme applied</value>
+    </data>
+    <data name="Text.Themes.DeleteConfirmFormat" xml:space="preserve">
+        <value>Are you sure you want to delete theme '{0}'?</value>
+    </data>
+    <data name="Text.Themes.ThemeDeleted" xml:space="preserve">
+        <value>Theme deleted</value>
+    </data>
+    <data name="Text.Themes.PackagingTheme" xml:space="preserve">
+        <value>Packaging theme</value>
+    </data>
+    <data name="Text.Themes.ThemeNameFormat" xml:space="preserve">
+        <value>Theme name: {0}</value>
+    </data>
+    <data name="Text.Themes.PackageInfoFormat" xml:space="preserve">
+        <value>=====================
+Version: {0}
+Author: {1}
+=====================
+You can find the packaged theme file in {2}.</value>
+    </data>
+    <data name="Text.Themes.ThemePackaged" xml:space="preserve">
+        <value>Theme packaged</value>
+    </data>
+    <data name="Text.Themes.ThemePackageCompleted" xml:space="preserve">
+        <value>Theme packaging completed!</value>
+    </data>
+    <data name="Text.Themes.OpenFolder" xml:space="preserve">
+        <value>Open Folder</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultCaption" xml:space="preserve">
+        <value>Restore Default Theme</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultConfirm" xml:space="preserve">
+        <value>Are you sure you want to restore the default theme?
+
+This will delete the currently selected theme configuration file, and takes effect after restarting.</value>
+    </data>
+    <data name="Text.Themes.DefaultThemeRestored" xml:space="preserve">
+        <value>The default theme has been restored. Please restart the app to apply.</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultFailedFormat" xml:space="preserve">
+        <value>Failed to restore the default theme: {0}</value>
+    </data>
+    <data name="Text.PortScan.Scanning" xml:space="preserve">
+        <value>Scanning...</value>
+    </data>
+    <data name="Text.PortScan.Ready" xml:space="preserve">
+        <value>Ready</value>
+    </data>
+    <data name="Text.PortScan.ScannedProgressFormat" xml:space="preserve">
+        <value>Scanned {0}/{1} ports</value>
+    </data>
+    <data name="Text.PortScan.ScanCompletedFormat" xml:space="preserve">
+        <value>Scan completed, found {0} open port(s)</value>
+    </data>
+    <data name="Text.PortScan.ScanCancelled" xml:space="preserve">
+        <value>Scan cancelled</value>
+    </data>
+    <data name="Text.PortScan.ScanErrorFormat" xml:space="preserve">
+        <value>Scan error: {0}</value>
+    </data>
+    <data name="Text.PortScan.QuickScanning" xml:space="preserve">
+        <value>Quick scanning common MC ports...</value>
+    </data>
+    <data name="Text.PortScan.QuickScanCompletedFormat" xml:space="preserve">
+        <value>Quick scan completed, found {0} possible MC port(s)</value>
+    </data>
+    <data name="Text.PortScan.StoppingScan" xml:space="preserve">
+        <value>Stopping scan...</value>
+    </data>
+    <data name="Text.PortScan.PortCopiedFormat" xml:space="preserve">
+        <value>Port {0} copied to clipboard</value>
+    </data>
+    <data name="Text.PortScan.PortSelectedFormat" xml:space="preserve">
+        <value>Port {0} selected</value>
+    </data>
+    <data name="Text.PortScan.EnterTargetIp" xml:space="preserve">
+        <value>Please enter the target IP address</value>
+    </data>
+    <data name="Text.PortScan.PortMustBeNumber" xml:space="preserve">
+        <value>Port numbers must be numeric</value>
+    </data>
+    <data name="Text.PortScan.PortRange" xml:space="preserve">
+        <value>Port numbers must be between 1-65535</value>
+    </data>
+    <data name="Text.PortScan.StartGreaterEnd" xml:space="preserve">
+        <value>Start port cannot be greater than end port</value>
+    </data>
+    <data name="Text.PortScan.Open" xml:space="preserve">
+        <value>Open</value>
+    </data>
+    <data name="Text.PortScan.Closed" xml:space="preserve">
+        <value>Closed</value>
+    </data>
+    <data name="Text.Nodes.RegionAll" xml:space="preserve">
+        <value>All Regions</value>
+    </data>
+    <data name="Text.Nodes.RegionCN" xml:space="preserve">
+        <value>Mainland China</value>
+    </data>
+    <data name="Text.Nodes.RegionHKMT" xml:space="preserve">
+        <value>HK/Macau/TW</value>
+    </data>
+    <data name="Text.Nodes.RegionOversea" xml:space="preserve">
+        <value>Overseas</value>
+    </data>
+    <data name="Text.Nodes.RegionUnknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Text.Nodes.SortNodeId" xml:space="preserve">
+        <value>Node ID</value>
+    </data>
+    <data name="Text.Nodes.SortOnlineTunnels" xml:space="preserve">
+        <value>Online tunnels</value>
+    </data>
+    <data name="Text.Nodes.SortCurrentConnections" xml:space="preserve">
+        <value>Current connections</value>
+    </data>
+    <data name="Text.Nodes.SortLoadPercent" xml:space="preserve">
+        <value>Load percentage</value>
+    </data>
+    <data name="Text.Nodes.SortDailyTraffic" xml:space="preserve">
+        <value>Today's traffic</value>
+    </data>
+    <data name="Text.Nodes.SortUptime" xml:space="preserve">
+        <value>Uptime</value>
+    </data>
+    <data name="Text.Nodes.GetStatusFailedCodeFormat" xml:space="preserve">
+        <value>Failed to get node status (code={0})</value>
+    </data>
+    <data name="Text.Nodes.GetStatusFailedFormat" xml:space="preserve">
+        <value>Failed to get node status: {0}</value>
+    </data>
+    <data name="Text.Nodes.NodeNotFound" xml:space="preserve">
+        <value>Node not found</value>
+    </data>
+    <data name="Text.CreateProxyGuide.RDPName" xml:space="preserve">
+        <value>Remote Desktop Connection</value>
+    </data>
+    <data name="Text.CreateProxyGuide.AListDesc" xml:space="preserve">
+        <value>AList/OpenList is an open-source cloud drive aggregation tool that supports unified management of multiple cloud drives, file browsing and video playback. The default HTTP port is 5244 and the HTTPS port is 5245. It provides WebDAV services, making it easy to connect local and cloud data.</value>
+    </data>
+    <data name="Text.CreateProxyGuide.MinecraftJavaDesc" xml:space="preserve">
+        <value>A Minecraft Java Edition multiplayer server that supports mods and plugin extensions. The default TCP port is 25565, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends.</value>
+    </data>
+    <data name="Text.CreateProxyGuide.MinecraftBedrockDesc" xml:space="preserve">
+        <value>A Minecraft Bedrock Edition multiplayer server that supports mods and plugin extensions. The default TCP port is 19132, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends.</value>
+    </data>
+    <data name="Text.CreateProxyGuide.RDPDesc" xml:space="preserve">
+        <value>RDP (Remote Desktop Protocol) is a remote access protocol developed by Microsoft. It uses TCP port 3389 by default, allowing users to remotely control a computer through a graphical interface over the network.</value>
+    </data>
+    <data name="Text.ManageProxy.MenuTunnels" xml:space="preserve">
+        <value>Tunnels</value>
+    </data>
+    <data name="Text.ManageProxy.ManageTunnels" xml:space="preserve">
+        <value>Manage Tunnels</value>
+    </data>
+    <data name="Text.ManageProxy.CreateTunnel" xml:space="preserve">
+        <value>Create Tunnel</value>
+    </data>
+    <data name="Text.ManageProxy.LaunchTunnel" xml:space="preserve">
+        <value>Launch Tunnel</value>
+    </data>
+    <data name="Text.ManageProxy.ExitApp" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="Text.ManageProxy.DownloadCompleted" xml:space="preserve">
+        <value>Download completed</value>
+    </data>
+    <data name="Text.ManageProxy.DownloadCancelled" xml:space="preserve">
+        <value>Download cancelled</value>
+    </data>
+    <data name="Text.ManageProxy.HelpTitle" xml:space="preserve">
+        <value>Help</value>
+    </data>
+    <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
+        <value>Please enter a tunnel name</value>
+    </data>
+    <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
+        <value>Please enter a local address</value>
+    </data>
+    <data name="Text.CreateProxy.EnterValidPort" xml:space="preserve">
+        <value>Please enter a valid port number</value>
+    </data>
+    <data name="Text.CreateProxy.EditRequestHeaders" xml:space="preserve">
+        <value>Edit Request Headers</value>
+    </data>
+    <data name="Text.CreateProxy.EditDomains" xml:space="preserve">
+        <value>Edit Bound Domains</value>
+    </data>
+    <data name="Text.CreateProxy.FindMinecraftPort" xml:space="preserve">
+        <value>Find Minecraft Port</value>
+    </data>
+    <data name="Text.CreateProxy.EditResponseHeaders" xml:space="preserve">
+        <value>Edit Response Headers</value>
+    </data>
+    <data name="Text.CreateProxy.EditLocations" xml:space="preserve">
+        <value>Edit Locations</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowTitle" xml:space="preserve">
+        <value>Online Tunnels</value>
+    </data>
+    <data name="Text.ConfigPreviewer.YamlFile" xml:space="preserve">
+        <value>YAML File</value>
+    </data>
+    <data name="Text.ConfigPreviewer.IniFile" xml:space="preserve">
+        <value>INI File</value>
+    </data>
+    <data name="Text.ConfigPreviewer.TomlFile" xml:space="preserve">
+        <value>TOML File</value>
+    </data>
+    <data name="Text.ConfigPreviewer.JsonFile" xml:space="preserve">
+        <value>JSON File</value>
+    </data>
+    <data name="Text.ConfigPreviewer.CopiedToClipboard" xml:space="preserve">
+        <value>Configuration copied to clipboard</value>
+    </data>
+    <data name="Text.ConfigPreviewer.SaveConfigTitle" xml:space="preserve">
+        <value>Save Configuration File</value>
+    </data>
+    <data name="Text.ConfigPreviewer.SavedFormat" xml:space="preserve">
+        <value>Configuration saved to {0}</value>
+    </data>
+    <data name="Text.Traffic.Inbound" xml:space="preserve">
+        <value>Inbound Traffic</value>
+    </data>
+    <data name="Text.Traffic.Outbound" xml:space="preserve">
+        <value>Outbound Traffic</value>
+    </data>
+    <data name="Text.Traffic.Total" xml:space="preserve">
+        <value>Total Traffic</value>
+    </data>
+    <data name="Text.MainWindow.LoadingConfig" xml:space="preserve">
+        <value>Loading configuration</value>
+    </data>
+    <data name="Text.MainWindow.InitTray" xml:space="preserve">
+        <value>Initializing system tray</value>
+    </data>
+    <data name="Text.MainWindow.TrayToolTip" xml:space="preserve">
+        <value>PML 2 is running</value>
+    </data>
+    <data name="Text.MainWindow.PrivacyPolicy" xml:space="preserve">
+        <value>### PML 2 Privacy Policy (Key Edition)
+**Important notice:** We use [Sentry](https://sentry.io) for error tracking and performance monitoring to improve software stability. Data is stored on Sentry's servers located in the European Union.
+### 1. Scope of Information Collection
+- **Personal data**: username, email address, tunnel information (such as average API duration, launch failures, etc.)
+- **Device data**: device identifiers, operating system version, crash stacks and error logs
+- **Usage behavior**: feature clicks, session duration, error logs
+___
+**Note:** Telemetry data does not include sensitive information such as your account password or tunnel contents.
+### 2. Use of Information
+- Providing core services (account verification, data synchronization)
+- Improving user experience (bug fixes, feature improvements)
+- Error monitoring and performance analysis (via Sentry)
+### 3. Data Sharing
+**We do not sell user data**. It is only shared in the following cases:
+- With your explicit consent
+- To fulfill legal obligations
+- When necessary for cooperation with third-party service providers (such as cloud services)
+___
+### 4. Your Rights
+You have the right to access, correct or delete your personal information, and you can disable telemetry data collection in the settings.
+**Contact:** [Email](mailto:im@rycb.tech) | [Website](https://www.rycb.tech/)
+___
+For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.rycb.tech/pml-2/policy)</value>
+    </data>
+    <data name="Text.MainWindow.Agree" xml:space="preserve">
+        <value>Agree</value>
+    </data>
+    <data name="Text.MainWindow.Decline" xml:space="preserve">
+        <value>Decline</value>
+    </data>
+    <data name="Text.MainWindow.UpdateDetectedFormat" xml:space="preserve">
+        <value>A new version ({0}) has been detected. Please go to the "Updates" page for details</value>
+    </data>
+    <data name="Text.MainWindow.UpdateDetectedTitleFormat" xml:space="preserve">
+        <value>Update detected: {0} → {1}</value>
+    </data>
+    <data name="Text.MainWindow.OpenMainWindow" xml:space="preserve">
+        <value>Open Main Window</value>
+    </data>
+    <data name="Text.MainWindow.OpenTerminal" xml:space="preserve">
+        <value>Open Terminal</value>
+    </data>
+    <data name="Text.MainWindow.Exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="Text.MainWindow.CannotCloseConsole" xml:space="preserve">
+        <value>Unable to close the console automatically</value>
+    </data>
+    <data name="Text.MainWindow.LoginFirst" xml:space="preserve">
+        <value>Please log in first</value>
+    </data>
+    <data name="Text.Themes.UnpackingFormat" xml:space="preserve">
+        <value>Extracting theme: {0}%</value>
+    </data>
+    <data name="Text.Appearance.RecentImages" xml:space="preserve">
+        <value>Recent Images</value>
+    </data>
+    <data name="Text.Appearance.ChoosePhoto" xml:space="preserve">
+        <value>Choose a photo</value>
+    </data>
+    <data name="Text.Appearance.Select" xml:space="preserve">
+        <value>Select</value>
+    </data>
+    <data name="Text.Appearance.SelectBackgroundTitle" xml:space="preserve">
+        <value>Please select a background</value>
+    </data>
+    <data name="Text.Appearance.ImageFiles" xml:space="preserve">
+        <value>Image Files</value>
+    </data>
+    <data name="Text.ProxySSL.CertFiles" xml:space="preserve">
+        <value>Certificate Files</value>
+    </data>
+    <data name="Text.ProxySSL.KeyFiles" xml:space="preserve">
+        <value>Private Key Files</value>
+    </data>
+    <data name="Text.ProxySSL.SelectFileTitle" xml:space="preserve">
+        <value>Please select a file</value>
+    </data>
+    <data name="Text.ALPConfigEditor.SavePathTitle" xml:space="preserve">
+        <value>Please select a path to save the configuration file</value>
+    </data>
+    <data name="Text.ALPConfigEditor.SaveConfirm" xml:space="preserve">
+        <value>The configuration file has been modified. Save before returning?</value>
+    </data>
+    <data name="Text.ALPConfigEditor.PasteFailed" xml:space="preserve">
+        <value>Failed to paste. Please check the clipboard contents.</value>
+    </data>
+    <data name="Text.ALPControl.ConfigChoicePrompt" xml:space="preserve">
+        <value>Open a configuration file or enter the contents?</value>
+    </data>
+    <data name="Text.ALPControl.FileButton" xml:space="preserve">
+        <value>File</value>
+    </data>
+    <data name="Text.ALPControl.ContentButton" xml:space="preserve">
+        <value>Content</value>
+    </data>
+    <data name="Text.ALPControl.SelectConfigTitle" xml:space="preserve">
+        <value>Please select a configuration file</value>
+    </data>
+    <data name="Text.Update.StableChannelDesc" xml:space="preserve">
+        <value>Receive stable updates of the app, containing relatively new and stable features and improvements.</value>
+    </data>
+    <data name="Text.Update.PreviewChannelDesc" xml:space="preserve">
+        <value>Preview features of the next version early, containing newer features and improvements, with possibly a few defects.</value>
+    </data>
+    <data name="Text.Update.UnknownChannel" xml:space="preserve">
+        <value>Unknown channel</value>
+    </data>
+    <data name="Text.App.LoadingTheme" xml:space="preserve">
+        <value>Loading theme...</value>
+    </data>
+    <data name="Text.App.CreatingMainWindow" xml:space="preserve">
+        <value>Creating main window</value>
+    </data>
+    <data name="Text.CreateProxy.NodeOverloaded" xml:space="preserve">
+        <value>The node is overloaded and cannot accept any more tunnels.</value>
+    </data>
+    <data name="Text.CreateProxy.SelectANode" xml:space="preserve">
+        <value>Please select a node.</value>
+    </data>
+    <data name="Text.CreateProxy.SelectAreaOnMap" xml:space="preserve">
+        <value>Please select an area on the map.</value>
+    </data>
+    <data name="Text.CreateProxy.NoNodesInAreaFormat" xml:space="preserve">
+        <value>No available nodes were found in the "{0}" area. Please select manually.</value>
+    </data>
+    <data name="Text.CreateProxy.LoadingNodesRetry" xml:space="preserve">
+        <value>Nodes are still loading. Please try again.</value>
+    </data>
+    <data name="Text.CreateProxy.NoMatchingNodes" xml:space="preserve">
+        <value>No matching nodes were found. Please select manually.</value>
+    </data>
+    <data name="Text.CreateProxy.CreateSuccess" xml:space="preserve">
+        <value>Tunnel created successfully.</value>
+    </data>
+    <data name="Text.CreateProxy.CreateSameNameSuccessFormat" xml:space="preserve">
+        <value>Successfully created a same-named {0} tunnel.</value>
+    </data>
+    <data name="Text.CreateProxy.CreateFailed" xml:space="preserve">
+        <value>Failed to create the tunnel.</value>
+    </data>
+    <data name="Text.ALPSettings.SaveSuccess" xml:space="preserve">
+        <value>Saved successfully.</value>
+    </data>
+    <data name="Text.Converters.Overloaded" xml:space="preserve">
+        <value>Overloaded</value>
+    </data>
+    <data name="Text.Converters.Online" xml:space="preserve">
+        <value>Online</value>
+    </data>
+    <data name="Text.Converters.Offline" xml:space="preserve">
+        <value>Offline</value>
+    </data>
+    <data name="Text.Converters.Unknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Text.Converters.OnlineForFormat" xml:space="preserve">
+        <value>Online for {0}</value>
+    </data>
+    <data name="Text.Converters.OfflineAgoFormat" xml:space="preserve">
+        <value>Offline {0} ago</value>
+    </data>
+    <data name="Text.Converters.DaysHoursFormat" xml:space="preserve">
+        <value>{0}d {1}h</value>
+    </data>
+    <data name="Text.Converters.HoursMinutesFormat" xml:space="preserve">
+        <value>{0}h {1}m</value>
+    </data>
+    <data name="Text.Converters.MinutesFormat" xml:space="preserve">
+        <value>{0}m</value>
+    </data>
+    <data name="Text.Converters.SecondsFormat" xml:space="preserve">
+        <value>{0}s</value>
+    </data>
+    <data name="Text.Converters.Yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="Text.Converters.No" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="Text.Converters.StatusNormal" xml:space="preserve">
+        <value>Normal</value>
+    </data>
+    <data name="Text.Converters.StatusBanned" xml:space="preserve">
+        <value>Banned</value>
+    </data>
+    <data name="Text.Converters.StatusTrafficExceeded" xml:space="preserve">
+        <value>Traffic exceeded</value>
+    </data>
+    <data name="Text.Converters.UnknownStatusFormat" xml:space="preserve">
+        <value>Unknown status ({0})</value>
+    </data>
+    <data name="Text.Converters.Enabled" xml:space="preserve">
+        <value>Enabled</value>
+    </data>
+    <data name="Text.Converters.Disabled" xml:space="preserve">
+        <value>Disabled</value>
+    </data>
+    <data name="Text.Api.FetchingFormat" xml:space="preserve">
+        <value>Fetching {0}</value>
+    </data>
+    <data name="Text.Api.CannotGetApiInfo" xml:space="preserve">
+        <value>Unable to retrieve API information</value>
+    </data>
+    <data name="Text.Api.OriginFallbackFailed" xml:space="preserve">
+        <value>API origin fallback failed. Unable to retrieve API information</value>
+    </data>
+    <data name="Text.Api.DoneCodeFormat" xml:space="preserve">
+        <value>Done, return code: {0}</value>
+    </data>
+    <data name="Text.Api.RequestFailedFormat" xml:space="preserve">
+        <value>Request failed: {0}</value>
+    </data>
+    <data name="Text.Api.SendFailed" xml:space="preserve">
+        <value>Failed to send</value>
+    </data>
+    <data name="Text.Api.FetchingLatestVersion" xml:space="preserve">
+        <value>Fetching latest version</value>
+    </data>
+    <data name="Text.Api.FetchingErrorInfo" xml:space="preserve">
+        <value>Fetching error information</value>
+    </data>
+    <data name="Text.Api.FetchingSoftwareNotice" xml:space="preserve">
+        <value>Fetching software notice</value>
+    </data>
+    <data name="Text.Api.OpIcpDomainList" xml:space="preserve">
+        <value>ICP domain list</value>
+    </data>
+    <data name="Text.Api.OpSystemStatus" xml:space="preserve">
+        <value>System status</value>
+    </data>
+    <data name="Text.Api.OpPopupNotice" xml:space="preserve">
+        <value>Important notice</value>
+    </data>
+    <data name="Text.Api.OpNotice" xml:space="preserve">
+        <value>Notice</value>
+    </data>
+    <data name="Text.Api.OpPublicInfo" xml:space="preserve">
+        <value>Public information</value>
+    </data>
+    <data name="Text.Api.OpExtraUserInfo" xml:space="preserve">
+        <value>Detailed user information</value>
+    </data>
+    <data name="Text.Api.OpNodeStatus" xml:space="preserve">
+        <value>Node status</value>
+    </data>
+    <data name="Text.Api.OpNodeInfo" xml:space="preserve">
+        <value>Node information</value>
+    </data>
+    <data name="Text.Api.OpConnectedNodeInfo" xml:space="preserve">
+        <value>Connected node information</value>
+    </data>
+    <data name="Text.Api.OpProxyList" xml:space="preserve">
+        <value>Tunnel list</value>
+    </data>
+    <data name="Text.Api.OpFrpTokenInfo" xml:space="preserve">
+        <value>FrpToken information</value>
+    </data>
+    <data name="Text.Download.ContentHeaderFormat" xml:space="preserve">
+        <value>Please wait, downloading file
+File name: {0}</value>
+    </data>
+    <data name="Text.Download.ContentFooter" xml:space="preserve">
+        <value>
+Current source: {1}
+Download speed: {0}
+------------------
+JOKE_PLACEHOLDER
+------------------</value>
+    </data>
+    <data name="Text.Download.UnknownPlatform" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Text.Download.Title" xml:space="preserve">
+        <value>PML Ⅱ is downloading files</value>
+    </data>
+    <data name="Text.Download.SubHeader" xml:space="preserve">
+        <value>Downloading ME Frp client</value>
+    </data>
+    <data name="Text.Download.InstallingClient" xml:space="preserve">
+        <value>Installing new MEFrpClient</value>
+    </data>
+    <data name="Text.Download.Jokes" xml:space="preserve">
+        <value>We all have rough times.
+Roll back wattage. Sit back and relax.
+Good things are on the way
+Hi. We're getting things ready for you.
+You are being successful!
+Hey, long time no see!
+You've completed 30%
+Do! Boom! Cha-cha-cha Push-push
+OneDrive: You have only 17179869184 GB of avaliable space
+F R E E  O F  C H A R G E
+Wondering how much battery is left? Don't worry about it anymore.
+Countdown to happiness
+Windows 10 isn't for all of us, it's for each of us.
+You and your PC need to restart.
+Heads up
+Windows tweaked these settings to match your hardware
+Terminology (in)
+Please do NOT™ turn off your computer
+Microsoft Edge has a new look!
+Well, this is awkward
+Malicious external devices are protected from attacking your device's memory
+Windows Sandbox is shutting down and will be closed
+A bosom friend afar brings a distant land near
+Roll back to a previous version
+100% fully billed
+You look very smart today!
+Don't say we didn't warn you
+Heads up, to make sure you're up to date, we're going to update your Win10. Please do NOT™ turn off your computer. Sit back and relax. You are being successful.
+If the update fails, that's okay—we all have rough times. We suggest rolling back to a previous version, or pressing Power, opening a new kind of plant-based fuel (BIOS) to configure, then opening Microsoft Edge Traffic Browser to report on Microsoft's site, or opening the Insider Hub to give feedback. We will review your feedback.
+You are being successful! Heads up, the all-new Win11 is here! You can do exactly the same things in Win11, like boom, cha-cha-cha, push-push. You can share wonderful memory with your family—shared and shared again.
+The all-new interface and split-screen features make Windows Tablet easy to use. Upgrading to Win11 is completely free of charge. Just find the Preview Experience Program in the Insider Hub and click Upgrade; your PC will automatically roll back wattage. Please sit back and relax.
+You can always trust BugJump's update speed!
+Never Gonna Give the Minecraft Up</value>
+    </data>
+    <data name="Text.Terminal.ProcessExitedFormat" xml:space="preserve">
+        <value>[Terminal] Process exited with code: {0}</value>
+    </data>
+    <data name="Text.Terminal.ShellStartedFormat" xml:space="preserve">
+        <value>[Terminal] Shell started: {0}</value>
+    </data>
+    <data name="Text.Terminal.StartFailedFormat" xml:space="preserve">
+        <value>[Error] Failed to start terminal: {0}</value>
+    </data>
+    <data name="Text.Terminal.ReadOutputFailedFormat" xml:space="preserve">
+        <value>[Error] Failed to read output: {0}</value>
+    </data>
+    <data name="Text.Terminal.ReadErrorFailedFormat" xml:space="preserve">
+        <value>[Error] Failed to read error output: {0}</value>
+    </data>
+    <data name="Text.Terminal.ErrorOutputReadFailedFormat" xml:space="preserve">
+        <value>Failed to read error output: {0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessStateAbnormalFormat" xml:space="preserve">
+        <value>Abnormal process state: {0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessExitedCodeFormat" xml:space="preserve">
+        <value>Process exited, exit code: {0}</value>
+    </data>
+    <data name="Text.Terminal.CannotGetErrorInfo" xml:space="preserve">
+        <value>Unable to retrieve error information</value>
+    </data>
+    <data name="Text.Terminal.CheckNetworkConnection" xml:space="preserve">
+        <value>Please check the network connection</value>
+    </data>
+    <data name="Text.Terminal.TerminalErrorFormat" xml:space="preserve">
+        <value>Terminal error: {0}</value>
+    </data>
+    <data name="Text.Terminal.NoActiveProcess" xml:space="preserve">
+        <value>There is no active process to interrupt</value>
+    </data>
+    <data name="Text.Terminal.ProcessTerminated" xml:space="preserve">
+        <value>Process terminated</value>
+    </data>
+    <data name="Text.Terminal.TerminateFailedCodeFormat" xml:space="preserve">
+        <value>Failed to terminate process, exit code: {0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessForceTerminated" xml:space="preserve">
+        <value>Process was forcibly terminated</value>
+    </data>
+    <data name="Text.Terminal.ForceTerminateFailedFormat" xml:space="preserve">
+        <value>Failed to force terminate: {0}</value>
+    </data>
+    <data name="Text.Terminal.TerminateTimeout" xml:space="preserve">
+        <value>Process termination timed out</value>
+    </data>
+    <data name="Text.Terminal.TerminateFailedFormat" xml:space="preserve">
+        <value>Failed to terminate process: {0}</value>
+    </data>
+    <data name="Text.Terminal.SendInterruptFailedFormat" xml:space="preserve">
+        <value>Failed to send interrupt signal: {0}</value>
+    </data>
+    <data name="Text.Terminal.ErrorDetailsTitle" xml:space="preserve">
+        <value>Error details</value>
+    </data>
+    <data name="Text.Terminal.SendCommandFailedFormat" xml:space="preserve">
+        <value>Failed to send command: {0}</value>
+    </data>
+    <data name="Text.Terminal.InputPrompt" xml:space="preserve">
+        <value>Leave empty if unsure; enter cancel to exit
+Available variables:
+{mefrpc} - ME Frp Client executable path (including file name)
+{mefrpcp} - ME Frp Client executable directory
+{startup} - Program startup directory</value>
+    </data>
+    <data name="Text.Terminal.InputTitle" xml:space="preserve">
+        <value>Enter command line and arguments</value>
+    </data>
+    <data name="Text.Terminal.ConsoleTabFormat" xml:space="preserve">
+        <value>Console {0}</value>
+    </data>
+    <data name="Text.Terminal.Unpacking" xml:space="preserve">
+        <value>Extracting files...</value>
+    </data>
+    <data name="Text.TunnelError.InfoPortNotAllowed" xml:space="preserve">
+        <value>The port is not within the allowed range</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPort" xml:space="preserve">
+        <value>Please check whether the port is within the allowed range</value>
+    </data>
+    <data name="Text.TunnelError.InfoTrafficExhausted" xml:space="preserve">
+        <value>Traffic exhausted</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTraffic" xml:space="preserve">
+        <value>Please check whether the traffic is exhausted</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelNotExist" xml:space="preserve">
+        <value>Tunnel does not exist</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTunnelExists" xml:space="preserve">
+        <value>Please check whether the tunnel exists</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelOnline" xml:space="preserve">
+        <value>Tunnel is online</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelDisabled" xml:space="preserve">
+        <value>Tunnel is disabled</value>
+    </data>
+    <data name="Text.TunnelError.SolutionTunnelDisabledDetail" xml:space="preserve">
+        <value>Please check whether the tunnel is disabled (it is disabled when the tunnel is forcibly taken offline), and re-enable it.</value>
+    </data>
+    <data name="Text.TunnelError.SolutionContactAdmin" xml:space="preserve">
+        <value>If this was not you, please contact the administrator for assistance.</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelNodeNotExist" xml:space="preserve">
+        <value>The node hosting the tunnel does not exist</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTunnelNode" xml:space="preserve">
+        <value>Please check whether the node hosting the tunnel exists</value>
+    </data>
+    <data name="Text.TunnelError.InfoNoNodePermission" xml:space="preserve">
+        <value>The user does not have permission to use this node</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPermission" xml:space="preserve">
+        <value>Please check whether the user has permission to use this node</value>
+    </data>
+    <data name="Text.TunnelError.InfoConnectNodeFailed" xml:space="preserve">
+        <value>Failed to connect to the node</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckNodeOnline" xml:space="preserve">
+        <value>Please check whether the node is online</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckNodeReachable" xml:space="preserve">
+        <value>Please check whether the node is reachable</value>
+    </data>
+    <data name="Text.TunnelError.InfoCannotConnectLocal" xml:space="preserve">
+        <value>Cannot connect to the local service</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckServiceStarted" xml:space="preserve">
+        <value>Please check whether the service has been started</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPortOpen" xml:space="preserve">
+        <value>Please check whether the port is open</value>
+    </data>
+    <data name="Text.Plugin.FileNotFound" xml:space="preserve">
+        <value>File not found</value>
+    </data>
+    <data name="Text.Plugin.CannotReadFile" xml:space="preserve">
+        <value>Unable to read the file</value>
+    </data>
+    <data name="Text.Plugin.ReadFileError" xml:space="preserve">
+        <value>An error occurred while reading the file</value>
+    </data>
+    <data name="Text.MinecraftExtension.MinecraftServerDesc" xml:space="preserve">
+        <value>Minecraft game server</value>
+    </data>
+    <data name="Text.MinecraftExtension.UnknownService" xml:space="preserve">
+        <value>Unknown service</value>
+    </data>
+    <data name="Text.MinecraftExtension.OpenPort" xml:space="preserve">
+        <value>Open port</value>
+    </data>
+    <data name="Text.Validation.Required" xml:space="preserve">
+        <value>Required</value>
+    </data>
+    <data name="Text.Validation.ProxyNameNoDot" xml:space="preserve">
+        <value>Tunnel name cannot contain: .</value>
+    </data>
+    <data name="Text.Validation.EmailRequired" xml:space="preserve">
+        <value>Please enter your ME Frp email</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NExampleValue" xml:space="preserve">
+        <value>/n:Node1</value>
+    </data>
+    <data name="Text.UserProxy.Download" xml:space="preserve">
+        <value>Download</value>
+    </data>
+    <data name="Text.UserProxy.LaunchCancelledFormat" xml:space="preserve">
+        <value>Tunnel launch cancelled: {0}</value>
+    </data>
+    <data name="Text.UserProxy.LaunchCancelledErrorFormat" xml:space="preserve">
+        <value>Tunnel launch cancelled due to an internal error: {0}
+Details: {1}</value>
+    </data>
+    <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
+        <value>Tunnel launched successfully: {0}</value>
+    </data>
+    <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
+        <value>{0} file verification failed, the client needs to be re-downloaded. Close this window to try launching directly; click "No" to cancel the launch.
+Please note: we are not responsible for any consequences caused by running any unofficial file (different from the file verification values we provide).</value>
+    </data>
+    <data name="Text.UserProxy.ConfirmDeleteTitle" xml:space="preserve">
+        <value>Confirm Deletion</value>
+    </data>
+    <data name="Text.UserProxy.ConfirmDeleteMultipleFormat" xml:space="preserve">
+        <value>Are you sure you want to delete these {0} tunnels?</value>
+    </data>
+    <data name="Text.UserProxy.DeleteSucceededFormat" xml:space="preserve">
+        <value>Tunnel deleted successfully: {0}</value>
+    </data>
+    <data name="Text.UserProxy.ConfigGeneratedFormat" xml:space="preserve">
+        <value>Launch configuration generated for tunnel {0}</value>
+    </data>
+    <data name="Text.UserProxy.TunnelDetails" xml:space="preserve">
+        <value>Tunnel Details</value>
+    </data>
+    <data name="Text.UserProxy.CreatedFromNodeFormat" xml:space="preserve">
+        <value>Created from node: {0}</value>
+    </data>
+    <data name="Text.UserProxy.DetailProtocolType" xml:space="preserve">
+        <value>Protocol type</value>
+    </data>
+    <data name="Text.UserProxy.DetailLocalPort" xml:space="preserve">
+        <value>Local port</value>
+    </data>
+    <data name="Text.UserProxy.DetailLocalAddress" xml:space="preserve">
+        <value>Local address</value>
+    </data>
+    <data name="Text.UserProxy.DetailTransportProtocol" xml:space="preserve">
+        <value>Transport protocol</value>
+    </data>
+    <data name="Text.UserProxy.DetailLinkAddress" xml:space="preserve">
+        <value>Link address</value>
+    </data>
+    <data name="Text.UserProxy.DetailHttpMappingType" xml:space="preserve">
+        <value>HTTP mapping type</value>
+    </data>
+    <data name="Text.UserProxy.DetailSecurityOption" xml:space="preserve">
+        <value>Security option</value>
+    </data>
+    <data name="Text.UserProxy.DetailLastStartTime" xml:space="preserve">
+        <value>Last start time</value>
+    </data>
+    <data name="Text.UserProxy.DetailLastCloseTime" xml:space="preserve">
+        <value>Last close time</value>
+    </data>
+    <data name="Text.UserProxy.DetailMoreInfoWebsite" xml:space="preserve">
+        <value>* For more information (domain resolution, etc.), please visit the official website.</value>
+    </data>
+    <data name="Text.UserProxy.SslCertConfig" xml:space="preserve">
+        <value>SSL Certificate Configuration</value>
+    </data>
+    <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
+        <value>Tunnel information copied</value>
     </data>
 </root>

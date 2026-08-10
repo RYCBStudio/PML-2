@@ -1,10 +1,11 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pml2="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:controls="clr-namespace:MEFrpLauncherX.ViewModels.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.CreateProxy"
              x:DataType="controls:TunnelNodeViewModel">
@@ -52,39 +53,39 @@
                        Classes="Indigo"
                        Content="{Binding Bandwidth}"
                        FontFamily="{StaticResource GlobalFontFamily}" />
-                <Label Content="{Binding AllowPorts, StringFormat='允许端口范围: {0}'}" />
+                <Label Content="{Binding AllowPorts, StringFormat={x:Static languages:Languages.Text_CreateProxy_AllowedPortRange}}" />
             </WrapPanel>
         </Grid>
         <ScrollViewer Grid.Row="1" x:Name="MainContainer">
             <StackPanel x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
-                <fa:SettingsExpander Header="基本设置"
+                <fa:SettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_BasicSettings}"
                                      IconSource="AllApps"
-                                     Description="以下是创建隧道的必填设置。">
-                    <fa:SettingsExpanderItem Description="请输入隧道名称">
-                        <pml2:RequiredField Label="隧道名称" IsRequired="True" />
+                                     Description="{x:Static languages:Languages.Text_CreateProxy_BasicSettingsDescription}">
+                    <fa:SettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}">
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_ProxyName}" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="ProxyNameBox"
                                 Margin="5"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                Watermark="请输入隧道名称"
+                                Watermark="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}"
                                 Text="{Binding ProxyName}" />
 
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Description="请输入本地地址，格式示例: 127.0.0.1">
-                        <pml2:RequiredField Label="本地地址" IsRequired="True" />
+                    <fa:SettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}">
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_LocalAddress}" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="LocalAddressBox"
                                 Margin="5"
-                                Watermark="请输入本地地址，格式示例: 127.0.0.1"
+                                Watermark="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Text="{Binding LocalAddress}" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem>
-                        <pml2:RequiredField Label="本地端口" IsRequired="True" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_LocalPort}" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <!-- <Button Content="想要MC开服? 点击此处查找端口 (BETA)" Click="CheckPort" /> -->
@@ -100,7 +101,7 @@
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem>
-                        <pml2:RequiredField Label="协议类型" IsRequired="True" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_ProtocolType}" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <ComboBox
                                 x:Name="ProtocolCbBox"
@@ -117,7 +118,7 @@
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="RemotePortGrid">
-                        <pml2:RequiredField Label="远程端口" IsRequired="True" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_RemotePort}" IsRequired="True" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="4">
                                 <fa:NumberBox
@@ -133,7 +134,7 @@
                                         x:Name="GetRemotePort"
                                         Margin="5"
                                         Click="GetRemotePort_Click"
-                                        Content="获取远程空闲端口"
+                                        Content="{x:Static languages:Languages.Text_CreateProxy_GetRemotePort}"
                                         FontFamily="{StaticResource GlobalFontFamily}" />
                                     <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading" />
                                 </Panel>
@@ -141,11 +142,11 @@
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="SourceProtocolSettingsExpanderItemForHttp" IsVisible="False">
-                        <pml2:RequiredField Label="源协议" IsRequired="False" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_SourceProtocol}" IsRequired="False" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="http" x:Name="SameAsHttp" IsChecked="True">
-                                    <TextBlock VerticalAlignment="Bottom">与隧道协议相同(HTTP)</TextBlock>
+                                    <TextBlock VerticalAlignment="Bottom" Text="{x:Static languages:Languages.Text_CreateProxy_SameAsHttp}" />
                                 </RadioButton>
                                 <RadioButton GroupName="http" x:Name="Http2Https">
                                     <TextBlock VerticalAlignment="Bottom">HTTPS</TextBlock>
@@ -154,11 +155,11 @@
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="SourceProtocolSettingsExpanderItemForHttps" IsVisible="False">
-                        <pml2:RequiredField Label="源协议" IsRequired="False" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_SourceProtocol}" IsRequired="False" />
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="https" x:Name="SameAsHttps" IsChecked="True">
-                                    <TextBlock VerticalAlignment="Bottom">与隧道协议相同(HTTPS)</TextBlock>
+                                    <TextBlock VerticalAlignment="Bottom" Text="{x:Static languages:Languages.Text_CreateProxy_SameAsHttps}" />
                                 </RadioButton>
                                 <RadioButton GroupName="https" x:Name="Https2Http">
                                     <TextBlock VerticalAlignment="Bottom">HTTP</TextBlock>
@@ -166,70 +167,70 @@
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="CertificateSettingsForPath" IsVisible="False" Content="SSL证书路径"
-                                             Description="设置的路径推荐为mefrpc相对路径。">
+                    <fa:SettingsExpanderItem x:Name="CertificateSettingsForPath" IsVisible="False" Content="{x:Static languages:Languages.Text_CreateProxy_SslCertPath}"
+                                             Description="{x:Static languages:Languages.Text_CreateProxy_SslPathDescription}">
                         <fa:SettingsExpanderItem.Footer>
-                            <TextBox x:Name="SslPathBox" Watermark="请输入SSL证书路径(例如: ./server.crt)" />
+                            <TextBox x:Name="SslPathBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslCertPathPlaceholder}" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="CertificateSettingsForPrivateKey" IsVisible="False"
-                                             Content="SSL密钥路径" Description="设置的路径推荐为mefrpc相对路径。">
+                                             Content="{x:Static languages:Languages.Text_CreateProxy_SslKeyPath}" Description="{x:Static languages:Languages.Text_CreateProxy_SslPathDescription}">
                         <fa:SettingsExpanderItem.Footer>
-                            <TextBox x:Name="SslKeyBox" Watermark="请输入SSL密钥路径(例如: ./server.key)" />
+                            <TextBox x:Name="SslKeyBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslKeyPathPlaceholder}" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem
-                        x:Name="RemoteAddressStackPanel" Description="编辑将绑定的域名"
+                        x:Name="RemoteAddressStackPanel" Description="{x:Static languages:Languages.Text_CreateProxy_BindDomainsDescription}"
                         IsVisible="False">
-                        <pml2:RequiredField Label="绑定域名" IsRequired="False" />
+                        <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_BindDomains}" IsRequired="False" />
                         <fa:SettingsExpanderItem.Footer>
                             <Button Click="EditDomains">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <fa:SymbolIcon Symbol="Edit" />
-                                        <TextBlock>编辑</TextBlock>
+                                        <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                 </fa:SettingsExpander>
-                <fa:SettingsExpander Header="高级设置"
+                <fa:SettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_AdvancedSettings}"
                                      IconSource="Code"
-                                     Description="提示：仅推荐技术用户使用, 一般用户请勿随意填写。请确保您的配置正确, 否则隧道可能无法启动。">
-                    <fa:SettingsExpanderItem Content="安全选项" x:Name="SecurityOptionsSettingsExpander"
+                                     Description="{x:Static languages:Languages.Text_CreateProxy_AdvancedSettingsDescription}">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_SecurityOptions}" x:Name="SecurityOptionsSettingsExpander"
                                              IsVisible="False">
                         <fa:SettingsExpanderItem.Footer>
                             <ComboBox x:Name="SecurityOptionsSelect" SelectedIndex="0">
-                                <ComboBoxItem>禁用</ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_CreateProxy_Disabled}" />
                                 <ComboBoxItem>HTTP Basic Auth</ComboBoxItem>
-                                <ComboBoxItem>访问密钥</ComboBoxItem>
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_CreateProxy_AccessKey}" />
                             </ComboBox>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="访问密钥" Description="请输入访问密钥"
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_AccessKey}" Description="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
                                              IsVisible="{Binding #SecurityOptionsSelect.SelectedIndex, Converter={x:Static pml2:SelectIndexToVisibleConverterReverse.Instance}}">
                         <fa:SettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="AccessKeyBox"
                                 Margin="5"
-                                Watermark="请输入访问密钥"
+                                Watermark="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
                                 FontFamily="{StaticResource GlobalFontFamily}" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="HTTP Basic Auth" Description="请输入用户名和密码"
+                    <fa:SettingsExpanderItem Content="HTTP Basic Auth" Description="{x:Static languages:Languages.Text_CreateProxy_HttpBasicAuthDescription}"
                                              IsVisible="{Binding #SecurityOptionsSelect.SelectedIndex, Converter={x:Static pml2:SelectIndexToVisibleConverter.Instance}}">
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <TextBox
                                     x:Name="HTTPBasicAuthNameBox"
                                     Margin="5"
-                                    Watermark="请输入用户名"
+                                    Watermark="{x:Static languages:Languages.Text_CreateProxy_UsernamePlaceholder}"
                                     FontFamily="{StaticResource GlobalFontFamily}" />
                                 <TextBox
                                     x:Name="HTTPBasicAuthPwdBox"
                                     Margin="5"
-                                    Watermark="请输入密码"
+                                    Watermark="{x:Static languages:Languages.Text_CreateProxy_PasswordPlaceholder}"
                                     RevealPassword="{Binding #RevealPwdToggleBtn.IsChecked}"
                                     PasswordChar="•"
                                     FontFamily="{StaticResource GlobalFontFamily}" />
@@ -243,8 +244,8 @@
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="传输协议"
-                                             Description="QUIC 提供了类似 TCP 的可靠性，同时克服了 TCP 的性能瓶颈, 部分场景下可以优化延迟。">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_TransmissionProtocol}"
+                                             Description="{x:Static languages:Languages.Text_CreateProxy_TransmissionProtocolDescription}">
                         <fa:SettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True"
@@ -253,38 +254,38 @@
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="自定义请求头" IsVisible="False" x:Name="CustomRequestHeaderSettings">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomRequestHeaders}" IsVisible="False" x:Name="CustomRequestHeaderSettings">
                         <fa:SettingsExpanderItem.Footer>
                             <Button Click="EditRequestHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <fa:SymbolIcon Symbol="Edit" />
-                                        <TextBlock>编辑</TextBlock>
+                                        <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="自定义响应头" IsVisible="False" x:Name="CustomResponseHeaderSettings">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomResponseHeaders}" IsVisible="False" x:Name="CustomResponseHeaderSettings">
                         <fa:SettingsExpanderItem.Footer>
                             <Button Click="EditResponseHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <fa:SymbolIcon Symbol="Edit" />
-                                        <TextBlock>编辑</TextBlock>
+                                        <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="Locations" Description="编辑 HTTP 隧道的路径路由规则。" IsVisible="False"
+                    <fa:SettingsExpanderItem Content="Locations" Description="{x:Static languages:Languages.Text_CreateProxy_LocationsDescription}" IsVisible="False"
                                              x:Name="LocationSettings">
                         <fa:SettingsExpanderItem.Footer>
                             <Button Click="EditLocations">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <fa:SymbolIcon Symbol="Edit" />
-                                        <TextBlock>编辑</TextBlock>
+                                        <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
@@ -298,30 +299,30 @@
                                 Margin="5"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 SelectedIndex="0">
-                                <ComboBoxItem Content="不启用" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_CreateProxy_NotEnabled}" />
                                 <ComboBoxItem Content="v1" />
                                 <ComboBoxItem Content="v2" />
                             </ComboBox>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="启用加密">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableEncryption}">
                         <fa:SettingsExpanderItem.Footer>
                             <ToggleSwitch
                                 x:Name="EnableCryptoCBox"
                                 Margin="5,0,5,0"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                OffContent="否"
-                                OnContent="是"
+                                OffContent="{x:Static languages:Languages.Text_Global_No}"
+                                OnContent="{x:Static languages:Languages.Text_Global_Yes}"
                                 IsChecked="False" />
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="启用压缩">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableCompression}">
                         <fa:SettingsExpanderItem.Footer>
                             <ToggleSwitch
                                 x:Name="EnableCompressCBox"
                                 Margin="5,0,5,0"
-                                OffContent="否"
-                                OnContent="是"
+                                OffContent="{x:Static languages:Languages.Text_Global_No}"
+                                OnContent="{x:Static languages:Languages.Text_Global_Yes}"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 IsChecked="False" />
                         </fa:SettingsExpanderItem.Footer>

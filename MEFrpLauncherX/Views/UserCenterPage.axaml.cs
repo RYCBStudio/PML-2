@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -97,23 +97,23 @@ public partial class UserCenterPage : UserControl
 
                     if (data.isRealname)
                     {
-                        isRealNamed.Text = "已实名";
+                        isRealNamed.Text = Languages.Text_UserCenter_RealNameVerified;
                         isRealNamed.Classes.Clear();
                         isRealNamed.Classes.Add("Success");
                     }
                     else
                     {
-                        isRealNamed.Text = "未实名";
+                        isRealNamed.Text = Languages.Text_UserCenter_RealNameNotVerified;
                         isRealNamed.Classes.Clear();
                         isRealNamed.Classes.Add("Danger");
                     }
 
                     status.Text = data.status switch
                     {
-                        0 => "正常",
-                        1 => "封禁",
-                        2 => "流量超限",
-                        _ => "未知状态"
+                        0 => Languages.Text_UserCenter_StatusNormal,
+                        1 => Languages.Text_UserCenter_StatusBanned,
+                        2 => Languages.Text_UserCenter_StatusTrafficExceeded,
+                        _ => Languages.Text_UserCenter_StatusUnknown
                     };
 
                     status.Classes.Clear();
@@ -127,7 +127,9 @@ public partial class UserCenterPage : UserControl
 
                     TodaySignButton.IsVisible = true;
                     TodaySignButton.IsEnabled = !data.todaySigned;
-                    TodaySignButton.Content = !data.todaySigned ? "签到" : "已签到";
+                    TodaySignButton.Content = !data.todaySigned
+                        ? Languages.Text_UserCenter_SignIn
+                        : Languages.Text_UserCenter_SignedIn;
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
@@ -176,29 +178,25 @@ public partial class UserCenterPage : UserControl
             var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
                 JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ??
-                                                                        """
-                                                                        {
-                                                                            "code": -1,
-                                                                            "data": null,
-                                                                            "message": "未知错误"
-                                                                        }
-                                                                        """,
+                                                                        $"{{\"code\": -1, \"data\": null, \"message\": \"{Languages.Text_Global_UnknownError}\"}}",
                     App.AppJsonSerializerContext.ApiInfoObject);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
             if (success)
             {
-                Growl.Success(signInfo?.message ?? "签到成功", "签到成功");
+                Growl.Success(signInfo?.message ?? Languages.Text_UserCenter_SignInSuccess,
+                    Languages.Text_UserCenter_SignInSuccess);
             }
             else
             {
-                Growl.Error(signInfo?.message ?? "签到失败", "签到失败");
+                Growl.Error(signInfo?.message ?? Languages.Text_UserCenter_SignInFailed,
+                    Languages.Text_UserCenter_SignInFailed);
             }
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            Growl.Error(ex.Message, "签到失败");
+            Growl.Error(ex.Message, Languages.Text_UserCenter_SignInFailed);
         }
         finally
         {
@@ -237,7 +235,8 @@ public partial class UserCenterPage : UserControl
 
     private async void ExitLogin(object sender, RoutedEventArgs e)
     {
-        var result = await MessageBoxManager.GetMessageBoxStandard("警告", "确定要退出登录吗？退出登录后软件将重启。", ButtonEnum.YesNo)
+        var result = await MessageBoxManager
+            .GetMessageBoxStandard(Languages.Caption_Warning, Languages.Text_UserCenter_LogoutConfirm, ButtonEnum.YesNo)
             .ShowAsync();
 
         if (result != ButtonResult.Yes)
@@ -275,6 +274,7 @@ public partial class UserCenterPage : UserControl
 }
 
 public partial class UserCenterViewModel : ViewModelBase
+
 {
     public event EventHandler? IcpDomainsChanged;
 
@@ -317,12 +317,12 @@ public partial class UserCenterViewModel : ViewModelBase
                 await MEFrpApiConverter.DeleteIcpDomainAsync(domain.domain);
                 IcpDomains.Remove(domain);
                 AddedDomains--;
-                Growl.Success($"删除成功: {domain.domain}");
+                Growl.Success(string.Format(Languages.Text_UserCenter_DomainDeleted, domain.domain));
             }
             catch (Exception ex)
             {
                 Core.App.CurrentLogger.Error(ex);
-                Growl.Error(ex.Message, "删除失败");
+                Growl.Error(ex.Message, Languages.Text_UserCenter_DeleteFailed);
             }
             finally
             {
@@ -333,14 +333,14 @@ public partial class UserCenterViewModel : ViewModelBase
         {
             var domainBox = new TextBox()
             {
-                Watermark = "请输入备案域名",
+                Watermark = Languages.Text_UserCenter_DomainWatermark,
                 Margin = new Thickness(10),
             };
             var inputDialog = new ContentDialog()
             {
-                Title = "添加备案域名",
+                Title = Languages.Text_UserCenter_AddDomainTitle,
                 Content = domainBox,
-                PrimaryButtonText = "添加",
+                PrimaryButtonText = Languages.Text_Global_Add,
                 CloseButtonText = Languages.Text_Global_Cancel,
                 IsPrimaryButtonEnabled = true,
                 DefaultButton = ContentDialogButton.Primary,
@@ -353,14 +353,14 @@ public partial class UserCenterViewModel : ViewModelBase
 
             if (IcpDomains.Any(d => d.domain == domainBox.Text))
             {
-                Growl.Info("该备案域名已存在", "添加失败");
+                Growl.Info(Languages.Text_UserCenter_DomainExists, Languages.Text_UserCenter_AddFailed);
                 return;
             }
 
             var domainRegex = DomainRegex();
             if (!domainRegex.IsMatch(domainBox.Text))
             {
-                Growl.Warning("请输入正确的备案域名", "添加失败");
+                Growl.Warning(Languages.Text_UserCenter_InvalidDomain, Languages.Text_UserCenter_AddFailed);
                 return;
             }
 
@@ -374,7 +374,7 @@ public partial class UserCenterViewModel : ViewModelBase
                 IcpDomains.Clear();
                 if (domains.data == null || domains.data?.Count == 0)
                 {
-                    Growl.Warning("没有备案域名", "添加失败");
+                    Growl.Warning(Languages.Text_UserCenter_NoDomains, Languages.Text_UserCenter_AddFailed);
                     return;
                 }
 
@@ -384,12 +384,12 @@ public partial class UserCenterViewModel : ViewModelBase
                 }
 
                 AddedDomains = IcpDomains.Count;
-                Growl.Success($"添加成功: {result.Trim()}");
+                Growl.Success(string.Format(Languages.Text_UserCenter_DomainAdded, result.Trim()));
             }
             catch (Exception ex)
             {
                 Core.App.CurrentLogger.Error(ex);
-                Growl.Warning(ex.Message, "添加失败");
+                Growl.Warning(ex.Message, Languages.Text_UserCenter_AddFailed);
             }
             finally
             {

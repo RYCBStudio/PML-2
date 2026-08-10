@@ -1,10 +1,11 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.CreateProxyGuide"
              x:DataType="viewModels:CreateProxyGuideViewModel">
@@ -13,8 +14,8 @@
     </Design.DataContext>
     <Grid RowDefinitions="Auto, Auto, *" Margin="10" RowSpacing="5">
         <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                   Theme="{StaticResource SubtitleTextBlockStyle}" Text="创建隧道向导" />
-        <controls:TypingControl Grid.Row="1" Text="欢迎使用创建隧道向导。请选择您需要映射的服务。">
+                   Theme="{StaticResource SubtitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_Proxy_Guide_Title}" />
+        <controls:TypingControl Grid.Row="1" Text="{x:Static languages:Languages.Text_Proxy_Guide_Welcome}">
             <controls:TypingControl.Styles>
                 <Style>
                     <Style.Animations>

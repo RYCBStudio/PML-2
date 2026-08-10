@@ -1,16 +1,17 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.HeadersEdit"
              x:DataType="controls:HeadersEdit">
     <Grid RowDefinitions="Auto, *">
         <Grid ColumnDefinitions="4*,4*, *, *" ColumnSpacing="3" Margin="3">
-            <TextBox Text="{Binding currentHeader_Name}" Watermark="请求头名" />
-            <TextBox Grid.Column="1" Text="{Binding currentHeader_Value}" Watermark="请求头值" />
+            <TextBox Text="{Binding currentHeader_Name}" Watermark="{x:Static languages:Languages.Text_Headers_NameWatermark}" />
+            <TextBox Grid.Column="1" Text="{Binding currentHeader_Value}" Watermark="{x:Static languages:Languages.Text_Headers_ValueWatermark}" />
             <Button Grid.Column="2" Click="AddHeader">
                 <Button.Content>
                     <controls1:SymbolIcon Symbol="Add" />

@@ -205,7 +205,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = -2;
 
-    public string SystemStatusRemark
+    public string? SystemStatusRemark
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -277,7 +277,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         IsLoading = true;
         var ss = await MEFrpApiConverter.GetSystemStatusAsync();
         SystemStatus = ss.data?.status ?? -1;
-        SystemStatusRemark = ss.data?.remark ?? $"网络服务不可用，返回代码: {ss.code}";
+        SystemStatusRemark = ss.data?.remark ?? string.Format(Languages.Text_Home_NetworkUnavailableFormat, ss.code);
         var networkOk = ss.code == 200;
         if (!networkOk)
         {
@@ -516,7 +516,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard(Languages.Caption_Error, $"加载用户数据失败: {ex.Message}")
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Home_LoadUserDataFailed, ex.Message))
                 .ShowAsync();
         }
         finally
@@ -541,13 +541,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             var (success, message) = await MEFrpApiConverter.SendSignRequestAsync(captchaResult.Trim());
             var signInfo =
                 JsonSerializer.Deserialize<InfoClasses.ApiInfo<object>>(message ??
-                                                                        """
-                                                                        {
-                                                                            "code": -1,
-                                                                            "data": null,
-                                                                            "message": "未知错误"
-                                                                        }
-                                                                        """,
+                                                                        $"{{\n                                                                            \"code\": -1,\n                                                                            \"data\": null,\n                                                                            \"message\": \"{Languages.Text_Global_UnknownError}\"\n                                                                        }}",
                     App.AppJsonSerializerContext.ApiInfoObject);
 
             Core.App.CurrentLogger.Log($"API返回结果: {success}, {message}");
@@ -565,7 +559,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            Growl.Error(ex.Message, "签到失败");
+            Growl.Error(ex.Message, Languages.Text_Main_UserInfo_SignIn + Languages.Text_Global_Failed);
         }
         finally
         {
@@ -698,7 +692,7 @@ public class NoticeManager
             // 显示消息框
             await MessageBox.ShowAsync(
                 markdownRender,
-                "重要通知");
+                Languages.Text_Home_ImportantNotice);
         }
     }
 }

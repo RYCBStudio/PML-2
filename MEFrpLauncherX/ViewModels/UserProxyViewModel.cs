@@ -428,7 +428,7 @@ public class UserProxyViewModel : ViewModelBase
             var cs = new ConfigSelect(configFiles);
             var cd = new ContentDialog
             {
-                Title = "请选择配置文件",
+                Title = Languages.Text_ALPControl_SelectConfigTitle,
                 Content = cs,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 CloseButtonText = Languages.Text_Global_Cancel
@@ -443,7 +443,7 @@ public class UserProxyViewModel : ViewModelBase
         {
             cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "请选择配置文件",
+                Title = Languages.Text_ALPControl_SelectConfigTitle,
                 AllowMultiple = false,
                 FileTypeFilter = [FilePickerFileTypes.All]
             });
@@ -457,7 +457,7 @@ public class UserProxyViewModel : ViewModelBase
             }
             catch (ArgumentOutOfRangeException)
             {
-                Growl.Warning($"取消启动隧道: {proxy?.proxyName}");
+                Growl.Warning(string.Format(Languages.Text_UserProxy_LaunchCancelledFormat, proxy?.proxyName));
                 return;
             }
             catch (Exception ex)
@@ -465,21 +465,21 @@ public class UserProxyViewModel : ViewModelBase
                 Core.App.CurrentLogger.Log($"使用配置文件启动单个隧道操作失败: {ex.Message}", port: EnumLogPort.Client,
                     module: EnumLogModule.Main);
                 Core.App.CurrentLogger.Error(ex);
-                Growl.Error($"由于内部错误, 取消启动隧道: {proxy?.proxyName}\n详细信息: {ex.Message}");
+                Growl.Error(string.Format(Languages.Text_UserProxy_LaunchCancelledErrorFormat, proxy?.proxyName, ex.Message));
                 return;
             }
         }
 
         if (configFile.IsNullOrEmpty())
         {
-            Growl.Warning($"取消启动隧道: {proxy?.proxyName}");
+            Growl.Warning(string.Format(Languages.Text_UserProxy_LaunchCancelledFormat, proxy?.proxyName));
             return;
         }
 
         var _res = await new ConfigEditor(configFile).ShowDialog<bool>(Core.App.MainWindow);
         if (!_res)
         {
-            Growl.Error($"取消启动隧道: {proxy?.proxyName}");
+            Growl.Error(string.Format(Languages.Text_UserProxy_LaunchCancelledFormat, proxy?.proxyName));
             return;
         }
 
@@ -509,7 +509,7 @@ public class UserProxyViewModel : ViewModelBase
             ProxyFloat.Instance?.Show();
         }
 
-        Growl.Success($"启动隧道: {proxy?.proxyName} 成功");
+        Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy?.proxyName));
         IsLaunched = true;
     }
 
@@ -560,14 +560,13 @@ public class UserProxyViewModel : ViewModelBase
 
         // 文件校验失败，提示用户
         var res = await MessageBox.ShowAsync(
-            $"{clientConfig.FileName} 文件校验失败，需要重新下载客户端。关闭此窗口尝试直接启动; 点击“否”以取消启动。" +
-            "\n请注意: 我们不对任何非官方(与我们提供的文件校验值不同)的文件运行所造成的任何后果负责。",
-            "警告",
+            string.Format(Languages.Text_UserProxy_ClientFileCheckFailedFormat, clientConfig.FileName),
+            Languages.Caption_Warning,
             "",
             MessageBoxIcon.Warning,
             [
-                new TaskDialogButton("下载", TaskDialogStandardResult.Yes),
-                new TaskDialogButton("否", TaskDialogStandardResult.No)
+                new TaskDialogButton(Languages.Text_UserProxy_Download, TaskDialogStandardResult.Yes),
+                new TaskDialogButton(Languages.Text_Global_No, TaskDialogStandardResult.No)
             ]);
 
         return res switch
@@ -629,7 +628,7 @@ public class UserProxyViewModel : ViewModelBase
         IsLoading = false;
         MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
         MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
-        Growl.Success($"启动隧道: {proxy.proxyName} 成功");
+        Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy.proxyName));
         IsLaunched = true;
     }
 
@@ -641,8 +640,8 @@ public class UserProxyViewModel : ViewModelBase
             case UserProxyViewModel proxy:
                 DeleteSingleProxy(proxy);
                 break;
-            case IList<UserProxyViewModel> proxies when await MessageBox.ShowAsync($"确定要删除这 {proxies.Count} 个隧道吗？",
-                                                            "确认删除",
+            case IList<UserProxyViewModel> proxies when await MessageBox.ShowAsync(string.Format(Languages.Text_UserProxy_ConfirmDeleteMultipleFormat, proxies.Count),
+                                                            Languages.Text_UserProxy_ConfirmDeleteTitle,
                                                             [
                                                                 TaskDialogButton.YesButton,
                                                                 TaskDialogButton.NoButton
@@ -666,7 +665,7 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在删除隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         IsLoading = true;
         await Task.Run(() => MEFrpApiConverter.DeleteProxy(proxy.proxyId));
-        Growl.Success($"删除隧道: {proxy.proxyName} 成功");
+        Growl.Success(string.Format(Languages.Text_UserProxy_DeleteSucceededFormat, proxy.proxyName));
         ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
     }
@@ -748,7 +747,7 @@ public class UserProxyViewModel : ViewModelBase
             module: EnumLogModule.Main);
         var res = await Task.Run(() => MEFrpApiConverter.GetLaunchConfig(proxy.proxyId, type));
         var cfg = res.data.config;
-        Growl.Success($"已为隧道 {proxy.proxyName} 生成启动配置");
+        Growl.Success(string.Format(Languages.Text_UserProxy_ConfigGeneratedFormat, proxy.proxyName));
         IsLoading = false;
         await new ConfigPreviewer(type, cfg, proxy.proxyName).ShowDialog(Core.App.MainWindow);
     }
@@ -758,21 +757,21 @@ public class UserProxyViewModel : ViewModelBase
         var td = new TaskDialog
         {
             // Title property only applies on Windowed dialogs
-            Title = "隧道详情",
+            Title = Languages.Text_UserProxy_TunnelDetails,
             Header = $"{proxy.proxyName}",
-            SubHeader = $"创建自节点: {proxy.node}",
+            SubHeader = string.Format(Languages.Text_UserProxy_CreatedFromNodeFormat, proxy.node),
             Content = new SelectableTextBlock
             {
                 Text =
                     $"""
-                     协议类型: {proxy.proxyType}
-                     本地端口: {proxy.localPort}
-                     本地地址: {proxy.localIp}
-                     传输协议: {proxy.transportProtocol.ToUpper()}{(proxy.proxyType.ToLower() is "tcp" or "udp" ? "\n链接地址: " + proxy.location : $"\nHTTP映射类型: {proxy.httpPlugin.ToUpper()}\n安全选项: {GetSecurityOption()}")}
-                     上次启动时间: {new UnixTimeToDateTimeConverter()
+                     {Languages.Text_UserProxy_DetailProtocolType}: {proxy.proxyType}
+                     {Languages.Text_UserProxy_DetailLocalPort}: {proxy.localPort}
+                     {Languages.Text_UserProxy_DetailLocalAddress}: {proxy.localIp}
+                     {Languages.Text_UserProxy_DetailTransportProtocol}: {proxy.transportProtocol.ToUpper()}{(proxy.proxyType.ToLower() is "tcp" or "udp" ? "\n" + Languages.Text_UserProxy_DetailLinkAddress + ": " + proxy.location : $"\n{Languages.Text_UserProxy_DetailHttpMappingType}: {proxy.httpPlugin.ToUpper()}\n{Languages.Text_UserProxy_DetailSecurityOption}: {GetSecurityOption()}")}
+                     {Languages.Text_UserProxy_DetailLastStartTime}: {new UnixTimeToDateTimeConverter()
                          .Convert(proxy.lastStartTime, null, null, null)}
-                     上次关闭时间: {new UnixTimeToDateTimeConverter()
-                         .Convert(proxy.lastCloseTime, null, null, null)}{(proxy.proxyType.ToUpper() is "HTTP" or "HTTPS" ? "\n* 更多信息(域名解析等)请前往官网查看。" : "")}
+                     {Languages.Text_UserProxy_DetailLastCloseTime}: {new UnixTimeToDateTimeConverter()
+                         .Convert(proxy.lastCloseTime, null, null, null)}{(proxy.proxyType.ToUpper() is "HTTP" or "HTTPS" ? "\n" + Languages.Text_UserProxy_DetailMoreInfoWebsite : "")}
                      """
             },
             Buttons =
@@ -789,12 +788,12 @@ public class UserProxyViewModel : ViewModelBase
         {
             if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty() && proxy.accessKey.IsNullOrEmpty())
             {
-                return "禁用";
+                return Languages.Text_Global_Disable;
             }
 
             if (proxy.httpUser.IsNullOrEmpty() && proxy.httpPassword.IsNullOrEmpty())
             {
-                return "访问密钥";
+                return Languages.Text_CreateProxy_AccessKey;
             }
 
             return "HTTP Basic Auth";
@@ -806,7 +805,7 @@ public class UserProxyViewModel : ViewModelBase
         var pss = new ProxySSLSettings(obj);
         var cd = new ContentDialog
         {
-            Title = "SSL证书配置",
+            Title = Languages.Text_UserProxy_SslCertConfig,
             Content = pss,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             PrimaryButtonCommand = new RelayCommand(_obj =>
@@ -846,7 +845,7 @@ public class UserProxyViewModel : ViewModelBase
             ? obj.domain
             : Node?.hostname +
               $":{obj.remotePort}");
-        Growl.Success("已复制隧道信息");
+        Growl.Success(Languages.Text_UserProxy_TunnelInfoCopied);
     }
 
     private void StopProxy(UserProxyViewModel obj)

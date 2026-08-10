@@ -7,7 +7,6 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MEFrpLauncherX.CrashDisplayer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Topmost="True"
-        Title="程序崩溃报告">
+        Topmost="True">
         <views1:MainView />
 </Window>

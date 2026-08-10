@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Web;
 using System.Xml;
@@ -10,6 +10,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.TextMate;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using TextMateSharp.Grammars;
 
 #pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
@@ -18,10 +19,10 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ConfigPreviewer : Window
 {
-    internal static readonly FilePickerFileType fpftype_yml = new("YAML文件") { Patterns = ["*.yaml", "*.yml"] };
-    internal static readonly FilePickerFileType fpftype_ini = new("INI文件") { Patterns = ["*.ini"] };
-    internal static readonly FilePickerFileType fpftype_toml = new("TOML文件") { Patterns = ["*.toml"] };
-    internal static readonly FilePickerFileType fpftype_json = new("JSON文件") { Patterns = ["*.json"] };
+    internal static readonly FilePickerFileType fpftype_yml = new(Languages.Text_ConfigPreviewer_YamlFile) { Patterns = ["*.yaml", "*.yml"] };
+    internal static readonly FilePickerFileType fpftype_ini = new(Languages.Text_ConfigPreviewer_IniFile) { Patterns = ["*.ini"] };
+    internal static readonly FilePickerFileType fpftype_toml = new(Languages.Text_ConfigPreviewer_TomlFile) { Patterns = ["*.toml"] };
+    internal static readonly FilePickerFileType fpftype_json = new(Languages.Text_ConfigPreviewer_JsonFile) { Patterns = ["*.json"] };
     private readonly string _config;
     private readonly string _proxyname;
     private readonly string _type;
@@ -59,14 +60,14 @@ public partial class ConfigPreviewer : Window
     {
         await Clipboard.SetTextAsync(ConfigEditor.Text);
         // Replace Growl with Avalonia notification system
-        ShowNotification("配置已复制到剪贴板");
+        ShowNotification(Languages.Text_ConfigPreviewer_CopiedToClipboard);
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
-            Title = "保存配置文件",
+            Title = Languages.Text_ConfigPreviewer_SaveConfigTitle,
             SuggestedFileName = $"{(_proxyname.IsNullOrEmpty() ? "config" : _proxyname)}.{_type.ToLower()}",
             SuggestedStartLocation =
                 await StorageProvider.TryGetFolderFromPathAsync(new Uri($"file:///{Core.App.StartupPath}/Config/frp")),
@@ -93,7 +94,7 @@ public partial class ConfigPreviewer : Window
         }
 
         await File.WriteAllTextAsync(HttpUtility.UrlDecode(file.Path.AbsolutePath), ConfigEditor.Text);
-        ShowNotification($"配置已保存到 {file.Name}");
+        ShowNotification(string.Format(Languages.Text_ConfigPreviewer_SavedFormat, file.Name));
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();

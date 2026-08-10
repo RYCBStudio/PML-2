@@ -22,7 +22,7 @@
                     FontSize="20"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="哎呀，程序崩溃了！" />
+                    Text="{Binding OopsCrashed}" />
             </StackPanel>
         </Border>
 
@@ -52,7 +52,7 @@
                                     FontSize="14"
                                     FontWeight="Bold"
                                     Foreground="#FF4682B4"
-                                    Text="程序员幽默" />
+                                    Text="{Binding ProgrammerHumor}" />
                             </StackPanel>
                         </Border>
 
@@ -87,7 +87,7 @@
                             HorizontalAlignment="Center"
                             FontSize="10"
                             Foreground="Gray"
-                            Text="(此内容仅为缓解紧张情绪，与错误无关)" />
+                            Text="{Binding HumorNote}" />
 
                         <!--  表情符号  -->
                         <Viewbox
@@ -113,7 +113,7 @@
                 <TextBlock
                     Margin="10,10,10,5"
                     FontWeight="Bold"
-                    Text="错误详情:" />
+                    Text="{Binding ErrorDetailsLabel}" />
 
                 <TextBox
                     TextWrapping="WrapWithOverflow"
@@ -134,11 +134,11 @@
                 Margin="0,0,10,0"
                 Padding="15,5"
                 Command="{Binding CopyCommand}"
-                Content="复制错误信息" />
+                Content="{Binding CopyErrorInfo}" />
             <Button
                 Padding="15,5"
                 Command="{Binding CloseCommand}"
-                Content="关闭" />
+                Content="{Binding Close}" />
         </StackPanel>
     </Grid>
 </UserControl>

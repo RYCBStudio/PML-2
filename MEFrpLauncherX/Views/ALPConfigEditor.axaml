@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,19 +13,19 @@
         CanResize="False"
         Closing="Window_OnClosing"
         x:Class="MEFrpLauncherX.Views.ALPConfigEditor"
-        Title="编辑配置文件">
+        Title="{x:Static languages:Languages.Text_ConfigEditor_Title}">
     <Grid RowDefinitions="Auto, *" RowSpacing="4" Margin="3" Classes="animated">
         <DockPanel>
             <StackPanel x:Name="UnSavedTip" DockPanel.Dock="Right" Orientation="Horizontal" Spacing="3">
                 <controls:SymbolIcon Symbol="SaveLocal" FontSize="20" VerticalAlignment="Center" />
-                <TextBlock Text="修改未保存。" VerticalAlignment="Center" />
+                <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_UnsavedChanges}" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <Button VerticalAlignment="Center" Click="OnPasteClicked" Classes="accent">
                     <Button.Content>
                         <DockPanel HorizontalSpacing="3">
                             <controls:SymbolIcon Symbol="Paste" DockPanel.Dock="Left" />
-                            <TextBlock Text="粘贴" />
+                            <TextBlock Text="{x:Static languages:Languages.Text_Global_Paste}" />
                         </DockPanel>
                     </Button.Content>
                 </Button>
@@ -33,7 +33,7 @@
                     <Button.Content>
                         <DockPanel HorizontalSpacing="3">
                             <controls:SymbolIcon Symbol="Save" DockPanel.Dock="Left" />
-                            <TextBlock Text="保存" />
+                            <TextBlock Text="{x:Static languages:Languages.Text_Global_Save}" />
                         </DockPanel>
                     </Button.Content>
                 </Button>
@@ -46,7 +46,7 @@
                     </Button.Content>
                 </Button>
                 <StackPanel Orientation="Horizontal" Spacing="3">
-                    <TextBlock Text="配置文件类型: " />
+                    <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_FileType}" />
                     <ComboBox x:Name="FileTypeComboBox" SelectionChanged="ChangeSyntaxHighlight">
                         <ComboBoxItem Content="JSON" />
                         <ComboBoxItem Content="YAML" />

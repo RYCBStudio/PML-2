@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Web;
 using System.Xml;
@@ -10,6 +10,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.TextMate;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using TextMateSharp.Grammars;
 using static MEFrpLauncherX.Views.ConfigPreviewer;
 
@@ -45,14 +46,14 @@ public partial class ConfigEditor : Window
     {
         await Clipboard.SetTextAsync(CfgEditor.Text);
         // Replace Growl with Avalonia notification system
-        ShowNotification("配置已复制到剪贴板");
+        ShowNotification(Languages.Text_ConfigPreviewer_CopiedToClipboard);
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
-            Title = "保存配置文件",
+            Title = Languages.Text_ConfigPreviewer_SaveConfigTitle,
             SuggestedFileName = Path.GetFileName(_file),
             SuggestedStartLocation =
                 await StorageProvider.TryGetFolderFromPathAsync(new Uri($"file:///{Core.App.StartupPath}/Config/frp")),
@@ -80,7 +81,7 @@ public partial class ConfigEditor : Window
 
         await File.WriteAllTextAsync(HttpUtility.UrlDecode(file.Path.AbsolutePath), CfgEditor.Text);
         _file = file.Path.AbsolutePath;
-        ShowNotification($"配置已保存到 {file.Name}");
+        ShowNotification(string.Format(Languages.Text_ConfigPreviewer_SavedFormat, file.Name));
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => Close(false);

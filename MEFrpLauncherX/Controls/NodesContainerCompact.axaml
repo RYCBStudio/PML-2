@@ -1,10 +1,11 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.NodesContainerCompact"
              x:DataType="viewModels:NodesContainerViewModel">
@@ -20,7 +21,7 @@
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal" Spacing="2">
                     <TextBox Width="200" VerticalAlignment="Center"
-                             Watermark="搜索节点"
+                             Watermark="{x:Static languages:Languages.Text_Nodes_SearchWatermark}"
                              FontFamily="{StaticResource GlobalFontFamily}"
                              Text="{Binding SearchText}" />
                     <ToggleButton x:Name="HelpBtn">
@@ -30,15 +31,15 @@
                     </ToggleButton>
                     <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
                                           Target="{Binding #HelpBtn}"
-                                          Title="搜索帮助"
+                                          Title="{x:Static languages:Languages.Text_Nodes_SearchHelp_Title}"
                                           IconSource="Help">
                         <controls:TeachingTip.Content>
                             <StackPanel Spacing="3">
-                                <TextBlock>无参数: 直接搜索名称</TextBlock>
-                                <TextBlock>输入/d:&lt;KEYWORD&gt;以搜索描述</TextBlock>
-                                <TextBlock>输入/pn:&lt;PINYIN&gt;以使用拼音搜索名称</TextBlock>
-                                <TextBlock>输入/pd:&lt;PINYIN&gt;以使用拼音搜索描述</TextBlock>
-                                <controls:InfoBar Severity="Warning" Title="已知性能警告" Message="使用拼音搜索将减慢搜索速度, 并造成程序假死。"
+                                <TextBlock Text="{x:Static languages:Languages.Text_Nodes_SearchHelp_NoParam}" />
+                                <TextBlock Text="{x:Static languages:Languages.Text_Nodes_SearchHelp_Description}" />
+                                <TextBlock Text="{x:Static languages:Languages.Text_Nodes_SearchHelp_PinyinName}" />
+                                <TextBlock Text="{x:Static languages:Languages.Text_Nodes_SearchHelp_PinyinDescription}" />
+                                <controls:InfoBar Severity="Warning" Title="{x:Static languages:Languages.Text_Nodes_SearchHelp_PerfWarning_Title}" Message="{x:Static languages:Languages.Text_Nodes_SearchHelp_PerfWarning_Message}"
                                                   IsOpen="True" IsClosable="False" />
                             </StackPanel>
                         </controls:TeachingTip.Content>
@@ -49,15 +50,15 @@
                 </StackPanel>
 
                 <CheckBox Margin="15,0,0,0"
-                          Content="仅显示可建站节点" VerticalAlignment="Center"
+                          Content="{x:Static languages:Languages.Text_Nodes_Filter_CanBuildSite}" VerticalAlignment="Center"
                           FontFamily="{StaticResource GlobalFontFamily}"
                           IsChecked="{Binding FilterCanBuildSite}" />
                 <CheckBox Margin="15,0,0,0"
-                          Content="仅显示允许大流量节点" VerticalAlignment="Center"
+                          Content="{x:Static languages:Languages.Text_Nodes_Filter_AllowHighTraffic}" VerticalAlignment="Center"
                           FontFamily="{StaticResource GlobalFontFamily}"
                           IsChecked="{Binding FilterAllowHighTraffic}" />
                 <CheckBox Margin="15,0,0,0"
-                          Content="仅显示未过载节点" VerticalAlignment="Center"
+                          Content="{x:Static languages:Languages.Text_Nodes_Filter_NotOverLoaded}" VerticalAlignment="Center"
                           FontFamily="{StaticResource GlobalFontFamily}"
                           IsChecked="{Binding FilterNotOverLoaded}" />
             </StackPanel>

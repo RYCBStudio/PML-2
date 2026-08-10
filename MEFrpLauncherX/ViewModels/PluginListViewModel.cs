@@ -18,6 +18,7 @@ using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
@@ -190,7 +191,7 @@ public class PluginListViewModel : ViewModelBase
             }
 
             LoadPlugins();
-            Growl.Success($"成功安装 {installed} 个插件");
+            Growl.Success(string.Format(Languages.Text_PluginList_InstalledCountFormat, installed));
         });
         RefreshOnlinePluginsCommand = ReactiveCommand.CreateFromTask(RefreshOnlinePluginsAsync);
         DownloadSelectedPluginsCommand = ReactiveCommand.CreateFromTask(
@@ -288,7 +289,7 @@ public class PluginListViewModel : ViewModelBase
 
             if (listDoc.RootElement.GetProperty("code").GetInt32() != 200)
             {
-                Growl.Error("获取在线插件列表失败");
+                Growl.Error(Languages.Text_PluginList_FetchOnlineListFailed);
                 return;
             }
 
@@ -316,13 +317,13 @@ public class PluginListViewModel : ViewModelBase
 
             OnlinePlugins = [.. result];
             FilteredOnlinePlugins = [.. result];
-            Growl.Success($"已加载 {result.Count} 个在线插件");
+            Growl.Success(string.Format(Languages.Text_PluginList_OnlineLoadedCountFormat, result.Count));
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex, "刷新在线插件失败");
             await MessageBoxManager
-                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"刷新在线插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_RefreshOnlineFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -383,13 +384,13 @@ public class PluginListViewModel : ViewModelBase
             }
 
             LoadPlugins();
-            Growl.Success($"成功安装 {installed} 个在线插件");
+            Growl.Success(string.Format(Languages.Text_PluginList_InstalledOnlineCountFormat, installed));
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex, "下载在线插件失败");
             await MessageBoxManager
-                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"下载安装失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_DownloadInstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -427,7 +428,7 @@ public class PluginListViewModel : ViewModelBase
     {
         _pluginService.ReloadPlugins();
         LoadPlugins();
-        Growl.Success("插件列表已刷新");
+        Growl.Success(Languages.Text_PluginList_ListRefreshed);
     }
 
     private async Task InstallPluginAsync()
@@ -439,12 +440,12 @@ public class PluginListViewModel : ViewModelBase
                 AllowMultiple = true,
                 FileTypeFilter =
                 [
-                    new FilePickerFileType("YAML 插件文件")
+                    new FilePickerFileType(Languages.Text_PluginList_YamlPluginFiles)
                     {
                         Patterns = ["*.yaml", "*.yml"]
                     }
                 ],
-                Title = "安装插件",
+                Title = Languages.Text_PluginList_InstallPluginTitle,
                 SuggestedStartLocation =
                     await MainWindow.Instance.StorageProvider.TryGetFolderFromPathAsync(
                         Environment.GetFolderPath(Environment.SpecialFolder.Desktop))
@@ -455,12 +456,12 @@ public class PluginListViewModel : ViewModelBase
             var installed = files.Count(file => _pluginService.InstallPlugin(file.TryGetLocalPath()));
 
             LoadPlugins();
-            Growl.Success($"成功安装 {installed} 个插件");
+            Growl.Success(string.Format(Languages.Text_PluginList_InstalledCountFormat, installed));
         }
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"安装插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_InstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -470,8 +471,8 @@ public class PluginListViewModel : ViewModelBase
         if (SelectedPlugin == null) return;
 
         var result = await MessageBoxManager
-            .GetMessageBoxStandard("确认卸载",
-                $"确定要卸载插件 '{SelectedPlugin.Name}' 吗？\n\n此操作将删除插件文件，不可恢复。",
+            .GetMessageBoxStandard(Languages.Text_PluginList_ConfirmUninstallCaption,
+                string.Format(Languages.Text_PluginList_UninstallConfirmFormat, SelectedPlugin.Name),
                 ButtonEnum.YesNo, Icon.Question)
             .ShowAsync();
 
@@ -483,13 +484,13 @@ public class PluginListViewModel : ViewModelBase
             {
                 Plugins.Remove(SelectedPlugin);
                 SelectedPlugin = null;
-                Growl.Success("插件已卸载");
+                Growl.Success(Languages.Text_PluginList_Uninstalled);
             }
         }
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"卸载插件失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_UninstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }
@@ -517,14 +518,14 @@ public class PluginListViewModel : ViewModelBase
             if (yaml == null)
             {
                 await MessageBoxManager
-                    .GetMessageBoxStandard("提示", "无法读取插件文件内容。", ButtonEnum.Ok, Icon.Warning)
+                    .GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_PluginList_CannotReadPluginContent, ButtonEnum.Ok, Icon.Warning)
                     .ShowAsync();
                 return;
             }
 
             var viewer = new ContentDialog
             {
-                Title = $"插件源码: {SelectedPlugin.Name}",
+                Title = string.Format(Languages.Text_PluginList_PluginSourceTitleFormat, SelectedPlugin.Name),
                 Content = new ScrollViewer
                 {
                     Content = new TextBlock
@@ -535,7 +536,7 @@ public class PluginListViewModel : ViewModelBase
                         TextWrapping = Avalonia.Media.TextWrapping.Wrap
                     }
                 },
-                PrimaryButtonText = "关闭",
+                PrimaryButtonText = Languages.Text_Global_Close,
                 MaxWidth = 800,
                 MaxHeight = 600
             };
@@ -545,7 +546,7 @@ public class PluginListViewModel : ViewModelBase
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, $"读取插件 YAML 失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_ReadYamlFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }

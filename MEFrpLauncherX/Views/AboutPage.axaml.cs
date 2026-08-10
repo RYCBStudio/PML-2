@@ -44,9 +44,9 @@ public partial class AboutPage : UserControl
             HitokotoBox.Text = string.Empty;
             HitokotoResource Hitokoto = new()
             {
-                hitokoto = "用代码表达言语的魅力，用代码书写山河的壮丽。",
-                from = "一言「一言开发者中心」",
-                from_who = "一言开发者"
+                hitokoto = Languages.Text_About_HitokotoFallback,
+                from = Languages.Text_About_HitokotoSource,
+                from_who = Languages.Text_About_HitokotoAuthor
             };
             MainPageFrameViewModel.Instance?.IsLoading = true;
             try
@@ -71,7 +71,7 @@ public partial class AboutPage : UserControl
                     Hitokoto = new HitokotoResource
                     {
                         hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
-                        from = "微软式中文",
+                        from = Languages.Text_About_MicrosoftStyleChinese,
                         creator = "Microsoft"
                     };
                 }
@@ -158,7 +158,7 @@ public partial class AboutPage : UserControl
 
                         """
             },
-            CloseButtonText = "关闭"
+            CloseButtonText = Languages.Text_Global_Close
         };
         await cd.ShowAsync();
     }
@@ -209,9 +209,9 @@ public partial class AboutPage : UserControl
 
         var cd = new ContentDialog
         {
-            Title = "开源软件",
+            Title = Languages.Text_About_OpenSourceSoftware,
             Content = scrollViewer,
-            PrimaryButtonText = "关闭",
+            PrimaryButtonText = Languages.Text_Global_Close,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
         };
@@ -230,11 +230,11 @@ public partial class AboutPage : UserControl
     private async void OQ_Click(object sender, RoutedEventArgs e)
     {
         var res = await MessageBox.ShowAsync(
-            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
-            "提示",
+            Languages.Text_About_GroupRules,
+            Languages.Caption_Hint,
             [
-                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
-                new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
+                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
+                new TaskDialogButton(Languages.Text_About_CopyGroupNumber, TaskDialogStandardResult.No),
                 new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
 
@@ -251,18 +251,18 @@ public partial class AboutPage : UserControl
         {
             var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
             await clipboard?.SetTextAsync("1019501085");
-            Growl.Success("群号已复制到剪贴板");
+            Growl.Success(Languages.Text_About_GroupNumberCopied);
         }
     }
 
     private async void OQ2_Click(object? sender, RoutedEventArgs e)
     {
         var res = await MessageBox.ShowAsync(
-            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
-            "提示",
+            Languages.Text_About_GroupRules,
+            Languages.Caption_Hint,
             [
-                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
-                new TaskDialogButton("复制群号", TaskDialogStandardResult.No),
+                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
+                new TaskDialogButton(Languages.Text_About_CopyGroupNumber, TaskDialogStandardResult.No),
                 new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
 
@@ -279,17 +279,17 @@ public partial class AboutPage : UserControl
         {
             var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
             await clipboard?.SetTextAsync("708797546");
-            Growl.Success("群号已复制到剪贴板");
+            Growl.Success(Languages.Text_About_GroupNumberCopied);
         }
     }
 
     private async void FS_Click(object sender, RoutedEventArgs e)
     {
         var res = await MessageBox.ShowAsync(
-            "请友善、真诚提问，杜绝任何跳脸和违法行为，一经发现，立刻踢出。",
-            "提示",
+            Languages.Text_About_GroupRules,
+            Languages.Caption_Hint,
             [
-                new TaskDialogButton("我已知晓, 前往", TaskDialogStandardResult.Yes),
+                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
                 new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
             ]);
         if (res == MessageBoxResult.Yes)
@@ -404,9 +404,9 @@ public partial class AboutPage : UserControl
                 "https://docs.rycb.mxj.pub/pml-2",
             UseShellExecute = true
         });
-        await MessageBox.ShowAsync("已打开文档。若无法访问, 请选择以下备用源: ", buttons:
+        await MessageBox.ShowAsync(Languages.Text_About_DocOpened, buttons:
         [
-            new TaskDialogButton("源1", MessageBoxResult.Yes)
+            new TaskDialogButton(Languages.Text_About_Source1, MessageBoxResult.Yes)
             {
                 Command = new RelayCommand((s) =>
                 {
@@ -418,7 +418,7 @@ public partial class AboutPage : UserControl
                     });
                 })
             },
-            new TaskDialogButton("源2", MessageBoxResult.No)
+            new TaskDialogButton(Languages.Text_About_Source2, MessageBoxResult.No)
             {
                 Command = new RelayCommand((s) =>
                 {
@@ -467,10 +467,10 @@ public partial class AboutPage : UserControl
                 $"收到反馈: {feedbackForm.Feedback} <br>用户邮箱:{feedbackForm.Email} <br>时间:{DateTime.Now:O}",
                 "收到反馈 | RYCB 内部通知");
             vm.SubmitProgress = 1.5;
-            await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email, "您的反馈已提交成功。我们将尽快处理您的反馈。",
-                "反馈已提交成功 | RYCB Studio");
+            await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email, Languages.Text_About_FeedbackEmailBody,
+                Languages.Text_About_FeedbackEmailSubject);
             vm.SubmitProgress = 2.6;
-            Growl.Success("反馈提交成功");
+            Growl.Success(Languages.Text_About_FeedbackSubmitted);
             vm.SubmitProgress = 3;
             await Task.Delay(500);
             vm.IsSubmittingFeedback = false;
@@ -554,8 +554,8 @@ public partial class AboutPage : UserControl
         // 获取新一言
         HitokotoResource Hitokoto = new()
         {
-            hitokoto = "用代码表达言语的魅力，用代码书写山河的壮丽。",
-            from = "一言「一言开发者中心」"
+            hitokoto = Languages.Text_About_HitokotoFallback,
+            from = Languages.Text_About_HitokotoSource
         };
         try
         {
@@ -579,7 +579,7 @@ public partial class AboutPage : UserControl
                 Hitokoto = new HitokotoResource
                 {
                     hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
-                    from = "微软式中文",
+                    from = Languages.Text_About_MicrosoftStyleChinese,
                     creator = "Microsoft"
                 };
             }

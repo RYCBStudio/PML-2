@@ -1,36 +1,37 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:appearance="clr-namespace:MEFrpLauncherX.Views.Appearance"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         Width="500" Height="300"
         x:Class="MEFrpLauncherX.Views.Appearance.AppearanceSettings"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        Title="设置"
+        Title="{x:Static languages:Languages.Text_Global_Settings}"
         x:DataType="appearance:AppearanceSettingsViewModel">
     <Design.DataContext>
         <appearance:AppearanceSettingsViewModel />
     </Design.DataContext>
     <ScrollViewer>
         <StackPanel Margin="5" Spacing="5" Classes="animated">
-            <controls:SettingsExpander Header="选择一个背景"
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectBackground}"
                                        IsExpanded="True"
                                        IconSource="Image"
                                        ItemsSource="{Binding Items}" />
-            <controls:SettingsExpander Header="背景不透明度" Description="有些时候背景图片可能会影响观感，请选择一个不透明度来调整。">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacity}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacityDescription}">
                 <controls:SettingsExpander.Footer>
                     <Slider Maximum="100" Minimum="0" Width="200" x:Name="OpacitySlider" ValueChanged="UpdateOpacity" />
                 </controls:SettingsExpander.Footer>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="背景填充模式" Description="设置软件是否应该将背景图片填充整个窗口至标题栏。">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillMode}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillModeDescription}">
                 <controls:SettingsExpander.Footer>
                     <ComboBox x:Name="FillModeBox" SelectionChanged="UpdateBackgroundFillMode">
-                        <ComboBoxItem>填充至标题栏</ComboBoxItem>
-                        <ComboBoxItem>仅填充至窗口</ComboBoxItem>
+                        <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_FillToTitleBar}" />
+                        <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_FillToWindowOnly}" />
                     </ComboBox>
                 </controls:SettingsExpander.Footer>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="选择主题色" IconSource="ColorFill" IsExpanded="True">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectAccentColor}" IconSource="ColorFill" IsExpanded="True">
                 <controls:SettingsExpanderItem>
                     <Grid ColumnDefinitions="*, *" RowDefinitions="*,*,*,*">
                         <Border Grid.ColumnSpan="2" Background="{DynamicResource SystemAccentColor}">
@@ -84,7 +85,7 @@
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
                                         <controls:SymbolIcon Symbol="Restore" />
-                                        <TextBlock Text="还原" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_AppearanceSettings_Restore}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
@@ -92,14 +93,14 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="自定义主页" Description="您可以选择主页展示的内容。">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePage}" Description="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePageDescription}">
                 <StackPanel Spacing="3">
-                    <CheckBox Content="统计信息" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics" />
-                    <CheckBox Content="用户信息" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo" />
-                    <CheckBox Content="系统信息" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo" />
-                    <CheckBox Content="软件公告" x:Name="ShowSoftwareNotice"
+                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_Statistics}" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics" />
+                    <CheckBox Content="{x:Static languages:Languages.Text_UserCenter_UserInfo}" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo" />
+                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemInfo}" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo" />
+                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SoftwareNotice}" x:Name="ShowSoftwareNotice"
                               IsCheckedChanged="UpdateVisibilityForSoftwareNotice" />
-                    <CheckBox Content="系统公告" x:Name="ShowSystemNotice"
+                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemNotice}" x:Name="ShowSystemNotice"
                               IsCheckedChanged="UpdateVisibilityForSystemNotice" />
                 </StackPanel>
             </controls:SettingsExpander>
@@ -151,7 +152,7 @@
                 <controls:SettingsExpanderItem.Footer>
                     <WrapPanel ItemSpacing="5">
                         <Button Content="{Binding Footer}" Command="{Binding SelectBackgroundCommand}" />
-                        <Button Content="清除所有背景" Command="{Binding ClearFileCommand}" />
+                        <Button Content="{x:Static languages:Languages.Text_AppearanceSettings_ClearAllBackgrounds}" Command="{Binding ClearFileCommand}" />
                     </WrapPanel>
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>

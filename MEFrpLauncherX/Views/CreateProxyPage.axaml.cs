@@ -10,6 +10,7 @@ using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Models;
@@ -68,7 +69,7 @@ public partial class CreateProxyPage : UserControl
                     {
                         if (_createProxyPageViewModel.selectedNode.IsOverloaded)
                         {
-                            await MessageBox.ShowAsync("节点已过载，无法再创建隧道", "", MessageBoxIcon.Error);
+                            await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, "", MessageBoxIcon.Error);
                             _index--;
                             break;
                         }
@@ -78,7 +79,7 @@ public partial class CreateProxyPage : UserControl
                     }
                     else
                     {
-                        await MessageBoxManager.GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, "请选择一个节点").ShowAsync();
+                        await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, Languages.Text_CreateProxy_SelectANode).ShowAsync();
                         _index--;
                     }
                 }
@@ -89,7 +90,7 @@ public partial class CreateProxyPage : UserControl
 
                     if (string.IsNullOrEmpty(selectedArea))
                     {
-                        await MessageBoxManager.GetMessageBoxStandard("提示", "请在地图上选择一个区域").ShowAsync();
+                        await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_SelectAreaOnMap).ShowAsync();
                         _index--;
                         break;
                     }
@@ -106,7 +107,7 @@ public partial class CreateProxyPage : UserControl
 
                         if (!candidates.Any())
                         {
-                            await MessageBox.ShowAsync($"在“{selectedArea}”区域未找到可用节点，请手动选择", "提示", ButtonEnum.Ok);
+                            await MessageBox.ShowAsync(string.Format(Languages.Text_CreateProxy_NoNodesInAreaFormat, selectedArea), Languages.Caption_Hint, ButtonEnum.Ok);
                             _index--;
                             break;
                         }
@@ -156,7 +157,7 @@ public partial class CreateProxyPage : UserControl
                         var chosenCheck = candidates.First();
                         if (chosenCheck.IsOverloaded)
                         {
-                            await MessageBox.ShowAsync("节点已过载，无法再创建隧道", buttons: [TaskDialogButton.OKButton]);
+                            await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [TaskDialogButton.OKButton]);
                             _index--;
                             break;
                         }
@@ -167,7 +168,7 @@ public partial class CreateProxyPage : UserControl
                     {
                         // 若未加载节点，回退到加载页
                         await _createProxyPageViewModel.LoadDataAsync();
-                        await MessageBoxManager.GetMessageBoxStandard("提示", "正在加载节点，请重试").ShowAsync();
+                        await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_LoadingNodesRetry).ShowAsync();
                         _index--;
                     }
                 }
@@ -230,7 +231,7 @@ public partial class CreateProxyPage : UserControl
 
                                 if (!candidates.Any())
                                 {
-                                    await MessageBoxManager.GetMessageBoxStandard("提示", "未找到满足条件的节点，请手动选择").ShowAsync();
+                                    await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_NoMatchingNodes).ShowAsync();
                                     _index--;
                                     break;
                                 }
@@ -248,7 +249,7 @@ public partial class CreateProxyPage : UserControl
 
                                 if (chosen.IsOverloaded)
                                 {
-                                    await MessageBox.ShowAsync("节点已过载，无法再创建隧道", buttons: [TaskDialogButton.OKButton]);
+                                    await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [TaskDialogButton.OKButton]);
                                     _index--;
                                     break;
                                 }
@@ -270,7 +271,7 @@ public partial class CreateProxyPage : UserControl
                             {
                                 // 若未加载节点，回退到加载页
                                 await _createProxyPageViewModel.LoadDataAsync();
-                                await MessageBoxManager.GetMessageBoxStandard("提示", "正在加载节点，请重试").ShowAsync();
+                                await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_LoadingNodesRetry).ShowAsync();
                                 _index--;
                             }
                         }
@@ -315,7 +316,7 @@ public partial class CreateProxyPage : UserControl
 
                                     if (!candidates.Any())
                                     {
-                                        await MessageBoxManager.GetMessageBoxStandard("提示", "未找到满足条件的节点，请手动选择")
+                                        await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_NoMatchingNodes)
                                             .ShowAsync();
                                         _index--;
                                         break;
@@ -334,7 +335,7 @@ public partial class CreateProxyPage : UserControl
 
                                     if (chosen.IsOverloaded)
                                     {
-                                        await MessageBox.ShowAsync("节点已过载，无法再创建隧道",
+                                        await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded,
                                             buttons: [TaskDialogButton.OKButton]);
                                         _index--;
                                         break;
@@ -358,7 +359,7 @@ public partial class CreateProxyPage : UserControl
                                 {
                                     // 若未加载节点，回退到加载页
                                     await _createProxyPageViewModel.LoadDataAsync();
-                                    await MessageBoxManager.GetMessageBoxStandard("提示", "正在加载节点，请重试").ShowAsync();
+                                    await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_LoadingNodesRetry).ShowAsync();
                                     _index--;
                                 }
                             }
@@ -398,7 +399,7 @@ public partial class CreateProxyPage : UserControl
 
                                     if (!candidates.Any())
                                     {
-                                        await MessageBoxManager.GetMessageBoxStandard("提示", "未找到满足条件的节点，请手动选择")
+                                        await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_NoMatchingNodes)
                                             .ShowAsync();
                                         _index--;
                                         break;
@@ -417,7 +418,7 @@ public partial class CreateProxyPage : UserControl
 
                                     if (chosen.IsOverloaded)
                                     {
-                                        await MessageBox.ShowAsync("节点已过载，无法再创建隧道",
+                                        await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded,
                                             buttons: [TaskDialogButton.OKButton]);
                                         _index--;
                                         break;
@@ -441,7 +442,7 @@ public partial class CreateProxyPage : UserControl
                                 {
                                     // 若未加载节点，回退到加载页
                                     await _createProxyPageViewModel.LoadDataAsync();
-                                    await MessageBoxManager.GetMessageBoxStandard("提示", "正在加载节点，请重试").ShowAsync();
+                                    await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Hint, Languages.Text_CreateProxy_LoadingNodesRetry).ShowAsync();
                                     _index--;
                                 }
                             }
@@ -459,14 +460,14 @@ public partial class CreateProxyPage : UserControl
 
                 if (await OnCreateProxy?.Invoke()!)
                 {
-                    Growl.Success("成功创建隧道");
+                    Growl.Success(Languages.Text_CreateProxy_CreateSuccess);
                     if (_targetService == "rdp")
                     {
                         _targetRequest.proxyType = _targetRequest.proxyType.ToLower() == "tcp" ? "udp" : "tcp";
                         _targetRequest.proxyName = $"{_targetRequest.proxyName}({_targetRequest.proxyType.ToUpper()})";
                         await MEFrpApiConverter.PostNewTunnelAsync(JsonSerializer.Serialize(_targetRequest,
                             App.AppJsonSerializerContext.CreateProxyRequestData));
-                        Growl.Success($"成功创建同名{_targetRequest.proxyType.ToUpper()}隧道");
+                        Growl.Success(string.Format(Languages.Text_CreateProxy_CreateSameNameSuccessFormat, _targetRequest.proxyType.ToUpper()));
                     }
 
                     _createProxyPageViewModel.CurrentPage = new OperationSuccess();
@@ -474,7 +475,7 @@ public partial class CreateProxyPage : UserControl
                 }
                 else
                 {
-                    Growl.Error("创建隧道失败");
+                    Growl.Error(Languages.Text_CreateProxy_CreateFailed);
                 }
 
                 _index--;

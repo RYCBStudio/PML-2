@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Media.Imaging;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Views;
@@ -117,7 +118,7 @@ public class ThemeService
             Directory.CreateDirectory(themeDir);
             PMLAHelper.UnpackPmla(downloadPath, themeDir, (progress, status) =>
             {
-                MainWindowViewModel.Instance.AppMessage = $"正在解压主题：{progress}%";
+                MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Themes_UnpackingFormat, progress);
                 MainWindowViewModel.Instance.Progress = progress;
             });
             File.Delete(downloadPath); // 删除临时 zip 文件

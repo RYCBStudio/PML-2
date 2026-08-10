@@ -1,15 +1,16 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
              xmlns:local="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="300"
              x:Class="MEFrpLauncherX.Controls.ConfigSelect"
              x:DataType="local:ConfigSelect">
     <Grid RowDefinitions="Auto, Auto, *, Auto" RowSpacing="3" Margin="8">
-        <TextBlock Text="{Binding Count, StringFormat='匹配项: {0}'}" />
+        <TextBlock Text="{Binding Count, StringFormat={x:Static languages:Languages.Text_ConfigSelect_Matches}}" />
         <DockPanel Grid.Row="1" DockPanel.Dock="Top" HorizontalSpacing="3">
             <StackPanel Orientation="Horizontal" Spacing="3" DockPanel.Dock="Right">
                 <Button x:Name="PrevBtn" Click="PrevFile">
@@ -28,7 +29,7 @@
         <Panel Grid.Row="2">
             <controls:InfoBadge HorizontalAlignment="Right" VerticalAlignment="Top">
                 <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}" Glyph="只读" />
+                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}" Glyph="{x:Static languages:Languages.Text_Global_ReadOnly}" />
                 </controls:InfoBadge.IconSource>
             </controls:InfoBadge>
             <avaloniaEdit:TextEditor FontFamily="{StaticResource Jbm}" IsReadOnly="True" x:Name="ConfigPresenter"

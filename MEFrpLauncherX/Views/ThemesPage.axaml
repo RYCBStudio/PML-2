@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:MEFrpLauncherX.ViewModels"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -13,30 +14,30 @@
     </Design.DataContext>
 
     <StackPanel Margin="10" Spacing="10" Classes="animated-intro">
-        <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="主题设置" />
+        <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_Themes_Title}" />
 
         <TabControl Classes="compact">
-            <TabItem Header="本地主题">
+            <TabItem Header="{x:Static languages:Languages.Text_Themes_LocalThemes}">
                 <Grid RowDefinitions="Auto, *">
                     <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
                         <controls:CommandBar.PrimaryCommands>
-                            <controls:CommandBarButton IconSource="Refresh" Label="刷新"
+                            <controls:CommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                        Command="{Binding RefreshLocalThemesCommand}" />
-                            <controls:CommandBarButton IconSource="Add" Label="新建"
+                            <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_Themes_New}"
                                                        Command="{Binding AddLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Checkmark" Label="应用所选"
+                            <controls:CommandBarButton IconSource="Checkmark" Label="{x:Static languages:Languages.Text_Themes_ApplySelected}"
                                                        Command="{Binding ApplyLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Edit" Label="编辑所选"
+                            <controls:CommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_Themes_EditSelected}"
                                                        Command="{Binding EditLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Delete" Label="删除所选"
+                            <controls:CommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_Themes_DeleteSelected}"
                                                        Command="{Binding DeleteLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="OpenFile" Label="打包所选"
+                            <controls:CommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_Themes_PackageSelected}"
                                                        Command="{Binding PackageLocalThemeCommand}" />
-                            <controls:CommandBarButton Label="导入" IconSource="Import"
+                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_Import}" IconSource="Import"
                                                        Command="{Binding ImportThemeCommand}" />
-                            <controls:CommandBarButton Label="恢复默认" IconSource="Undo"
+                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_RestoreDefault}" IconSource="Undo"
                                                        Command="{Binding RestoreDefaultThemeCommand}" />
-                            <controls:CommandBarButton Label="访问文档" IconSource="Help"
+                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_OpenDocs}" IconSource="Help"
                                                        Command="{Binding OpenDocumentationCommand}" />
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>
@@ -69,7 +70,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="在线主题">
+            <TabItem Header="{x:Static languages:Languages.Text_Themes_OnlineThemes}">
                 <Grid RowDefinitions="Auto, Auto, *">
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10">
                         <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoadingOnlineThemes}" Width="100" />
@@ -77,14 +78,14 @@
                     </StackPanel>
                     <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
                         <controls:CommandBar.PrimaryCommands>
-                            <controls:CommandBarButton Label="刷新" IconSource="Refresh"
+                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
                                                        Command="{Binding FetchOnlineThemesCommand}"
                                                        IsEnabled="{Binding !IsLoadingOnlineThemes}" />
-                            <controls:CommandBarButton Label="下载所选" IconSource="Download"
+                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_DownloadSelected}" IconSource="Download"
                                                        Command="{Binding DownloadThemeCommand}"
                                                        IsEnabled="{Binding !IsDownloading}" />
                             <controls:CommandBarElementContainer>
-                                <TextBox Watermark="搜索..." MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
+                                <TextBox Watermark="{x:Static languages:Languages.Text_Themes_Search}" MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
                             </controls:CommandBarElementContainer>
                         </controls:CommandBar.PrimaryCommands>
                     </controls:CommandBar>

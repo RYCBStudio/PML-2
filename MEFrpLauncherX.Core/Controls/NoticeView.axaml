@@ -1,10 +1,11 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Core.Controls"
              xmlns:MarkdownAIRender="https://github.com/AIDotNet/Markdown.AIRender"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages"
              mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="300"
              x:Class="MEFrpLauncherX.Core.Controls.NoticeView"
              x:DataType="core:NoticeContent">
@@ -15,7 +16,7 @@
                    DockPanel.Dock="Right" />
             <Label Content="{Binding Summary}" />
         </DockPanel>
-        <TextBlock Grid.Row="1" Text="{Binding Date, StringFormat='发布日期: {0}'}" />
+        <TextBlock Grid.Row="1" Text="{Binding Date, StringFormat={x:Static languages:Languages.Text_Notice_PublishDate}}" />
         <MarkdownAIRender:MarkdownRender Grid.Row="2" Value="{Binding ContentOfNotice}" x:Name="MarkdownRender" />
     </Grid>
 </UserControl>

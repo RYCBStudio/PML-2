@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -102,7 +103,7 @@ public class MainPageFrameViewModel : ViewModelBase
     }
 
     // 静态页面实例
-    public static AboutPage AboutPage
+    public static AboutPage? AboutPage
     {
         get;
         set;

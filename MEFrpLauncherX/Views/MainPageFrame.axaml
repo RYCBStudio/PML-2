@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -19,28 +20,28 @@
                                  Background="Transparent">
             <controls:NavigationView.MenuItems>
                 <controls:NavigationViewItem x:Name="HomeBtn" Tag="Home" IsSelected="True" IconSource="Home"
-                                             Content="主页" />
+                                             Content="{x:Static languages:Languages.Text_Nav_Home}" />
 
                 <controls:NavigationViewItem
-                    x:Name="CreateProxyBtn" Tag="Create" IconSource="Add" Content="创建隧道" />
+                    x:Name="CreateProxyBtn" Tag="Create" IconSource="Add" Content="{x:Static languages:Languages.Text_Nav_CreateProxy}" />
                 <controls:NavigationViewItem Tag="Manage"
-                                             x:Name="ManageProxyPageBtn" IconSource="AllApps" Content="隧道管理" />
+                                             x:Name="ManageProxyPageBtn" IconSource="AllApps" Content="{x:Static languages:Languages.Text_Nav_ManageProxy}" />
                 <controls:NavigationViewItem Tag="Monitoring"
-                                             x:Name="NodesMonitoringPageBtn" Content="节点监控">
+                                             x:Name="NodesMonitoringPageBtn" Content="{x:Static languages:Languages.Text_Nav_NodesMonitoring}">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;"
                                                  FontSize="16" />
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="User"
-                                             x:Name="UserCenterPageBtn" IconSource="ContactInfo" Content="用户中心" />
+                                             x:Name="UserCenterPageBtn" IconSource="ContactInfo" Content="{x:Static languages:Languages.Text_Nav_UserCenter}" />
                 <controls:NavigationViewItemSeparator />
                 <controls:NavigationViewItem Tag="Settings"
-                                             x:Name="SettingsPageBtn" IconSource="Setting" Content="设置" />
+                                             x:Name="SettingsPageBtn" IconSource="Setting" Content="{x:Static languages:Languages.Text_Nav_Settings}" />
                 <controls:NavigationViewItem Tag="Theme"
-                                             x:Name="ThemesPageBtn" IconSource="Library" Content="主题" />
+                                             x:Name="ThemesPageBtn" IconSource="Library" Content="{x:Static languages:Languages.Text_Nav_Themes}" />
                 <controls:NavigationViewItem Tag="Plugin" 
-                                             x:Name="PluginListPageBtn" Content="插件">
+                                             x:Name="PluginListPageBtn" Content="{x:Static languages:Languages.Text_Nav_Plugins}">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -48,7 +49,7 @@
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="About"
-                                             x:Name="AboutPageBtn" Content="关于">
+                                             x:Name="AboutPageBtn" Content="{x:Static languages:Languages.Text_Nav_About}">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -56,7 +57,7 @@
                     </controls:NavigationViewItem.IconSource>
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItem Tag="Update"
-                                             x:Name="UpdatePageBtn" Content="更新">
+                                             x:Name="UpdatePageBtn" Content="{x:Static languages:Languages.Text_Nav_Update}">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
                             FontFamily="{StaticResource IconFont}"
@@ -65,7 +66,7 @@
                 </controls:NavigationViewItem>
                 <controls:NavigationViewItemSeparator />
                 <controls:NavigationViewItem Tag="Terminal"
-                                             x:Name="TerminalPageBtn" Content="终端">
+                                             x:Name="TerminalPageBtn" Content="{x:Static languages:Languages.Text_Nav_Terminal}">
                     <controls:NavigationViewItem.IconSource>
                         <controls:FontIconSource
                             FontFamily="{StaticResource IconFont}"

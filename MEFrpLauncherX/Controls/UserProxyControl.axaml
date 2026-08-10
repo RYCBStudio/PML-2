@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +6,7 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.UserProxyControl"
              x:CompileBindings="True"
@@ -37,7 +38,7 @@
                         <TextBlock
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Text="使用配置文件运行" />
+                            Text="{x:Static languages:Languages.Text_UserProxy_LaunchViaConfig}" />
                     </StackPanel>
                 </Button>
             </controls1:CommandBarElementContainer>
@@ -57,7 +58,7 @@
                         <TextBlock
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Text="编辑" />
+                            Text="{x:Static languages:Languages.Text_Global_Edit}" />
                     </StackPanel>
                 </Button>
             </controls1:CommandBarElementContainer>
@@ -99,7 +100,7 @@
                             <TextBlock
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="强制下线" />
+                                Text="{x:Static languages:Languages.Text_UserProxy_ForceOffline}" />
                         </StackPanel>
                     </Button>
                     <Button
@@ -117,7 +118,7 @@
                             <TextBlock
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="删除" />
+                                Text="{x:Static languages:Languages.Text_Global_Delete}" />
                         </StackPanel>
                     </Button>
                 </WrapPanel>
@@ -147,7 +148,7 @@
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
-                                    Text="生成配置文件" />
+                                    Text="{x:Static languages:Languages.Text_UserProxy_GenerateConfig}" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -189,7 +190,7 @@
                                  IsVisible="{Binding isBanned}">
                 <controls1:InfoBadge.IconSource>
                     <controls1:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
-                                              Glyph="已封禁" />
+                                              Glyph="{x:Static languages:Languages.Text_UserProxy_Banned}" />
                 </controls1:InfoBadge.IconSource>
             </controls1:InfoBadge>
             <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7" IsVisible="{Binding IsLoading}" />
@@ -296,7 +297,7 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             IsVisible="{Binding Detailed}"
-                            Text="启动隧道" />
+                            Text="{x:Static languages:Languages.Text_UserProxy_LaunchTunnel}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -317,7 +318,7 @@
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             IsVisible="{Binding Detailed}"
-                            Text="停止隧道" />
+                            Text="{x:Static languages:Languages.Text_UserProxy_StopTunnel}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -335,7 +336,7 @@
                             <TextBlock
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="详细信息"
+                                Text="{x:Static languages:Languages.Text_UserProxy_DetailedInfo}"
                                 IsVisible="{Binding Detailed}" />
                         </StackPanel>
                     </Button.Content>
@@ -356,7 +357,7 @@
                         <TextBlock
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Text="禁用"
+                            Text="{x:Static languages:Languages.Text_Global_Disable}"
                             IsVisible="{Binding Detailed}" />
                     </StackPanel>
                 </Button>
@@ -376,7 +377,7 @@
                         <TextBlock
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Text="启用"
+                            Text="{x:Static languages:Languages.Text_Global_Enable}"
                             IsVisible="{Binding Detailed}" />
                     </StackPanel>
                 </Button>
@@ -395,7 +396,7 @@
                             <TextBlock
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Center" IsVisible="{Binding Detailed}"
-                                Text="更多选项" />
+                                Text="{x:Static languages:Languages.Text_UserProxy_MoreOptions}" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
@@ -414,7 +415,7 @@
                             <TextBlock
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Center" IsVisible="{Binding Detailed}"
-                                Text="复制地址" />
+                                Text="{x:Static languages:Languages.Text_UserProxy_CopyAddress}" />
                         </StackPanel>
                     </Button.Content>
                 </Button>

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -123,7 +123,7 @@ public partial class EditProxyWindow : Window
 
         var cd = new ContentDialog
         {
-            Title = "编辑响应头",
+            Title = Languages.Text_CreateProxy_EditResponseHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -153,7 +153,7 @@ public partial class EditProxyWindow : Window
 
         var cd = new ContentDialog
         {
-            Title = "编辑路径",
+            Title = Languages.Text_CreateProxy_EditLocations,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -229,7 +229,7 @@ public partial class EditProxyWindow : Window
 
         var cd = new ContentDialog
         {
-            Title = "编辑请求头",
+            Title = Languages.Text_CreateProxy_EditRequestHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -262,7 +262,7 @@ public partial class EditProxyWindow : Window
 
         var cd = new ContentDialog
         {
-            Title = "编辑绑定域名",
+            Title = Languages.Text_CreateProxy_EditDomains,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -349,7 +349,7 @@ public partial class EditProxyWindow : Window
             hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
             crtPath = _type.ToLower() == "https" ? SslPathBox.Text : string.Empty,
             keyPath = _type.ToLower() == "https" ? SslKeyBox.Text : string.Empty,
-            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains("不启用")
+            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains(Languages.Text_CreateProxy_NotEnabled)
                 ? ""
                 : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
             useEncryption = EnableCryptoCBox.IsChecked ?? false,

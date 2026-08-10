@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -111,13 +111,13 @@ public partial class SettingsPage : UserControl
         };
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
-            NoSenseValidation.Content = "无感验证";
-            BrowserValidation.Content = "(推荐) 浏览器验证";
+            NoSenseValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_Implicit;
+            BrowserValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_ExplicitRecommended;
         }
         else
         {
-            NoSenseValidation.Content = "(推荐) 无感验证";
-            BrowserValidation.Content = "浏览器验证";
+            NoSenseValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_ImplicitRecommended;
+            BrowserValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_Explicit;
         }
     }
 
@@ -253,14 +253,16 @@ public partial class SettingsPage : UserControl
             }
 
             // 可以添加其他操作系统支持
-            Growl.Success(isAutoStartEnabled ? "添加开机启动项成功" : "删除开机启动项成功");
+            Growl.Success(isAutoStartEnabled
+                ? Core.Languages.Languages.Text_Settings_AutoStartAdded
+                : Core.Languages.Languages.Text_Settings_AutoStartRemoved);
         }
         catch (Exception ex)
         {
             // 记录错误并提供用户反馈
             Core.App.CurrentLogger.Log($"设置开机自启动失败: {ex.Message}");
             Core.App.CurrentLogger.Error(ex);
-            ShowErrorMessage("无法更改开机自启动设置");
+            ShowErrorMessage(Core.Languages.Languages.Text_Settings_AutoStartChangeFailed);
 
             // 回滚UI状态
             checkBox.IsChecked = !isAutoStartEnabled;
@@ -540,9 +542,9 @@ public class ValidationModeConverter : IValueConverter
 
         return i switch
         {
-            0 => "在软件内验证, 无需其他操作, 对于x64系列处理器友好, 对于Arm架构处理器可能会耗费大量时间。",
-            1 => "通过浏览器打开验证网页, 并手动复制验证结果, 对于Arm处理器友好。",
-            _ => "未知方式"
+            0 => Core.Languages.Languages.Text_Settings_Captcha_ImplicitDesc,
+            1 => Core.Languages.Languages.Text_Settings_Captcha_ExplicitDesc,
+            _ => Core.Languages.Languages.Text_Settings_Captcha_UnknownMode
         };
     }
 

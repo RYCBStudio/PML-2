@@ -1,5 +1,7 @@
 namespace MEFrpLauncherX.Core.Helpers;
 
+using MEFrpLauncherX.Core.Languages;
+
 public static class NodeLocationMapper
 {
     public static readonly List<string> ChineseProvinces =
@@ -58,6 +60,6 @@ public static class NodeLocationMapper
         foreach (var city in CityCoord.Keys)
             if (nodeName.Contains(city))
                 return city;
-        return "未知";
+        return Languages.Text_Converters_Unknown;
     }
 }

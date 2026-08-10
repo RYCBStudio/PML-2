@@ -1,4 +1,5 @@
-﻿using System.Text;
+using System.Text;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Core;
 using YamlDotNet.Serialization;
 
@@ -16,7 +17,7 @@ public class PluginPreprocessor
             return new PluginDefinition()
             {
                 Id = "错误",
-                Name = "无法找到文件"
+                Name = Languages.Text_Plugin_FileNotFound
             };
         // 注册函数
         foreach (var kv in raw.Functions)
@@ -44,7 +45,7 @@ public class PluginPreprocessor
             return new RawPlugin()
             {
                 Id = "错误",
-                Name = "无法找到文件",
+                Name = Languages.Text_Plugin_FileNotFound,
             };
         }
         catch (IOException e)
@@ -52,7 +53,7 @@ public class PluginPreprocessor
             return new RawPlugin()
             {
                 Id = "错误",
-                Name = "无法读取文件",
+                Name = Languages.Text_Plugin_CannotReadFile,
             };
         }
         catch (Exception e)
@@ -60,7 +61,7 @@ public class PluginPreprocessor
             return new RawPlugin()
             {
                 Id = "错误",
-                Name = "读取文件时发生错误",
+                Name = Languages.Text_Plugin_ReadFileError,
             };
         }
 

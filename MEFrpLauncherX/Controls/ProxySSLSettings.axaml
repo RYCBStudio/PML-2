@@ -1,49 +1,50 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.ProxySSLSettings">
     <StackPanel>
-        <controls:SettingsExpander Header="隧道配置文件" Description="配置https隧道的SSL证书需要使用配置文件启动。">
+        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_SSL_ConfigFile}" Description="{x:Static languages:Languages.Text_SSL_ConfigFileDescription}">
             <controls:SettingsExpander.Footer>
                 <StackPanel Orientation="Horizontal" Spacing="5">
-                    <TextBox x:Name="ProxyCfgBox" Watermark="隧道配置文件" />
+                    <TextBox x:Name="ProxyCfgBox" Watermark="{x:Static languages:Languages.Text_SSL_ConfigFile}" />
                     <Button Name="ProxyCfg" Content="..." Click="OpenFile" />
                 </StackPanel>
             </controls:SettingsExpander.Footer>
         </controls:SettingsExpander>
-        <controls:SettingsExpander IsExpanded="True" Header="http(s)隧道设置">
-            <controls:SettingsExpanderItem Content="代理名称" Description="代理名称是此隧道服务的唯一标识符，用于区分不同的代理配置。">
+        <controls:SettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_HttpTunnelSettings}">
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_ProxyName}" Description="{x:Static languages:Languages.Text_SSL_ProxyNameDescription}">
                 <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="ProxyNameBox" Watermark="代理名称" />
+                    <TextBox x:Name="ProxyNameBox" Watermark="{x:Static languages:Languages.Text_SSL_ProxyName}" />
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="访问域名" Description="设置隧道的访问域名。">
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_Domain}" Description="{x:Static languages:Languages.Text_SSL_DomainDescription}">
                 <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="DomainBox" Watermark="访问域名" />
+                    <TextBox x:Name="DomainBox" Watermark="{x:Static languages:Languages.Text_SSL_Domain}" />
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="本地地址" Description="用于穿透的本地地址。">
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_LocalAddress}" Description="{x:Static languages:Languages.Text_SSL_LocalAddressDescription}">
                 <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="LocalIpBox" Watermark="本地地址, 通常为x.x.x.x:xxx" />
+                    <TextBox x:Name="LocalIpBox" Watermark="{x:Static languages:Languages.Text_SSL_LocalAddressWatermark}" />
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>
         </controls:SettingsExpander>
-        <controls:SettingsExpander IsExpanded="True" Header="SSL配置">
-            <controls:SettingsExpanderItem Content="证书文件" Description="用于https隧道的SSL证书文件。">
+        <controls:SettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_Title}">
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_CertFile}" Description="{x:Static languages:Languages.Text_SSL_CertFileDescription}">
                 <controls:SettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBox x:Name="CertFileBox" Watermark="证书文件, 后缀名一般为.crt或.pem" />
+                        <TextBox x:Name="CertFileBox" Watermark="{x:Static languages:Languages.Text_SSL_CertFileWatermark}" />
                         <Button Name="CertFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
                 </controls:SettingsExpanderItem.Footer>
             </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="私钥文件" Description="用于https隧道的私钥文件。">
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_KeyFile}" Description="{x:Static languages:Languages.Text_SSL_KeyFileDescription}">
                 <controls:SettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBox x:Name="KeyFileBox" Watermark="私钥文件, 后缀名一般为.key" />
+                        <TextBox x:Name="KeyFileBox" Watermark="{x:Static languages:Languages.Text_SSL_KeyFileWatermark}" />
                         <Button Name="KeyFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
                 </controls:SettingsExpanderItem.Footer>

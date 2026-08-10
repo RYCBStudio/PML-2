@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Controls;
@@ -50,23 +51,23 @@ public partial class ProxySSLSettings : UserControl
 
         IReadOnlyList<FilePickerFileType> filterForCfg =
         [
-            new("TOML文件") { Patterns = ["*.toml"] }, new("JSON文件") { Patterns = ["*.json"] },
-            new("INI文件") { Patterns = ["*.ini"] }, new("YAML文件") { Patterns = ["*.yaml", "*.yml"] },
+            new(Languages.Text_ConfigPreviewer_TomlFile) { Patterns = ["*.toml"] }, new(Languages.Text_ConfigPreviewer_JsonFile) { Patterns = ["*.json"] },
+            new(Languages.Text_ConfigPreviewer_IniFile) { Patterns = ["*.ini"] }, new(Languages.Text_ConfigPreviewer_YamlFile) { Patterns = ["*.yaml", "*.yml"] },
             FilePickerFileTypes.All
         ];
         IReadOnlyList<FilePickerFileType> filterForCert =
         [
-            new("证书文件") { Patterns = ["*.crt", "*.pem"] },
+            new(Languages.Text_ProxySSL_CertFiles) { Patterns = ["*.crt", "*.pem"] },
             FilePickerFileTypes.All
         ];
         IReadOnlyList<FilePickerFileType> filterForKey =
         [
-            new("私钥文件") { Patterns = ["*.key", "*.pem"] },
+            new(Languages.Text_ProxySSL_KeyFiles) { Patterns = ["*.key", "*.pem"] },
             FilePickerFileTypes.All
         ];
         var cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "请选择文件",
+            Title = Languages.Text_ProxySSL_SelectFileTitle,
             AllowMultiple = false,
             FileTypeFilter = btn.Name switch
             {

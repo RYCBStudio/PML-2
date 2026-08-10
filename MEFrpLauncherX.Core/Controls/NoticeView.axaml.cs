@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 
@@ -44,9 +44,9 @@ public class TypeToReadableChineseConverter : IValueConverter
         return value is string _type
             ? _type.ToLower() switch
             {
-                "maintenance" => "维护",
-                "notice" => "公告",
-                "update" => "新版本",
+                "maintenance" => Languages.Languages.Text_Notice_TypeMaintenance,
+                "notice" => Languages.Languages.Text_Notice_TypeNotice,
+                "update" => Languages.Languages.Text_Notice_TypeUpdate,
                 _ => _type
             }
             : value;

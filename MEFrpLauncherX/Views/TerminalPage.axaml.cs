@@ -170,13 +170,10 @@ public partial class TerminalPage : UserControl
         {
             var captchaResult = await Dispatcher.UIThread.InvokeAsync(async () =>
             {
-                var iw = new InputControl("如不清楚，留空即可；输入cancel退出\n可用变量：" +
-                                          "\n{mefrpc} - ME Frp Client可执行文件目录(包括文件名)" +
-                                          "\n{mefrpcp} - ME Frp Client可执行文件目录" +
-                                          "\n{startup} - 程序启动目录");
+                var iw = new InputControl(Languages.Text_Terminal_InputPrompt);
                 var cd = new ContentDialog
                 {
-                    Title = "输入命令行及参数",
+                    Title = Languages.Text_Terminal_InputTitle,
                     Content = iw,
                     PrimaryButtonText = Languages.Text_Global_Confirm,
                     DefaultButton = ContentDialogButton.Primary,
@@ -198,7 +195,7 @@ public partial class TerminalPage : UserControl
             {
                 newTab = new TabItem
                 {
-                    Header = "控制台" + MainTabCtrl.Items.Count,
+                    Header = string.Format(Languages.Text_Terminal_ConsoleTabFormat, MainTabCtrl.Items.Count),
                     Content = new TerminalControl()
                 };
             }
@@ -206,7 +203,7 @@ public partial class TerminalPage : UserControl
             {
                 newTab = new TabItem
                 {
-                    Header = "控制台" + MainTabCtrl.Items.Count,
+                    Header = string.Format(Languages.Text_Terminal_ConsoleTabFormat, MainTabCtrl.Items.Count),
                     Content = new TerminalView
                     {
                         Process = CliUtils.GetCliWithArguments(ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty()
@@ -265,7 +262,9 @@ public partial class TerminalPage : UserControl
         {
             newTab = new TabItem
             {
-                Header = consoleTitle.IsNullOrEmpty() ? "控制台" + MainTabCtrl.Items.Count : consoleTitle,
+                Header = consoleTitle.IsNullOrEmpty()
+                    ? string.Format(Languages.Text_Terminal_ConsoleTabFormat, MainTabCtrl.Items.Count)
+                    : consoleTitle,
                 Content = new TerminalView
                 {
                     Process = CliUtils.GetCliWithArguments(ConfigManager.CurrentConfig.TerminalCli.IsNullOrEmpty()
@@ -322,8 +321,8 @@ public partial class TerminalPage : UserControl
             if (newTab.Content is TerminalControl terminal)
             {
                 await terminal.SendCommandAsync("cd /" + Path.Combine("opt", "pml-2"));
-                await terminal.SendCommandAsync("""
-                                                echo -e "\e[33m解压文件...\e[0m"
+                await terminal.SendCommandAsync($"""
+                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                 """);
                 await terminal.SendCommandAsync("tar -xvf " +
                                                 Path.Combine(Core.App.StartupPath, "bin",
@@ -340,8 +339,8 @@ public partial class TerminalPage : UserControl
             else if (newTab.Content is TerminalView terminal1)
             {
                 await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + " \r");
-                await terminal1.SendToPtyAsync(""" 
-                                               echo -e "\e[33m解压文件...\e[0m" 
+                await terminal1.SendToPtyAsync($""" 
+                                               echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                """ + " \r");
                 await terminal1.SendToPtyAsync("tar -xvf " +
                                                Path.Combine(Core.App.StartupPath, "bin",
@@ -363,8 +362,8 @@ public partial class TerminalPage : UserControl
             if (newTab.Content is TerminalControl terminal)
             {
                 await terminal.SendCommandAsync("cd " + Core.App.StartupPath);
-                await terminal.SendCommandAsync("""
-                                                echo -e "\e[33m解压文件...\e[0m"
+                await terminal.SendCommandAsync($"""
+                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                 """);
                 await terminal.SendCommandAsync("tar -xvf " +
                                                 Path.Combine(Core.App.StartupPath, "bin",
@@ -381,8 +380,8 @@ public partial class TerminalPage : UserControl
             else if (newTab.Content is TerminalView terminal1)
             {
                 await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + " \r");
-                await terminal1.SendToPtyAsync(""" 
-                                               echo -e "\e[33m解压文件...\e[0m" 
+                await terminal1.SendToPtyAsync($""" 
+                                               echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                """ + " \r");
                 await terminal1.SendToPtyAsync("tar -xvf " +
                                                Path.Combine(Core.App.StartupPath, "bin",

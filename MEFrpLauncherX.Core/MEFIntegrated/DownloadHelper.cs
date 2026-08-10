@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
@@ -29,13 +29,13 @@ public partial class DownloadHelper
     private readonly Visual? VisualRoot;
 
     private string content =
-        $"请稍等，正在下载文件\n文件名:{Environment.OSVersion.Platform switch {
+        string.Format(Languages.Languages.Text_Download_ContentHeaderFormat, Environment.OSVersion.Platform switch {
             PlatformID.Win32NT => "mefrpc-windows.exe",
             PlatformID.Unix => OperatingSystem.IsMacOS() ? "mefrpc-darwin.tar" : "mefrpc-unix.tar",
             PlatformID.MacOSX => "mefrpc-darwin.tar",
-            _ => "未知"
-        }}" +
-        $"\n当前线路: {{1}}\n下载速度: {{0}}\n------------------\nJOKE_PLACEHOLDER\n------------------";
+            _ => Languages.Languages.Text_Download_UnknownPlatform
+        }) +
+        Languages.Languages.Text_Download_ContentFooter;
 
     private string currentJoke; // 当前显示的笑话
 
@@ -89,10 +89,10 @@ public partial class DownloadHelper
         };
         td = new TaskDialog
         {
-            Title = "PML Ⅱ 正在下载文件",
+            Title = Languages.Languages.Text_Download_Title,
             ShowProgressBar = true,
             IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-            SubHeader = "正在下载ME Frp客户端",
+            SubHeader = Languages.Languages.Text_Download_SubHeader,
             Content =
                 content,
             Buttons =
@@ -362,7 +362,7 @@ public partial class DownloadHelper
                     }
 */
                     // All done, auto close the dialog here
-                    td.Content = "正在安装新版MEFrpClient";
+                    td.Content = Languages.Languages.Text_Download_InstallingClient;
                     new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
                         OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp")).MoveTo(
                         Path.Combine(AppContext.BaseDirectory, "bin",

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +13,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.Views.Appearance;
@@ -186,12 +187,12 @@ public class AppearanceSettingsViewModel : ViewModelBase
         [
             new RecentImagesSettingsItem
             {
-                Header = "最近的图片"
+                Header = Languages.Text_Appearance_RecentImages
             },
 
             new FooterButtonSettingsItem
             {
-                Header = "Choose a photo"
+                Header = Languages.Text_Appearance_ChoosePhoto
             }
         ];
     }
@@ -300,7 +301,7 @@ public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
 {
     public FooterButtonSettingsItem()
     {
-        Footer = "选择";
+        Footer = Languages.Text_Appearance_Select;
     }
 
     public object Footer
@@ -336,14 +337,14 @@ public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
     {
         var files = await Core.App.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "请选择一个背景",
+            Title = Languages.Text_Appearance_SelectBackgroundTitle,
             SuggestedStartLocation =
                 await Core.App.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Pictures),
             SuggestedFileName = null,
             AllowMultiple = false,
             FileTypeFilter =
             [
-                new FilePickerFileType("图片文件") { Patterns = ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif", "*.tiff"] }
+                new FilePickerFileType(Languages.Text_Appearance_ImageFiles) { Patterns = ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif", "*.tiff"] }
             ]
         });
         if (files.Count > 0)

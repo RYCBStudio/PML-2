@@ -1,6 +1,7 @@
 <Styles
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i18n="clr-namespace:MarkdownAIRender.i18n">
     <!--  默认主题  -->
 
     <Styles.Resources>
@@ -168,7 +169,7 @@
     </Style>
 
     <Style Selector="Button.Copy">
-        <Setter Property="Content" Value="复制" />
+        <Setter Property="Content" Value="{x:Static i18n:MdStrings.Copy}" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Height" Value="24" />
         <Setter Property="Padding" Value="3" />

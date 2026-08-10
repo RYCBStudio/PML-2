@@ -20,6 +20,7 @@ using FluentAvalonia.UI.Windowing;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
@@ -160,7 +161,7 @@ public partial class MainWindow : AppWindow, IDisposable
 
     private async void OnLoaded(object? sender, RoutedEventArgs e)
     {
-        App.SplashService?.UpdateProgress(40, "正在加载配置");
+        App.SplashService?.UpdateProgress(40, Languages.Text_MainWindow_LoadingConfig);
         Core.App.StorageProvider = StorageProvider;
         _vm = new MainWindowViewModel();
         DataContext = _vm;
@@ -198,12 +199,12 @@ public partial class MainWindow : AppWindow, IDisposable
             _vm.Progress = progress;
         });
         var menu = CreateContextMenu();
-        App.SplashService?.UpdateProgress(60, "正在初始化系统托盘");
+        App.SplashService?.UpdateProgress(60, Languages.Text_MainWindow_InitTray);
         _notifyIcon = new TrayIcon
         {
             Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://MEFrpLauncherX/Assets/meflx.png"))),
             Menu = CreateContextMenu(),
-            ToolTipText = "PML 2 运行中"
+            ToolTipText = Languages.Text_MainWindow_TrayToolTip
         };
         if (OperatingSystem.IsMacOS())
         {
@@ -211,11 +212,11 @@ public partial class MainWindow : AppWindow, IDisposable
             NativeMenuBar = [];
 
             // 添加应用程序菜单（macOS 第一个菜单）
-            var appMenu = new NativeMenuItem("隧道");
+            var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
             var appSubMenu = new NativeMenu();
 
             // 添加标准 macOS 菜单项
-            appSubMenu.Add(new NativeMenuItem("管理隧道")
+            appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
             {
                 Gesture = KeyGesture.Parse("Ctrl+M"),
                 Command = ReactiveCommand.Create(() =>
@@ -224,7 +225,7 @@ public partial class MainWindow : AppWindow, IDisposable
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
-            appSubMenu.Add(new NativeMenuItem("创建隧道")
+            appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
             {
                 Gesture = KeyGesture.Parse("Ctrl+D"),
                 Command = ReactiveCommand.Create(() =>
@@ -233,7 +234,7 @@ public partial class MainWindow : AppWindow, IDisposable
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
-            appSubMenu.Add(new NativeMenuItem("退出程序")
+            appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
             {
                 Gesture = KeyGesture.Parse("Ctrl+Q"),
                 Command = ReactiveCommand.Create(() =>
@@ -330,34 +331,10 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             Content = new MarkdownRender
             {
-                Value = """
-                        ### PML 2 隐私政策 (关键版)
-                        **重要提示：** 我们使用 [Sentry](https://sentry.io) 进行错误跟踪和性能监控，以改善软件稳定性。数据存储在 Sentry 位于欧盟的服务器上。  
-                        ### 1. 信息收集范围
-                        - **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
-                        - **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
-                        - **使用行为**：功能点击、会话时长、错误日志
-                        ___
-                        **注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。  
-                        ### 2. 信息用途
-                        - 提供核心功能服务（账号验证、数据同步）
-                        - 优化用户体验（故障修复、功能改进）
-                        - 错误监控与性能分析（通过 Sentry）  
-                        ### 3. 数据共享
-                        **我们不会出售用户数据**。仅在以下情况共享：
-                        - 经您明确同意
-                        - 履行法律义务
-                        - 与第三方服务商合作（如云服务）必需时  
-                        ___
-                        ### 4. 您的权利
-                        您有权访问、更正或删除个人信息，可通过设置禁用遥测数据收集。  
-                        **联系方式：** [邮件](mailto:im@rycb.tech) | [官网](https://www.rycb.tech/)  
-                        ___
-                        详细隐私政策请查看：[PML 2 隐私政策](https://docs.rycb.tech/pml-2/policy)
-                        """
+                Value = Languages.Text_MainWindow_PrivacyPolicy
             },
-            PrimaryButtonText = "同意",
-            CloseButtonText = "拒绝",
+            PrimaryButtonText = Languages.Text_MainWindow_Agree,
+            CloseButtonText = Languages.Text_MainWindow_Decline,
             IsPrimaryButtonEnabled = true,
             IsSecondaryButtonEnabled = false,
             DefaultButton = ContentDialogButton.Primary
@@ -435,7 +412,7 @@ public partial class MainWindow : AppWindow, IDisposable
             var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
             if (hasNew)
             {
-                Growl.Info($"检测到新版本({latest}), 请前往\"更新\"页面查看详情", $"检测到更新: {Core.App.Version} → {latest}");
+                Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest), string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
             }
 
             _updateChecked = true;
@@ -455,7 +432,7 @@ public partial class MainWindow : AppWindow, IDisposable
         });
         tmpCM.Items.Add(new NativeMenuItem
         {
-            Header = "打开主界面",
+            Header = Languages.Text_MainWindow_OpenMainWindow,
             Command = new RelayCommand(o =>
             {
                 NotifyIcon_DoubleClick();
@@ -463,14 +440,14 @@ public partial class MainWindow : AppWindow, IDisposable
         });
         tmpCM.Items.Add(new NativeMenuItem
         {
-            Header = "打开终端",
+            Header = Languages.Text_MainWindow_OpenTerminal,
             Command = new RelayCommand(o =>
             {
                 MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage ?? new TerminalPage();
                 MainPageFrameViewModel.TerminalPage = MainPageFrameViewModel.Instance.CurrentPage as TerminalPage;
             })
         });
-        tmpCM.Items.Add(new NativeMenuItem { Header = "退出", Command = new RelayCommand(Exit) });
+        tmpCM.Items.Add(new NativeMenuItem { Header = Languages.Text_MainWindow_Exit, Command = new RelayCommand(Exit) });
         return tmpCM;
     }
 
@@ -483,7 +460,7 @@ public partial class MainWindow : AppWindow, IDisposable
         catch (Win32Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            MessageBoxManager.GetMessageBoxStandard("警告", "无法自动关闭控制台",
+            MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Warning, Languages.Text_MainWindow_CannotCloseConsole,
                 ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Warning).ShowAsync();
         }
 
@@ -500,7 +477,7 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             Show();
             MessageBoxManager
-                .GetMessageBoxStandard("", "请先登录", ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Forbidden).ShowAsync();
+                .GetMessageBoxStandard("", Languages.Text_MainWindow_LoginFirst, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Forbidden).ShowAsync();
         }
     }
 
