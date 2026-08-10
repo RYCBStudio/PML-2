@@ -78,7 +78,7 @@ public partial class CreateProxyPage : UserControl
                     }
                     else
                     {
-                        await MessageBoxManager.GetMessageBoxStandard("错误", "请选择一个节点").ShowAsync();
+                        await MessageBoxManager.GetMessageBoxStandard(Core.Languages.Languages.Caption_Error, "请选择一个节点").ShowAsync();
                         _index--;
                     }
                 }

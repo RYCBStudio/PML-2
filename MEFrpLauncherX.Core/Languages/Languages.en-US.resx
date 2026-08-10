@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Text.Main.PlatformStatistics.Title" xml:space="preserve">
+        <value>Platform Statistics</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Nodes" xml:space="preserve">
+        <value>Nodes</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Users" xml:space="preserve">
+        <value>Users</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.OnlineProxies" xml:space="preserve">
+        <value>Online Proxies</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Traffic" xml:space="preserve">
+        <value>Traffic</value>
+    </data>
+    <data name="Text.Main.UserInfo.Title" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="Text.Main.UserInfo.Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Text.Main.UserInfo.Id" xml:space="preserve">
+        <value>ID</value>
+    </data>
+    <data name="Text.Main.UserInfo.Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Text.Main.UserInfo.Group" xml:space="preserve">
+        <value>Group</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus" xml:space="preserve">
+        <value>Real-name Authentication Status</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus" xml:space="preserve">
+        <value>Account Status</value>
+    </data>
+    <data name="Text.Main.UserInfo.ProxyCount" xml:space="preserve">
+        <value>Proxy Count</value>
+    </data>
+    <data name="Text.Main.UserInfo.InboundBandwidth" xml:space="preserve">
+        <value>Inbound Bandwidth</value>
+    </data>
+    <data name="Text.Main.UserInfo.OutboundBandwidth" xml:space="preserve">
+        <value>Outbound Bandwidth</value>
+    </data>
+    <data name="Text.Main.PlatformNotice.Title" xml:space="preserve">
+        <value>Platform Notices</value>
+    </data>
+    <data name="Text.Main.SoftwareNotice.Title" xml:space="preserve">
+        <value>Software Notices</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.Normal.Title" xml:space="preserve">
+        <value>Operating Normally</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.Downgrade.Title" xml:space="preserve">
+        <value>Downgraded Service</value>
+    </data>
+    <data name="Text.Main.PlatformStatusBreakdown.Title" xml:space="preserve">
+        <value>System Service Failure</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.NetworkError.Title" xml:space="preserve">
+        <value>Network Error</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.Authenticated" xml:space="preserve">
+        <value>Authenticated</value>
+    </data>
+    <data name="Text.Main.UserInfo.RemainingTraffic" xml:space="preserve">
+        <value>Remaining Data Allowance</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.UnAuthenticated" xml:space="preserve">
+        <value>Unauthenticated</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Normal" xml:space="preserve">
+        <value>Normal</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Banned" xml:space="preserve">
+        <value>Banned</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.OverTraffic" xml:space="preserve">
+        <value>Data Limit Exceeded</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Unknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
+    <data name="Text.Main.UserInfo.SignIn" xml:space="preserve">
+        <value>Sign In</value>
+    </data>
+    <data name="Text.Main.UserInfo.SignedIn" xml:space="preserve">
+        <value>Signed In</value>
+    </data>
+    <data name="Text.Global.Confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="Text.Global.Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Text.Main.Initialize.Title" xml:space="preserve">
+        <value>Initializing</value>
+    </data>
+    <data name="Text.Main.Initialize.Resource" xml:space="preserve">
+        <value>Decompressing necessary resources</value>
+    </data>
+    <data name="Text.Main.PostUpdateProcess.Title" xml:space="preserve">
+        <value>Undergoing post-update cleaning</value>
+    </data>
+    <data name="Text.Main.PostUpdateProcess.Cleaning" xml:space="preserve">
+        <value>Clearing update cache</value>
+    </data>
+    <data name="Caption.Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="Text.Global.Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="Text.Global.Failed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="Text.Login.MEFrpFeature.1" xml:space="preserve">
+        <value>Free, public welfare, user-friendly, low-latency and stable FRP service</value>
+    </data>
+    <data name="Text.Login.MEFrpFeature.2" xml:space="preserve">
+        <value>Six years of accumulation · Brand-new upgrade · A stable and efficient FRP tool</value>
+    </data>
+    <data name="Text.Login.Welcome" xml:space="preserve">
+        <value>Welcome To ME Frp</value>
+    </data>
+    <data name="Text.Login.Method.MEFrp" xml:space="preserve">
+        <value>Log in via ME Frp account</value>
+    </data>
+    <data name="Text.Login.Method.Acme" xml:space="preserve">
+        <value>Log in via AcmeCloud account</value>
+    </data>
+    <data name="Text.Login.RememberMe" xml:space="preserve">
+        <value>Remember Me</value>
+    </data>
+    <data name="Text.Login.Username" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Text.Login.Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Text.Login.AuthMode" xml:space="preserve">
+        <value>CAPTCHA method</value>
+    </data>
+    <data name="Text.Login.Register" xml:space="preserve">
+        <value>Register</value>
+    </data>
+</root>

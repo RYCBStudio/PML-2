@@ -57,7 +57,7 @@ public class App : IDisposable
         set;
     }
 
-    public static LogUtil CurrentLogger
+    public static LogUtil? CurrentLogger
     {
         get;
         private set;

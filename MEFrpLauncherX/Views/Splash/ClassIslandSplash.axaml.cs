@@ -17,7 +17,7 @@ public partial class ClassIslandSplash : Window, ISplashService
         if (!Design.IsDesignMode)
         {
             ViewModel = new ClassIslandSplashViewModel();
-            this.DataContext = ViewModel;
+            DataContext = ViewModel;
         }
     }
 
@@ -28,11 +28,11 @@ public partial class ClassIslandSplash : Window, ISplashService
     
     void ISplashService.Close()
     {
-        this.Close();
+        Close();
     }
     
     void ISplashService.Show()
     {
-        this.Show();
+        Show();
     }
 }

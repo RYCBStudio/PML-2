@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -13,6 +15,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Plugin.Services;
@@ -57,6 +60,16 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Languages.Culture = ConfigManager.CurrentConfig.Language switch
+        {
+            "zh-CN" => new CultureInfo("zh-CN"),
+            "en-US" => new CultureInfo("en-US"),
+            _ => CultureInfo.CurrentCulture
+        };
+        #if DEBUG
+        Languages.Culture = new CultureInfo("en-US");
+        Debug.WriteLine("CurrentCulture: " + CultureInfo.CurrentCulture);
+        #endif
         AppAnalytics.Setup(
             "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
             Core.App.Version);

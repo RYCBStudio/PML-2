@@ -6,6 +6,7 @@
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="viewModels:LoginViewModel"
              Loaded="Control_OnLoaded"
@@ -34,12 +35,8 @@
 
         <DockPanel Margin="0,0,0,10">
             <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center">
-                    免费 · 公益 · 好用 · 低延迟 · 稳定的内网穿透服务 &#x0D;
-                </TextBlock>
-                <TextBlock HorizontalAlignment="Center">
-                    六年沉淀 · 全新升级 · 稳定高效的内网穿透利器
-                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="{x:Static languages:Languages.Text_Login_MEFrpFeature_1}" />
+                <TextBlock HorizontalAlignment="Center" Text="{x:Static languages:Languages.Text_Login_MEFrpFeature_2}" />
             </StackPanel>
             <TextBlock
                 Margin="10"
@@ -48,7 +45,7 @@
                 FontSize="25"
                 HorizontalAlignment="Center"
                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                Text="欢迎来到&#x0020;ME&#x0020;Frp&#x0020;幻缘映射" />
+                Text="{x:Static languages:Languages.Text_Login_Welcome}" />
         </DockPanel>
         <TabStrip SelectedIndex="{Binding SelectedLoginMode}" HorizontalAlignment="Center" Grid.Row="1"
                   Theme="{DynamicResource AlternateTabStripTheme}"
@@ -57,13 +54,13 @@
                 <DockPanel HorizontalSpacing="5">
                     <controls:ImageIcon Source="{DynamicResource MEFrpLogo}" Width="20"
                                         Height="20" />
-                    <TextBlock Text="使用 ME Frp 登录" />
+                    <TextBlock Text="{x:Static languages:Languages.Text_Login_Method_MEFrp}" />
                 </DockPanel>
             </TabStripItem>
             <TabStripItem IsVisible="False">
                 <DockPanel HorizontalSpacing="5">
                     <Image Source="/Assets/acmecloud.png" Width="20" Height="20" />
-                    <TextBlock Text="使用 云上极致 登录" />
+                    <TextBlock Text="{x:Static languages:Languages.Text_Login_Method_Acme}" />
                 </DockPanel>
             </TabStripItem>
         </TabStrip>
@@ -75,7 +72,7 @@
                        Margin="10,0,10,5"
                        LastChildFill="True">
                 <DockPanel DockPanel.Dock="Right" HorizontalSpacing="5">
-                    <TextBlock VerticalAlignment="Center">以后自动登录</TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Login_RememberMe}"/>
                     <ToggleSwitch x:Name="AutoLoginSwitch" IsCheckedChanged="AutoLogin" VerticalAlignment="Top" />
                 </DockPanel>
                 <TextBlock
@@ -83,7 +80,7 @@
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"
                     FontFamily="{StaticResource GlobalFontFamily}"
-                    Text="用户名" />
+                    Text="{x:Static languages:Languages.Text_Login_Username}" />
                 <!-- 将用户名输入替换成可编辑的 ComboBox，用户可以下拉选择已存账号或直接输入新账号 -->
                 <controls:FAComboBox HorizontalAlignment="Stretch"
                                      x:Name="UsrNameBox"
@@ -104,7 +101,7 @@
                     VerticalAlignment="Center"
                     DockPanel.Dock="Left"
                     FontFamily="{StaticResource GlobalFontFamily}"
-                    Text="密码" />
+                    Text="{x:Static languages:Languages.Text_Login_Password}" />
                 <Panel>
                     <TextBox
                         PasswordChar="•"
@@ -124,7 +121,7 @@
             <StackPanel Spacing="5" Margin="10,0,10,0" Grid.Row="4">
                 <DockPanel HorizontalSpacing="4">
                     <StackPanel Orientation="Horizontal" Spacing="5" DockPanel.Dock="Right" VerticalAlignment="Top">
-                        <TextBlock VerticalAlignment="Center">验证方式</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Login_AuthMode}"/>
                         <controls:FAComboBox x:Name="AuthModeComboBox" ItemsSource="{Binding AuthModes}"
                                              SelectedIndex="{Binding AuthMode}" />
                     </StackPanel>
@@ -143,7 +140,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center"
                     Click="SignUpBtn_OnClick"
-                    Content="注册"
+                    Content="{x:Static languages:Languages.Text_Login_Register}"
                     FontFamily="{StaticResource GlobalFontFamily}" />
             </StackPanel>
         </Grid>

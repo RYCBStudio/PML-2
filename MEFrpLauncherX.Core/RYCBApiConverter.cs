@@ -377,7 +377,7 @@ public class NoticeContent : ReactiveObject
         {
             Content = new NoticeView(this, ContentOfNotice),
             Title = Summary,
-            PrimaryButtonText = "确定",
+            PrimaryButtonText = Languages.Languages.Text_Global_Confirm,
             CloseButtonText = "关闭",
             DefaultButton = ContentDialogButton.Primary
         };

@@ -14,6 +14,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.ViewModels;
@@ -340,7 +341,7 @@ public partial class UserCenterViewModel : ViewModelBase
                 Title = "添加备案域名",
                 Content = domainBox,
                 PrimaryButtonText = "添加",
-                CloseButtonText = "取消",
+                CloseButtonText = Languages.Text_Global_Cancel,
                 IsPrimaryButtonEnabled = true,
                 DefaultButton = ContentDialogButton.Primary,
             };

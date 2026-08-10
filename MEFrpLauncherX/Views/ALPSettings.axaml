@@ -4,6 +4,7 @@
         xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
         xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         WindowStartupLocation="CenterScreen"
         x:Class="MEFrpLauncherX.Views.ALPSettings"
         x:DataType="viewModels:ALPSettingsViewModel">
@@ -140,7 +141,7 @@
         <StackPanel HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                     Orientation="Horizontal" Spacing="10">
             <Button Content="保存" Click="SaveSettings" Classes="accent" />
-            <Button Content="取消" Click="Close" />
+            <Button Content="{x:Static languages:Languages.Text_Global_Cancel}" Click="Close" />
         </StackPanel>
     </Grid>
 </Window>

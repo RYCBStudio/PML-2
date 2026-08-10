@@ -128,7 +128,7 @@ namespace Iciclecreek.TerminalWindow
         {
             base.OnInitialized();
             _terminalControl = new TerminalControl();
-            _terminalControl.Options = this.Options ?? new XTerm.Options.TerminalOptions();
+            _terminalControl.Options = Options ?? new XTerm.Options.TerminalOptions();
             _terminalControl.Options.WindowOptions.GetWinPosition = true;
             _terminalControl.Options.WindowOptions.GetWinSizePixels = true;
             _terminalControl.Options.WindowOptions.GetWinSizeChars = true;
@@ -168,12 +168,12 @@ namespace Iciclecreek.TerminalWindow
             TerminalView.AddWindowInfoRequestedHandler(_terminalControl, OnTerminalWindowInfoRequested);
 
             // Bind properties from Window to TerminalControl
-            _terminalControl.Bind(TerminalControl.FontFamilyProperty, this.GetObservable(FontFamilyProperty));
-            _terminalControl.Bind(TerminalControl.FontSizeProperty, this.GetObservable(FontSizeProperty));
-            _terminalControl.Bind(TerminalControl.FontStyleProperty, this.GetObservable(FontStyleProperty));
-            _terminalControl.Bind(TerminalControl.FontWeightProperty, this.GetObservable(FontWeightProperty));
-            _terminalControl.Bind(TemplatedControl.ForegroundProperty, this.GetObservable(ForegroundProperty));
-            _terminalControl.Bind(TemplatedControl.BackgroundProperty, this.GetObservable(BackgroundProperty));
+            _terminalControl.Bind(FontFamilyProperty, this.GetObservable(FontFamilyProperty));
+            _terminalControl.Bind(FontSizeProperty, this.GetObservable(FontSizeProperty));
+            _terminalControl.Bind(FontStyleProperty, this.GetObservable(FontStyleProperty));
+            _terminalControl.Bind(FontWeightProperty, this.GetObservable(FontWeightProperty));
+            _terminalControl.Bind(ForegroundProperty, this.GetObservable(ForegroundProperty));
+            _terminalControl.Bind(BackgroundProperty, this.GetObservable(BackgroundProperty));
             _terminalControl.Bind(TerminalControl.SelectionBrushProperty, this.GetObservable(SelectionBrushProperty));
             _terminalControl.Bind(TerminalControl.ProcessProperty, this.GetObservable(ProcessProperty));
             _terminalControl.Bind(TerminalControl.ArgsProperty, this.GetObservable(ArgsProperty));
@@ -333,7 +333,7 @@ namespace Iciclecreek.TerminalWindow
         {
             if (!e.Handled)
             {
-                this.Activate();
+                Activate();
                 e.Handled = true;
             }
         }

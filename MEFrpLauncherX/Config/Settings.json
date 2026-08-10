@@ -43,5 +43,6 @@
   },
   "DoNotShowSuccessMsg": true,
   "TerminalEngineType": "Original",
-  "TerminalCli": "powershell"
+  "TerminalCli": "powershell",
+  "Language": "zh-CN"
 }

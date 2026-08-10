@@ -33,23 +33,23 @@ namespace Porta.Pty.Windows
             // This avoids the buffering issues that can occur with AnonymousPipeClientStream
             // Note: FileStream(SafeFileHandle, ...) does not take ownership of the handle,
             // so disposing the streams below does not close the underlying pipes early.
-            this.ReaderStream = new FileStream(
+            ReaderStream = new FileStream(
                 handles.OutPipeOurSide,
-                System.IO.FileAccess.Read,
+                FileAccess.Read,
                 bufferSize: 0,  // No buffering
                 isAsync: false);
 
-            this.WriterStream = new FileStream(
+            WriterStream = new FileStream(
                 handles.InPipeOurSide,
-                System.IO.FileAccess.Write,
+                FileAccess.Write,
                 bufferSize: 0,  // No buffering - writes go directly to pipe
                 isAsync: false);
 
             this.handles = handles;
-            this.Pid = handles.Pid;
-            this.process = Process.GetProcessById(this.Pid);
-            this.process.Exited += this.Process_Exited;
-            this.process.EnableRaisingEvents = true;
+            Pid = handles.Pid;
+            process = Process.GetProcessById(Pid);
+            process.Exited += Process_Exited;
+            process.EnableRaisingEvents = true;
         }
 
         /// <inheritdoc/>
@@ -65,23 +65,23 @@ namespace Porta.Pty.Windows
         public int Pid { get; }
 
         /// <inheritdoc/>
-        public int ExitCode => this.process.ExitCode;
+        public int ExitCode => process.ExitCode;
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            lock (this.disposeLock)
+            lock (disposeLock)
             {
-                if (this.isDisposed)
+                if (isDisposed)
                 {
                     return;
                 }
 
-                this.isDisposed = true;
+                isDisposed = true;
             }
 
             // Unsubscribe from events first to prevent callbacks during disposal
-            this.process.Exited -= this.Process_Exited;
+            process.Exited -= Process_Exited;
 
             // ConPTY cleanup order (per Microsoft documentation):
             // 1. Close the PseudoConsole handle - signals conhost to shut down
@@ -89,47 +89,47 @@ namespace Porta.Pty.Windows
             // 3. Close process/thread handles
             // 4. Close job object last - terminates any remaining processes
 
-            if (this.handles != null)
+            if (handles != null)
             {
                 // Step 1: Close the pseudo console first (calls ClosePseudoConsole)
                 // This signals conhost.exe to shut down gracefully
-                this.handles.PseudoConsoleHandle?.Dispose();
+                handles.PseudoConsoleHandle?.Dispose();
 
                 // Step 2: Close the pipes
                 // Close our side of the pipes - this will cause any pending reads to complete
-                this.handles.InPipeOurSide?.Dispose();
-                this.handles.OutPipeOurSide?.Dispose();
+                handles.InPipeOurSide?.Dispose();
+                handles.OutPipeOurSide?.Dispose();
 
                 // Step 3: Close process and thread handles
-                this.handles.MainThreadHandle?.Dispose();
-                this.handles.ProcessHandle?.Dispose();
+                handles.MainThreadHandle?.Dispose();
+                handles.ProcessHandle?.Dispose();
 
                 // Step 4: Dispose the job object last - this will terminate any remaining
                 // child processes due to JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
-                this.handles.JobObjectHandle?.Dispose();
+                handles.JobObjectHandle?.Dispose();
 
-                this.handles = null;
+                handles = null;
             }
 
             // Dispose streams (they don't own the underlying handles)
-            this.ReaderStream?.Dispose();
-            this.WriterStream?.Dispose();
+            ReaderStream?.Dispose();
+            WriterStream?.Dispose();
 
             // Dispose the Process object
-            this.process?.Dispose();
+            process?.Dispose();
         }
 
         /// <inheritdoc/>
         public void Kill()
         {
-            this.process.Kill();
+            process.Kill();
         }
 
         /// <inheritdoc/>
         public void Resize(int cols, int rows)
         {
             var handles = this.handles;
-            if (handles == null || this.isDisposed)
+            if (handles == null || isDisposed)
             {
                 throw new ObjectDisposedException(nameof(PseudoConsoleConnection));
             }
@@ -147,18 +147,18 @@ namespace Porta.Pty.Windows
         /// <inheritdoc/>
         public bool WaitForExit(int milliseconds)
         {
-            return this.process.WaitForExit(milliseconds);
+            return process.WaitForExit(milliseconds);
         }
 
         private void Process_Exited(object? sender, EventArgs e)
         {
             // Check if we're disposed to avoid raising events during/after disposal
-            if (this.isDisposed)
+            if (isDisposed)
             {
                 return;
             }
 
-            this.ProcessExited?.Invoke(this, new PtyExitedEventArgs(this.process.ExitCode));
+            ProcessExited?.Invoke(this, new PtyExitedEventArgs(process.ExitCode));
         }
 
         /// <summary>
@@ -185,13 +185,13 @@ namespace Porta.Pty.Windows
                 SafeFileHandle mainThreadHandle,
                 SafeFileHandle jobObjectHandle)
             {
-                this.InPipeOurSide = inPipeOurSide;
-                this.OutPipeOurSide = outPipeOurSide;
-                this.PseudoConsoleHandle = pseudoConsoleHandle;
-                this.ProcessHandle = processHandle;
-                this.Pid = pid;
-                this.MainThreadHandle = mainThreadHandle;
-                this.JobObjectHandle = jobObjectHandle;
+                InPipeOurSide = inPipeOurSide;
+                OutPipeOurSide = outPipeOurSide;
+                PseudoConsoleHandle = pseudoConsoleHandle;
+                ProcessHandle = processHandle;
+                Pid = pid;
+                MainThreadHandle = mainThreadHandle;
+                JobObjectHandle = jobObjectHandle;
             }
 
             /// <summary>

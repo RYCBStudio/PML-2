@@ -9,7 +9,7 @@ namespace Porta.Pty.Mac
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using static Porta.Pty.Mac.NativeMethods;
+    using static NativeMethods;
 
     /// <summary>
     /// Provides a pty connection for MacOS machines.

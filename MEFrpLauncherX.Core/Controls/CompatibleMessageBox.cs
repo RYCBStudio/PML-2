@@ -112,12 +112,12 @@ public static class MessageBox
                 return MessageBoxResult.No;
             }
 
-            if (button.Text?.Contains("确定") == true || button.Text?.Contains("OK") == true)
+            if (button.Text?.Contains(Languages.Languages.Text_Global_Confirm) == true || button.Text?.Contains("OK") == true)
             {
                 return MessageBoxResult.OK;
             }
 
-            if (button.Text?.Contains("取消") == true || button.Text?.Contains("Cancel") == true)
+            if (button.Text?.Contains(Languages.Languages.Text_Global_Cancel) == true || button.Text?.Contains("Cancel") == true)
             {
                 return MessageBoxResult.Cancel;
             }

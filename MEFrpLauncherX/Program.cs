@@ -56,6 +56,18 @@ internal partial class Program
 
         // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"请求
         StartPipeServer();
+        var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
+        if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+        {
+            if (File.Exists(splashFile))
+            {
+                var psi = new ProcessStartInfo("/bin/chmod", $"+x \"{splashFile}\"")
+                {
+                    UseShellExecute = false
+                };
+                Process.Start(psi)?.WaitForExit();
+            }
+        }
 
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
@@ -64,30 +76,38 @@ internal partial class Program
         //     return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
         // };
 
-        var file = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
-
-        if (!File.Exists(file))
+        try
         {
-            System.Console.WriteLine("\e[33m[WARNING] The Splash file is missing. May need to reinstall.\e[0m");
-            Core.App.CurrentLogger.Log("启动画面文件缺失。", EnumLogType.Warn);
-        }
-        else if (!DownloadHelper.ValidateFileSimple(file,
-                     "0180aeb78b091ba60891b5635c218b14|803dff910453f2bcde6d114acb082cd5|" +
-                     "f4ee9156ffb37e77f6cdc822d7acbd7c|85a6ad0adbab937851c13345127a3489|" +
-                     "f699e44cce5056e68d1c03620ad80016|86efbb015589a98cc5fe10d08c0747ef"))
-        {
-            System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
-            System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
-            Core.App.CurrentLogger.Log("启动画面文件完整性检查失败。", EnumLogType.Warn);
-        }
-        else
-        {
-            var p = Process.Start(new ProcessStartInfo
+            if (!File.Exists(splashFile))
             {
-                FileName = file,
-                Arguments = $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
-            });
-            SplashProcess = p;
+                System.Console.WriteLine("\e[33m[WARNING] The Splash file is missing. May need to reinstall.\e[0m");
+                Core.App.CurrentLogger?.Log("启动画面文件缺失。", EnumLogType.Warn);
+            }
+#if !DEBUG
+            else if (!DownloadHelper.ValidateFileSimple(splashFile,
+                         "fdce2f73617f8c60f8cbf5e0d82a375b|a56e73829f0d65a205f5670f57b74dff|" +
+                         "e382a771cc77afc9d637a90fe4de2456|7c68220c178750b5a55f44ca2aaaf66a|" +
+                         "a6aa19013912c6063a8b711e7fbbf5b9|e3ced0c893d47a7ea1202fb8d1554753"))
+            {
+                System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
+                System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
+                Core.App.CurrentLogger?.Log("启动画面文件完整性检查失败。", EnumLogType.Warn);
+            }
+#endif
+            else
+            {
+                var p = Process.Start(new ProcessStartInfo
+                {
+                    FileName = splashFile,
+                    Arguments = $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
+                });
+                SplashProcess = p;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine($"\e[31m[ERROR] Failed to start splash process: {ex.Message}\e[0m");
+            Core.App.CurrentLogger?.Log($"启动画面进程启动失败: {ex.Message}", EnumLogType.Error);
         }
 #if !DEBUG
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -123,7 +143,7 @@ internal partial class Program
         }
 #endif
     }
-    
+
 
     /// <summary>
     ///     启动 Named Pipe 服务器，在后台线程上监听第二个实例的"激活窗口"请求

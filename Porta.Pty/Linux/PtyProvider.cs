@@ -9,7 +9,7 @@ namespace Porta.Pty.Linux
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using static Porta.Pty.Linux.NativeMethods;
+    using static NativeMethods;
 
     /// <summary>
     /// Provides a pty connection for linux machines.

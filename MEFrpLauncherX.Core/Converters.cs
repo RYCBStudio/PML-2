@@ -243,11 +243,11 @@ public class StatusNumToTextConverter : IValueConverter
 
         return status switch
         {
-            -1 => "网络服务错误/不可用",
-            0 => "系统正常运行",
-            1 => "系统服务降级",
-            2 => "系统服务故障",
-            _ => "网络服务错误"
+            -1 => Languages.Languages.Text_Main_PlatformStatus_NetworkError_Title,
+            0 => Languages.Languages.Text_Main_PlatformStatus_Normal_Title,
+            1 => Languages.Languages.Text_Main_PlatformStatus_Downgrade_Title,
+            2 => Languages.Languages.Text_Main_PlatformStatusBreakdown_Title,
+            _ => Languages.Languages.Text_Main_PlatformStatus_NetworkError_Title
         };
     }
 

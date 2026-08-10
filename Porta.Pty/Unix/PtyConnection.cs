@@ -32,12 +32,12 @@ namespace Porta.Pty.Unix
         /// <param name="pid">The id of the spawned process.</param>
         public PtyConnection(int controller, int pid)
         {
-            this.ReaderStream = new PtyStream(controller, FileAccess.Read);
-            this.WriterStream = new PtyStream(controller, FileAccess.Write);
+            ReaderStream = new PtyStream(controller, FileAccess.Read);
+            WriterStream = new PtyStream(controller, FileAccess.Write);
 
             this.controller = controller;
             this.pid = pid;
-            var childWatcherThread = new Thread(this.ChildWatcherThreadProc)
+            var childWatcherThread = new Thread(ChildWatcherThreadProc)
             {
                 IsBackground = true,
                 Priority = ThreadPriority.Lowest,
@@ -57,32 +57,32 @@ namespace Porta.Pty.Unix
         public Stream WriterStream { get; }
 
         /// <inheritdoc/>
-        public int Pid => this.pid;
+        public int Pid => pid;
 
         /// <inheritdoc/>
-        public int ExitCode => this.exitCode;
+        public int ExitCode => exitCode;
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            if (this.isDisposed)
+            if (isDisposed)
             {
                 return;
             }
 
-            this.isDisposed = true;
+            isDisposed = true;
 
-            this.ReaderStream?.Dispose();
-            this.WriterStream?.Dispose();
+            ReaderStream?.Dispose();
+            WriterStream?.Dispose();
 
             // Try to kill the process, but don't throw if it already exited
-            this.TryKill();
+            TryKill();
         }
 
         /// <inheritdoc/>
         public void Kill()
         {
-            if (!this.Kill(this.controller))
+            if (!Kill(controller))
             {
                 int errno = Marshal.GetLastWin32Error();
                 // ESRCH means the process doesn't exist (already exited) - that's OK
@@ -96,7 +96,7 @@ namespace Porta.Pty.Unix
         /// <inheritdoc/>
         public void Resize(int cols, int rows)
         {
-            if (!this.Resize(this.controller, cols, rows))
+            if (!Resize(controller, cols, rows))
             {
                 throw new InvalidOperationException($"Resizing terminal failed with error {Marshal.GetLastWin32Error()}");
             }
@@ -105,7 +105,7 @@ namespace Porta.Pty.Unix
         /// <inheritdoc/>
         public bool WaitForExit(int milliseconds)
         {
-            return this.terminalProcessTerminatedEvent.WaitOne(milliseconds);
+            return terminalProcessTerminatedEvent.WaitOne(milliseconds);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Porta.Pty.Unix
         {
             try
             {
-                this.Kill();
+                Kill();
             }
             catch
             {
@@ -149,18 +149,18 @@ namespace Porta.Pty.Unix
 
         private void ChildWatcherThreadProc()
         {
-            Debug.WriteLine($"Waiting on {this.pid}");
+            Debug.WriteLine($"Waiting on {pid}");
             const int SignalMask = 127;
             const int ExitCodeMask = 255;
 
             int status = 0;
-            if (!this.WaitPid(this.pid, ref status))
+            if (!WaitPid(pid, ref status))
             {
                 int errno = Marshal.GetLastWin32Error();
                 Debug.WriteLine($"Wait failed with {errno}");
                 if (errno == EINTR)
                 {
-                    this.ChildWatcherThreadProc();
+                    ChildWatcherThreadProc();
                 }
                 else if (errno == ECHILD)
                 {
@@ -176,10 +176,10 @@ namespace Porta.Pty.Unix
             }
 
             Debug.WriteLine($"Wait succeeded");
-            this.exitSignal = status & SignalMask;
-            this.exitCode = this.exitSignal == 0 ? (status >> 8) & ExitCodeMask : 0;
-            this.terminalProcessTerminatedEvent.Set();
-            this.ProcessExited?.Invoke(this, new PtyExitedEventArgs(this.exitCode));
+            exitSignal = status & SignalMask;
+            exitCode = exitSignal == 0 ? (status >> 8) & ExitCodeMask : 0;
+            terminalProcessTerminatedEvent.Set();
+            ProcessExited?.Invoke(this, new PtyExitedEventArgs(exitCode));
         }
     }
 }

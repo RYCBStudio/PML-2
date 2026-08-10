@@ -4,7 +4,7 @@
 namespace Porta.Pty.Mac
 {
     using System.Threading;
-    using static Porta.Pty.Mac.NativeMethods;
+    using static NativeMethods;
 
     /// <summary>
     /// A connection to a pseudoterminal on MacOS machines.
@@ -26,13 +26,13 @@ namespace Porta.Pty.Mac
         {
             // First try SIGHUP (standard terminal hangup signal)
             // This is the proper signal for terminal processes
-            bool result = pty_kill(this.Pid, SIGHUP) != -1;
+            bool result = pty_kill(Pid, SIGHUP) != -1;
             
             // Give a brief moment for graceful shutdown
             Thread.Sleep(100);
             
             // Then send SIGKILL to ensure termination (cannot be caught or ignored)
-            pty_kill(this.Pid, SIGKILL);
+            pty_kill(Pid, SIGKILL);
             
             return result;
         }

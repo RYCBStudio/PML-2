@@ -16,7 +16,7 @@ namespace Porta.Pty
         /// <param name="exitCode">Exit code of the pty process.</param>
         internal PtyExitedEventArgs(int exitCode)
         {
-            this.ExitCode = exitCode;
+            ExitCode = exitCode;
         }
 
         /// <summary>

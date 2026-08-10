@@ -22,7 +22,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
 
         public SVirtualizingWrapPanel()
         {
-            this.EffectiveViewportChanged += VirtualizingWrapPanel_EffectiveViewportChanged;
+            EffectiveViewportChanged += VirtualizingWrapPanel_EffectiveViewportChanged;
         }
         Boolean _isLoadRendered = false;
 
@@ -138,7 +138,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
             var _endIndex = Items.Count - 1;
             var _index = startIndex;
             //Debug.WriteLine("_maxLineWidth" + _maxLineWidth);
-            double _maxLineWidth = this.Bounds.Width;
+            double _maxLineWidth = Bounds.Width;
             double _maxLineHeight = 0.0;
             if (_elementDictionary.TryGetValue(_index, out var _firstElement))
             {
