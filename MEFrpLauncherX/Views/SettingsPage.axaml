@@ -10,28 +10,52 @@
              x:Class="MEFrpLauncherX.Views.SettingsPage">
     <ScrollViewer>
         <StackPanel Classes="animated">
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Appearance}" IconSource="DarkTheme" Description="{x:Static languages:Languages.Text_Settings_AppearanceDescription}">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}" IconSource="New" Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Appearance}"
+                                       IconSource="DarkTheme"
+                                       Description="{x:Static languages:Languages.Text_Settings_AppearanceDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Language}"
+                                               Description="{x:Static languages:Languages.Text_Settings_LanguageDescription}"
+                                               IconSource="Character">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="LanguageSelectComboBox" SelectionChanged="LanguageChanged">
+                            <ComboBoxItem Content="简体中文" Tag="zh-CN"/>
+                            <ComboBoxItem Content="English" Tag="en-US"/>
+                            <ComboBoxItem Content="繁體中文" Tag="zh-Hant"/>
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
+                                               IconSource="New"
+                                               Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Theme"
                             SelectionChanged="ThemeChanged">
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Dark}" Tag="Dark" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Light}" Tag="Light" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_System}" Tag="System" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Light}"
+                                          Tag="Light" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_System}"
+                                          Tag="System" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Material}" IconSource="Scan" Description="{x:Static languages:Languages.Text_Settings_MaterialDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Material}"
+                                               IconSource="Scan"
+                                               Description="{x:Static languages:Languages.Text_Settings_MaterialDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Skin"
                             SelectionChanged="SkinChanged">
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Mica}" Tag="Mica" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Acrylic}" Tag="AcrylicBlur" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Blur}" Tag="Blur" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Transparent}" Tag="Transparent" />
-                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_None}" Tag="None" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Mica}"
+                                          Tag="Mica" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Acrylic}"
+                                          Tag="AcrylicBlur" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Blur}"
+                                          Tag="Blur" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Transparent}"
+                                          Tag="Transparent" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_None}"
+                                          Tag="None" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
@@ -39,27 +63,46 @@
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetAppearanceAdvanced" />
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Background}" IconSource="FullScreenMaximize"
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Background}"
+                                               IconSource="FullScreenMaximize"
                                                Description="{x:Static languages:Languages.Text_Settings_BackgroundDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <ComboBox x:Name="StretchBox" SelectionChanged="StretchChanged">
-                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_None}" Tag="None" />
-                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Fill}" Tag="Stretch" />
-                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Uniform}" Tag="Uniform" />
-                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_UniformToFill}" Tag="UniformToFill" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_None}"
+                                              Tag="None" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Fill}"
+                                              Tag="Stretch" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Uniform}"
+                                              Tag="Uniform" />
+                                <ComboBoxItem
+                                    Content="{x:Static languages:Languages.Text_Settings_Stretch_UniformToFill}"
+                                    Tag="UniformToFill" />
                             </ComboBox>
                         </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AnimationLevel}"
+                                               IconSource="SlideShow"
+                                               Description="{x:Static languages:Languages.Text_Settings_AnimationLevelDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="AnimationLevelBox" SelectionChanged="AnimationLevelChanged">
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Off}" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Reduced}" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Standard}" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}" Description="{x:Static languages:Languages.Text_Settings_StartupDescription}">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}"
+                                       Description="{x:Static languages:Languages.Text_Settings_StartupDescription}">
                 <controls:SettingsExpander.IconSource>
                     <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
                         <controls:FontIconSource.Glyph>&#xE770;</controls:FontIconSource.Glyph>
                     </controls:FontIconSource>
                 </controls:SettingsExpander.IconSource>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoStart}" Description="{x:Static languages:Languages.Text_Settings_AutoStartDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoStart}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoStartDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoStart"
@@ -74,7 +117,8 @@
                             IsCheckedChanged="AutoLaunchChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}" Content="{x:Static languages:Languages.Text_Settings_SetTunnelsToLaunch}">
+                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}"
+                                               Content="{x:Static languages:Languages.Text_Settings_SetTunnelsToLaunch}">
                     <controls:SettingsExpanderItem.Footer>
                         <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                         <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
@@ -82,7 +126,8 @@
                         </Button>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_MinimizeToTray}" Description="{x:Static languages:Languages.Text_Settings_MinimizeToTrayDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_MinimizeToTray}"
+                                               Description="{x:Static languages:Languages.Text_Settings_MinimizeToTrayDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="HideInsteadOfClose"
@@ -90,9 +135,12 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}" Description="{x:Static languages:Languages.Text_Settings_TunnelSettingsDescription}" IconSource="AllApps">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
-                                               Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}"
+                                       Description="{x:Static languages:Languages.Text_Settings_TunnelSettingsDescription}"
+                                       IconSource="AllApps">
+                <controls:SettingsExpanderItem
+                    Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
+                    Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="KickWithoutDisable"
@@ -102,16 +150,23 @@
                 <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ProxyMonitorBar}"
                                                Description="{x:Static languages:Languages.Text_Settings_ProxyMonitorBarDescription}">
                     <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch x:Name="pmS" OnContent="{x:Static languages:Languages.Text_Global_On}" OffContent="{x:Static languages:Languages.Text_Global_Off}" IsCheckedChanged="PMChanged" />
+                        <ToggleSwitch x:Name="pmS" OnContent="{x:Static languages:Languages.Text_Global_On}"
+                                      OffContent="{x:Static languages:Languages.Text_Global_Off}"
+                                      IsCheckedChanged="PMChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}" Content="{x:Static languages:Languages.Text_Settings_CustomProxyMonitorBar}"
+                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}"
+                                               Content="{x:Static languages:Languages.Text_Settings_CustomProxyMonitorBar}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetProxyMonitorBar" />
             </controls:SettingsExpander>
-            <controls:SettingsExpander IconSource="Download" Description="{x:Static languages:Languages.Text_Settings_DownloadDescription}" Header="{x:Static languages:Languages.Text_Settings_Download}" IsExpanded="False">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownload}" Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadDescription}">
+            <controls:SettingsExpander IconSource="Download"
+                                       Description="{x:Static languages:Languages.Text_Settings_DownloadDescription}"
+                                       Header="{x:Static languages:Languages.Text_Settings_Download}"
+                                       IsExpanded="False">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownload}"
+                                               Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="ParallelDownload"
@@ -120,7 +175,9 @@
                             IsChecked="True" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettings}" Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettingsDescription}">
+                <controls:SettingsExpanderItem
+                    Content="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettings}"
+                    Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettingsDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal">
                             <Slider
@@ -148,22 +205,30 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
-                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10" Title="{x:Static languages:Languages.Caption_Warning}"
+                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10"
+                                      Title="{x:Static languages:Languages.Caption_Warning}"
                                       Message="{x:Static languages:Languages.Text_Settings_TooManyThreadsWarning}"
                                       Severity="Warning" />
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DownloadSource}" Description="{x:Static languages:Languages.Text_Settings_DownloadSourceDescription}"
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DownloadSource}"
+                                               Description="{x:Static languages:Languages.Text_Settings_DownloadSourceDescription}"
                                                IconSource="CloudDownload">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox x:Name="DownloadSource" SelectionChanged="DownloadSourceChanged">
-                            <ComboBoxItem Tag="TPCA" Content="{x:Static languages:Languages.Text_Settings_DownloadSource_TPCA}" />
-                            <ComboBoxItem Tag="Official" Content="{x:Static languages:Languages.Text_Settings_DownloadSource_Official}" />
+                            <ComboBoxItem Tag="TPCA"
+                                          Content="{x:Static languages:Languages.Text_Settings_DownloadSource_TPCA}" />
+                            <ComboBoxItem Tag="Official"
+                                          Content="{x:Static languages:Languages.Text_Settings_DownloadSource_Official}" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Description="{x:Static languages:Languages.Text_Settings_AccountDescription}" IconSource="Admin" Header="{x:Static languages:Languages.Text_Settings_Account}" IsExpanded="False">
-                <controls:SettingsExpanderItem Description="{x:Static languages:Languages.Text_Settings_LoginExpireDaysDescription}" Content="{x:Static languages:Languages.Text_Settings_LoginExpireDays}">
+            <controls:SettingsExpander Description="{x:Static languages:Languages.Text_Settings_AccountDescription}"
+                                       IconSource="Admin" Header="{x:Static languages:Languages.Text_Settings_Account}"
+                                       IsExpanded="False">
+                <controls:SettingsExpanderItem
+                    Description="{x:Static languages:Languages.Text_Settings_LoginExpireDaysDescription}"
+                    Content="{x:Static languages:Languages.Text_Settings_LoginExpireDays}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <Slider
@@ -188,32 +253,40 @@
                         </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLogin}" Description="{x:Static languages:Languages.Text_Settings_AutoLoginDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLogin}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoLoginDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoLogin"
                             IsCheckedChanged="AutoLoginChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoSignIn}" Description="{x:Static languages:Languages.Text_Settings_AutoSignInDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoSignIn}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoSignInDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoSign"
                             IsCheckedChanged="AutoSignChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Description="{x:Static languages:Languages.Text_Settings_CaptchaModeDescription}" Content="{x:Static languages:Languages.Text_Settings_CaptchaMode}">
+                <controls:SettingsExpanderItem
+                    Description="{x:Static languages:Languages.Text_Settings_CaptchaModeDescription}"
+                    Content="{x:Static languages:Languages.Text_Settings_CaptchaMode}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox x:Name="CaptchaModeCBox" SelectionChanged="CaptchaModeChanged">
-                            <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit" Content="{x:Static languages:Languages.Text_Settings_Captcha_Implicit}" />
-                            <ComboBoxItem x:Name="BrowserValidation" Tag="explicit" Content="{x:Static languages:Languages.Text_Settings_Captcha_Explicit}" />
+                            <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit"
+                                          Content="{x:Static languages:Languages.Text_Settings_Captcha_Implicit}" />
+                            <ComboBoxItem x:Name="BrowserValidation" Tag="explicit"
+                                          Content="{x:Static languages:Languages.Text_Settings_Captcha_Explicit}" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem
                     Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Other}" IconSource="Settings" Description="{x:Static languages:Languages.Text_Settings_OtherDescription}">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Other}"
+                                       IconSource="Settings"
+                                       Description="{x:Static languages:Languages.Text_Settings_OtherDescription}">
                 <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DoNotShowResponse}"
                                                Description="{x:Static languages:Languages.Text_Settings_DoNotShowResponseDescription}">
                     <controls:SettingsExpanderItem.Footer>
@@ -227,7 +300,8 @@
                         <StackPanel Orientation="Horizontal" Spacing="3">
                             <ComboBox x:Name="TerminalEngineTypeBox"
                                       SelectionChanged="TerminalEngineTypeChanged">
-                                <ComboBoxItem Tag="Original" Content="{x:Static languages:Languages.Text_Settings_Engine_Default}" />
+                                <ComboBoxItem Tag="Original"
+                                              Content="{x:Static languages:Languages.Text_Settings_Engine_Default}" />
                                 <ComboBoxItem Tag="XTerm">XTerm</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
@@ -254,6 +328,53 @@
                 <controls:SettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
                     <controls:InfoBar IsOpen="True" IsClosable="False" Severity="Warning"
                                       Message="{x:Static languages:Languages.Text_Settings_LinuxShNotice}" />
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Advanced}"
+                                       Description="{x:Static languages:Languages.Text_Settings_Advanced_Description}">
+                <controls:SettingsExpander.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE822;"></controls:FontIconSource>
+                </controls:SettingsExpander.IconSource>
+                <controls:InfoBar Message="{x:Static languages:Languages.Text_Settings_Advanced_Warning_Message}"
+                                  Title="{x:Static languages:Languages.Caption_Warning}"
+                                  IsClosable="False"
+                                  Severity="Warning"
+                                  IsOpen="True" />
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_RenderingMode}"
+                                               Description="{x:Static languages:Languages.Text_Settings_RenderingModeDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="RenderingModeBox" SelectionChanged="RenderingModeChanged">
+                            <ComboBoxItem Tag="Auto"
+                                          Content="{x:Static languages:Languages.Text_Settings_Rendering_Auto}" />
+                            <ComboBoxItem Tag="Vulkan" Content="Vulkan" />
+                            <ComboBoxItem Tag="OpenGL" Content="OpenGL" />
+                            <ComboBoxItem Tag="Software"
+                                          Content="{x:Static languages:Languages.Text_Settings_Rendering_Software}" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_GpuMemory}"
+                                               Description="{x:Static languages:Languages.Text_Settings_GpuMemoryDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="GpuMemoryBox" SelectionChanged="GpuMemoryChanged">
+                            <ComboBoxItem Tag="128" Content="128 MB" />
+                            <ComboBoxItem Tag="256" Content="256 MB" />
+                            <ComboBoxItem Tag="512" Content="512 MB" />
+                            <ComboBoxItem Tag="1024" Content="1024 MB" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_LowLatency}"
+                                               Description="{x:Static languages:Languages.Text_Settings_LowLatencyDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch x:Name="LowLatencySwitch" IsCheckedChanged="LowLatencyChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem>
+                    <controls:InfoBar x:Name="RenderRestartNotice" IsOpen="False" IsClosable="True"
+                                      Severity="Informational"
+                                      Title="{x:Static languages:Languages.Caption_Hint}"
+                                      Message="{x:Static languages:Languages.Text_Settings_RestartRequiredNotice}" />
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
         </StackPanel>

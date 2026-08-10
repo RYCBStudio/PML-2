@@ -254,7 +254,9 @@ public partial class TerminalPage : UserControl
         {
             newTab = new TabItem
             {
-                Header = "控制台" + MainTabCtrl.Items.Count,
+                Header = consoleTitle.IsNullOrEmpty()
+                    ? string.Format(Languages.Text_Terminal_ConsoleTabFormat, MainTabCtrl.Items.Count)
+                    : consoleTitle,
                 Content = new TerminalControl()
             };
         }

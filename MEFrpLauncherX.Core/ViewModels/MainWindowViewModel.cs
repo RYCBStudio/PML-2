@@ -30,7 +30,7 @@ public class MainWindowViewModel : ViewModelBase
         private set;
     }
 
-    public string AppMessage
+    public string? AppMessage
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);

@@ -2726,4 +2726,67 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>已复制隧道信息</value>
     </data>
+    <data name="Text.Settings.Advanced" xml:space="preserve">
+        <value>高级设置</value>
+    </data>
+    <data name="Text.Settings.Advanced.Warning.Message" xml:space="preserve">
+        <value>修改本页面的设置存在风险,请谨慎操作。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Description" xml:space="preserve">
+        <value>修改软件的高级设置。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Caution.Message" xml:space="preserve">
+        <value>修改以下设置项可能会导致软件表现异常或崩溃。请确保您具备修改这些设置的能力。</value>
+    </data>
+    <data name="Text.Settings.AnimationLevel" xml:space="preserve">
+        <value>动画程度</value>
+    </data>
+    <data name="Text.Settings.AnimationLevelDescription" xml:space="preserve">
+        <value>调整界面入场与过渡动画的丰富程度, 关闭动画可提升响应速度</value>
+    </data>
+    <data name="Text.Settings.Animation.Off" xml:space="preserve">
+        <value>关闭</value>
+    </data>
+    <data name="Text.Settings.Animation.Reduced" xml:space="preserve">
+        <value>精简</value>
+    </data>
+    <data name="Text.Settings.Animation.Standard" xml:space="preserve">
+        <value>标准</value>
+    </data>
+    <data name="Text.Settings.RenderingMode" xml:space="preserve">
+        <value>渲染模式</value>
+    </data>
+    <data name="Text.Settings.RenderingModeDescription" xml:space="preserve">
+        <value>选择界面渲染使用的图形接口, 更改后需重启生效</value>
+    </data>
+    <data name="Text.Settings.Rendering.Auto" xml:space="preserve">
+        <value>自动</value>
+    </data>
+    <data name="Text.Settings.Rendering.Software" xml:space="preserve">
+        <value>软件渲染</value>
+    </data>
+    <data name="Text.Settings.GpuMemory" xml:space="preserve">
+        <value>显存分配</value>
+    </data>
+    <data name="Text.Settings.GpuMemoryDescription" xml:space="preserve">
+        <value>图形渲染的 GPU 资源缓存上限, 更大的缓存可减少重复加载, 更改后需重启生效</value>
+    </data>
+    <data name="Text.Settings.LowLatency" xml:space="preserve">
+        <value>低延迟渲染</value>
+    </data>
+    <data name="Text.Settings.LowLatencyDescription" xml:space="preserve">
+        <value>使用低延迟交换链降低帧延迟, 使动画更流畅, 但会禁用部分窗口合成特效, 更改后需重启生效</value>
+    </data>
+    <data name="Text.Settings.RestartRequiredNotice" xml:space="preserve">
+        <value>更改将在重启软件后生效</value>
+    </data>
+    <data name="Text.Settings.Language" xml:space="preserve">
+        <value>语言</value>
+    </data>
+    <data name="Text.Settings.LanguageDescription" xml:space="preserve">
+        <value>设置软件的显示语言</value>
+    </data>
+    <data name="Text.Tips.NeedRestart" xml:space="preserve">
+        <value>需要重启</value>
+    </data>
 </root>

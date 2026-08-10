@@ -1,9 +1,13 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Reactive;
 using Avalonia.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Tools;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace MEFrpLauncherX.ViewModels;
@@ -12,6 +16,8 @@ public class MainPageFrameViewModel : ViewModelBase
 {
     public MainPageFrameViewModel()
     {
+        NeedRestart = false || Design.IsDesignMode;
+
         // 初始化命令
         NavigateToHomeCommand = CreateNavigationCommand(() => new HomePage());
         NavigateToCreateProxyCommand = CreateNavigationCommand(() => new CreateProxyPage());
@@ -24,6 +30,19 @@ public class MainPageFrameViewModel : ViewModelBase
         NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
         NavigateToThemeCommand = CreateNavigationCommand(() => new ThemesPage());
         NavigateToPluginCommand = CreateNavigationCommand(() => new PluginListPage());
+
+        RestartCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            try
+            {
+                await DesktopUtils.RestartAsync();
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger.Error(ex);
+                Environment.Exit(0); // 最简化的强制退出
+            }
+        });
     }
 
     public bool IsMenuOpen
@@ -98,6 +117,17 @@ public class MainPageFrameViewModel : ViewModelBase
     }
 
     public ReactiveCommand<Unit, Unit> NavigateToPluginCommand
+    {
+        get;
+    }
+
+    public bool NeedRestart
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> RestartCommand
     {
         get;
     }

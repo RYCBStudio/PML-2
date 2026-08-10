@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.ViewModels;
@@ -25,6 +26,12 @@ public partial class MainPageFrame : UserControl
             var viewModel = DataContext as MainPageFrameViewModel;
             viewModel?.NavigateToPage(item.Tag);
         }
+    }
+
+    private void CloseNRTip(object? sender, PointerReleasedEventArgs e)
+    {
+        var viewModel = DataContext as MainPageFrameViewModel;
+        viewModel?.NeedRestart = false;
     }
 }
 
