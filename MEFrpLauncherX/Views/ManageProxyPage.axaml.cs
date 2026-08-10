@@ -204,59 +204,62 @@ public partial class ManageProxyPage : UserControl
             {
                 // 创建原生菜单
                 MainWindow.Instance.NativeMenuBar = [];
-
-                // 添加应用程序菜单（macOS 第一个菜单）
-                var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
-                var appSubMenu = new NativeMenu
+                MainWindow.Instance.NativeMenuBar.NeedsUpdate += (sender, args) =>
                 {
-                    new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
-                    {
-                        Gesture = KeyGesture.Parse("Ctrl+M"),
-                        Command = ReactiveCommand.Create(() =>
-                        {
-                            MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
-                        })
-                    },
-                    new NativeMenuItemSeparator(),
-                    new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
-                    {
-                        Gesture = KeyGesture.Parse("Ctrl+D"),
-                        Command = ReactiveCommand.Create(() =>
-                        {
-                            MainPageFrameViewModel.Instance?.NavigateToPage("Create");
-                        })
-                    },
-                    new NativeMenuItemSeparator()
-                };
 
-                var tmp_launchProxy = new NativeMenu();
-                foreach (var proxy in proxyViewModel.AllProxies)
-                {
-                    tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
+                    // 添加应用程序菜单（macOS 第一个菜单）
+                    var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
+                    var appSubMenu = new NativeMenu
                     {
-                        Command = proxy.LaunchProxyCommand
+                        new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
+                        {
+                            Gesture = KeyGesture.Parse("Ctrl+M"),
+                            Command = ReactiveCommand.Create(() =>
+                            {
+                                MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                            })
+                        },
+                        new NativeMenuItemSeparator(),
+                        new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
+                        {
+                            Gesture = KeyGesture.Parse("Ctrl+D"),
+                            Command = ReactiveCommand.Create(() =>
+                            {
+                                MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                            })
+                        },
+                        new NativeMenuItemSeparator()
+                    };
+
+                    var tmp_launchProxy = new NativeMenu();
+                    foreach (var proxy in proxyViewModel.AllProxies)
+                    {
+                        tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
+                        {
+                            Command = proxy.LaunchProxyCommand
+                        });
+                    }
+
+                    appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_LaunchTunnel)
+                    {
+                        Menu = tmp_launchProxy
                     });
-                }
-
-                appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_LaunchTunnel)
-                {
-                    Menu = tmp_launchProxy
-                });
-                appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
-                {
-                    Gesture = KeyGesture.Parse("Ctrl+Q"),
-                    Command = ReactiveCommand.Create(() =>
+                    appSubMenu.Add(new NativeMenuItemSeparator());
+                    appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
                     {
-                        App.Desktop.Shutdown();
-                    })
-                });
+                        Gesture = KeyGesture.Parse("Ctrl+Q"),
+                        Command = ReactiveCommand.Create(() =>
+                        {
+                            App.Desktop.Shutdown();
+                        })
+                    });
 
-                appMenu.Menu = appSubMenu;
-                MainWindow.Instance.NativeMenuBar.Add(appMenu);
+                    appMenu.Menu = appSubMenu;
+                    MainWindow.Instance.NativeMenuBar.Add(appMenu);
 
-                // 设置菜单栏
-                NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
+                    // 设置菜单栏
+                    NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
+                };
             }
 
             Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);

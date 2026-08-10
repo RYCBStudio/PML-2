@@ -144,7 +144,6 @@
                                 Width="20"
                                 Margin="5,0,5,0"
                                 Source="{DynamicResource MEFrpLogo}"
-                                IsVisible="{Binding !IsDark}"
                                 Stretch="UniformToFill" />
                             <TextBlock
                                 FontFamily="{StaticResource GlobalFontFamily}"
@@ -227,7 +226,6 @@
                                 Width="20"
                                 Margin="5,0,5,0"
                                 Source="/Assets/hitokoto.png"
-                                IsVisible="{Binding IsDark}"
                                 Stretch="UniformToFill" />
                             <TextBlock
                                 FontFamily="{StaticResource GlobalFontFamily}"

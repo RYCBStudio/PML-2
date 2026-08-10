@@ -17,6 +17,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Tools;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -245,25 +246,10 @@ public partial class UserCenterPage : UserControl
         }
 
         UserCache.Logout();
+        await ConfigManager.UpdateConfigAsync(cfg => cfg.AutoLogin = false);
         try
         {
-            // 使用独立的重启器进程（避免文件占用问题）
-            var tempBat = Path.Combine(Path.GetTempPath(), "restart.bat");
-            await File.WriteAllTextAsync(tempBat, $"""
-
-                                                   @echo off
-                                                   timeout /t 1 /nobreak >nul
-                                                   start "" "{Environment.ProcessPath}"
-                                                   del "%~f0"
-                                                   """);
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = tempBat,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true
-            });
-            App.Desktop.Shutdown();
+            await DesktopUtils.RestartAsync();
         }
         catch (Exception ex)
         {

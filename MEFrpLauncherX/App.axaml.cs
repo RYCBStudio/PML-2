@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -20,6 +21,7 @@ using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Styling;
 using MEFrpLauncherX.Views;
 
 namespace MEFrpLauncherX;
@@ -34,7 +36,7 @@ public class App : Application
     public static FluentAvaloniaTheme? FATheme
     {
         get;
-        private set;    
+        private set;
     }
 
     public static IClassicDesktopStyleApplicationLifetime Desktop
@@ -71,16 +73,22 @@ public class App : Application
             "zh-Hant" => new CultureInfo("zh-Hant"),
             _ => CultureInfo.CurrentCulture
         };
-        #if DEBUG
-        Languages.Culture = new CultureInfo("en-US");
+#if DEBUG
+        //Languages.Culture = new CultureInfo("en-US");
         Debug.WriteLine("CurrentCulture: " + CultureInfo.CurrentCulture);
-        #endif
-        AppAnalytics.Setup(
-            "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
-            Core.App.Version);
-        if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
+#endif
+        // 按配置应用动画程度 (0=关闭 1=精简 2=标准)
+        AnimationStyles.Apply(ConfigManager.CurrentConfig.AnimationLevel);
+        if (!Design.IsDesignMode)
         {
-            AppAnalytics.EnableAnalytics();
+            AppAnalytics.Setup(
+                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
+                Core.App.Version);
+
+            if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
+            {
+                AppAnalytics.EnableAnalytics();
+            }
         }
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

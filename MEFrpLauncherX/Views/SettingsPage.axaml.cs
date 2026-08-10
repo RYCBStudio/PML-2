@@ -12,6 +12,8 @@ using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.ViewModels;
+using MEFrpLauncherX.Styling;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.Appearance;
 using MEFrpLauncherX.Views.ProxyMonitor;
@@ -105,6 +107,36 @@ public partial class SettingsPage : UserControl
                 };
             AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
             AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
+            LanguageSelectComboBox.SelectedIndex = ConfigManager.CurrentConfig.Language switch
+            {
+                "zh-CN" => 0,
+                "en-US" => 1,
+                "zh-Hant" => 2,
+                _ => 0
+            };
+
+            AnimationLevelBox.SelectedIndex = ConfigManager.CurrentConfig.AnimationLevel switch
+            {
+                0 => 0,
+                1 => 1,
+                _ => 2
+            };
+            var renderConfig = RenderConfigManager.Load();
+            RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
+            {
+                "VULKAN" => 1,
+                "OPENGL" => 2,
+                "SOFTWARE" => 3,
+                _ => 0
+            };
+            GpuMemoryBox.SelectedIndex = renderConfig.GpuMemoryLimitMb switch
+            {
+                128 => 0,
+                512 => 2,
+                1024 => 3,
+                _ => 1
+            };
+            LowLatencySwitch.IsChecked = renderConfig.LowLatencyRendering;
 
             MainPageFrameViewModel.Instance?.IsLoading = false;
             _isInit = false;
@@ -369,6 +401,7 @@ public partial class SettingsPage : UserControl
 
         ConfigManager.UpdateConfig(config =>
             config.ExpireDays = (int)e.NewValue);
+        MainPageFrameViewModel.Instance.NeedRestart = true;
     }
 
     private void ThemeChanged(object? sender, SelectionChangedEventArgs e)
@@ -527,6 +560,72 @@ public partial class SettingsPage : UserControl
         ConfigManager.UpdateConfig(config => config.AutoSign = (sender as ToggleSwitch).IsChecked.Value);
     }
 
+    private void AnimationLevelChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        var level = (sender as ComboBox).SelectedIndex;
+        ConfigManager.UpdateConfig(config => config.AnimationLevel = level);
+        AnimationStyles.Apply(level);
+    }
+
+    private void RenderingModeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg =>
+            cfg.RenderingMode = ((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString() ?? "Auto");
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void GpuMemoryChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg =>
+            cfg.GpuMemoryLimitMb =
+                int.TryParse(((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString(), out var mb)
+                    ? mb
+                    : 256);
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void LowLatencyChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg => cfg.LowLatencyRendering = (sender as ToggleSwitch).IsChecked.Value);
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void LanguageChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+        
+        ConfigManager.UpdateConfig(config =>
+        {
+            config.Language = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "";
+        });
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
 }
 
 public class ValidationModeConverter : IValueConverter

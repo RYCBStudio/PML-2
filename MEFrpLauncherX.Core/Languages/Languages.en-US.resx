@@ -964,7 +964,7 @@
         <value>User ID</value>
     </data>
     <data name="Text.UserCenter.RegisteredEmail" xml:space="preserve">
-        <value>Registered Email</value>
+        <value>Email</value>
     </data>
     <data name="Text.UserCenter.RegisteredTime" xml:space="preserve">
         <value>Registration Time</value>
@@ -2725,5 +2725,68 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>Tunnel information copied</value>
+    </data>
+    <data name="Text.Settings.Advanced" xml:space="preserve">
+        <value>Advanced Settings</value>
+    </data>
+    <data name="Text.Settings.Advanced.Warning.Message" xml:space="preserve">
+        <value>Changes to these settings may be risky. Operate with care.</value>
+    </data>
+    <data name="Text.Settings.Advanced.Description" xml:space="preserve">
+        <value>Modify the software’s advanced settings.</value>
+    </data>
+    <data name="Text.Settings.Advanced.Caution.Message" xml:space="preserve">
+        <value>Changes to the following settings may lead to instability or crashes. Only proceed if you understand these options.</value>
+    </data>
+    <data name="Text.Settings.AnimationLevel" xml:space="preserve">
+        <value>Animation level</value>
+    </data>
+    <data name="Text.Settings.AnimationLevelDescription" xml:space="preserve">
+        <value>Adjusts how rich the entrance and transition animations are. Turning animations off can improve responsiveness.</value>
+    </data>
+    <data name="Text.Settings.Animation.Off" xml:space="preserve">
+        <value>Off</value>
+    </data>
+    <data name="Text.Settings.Animation.Reduced" xml:space="preserve">
+        <value>Reduced</value>
+    </data>
+    <data name="Text.Settings.Animation.Standard" xml:space="preserve">
+        <value>Standard</value>
+    </data>
+    <data name="Text.Settings.RenderingMode" xml:space="preserve">
+        <value>Rendering mode</value>
+    </data>
+    <data name="Text.Settings.RenderingModeDescription" xml:space="preserve">
+        <value>Selects the graphics API used to render the interface. Takes effect after a restart.</value>
+    </data>
+    <data name="Text.Settings.Rendering.Auto" xml:space="preserve">
+        <value>Automatic</value>
+    </data>
+    <data name="Text.Settings.Rendering.Software" xml:space="preserve">
+        <value>Software rendering</value>
+    </data>
+    <data name="Text.Settings.GpuMemory" xml:space="preserve">
+        <value>GPU memory allocation</value>
+    </data>
+    <data name="Text.Settings.GpuMemoryDescription" xml:space="preserve">
+        <value>Upper limit of the GPU resource cache for rendering. A larger cache reduces repeated reloading. Takes effect after a restart.</value>
+    </data>
+    <data name="Text.Settings.LowLatency" xml:space="preserve">
+        <value>Low latency rendering</value>
+    </data>
+    <data name="Text.Settings.LowLatencyDescription" xml:space="preserve">
+        <value>Uses a low-latency swap chain to reduce frame latency and make animations smoother, but disables some window composition effects. Takes effect after a restart.</value>
+    </data>
+    <data name="Text.Settings.RestartRequiredNotice" xml:space="preserve">
+        <value>Changes will take effect after restarting the application</value>
+    </data>
+    <data name="Text.Settings.Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Text.Settings.LanguageDescription" xml:space="preserve">
+        <value>Set the software’s display language.</value>
+    </data>
+    <data name="Text.Tips.NeedRestart" xml:space="preserve">
+        <value>Restart required</value>
     </data>
 </root>

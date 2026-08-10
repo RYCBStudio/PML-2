@@ -2645,7 +2645,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>隧道名稱不能包含: .</value>
     </data>
     <data name="Text.Validation.EmailRequired" xml:space="preserve">
-        <value>請填寫您的 ME Frp 信箱</value>
+        <value>請填寫您的 ME Frp 電子郵件</value>
     </data>
     <data name="Text.ManageProxyHelp.NExampleValue" xml:space="preserve">
         <value>/n:節點1</value>
@@ -2720,5 +2720,68 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>已複製隧道資訊</value>
+    </data>
+    <data name="Text.Settings.Advanced" xml:space="preserve">
+        <value>進階設定</value>
+    </data>
+    <data name="Text.Settings.Advanced.Warning.Message" xml:space="preserve">
+        <value>修改本頁面的設定存在風險，請謹慎操作。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Description" xml:space="preserve">
+        <value>修改軟體的進階設定。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Caution.Message" xml:space="preserve">
+        <value>修改以下設定項可能會導致軟體表現異常或崩潰。請確保您具備修改這些設定的能力。</value>
+    </data>
+    <data name="Text.Settings.AnimationLevel" xml:space="preserve">
+        <value>動畫程度</value>
+    </data>
+    <data name="Text.Settings.AnimationLevelDescription" xml:space="preserve">
+        <value>調整介面入場與過場動畫的豐富程度, 關閉動畫可提升回應速度</value>
+    </data>
+    <data name="Text.Settings.Animation.Off" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.Settings.Animation.Reduced" xml:space="preserve">
+        <value>精簡</value>
+    </data>
+    <data name="Text.Settings.Animation.Standard" xml:space="preserve">
+        <value>標準</value>
+    </data>
+    <data name="Text.Settings.RenderingMode" xml:space="preserve">
+        <value>渲染模式</value>
+    </data>
+    <data name="Text.Settings.RenderingModeDescription" xml:space="preserve">
+        <value>選擇介面渲染使用的圖形介面, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.Rendering.Auto" xml:space="preserve">
+        <value>自動</value>
+    </data>
+    <data name="Text.Settings.Rendering.Software" xml:space="preserve">
+        <value>軟體渲染</value>
+    </data>
+    <data name="Text.Settings.GpuMemory" xml:space="preserve">
+        <value>顯存分配</value>
+    </data>
+    <data name="Text.Settings.GpuMemoryDescription" xml:space="preserve">
+        <value>圖形渲染的 GPU 資源快取上限, 更大的快取可減少重複載入, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.LowLatency" xml:space="preserve">
+        <value>低延遲渲染</value>
+    </data>
+    <data name="Text.Settings.LowLatencyDescription" xml:space="preserve">
+        <value>使用低延遲交換鏈降低影格延遲, 使動畫更流暢, 但會停用部分視窗合成特效, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.RestartRequiredNotice" xml:space="preserve">
+        <value>變更將在重新啟動程式後生效</value>
+    </data>
+    <data name="Text.Settings.Language" xml:space="preserve">
+        <value>	語言</value>
+    </data>
+    <data name="Text.Settings.LanguageDescription" xml:space="preserve">
+        <value>設定軟體的顯示語言。</value>
+    </data>
+    <data name="Text.Tips.NeedRestart" xml:space="preserve">
+        <value>需要重新啟動</value>
     </data>
 </root>
