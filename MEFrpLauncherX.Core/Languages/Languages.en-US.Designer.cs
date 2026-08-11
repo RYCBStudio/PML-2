@@ -3028,6 +3028,42 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Region.
+        /// </summary>
+        public static string Text_MappedNodeContainer_CurrentRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.CurrentRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to China (incl. HK, MO, TW).
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_China {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.China", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global Nodes.
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_Globe {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.Globe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Region.
+        /// </summary>
+        public static string Text_MappedNodeContainer_SelectedRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.SelectedRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minecraft game server.
         /// </summary>
         public static string Text_MinecraftExtension_MinecraftServerDesc {
@@ -4470,7 +4506,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Jiahao.
+        ///   Looks up a localized string similar to Map View.
         /// </summary>
         public static string Text_Proxy_Mode_Jiahao {
             get {

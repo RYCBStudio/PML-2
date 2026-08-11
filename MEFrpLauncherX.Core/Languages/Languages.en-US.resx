@@ -373,7 +373,7 @@
         <value>Expert</value>
     </data>
     <data name="Text.Proxy.Mode.Jiahao" xml:space="preserve">
-        <value>Jiahao</value>
+        <value>Map View</value>
     </data>
     <data name="Text.Proxy.PageLoading" xml:space="preserve">
         <value>Loading...</value>
@@ -2797,5 +2797,17 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.About.CompleteCopyrightStatement.Content" xml:space="preserve">
         <value>Warning: This software consists of both open-source and closed-source components. The open-source modules are licensed under the MIT License, permitting free use, modification, and distribution in accordance with its terms. The closed-source modules are protected by copyright law and international treaties. Any unauthorized reproduction, distribution, or use of these proprietary components may result in severe civil and criminal penalties. Legal action will be pursued to the fullest extent permitted by law.</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.China" xml:space="preserve">
+        <value>China (incl. HK, MO, TW)</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.Globe" xml:space="preserve">
+        <value>Global Nodes</value>
+    </data>
+    <data name="Text.MappedNodeContainer.SelectedRegion" xml:space="preserve">
+        <value>Selected Region</value>
+    </data>
+    <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
+        <value>Current Region</value>
     </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              x:Class="MEFrpLauncherX.Views.MappedNodesContainerLegacy"
              FontFamily="{StaticResource GlobalFontFamily}">
     <UserControl.Styles>
@@ -28,8 +29,8 @@
         <TabStrip Theme="{DynamicResource AlternateTabStripTheme}"
                   SelectionChanged="SelectingItemsControl_OnSelectionChanged" x:Name="Option"
                   ItemContainerTheme="{DynamicResource AlternateTabStripItemTheme}">
-            <TabStripItem>国内 (包括港澳台)</TabStripItem>
-            <TabStripItem>全球</TabStripItem>
+            <TabStripItem Content="{x:Static languages:Languages.Text_MappedNodeContainer_Section_China}" />
+            <TabStripItem Content="{x:Static languages:Languages.Text_MappedNodeContainer_Section_Globe}" />
         </TabStrip>
         <Viewbox Grid.Row="1" x:Name="GlobalMap" IsVisible="False">
             <Panel>
@@ -586,10 +587,10 @@
         <controls:ChinaMap Grid.Row="1" x:Name="ChinaMapControl" />
         <GridSplitter Grid.RowSpan="2" Grid.Column="1" />
         <StackPanel Grid.RowSpan="2" Grid.Column="2">
-            <Expander Header="已选地区" IsExpanded="True">
+            <Expander Header="{x:Static languages:Languages.Text_MappedNodeContainer_SelectedRegion}" IsExpanded="True">
                 <TextBlock x:Name="SelectedArea" />
             </Expander>
-            <Expander Header="当前地区" IsExpanded="True">
+            <Expander Header="{x:Static languages:Languages.Text_MappedNodeContainer_CurrentRegion}" IsExpanded="True">
                 <TextBlock x:Name="HoveredArea" />
             </Expander>
         </StackPanel>

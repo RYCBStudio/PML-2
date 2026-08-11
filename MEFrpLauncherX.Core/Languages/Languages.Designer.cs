@@ -3057,6 +3057,42 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 当前地区.
+        /// </summary>
+        public static string Text_MappedNodeContainer_CurrentRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.CurrentRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 国内 (包括港澳台).
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_China {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.China", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 全球.
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_Globe {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.Globe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已选地区.
+        /// </summary>
+        public static string Text_MappedNodeContainer_SelectedRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.SelectedRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 我的世界游戏服务器.
         /// </summary>
         public static string Text_MinecraftExtension_MinecraftServerDesc {

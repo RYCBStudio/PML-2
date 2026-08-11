@@ -2798,4 +2798,16 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.About.CompleteCopyrightStatement.Content" xml:space="preserve">
         <value>警告： 本软件包含开源与闭源两部分。开源模块遵循 MIT 开源许可协议，您可依据该协议条款自由使用、修改及分发。闭源模块受著作权法及国际版权公约的保护，未经明确授权，任何复制、传播或使用闭源部分内容的行为，均可能招致严厉的民事及刑事法律责任。对于侵权行为，我们将依法在最大范围内追究相关责任。</value>
     </data>
+    <data name="Text.MappedNodeContainer.Section.China" xml:space="preserve">
+        <value>国内 (包括港澳台)</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.Globe" xml:space="preserve">
+        <value>全球</value>
+    </data>
+    <data name="Text.MappedNodeContainer.SelectedRegion" xml:space="preserve">
+        <value>已选地区</value>
+    </data>
+    <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
+        <value>当前地区</value>
+    </data>
 </root>

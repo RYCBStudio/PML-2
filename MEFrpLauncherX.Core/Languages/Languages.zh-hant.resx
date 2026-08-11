@@ -367,9 +367,6 @@
     <data name="Text.Proxy.Mode.Expert" xml:space="preserve">
         <value>專家版</value>
     </data>
-    <data name="Text.Proxy.Mode.Jiahao" xml:space="preserve">
-        <value>嘉豪版</value>
-    </data>
     <data name="Text.Proxy.PageLoading" xml:space="preserve">
         <value>正在載入...</value>
     </data>
@@ -2792,5 +2789,20 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.About.CompleteCopyrightStatement.Content" xml:space="preserve">
         <value>警告： 本軟體包含開源與閉源兩部分。開源模組遵循 MIT 開源授權協議，您可依據該協議條款自由使用、修改及散佈。閉源模組受著作權法及國際版權公約的保護，未經明確授權，任何複製、傳播或使用閉源部分內容的行為，均可能招致嚴厲的民事及刑事法律責任。對於侵權行為，我們將依法在最大範圍內追究相關責任。</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.China" xml:space="preserve">
+        <value>中國大陸及港澳臺</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.Globe" xml:space="preserve">
+        <value>全球節點</value>
+    </data>
+    <data name="Text.MappedNodeContainer.SelectedRegion" xml:space="preserve">
+        <value>	已選地區	</value>
+    </data>
+    <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
+        <value>當前地區</value>
+    </data>
+    <data name="Text.Proxy.Mode.Jiahao" xml:space="preserve">
+        <value>地圖檢視</value>
     </data>
 </root>

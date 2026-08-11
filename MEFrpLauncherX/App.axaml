@@ -58,7 +58,7 @@
         <Style Selector=":is(TextBlock)">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style Selector="ToggleSwitch">
+        <Style Selector=":is(ToggleSwitch)">
             <Setter Property="OnContent" Value="{x:Static languages:Languages.Text_Global_On}" />
             <Setter Property="OffContent" Value="{x:Static languages:Languages.Text_Global_Off}" />
         </Style>

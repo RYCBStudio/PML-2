@@ -49,6 +49,15 @@ public class App : Application
 
     public override void Initialize()
     {
+        // 必须在加载 App.axaml 前设置 Culture，
+        // 否则 Styles 中的 {x:Static languages:...} 会以默认(zh-CN)资源被提前固化
+        Languages.Culture = ConfigManager.CurrentConfig.Language switch
+        {
+            "zh-CN" => new CultureInfo("zh-CN"),
+            "en-US" => new CultureInfo("en-US"),
+            "zh-Hant" => new CultureInfo("zh-Hant"),
+            _ => CultureInfo.CurrentCulture
+        };
         AvaloniaXamlLoader.Load(this);
         _ = Core.App.Initialize();
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
@@ -66,13 +75,6 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Languages.Culture = ConfigManager.CurrentConfig.Language switch
-        {
-            "zh-CN" => new CultureInfo("zh-CN"),
-            "en-US" => new CultureInfo("en-US"),
-            "zh-Hant" => new CultureInfo("zh-Hant"),
-            _ => CultureInfo.CurrentCulture
-        };
 #if DEBUG
         //Languages.Culture = new CultureInfo("en-US");
         Debug.WriteLine("CurrentCulture: " + CultureInfo.CurrentCulture);
