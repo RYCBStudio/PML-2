@@ -552,7 +552,8 @@ public static class ConfigManager
             {
                 Position = "rt",
                 Enabled = false
-            }
+            },
+            AnimationLevel = 2
         };
     }
 }
@@ -712,6 +713,15 @@ public class AppConfig
         get;
         set;
     }
+
+    /// <summary>
+    ///     动画程度: 0=关闭动画 1=精简 2=标准
+    /// </summary>
+    public int AnimationLevel
+    {
+        get;
+        set;
+    } = 2;
 }
 
 public class HomeConfig

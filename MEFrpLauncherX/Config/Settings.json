@@ -25,7 +25,6 @@
     "AutoCheck": true,
     "Channel": "Preview",
     "Method": "ds",
-    "CompileType": "Common",
     "KeepProfile": false
   },
   "DownloadSource": "TPCA",

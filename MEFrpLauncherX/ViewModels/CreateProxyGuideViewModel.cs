@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
@@ -7,6 +7,7 @@ using IconPacks.Avalonia.Lucide;
 using IconPacks.Avalonia.Material;
 using IconPacks.Avalonia.SimpleIcons;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -32,8 +33,7 @@ public class CreateProxyGuideViewModel : ViewModelBase
             new ProxyType()
             {
                 Name = "AList/OpenList",
-                Description =
-                    "AList/OpenList是开源网盘聚合工具，支持多网盘统一管理、文件浏览与视频播放。默认HTTP端口5244，HTTPS端口5245，提供WebDAV服务，可轻松实现本地与云端数据互通。",
+                Description = Languages.Text_CreateProxyGuide_AListDesc,
                 Icon = new PackIcon()
                 {
                     Icon = "AList",
@@ -44,7 +44,7 @@ public class CreateProxyGuideViewModel : ViewModelBase
             new ProxyType()
             {
                 Name = "Minecraft Java Edition",
-                Description = "Minecraft Java版多人游戏服务器，支持模组和插件扩展。默认TCP端口25565，可通过SRV记录隐藏端口，适合与朋友联机建造和探索虚拟世界。",
+                Description = Languages.Text_CreateProxyGuide_MinecraftJavaDesc,
                 Icon = new PackIcon()
                 {
                     Icon = "Minecraft",
@@ -55,7 +55,7 @@ public class CreateProxyGuideViewModel : ViewModelBase
             new ProxyType()
             {
                 Name = "Minecraft Bedrock Edition",
-                Description = "Minecraft Bedrock版多人游戏服务器，支持模组和插件扩展。默认TCP端口19132，可通过SRV记录隐藏端口，适合与朋友联机建造和探索虚拟世界。",
+                Description = Languages.Text_CreateProxyGuide_MinecraftBedrockDesc,
                 Icon = new PackIcon()
                 {
                     Icon = "Minecraft",
@@ -65,8 +65,8 @@ public class CreateProxyGuideViewModel : ViewModelBase
             },
             new ProxyType()
             {
-                Name = "远程桌面连接",
-                Description = "RDP（远程桌面协议）是微软开发的远程访问协议，默认使用TCP 3389端口，允许用户通过网络图形化控制远程计算机。",
+                Name = Languages.Text_CreateProxyGuide_RDPName,
+                Description = Languages.Text_CreateProxyGuide_RDPDesc,
                 Icon = new PackIcon()
                 {
                     Icon = "Airplay",
@@ -176,7 +176,6 @@ public class PackIconToControlConverter : IValueConverter
                     };
                 }
                 break;
-            
         }
 
         return null;

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Storage;
 using ReactiveUI;
 
@@ -17,11 +18,17 @@ public class LoginViewModel : ViewModelBase
     {
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
-            AuthModes = ["(推荐) 浏览器验证", "无感验证"];
+            AuthModes =
+            [
+                Languages.Text_Settings_Captcha_ExplicitRecommended, Languages.Text_Settings_Captcha_Implicit
+            ];
         }
         else
         {
-            AuthModes = ["浏览器验证", "(推荐) 无感验证"];
+            AuthModes =
+            [
+                Languages.Text_Settings_Captcha_Explicit, Languages.Text_Settings_Captcha_ImplicitRecommended
+            ];
         }
 
         AuthMode = ConfigManager.CurrentConfig.CaptchaMode.ToLower() switch
@@ -175,7 +182,7 @@ public class LoginViewModel : ViewModelBase
             .Where(u => !string.Equals(u, "default", StringComparison.OrdinalIgnoreCase))
             .ToList();
         // Insert a placeholder at index 0 for "use new account"
-        var list = new List<string> { "<使用新账号>" };
+        var list = new List<string> { Languages.Text_Login_UseNewAccount };
         list.AddRange(filteredUsernames);
         StoredUsernames = new AvaloniaList<string>(list);
         this.RaisePropertyChanged(nameof(HasStoredUsernames));
@@ -214,7 +221,9 @@ public class ProgressToTextConverter : IValueConverter
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
         var progress = value as double?;
-        return progress.HasValue ? progress > 0 ? $"登录中... {progress:F2}%" : "登录" : "登录";
+        return progress.HasValue
+            ? progress > 0 ? string.Format(Languages.Text_Login_LoggingInProgress, progress) : Languages.Text_Login_Login
+            : Languages.Text_Login_Login;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -12,6 +12,8 @@ using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.ViewModels;
+using MEFrpLauncherX.Styling;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.Appearance;
 using MEFrpLauncherX.Views.ProxyMonitor;
@@ -105,19 +107,49 @@ public partial class SettingsPage : UserControl
                 };
             AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
             AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
+            LanguageSelectComboBox.SelectedIndex = ConfigManager.CurrentConfig.Language switch
+            {
+                "zh-CN" => 0,
+                "en-US" => 1,
+                "zh-Hant" => 2,
+                _ => 0
+            };
+
+            AnimationLevelBox.SelectedIndex = ConfigManager.CurrentConfig.AnimationLevel switch
+            {
+                0 => 0,
+                1 => 1,
+                _ => 2
+            };
+            var renderConfig = RenderConfigManager.Load();
+            RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
+            {
+                "VULKAN" => 1,
+                "OPENGL" => 2,
+                "SOFTWARE" => 3,
+                _ => 0
+            };
+            GpuMemoryBox.SelectedIndex = renderConfig.GpuMemoryLimitMb switch
+            {
+                128 => 0,
+                512 => 2,
+                1024 => 3,
+                _ => 1
+            };
+            LowLatencySwitch.IsChecked = renderConfig.LowLatencyRendering;
 
             MainPageFrameViewModel.Instance?.IsLoading = false;
             _isInit = false;
         };
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
-            NoSenseValidation.Content = "无感验证";
-            BrowserValidation.Content = "(推荐) 浏览器验证";
+            NoSenseValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_Implicit;
+            BrowserValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_ExplicitRecommended;
         }
         else
         {
-            NoSenseValidation.Content = "(推荐) 无感验证";
-            BrowserValidation.Content = "浏览器验证";
+            NoSenseValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_ImplicitRecommended;
+            BrowserValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_Explicit;
         }
     }
 
@@ -253,14 +285,16 @@ public partial class SettingsPage : UserControl
             }
 
             // 可以添加其他操作系统支持
-            Growl.Success(isAutoStartEnabled ? "添加开机启动项成功" : "删除开机启动项成功");
+            Growl.Success(isAutoStartEnabled
+                ? Core.Languages.Languages.Text_Settings_AutoStartAdded
+                : Core.Languages.Languages.Text_Settings_AutoStartRemoved);
         }
         catch (Exception ex)
         {
             // 记录错误并提供用户反馈
             Core.App.CurrentLogger.Log($"设置开机自启动失败: {ex.Message}");
             Core.App.CurrentLogger.Error(ex);
-            ShowErrorMessage("无法更改开机自启动设置");
+            ShowErrorMessage(Core.Languages.Languages.Text_Settings_AutoStartChangeFailed);
 
             // 回滚UI状态
             checkBox.IsChecked = !isAutoStartEnabled;
@@ -367,6 +401,7 @@ public partial class SettingsPage : UserControl
 
         ConfigManager.UpdateConfig(config =>
             config.ExpireDays = (int)e.NewValue);
+        MainPageFrameViewModel.Instance.NeedRestart = true;
     }
 
     private void ThemeChanged(object? sender, SelectionChangedEventArgs e)
@@ -525,6 +560,72 @@ public partial class SettingsPage : UserControl
         ConfigManager.UpdateConfig(config => config.AutoSign = (sender as ToggleSwitch).IsChecked.Value);
     }
 
+    private void AnimationLevelChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        var level = (sender as ComboBox).SelectedIndex;
+        ConfigManager.UpdateConfig(config => config.AnimationLevel = level);
+        AnimationStyles.Apply(level);
+    }
+
+    private void RenderingModeChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg =>
+            cfg.RenderingMode = ((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString() ?? "Auto");
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void GpuMemoryChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg =>
+            cfg.GpuMemoryLimitMb =
+                int.TryParse(((sender as ComboBox).SelectedItem as ComboBoxItem).Tag.ToString(), out var mb)
+                    ? mb
+                    : 256);
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void LowLatencyChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        RenderConfigManager.UpdateConfig(cfg => cfg.LowLatencyRendering = (sender as ToggleSwitch).IsChecked.Value);
+        RenderRestartNotice.IsOpen = true;
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void LanguageChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+        
+        ConfigManager.UpdateConfig(config =>
+        {
+            config.Language = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "";
+        });
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
 }
 
 public class ValidationModeConverter : IValueConverter
@@ -540,9 +641,9 @@ public class ValidationModeConverter : IValueConverter
 
         return i switch
         {
-            0 => "在软件内验证, 无需其他操作, 对于x64系列处理器友好, 对于Arm架构处理器可能会耗费大量时间。",
-            1 => "通过浏览器打开验证网页, 并手动复制验证结果, 对于Arm处理器友好。",
-            _ => "未知方式"
+            0 => Core.Languages.Languages.Text_Settings_Captcha_ImplicitDesc,
+            1 => Core.Languages.Languages.Text_Settings_Captcha_ExplicitDesc,
+            _ => Core.Languages.Languages.Text_Settings_Captcha_UnknownMode
         };
     }
 

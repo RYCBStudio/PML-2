@@ -1,5 +1,6 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.RegularExpressions;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Plugin;
 
 namespace RYCB.PML2.Mixin.TerminalHelper;
@@ -38,8 +39,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0005",
-                Info = "端口不在允许范围内",
-                Solution = ["请检查端口是否在允许范围内"]
+                Info = Languages.Text_TunnelError_InfoPortNotAllowed,
+                Solution = [Languages.Text_TunnelError_SolutionCheckPort]
             };
         }
 
@@ -48,8 +49,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0006",
-                Info = "流量已耗尽",
-                Solution = ["请检查流量是否已耗尽"]
+                Info = Languages.Text_TunnelError_InfoTrafficExhausted,
+                Solution = [Languages.Text_TunnelError_SolutionCheckTraffic]
             };
         }
 
@@ -58,8 +59,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0007",
-                Info = "隧道不存在",
-                Solution = ["请检查隧道是否存在"]
+                Info = Languages.Text_TunnelError_InfoTunnelNotExist,
+                Solution = [Languages.Text_TunnelError_SolutionCheckTunnelExists]
             };
         }
 
@@ -68,8 +69,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0004",
-                Info = "隧道在线",
-                Solution = ["请检查隧道是否存在"]
+                Info = Languages.Text_TunnelError_InfoTunnelOnline,
+                Solution = [Languages.Text_TunnelError_SolutionCheckTunnelExists]
             };
         }
 
@@ -78,11 +79,11 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0008",
-                Info = "隧道已禁用",
+                Info = Languages.Text_TunnelError_InfoTunnelDisabled,
                 Solution =
                 [
-                    "请检查隧道是否被禁用 (在强制下线隧道时会被禁用), 请重新启用",
-                    "若非本人操作, 请联系管理员协助处理"
+                    Languages.Text_TunnelError_SolutionTunnelDisabledDetail,
+                    Languages.Text_TunnelError_SolutionContactAdmin
                 ]
             };
         }
@@ -92,8 +93,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0009",
-                Info = "隧道所在节点不存在",
-                Solution = ["请检查隧道所在节点是否存在"]
+                Info = Languages.Text_TunnelError_InfoTunnelNodeNotExist,
+                Solution = [Languages.Text_TunnelError_SolutionCheckTunnelNode]
             };
         }
 
@@ -102,8 +103,8 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0010",
-                Info = "用户没有此节点的使用权限",
-                Solution = ["请检查用户是否有此节点的使用权限"]
+                Info = Languages.Text_TunnelError_InfoNoNodePermission,
+                Solution = [Languages.Text_TunnelError_SolutionCheckPermission]
             };
         }
 
@@ -116,8 +117,12 @@ public partial class TerminalHelper : ILogicalPlugin
                 return new ErrorSolution
                 {
                     Flag = "MT0011",
-                    Info = "连接节点失败",
-                    Solution = ["请检查节点是否在线", "请检查节点是否可达"]
+                    Info = Languages.Text_TunnelError_InfoConnectNodeFailed,
+                    Solution =
+                    [
+                        Languages.Text_TunnelError_SolutionCheckNodeOnline,
+                        Languages.Text_TunnelError_SolutionCheckNodeReachable
+                    ]
                 };
             }
         }
@@ -127,8 +132,12 @@ public partial class TerminalHelper : ILogicalPlugin
             return new ErrorSolution
             {
                 Flag = "MT0001",
-                Info = "无法连接到本地服务",
-                Solution = ["请检查是否已打开服务", "请检查该端口是否已开放"]
+                Info = Languages.Text_TunnelError_InfoCannotConnectLocal,
+                Solution =
+                [
+                    Languages.Text_TunnelError_SolutionCheckServiceStarted,
+                    Languages.Text_TunnelError_SolutionCheckPortOpen
+                ]
             };
         }
 

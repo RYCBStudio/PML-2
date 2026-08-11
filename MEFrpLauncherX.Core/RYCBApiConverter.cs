@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.ViewModels;
 using ReactiveUI;
 using RestSharp;
@@ -100,7 +101,7 @@ public class RYCBApiConverter
         using var client = new RestClient(new RestClientOptions(endpoint)
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.2" : "RYCB-PML2/Desktop 2.1.0",
+            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.2" : $"RYCB-PML2/Desktop {App.Version} ",
             Timeout = TimeSpan.FromSeconds(10)
         });
 
@@ -152,7 +153,7 @@ public class RYCBApiConverter
             return new FeedbackResponse
             {
                 success = false,
-                message = "发送失败"
+                message = Languages.Languages.Text_Api_SendFailed
             };
         }
 
@@ -166,7 +167,7 @@ public class RYCBApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/latest"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = "正在获取最新版本";
+        MainWindowViewModel.Instance?.AppMessage = Languages.Languages.Text_Api_FetchingLatestVersion;
 
         using var client = CreateClient("changelog/latest");
 
@@ -193,7 +194,7 @@ public class RYCBApiConverter
                 data = default
             };
 
-        MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
+        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, (int)response.StatusCode);
         return result;
     }
 
@@ -202,7 +203,7 @@ public class RYCBApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/preview/latest"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = "正在获取最新版本";
+        MainWindowViewModel.Instance?.AppMessage = Languages.Languages.Text_Api_FetchingLatestVersion;
 
         using var client = CreateClient("changelog/preview/latest");
 
@@ -229,7 +230,7 @@ public class RYCBApiConverter
                 data = default
             };
 
-        MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {(int)response.StatusCode}";
+        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, (int)response.StatusCode);
         return result;
     }
 
@@ -238,10 +239,21 @@ public class RYCBApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "tpca/errors"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取错误信息", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = "正在获取错误信息";
+        MainWindowViewModel.Instance?.AppMessage = Languages.Languages.Text_Api_FetchingErrorInfo;
         using var client = CreateClient("tpca/errors");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        if (res.StatusCode != HttpStatusCode.OK || res.Content is null)
+        {
+            return new TunnelErrorInfosShell
+            {
+                success = false,
+                data = default,
+                count = 0,
+                timestamp = DateTimeOffset.Now.ToString("O")
+            };
+            ;
+        }
         var result =
             JsonSerializer.Deserialize<TunnelErrorInfosShell>(res.Content,
                 App.AppJsonSerializerContext.TunnelErrorInfosShell);
@@ -253,7 +265,7 @@ public class RYCBApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + $"tpca/errors/{flag}"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取错误信息", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = "正在获取错误信息";
+        MainWindowViewModel.Instance?.AppMessage = Languages.Languages.Text_Api_FetchingErrorInfo;
         using var client = CreateClient($"tpca/errors/{flag}");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
@@ -279,7 +291,7 @@ public class RYCBApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "notice"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取软件公告", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = "正在获取软件公告";
+        MainWindowViewModel.Instance?.AppMessage = Languages.Languages.Text_Api_FetchingSoftwareNotice;
         using var client = CreateClient("notice");
         var res = await client.ExecuteAsync(CreateRequest(withAuthorization: false));
         App.CurrentLogger.Log($"状态: {res.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
@@ -306,7 +318,7 @@ public class RYCBApiConverter
         return new RestClient(new RestClientOptions(BaseApiUrl + endpoint)
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.2" : "RYCB-PML2/Desktop 2.1.0",
+            UserAgent = OperatingSystem.IsAndroid() ? $"RYCB-PML2/Android 0.0.2" : $"RYCB-PML2/Desktop {App.Version}",
             Timeout = TimeSpan.FromSeconds(10)
         });
     }
@@ -377,8 +389,8 @@ public class NoticeContent : ReactiveObject
         {
             Content = new NoticeView(this, ContentOfNotice),
             Title = Summary,
-            PrimaryButtonText = Languages.Languages.Text_Global_Confirm,
-            CloseButtonText = "关闭",
+            PrimaryButtonText =Languages.Languages.Text_Global_Confirm,
+            CloseButtonText = Languages.Languages.Text_Global_Close,
             DefaultButton = ContentDialogButton.Primary
         };
         cd.ShowAsync();

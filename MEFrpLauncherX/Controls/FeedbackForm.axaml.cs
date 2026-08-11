@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
+using MEFrpLauncherX.Core.Languages;
 
 namespace MEFrpLauncherX.Controls;
 
@@ -12,7 +13,7 @@ public partial class FeedbackForm : UserControl, INotifyPropertyChanged
         InitializeComponent();
     }
 
-    [Required(ErrorMessage = "请填写您的 ME Frp 邮箱")]
+    [Required(ErrorMessageResourceName = "Text_Validation_EmailRequired", ErrorMessageResourceType = typeof(Languages))]
     public string Email
     {
         get;

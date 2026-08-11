@@ -10,6 +10,7 @@ using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using ReactiveUI;
 using RYCB.PML2.Extensions.MinecraftExtension;
 
@@ -40,7 +41,7 @@ public class PortScannerViewModel : ViewModelBase
             IsScanning = isExecuting;
             if (isExecuting)
             {
-                StatusMessage = "扫描中...";
+                StatusMessage = Languages.Text_PortScan_Scanning;
             }
         });
     }
@@ -85,7 +86,7 @@ public class PortScannerViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "就绪";
+    } = Languages.Text_PortScan_Ready;
 
     public AvaloniaList<PortScannerService.ScanResult> ScanResults
     {
@@ -194,19 +195,19 @@ public class PortScannerViewModel : ViewModelBase
 
                     scannedPorts += batchSize;
                     ScanProgress = (double)scannedPorts / totalPorts * 100;
-                    StatusMessage = $"已扫描 {scannedPorts}/{totalPorts} 个端口";
+                    StatusMessage = string.Format(Languages.Text_PortScan_ScannedProgressFormat, scannedPorts, totalPorts);
                 });
             }
 
-            StatusMessage = $"扫描完成，找到 {ScanResults.Count} 个开放端口";
+            StatusMessage = string.Format(Languages.Text_PortScan_ScanCompletedFormat, ScanResults.Count);
         }
         catch (OperationCanceledException)
         {
-            StatusMessage = "扫描已取消";
+            StatusMessage = Languages.Text_PortScan_ScanCancelled;
         }
         catch (Exception ex)
         {
-            StatusMessage = $"扫描出错: {ex.Message}";
+            StatusMessage = string.Format(Languages.Text_PortScan_ScanErrorFormat, ex.Message);
         }
     }
 
@@ -218,7 +219,7 @@ public class PortScannerViewModel : ViewModelBase
             _cancellationTokenSource = new CancellationTokenSource();
 
             IsScanning = true;
-            StatusMessage = "快速扫描MC常用端口中...";
+            StatusMessage = Languages.Text_PortScan_QuickScanning;
 
             var results = await _portScanner.ScanCommonMCPortsAsync(TargetIp, _cancellationTokenSource.Token);
 
@@ -229,18 +230,18 @@ public class PortScannerViewModel : ViewModelBase
                     ScanResults.Add(result);
                 }
 
-                StatusMessage = $"快速扫描完成，找到 {ScanResults.Count} 个可能的MC端口";
+                StatusMessage = string.Format(Languages.Text_PortScan_QuickScanCompletedFormat, ScanResults.Count);
                 IsScanning = false;
             });
         }
         catch (OperationCanceledException)
         {
-            StatusMessage = "扫描已取消";
+            StatusMessage = Languages.Text_PortScan_ScanCancelled;
             IsScanning = false;
         }
         catch (Exception ex)
         {
-            StatusMessage = $"扫描出错: {ex.Message}";
+            StatusMessage = string.Format(Languages.Text_PortScan_ScanErrorFormat, ex.Message);
             IsScanning = false;
         }
     }
@@ -248,7 +249,7 @@ public class PortScannerViewModel : ViewModelBase
     private void StopScan()
     {
         _cancellationTokenSource?.Cancel();
-        StatusMessage = "正在停止扫描...";
+        StatusMessage = Languages.Text_PortScan_StoppingScan;
     }
 
     private void SetCommonPorts()
@@ -269,7 +270,7 @@ public class PortScannerViewModel : ViewModelBase
         if (SelectedResult != null)
         {
             await Core.App.MainWindow.Clipboard.SetTextAsync(SelectedResult.Port.ToString());
-            StatusMessage = $"已复制端口 {SelectedResult.Port} 到剪贴板";
+            StatusMessage = string.Format(Languages.Text_PortScan_PortCopiedFormat, SelectedResult.Port);
         }
     }
 
@@ -278,33 +279,33 @@ public class PortScannerViewModel : ViewModelBase
         // 这里可以将端口传递给主界面的配置
         // 例如通过消息总线或事件
         MessageBus.Current.SendMessage(new PortSelectedMessage(port));
-        StatusMessage = $"已选择端口 {port}";
+        StatusMessage = string.Format(Languages.Text_PortScan_PortSelectedFormat, port);
     }
 
     private bool ValidateInputs()
     {
         if (string.IsNullOrEmpty(TargetIp))
         {
-            StatusMessage = "请输入目标IP地址";
+            StatusMessage = Languages.Text_PortScan_EnterTargetIp;
             return false;
         }
 
         if (!int.TryParse(StartPort, out var start) ||
             !int.TryParse(EndPort, out var end))
         {
-            StatusMessage = "端口号必须为数字";
+            StatusMessage = Languages.Text_PortScan_PortMustBeNumber;
             return false;
         }
 
         if (start < 1 || start > 65535 || end < 1 || end > 65535)
         {
-            StatusMessage = "端口号必须在1-65535之间";
+            StatusMessage = Languages.Text_PortScan_PortRange;
             return false;
         }
 
         if (start > end)
         {
-            StatusMessage = "起始端口不能大于结束端口";
+            StatusMessage = Languages.Text_PortScan_StartGreaterEnd;
             return false;
         }
 
@@ -340,7 +341,7 @@ public class BoolToColorConverter : IValueConverter
 public class BoolToStatusConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is bool b && b ? "开放" : "关闭";
+        value is bool b && b ? Languages.Text_PortScan_Open : Languages.Text_PortScan_Closed;
 
     public object ConvertBack(object value, Type targetType, object parameter,
         CultureInfo culture) =>

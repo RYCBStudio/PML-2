@@ -1,9 +1,9 @@
-<!-- PortScannerView.axaml -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              x:Class="MEFrpLauncherX.Controls.PortScannerView"
              x:DataType="viewModels:PortScannerViewModel">
 
@@ -17,7 +17,7 @@
     </UserControl.Resources>
 
     <StackPanel Margin="20" Spacing="10">
-        <TextBlock Text="MC端口扫描工具"
+        <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_Title}"
                    FontSize="18"
                    FontWeight="Bold"
                    Margin="0,0,0,10" />
@@ -25,31 +25,31 @@
         <!-- 扫描设置 -->
         <Border Padding="10" Background="{DynamicResource ControlFillColorSecondaryBrush}" CornerRadius="8">
             <StackPanel Spacing="10">
-                <TextBlock Text="扫描设置" FontWeight="Bold" />
+                <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_ScanSettings}" FontWeight="Bold" />
 
                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
-                    <TextBlock Text="目标IP:" VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_TargetIp}" VerticalAlignment="Center" />
                     <TextBox Text="{Binding TargetIp}"
                              Grid.Column="1"
-                             Watermark="例如: 127.0.0.1" />
-                    <Button Content="本机"
+                             Watermark="{x:Static languages:Languages.Text_PortScanner_TargetIpPlaceholder}" />
+                    <Button Content="{x:Static languages:Languages.Text_PortScanner_Localhost}"
                             Grid.Column="2"
                             Command="{Binding UseLocalhostCommand}"
                             Padding="10,2" />
 
-                    <TextBlock Text="端口范围:"
+                    <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_PortRange}"
                                Grid.Row="1"
                                VerticalAlignment="Center" />
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Spacing="5">
                         <TextBox Text="{Binding StartPort}"
                                  Width="80"
-                                 Watermark="起始端口" />
+                                 Watermark="{x:Static languages:Languages.Text_PortScanner_StartPort}" />
                         <TextBlock Text="-" VerticalAlignment="Center" />
                         <TextBox Text="{Binding EndPort}"
                                  Width="80"
-                                 Watermark="结束端口" />
+                                 Watermark="{x:Static languages:Languages.Text_PortScanner_EndPort}" />
                     </StackPanel>
-                    <Button Content="常用端口"
+                    <Button Content="{x:Static languages:Languages.Text_PortScanner_CommonPorts}"
                             Grid.Column="2"
                             Grid.Row="1"
                             Command="{Binding UseCommonPortsCommand}"
@@ -60,20 +60,20 @@
 
         <!-- 控制按钮 -->
         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-            <Button Content="开始扫描"
+            <Button Content="{x:Static languages:Languages.Text_PortScanner_StartScan}"
                     Classes="accent"
                     Command="{Binding StartScanCommand}"
                     IsEnabled="{Binding IsNotScanning}"
                     Width="120"
                     Height="35" />
 
-            <Button Content="停止扫描"
+            <Button Content="{x:Static languages:Languages.Text_PortScanner_StopScan}"
                     Command="{Binding StopScanCommand}"
                     IsEnabled="{Binding IsScanning}"
                     Width="120"
                     Height="35" />
 
-            <Button Content="快速扫描MC端口"
+            <Button Content="{x:Static languages:Languages.Text_PortScanner_QuickScan}"
                     Command="{Binding QuickScanCommand}"
                     IsEnabled="{Binding IsNotScanning}"
                     Width="150"
@@ -98,8 +98,8 @@
                 BorderThickness="1" BorderBrush="{DynamicResource ControlFillColorSecondaryBrush}">
             <StackPanel Spacing="10">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="扫描结果" FontWeight="Bold" />
-                    <TextBlock Text="{Binding ResultCount, StringFormat='(共{0}个开放端口)'}" />
+                    <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_ScanResults}" FontWeight="Bold" />
+                    <TextBlock Text="{Binding ResultCount, StringFormat={x:Static languages:Languages.Text_PortScanner_ResultCountFormat}}" />
                 </StackPanel>
 
                 <ListBox ItemsSource="{Binding ScanResults}"
@@ -113,7 +113,7 @@
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
                                 <Grid ColumnDefinitions="60,80,*,100">
-                                    <TextBlock Text="{Binding Port, StringFormat='端口:{0}'}"
+                                    <TextBlock Text="{Binding Port, StringFormat={x:Static languages:Languages.Text_PortScanner_PortFormat}}"
                                                FontWeight="Bold" />
 
                                     <Border Grid.Column="1"
@@ -134,7 +134,7 @@
                                                Margin="10,0" />
 
                                     <Button Grid.Column="3"
-                                            Content="使用此端口"
+                                            Content="{x:Static languages:Languages.Text_PortScanner_UseThisPort}"
                                             Command="{Binding $parent[controls:PortScannerView].DataContext.UsePortCommand}"
                                             CommandParameter="{Binding Port}"
                                             Padding="10,2" />
@@ -146,12 +146,12 @@
 
                 <!-- 操作按钮 -->
                 <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-                    <Button Content="复制选中端口"
+                    <Button Content="{x:Static languages:Languages.Text_PortScanner_CopySelectedPort}"
                             Command="{Binding CopySelectedPortCommand}"
                             IsEnabled="{Binding HasSelection}"
                             Padding="10,5" />
 
-                    <Button Content="清空结果"
+                    <Button Content="{x:Static languages:Languages.Text_PortScanner_ClearResults}"
                             Command="{Binding ClearResultsCommand}"
                             IsEnabled="{Binding HasResults}"
                             Padding="10,5" />

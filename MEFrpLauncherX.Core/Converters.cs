@@ -6,9 +6,13 @@ using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
+using MEFrpLauncherX.Core.Languages;
 using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;
+#pragma warning disable CS8603 // 可能返回 null 引用。
+#pragma warning disable CS8767 // 参数类型中引用类型的为 Null 性与隐式实现的成员不匹配(可能是由于为 Null 性特性)。
+#pragma warning disable CS8605 // 取消装箱可能为 null 的值。
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
 
 namespace MEFrpLauncherX.Core;
@@ -450,34 +454,6 @@ public class Int32ToProgressBarDangerConvertor : IValueConverter
         throw new NotImplementedException();
 }
 
-// 视图模板选择器
-public class ViewModeTemplateSelector : IDataTemplate
-{
-    public DataTemplate? GridTemplate
-    {
-        get;
-        set;
-    }
-
-    public DataTemplate? ListTemplate
-    {
-        get;
-        set;
-    }
-
-    public Control Build(object param)
-    {
-        if (param is Control { Parent: ItemsControl })
-        {
-            //var viewModel = itemsControl.DataContext as ProxyViewModel;
-            //return viewModel?.CurrentViewMode == ViewMode.List ? ListTemplate : GridTemplate;
-        }
-
-        return (GridTemplate ?? throw new InvalidOperationException()).Build(param);
-    }
-
-    public bool Match(object data) => data is Control;
-}
 
 public class NodeNotFoundToBoolConverter : IValueConverter
 {
@@ -534,7 +510,7 @@ public class EnumToBooleanConverter : IValueConverter
 public class BoolToBadgeHeaderConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        (bool)value ? "负载过高" : null;
+        (bool)value ? Languages.Languages.Text_Converters_Overloaded : null;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
@@ -627,23 +603,23 @@ public class LowerCaseToUpperCaseConverter : ConverterBase
     public override object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value?.ToString()?.ToUpper();
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+    public override object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
 public class BoolToStatusConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is bool isOnline)
         {
-            return isOnline ? "在线" : "离线";
+            return isOnline ? Languages.Languages.Text_Converters_Online : Languages.Languages.Text_Converters_Offline;
         }
 
-        return "未知";
+        return Languages.Languages.Text_Converters_Unknown;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object? ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -907,10 +883,10 @@ public class UnixTimeToReadableConverter : IValueConverter
 
             if (isOnline)
             {
-                return $"已在线 {GetTimeAgoString(timeDiff)}";
+                return string.Format(Languages.Languages.Text_Converters_OnlineForFormat, GetTimeAgoString(timeDiff));
             }
 
-            return $"{GetTimeAgoString(timeDiff)}前离线";
+            return string.Format(Languages.Languages.Text_Converters_OfflineAgoFormat, GetTimeAgoString(timeDiff));
         }
 
         return string.Empty;
@@ -925,22 +901,22 @@ public class UnixTimeToReadableConverter : IValueConverter
         {
             var days = (int)timeSpan.TotalDays;
             var hours = (int)(timeSpan.TotalHours % 24);
-            return $"{days}天{hours}小时";
+            return string.Format(Languages.Languages.Text_Converters_DaysHoursFormat, days, hours);
         }
 
         if (timeSpan.TotalHours >= 1)
         {
             var hours = (int)timeSpan.TotalHours;
             var minutes = (int)(timeSpan.TotalMinutes % 60);
-            return $"{hours}小时{minutes}分";
+            return string.Format(Languages.Languages.Text_Converters_HoursMinutesFormat, hours, minutes);
         }
 
         if (timeSpan.TotalMinutes >= 1)
         {
-            return $"{(int)timeSpan.TotalMinutes}分";
+            return string.Format(Languages.Languages.Text_Converters_MinutesFormat, (int)timeSpan.TotalMinutes);
         }
 
-        return $"{(int)timeSpan.TotalSeconds}秒";
+        return string.Format(Languages.Languages.Text_Converters_SecondsFormat, (int)timeSpan.TotalSeconds);
     }
 }
 
@@ -953,7 +929,9 @@ public class OnlineStatusTextConverter : IValueConverter
             var duration = TimeSpan.FromSeconds(status.uptime);
             var timeText = FormatTimeSpan(duration);
 
-            return status.isOnline ? $"已在线 {timeText}" : $"{timeText}前离线";
+            return status.isOnline
+                ? string.Format(Languages.Languages.Text_Converters_OnlineForFormat, timeText)
+                : string.Format(Languages.Languages.Text_Converters_OfflineAgoFormat, timeText);
         }
 
         return string.Empty;
@@ -968,22 +946,22 @@ public class OnlineStatusTextConverter : IValueConverter
         {
             var days = (int)ts.TotalDays;
             var hours = ts.Hours;
-            return $"{days}天{hours}小时";
+            return string.Format(Languages.Languages.Text_Converters_DaysHoursFormat, days, hours);
         }
 
         if (ts.TotalHours >= 1)
         {
             var hours = (int)ts.TotalHours;
             var minutes = ts.Minutes;
-            return $"{hours}小时{minutes}分";
+            return string.Format(Languages.Languages.Text_Converters_HoursMinutesFormat, hours, minutes);
         }
 
         if (ts.TotalMinutes >= 1)
         {
-            return $"{(int)ts.TotalMinutes}分";
+            return string.Format(Languages.Languages.Text_Converters_MinutesFormat, (int)ts.TotalMinutes);
         }
 
-        return $"{(int)ts.TotalSeconds}秒";
+        return string.Format(Languages.Languages.Text_Converters_SecondsFormat, (int)ts.TotalSeconds);
     }
 }
 
@@ -1020,10 +998,10 @@ public class BoolToYesNoConverter : IValueConverter
     {
         if (value is bool boolValue)
         {
-            return boolValue ? "是" : "否";
+            return boolValue ? Languages.Languages.Text_Converters_Yes : Languages.Languages.Text_Converters_No;
         }
 
-        return "否";
+        return Languages.Languages.Text_Converters_No;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
@@ -1038,10 +1016,10 @@ public class StatusToStringConverter : IValueConverter
         {
             switch (status)
             {
-                case 0: return "正常";
-                case 1: return "封禁";
-                case 2: return "流量超限";
-                default: return $"未知状态 ({status})";
+                case 0: return Languages.Languages.Text_Converters_StatusNormal;
+                case 1: return Languages.Languages.Text_Converters_StatusBanned;
+                case 2: return Languages.Languages.Text_Converters_StatusTrafficExceeded;
+                default: return string.Format(Languages.Languages.Text_Converters_UnknownStatusFormat, status);
             }
         }
 
@@ -1116,8 +1094,8 @@ public class StatusToTextConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isEnabled)
-            return isEnabled ? "已启用" : "已禁用";
-        return "未知";
+            return isEnabled ? Languages.Languages.Text_Converters_Enabled : Languages.Languages.Text_Converters_Disabled;
+        return Languages.Languages.Text_Converters_Unknown;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

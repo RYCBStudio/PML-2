@@ -1,9 +1,10 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="UserControl"
              x:Class="MEFrpLauncherX.Views.ManageProxyPage"
@@ -17,29 +18,29 @@
 
         <!-- Top toolbar -->
         <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Spacing="10">
-            <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="隧道管理" />
+            <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_Nav_ManageProxy}" />
 
             <AutoCompleteBox x:Name="SearchBox" FilterMode="StartsWith" MinimumPrefixLength="1"
-                             Text="{Binding SearchText}" Watermark="搜索隧道:支持拼音和命令语法" Width="200" />
+                             Text="{Binding SearchText}" Watermark="{x:Static languages:Languages.Text_ALP_SearchWatermark}" Width="200" />
             <Button Click="OpenHelp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe83d;" FontFamily="{StaticResource IconFont}" />
-                    <TextBlock Margin="5,0,0,0" Text="帮助" />
+                    <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Global_Help}" />
                 </StackPanel>
             </Button>
             <Button Click="RefreshProxies">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe674;" FontFamily="{StaticResource IconFont}" />
-                    <TextBlock Margin="5,0,0,0" Text="刷新" />
+                    <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Global_Refresh}" />
                 </StackPanel>
             </Button>
             <Button Click="DownloadMEFClient">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe72b;" FontFamily="{StaticResource IconFont}" />
-                    <TextBlock Margin="5,0,0,0" Text="下载 ME Frp 客户端" />
+                    <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Proxy_DownloadMEFClient}" />
                 </StackPanel>
             </Button>
-            <ToggleButton Content="详细描述" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}" />
+            <ToggleButton Content="{x:Static languages:Languages.Text_Proxy_DetailedDescription}" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}" />
         </StackPanel>
 
         <!-- Batch operation area -->
@@ -49,14 +50,14 @@
                 IsVisible="{Binding IsAnyProxySelected}">
             <StackPanel Margin="5" Orientation="Horizontal" Spacing="5">
                 <TextBlock Margin="10,0" VerticalAlignment="Center"
-                           Text="{Binding SelectedProxies.Count, StringFormat='已选择 {0} 个隧道'}" />
+                           Text="{Binding SelectedProxies.Count, StringFormat={x:Static languages:Languages.Text_Proxy_SelectedCount}}" />
 
                 <Button Classes="Success" FontFamily="{StaticResource GlobalFontFamily}"
                         Command="{Binding LaunchMultiProxyCommand}"
                         CommandParameter="{Binding SelectedProxies}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xe6c1;" FontFamily="{StaticResource IconFont}" />
-                        <TextBlock Margin="5,0,0,0" Text="批量启动" />
+                        <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Proxy_BatchLaunch}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -71,7 +72,7 @@
                             Text="&#xe655;" />
                         <TextBlock
                             Margin="5,0,0,0"
-                            Text="批量禁用" />
+                            Text="{x:Static languages:Languages.Text_Proxy_BatchDisable}" />
                     </StackPanel>
                 </Button>
 
@@ -87,7 +88,7 @@
                             Text="&#xe6c1;" />
                         <TextBlock
                             Margin="5,0,0,0"
-                            Text="批量启用" />
+                            Text="{x:Static languages:Languages.Text_Proxy_BatchEnable}" />
                     </StackPanel>
                 </Button>
 
@@ -103,7 +104,7 @@
                             Text="&#xe64b;" />
                         <TextBlock
                             Margin="5,0,0,0"
-                            Text="批量删除" />
+                            Text="{x:Static languages:Languages.Text_Proxy_BatchDelete}" />
                     </StackPanel>
                 </Button>
 
@@ -118,7 +119,7 @@
                             Text="&#xe64b;" />
                         <TextBlock
                             Margin="5,0,0,0"
-                            Text="清除选择" />
+                            Text="{x:Static languages:Languages.Text_Proxy_ClearSelection}" />
                     </StackPanel>
                 </Button>
             </StackPanel>

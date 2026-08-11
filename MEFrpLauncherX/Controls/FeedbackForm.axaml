@@ -1,20 +1,21 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.FeedbackForm">
     <StackPanel Spacing="5" Margin="2">
         <DockPanel HorizontalSpacing="2">
-            <TextBlock Text="用户邮箱" DockPanel.Dock="Left" />
+            <TextBlock Text="{x:Static languages:Languages.Text_Feedback_Email}" DockPanel.Dock="Left" />
             <TextBox Text="{Binding Email,RelativeSource={RelativeSource AncestorType=controls:FeedbackForm}}"
-                     Watermark="请填写您的邮箱" x:Name="EmailBox" />
+                     Watermark="{x:Static languages:Languages.Text_Feedback_EmailWatermark}" x:Name="EmailBox" />
         </DockPanel>
         <DockPanel HorizontalSpacing="2">
-            <TextBlock Text="反馈内容" DockPanel.Dock="Left" />
+            <TextBlock Text="{x:Static languages:Languages.Text_Feedback_Content}" DockPanel.Dock="Left" />
             <TextBox Text="{Binding Feedback, RelativeSource={RelativeSource AncestorType=controls:FeedbackForm}}"
-                     Watermark="请填写您的反馈内容" AcceptsReturn="True" x:Name="FeedbackBox" />
+                     Watermark="{x:Static languages:Languages.Text_Feedback_ContentWatermark}" AcceptsReturn="True" x:Name="FeedbackBox" />
         </DockPanel>
     </StackPanel>
 </UserControl>

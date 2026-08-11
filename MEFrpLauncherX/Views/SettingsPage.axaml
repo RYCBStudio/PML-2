@@ -1,79 +1,124 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="350"
              x:Class="MEFrpLauncherX.Views.SettingsPage">
     <ScrollViewer>
         <StackPanel Classes="animated">
-            <controls:SettingsExpander Header="外观" IconSource="DarkTheme" Description="自定义程序的外观">
-                <controls:SettingsExpanderItem Content="主题" IconSource="New" Description="设置程序的配色主题">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Appearance}"
+                                       IconSource="DarkTheme"
+                                       Description="{x:Static languages:Languages.Text_Settings_AppearanceDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Language}"
+                                               Description="{x:Static languages:Languages.Text_Settings_LanguageDescription}"
+                                               IconSource="Character">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="LanguageSelectComboBox" SelectionChanged="LanguageChanged">
+                            <ComboBoxItem Content="简体中文" Tag="zh-CN"/>
+                            <ComboBoxItem Content="English" Tag="en-US"/>
+                            <ComboBoxItem Content="繁體中文" Tag="zh-Hant"/>
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
+                                               IconSource="New"
+                                               Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Theme"
                             SelectionChanged="ThemeChanged">
-                            <ComboBoxItem Content="深色" Tag="Dark" />
-                            <ComboBoxItem Content="浅色" Tag="Light" />
-                            <ComboBoxItem Content="跟随系统" Tag="System" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Dark}" Tag="Dark" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Light}"
+                                          Tag="Light" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_System}"
+                                          Tag="System" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="材质" IconSource="Scan" Description="设置窗口背景的透明效果和材质">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Material}"
+                                               IconSource="Scan"
+                                               Description="{x:Static languages:Languages.Text_Settings_MaterialDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Skin"
                             SelectionChanged="SkinChanged">
-                            <ComboBoxItem Content="云母(Mica)" Tag="Mica" />
-                            <ComboBoxItem Content="亚克力(Acrylic)" Tag="AcrylicBlur" />
-                            <ComboBoxItem Content="模糊(Blur)" Tag="Blur" />
-                            <ComboBoxItem Content="透明(Transparent)" Tag="Transparent" />
-                            <ComboBoxItem Content="无(None)" Tag="None" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Mica}"
+                                          Tag="Mica" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Acrylic}"
+                                          Tag="AcrylicBlur" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Blur}"
+                                          Tag="Blur" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_Transparent}"
+                                          Tag="Transparent" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_None}"
+                                          Tag="None" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="自定义"
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Custom}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetAppearanceAdvanced" />
-                <controls:SettingsExpanderItem Content="背景设置" IconSource="FullScreenMaximize"
-                                               Description="设置窗口背景的拉伸模式">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Background}"
+                                               IconSource="FullScreenMaximize"
+                                               Description="{x:Static languages:Languages.Text_Settings_BackgroundDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <ComboBox x:Name="StretchBox" SelectionChanged="StretchChanged">
-                                <ComboBoxItem Content="无" Tag="None" />
-                                <ComboBoxItem Content="填充" Tag="Stretch" />
-                                <ComboBoxItem Content="均匀" Tag="Uniform" />
-                                <ComboBoxItem Content="均匀填充" Tag="UniformToFill" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_None}"
+                                              Tag="None" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Fill}"
+                                              Tag="Stretch" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_Uniform}"
+                                              Tag="Uniform" />
+                                <ComboBoxItem
+                                    Content="{x:Static languages:Languages.Text_Settings_Stretch_UniformToFill}"
+                                    Tag="UniformToFill" />
                             </ComboBox>
                         </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AnimationLevel}"
+                                               IconSource="SlideShow"
+                                               Description="{x:Static languages:Languages.Text_Settings_AnimationLevelDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="AnimationLevelBox" SelectionChanged="AnimationLevelChanged">
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Off}" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Reduced}" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Standard}" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="启动设置" Description="设置程序的启动选项">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}"
+                                       Description="{x:Static languages:Languages.Text_Settings_StartupDescription}">
                 <controls:SettingsExpander.IconSource>
                     <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
                         <controls:FontIconSource.Glyph>&#xE770;</controls:FontIconSource.Glyph>
                     </controls:FontIconSource>
                 </controls:SettingsExpander.IconSource>
-                <controls:SettingsExpanderItem Content="开机自启" Description="设置软件是否在开机时启动。请注意: 此处的“开机”指用户登录时。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoStart}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoStartDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoStart"
                             IsCheckedChanged="AutoStartChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="启动时自动启动某些隧道"
-                                               Description="设置启动时自动启动某些隧道。请注意: 此处的“启动”指软件启动时。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLaunch}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoLaunchDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoLaunch"
                             IsCheckedChanged="AutoLaunchChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}" Content="设置要启动的隧道">
+                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}"
+                                               Content="{x:Static languages:Languages.Text_Settings_SetTunnelsToLaunch}">
                     <controls:SettingsExpanderItem.Footer>
                         <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                         <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
@@ -81,7 +126,8 @@
                         </Button>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="关闭时最小化到系统托盘，而不是直接关闭" Description="启用该选项可以让软件运行在后台。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_MinimizeToTray}"
+                                               Description="{x:Static languages:Languages.Text_Settings_MinimizeToTrayDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="HideInsteadOfClose"
@@ -89,28 +135,38 @@
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="隧道设置" Description="设置隧道相关选项" IconSource="AllApps">
-                <controls:SettingsExpanderItem Content="强制下线隧道时不同时禁用隧道"
-                                               Description="幻缘映射官网强制下线隧道时会同时禁用隧道, 我们可以在强制下线隧道时再启用隧道。">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}"
+                                       Description="{x:Static languages:Languages.Text_Settings_TunnelSettingsDescription}"
+                                       IconSource="AllApps">
+                <controls:SettingsExpanderItem
+                    Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
+                    Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="KickWithoutDisable"
                             IsCheckedChanged="KickWithoutDisableChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="&quot;隧道监控&quot;栏 [BETA]"
-                                               Description="&quot;隧道监控&quot;是我们推出的一项新功能, 可以监视启动隧道的出入流量信息。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ProxyMonitorBar}"
+                                               Description="{x:Static languages:Languages.Text_Settings_ProxyMonitorBarDescription}">
                     <controls:SettingsExpanderItem.Footer>
-                        <ToggleSwitch x:Name="pmS" OnContent="开启" OffContent="关闭" IsCheckedChanged="PMChanged" />
+                        <ToggleSwitch x:Name="pmS" OnContent="{x:Static languages:Languages.Text_Global_On}"
+                                      OffContent="{x:Static languages:Languages.Text_Global_Off}"
+                                      IsCheckedChanged="PMChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}" Content="自定义&quot;隧道监控&quot;栏"
+                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}"
+                                               Content="{x:Static languages:Languages.Text_Settings_CustomProxyMonitorBar}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetProxyMonitorBar" />
             </controls:SettingsExpander>
-            <controls:SettingsExpander IconSource="Download" Description="设置软件的下载选项" Header="下载设置" IsExpanded="False">
-                <controls:SettingsExpanderItem Content="启用多线程下载" Description="启用多线程下载可以在一定程度上提升下载速度。">
+            <controls:SettingsExpander IconSource="Download"
+                                       Description="{x:Static languages:Languages.Text_Settings_DownloadDescription}"
+                                       Header="{x:Static languages:Languages.Text_Settings_Download}"
+                                       IsExpanded="False">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownload}"
+                                               Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="ParallelDownload"
@@ -119,7 +175,9 @@
                             IsChecked="True" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="多线程下载设置" Description="设置多线程下载的线程数。">
+                <controls:SettingsExpanderItem
+                    Content="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettings}"
+                    Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettingsDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal">
                             <Slider
@@ -140,29 +198,37 @@
                                                 Value="{Binding ElementName=ParallelDownloadThreads, Path=Value, Mode=TwoWay}" />
                             <TextBlock
                                 Margin="10,0,0,0"
-                                Text="线程"
+                                Text="{x:Static languages:Languages.Text_Settings_Threads}"
                                 VerticalAlignment="Center"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
                         </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
-                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10" Title="警告"
-                                      Message="过多的线程数可能会降低下载速度。推荐的线程数为8~32。"
+                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10"
+                                      Title="{x:Static languages:Languages.Caption_Warning}"
+                                      Message="{x:Static languages:Languages.Text_Settings_TooManyThreadsWarning}"
                                       Severity="Warning" />
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="ME Frp 客户端下载源" Description="设置ME Frp 客户端下载源, 默认为 TPCA 源。"
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DownloadSource}"
+                                               Description="{x:Static languages:Languages.Text_Settings_DownloadSourceDescription}"
                                                IconSource="CloudDownload">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox x:Name="DownloadSource" SelectionChanged="DownloadSourceChanged">
-                            <ComboBoxItem Tag="TPCA" Content="TPCA (默认)" />
-                            <ComboBoxItem Tag="Official" Content="官方源" />
+                            <ComboBoxItem Tag="TPCA"
+                                          Content="{x:Static languages:Languages.Text_Settings_DownloadSource_TPCA}" />
+                            <ComboBoxItem Tag="Official"
+                                          Content="{x:Static languages:Languages.Text_Settings_DownloadSource_Official}" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
-            <controls:SettingsExpander Description="设置账户相关选项" IconSource="Admin" Header="账户设置" IsExpanded="False">
-                <controls:SettingsExpanderItem Description="设置登录过期天数, 修改后需重新登录。" Content="登录过期天数">
+            <controls:SettingsExpander Description="{x:Static languages:Languages.Text_Settings_AccountDescription}"
+                                       IconSource="Admin" Header="{x:Static languages:Languages.Text_Settings_Account}"
+                                       IsExpanded="False">
+                <controls:SettingsExpanderItem
+                    Description="{x:Static languages:Languages.Text_Settings_LoginExpireDaysDescription}"
+                    Content="{x:Static languages:Languages.Text_Settings_LoginExpireDays}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <Slider
@@ -182,51 +248,60 @@
                             <TextBlock
                                 Margin="10,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="天"
+                                Text="{x:Static languages:Languages.Text_Settings_Days}"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
                         </StackPanel>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="自动登录" Description="设置软件启动时自动登录。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLogin}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoLoginDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoLogin"
                             IsCheckedChanged="AutoLoginChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="自动签到" Description="设置软件启动时自动签到。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoSignIn}"
+                                               Description="{x:Static languages:Languages.Text_Settings_AutoSignInDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoSign"
                             IsCheckedChanged="AutoSignChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Description="设置登录时人机验证的方式。" Content="验证方式">
+                <controls:SettingsExpanderItem
+                    Description="{x:Static languages:Languages.Text_Settings_CaptchaModeDescription}"
+                    Content="{x:Static languages:Languages.Text_Settings_CaptchaMode}">
                     <controls:SettingsExpanderItem.Footer>
                         <ComboBox x:Name="CaptchaModeCBox" SelectionChanged="CaptchaModeChanged">
-                            <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit">无感验证</ComboBoxItem>
-                            <ComboBoxItem x:Name="BrowserValidation" Tag="explicit">浏览器验证</ComboBoxItem>
+                            <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit"
+                                          Content="{x:Static languages:Languages.Text_Settings_Captcha_Implicit}" />
+                            <ComboBoxItem x:Name="BrowserValidation" Tag="explicit"
+                                          Content="{x:Static languages:Languages.Text_Settings_Captcha_Explicit}" />
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem
                     Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
             </controls:SettingsExpander>
-            <controls:SettingsExpander Header="其他设置" IconSource="Settings" Description="设置一些杂项。">
-                <controls:SettingsExpanderItem Content="不显示请求响应"
-                                               Description="设置软件是否应该在界面上显示请求的响应。请注意: 该设置项只对成功的请求有效。">
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Other}"
+                                       IconSource="Settings"
+                                       Description="{x:Static languages:Languages.Text_Settings_OtherDescription}">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DoNotShowResponse}"
+                                               Description="{x:Static languages:Languages.Text_Settings_DoNotShowResponseDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="DoNotShowResponseSettings"
                                       IsCheckedChanged="DoNotShowResponseSettingsChanged" />
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="终端引擎"
-                                               Description="设置软件应该使用哪个终端引擎。在某些情况下, 特定的终端引擎可能会导致软件崩溃。">
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_TerminalEngine}"
+                                               Description="{x:Static languages:Languages.Text_Settings_TerminalEngineDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="3">
                             <ComboBox x:Name="TerminalEngineTypeBox"
                                       SelectionChanged="TerminalEngineTypeChanged">
-                                <ComboBoxItem Tag="Original">默认</ComboBoxItem>
+                                <ComboBoxItem Tag="Original"
+                                              Content="{x:Static languages:Languages.Text_Settings_Engine_Default}" />
                                 <ComboBoxItem Tag="XTerm">XTerm</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
@@ -234,8 +309,8 @@
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem
                     IsVisible="{Binding #TerminalEngineTypeBox.SelectedIndex, Converter={x:Static meFrpLauncherX:VisibilityConverter.Instance}}"
-                    Content="终端设置"
-                    Description="设置软件的默认CLI。">
+                    Content="{x:Static languages:Languages.Text_Settings_TerminalSettings}"
+                    Description="{x:Static languages:Languages.Text_Settings_TerminalSettingsDescription}">
                     <controls:SettingsExpanderItem.Footer>
                         <controls:FAComboBox IsEditable="True" x:Name="TerminalCliComboBox"
                                              SelectionChanged="SetTerminalCli">
@@ -252,7 +327,54 @@
                 </controls:SettingsExpanderItem>
                 <controls:SettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
                     <controls:InfoBar IsOpen="True" IsClosable="False" Severity="Warning"
-                                      Message="在 Linux 下，为确保兼容性，默认模式将始终使用 sh。" />
+                                      Message="{x:Static languages:Languages.Text_Settings_LinuxShNotice}" />
+                </controls:SettingsExpanderItem>
+            </controls:SettingsExpander>
+            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Advanced}"
+                                       Description="{x:Static languages:Languages.Text_Settings_Advanced_Description}">
+                <controls:SettingsExpander.IconSource>
+                    <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE822;"></controls:FontIconSource>
+                </controls:SettingsExpander.IconSource>
+                <controls:InfoBar Message="{x:Static languages:Languages.Text_Settings_Advanced_Warning_Message}"
+                                  Title="{x:Static languages:Languages.Caption_Warning}"
+                                  IsClosable="False"
+                                  Severity="Warning"
+                                  IsOpen="True" />
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_RenderingMode}"
+                                               Description="{x:Static languages:Languages.Text_Settings_RenderingModeDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="RenderingModeBox" SelectionChanged="RenderingModeChanged">
+                            <ComboBoxItem Tag="Auto"
+                                          Content="{x:Static languages:Languages.Text_Settings_Rendering_Auto}" />
+                            <ComboBoxItem Tag="Vulkan" Content="Vulkan" />
+                            <ComboBoxItem Tag="OpenGL" Content="OpenGL" />
+                            <ComboBoxItem Tag="Software"
+                                          Content="{x:Static languages:Languages.Text_Settings_Rendering_Software}" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_GpuMemory}"
+                                               Description="{x:Static languages:Languages.Text_Settings_GpuMemoryDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ComboBox x:Name="GpuMemoryBox" SelectionChanged="GpuMemoryChanged">
+                            <ComboBoxItem Tag="128" Content="128 MB" />
+                            <ComboBoxItem Tag="256" Content="256 MB" />
+                            <ComboBoxItem Tag="512" Content="512 MB" />
+                            <ComboBoxItem Tag="1024" Content="1024 MB" />
+                        </ComboBox>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_LowLatency}"
+                                               Description="{x:Static languages:Languages.Text_Settings_LowLatencyDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <ToggleSwitch x:Name="LowLatencySwitch" IsCheckedChanged="LowLatencyChanged" />
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
+                <controls:SettingsExpanderItem>
+                    <controls:InfoBar x:Name="RenderRestartNotice" IsOpen="False" IsClosable="True"
+                                      Severity="Informational"
+                                      Title="{x:Static languages:Languages.Caption_Hint}"
+                                      Message="{x:Static languages:Languages.Text_Settings_RestartRequiredNotice}" />
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
         </StackPanel>

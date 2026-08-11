@@ -1,0 +1,2808 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Text.Main.PlatformStatistics.Title" xml:space="preserve">
+        <value>統計資訊</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Nodes" xml:space="preserve">
+        <value>節點數</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Users" xml:space="preserve">
+        <value>使用者數</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.OnlineProxies" xml:space="preserve">
+        <value>線上隧道</value>
+    </data>
+    <data name="Text.Main.PlatformStatistics.Traffic" xml:space="preserve">
+        <value>流量</value>
+    </data>
+    <data name="Text.Main.UserInfo.Title" xml:space="preserve">
+        <value>使用者資訊</value>
+    </data>
+    <data name="Text.Main.UserInfo.Name" xml:space="preserve">
+        <value>使用者名稱</value>
+    </data>
+    <data name="Text.Main.UserInfo.Id" xml:space="preserve">
+        <value>使用者 ID</value>
+    </data>
+    <data name="Text.Main.UserInfo.Email" xml:space="preserve">
+        <value>註冊電子郵件</value>
+    </data>
+    <data name="Text.Main.UserInfo.Group" xml:space="preserve">
+        <value>使用者群組</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus" xml:space="preserve">
+        <value>實名認證狀態</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus" xml:space="preserve">
+        <value>帳戶狀態</value>
+    </data>
+    <data name="Text.Main.UserInfo.ProxyCount" xml:space="preserve">
+        <value>隧道數量</value>
+    </data>
+    <data name="Text.Main.UserInfo.InboundBandwidth" xml:space="preserve">
+        <value>入站頻寬</value>
+    </data>
+    <data name="Text.Main.UserInfo.OutboundBandwidth" xml:space="preserve">
+        <value>出站頻寬</value>
+    </data>
+    <data name="Text.Main.PlatformNotice.Title" xml:space="preserve">
+        <value>系統公告</value>
+    </data>
+    <data name="Text.Main.SoftwareNotice.Title" xml:space="preserve">
+        <value>軟體公告</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.Normal.Title" xml:space="preserve">
+        <value>系統正常運行</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.Downgrade.Title" xml:space="preserve">
+        <value>系統服務降級</value>
+    </data>
+    <data name="Text.Main.PlatformStatusBreakdown.Title" xml:space="preserve">
+        <value>系統服務故障</value>
+    </data>
+    <data name="Text.Main.PlatformStatus.NetworkError.Title" xml:space="preserve">
+        <value>網路服務錯誤</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.Authenticated" xml:space="preserve">
+        <value>已實名</value>
+    </data>
+    <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.UnAuthenticated" xml:space="preserve">
+        <value>未實名</value>
+    </data>
+    <data name="Text.Main.UserInfo.RemainingTraffic" xml:space="preserve">
+        <value>剩餘流量</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Normal" xml:space="preserve">
+        <value>正常</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Banned" xml:space="preserve">
+        <value>已封禁</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.OverTraffic" xml:space="preserve">
+        <value>流量超限</value>
+    </data>
+    <data name="Text.Main.UserInfo.AccountStatus.Unknown" xml:space="preserve">
+        <value>未知</value>
+    </data>
+    <data name="Text.Main.UserInfo.SignIn" xml:space="preserve">
+        <value>簽到</value>
+    </data>
+    <data name="Text.Main.UserInfo.SignedIn" xml:space="preserve">
+        <value>已簽到</value>
+    </data>
+    <data name="Text.Global.Confirm" xml:space="preserve">
+        <value>確認</value>
+    </data>
+    <data name="Text.Global.Cancel" xml:space="preserve">
+        <value>取消</value>
+    </data>
+    <data name="Text.Main.Initialize.Title" xml:space="preserve">
+        <value>PML 2 正在初始化</value>
+    </data>
+    <data name="Text.Main.Initialize.Resource" xml:space="preserve">
+        <value>正在解壓縮資源</value>
+    </data>
+    <data name="Text.Main.PostUpdateProcess.Title" xml:space="preserve">
+        <value>PML 2 正在進行更新後清理</value>
+    </data>
+    <data name="Text.Main.PostUpdateProcess.Cleaning" xml:space="preserve">
+        <value>正在清理更新快取</value>
+    </data>
+    <data name="Caption.Error" xml:space="preserve">
+        <value>錯誤</value>
+    </data>
+    <data name="Text.Global.Success" xml:space="preserve">
+        <value>成功</value>
+    </data>
+    <data name="Text.Global.Failed" xml:space="preserve">
+        <value>失敗</value>
+    </data>
+    <data name="Text.Login.MEFrpFeature.1" xml:space="preserve">
+        <value>免費 · 公益 · 好用 · 低延遲 · 穩定的內網穿透服務</value>
+    </data>
+    <data name="Text.Login.MEFrpFeature.2" xml:space="preserve">
+        <value>六年沉澱 · 全新升級 · 穩定高效的內網穿透利器</value>
+    </data>
+    <data name="Text.Login.Welcome" xml:space="preserve">
+        <value>歡迎來到 ME Frp 幻緣映射</value>
+    </data>
+    <data name="Text.Login.Method.MEFrp" xml:space="preserve">
+        <value>使用 ME Frp 登入</value>
+    </data>
+    <data name="Text.Login.Method.Acme" xml:space="preserve">
+        <value>使用 雲上極致 登入</value>
+    </data>
+    <data name="Text.Login.RememberMe" xml:space="preserve">
+        <value>以後自動登入</value>
+    </data>
+    <data name="Text.Login.Username" xml:space="preserve">
+        <value>使用者名稱</value>
+    </data>
+    <data name="Text.Login.Password" xml:space="preserve">
+        <value>密碼</value>
+    </data>
+    <data name="Text.Login.AuthMode" xml:space="preserve">
+        <value>人機驗證方式</value>
+    </data>
+    <data name="Text.Login.Register" xml:space="preserve">
+        <value>註冊</value>
+    </data>
+    <data name="Text.Global.NoData" xml:space="preserve">
+        <value>無資料</value>
+    </data>
+    <data name="Text.Global.OperationSuccess" xml:space="preserve">
+        <value>操作已成功完成</value>
+    </data>
+    <data name="Text.Global.Loading" xml:space="preserve">
+        <value>載入中...</value>
+    </data>
+    <data name="Text.Global.Copy" xml:space="preserve">
+        <value>複製</value>
+    </data>
+    <data name="Text.Global.ReadOnly" xml:space="preserve">
+        <value>唯讀</value>
+    </data>
+    <data name="Text.Global.InputValue" xml:space="preserve">
+        <value>輸入值</value>
+    </data>
+    <data name="Text.Global.StaticHeaderTest" xml:space="preserve">
+        <value>靜態標題-測試</value>
+    </data>
+    <data name="Text.Global.NotImplemented" xml:space="preserve">
+        <value>尚未實作</value>
+    </data>
+    <data name="Text.Global.On" xml:space="preserve">
+        <value>開啟</value>
+    </data>
+    <data name="Text.Global.Off" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.Feedback.Email" xml:space="preserve">
+        <value>使用者電子郵件</value>
+    </data>
+    <data name="Text.Feedback.EmailWatermark" xml:space="preserve">
+        <value>請填寫您的電子郵件</value>
+    </data>
+    <data name="Text.Feedback.Content" xml:space="preserve">
+        <value>回饋內容</value>
+    </data>
+    <data name="Text.Feedback.ContentWatermark" xml:space="preserve">
+        <value>請填寫您的回饋內容</value>
+    </data>
+    <data name="Text.Headers.NameWatermark" xml:space="preserve">
+        <value>請求標頭名稱</value>
+    </data>
+    <data name="Text.Headers.ValueWatermark" xml:space="preserve">
+        <value>請求標頭值</value>
+    </data>
+    <data name="Text.Tunnel.Load" xml:space="preserve">
+        <value>負載：</value>
+    </data>
+    <data name="Text.Splash.ApplyingTheme" xml:space="preserve">
+        <value>正在套用佈景主題...</value>
+    </data>
+    <data name="Text.Proxy.Guide.Title" xml:space="preserve">
+        <value>建立隧道精靈</value>
+    </data>
+    <data name="Text.Proxy.Guide.Welcome" xml:space="preserve">
+        <value>歡迎使用建立隧道精靈。請選擇您需要映射的服務。</value>
+    </data>
+    <data name="Text.Proxy.SetConfig" xml:space="preserve">
+        <value>設定設定檔</value>
+    </data>
+    <data name="Text.Proxy.UnsetConfig" xml:space="preserve">
+        <value>清除設定檔</value>
+    </data>
+    <data name="Text.Traffic.RecentDays" xml:space="preserve">
+        <value>最近{0}天</value>
+    </data>
+    <data name="Text.Traffic.Zoom" xml:space="preserve">
+        <value>縮放(WIP): </value>
+    </data>
+    <data name="Text.Traffic.LineChart" xml:space="preserve">
+        <value>折線圖</value>
+    </data>
+    <data name="Text.Traffic.BarChart" xml:space="preserve">
+        <value>長條圖</value>
+    </data>
+    <data name="Text.ConfigSelect.Matches" xml:space="preserve">
+        <value>匹配項: {0}</value>
+    </data>
+    <data name="Text.Global.Save" xml:space="preserve">
+        <value>儲存</value>
+    </data>
+    <data name="Text.Global.Close" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.Global.Type" xml:space="preserve">
+        <value>類型: </value>
+    </data>
+    <data name="Text.Global.Settings" xml:space="preserve">
+        <value>設定</value>
+    </data>
+    <data name="Text.Global.Exit" xml:space="preserve">
+        <value>結束</value>
+    </data>
+    <data name="Text.Global.Paste" xml:space="preserve">
+        <value>貼上</value>
+    </data>
+    <data name="Text.ConfigEditor.Title" xml:space="preserve">
+        <value>編輯設定檔</value>
+    </data>
+    <data name="Text.ConfigEditor.CloseAndCancelLaunch" xml:space="preserve">
+        <value>關閉/取消啟動</value>
+    </data>
+    <data name="Text.ConfigEditor.SaveAndRun" xml:space="preserve">
+        <value>儲存並執行</value>
+    </data>
+    <data name="Text.ConfigEditor.UnsavedChanges" xml:space="preserve">
+        <value>有未儲存的修改。</value>
+    </data>
+    <data name="Text.ConfigEditor.FileType" xml:space="preserve">
+        <value>設定檔類型: </value>
+    </data>
+    <data name="Text.ConfigPreviewer.Title" xml:space="preserve">
+        <value>設定檔預覽</value>
+    </data>
+    <data name="Text.ProxyFloat.RefreshTraffic" xml:space="preserve">
+        <value>重新整理流量</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowPosition" xml:space="preserve">
+        <value>視窗位置</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowPositionDescription" xml:space="preserve">
+        <value>設定監控列的視窗位置</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopLeft" xml:space="preserve">
+        <value>左上角</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopRight" xml:space="preserve">
+        <value>右上角</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomLeft" xml:space="preserve">
+        <value>左下角</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomRight" xml:space="preserve">
+        <value>右下角</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.TopCenter" xml:space="preserve">
+        <value>中上</value>
+    </data>
+    <data name="Text.ProxyFloat.Position.BottomCenter" xml:space="preserve">
+        <value>中下</value>
+    </data>
+    <data name="Text.ALP.Title" xml:space="preserve">
+        <value>請選擇要自動啟動的隧道</value>
+    </data>
+    <data name="Text.ALP.SearchWatermark" xml:space="preserve">
+        <value>搜尋隧道:支援拼音和命令語法</value>
+    </data>
+    <data name="Text.ALP.AddToQueue" xml:space="preserve">
+        <value>將所選項目加入自動啟動佇列 -&gt;</value>
+    </data>
+    <data name="Text.ALP.RemoveFromQueue" xml:space="preserve">
+        <value>&lt;- 將所選項目移出自動啟動佇列</value>
+    </data>
+    <data name="Text.Nav.Home" xml:space="preserve">
+        <value>主頁</value>
+    </data>
+    <data name="Text.Nav.CreateProxy" xml:space="preserve">
+        <value>建立通道</value>
+    </data>
+    <data name="Text.Nav.ManageProxy" xml:space="preserve">
+        <value>通道管理</value>
+    </data>
+    <data name="Text.Nav.NodesMonitoring" xml:space="preserve">
+        <value>節點監控</value>
+    </data>
+    <data name="Text.Nav.UserCenter" xml:space="preserve">
+        <value>使用者中心</value>
+    </data>
+    <data name="Text.Nav.Settings" xml:space="preserve">
+        <value>設定</value>
+    </data>
+    <data name="Text.Nav.Themes" xml:space="preserve">
+        <value>主題</value>
+    </data>
+    <data name="Text.Nav.Plugins" xml:space="preserve">
+        <value>外掛</value>
+    </data>
+    <data name="Text.Nav.About" xml:space="preserve">
+        <value>關於</value>
+    </data>
+    <data name="Text.Nav.Update" xml:space="preserve">
+        <value>更新</value>
+    </data>
+    <data name="Text.Nav.Terminal" xml:space="preserve">
+        <value>終端機</value>
+    </data>
+    <data name="Text.Global.Refresh" xml:space="preserve">
+        <value>重新整理</value>
+    </data>
+    <data name="Text.Global.Back" xml:space="preserve">
+        <value>返回</value>
+    </data>
+    <data name="Text.Global.Next" xml:space="preserve">
+        <value>下一步</value>
+    </data>
+    <data name="Text.Global.Help" xml:space="preserve">
+        <value>說明</value>
+    </data>
+    <data name="Text.Proxy.Mode.Guide" xml:space="preserve">
+        <value>引導版</value>
+    </data>
+    <data name="Text.Proxy.Mode.Expert" xml:space="preserve">
+        <value>專家版</value>
+    </data>
+    <data name="Text.Proxy.PageLoading" xml:space="preserve">
+        <value>正在載入...</value>
+    </data>
+    <data name="Text.Proxy.DownloadMEFClient" xml:space="preserve">
+        <value>下載 ME Frp 用戶端</value>
+    </data>
+    <data name="Text.Proxy.DetailedDescription" xml:space="preserve">
+        <value>詳細描述</value>
+    </data>
+    <data name="Text.Proxy.SelectedCount" xml:space="preserve">
+        <value>已選擇 {0} 個通道</value>
+    </data>
+    <data name="Text.Proxy.BatchLaunch" xml:space="preserve">
+        <value>批次啟動</value>
+    </data>
+    <data name="Text.Proxy.BatchDisable" xml:space="preserve">
+        <value>批次停用</value>
+    </data>
+    <data name="Text.Proxy.BatchEnable" xml:space="preserve">
+        <value>批次啟用</value>
+    </data>
+    <data name="Text.Proxy.BatchDelete" xml:space="preserve">
+        <value>批次刪除</value>
+    </data>
+    <data name="Text.Proxy.ClearSelection" xml:space="preserve">
+        <value>清除選取</value>
+    </data>
+    <data name="Text.Nodes.SearchWatermark" xml:space="preserve">
+        <value>搜尋節點</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.Title" xml:space="preserve">
+        <value>搜尋說明</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.NoParam" xml:space="preserve">
+        <value>無參數: 直接搜尋名稱</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.Description" xml:space="preserve">
+        <value>輸入/d:&lt;KEYWORD&gt;以搜尋描述</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PinyinName" xml:space="preserve">
+        <value>輸入/pn:&lt;PINYIN&gt;以使用拼音搜尋名稱</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PinyinDescription" xml:space="preserve">
+        <value>輸入/pd:&lt;PINYIN&gt;以使用拼音搜尋描述</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PerfWarning.Title" xml:space="preserve">
+        <value>已知效能警告</value>
+    </data>
+    <data name="Text.Nodes.SearchHelp.PerfWarning.Message" xml:space="preserve">
+        <value>使用拼音搜尋將減慢搜尋速度, 並造成程式假死。</value>
+    </data>
+    <data name="Text.Nodes.Filter.CanBuildSite" xml:space="preserve">
+        <value>僅顯示可建站節點</value>
+    </data>
+    <data name="Text.Nodes.Filter.AllowHighTraffic" xml:space="preserve">
+        <value>僅顯示允許大流量節點</value>
+    </data>
+    <data name="Text.Nodes.Filter.NotOverLoaded" xml:space="preserve">
+        <value>僅顯示未過載節點</value>
+    </data>
+    <data name="Text.Terminal.NewConsole" xml:space="preserve">
+        <value>新增主控台</value>
+    </data>
+    <data name="Text.Terminal.CloseTab" xml:space="preserve">
+        <value>關閉目前索引標籤</value>
+    </data>
+    <data name="Text.Terminal.SendCtrlC" xml:space="preserve">
+        <value>傳送CtrlC訊號 (終止目前操作)</value>
+    </data>
+    <data name="Text.Terminal.ClearOutput" xml:space="preserve">
+        <value>清空輸出</value>
+    </data>
+    <data name="Text.Terminal.VisitMEFDoc" xml:space="preserve">
+        <value>造訪ME Frp文件</value>
+    </data>
+    <data name="Text.Terminal.VisitConsoleDoc" xml:space="preserve">
+        <value>造訪主控台文件</value>
+    </data>
+    <data name="Text.Terminal.DefaultTab" xml:space="preserve">
+        <value>預設</value>
+    </data>
+    <data name="Text.SSL.ConfigFile" xml:space="preserve">
+        <value>通道設定檔</value>
+    </data>
+    <data name="Text.SSL.ConfigFileDescription" xml:space="preserve">
+        <value>設定https通道的SSL憑證需要使用設定檔啟動。</value>
+    </data>
+    <data name="Text.SSL.HttpTunnelSettings" xml:space="preserve">
+        <value>http(s)通道設定</value>
+    </data>
+    <data name="Text.SSL.ProxyName" xml:space="preserve">
+        <value>代理名稱</value>
+    </data>
+    <data name="Text.SSL.ProxyNameDescription" xml:space="preserve">
+        <value>代理名稱是此通道服務的唯一識別碼，用於區分不同的代理設定。</value>
+    </data>
+    <data name="Text.SSL.Domain" xml:space="preserve">
+        <value>存取網域</value>
+    </data>
+    <data name="Text.SSL.DomainDescription" xml:space="preserve">
+        <value>設定通道的存取網域。</value>
+    </data>
+    <data name="Text.SSL.LocalAddress" xml:space="preserve">
+        <value>本機位址</value>
+    </data>
+    <data name="Text.SSL.LocalAddressDescription" xml:space="preserve">
+        <value>用於穿透的本機位址。</value>
+    </data>
+    <data name="Text.SSL.LocalAddressWatermark" xml:space="preserve">
+        <value>本機位址, 通常為x.x.x.x:xxx</value>
+    </data>
+    <data name="Text.SSL.Title" xml:space="preserve">
+        <value>SSL設定</value>
+    </data>
+    <data name="Text.SSL.CertFile" xml:space="preserve">
+        <value>憑證檔案</value>
+    </data>
+    <data name="Text.SSL.CertFileDescription" xml:space="preserve">
+        <value>用於https通道的SSL憑證檔案。</value>
+    </data>
+    <data name="Text.SSL.CertFileWatermark" xml:space="preserve">
+        <value>憑證檔案, 副檔名一般為.crt或.pem</value>
+    </data>
+    <data name="Text.SSL.KeyFile" xml:space="preserve">
+        <value>私密金鑰檔案</value>
+    </data>
+    <data name="Text.SSL.KeyFileDescription" xml:space="preserve">
+        <value>用於https通道的私密金鑰檔案。</value>
+    </data>
+    <data name="Text.SSL.KeyFileWatermark" xml:space="preserve">
+        <value>私密金鑰檔案, 副檔名一般為.key</value>
+    </data>
+    <data name="Text.Global.Edit" xml:space="preserve">
+        <value>編輯</value>
+    </data>
+    <data name="Text.Global.Yes" xml:space="preserve">
+        <value>是</value>
+    </data>
+    <data name="Text.Global.No" xml:space="preserve">
+        <value>否</value>
+    </data>
+    <data name="Caption.Warning" xml:space="preserve">
+        <value>警告</value>
+    </data>
+    <data name="Text.Settings.Appearance" xml:space="preserve">
+        <value>外觀</value>
+    </data>
+    <data name="Text.Settings.AppearanceDescription" xml:space="preserve">
+        <value>自訂程式的外觀</value>
+    </data>
+    <data name="Text.Settings.Theme" xml:space="preserve">
+        <value>主題</value>
+    </data>
+    <data name="Text.Settings.ThemeDescription" xml:space="preserve">
+        <value>設定程式的配色主題</value>
+    </data>
+    <data name="Text.Settings.Theme.Dark" xml:space="preserve">
+        <value>深色</value>
+    </data>
+    <data name="Text.Settings.Theme.Light" xml:space="preserve">
+        <value>淺色</value>
+    </data>
+    <data name="Text.Settings.Theme.System" xml:space="preserve">
+        <value>跟隨系統</value>
+    </data>
+    <data name="Text.Settings.Material" xml:space="preserve">
+        <value>材質</value>
+    </data>
+    <data name="Text.Settings.MaterialDescription" xml:space="preserve">
+        <value>設定視窗背景的透明效果和材質</value>
+    </data>
+    <data name="Text.Settings.Material.Mica" xml:space="preserve">
+        <value>雲母(Mica)</value>
+    </data>
+    <data name="Text.Settings.Material.Acrylic" xml:space="preserve">
+        <value>壓克力(Acrylic)</value>
+    </data>
+    <data name="Text.Settings.Material.Blur" xml:space="preserve">
+        <value>模糊(Blur)</value>
+    </data>
+    <data name="Text.Settings.Material.Transparent" xml:space="preserve">
+        <value>透明(Transparent)</value>
+    </data>
+    <data name="Text.Settings.Material.None" xml:space="preserve">
+        <value>無(None)</value>
+    </data>
+    <data name="Text.Settings.Custom" xml:space="preserve">
+        <value>自訂</value>
+    </data>
+    <data name="Text.Settings.Background" xml:space="preserve">
+        <value>背景設定</value>
+    </data>
+    <data name="Text.Settings.BackgroundDescription" xml:space="preserve">
+        <value>設定視窗背景的拉伸模式</value>
+    </data>
+    <data name="Text.Settings.Stretch.None" xml:space="preserve">
+        <value>無</value>
+    </data>
+    <data name="Text.Settings.Stretch.Fill" xml:space="preserve">
+        <value>填充</value>
+    </data>
+    <data name="Text.Settings.Stretch.Uniform" xml:space="preserve">
+        <value>均勻</value>
+    </data>
+    <data name="Text.Settings.Stretch.UniformToFill" xml:space="preserve">
+        <value>均勻填充</value>
+    </data>
+    <data name="Text.Settings.Startup" xml:space="preserve">
+        <value>啟動設定</value>
+    </data>
+    <data name="Text.Settings.StartupDescription" xml:space="preserve">
+        <value>設定程式的啟動選項</value>
+    </data>
+    <data name="Text.Settings.AutoStart" xml:space="preserve">
+        <value>開機自啟</value>
+    </data>
+    <data name="Text.Settings.AutoStartDescription" xml:space="preserve">
+        <value>設定軟體是否在開機時啟動。請注意: 此處的“開機”指使用者登入時。</value>
+    </data>
+    <data name="Text.Settings.AutoLaunch" xml:space="preserve">
+        <value>啟動時自動啟動某些通道</value>
+    </data>
+    <data name="Text.Settings.AutoLaunchDescription" xml:space="preserve">
+        <value>設定啟動時自動啟動某些通道。請注意: 此處的“啟動”指軟體啟動時。</value>
+    </data>
+    <data name="Text.Settings.SetTunnelsToLaunch" xml:space="preserve">
+        <value>設定要啟動的通道</value>
+    </data>
+    <data name="Text.Settings.MinimizeToTray" xml:space="preserve">
+        <value>關閉時最小化到系統匣，而不是直接關閉</value>
+    </data>
+    <data name="Text.Settings.MinimizeToTrayDescription" xml:space="preserve">
+        <value>啟用該選項可以讓軟體執行在背景。</value>
+    </data>
+    <data name="Text.Settings.TunnelSettings" xml:space="preserve">
+        <value>通道設定</value>
+    </data>
+    <data name="Text.Settings.TunnelSettingsDescription" xml:space="preserve">
+        <value>設定通道相關選項</value>
+    </data>
+    <data name="Text.Settings.KickWithoutDisable" xml:space="preserve">
+        <value>強制下線通道時不同時停用通道</value>
+    </data>
+    <data name="Text.Settings.KickWithoutDisableDescription" xml:space="preserve">
+        <value>幻緣對應官網強制下線通道時會同時停用通道, 我們可以在強制下線通道時再啟用通道。</value>
+    </data>
+    <data name="Text.Settings.ProxyMonitorBar" xml:space="preserve">
+        <value>"通道監控"列 [BETA]</value>
+    </data>
+    <data name="Text.Settings.ProxyMonitorBarDescription" xml:space="preserve">
+        <value>"通道監控"是我們推出的一項新功能, 可以監視啟動通道的出入流量資訊。</value>
+    </data>
+    <data name="Text.Settings.CustomProxyMonitorBar" xml:space="preserve">
+        <value>自訂"通道監控"列</value>
+    </data>
+    <data name="Text.Settings.Download" xml:space="preserve">
+        <value>下載設定</value>
+    </data>
+    <data name="Text.Settings.DownloadDescription" xml:space="preserve">
+        <value>設定軟體的下載選項</value>
+    </data>
+    <data name="Text.Settings.ParallelDownload" xml:space="preserve">
+        <value>啟用多執行緒下載</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadDescription" xml:space="preserve">
+        <value>啟用多執行緒下載可以在一定程度上提升下載速度。</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadSettings" xml:space="preserve">
+        <value>多執行緒下載設定</value>
+    </data>
+    <data name="Text.Settings.ParallelDownloadSettingsDescription" xml:space="preserve">
+        <value>設定多執行緒下載的執行緒數。</value>
+    </data>
+    <data name="Text.Settings.Threads" xml:space="preserve">
+        <value>執行緒</value>
+    </data>
+    <data name="Text.Settings.TooManyThreadsWarning" xml:space="preserve">
+        <value>過多的執行緒數可能會降低下載速度。推薦的執行緒數為8~32。</value>
+    </data>
+    <data name="Text.Settings.DownloadSource" xml:space="preserve">
+        <value>ME Frp 用戶端下載來源</value>
+    </data>
+    <data name="Text.Settings.DownloadSourceDescription" xml:space="preserve">
+        <value>設定ME Frp 用戶端下載來源, 預設為 TPCA 來源。</value>
+    </data>
+    <data name="Text.Settings.DownloadSource.TPCA" xml:space="preserve">
+        <value>TPCA (預設)</value>
+    </data>
+    <data name="Text.Settings.DownloadSource.Official" xml:space="preserve">
+        <value>官方來源</value>
+    </data>
+    <data name="Text.Settings.Account" xml:space="preserve">
+        <value>帳戶設定</value>
+    </data>
+    <data name="Text.Settings.AccountDescription" xml:space="preserve">
+        <value>設定帳戶相關選項</value>
+    </data>
+    <data name="Text.Settings.LoginExpireDays" xml:space="preserve">
+        <value>登入逾期天數</value>
+    </data>
+    <data name="Text.Settings.LoginExpireDaysDescription" xml:space="preserve">
+        <value>設定登入逾期天數, 修改後需重新登入。</value>
+    </data>
+    <data name="Text.Settings.Days" xml:space="preserve">
+        <value>天</value>
+    </data>
+    <data name="Text.Settings.AutoLogin" xml:space="preserve">
+        <value>自動登入</value>
+    </data>
+    <data name="Text.Settings.AutoLoginDescription" xml:space="preserve">
+        <value>設定軟體啟動時自動登入。</value>
+    </data>
+    <data name="Text.Settings.AutoSignIn" xml:space="preserve">
+        <value>自動簽到</value>
+    </data>
+    <data name="Text.Settings.AutoSignInDescription" xml:space="preserve">
+        <value>設定軟體啟動時自動簽到。</value>
+    </data>
+    <data name="Text.Settings.CaptchaMode" xml:space="preserve">
+        <value>驗證方式</value>
+    </data>
+    <data name="Text.Settings.CaptchaModeDescription" xml:space="preserve">
+        <value>設定登入時人機驗證的方式。</value>
+    </data>
+    <data name="Text.Settings.Captcha.Implicit" xml:space="preserve">
+        <value>無感驗證</value>
+    </data>
+    <data name="Text.Settings.Captcha.Explicit" xml:space="preserve">
+        <value>瀏覽器驗證</value>
+    </data>
+    <data name="Text.Settings.Captcha.RecommendedPrefix" xml:space="preserve">
+        <value>(推薦) </value>
+    </data>
+    <data name="Text.Settings.Other" xml:space="preserve">
+        <value>其他設定</value>
+    </data>
+    <data name="Text.Settings.OtherDescription" xml:space="preserve">
+        <value>設定一些雜項。</value>
+    </data>
+    <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
+        <value>不顯示請求回應</value>
+    </data>
+    <data name="Text.Settings.DoNotShowResponseDescription" xml:space="preserve">
+        <value>設定軟體是否應該在介面上顯示請求的回應。請注意: 該設定項只對成功的請求有效。</value>
+    </data>
+    <data name="Text.Settings.TerminalEngine" xml:space="preserve">
+        <value>終端機引擎</value>
+    </data>
+    <data name="Text.Settings.TerminalEngineDescription" xml:space="preserve">
+        <value>設定軟體應該使用哪個終端機引擎。在某些情況下, 特定的終端機引擎可能會導致軟體當機。</value>
+    </data>
+    <data name="Text.Settings.Engine.Default" xml:space="preserve">
+        <value>預設</value>
+    </data>
+    <data name="Text.Settings.TerminalSettings" xml:space="preserve">
+        <value>終端機設定</value>
+    </data>
+    <data name="Text.Settings.TerminalSettingsDescription" xml:space="preserve">
+        <value>設定軟體的預設CLI。</value>
+    </data>
+    <data name="Text.Settings.LinuxShNotice" xml:space="preserve">
+        <value>在 Linux 下，為確保相容性，預設模式將始終使用 sh。</value>
+    </data>
+    <data name="Text.ThemeEditor.Title" xml:space="preserve">
+        <value>主題編輯器</value>
+    </data>
+    <data name="Text.ThemeEditor.SaveTheme" xml:space="preserve">
+        <value>儲存主題</value>
+    </data>
+    <data name="Text.ThemeEditor.AddColor" xml:space="preserve">
+        <value>新增顏色</value>
+    </data>
+    <data name="Text.ThemeEditor.RemoveColor" xml:space="preserve">
+        <value>刪除顏色</value>
+    </data>
+    <data name="Text.ThemeEditor.BasicInfo" xml:space="preserve">
+        <value>基本資訊</value>
+    </data>
+    <data name="Text.ThemeEditor.ThemeName" xml:space="preserve">
+        <value>主題名稱：</value>
+    </data>
+    <data name="Text.ThemeEditor.Author" xml:space="preserve">
+        <value>作者：</value>
+    </data>
+    <data name="Text.ThemeEditor.Version" xml:space="preserve">
+        <value>版本：</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewImage" xml:space="preserve">
+        <value>預覽圖：</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectImage" xml:space="preserve">
+        <value>選擇圖片</value>
+    </data>
+    <data name="Text.ThemeEditor.Description" xml:space="preserve">
+        <value>描述：</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundSettings" xml:space="preserve">
+        <value>背景設定</value>
+    </data>
+    <data name="Text.ThemeEditor.SolidColorBackground" xml:space="preserve">
+        <value>純色背景</value>
+    </data>
+    <data name="Text.ThemeEditor.ImageBackground" xml:space="preserve">
+        <value>圖片背景</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundColor" xml:space="preserve">
+        <value>背景顏色：</value>
+    </data>
+    <data name="Text.ThemeEditor.BackgroundImage" xml:space="preserve">
+        <value>背景圖片：</value>
+    </data>
+    <data name="Text.ThemeEditor.Browse" xml:space="preserve">
+        <value>瀏覽...</value>
+    </data>
+    <data name="Text.ThemeEditor.FillMode" xml:space="preserve">
+        <value>填充模式：</value>
+    </data>
+    <data name="Text.ThemeEditor.LayerOpacity" xml:space="preserve">
+        <value>圖層透明度：</value>
+    </data>
+    <data name="Text.ThemeEditor.AccentAnimation" xml:space="preserve">
+        <value>強調色動畫</value>
+    </data>
+    <data name="Text.ThemeEditor.ColorSequence" xml:space="preserve">
+        <value>顏色序列（從上到下循環）</value>
+    </data>
+    <data name="Text.ThemeEditor.MoveUp" xml:space="preserve">
+        <value>上移</value>
+    </data>
+    <data name="Text.ThemeEditor.MoveDown" xml:space="preserve">
+        <value>下移</value>
+    </data>
+    <data name="Text.ThemeEditor.EditColor" xml:space="preserve">
+        <value>編輯顏色</value>
+    </data>
+    <data name="Text.ThemeEditor.ColorValue" xml:space="preserve">
+        <value>顏色值：</value>
+    </data>
+    <data name="Text.ThemeEditor.Duration" xml:space="preserve">
+        <value>持續時間（秒）：</value>
+    </data>
+    <data name="Text.ThemeEditor.DurationSeconds" xml:space="preserve">
+        <value>{0:N2} 秒</value>
+    </data>
+    <data name="Text.ThemeEditor.PresetColors" xml:space="preserve">
+        <value>預設顏色：</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectColorHint" xml:space="preserve">
+        <value>請從左側選擇一個顏色進行編輯</value>
+    </data>
+    <data name="Text.ThemeEditor.FontSettings" xml:space="preserve">
+        <value>字型設定</value>
+    </data>
+    <data name="Text.ThemeEditor.SystemFont" xml:space="preserve">
+        <value>系統字型</value>
+    </data>
+    <data name="Text.ThemeEditor.CustomFontFile" xml:space="preserve">
+        <value>自訂字型檔案</value>
+    </data>
+    <data name="Text.ThemeEditor.SelectFont" xml:space="preserve">
+        <value>選擇字型：</value>
+    </data>
+    <data name="Text.ThemeEditor.FontFile" xml:space="preserve">
+        <value>字型檔案：</value>
+    </data>
+    <data name="Text.EditProxy.Title" xml:space="preserve">
+        <value>編輯通道</value>
+    </data>
+    <data name="Text.CreateProxy.AllowedPortRange" xml:space="preserve">
+        <value>允許連接埠範圍: {0}</value>
+    </data>
+    <data name="Text.CreateProxy.BasicSettings" xml:space="preserve">
+        <value>基本設定</value>
+    </data>
+    <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
+        <value>以下是建立通道的必填設定。</value>
+    </data>
+    <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
+        <value>通道名稱</value>
+    </data>
+    <data name="Text.CreateProxy.ProxyNamePlaceholder" xml:space="preserve">
+        <value>請輸入通道名稱</value>
+    </data>
+    <data name="Text.CreateProxy.LocalAddress" xml:space="preserve">
+        <value>本機位址</value>
+    </data>
+    <data name="Text.CreateProxy.LocalAddressPlaceholder" xml:space="preserve">
+        <value>請輸入本機位址，格式範例: 127.0.0.1</value>
+    </data>
+    <data name="Text.CreateProxy.LocalPort" xml:space="preserve">
+        <value>本機連接埠</value>
+    </data>
+    <data name="Text.CreateProxy.ProtocolType" xml:space="preserve">
+        <value>協定類型</value>
+    </data>
+    <data name="Text.CreateProxy.RemotePort" xml:space="preserve">
+        <value>遠端連接埠</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePort" xml:space="preserve">
+        <value>取得遠端空閒連接埠</value>
+    </data>
+    <data name="Text.CreateProxy.SourceProtocol" xml:space="preserve">
+        <value>來源協定</value>
+    </data>
+    <data name="Text.CreateProxy.SameAsHttp" xml:space="preserve">
+        <value>與通道協定相同(HTTP)</value>
+    </data>
+    <data name="Text.CreateProxy.SameAsHttps" xml:space="preserve">
+        <value>與通道協定相同(HTTPS)</value>
+    </data>
+    <data name="Text.CreateProxy.SslCertPath" xml:space="preserve">
+        <value>SSL憑證路徑</value>
+    </data>
+    <data name="Text.CreateProxy.SslKeyPath" xml:space="preserve">
+        <value>SSL金鑰路徑</value>
+    </data>
+    <data name="Text.CreateProxy.SslPathDescription" xml:space="preserve">
+        <value>設定的路徑推薦為mefrpc相對路徑。</value>
+    </data>
+    <data name="Text.CreateProxy.SslCertPathPlaceholder" xml:space="preserve">
+        <value>請輸入SSL憑證路徑(例如: ./server.crt)</value>
+    </data>
+    <data name="Text.CreateProxy.SslKeyPathPlaceholder" xml:space="preserve">
+        <value>請輸入SSL金鑰路徑(例如: ./server.key)</value>
+    </data>
+    <data name="Text.CreateProxy.BindDomains" xml:space="preserve">
+        <value>繫結網域</value>
+    </data>
+    <data name="Text.CreateProxy.BindDomainsDescription" xml:space="preserve">
+        <value>編輯將繫結的網域</value>
+    </data>
+    <data name="Text.CreateProxy.AdvancedSettings" xml:space="preserve">
+        <value>進階設定</value>
+    </data>
+    <data name="Text.CreateProxy.AdvancedSettingsDescription" xml:space="preserve">
+        <value>提示：僅推薦技術使用者使用, 一般使用者請勿隨意填寫。請確保您的設定正確, 否則通道可能無法啟動。</value>
+    </data>
+    <data name="Text.CreateProxy.SecurityOptions" xml:space="preserve">
+        <value>安全選項</value>
+    </data>
+    <data name="Text.CreateProxy.Disabled" xml:space="preserve">
+        <value>停用</value>
+    </data>
+    <data name="Text.CreateProxy.AccessKey" xml:space="preserve">
+        <value>存取金鑰</value>
+    </data>
+    <data name="Text.CreateProxy.AccessKeyDescription" xml:space="preserve">
+        <value>請輸入存取金鑰</value>
+    </data>
+    <data name="Text.CreateProxy.HttpBasicAuthDescription" xml:space="preserve">
+        <value>請輸入使用者名稱和密碼</value>
+    </data>
+    <data name="Text.CreateProxy.UsernamePlaceholder" xml:space="preserve">
+        <value>請輸入使用者名稱</value>
+    </data>
+    <data name="Text.CreateProxy.PasswordPlaceholder" xml:space="preserve">
+        <value>請輸入密碼</value>
+    </data>
+    <data name="Text.CreateProxy.TransmissionProtocol" xml:space="preserve">
+        <value>傳輸協定</value>
+    </data>
+    <data name="Text.CreateProxy.TransmissionProtocolDescription" xml:space="preserve">
+        <value>QUIC 提供了類似 TCP 的可靠性，同時克服了 TCP 的效能瓶頸, 部分場景下可以最佳化延遲。</value>
+    </data>
+    <data name="Text.CreateProxy.CustomRequestHeaders" xml:space="preserve">
+        <value>自訂要求標頭</value>
+    </data>
+    <data name="Text.CreateProxy.CustomResponseHeaders" xml:space="preserve">
+        <value>自訂回應標頭</value>
+    </data>
+    <data name="Text.CreateProxy.LocationsDescription" xml:space="preserve">
+        <value>編輯 HTTP 通道的路徑路由規則。</value>
+    </data>
+    <data name="Text.CreateProxy.NotEnabled" xml:space="preserve">
+        <value>不啟用</value>
+    </data>
+    <data name="Text.CreateProxy.EnableEncryption" xml:space="preserve">
+        <value>啟用加密</value>
+    </data>
+    <data name="Text.CreateProxy.EnableCompression" xml:space="preserve">
+        <value>啟用壓縮</value>
+    </data>
+    <data name="Text.UserCenter.UserInfo" xml:space="preserve">
+        <value>用戶資訊</value>
+    </data>
+    <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
+        <value>檢視並管理您的帳戶基本資訊</value>
+    </data>
+    <data name="Text.UserCenter.Username" xml:space="preserve">
+        <value>使用者名稱</value>
+    </data>
+    <data name="Text.UserCenter.UserId" xml:space="preserve">
+        <value>使用者 ID</value>
+    </data>
+    <data name="Text.UserCenter.RegisteredEmail" xml:space="preserve">
+        <value>註冊電子郵件</value>
+    </data>
+    <data name="Text.UserCenter.RegisteredTime" xml:space="preserve">
+        <value>註冊時間</value>
+    </data>
+    <data name="Text.UserCenter.UserGroup" xml:space="preserve">
+        <value>使用者群組</value>
+    </data>
+    <data name="Text.UserCenter.AccountStatus" xml:space="preserve">
+        <value>帳戶狀態</value>
+    </data>
+    <data name="Text.UserCenter.RealNameStatus" xml:space="preserve">
+        <value>實名狀態</value>
+    </data>
+    <data name="Text.UserCenter.DailySignIn" xml:space="preserve">
+        <value>今日簽到</value>
+    </data>
+    <data name="Text.UserCenter.TrafficAndTunnels" xml:space="preserve">
+        <value>流量與隧道</value>
+    </data>
+    <data name="Text.UserCenter.TrafficAndTunnelsDescription" xml:space="preserve">
+        <value>檢視您的流量使用情況和隧道設定</value>
+    </data>
+    <data name="Text.UserCenter.RemainingTraffic" xml:space="preserve">
+        <value>剩餘流量</value>
+    </data>
+    <data name="Text.UserCenter.TunnelCount" xml:space="preserve">
+        <value>隧道數量</value>
+    </data>
+    <data name="Text.UserCenter.InboundBandwidth" xml:space="preserve">
+        <value>入站頻寬</value>
+    </data>
+    <data name="Text.UserCenter.OutboundBandwidth" xml:space="preserve">
+        <value>出站頻寬</value>
+    </data>
+    <data name="Text.UserCenter.TrafficStatistics" xml:space="preserve">
+        <value>流量統計</value>
+    </data>
+    <data name="Text.UserCenter.TrafficStatisticsDescription" xml:space="preserve">
+        <value>檢視近期流量使用趨勢</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelist" xml:space="preserve">
+        <value>域名白名單</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistDescription" xml:space="preserve">
+        <value>檢視您的用於「中國大陸(不含港澳台)」節點建立 HTTP/HTTPS 隧道的域名白名單</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistInfo" xml:space="preserve">
+        <value>這裡是用於「中國大陸(不含港澳台)」節點建立 HTTP/HTTPS 隧道的域名白名單，您的域名需要擁有工業和信息化部的備案記錄才可新增。非中國大陸節點建站，域名無需過白。</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistWarning" xml:space="preserve">
+        <value>在填寫時，請直接填寫根域名，例如 mefrp.com，不要填寫 www.mefrp.com 等子域名，免費子域名請勿在此處填寫。我們使用即時資料自動過白，提交無效的域名可能導致您被通報！</value>
+    </data>
+    <data name="Text.UserCenter.DomainWhitelistError" xml:space="preserve">
+        <value>幻緣映射不提供任何的域名備案服務，請自行根據服務商要求備案。</value>
+    </data>
+    <data name="Text.UserCenter.AddDomain" xml:space="preserve">
+        <value>新增域名</value>
+    </data>
+    <data name="Text.UserCenter.AddedDomainsCount" xml:space="preserve">
+        <value>已新增 {0} 個域名</value>
+    </data>
+    <data name="Text.UserCenter.AccountOperations" xml:space="preserve">
+        <value>帳戶操作</value>
+    </data>
+    <data name="Text.UserCenter.Logout" xml:space="preserve">
+        <value>登出</value>
+    </data>
+    <data name="Text.UserCenter.GoToWebPortal" xml:space="preserve">
+        <value>前往網頁端以完成其他操作</value>
+    </data>
+    <data name="Text.UserCenter.WebPortalTip" xml:space="preserve">
+        <value>由於某些原因，網頁端的部分功能無法在用戶端實現(未開放API)，因此需要您前往網頁端進行操作。</value>
+    </data>
+    <data name="Text.PluginList.Enabled" xml:space="preserve">
+        <value>已啟用</value>
+    </data>
+    <data name="Text.PluginList.Disabled" xml:space="preserve">
+        <value>已停用</value>
+    </data>
+    <data name="Text.PluginList.LocalPlugins" xml:space="preserve">
+        <value>本機外掛</value>
+    </data>
+    <data name="Text.PluginList.DropPluginFileHere" xml:space="preserve">
+        <value>拖曳外掛檔案到此處</value>
+    </data>
+    <data name="Text.PluginList.InstallPlugin" xml:space="preserve">
+        <value>安裝外掛</value>
+    </data>
+    <data name="Text.PluginList.OpenFolder" xml:space="preserve">
+        <value>開啟目錄</value>
+    </data>
+    <data name="Text.PluginList.ViewSource" xml:space="preserve">
+        <value>檢視原始碼</value>
+    </data>
+    <data name="Text.PluginList.ToggleEnable" xml:space="preserve">
+        <value>啟用/停用</value>
+    </data>
+    <data name="Text.PluginList.Uninstall" xml:space="preserve">
+        <value>解除安裝</value>
+    </data>
+    <data name="Text.PluginList.Triggers" xml:space="preserve">
+        <value>觸發器: </value>
+    </data>
+    <data name="Text.PluginList.Functions" xml:space="preserve">
+        <value>函式: </value>
+    </data>
+    <data name="Text.PluginList.AuthorPrefix" xml:space="preserve">
+        <value>作者: </value>
+    </data>
+    <data name="Text.PluginList.NoPlugins" xml:space="preserve">
+        <value>暫無外掛</value>
+    </data>
+    <data name="Text.PluginList.NoPluginsHint" xml:space="preserve">
+        <value>點選上方安裝外掛按鈕新增 YAML 外掛檔案</value>
+    </data>
+    <data name="Text.PluginList.PluginMarket" xml:space="preserve">
+        <value>外掛市集</value>
+    </data>
+    <data name="Text.PluginList.SearchPlugins" xml:space="preserve">
+        <value>搜尋外掛</value>
+    </data>
+    <data name="Text.PluginList.SearchHelp" xml:space="preserve">
+        <value>搜尋說明</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpNoParams" xml:space="preserve">
+        <value>無參數:直接搜尋包含輸入文字的ID/名稱/作者的外掛</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpDesc" xml:space="preserve">
+        <value>輸入/desc:&lt;KEYWORD&gt;以搜尋描述</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpAuthor" xml:space="preserve">
+        <value>輸入/author:&lt;KEYWORD&gt;以搜尋作者</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpId" xml:space="preserve">
+        <value>輸入/id:&lt;KEYWORD&gt;以搜尋id</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpName" xml:space="preserve">
+        <value>輸入/name:&lt;KEYWORD&gt;以搜尋名稱</value>
+    </data>
+    <data name="Text.PluginList.SearchHelpCaseInsensitive" xml:space="preserve">
+        <value>所有參數均忽略大小寫。</value>
+    </data>
+    <data name="Text.PluginList.DownloadSelected" xml:space="preserve">
+        <value>下載所選外掛</value>
+    </data>
+    <data name="Text.PortScanner.Title" xml:space="preserve">
+        <value>MC連接埠掃描工具</value>
+    </data>
+    <data name="Text.PortScanner.ScanSettings" xml:space="preserve">
+        <value>掃描設定</value>
+    </data>
+    <data name="Text.PortScanner.TargetIp" xml:space="preserve">
+        <value>目標IP:</value>
+    </data>
+    <data name="Text.PortScanner.TargetIpPlaceholder" xml:space="preserve">
+        <value>例如: 127.0.0.1</value>
+    </data>
+    <data name="Text.PortScanner.Localhost" xml:space="preserve">
+        <value>本機</value>
+    </data>
+    <data name="Text.PortScanner.PortRange" xml:space="preserve">
+        <value>連接埠範圍:</value>
+    </data>
+    <data name="Text.PortScanner.StartPort" xml:space="preserve">
+        <value>起始連接埠</value>
+    </data>
+    <data name="Text.PortScanner.EndPort" xml:space="preserve">
+        <value>結束連接埠</value>
+    </data>
+    <data name="Text.PortScanner.CommonPorts" xml:space="preserve">
+        <value>常用連接埠</value>
+    </data>
+    <data name="Text.PortScanner.StartScan" xml:space="preserve">
+        <value>開始掃描</value>
+    </data>
+    <data name="Text.PortScanner.StopScan" xml:space="preserve">
+        <value>停止掃描</value>
+    </data>
+    <data name="Text.PortScanner.QuickScan" xml:space="preserve">
+        <value>快速掃描MC連接埠</value>
+    </data>
+    <data name="Text.PortScanner.ScanResults" xml:space="preserve">
+        <value>掃描結果</value>
+    </data>
+    <data name="Text.PortScanner.ResultCountFormat" xml:space="preserve">
+        <value>(共{0}個開放連接埠)</value>
+    </data>
+    <data name="Text.PortScanner.PortFormat" xml:space="preserve">
+        <value>連接埠:{0}</value>
+    </data>
+    <data name="Text.PortScanner.UseThisPort" xml:space="preserve">
+        <value>使用此連接埠</value>
+    </data>
+    <data name="Text.PortScanner.CopySelectedPort" xml:space="preserve">
+        <value>複製選中連接埠</value>
+    </data>
+    <data name="Text.PortScanner.ClearResults" xml:space="preserve">
+        <value>清空結果</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalNodes" xml:space="preserve">
+        <value>總節點數</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineNodes" xml:space="preserve">
+        <value>線上節點</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineUsers" xml:space="preserve">
+        <value>線上使用者</value>
+    </data>
+    <data name="Text.NodesMonitoring.OnlineTunnels" xml:space="preserve">
+        <value>線上隧道</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalInboundTraffic" xml:space="preserve">
+        <value>總入站流量</value>
+    </data>
+    <data name="Text.NodesMonitoring.TotalOutboundTraffic" xml:space="preserve">
+        <value>總出站流量</value>
+    </data>
+    <data name="Text.NodesMonitoring.SearchNodes" xml:space="preserve">
+        <value>搜尋節點...</value>
+    </data>
+    <data name="Text.NodesMonitoring.Descending" xml:space="preserve">
+        <value>倒序</value>
+    </data>
+    <data name="Text.NodesMonitoring.NodesCountFormat" xml:space="preserve">
+        <value>共 {0} 個節點</value>
+    </data>
+    <data name="Text.NodesMonitoring.VersionFormat" xml:space="preserve">
+        <value>版本: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.ConnectionCountFormat" xml:space="preserve">
+        <value>連線數: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.TunnelCountFormat" xml:space="preserve">
+        <value>隧道數: {0}</value>
+    </data>
+    <data name="Text.NodesMonitoring.Load" xml:space="preserve">
+        <value>負載:</value>
+    </data>
+    <data name="Text.Update.LastCheckTimeFormat" xml:space="preserve">
+        <value>上次檢查時間：{0}</value>
+    </data>
+    <data name="Text.Update.DownloadAndInstall" xml:space="preserve">
+        <value>下載並安裝更新</value>
+    </data>
+    <data name="Text.Update.CheckForUpdates" xml:space="preserve">
+        <value>檢查更新</value>
+    </data>
+    <data name="Text.Update.Changelog" xml:space="preserve">
+        <value>更新日誌</value>
+    </data>
+    <data name="Text.Update.VersionInfoFormat" xml:space="preserve">
+        <value>雲端最新: {0}           本地版本: {1}               版本代號:</value>
+    </data>
+    <data name="Text.Update.VersionInfoTip" xml:space="preserve">
+        <value>提示: 「雲端最新」可能傳回本地版本, 因為本地版本是最新的。</value>
+    </data>
+    <data name="Text.Update.UpdateSettings" xml:space="preserve">
+        <value>更新設定</value>
+    </data>
+    <data name="Text.Update.UpdateMode" xml:space="preserve">
+        <value>更新模式</value>
+    </data>
+    <data name="Text.Update.UpdateModeDescription" xml:space="preserve">
+        <value>設定應用程式的更新模式。</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.AutoInstall" xml:space="preserve">
+        <value>自動檢查更新並安裝</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.AutoDownload" xml:space="preserve">
+        <value>自動檢查更新並下載</value>
+    </data>
+    <data name="Text.Update.UpdateMethod.ManualInstall" xml:space="preserve">
+        <value>手動檢查更新並安裝</value>
+    </data>
+    <data name="Text.Update.KeepProfile" xml:space="preserve">
+        <value>保留設定</value>
+    </data>
+    <data name="Text.Update.KeepProfileDescription" xml:space="preserve">
+        <value>設定應用程式是否應該保留目前設定。請注意: 某些新版本可能新增或變更了設定, 強行覆寫可能會導致意想不到的後果。</value>
+    </data>
+    <data name="Text.Update.UpdateChannel" xml:space="preserve">
+        <value>更新通道</value>
+    </data>
+    <data name="Text.Update.UpdateChannelDescription" xml:space="preserve">
+        <value>控制應用程式的更新目標版本。版本的發行節奏和穩定程度因更新通道而異,部分通道可能包含不穩定的功能,請謹慎使用。</value>
+    </data>
+    <data name="Text.Update.Channel.Stable" xml:space="preserve">
+        <value>穩定通道</value>
+    </data>
+    <data name="Text.Update.Channel.Preview" xml:space="preserve">
+        <value>發布預覽通道</value>
+    </data>
+    <data name="Text.Update.CompileType" xml:space="preserve">
+        <value>目標編譯類型</value>
+    </data>
+    <data name="Text.Update.CompileTypeDescription" xml:space="preserve">
+        <value>選擇下載安裝包的編譯類型（AOT 或一般）。當目標類型與目前執行時類型一致時，安裝程式將不執行自動清理作業。</value>
+    </data>
+    <data name="Text.Update.CompileType.AOT" xml:space="preserve">
+        <value>AOT（預編譯）</value>
+    </data>
+    <data name="Text.Update.CompileType.Common" xml:space="preserve">
+        <value>一般</value>
+    </data>
+    <data name="Text.About.PoweredBy" xml:space="preserve">
+        <value>由開源軟體和 ME Frp 提供支援。</value>
+    </data>
+    <data name="Text.About.UserAgreement" xml:space="preserve">
+        <value>使用者協議</value>
+    </data>
+    <data name="Text.About.PrivacyPolicy" xml:space="preserve">
+        <value>隱私政策</value>
+    </data>
+    <data name="Text.About.HelpDocs" xml:space="preserve">
+        <value>說明文件</value>
+    </data>
+    <data name="Text.About.OpenSource" xml:space="preserve">
+        <value>開源軟體</value>
+    </data>
+    <data name="Text.About.ReportIssue" xml:space="preserve">
+        <value>回報軟體問題</value>
+    </data>
+    <data name="Text.About.ThrowException" xml:space="preserve">
+        <value>丟出例外</value>
+    </data>
+    <data name="Text.About.AboutMEFrp" xml:space="preserve">
+        <value>關於 ME Frp</value>
+    </data>
+    <data name="Text.About.MEFrpVersion" xml:space="preserve">
+        <value>ME Frp 版本</value>
+    </data>
+    <data name="Text.About.OpenClientFolder" xml:space="preserve">
+        <value>開啟ME Frp Client目錄</value>
+    </data>
+    <data name="Text.About.FriendlyLinks" xml:space="preserve">
+        <value>友情連結</value>
+    </data>
+    <data name="Text.About.OfficialQQGroup1" xml:space="preserve">
+        <value>官方 QQ 一群</value>
+    </data>
+    <data name="Text.About.OfficialQQGroup2" xml:space="preserve">
+        <value>官方 QQ 二群</value>
+    </data>
+    <data name="Text.About.OfficialFeishuGroup" xml:space="preserve">
+        <value>官方飛書群</value>
+    </data>
+    <data name="Text.About.SupportEmail" xml:space="preserve">
+        <value>支援電子郵件</value>
+    </data>
+    <data name="Text.About.DailyHitokoto" xml:space="preserve">
+        <value>每日一言</value>
+    </data>
+    <data name="Text.ManageProxyHelp.SearchCommands" xml:space="preserve">
+        <value>搜尋命令</value>
+    </data>
+    <data name="Text.ManageProxyHelp.SearchSyntaxNote" xml:space="preserve">
+        <value>搜尋語法並不通用。目前只適用於本軟體。您可以向其他軟體開發者提出該請求。</value>
+    </data>
+    <data name="Text.ManageProxyHelp.PidDescription" xml:space="preserve">
+        <value>n為隧道ID</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NidDescription" xml:space="preserve">
+        <value>n為節點ID</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NDescription" xml:space="preserve">
+        <value>x為節點名稱，支援拼音</value>
+    </data>
+    <data name="Text.ManageProxyHelp.Examples" xml:space="preserve">
+        <value>範例</value>
+    </data>
+    <data name="Text.ManageProxyHelp.PidExample" xml:space="preserve">
+        <value>搜尋所有隧道ID包含"1"的隧道</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NidExample" xml:space="preserve">
+        <value>搜尋所有節點ID包含"1"的隧道</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NExample" xml:space="preserve">
+        <value>搜尋所有節點名稱包含"節點1"的隧道</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ColorMeaning" xml:space="preserve">
+        <value>顏色含義解釋</value>
+    </data>
+    <data name="Text.ManageProxyHelp.GreenOnline" xml:space="preserve">
+        <value>綠色: 隧道線上</value>
+    </data>
+    <data name="Text.ManageProxyHelp.RedOffline" xml:space="preserve">
+        <value>紅色: 隧道離線</value>
+    </data>
+    <data name="Text.ManageProxyHelp.YellowDisabled" xml:space="preserve">
+        <value>黃色: 隧道被停用</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOnline" xml:space="preserve">
+        <value>隧道線上</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOffline" xml:space="preserve">
+        <value>隧道離線</value>
+    </data>
+    <data name="Text.ManageProxyHelp.ExampleOfflineDisabled" xml:space="preserve">
+        <value>隧道離線且被停用</value>
+    </data>
+    <data name="Caption.Hint" xml:space="preserve">
+        <value>提示</value>
+    </data>
+    <data name="Text.NodesContainer.SearchNodes" xml:space="preserve">
+        <value>搜尋節點</value>
+    </data>
+    <data name="Text.NodesContainer.HelpNoParams" xml:space="preserve">
+        <value>無參數: 直接搜尋名稱</value>
+    </data>
+    <data name="Text.NodesContainer.HelpDescSearch" xml:space="preserve">
+        <value>輸入/d:&lt;KEYWORD&gt;以搜尋描述</value>
+    </data>
+    <data name="Text.NodesContainer.HelpPinyinName" xml:space="preserve">
+        <value>輸入/pn:&lt;PINYIN&gt;以使用拼音搜尋名稱</value>
+    </data>
+    <data name="Text.NodesContainer.HelpPinyinDesc" xml:space="preserve">
+        <value>輸入/pd:&lt;PINYIN&gt;以使用拼音搜尋描述</value>
+    </data>
+    <data name="Text.NodesContainer.PerformanceWarningTitle" xml:space="preserve">
+        <value>已知效能警告</value>
+    </data>
+    <data name="Text.NodesContainer.PerformanceWarningMessage" xml:space="preserve">
+        <value>使用拼音搜尋會降低搜尋速度，並造成程式假死。</value>
+    </data>
+    <data name="Text.NodesContainer.OnlySiteBuildable" xml:space="preserve">
+        <value>僅顯示可建站節點</value>
+    </data>
+    <data name="Text.NodesContainer.OnlyHighTraffic" xml:space="preserve">
+        <value>僅顯示允許大流量節點</value>
+    </data>
+    <data name="Text.NodesContainer.OnlyNotOverloaded" xml:space="preserve">
+        <value>僅顯示未過載節點</value>
+    </data>
+    <data name="Text.NodesContainer.Region_All" xml:space="preserve">
+        <value>全部</value>
+    </data>
+    <data name="Text.NodesContainer.Region_MainlandChina" xml:space="preserve">
+        <value>中國大陸</value>
+    </data>
+    <data name="Text.NodesContainer.Region_HKMOTW" xml:space="preserve">
+        <value>港澳台</value>
+    </data>
+    <data name="Text.NodesContainer.Region_Overseas" xml:space="preserve">
+        <value>海外</value>
+    </data>
+    <data name="Text.UserProxy.LaunchViaConfig" xml:space="preserve">
+        <value>使用設定檔執行</value>
+    </data>
+    <data name="Text.UserProxy.ForceOffline" xml:space="preserve">
+        <value>強制下線</value>
+    </data>
+    <data name="Text.UserProxy.GenerateConfig" xml:space="preserve">
+        <value>產生設定檔</value>
+    </data>
+    <data name="Text.UserProxy.Banned" xml:space="preserve">
+        <value>已封禁</value>
+    </data>
+    <data name="Text.UserProxy.LaunchTunnel" xml:space="preserve">
+        <value>啟動隧道</value>
+    </data>
+    <data name="Text.UserProxy.StopTunnel" xml:space="preserve">
+        <value>停止隧道</value>
+    </data>
+    <data name="Text.UserProxy.DetailedInfo" xml:space="preserve">
+        <value>詳細資訊</value>
+    </data>
+    <data name="Text.UserProxy.MoreOptions" xml:space="preserve">
+        <value>更多選項</value>
+    </data>
+    <data name="Text.UserProxy.CopyAddress" xml:space="preserve">
+        <value>複製位址</value>
+    </data>
+    <data name="Text.Global.Delete" xml:space="preserve">
+        <value>刪除</value>
+    </data>
+    <data name="Text.Global.Disable" xml:space="preserve">
+        <value>停用</value>
+    </data>
+    <data name="Text.Global.Enable" xml:space="preserve">
+        <value>啟用</value>
+    </data>
+    <data name="Text.AppearanceSettings.SelectBackground" xml:space="preserve">
+        <value>選擇一個背景</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundOpacity" xml:space="preserve">
+        <value>背景不透明度</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundOpacityDescription" xml:space="preserve">
+        <value>有時候背景圖片可能會影響觀感，請選擇一個不透明度來調整。</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundFillMode" xml:space="preserve">
+        <value>背景填充模式</value>
+    </data>
+    <data name="Text.AppearanceSettings.BackgroundFillModeDescription" xml:space="preserve">
+        <value>設定軟體是否應該將背景圖片填充整個視窗至標題列。</value>
+    </data>
+    <data name="Text.AppearanceSettings.FillToTitleBar" xml:space="preserve">
+        <value>填充至標題列</value>
+    </data>
+    <data name="Text.AppearanceSettings.FillToWindowOnly" xml:space="preserve">
+        <value>僅填充至視窗</value>
+    </data>
+    <data name="Text.AppearanceSettings.SelectAccentColor" xml:space="preserve">
+        <value>選擇主題色</value>
+    </data>
+    <data name="Text.AppearanceSettings.Restore" xml:space="preserve">
+        <value>還原</value>
+    </data>
+    <data name="Text.AppearanceSettings.CustomizeHomePage" xml:space="preserve">
+        <value>自訂首頁</value>
+    </data>
+    <data name="Text.AppearanceSettings.CustomizeHomePageDescription" xml:space="preserve">
+        <value>您可以選擇首頁展示的內容。</value>
+    </data>
+    <data name="Text.AppearanceSettings.Statistics" xml:space="preserve">
+        <value>統計資訊</value>
+    </data>
+    <data name="Text.AppearanceSettings.SystemInfo" xml:space="preserve">
+        <value>系統資訊</value>
+    </data>
+    <data name="Text.AppearanceSettings.SoftwareNotice" xml:space="preserve">
+        <value>軟體公告</value>
+    </data>
+    <data name="Text.AppearanceSettings.SystemNotice" xml:space="preserve">
+        <value>系統公告</value>
+    </data>
+    <data name="Text.AppearanceSettings.ClearAllBackgrounds" xml:space="preserve">
+        <value>清除所有背景</value>
+    </data>
+    <data name="Text.Themes.Title" xml:space="preserve">
+        <value>主題設定</value>
+    </data>
+    <data name="Text.Themes.LocalThemes" xml:space="preserve">
+        <value>本機主題</value>
+    </data>
+    <data name="Text.Themes.New" xml:space="preserve">
+        <value>新建</value>
+    </data>
+    <data name="Text.Themes.ApplySelected" xml:space="preserve">
+        <value>套用所選</value>
+    </data>
+    <data name="Text.Themes.EditSelected" xml:space="preserve">
+        <value>編輯所選</value>
+    </data>
+    <data name="Text.Themes.DeleteSelected" xml:space="preserve">
+        <value>刪除所選</value>
+    </data>
+    <data name="Text.Themes.PackageSelected" xml:space="preserve">
+        <value>封裝所選</value>
+    </data>
+    <data name="Text.Themes.Import" xml:space="preserve">
+        <value>匯入</value>
+    </data>
+    <data name="Text.Themes.RestoreDefault" xml:space="preserve">
+        <value>還原預設</value>
+    </data>
+    <data name="Text.Themes.OpenDocs" xml:space="preserve">
+        <value>檢視文件</value>
+    </data>
+    <data name="Text.Themes.OnlineThemes" xml:space="preserve">
+        <value>線上主題</value>
+    </data>
+    <data name="Text.Themes.DownloadSelected" xml:space="preserve">
+        <value>下載所選</value>
+    </data>
+    <data name="Text.Themes.Search" xml:space="preserve">
+        <value>搜尋...</value>
+    </data>
+    <data name="Caption.Info" xml:space="preserve">
+        <value>資訊</value>
+    </data>
+    <data name="Caption.Success" xml:space="preserve">
+        <value>成功</value>
+    </data>
+    <data name="Text.Notice.PublishDate" xml:space="preserve">
+        <value>發布日期: {0}</value>
+    </data>
+    <data name="Text.Notice.TypeMaintenance" xml:space="preserve">
+        <value>維護</value>
+    </data>
+    <data name="Text.Notice.TypeNotice" xml:space="preserve">
+        <value>公告</value>
+    </data>
+    <data name="Text.Notice.TypeUpdate" xml:space="preserve">
+        <value>新版本</value>
+    </data>
+    <data name="Text.Terminal.ViewDetails" xml:space="preserve">
+        <value>檢視詳細資訊</value>
+    </data>
+    <data name="Text.Terminal.CommandWatermark" xml:space="preserve">
+        <value>輸入命令...</value>
+    </data>
+    <data name="Text.Settings.Captcha.ImplicitRecommended" xml:space="preserve">
+        <value>(推薦) 無感驗證</value>
+    </data>
+    <data name="Text.Settings.Captcha.ExplicitRecommended" xml:space="preserve">
+        <value>(推薦) 瀏覽器驗證</value>
+    </data>
+    <data name="Text.Settings.Captcha.ImplicitDesc" xml:space="preserve">
+        <value>在軟體內驗證, 無需其他操作, 對於x64系列處理器友善, 對於Arm架構處理器可能會耗費大量時間。</value>
+    </data>
+    <data name="Text.Settings.Captcha.ExplicitDesc" xml:space="preserve">
+        <value>透過瀏覽器開啟驗證網頁, 並手動複製驗證結果, 對於Arm處理器友善。</value>
+    </data>
+    <data name="Text.Settings.Captcha.UnknownMode" xml:space="preserve">
+        <value>未知方式</value>
+    </data>
+    <data name="Text.Settings.AutoStartAdded" xml:space="preserve">
+        <value>成功新增開機啟動項</value>
+    </data>
+    <data name="Text.Settings.AutoStartRemoved" xml:space="preserve">
+        <value>成功移除開機啟動項</value>
+    </data>
+    <data name="Text.Settings.AutoStartChangeFailed" xml:space="preserve">
+        <value>無法變更開機自啟動設定</value>
+    </data>
+    <data name="Text.Login.LocalStoredLogin" xml:space="preserve">
+        <value>已從本機儲存的帳號登入</value>
+    </data>
+    <data name="Text.Login.EnterCaptcha" xml:space="preserve">
+        <value>請輸入驗證碼</value>
+    </data>
+    <data name="Text.Login.CaptchaStep" xml:space="preserve">
+        <value>正在人機驗證 步驟{0}/5</value>
+    </data>
+    <data name="Text.Login.ValidationFailed" xml:space="preserve">
+        <value>驗證失敗</value>
+    </data>
+    <data name="Text.Login.LoggingIn" xml:space="preserve">
+        <value>登入中</value>
+    </data>
+    <data name="Text.Login.LoginFailed" xml:space="preserve">
+        <value>登入失敗</value>
+    </data>
+    <data name="Text.Login.Login" xml:space="preserve">
+        <value>登入</value>
+    </data>
+    <data name="Text.Login.ValidationFailedWithMsg" xml:space="preserve">
+        <value>驗證失敗: {0}</value>
+    </data>
+    <data name="Text.Login.UseNewAccount" xml:space="preserve">
+        <value>&lt;使用新帳號&gt;</value>
+    </data>
+    <data name="Text.Login.LoggingInProgress" xml:space="preserve">
+        <value>登入中... {0:F2}%</value>
+    </data>
+    <data name="Text.UserCenter.RealNameVerified" xml:space="preserve">
+        <value>已實名</value>
+    </data>
+    <data name="Text.UserCenter.RealNameNotVerified" xml:space="preserve">
+        <value>未實名</value>
+    </data>
+    <data name="Text.UserCenter.StatusNormal" xml:space="preserve">
+        <value>正常</value>
+    </data>
+    <data name="Text.UserCenter.StatusBanned" xml:space="preserve">
+        <value>封禁</value>
+    </data>
+    <data name="Text.UserCenter.StatusTrafficExceeded" xml:space="preserve">
+        <value>流量超限</value>
+    </data>
+    <data name="Text.UserCenter.StatusUnknown" xml:space="preserve">
+        <value>未知狀態</value>
+    </data>
+    <data name="Text.UserCenter.SignIn" xml:space="preserve">
+        <value>簽到</value>
+    </data>
+    <data name="Text.UserCenter.SignedIn" xml:space="preserve">
+        <value>已簽到</value>
+    </data>
+    <data name="Text.UserCenter.SignInSuccess" xml:space="preserve">
+        <value>簽到成功</value>
+    </data>
+    <data name="Text.UserCenter.SignInFailed" xml:space="preserve">
+        <value>簽到失敗</value>
+    </data>
+    <data name="Text.UserCenter.LogoutConfirm" xml:space="preserve">
+        <value>確定要登出嗎？登出後軟體將重新啟動。</value>
+    </data>
+    <data name="Text.UserCenter.DomainDeleted" xml:space="preserve">
+        <value>刪除成功: {0}</value>
+    </data>
+    <data name="Text.UserCenter.DeleteFailed" xml:space="preserve">
+        <value>刪除失敗</value>
+    </data>
+    <data name="Text.UserCenter.DomainWatermark" xml:space="preserve">
+        <value>請輸入備案域名</value>
+    </data>
+    <data name="Text.UserCenter.AddDomainTitle" xml:space="preserve">
+        <value>新增備案域名</value>
+    </data>
+    <data name="Text.UserCenter.DomainExists" xml:space="preserve">
+        <value>該備案域名已存在</value>
+    </data>
+    <data name="Text.UserCenter.InvalidDomain" xml:space="preserve">
+        <value>請輸入正確的備案域名</value>
+    </data>
+    <data name="Text.UserCenter.NoDomains" xml:space="preserve">
+        <value>沒有備案域名</value>
+    </data>
+    <data name="Text.UserCenter.AddFailed" xml:space="preserve">
+        <value>新增失敗</value>
+    </data>
+    <data name="Text.UserCenter.DomainAdded" xml:space="preserve">
+        <value>新增成功: {0}</value>
+    </data>
+    <data name="Text.Global.Add" xml:space="preserve">
+        <value>新增</value>
+    </data>
+    <data name="Text.Global.UnknownError" xml:space="preserve">
+        <value>未知錯誤</value>
+    </data>
+    <data name="Text.About.HitokotoFallback" xml:space="preserve">
+        <value>用程式碼表達言語的魅力，用程式碼書寫山河的壯麗。</value>
+    </data>
+    <data name="Text.About.HitokotoSource" xml:space="preserve">
+        <value>一言「一言開發者中心」</value>
+    </data>
+    <data name="Text.About.HitokotoAuthor" xml:space="preserve">
+        <value>一言開發者</value>
+    </data>
+    <data name="Text.About.MicrosoftStyleChinese" xml:space="preserve">
+        <value>微軟式中文</value>
+    </data>
+    <data name="Text.About.OpenSourceSoftware" xml:space="preserve">
+        <value>開放原始碼軟體</value>
+    </data>
+    <data name="Text.About.GroupRules" xml:space="preserve">
+        <value>請友善、真誠提問，杜絕任何挑釁和違法行為，一經發現，立刻踢出。</value>
+    </data>
+    <data name="Text.About.AcknowledgeAndGo" xml:space="preserve">
+        <value>我已知曉, 前往</value>
+    </data>
+    <data name="Text.About.CopyGroupNumber" xml:space="preserve">
+        <value>複製群號</value>
+    </data>
+    <data name="Text.About.GroupNumberCopied" xml:space="preserve">
+        <value>群號已複製到剪貼簿</value>
+    </data>
+    <data name="Text.About.DocOpened" xml:space="preserve">
+        <value>已開啟文件。若無法存取, 請選擇以下備用來源: </value>
+    </data>
+    <data name="Text.About.Source1" xml:space="preserve">
+        <value>來源1</value>
+    </data>
+    <data name="Text.About.Source2" xml:space="preserve">
+        <value>來源2</value>
+    </data>
+    <data name="Text.About.FeedbackEmailBody" xml:space="preserve">
+        <value>您的回饋已提交成功。我們將盡快處理您的回饋。</value>
+    </data>
+    <data name="Text.About.FeedbackEmailSubject" xml:space="preserve">
+        <value>回饋已提交成功 | RYCB Studio</value>
+    </data>
+    <data name="Text.About.FeedbackSubmitted" xml:space="preserve">
+        <value>回饋提交成功</value>
+    </data>
+    <data name="Text.Update.NeverChecked" xml:space="preserve">
+        <value>從未檢查過更新</value>
+    </data>
+    <data name="Text.Update.Checking" xml:space="preserve">
+        <value>正在檢查更新</value>
+    </data>
+    <data name="Text.Update.FetchFailed" xml:space="preserve">
+        <value>取得更新失敗</value>
+    </data>
+    <data name="Text.Update.NewVersionDetected" xml:space="preserve">
+        <value>偵測到新版本: </value>
+    </data>
+    <data name="Text.Update.AlreadyLatest" xml:space="preserve">
+        <value>目前版本已是最新版本</value>
+    </data>
+    <data name="Text.Update.Downloading" xml:space="preserve">
+        <value>正在下載更新</value>
+    </data>
+    <data name="Text.Update.DownloadCompleted" xml:space="preserve">
+        <value>更新下載完成</value>
+    </data>
+    <data name="Text.Update.InstallTipWindows" xml:space="preserve">
+        <value>點選確認開啟安裝檔所在目錄，按兩下 exe 檔案完成安裝</value>
+    </data>
+    <data name="Text.Update.InstallTipMacOS" xml:space="preserve">
+        <value>點選確認開啟安裝檔所在目錄，按兩下 dmg 檔案完成安裝</value>
+    </data>
+    <data name="Text.Update.InstallTipLinux" xml:space="preserve">
+        <value>點選確認開啟安裝檔所在目錄，使用 dpkg -i 命令安裝 deb 套件</value>
+    </data>
+    <data name="Text.Update.AutoUpdateNotSupported" xml:space="preserve">
+        <value>暫不支援目前作業系統的自動更新，請手動下載安裝包</value>
+    </data>
+    <data name="Text.Update.UnsupportedSystem" xml:space="preserve">
+        <value>不支援的系統</value>
+    </data>
+    <data name="Text.Update.BackupConfigFailed" xml:space="preserve">
+        <value>備份設定檔失敗, 請手動備份設定檔</value>
+    </data>
+    <data name="Text.Update.RestartToInstall" xml:space="preserve">
+        <value>即將關閉程式以自動安裝更新</value>
+    </data>
+    <data name="Text.Update.LinuxManualUpdate" xml:space="preserve">
+        <value>由於技術原因, 目前我們只提供Windows的自動更新服務。請您到最新版本頁手動下載並覆蓋安裝, 或使用安裝腳本安裝。</value>
+    </data>
+    <data name="Text.Update.MacOSManualUpdate" xml:space="preserve">
+        <value>由於技術原因, 目前我們只提供Windows的自動更新服務。請您到最新版本頁手動下載並覆蓋安裝。</value>
+    </data>
+    <data name="Text.Update.HardTimesCaption" xml:space="preserve">
+        <value>我們都有不順利的時候</value>
+    </data>
+    <data name="Text.Update.DownloadCompletedOpenDir" xml:space="preserve">
+        <value>更新下載完成！點選確認開啟安裝檔所在目錄</value>
+    </data>
+    <data name="Text.ThemeEditor.NewTheme" xml:space="preserve">
+        <value>新主題</value>
+    </data>
+    <data name="Text.ThemeEditor.UnknownAuthor" xml:space="preserve">
+        <value>未知作者</value>
+    </data>
+    <data name="Text.ThemeEditor.SystemFontFormat" xml:space="preserve">
+        <value>系統字型: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.CustomFontFormat" xml:space="preserve">
+        <value>自訂字型: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.NoFontSelected" xml:space="preserve">
+        <value>未選擇字型</value>
+    </data>
+    <data name="Text.ThemeEditor.PickPreviewImage" xml:space="preserve">
+        <value>選擇預覽圖片</value>
+    </data>
+    <data name="Text.ThemeEditor.ImageFiles" xml:space="preserve">
+        <value>圖片檔案</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadPreviewImageFailed" xml:space="preserve">
+        <value>載入預覽圖片失敗: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PickFontFile" xml:space="preserve">
+        <value>選擇字型檔</value>
+    </data>
+    <data name="Text.ThemeEditor.FontFiles" xml:space="preserve">
+        <value>字型檔</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadFontFailed" xml:space="preserve">
+        <value>載入字型檔失敗: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.ThemeSaved" xml:space="preserve">
+        <value>主題已儲存到: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.SaveFailed" xml:space="preserve">
+        <value>儲存失敗: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewEnabled" xml:space="preserve">
+        <value>預覽模式已啟用，重新啟動應用程式後恢復原主題</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewTheme" xml:space="preserve">
+        <value>預覽主題</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewRestartPrompt" xml:space="preserve">
+        <value>主題已套用預覽。
+重新啟動應用程式後會自動恢復原主題。
+
+是否立即重新啟動？</value>
+    </data>
+    <data name="Text.ThemeEditor.PreviewFailed" xml:space="preserve">
+        <value>預覽失敗: {0}</value>
+    </data>
+    <data name="Text.ThemeEditor.PickBackgroundImage" xml:space="preserve">
+        <value>選擇背景圖片</value>
+    </data>
+    <data name="Text.ThemeEditor.LoadThemeFailed" xml:space="preserve">
+        <value>載入主題失敗: {0}</value>
+    </data>
+    <data name="Text.Home.NetworkUnavailableFormat" xml:space="preserve">
+        <value>網路服務不可用，返回代碼: {0}</value>
+    </data>
+    <data name="Text.Home.LoadUserDataFailed" xml:space="preserve">
+        <value>載入使用者資料失敗: {0}</value>
+    </data>
+    <data name="Text.Home.ImportantNotice" xml:space="preserve">
+        <value>重要通知</value>
+    </data>
+    <data name="Text.PluginList.InstalledCountFormat" xml:space="preserve">
+        <value>成功安裝 {0} 個外掛</value>
+    </data>
+    <data name="Text.PluginList.FetchOnlineListFailed" xml:space="preserve">
+        <value>取得線上外掛清單失敗</value>
+    </data>
+    <data name="Text.PluginList.OnlineLoadedCountFormat" xml:space="preserve">
+        <value>已載入 {0} 個線上外掛</value>
+    </data>
+    <data name="Text.PluginList.RefreshOnlineFailedFormat" xml:space="preserve">
+        <value>重新整理線上外掛失敗: {0}</value>
+    </data>
+    <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
+        <value>成功安裝 {0} 個線上外掛</value>
+    </data>
+    <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
+        <value>下載安裝失敗: {0}</value>
+    </data>
+    <data name="Text.PluginList.ListRefreshed" xml:space="preserve">
+        <value>外掛清單已重新整理</value>
+    </data>
+    <data name="Text.PluginList.YamlPluginFiles" xml:space="preserve">
+        <value>YAML 外掛檔</value>
+    </data>
+    <data name="Text.PluginList.InstallPluginTitle" xml:space="preserve">
+        <value>安裝外掛</value>
+    </data>
+    <data name="Text.PluginList.InstallFailedFormat" xml:space="preserve">
+        <value>安裝外掛失敗: {0}</value>
+    </data>
+    <data name="Text.PluginList.ConfirmUninstallCaption" xml:space="preserve">
+        <value>確認解除安裝</value>
+    </data>
+    <data name="Text.PluginList.UninstallConfirmFormat" xml:space="preserve">
+        <value>確定要解除安裝外掛「{0}」嗎？
+
+此操作將刪除外掛檔案，無法復原。</value>
+    </data>
+    <data name="Text.PluginList.Uninstalled" xml:space="preserve">
+        <value>外掛已解除安裝</value>
+    </data>
+    <data name="Text.PluginList.UninstallFailedFormat" xml:space="preserve">
+        <value>解除安裝外掛失敗: {0}</value>
+    </data>
+    <data name="Text.PluginList.CannotReadPluginContent" xml:space="preserve">
+        <value>無法讀取外掛檔內容。</value>
+    </data>
+    <data name="Text.PluginList.PluginSourceTitleFormat" xml:space="preserve">
+        <value>外掛原始碼: {0}</value>
+    </data>
+    <data name="Text.PluginList.ReadYamlFailedFormat" xml:space="preserve">
+        <value>讀取外掛 YAML 失敗: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeFiles" xml:space="preserve">
+        <value>主題檔</value>
+    </data>
+    <data name="Text.Themes.ImportThemeTitle" xml:space="preserve">
+        <value>匯入主題</value>
+    </data>
+    <data name="Text.Themes.ImportingThemeFormat" xml:space="preserve">
+        <value>正在匯入主題 {0}</value>
+    </data>
+    <data name="Text.Themes.FetchOnlineFailedFormat" xml:space="preserve">
+        <value>取得線上主題失敗: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeDownloaded" xml:space="preserve">
+        <value>主題下載完成</value>
+    </data>
+    <data name="Text.Themes.ThemeDownloadFailed" xml:space="preserve">
+        <value>主題下載失敗</value>
+    </data>
+    <data name="Text.Themes.DownloadFailedFormat" xml:space="preserve">
+        <value>下載失敗: {0}</value>
+    </data>
+    <data name="Text.Themes.ThemeApplied" xml:space="preserve">
+        <value>主題已套用</value>
+    </data>
+    <data name="Text.Themes.DeleteConfirmFormat" xml:space="preserve">
+        <value>確定要刪除主題「{0}」嗎？</value>
+    </data>
+    <data name="Text.Themes.ThemeDeleted" xml:space="preserve">
+        <value>主題已刪除</value>
+    </data>
+    <data name="Text.Themes.PackagingTheme" xml:space="preserve">
+        <value>正在打包主題</value>
+    </data>
+    <data name="Text.Themes.ThemeNameFormat" xml:space="preserve">
+        <value>主題名稱: {0}</value>
+    </data>
+    <data name="Text.Themes.PackageInfoFormat" xml:space="preserve">
+        <value>=====================
+版本: {0}
+作者: {1}
+=====================
+您可以在{2}中找到打包後的主題檔。</value>
+    </data>
+    <data name="Text.Themes.ThemePackaged" xml:space="preserve">
+        <value>主題已打包</value>
+    </data>
+    <data name="Text.Themes.ThemePackageCompleted" xml:space="preserve">
+        <value>主題打包完成！</value>
+    </data>
+    <data name="Text.Themes.OpenFolder" xml:space="preserve">
+        <value>開啟資料夾</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultCaption" xml:space="preserve">
+        <value>恢復預設主題</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultConfirm" xml:space="preserve">
+        <value>確定要恢復預設主題嗎？
+
+這將刪除目前選擇的主題設定檔，需要重新啟動程式後生效。</value>
+    </data>
+    <data name="Text.Themes.DefaultThemeRestored" xml:space="preserve">
+        <value>預設主題已恢復，請重新啟動程式以生效。</value>
+    </data>
+    <data name="Text.Themes.RestoreDefaultFailedFormat" xml:space="preserve">
+        <value>恢復預設主題失敗: {0}</value>
+    </data>
+    <data name="Text.PortScan.Scanning" xml:space="preserve">
+        <value>掃描中...</value>
+    </data>
+    <data name="Text.PortScan.Ready" xml:space="preserve">
+        <value>就緒</value>
+    </data>
+    <data name="Text.PortScan.ScannedProgressFormat" xml:space="preserve">
+        <value>已掃描 {0}/{1} 個連接埠</value>
+    </data>
+    <data name="Text.PortScan.ScanCompletedFormat" xml:space="preserve">
+        <value>掃描完成，找到 {0} 個開放連接埠</value>
+    </data>
+    <data name="Text.PortScan.ScanCancelled" xml:space="preserve">
+        <value>掃描已取消</value>
+    </data>
+    <data name="Text.PortScan.ScanErrorFormat" xml:space="preserve">
+        <value>掃描發生錯誤: {0}</value>
+    </data>
+    <data name="Text.PortScan.QuickScanning" xml:space="preserve">
+        <value>正在快速掃描MC常用連接埠...</value>
+    </data>
+    <data name="Text.PortScan.QuickScanCompletedFormat" xml:space="preserve">
+        <value>快速掃描完成，找到 {0} 個可能的MC連接埠</value>
+    </data>
+    <data name="Text.PortScan.StoppingScan" xml:space="preserve">
+        <value>正在停止掃描...</value>
+    </data>
+    <data name="Text.PortScan.PortCopiedFormat" xml:space="preserve">
+        <value>已複製連接埠 {0} 到剪貼簿</value>
+    </data>
+    <data name="Text.PortScan.PortSelectedFormat" xml:space="preserve">
+        <value>已選擇連接埠 {0}</value>
+    </data>
+    <data name="Text.PortScan.EnterTargetIp" xml:space="preserve">
+        <value>請輸入目標IP位址</value>
+    </data>
+    <data name="Text.PortScan.PortMustBeNumber" xml:space="preserve">
+        <value>連接埠必須為數字</value>
+    </data>
+    <data name="Text.PortScan.PortRange" xml:space="preserve">
+        <value>連接埠必須在1-65535之間</value>
+    </data>
+    <data name="Text.PortScan.StartGreaterEnd" xml:space="preserve">
+        <value>起始連接埠不能大於結束連接埠</value>
+    </data>
+    <data name="Text.PortScan.Open" xml:space="preserve">
+        <value>開放</value>
+    </data>
+    <data name="Text.PortScan.Closed" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.Nodes.RegionAll" xml:space="preserve">
+        <value>全部地區</value>
+    </data>
+    <data name="Text.Nodes.RegionCN" xml:space="preserve">
+        <value>中國大陸</value>
+    </data>
+    <data name="Text.Nodes.RegionHKMT" xml:space="preserve">
+        <value>港澳台</value>
+    </data>
+    <data name="Text.Nodes.RegionOversea" xml:space="preserve">
+        <value>海外</value>
+    </data>
+    <data name="Text.Nodes.RegionUnknown" xml:space="preserve">
+        <value>未知</value>
+    </data>
+    <data name="Text.Nodes.SortNodeId" xml:space="preserve">
+        <value>節點ID</value>
+    </data>
+    <data name="Text.Nodes.SortOnlineTunnels" xml:space="preserve">
+        <value>線上隧道數</value>
+    </data>
+    <data name="Text.Nodes.SortCurrentConnections" xml:space="preserve">
+        <value>目前連線數</value>
+    </data>
+    <data name="Text.Nodes.SortLoadPercent" xml:space="preserve">
+        <value>負載百分比</value>
+    </data>
+    <data name="Text.Nodes.SortDailyTraffic" xml:space="preserve">
+        <value>今日總流量</value>
+    </data>
+    <data name="Text.Nodes.SortUptime" xml:space="preserve">
+        <value>運行時長</value>
+    </data>
+    <data name="Text.Nodes.GetStatusFailedCodeFormat" xml:space="preserve">
+        <value>取得節點狀態失敗 (code={0})</value>
+    </data>
+    <data name="Text.Nodes.GetStatusFailedFormat" xml:space="preserve">
+        <value>取得節點狀態失敗: {0}</value>
+    </data>
+    <data name="Text.Nodes.NodeNotFound" xml:space="preserve">
+        <value>節點不存在</value>
+    </data>
+    <data name="Text.CreateProxyGuide.RDPName" xml:space="preserve">
+        <value>遠端桌面連線</value>
+    </data>
+    <data name="Text.CreateProxyGuide.AListDesc" xml:space="preserve">
+        <value>AList/OpenList是開源網盤聚合工具，支援多網盤統一管理、檔案瀏覽與影片播放。預設HTTP連接埠5244，HTTPS連接埠5245，提供WebDAV服務，可輕鬆實現本機與雲端資料互通。</value>
+    </data>
+    <data name="Text.CreateProxyGuide.MinecraftJavaDesc" xml:space="preserve">
+        <value>Minecraft Java版多人遊戲伺服器，支援模組和外掛擴展。預設TCP連接埠25565，可透過SRV記錄隱藏連接埠，適合與朋友連線建造和探索虛擬世界。</value>
+    </data>
+    <data name="Text.CreateProxyGuide.MinecraftBedrockDesc" xml:space="preserve">
+        <value>Minecraft Bedrock版多人遊戲伺服器，支援模組和外掛擴展。預設TCP連接埠19132，可透過SRV記錄隱藏連接埠，適合與朋友連線建造和探索虛擬世界。</value>
+    </data>
+    <data name="Text.CreateProxyGuide.RDPDesc" xml:space="preserve">
+        <value>RDP（遠端桌面通訊協定）是微軟開發的遠端存取通訊協定，預設使用TCP 3389連接埠，允許使用者透過網路圖形化控制遠端電腦。</value>
+    </data>
+    <data name="Text.ManageProxy.MenuTunnels" xml:space="preserve">
+        <value>隧道</value>
+    </data>
+    <data name="Text.ManageProxy.ManageTunnels" xml:space="preserve">
+        <value>管理隧道</value>
+    </data>
+    <data name="Text.ManageProxy.CreateTunnel" xml:space="preserve">
+        <value>建立隧道</value>
+    </data>
+    <data name="Text.ManageProxy.LaunchTunnel" xml:space="preserve">
+        <value>啟動隧道</value>
+    </data>
+    <data name="Text.ManageProxy.ExitApp" xml:space="preserve">
+        <value>結束程式</value>
+    </data>
+    <data name="Text.ManageProxy.DownloadCompleted" xml:space="preserve">
+        <value>下載完成</value>
+    </data>
+    <data name="Text.ManageProxy.DownloadCancelled" xml:space="preserve">
+        <value>下載取消</value>
+    </data>
+    <data name="Text.ManageProxy.HelpTitle" xml:space="preserve">
+        <value>說明</value>
+    </data>
+    <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
+        <value>請輸入隧道名稱</value>
+    </data>
+    <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
+        <value>請輸入本機位址</value>
+    </data>
+    <data name="Text.CreateProxy.EnterValidPort" xml:space="preserve">
+        <value>請輸入合法的連接埠號</value>
+    </data>
+    <data name="Text.CreateProxy.EditRequestHeaders" xml:space="preserve">
+        <value>編輯要求標頭</value>
+    </data>
+    <data name="Text.CreateProxy.EditDomains" xml:space="preserve">
+        <value>編輯綁定網域</value>
+    </data>
+    <data name="Text.CreateProxy.FindMinecraftPort" xml:space="preserve">
+        <value>尋找 Minecraft 連接埠</value>
+    </data>
+    <data name="Text.CreateProxy.EditResponseHeaders" xml:space="preserve">
+        <value>編輯回應標頭</value>
+    </data>
+    <data name="Text.CreateProxy.EditLocations" xml:space="preserve">
+        <value>編輯路徑</value>
+    </data>
+    <data name="Text.ProxyFloat.WindowTitle" xml:space="preserve">
+        <value>線上隧道</value>
+    </data>
+    <data name="Text.ConfigPreviewer.YamlFile" xml:space="preserve">
+        <value>YAML檔案</value>
+    </data>
+    <data name="Text.ConfigPreviewer.IniFile" xml:space="preserve">
+        <value>INI檔案</value>
+    </data>
+    <data name="Text.ConfigPreviewer.TomlFile" xml:space="preserve">
+        <value>TOML檔案</value>
+    </data>
+    <data name="Text.ConfigPreviewer.JsonFile" xml:space="preserve">
+        <value>JSON檔案</value>
+    </data>
+    <data name="Text.ConfigPreviewer.CopiedToClipboard" xml:space="preserve">
+        <value>設定已複製到剪貼簿</value>
+    </data>
+    <data name="Text.ConfigPreviewer.SaveConfigTitle" xml:space="preserve">
+        <value>儲存設定檔</value>
+    </data>
+    <data name="Text.ConfigPreviewer.SavedFormat" xml:space="preserve">
+        <value>設定已儲存到 {0}</value>
+    </data>
+    <data name="Text.Traffic.Inbound" xml:space="preserve">
+        <value>入站流量</value>
+    </data>
+    <data name="Text.Traffic.Outbound" xml:space="preserve">
+        <value>出站流量</value>
+    </data>
+    <data name="Text.Traffic.Total" xml:space="preserve">
+        <value>總流量</value>
+    </data>
+    <data name="Text.MainWindow.LoadingConfig" xml:space="preserve">
+        <value>正在載入設定</value>
+    </data>
+    <data name="Text.MainWindow.InitTray" xml:space="preserve">
+        <value>正在初始化系統匣</value>
+    </data>
+    <data name="Text.MainWindow.TrayToolTip" xml:space="preserve">
+        <value>PML 2 執行中</value>
+    </data>
+    <data name="Text.MainWindow.PrivacyPolicy" xml:space="preserve">
+        <value>### PML 2 隱私權政策（關鍵版）
+**重要提示：** 我們使用 [Sentry](https://sentry.io) 進行錯誤追蹤和效能監控，以改善軟體穩定性。資料儲存在 Sentry 位於歐盟的伺服器上。
+### 1. 資訊蒐集範圍
+- **個人資料**：使用者名稱、電子郵件、隧道資訊（如 API 平均時長、啟動失敗等情況）
+- **裝置資料**：裝置識別碼、作業系統版本、崩潰堆疊和錯誤記錄
+- **使用行為**：功能點擊、工作階段時長、錯誤記錄
+___
+**注意：** 遙測資料不包含您的帳號密碼、隧道內容等敏感資訊。
+### 2. 資訊用途
+- 提供核心功能服務（帳號驗證、資料同步）
+- 最佳化使用者體驗（故障修復、功能改進）
+- 錯誤監控與效能分析（透過 Sentry）
+### 3. 資料共享
+**我們不會出售使用者資料**。僅在以下情況共享：
+- 經您明確同意
+- 履行法律義務
+- 與第三方服務商合作（如雲端服務）必要時
+___
+### 4. 您的權利
+您有權存取、更正或刪除個人資訊，可透過設定停用遙測資料蒐集。
+**聯絡方式：** [郵件](mailto:im@rycb.tech) | [官網](https://www.rycb.tech/)
+___
+詳細隱私權政策請檢視：[PML 2 隱私權政策](https://docs.rycb.tech/pml-2/policy)</value>
+    </data>
+    <data name="Text.MainWindow.Agree" xml:space="preserve">
+        <value>同意</value>
+    </data>
+    <data name="Text.MainWindow.Decline" xml:space="preserve">
+        <value>拒絕</value>
+    </data>
+    <data name="Text.MainWindow.UpdateDetectedFormat" xml:space="preserve">
+        <value>偵測到新版本({0})，請前往「更新」頁面檢視詳情</value>
+    </data>
+    <data name="Text.MainWindow.UpdateDetectedTitleFormat" xml:space="preserve">
+        <value>偵測到更新: {0} → {1}</value>
+    </data>
+    <data name="Text.MainWindow.OpenMainWindow" xml:space="preserve">
+        <value>開啟主介面</value>
+    </data>
+    <data name="Text.MainWindow.OpenTerminal" xml:space="preserve">
+        <value>開啟終端機</value>
+    </data>
+    <data name="Text.MainWindow.Exit" xml:space="preserve">
+        <value>退出</value>
+    </data>
+    <data name="Text.MainWindow.CannotCloseConsole" xml:space="preserve">
+        <value>無法自動關閉主控台</value>
+    </data>
+    <data name="Text.MainWindow.LoginFirst" xml:space="preserve">
+        <value>請先登入</value>
+    </data>
+    <data name="Text.Themes.UnpackingFormat" xml:space="preserve">
+        <value>正在解壓縮主題：{0}%</value>
+    </data>
+    <data name="Text.Appearance.RecentImages" xml:space="preserve">
+        <value>最近的圖片</value>
+    </data>
+    <data name="Text.Appearance.ChoosePhoto" xml:space="preserve">
+        <value>選擇相片</value>
+    </data>
+    <data name="Text.Appearance.Select" xml:space="preserve">
+        <value>選擇</value>
+    </data>
+    <data name="Text.Appearance.SelectBackgroundTitle" xml:space="preserve">
+        <value>請選擇一個背景</value>
+    </data>
+    <data name="Text.Appearance.ImageFiles" xml:space="preserve">
+        <value>圖片檔案</value>
+    </data>
+    <data name="Text.ProxySSL.CertFiles" xml:space="preserve">
+        <value>憑證檔案</value>
+    </data>
+    <data name="Text.ProxySSL.KeyFiles" xml:space="preserve">
+        <value>私鑰檔案</value>
+    </data>
+    <data name="Text.ProxySSL.SelectFileTitle" xml:space="preserve">
+        <value>請選擇檔案</value>
+    </data>
+    <data name="Text.ALPConfigEditor.SavePathTitle" xml:space="preserve">
+        <value>請選擇儲存設定檔的路徑</value>
+    </data>
+    <data name="Text.ALPConfigEditor.SaveConfirm" xml:space="preserve">
+        <value>設定檔已修改，是否返回並儲存？</value>
+    </data>
+    <data name="Text.ALPConfigEditor.PasteFailed" xml:space="preserve">
+        <value>貼上失敗，請檢查剪貼簿內容。</value>
+    </data>
+    <data name="Text.ALPControl.ConfigChoicePrompt" xml:space="preserve">
+        <value>開啟設定檔還是輸入內容？</value>
+    </data>
+    <data name="Text.ALPControl.FileButton" xml:space="preserve">
+        <value>檔案</value>
+    </data>
+    <data name="Text.ALPControl.ContentButton" xml:space="preserve">
+        <value>內容</value>
+    </data>
+    <data name="Text.ALPControl.SelectConfigTitle" xml:space="preserve">
+        <value>請選擇設定檔</value>
+    </data>
+    <data name="Text.Update.StableChannelDesc" xml:space="preserve">
+        <value>接收應用程式穩定版的更新，包含較新且穩定的特性和改進。</value>
+    </data>
+    <data name="Text.Update.PreviewChannelDesc" xml:space="preserve">
+        <value>提前預覽下一個版本中應用程式的功能，包含較新的特性和改進，可能存在少量缺陷。</value>
+    </data>
+    <data name="Text.Update.UnknownChannel" xml:space="preserve">
+        <value>未知通道</value>
+    </data>
+    <data name="Text.App.LoadingTheme" xml:space="preserve">
+        <value>正在載入主題...</value>
+    </data>
+    <data name="Text.App.CreatingMainWindow" xml:space="preserve">
+        <value>正在建立主視窗</value>
+    </data>
+    <data name="Text.CreateProxy.NodeOverloaded" xml:space="preserve">
+        <value>節點已過載，無法再建立隧道</value>
+    </data>
+    <data name="Text.CreateProxy.SelectANode" xml:space="preserve">
+        <value>請選擇一個節點</value>
+    </data>
+    <data name="Text.CreateProxy.SelectAreaOnMap" xml:space="preserve">
+        <value>請在地圖上選擇一個區域</value>
+    </data>
+    <data name="Text.CreateProxy.NoNodesInAreaFormat" xml:space="preserve">
+        <value>在「{0}」區域未找到可用節點，請手動選擇</value>
+    </data>
+    <data name="Text.CreateProxy.LoadingNodesRetry" xml:space="preserve">
+        <value>正在載入節點，請重試</value>
+    </data>
+    <data name="Text.CreateProxy.NoMatchingNodes" xml:space="preserve">
+        <value>未找到符合條件的節點，請手動選擇</value>
+    </data>
+    <data name="Text.CreateProxy.CreateSuccess" xml:space="preserve">
+        <value>成功建立隧道</value>
+    </data>
+    <data name="Text.CreateProxy.CreateSameNameSuccessFormat" xml:space="preserve">
+        <value>成功建立同名{0}隧道</value>
+    </data>
+    <data name="Text.CreateProxy.CreateFailed" xml:space="preserve">
+        <value>建立隧道失敗</value>
+    </data>
+    <data name="Text.ALPSettings.SaveSuccess" xml:space="preserve">
+        <value>儲存成功</value>
+    </data>
+    <data name="Text.Converters.Overloaded" xml:space="preserve">
+        <value>負載過高</value>
+    </data>
+    <data name="Text.Converters.Online" xml:space="preserve">
+        <value>線上</value>
+    </data>
+    <data name="Text.Converters.Offline" xml:space="preserve">
+        <value>離線</value>
+    </data>
+    <data name="Text.Converters.Unknown" xml:space="preserve">
+        <value>未知</value>
+    </data>
+    <data name="Text.Converters.OnlineForFormat" xml:space="preserve">
+        <value>已線上 {0}</value>
+    </data>
+    <data name="Text.Converters.OfflineAgoFormat" xml:space="preserve">
+        <value>{0}前離線</value>
+    </data>
+    <data name="Text.Converters.DaysHoursFormat" xml:space="preserve">
+        <value>{0}天{1}小時</value>
+    </data>
+    <data name="Text.Converters.HoursMinutesFormat" xml:space="preserve">
+        <value>{0}小時{1}分</value>
+    </data>
+    <data name="Text.Converters.MinutesFormat" xml:space="preserve">
+        <value>{0}分</value>
+    </data>
+    <data name="Text.Converters.SecondsFormat" xml:space="preserve">
+        <value>{0}秒</value>
+    </data>
+    <data name="Text.Converters.Yes" xml:space="preserve">
+        <value>是</value>
+    </data>
+    <data name="Text.Converters.No" xml:space="preserve">
+        <value>否</value>
+    </data>
+    <data name="Text.Converters.StatusNormal" xml:space="preserve">
+        <value>正常</value>
+    </data>
+    <data name="Text.Converters.StatusBanned" xml:space="preserve">
+        <value>封禁</value>
+    </data>
+    <data name="Text.Converters.StatusTrafficExceeded" xml:space="preserve">
+        <value>流量超限</value>
+    </data>
+    <data name="Text.Converters.UnknownStatusFormat" xml:space="preserve">
+        <value>未知狀態 ({0})</value>
+    </data>
+    <data name="Text.Converters.Enabled" xml:space="preserve">
+        <value>已啟用</value>
+    </data>
+    <data name="Text.Converters.Disabled" xml:space="preserve">
+        <value>已停用</value>
+    </data>
+    <data name="Text.Api.FetchingFormat" xml:space="preserve">
+        <value>正在獲取{0}</value>
+    </data>
+    <data name="Text.Api.CannotGetApiInfo" xml:space="preserve">
+        <value>無法取得 API 資訊</value>
+    </data>
+    <data name="Text.Api.OriginFallbackFailed" xml:space="preserve">
+        <value>API 回源失敗，無法取得 API 資訊</value>
+    </data>
+    <data name="Text.Api.DoneCodeFormat" xml:space="preserve">
+        <value>完成，返回代碼：{0}</value>
+    </data>
+    <data name="Text.Api.RequestFailedFormat" xml:space="preserve">
+        <value>請求失敗：{0}</value>
+    </data>
+    <data name="Text.Api.SendFailed" xml:space="preserve">
+        <value>傳送失敗</value>
+    </data>
+    <data name="Text.Api.FetchingLatestVersion" xml:space="preserve">
+        <value>正在獲取最新版本</value>
+    </data>
+    <data name="Text.Api.FetchingErrorInfo" xml:space="preserve">
+        <value>正在獲取錯誤資訊</value>
+    </data>
+    <data name="Text.Api.FetchingSoftwareNotice" xml:space="preserve">
+        <value>正在獲取軟體公告</value>
+    </data>
+    <data name="Text.Api.OpIcpDomainList" xml:space="preserve">
+        <value>ICP 備案網域清單</value>
+    </data>
+    <data name="Text.Api.OpSystemStatus" xml:space="preserve">
+        <value>系統狀態</value>
+    </data>
+    <data name="Text.Api.OpPopupNotice" xml:space="preserve">
+        <value>重要公告</value>
+    </data>
+    <data name="Text.Api.OpNotice" xml:space="preserve">
+        <value>公告</value>
+    </data>
+    <data name="Text.Api.OpPublicInfo" xml:space="preserve">
+        <value>公共資訊</value>
+    </data>
+    <data name="Text.Api.OpExtraUserInfo" xml:space="preserve">
+        <value>詳細的使用者資訊</value>
+    </data>
+    <data name="Text.Api.OpNodeStatus" xml:space="preserve">
+        <value>節點狀態</value>
+    </data>
+    <data name="Text.Api.OpNodeInfo" xml:space="preserve">
+        <value>節點資訊</value>
+    </data>
+    <data name="Text.Api.OpConnectedNodeInfo" xml:space="preserve">
+        <value>已連線節點資訊</value>
+    </data>
+    <data name="Text.Api.OpProxyList" xml:space="preserve">
+        <value>隧道清單</value>
+    </data>
+    <data name="Text.Api.OpFrpTokenInfo" xml:space="preserve">
+        <value>FrpToken 資訊</value>
+    </data>
+    <data name="Text.Download.ContentHeaderFormat" xml:space="preserve">
+        <value>請稍等，正在下載檔案
+檔案名稱：{0}</value>
+    </data>
+    <data name="Text.Download.ContentFooter" xml:space="preserve">
+        <value>
+目前線路：{1}
+下載速度：{0}
+------------------
+JOKE_PLACEHOLDER
+------------------</value>
+    </data>
+    <data name="Text.Download.UnknownPlatform" xml:space="preserve">
+        <value>未知</value>
+    </data>
+    <data name="Text.Download.Title" xml:space="preserve">
+        <value>PML Ⅱ 正在下載檔案</value>
+    </data>
+    <data name="Text.Download.SubHeader" xml:space="preserve">
+        <value>正在下載 ME Frp 用戶端</value>
+    </data>
+    <data name="Text.Download.InstallingClient" xml:space="preserve">
+        <value>正在安裝新版 MEFrpClient</value>
+    </data>
+    <data name="Text.Download.Jokes" xml:space="preserve">
+        <value>我們都有不順利的時候。
+滾回功率，坐和放寬。
+好東西就要來了
+你好。正在為你作準備。
+你正在成功！
+嗨，別來無恙啊！
+你已完成30%
+做！轟！嚓-嚓-嚓 推-推
+OneDrive: You have only 17179869184 GB of avaliable space
+免 費 花 分 文
+想知道還剩下多少電量嗎？現在不必再想了。
+幸福倒數計時
+Windows 10 不是面向我們所有人，而是面向我們每一個人。
+您和您的電腦需要重新啟動。
+頭抬起
+Windows 整了這些設定以與你的硬體性能匹配
+術語(in)
+請勿™關閉電腦
+微軟邊緣有新面貌！
+這真是讓人尷尬
+惡意的外部設備免受攻擊保護你的裝置的記憶體
+Windows沙盒正在關閉並將關閉
+海記憶體知己，天涯若比鄰
+滾回到以前的版本
+100%完全收費
+你今天看起來很聰明！
+不要怪我們沒有警告過你
+頭抬起，為了確保你是最新的，我們將要對你的窗10進行更新，請勿™關閉電腦，坐和放寬，你正在成功。
+如果更新失敗，沒關係，我們都有不順利的時候。建議你滾回到以前的版本，或者按下功率 (Power)，打開一種新的植物性燃料 (BIOS) 進行設定，然後可以打開微軟邊緣流量器 (Microsoft Edge)，進入微軟官網進行反映，或者打開內部集線器 (Insider Hub) 進行回饋。我們會對你的回饋進行審批.
+您正在成功！ 頭抬起，全新的窗11來了！您可以在窗11中做完全一樣的事，如轟、嚓嚓嚓、推推。您可以和家人分享美妙的記憶體，分了又分。
+全新的介面和分屏功能使Windows Tablet使用便捷。升級到窗11完全免費花分文，您只需要在內部集線器中找到預覽體驗計畫，並點擊升級，電腦會自動滾回功率。請坐和放寬。
+你永遠可以相信BugJump的更新速度！
+Never Gonna Give the Minecraft Up</value>
+    </data>
+    <data name="Text.Terminal.ProcessExitedFormat" xml:space="preserve">
+        <value>[終端機] 處理程序已結束，結束代碼：{0}</value>
+    </data>
+    <data name="Text.Terminal.ShellStartedFormat" xml:space="preserve">
+        <value>[終端機] 已啟動 Shell：{0}</value>
+    </data>
+    <data name="Text.Terminal.StartFailedFormat" xml:space="preserve">
+        <value>[錯誤] 啟動終端機失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.ReadOutputFailedFormat" xml:space="preserve">
+        <value>[錯誤] 讀取輸出失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.ReadErrorFailedFormat" xml:space="preserve">
+        <value>[錯誤] 讀取錯誤輸出失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.ErrorOutputReadFailedFormat" xml:space="preserve">
+        <value>錯誤輸出讀取失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessStateAbnormalFormat" xml:space="preserve">
+        <value>處理程序狀態異常：{0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessExitedCodeFormat" xml:space="preserve">
+        <value>處理程序已結束，結束代碼：{0}</value>
+    </data>
+    <data name="Text.Terminal.CannotGetErrorInfo" xml:space="preserve">
+        <value>無法取得錯誤資訊</value>
+    </data>
+    <data name="Text.Terminal.CheckNetworkConnection" xml:space="preserve">
+        <value>請檢查網路連線</value>
+    </data>
+    <data name="Text.Terminal.TerminalErrorFormat" xml:space="preserve">
+        <value>終端機錯誤：{0}</value>
+    </data>
+    <data name="Text.Terminal.NoActiveProcess" xml:space="preserve">
+        <value>沒有使用中的處理程序可以中斷</value>
+    </data>
+    <data name="Text.Terminal.ProcessTerminated" xml:space="preserve">
+        <value>處理程序已終止</value>
+    </data>
+    <data name="Text.Terminal.TerminateFailedCodeFormat" xml:space="preserve">
+        <value>終止處理程序失敗，結束代碼：{0}</value>
+    </data>
+    <data name="Text.Terminal.ProcessForceTerminated" xml:space="preserve">
+        <value>處理程序已被強制終止</value>
+    </data>
+    <data name="Text.Terminal.ForceTerminateFailedFormat" xml:space="preserve">
+        <value>強制終止失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.TerminateTimeout" xml:space="preserve">
+        <value>終止處理程序逾時</value>
+    </data>
+    <data name="Text.Terminal.TerminateFailedFormat" xml:space="preserve">
+        <value>終止處理程序失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.SendInterruptFailedFormat" xml:space="preserve">
+        <value>傳送中斷訊號失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.ErrorDetailsTitle" xml:space="preserve">
+        <value>錯誤詳細資訊</value>
+    </data>
+    <data name="Text.Terminal.SendCommandFailedFormat" xml:space="preserve">
+        <value>傳送命令失敗：{0}</value>
+    </data>
+    <data name="Text.Terminal.InputPrompt" xml:space="preserve">
+        <value>如不清楚，留空即可；輸入cancel退出
+可用變數：
+{mefrpc} - ME Frp Client可執行檔目錄(包括檔案名稱)
+{mefrpcp} - ME Frp Client可執行檔目錄
+{startup} - 程式啟動目錄</value>
+    </data>
+    <data name="Text.Terminal.InputTitle" xml:space="preserve">
+        <value>輸入命令列及參數</value>
+    </data>
+    <data name="Text.Terminal.ConsoleTabFormat" xml:space="preserve">
+        <value>主控台{0}</value>
+    </data>
+    <data name="Text.Terminal.Unpacking" xml:space="preserve">
+        <value>解壓縮檔案...</value>
+    </data>
+    <data name="Text.TunnelError.InfoPortNotAllowed" xml:space="preserve">
+        <value>連接埠不在允許範圍內</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPort" xml:space="preserve">
+        <value>請檢查連接埠是否在允許範圍內</value>
+    </data>
+    <data name="Text.TunnelError.InfoTrafficExhausted" xml:space="preserve">
+        <value>流量已用盡</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTraffic" xml:space="preserve">
+        <value>請檢查流量是否已用盡</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelNotExist" xml:space="preserve">
+        <value>隧道不存在</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTunnelExists" xml:space="preserve">
+        <value>請檢查隧道是否存在</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelOnline" xml:space="preserve">
+        <value>隧道線上</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelDisabled" xml:space="preserve">
+        <value>隧道已停用</value>
+    </data>
+    <data name="Text.TunnelError.SolutionTunnelDisabledDetail" xml:space="preserve">
+        <value>請檢查隧道是否被停用 (在強制下線隧道時會被停用)，請重新啟用</value>
+    </data>
+    <data name="Text.TunnelError.SolutionContactAdmin" xml:space="preserve">
+        <value>若非本人操作，請聯絡管理員協助處理</value>
+    </data>
+    <data name="Text.TunnelError.InfoTunnelNodeNotExist" xml:space="preserve">
+        <value>隧道所在節點不存在</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckTunnelNode" xml:space="preserve">
+        <value>請檢查隧道所在節點是否存在</value>
+    </data>
+    <data name="Text.TunnelError.InfoNoNodePermission" xml:space="preserve">
+        <value>使用者沒有此節點的使用權限</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPermission" xml:space="preserve">
+        <value>請檢查使用者是否有此節點的使用權限</value>
+    </data>
+    <data name="Text.TunnelError.InfoConnectNodeFailed" xml:space="preserve">
+        <value>連線節點失敗</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckNodeOnline" xml:space="preserve">
+        <value>請檢查節點是否線上</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckNodeReachable" xml:space="preserve">
+        <value>請檢查節點是否可達</value>
+    </data>
+    <data name="Text.TunnelError.InfoCannotConnectLocal" xml:space="preserve">
+        <value>無法連線到本機服務</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckServiceStarted" xml:space="preserve">
+        <value>請檢查是否已開啟服務</value>
+    </data>
+    <data name="Text.TunnelError.SolutionCheckPortOpen" xml:space="preserve">
+        <value>請檢查該連接埠是否已開放</value>
+    </data>
+    <data name="Text.Plugin.FileNotFound" xml:space="preserve">
+        <value>無法找到檔案</value>
+    </data>
+    <data name="Text.Plugin.CannotReadFile" xml:space="preserve">
+        <value>無法讀取檔案</value>
+    </data>
+    <data name="Text.Plugin.ReadFileError" xml:space="preserve">
+        <value>讀取檔案時發生錯誤</value>
+    </data>
+    <data name="Text.MinecraftExtension.MinecraftServerDesc" xml:space="preserve">
+        <value>我的世界遊戲伺服器</value>
+    </data>
+    <data name="Text.MinecraftExtension.UnknownService" xml:space="preserve">
+        <value>未知服務</value>
+    </data>
+    <data name="Text.MinecraftExtension.OpenPort" xml:space="preserve">
+        <value>開放連接埠</value>
+    </data>
+    <data name="Text.Validation.Required" xml:space="preserve">
+        <value>必填項</value>
+    </data>
+    <data name="Text.Validation.ProxyNameNoDot" xml:space="preserve">
+        <value>隧道名稱不能包含: .</value>
+    </data>
+    <data name="Text.Validation.EmailRequired" xml:space="preserve">
+        <value>請填寫您的 ME Frp 電子郵件</value>
+    </data>
+    <data name="Text.ManageProxyHelp.NExampleValue" xml:space="preserve">
+        <value>/n:節點1</value>
+    </data>
+    <data name="Text.UserProxy.Download" xml:space="preserve">
+        <value>下載</value>
+    </data>
+    <data name="Text.UserProxy.LaunchCancelledFormat" xml:space="preserve">
+        <value>取消啟動隧道: {0}</value>
+    </data>
+    <data name="Text.UserProxy.LaunchCancelledErrorFormat" xml:space="preserve">
+        <value>由於內部錯誤, 取消啟動隧道: {0}
+詳細資訊: {1}</value>
+    </data>
+    <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
+        <value>啟動隧道: {0} 成功</value>
+    </data>
+    <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
+        <value>{0} 檔案校驗失敗，需要重新下載用戶端。關閉此視窗嘗試直接啟動; 點擊「否」以取消啟動。
+請注意: 我們不對任何非官方(與我們提供的檔案校驗值不同)的檔案執行所造成的任何後果負責。</value>
+    </data>
+    <data name="Text.UserProxy.ConfirmDeleteTitle" xml:space="preserve">
+        <value>確認刪除</value>
+    </data>
+    <data name="Text.UserProxy.ConfirmDeleteMultipleFormat" xml:space="preserve">
+        <value>確定要刪除這 {0} 個隧道嗎？</value>
+    </data>
+    <data name="Text.UserProxy.DeleteSucceededFormat" xml:space="preserve">
+        <value>刪除隧道: {0} 成功</value>
+    </data>
+    <data name="Text.UserProxy.ConfigGeneratedFormat" xml:space="preserve">
+        <value>已為隧道 {0} 生成啟動配置</value>
+    </data>
+    <data name="Text.UserProxy.TunnelDetails" xml:space="preserve">
+        <value>隧道詳情</value>
+    </data>
+    <data name="Text.UserProxy.CreatedFromNodeFormat" xml:space="preserve">
+        <value>建立自節點: {0}</value>
+    </data>
+    <data name="Text.UserProxy.DetailProtocolType" xml:space="preserve">
+        <value>通訊協定類型</value>
+    </data>
+    <data name="Text.UserProxy.DetailLocalPort" xml:space="preserve">
+        <value>本機連接埠</value>
+    </data>
+    <data name="Text.UserProxy.DetailLocalAddress" xml:space="preserve">
+        <value>本機位址</value>
+    </data>
+    <data name="Text.UserProxy.DetailTransportProtocol" xml:space="preserve">
+        <value>傳輸協定</value>
+    </data>
+    <data name="Text.UserProxy.DetailLinkAddress" xml:space="preserve">
+        <value>連結位址</value>
+    </data>
+    <data name="Text.UserProxy.DetailHttpMappingType" xml:space="preserve">
+        <value>HTTP對應類型</value>
+    </data>
+    <data name="Text.UserProxy.DetailSecurityOption" xml:space="preserve">
+        <value>安全選項</value>
+    </data>
+    <data name="Text.UserProxy.DetailLastStartTime" xml:space="preserve">
+        <value>上次啟動時間</value>
+    </data>
+    <data name="Text.UserProxy.DetailLastCloseTime" xml:space="preserve">
+        <value>上次關閉時間</value>
+    </data>
+    <data name="Text.UserProxy.DetailMoreInfoWebsite" xml:space="preserve">
+        <value>* 更多資訊(網域解析等)請前往官網檢視。</value>
+    </data>
+    <data name="Text.UserProxy.SslCertConfig" xml:space="preserve">
+        <value>SSL 憑證配置</value>
+    </data>
+    <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
+        <value>已複製隧道資訊</value>
+    </data>
+    <data name="Text.Settings.Advanced" xml:space="preserve">
+        <value>進階設定</value>
+    </data>
+    <data name="Text.Settings.Advanced.Warning.Message" xml:space="preserve">
+        <value>修改本頁面的設定存在風險，請謹慎操作。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Description" xml:space="preserve">
+        <value>修改軟體的進階設定。</value>
+    </data>
+    <data name="Text.Settings.Advanced.Caution.Message" xml:space="preserve">
+        <value>修改以下設定項可能會導致軟體表現異常或崩潰。請確保您具備修改這些設定的能力。</value>
+    </data>
+    <data name="Text.Settings.AnimationLevel" xml:space="preserve">
+        <value>動畫程度</value>
+    </data>
+    <data name="Text.Settings.AnimationLevelDescription" xml:space="preserve">
+        <value>調整介面入場與過場動畫的豐富程度, 關閉動畫可提升回應速度</value>
+    </data>
+    <data name="Text.Settings.Animation.Off" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.Settings.Animation.Reduced" xml:space="preserve">
+        <value>精簡</value>
+    </data>
+    <data name="Text.Settings.Animation.Standard" xml:space="preserve">
+        <value>標準</value>
+    </data>
+    <data name="Text.Settings.RenderingMode" xml:space="preserve">
+        <value>渲染模式</value>
+    </data>
+    <data name="Text.Settings.RenderingModeDescription" xml:space="preserve">
+        <value>選擇介面渲染使用的圖形介面, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.Rendering.Auto" xml:space="preserve">
+        <value>自動</value>
+    </data>
+    <data name="Text.Settings.Rendering.Software" xml:space="preserve">
+        <value>軟體渲染</value>
+    </data>
+    <data name="Text.Settings.GpuMemory" xml:space="preserve">
+        <value>顯存分配</value>
+    </data>
+    <data name="Text.Settings.GpuMemoryDescription" xml:space="preserve">
+        <value>圖形渲染的 GPU 資源快取上限, 更大的快取可減少重複載入, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.LowLatency" xml:space="preserve">
+        <value>低延遲渲染</value>
+    </data>
+    <data name="Text.Settings.LowLatencyDescription" xml:space="preserve">
+        <value>使用低延遲交換鏈降低影格延遲, 使動畫更流暢, 但會停用部分視窗合成特效, 變更後需重新啟動生效</value>
+    </data>
+    <data name="Text.Settings.RestartRequiredNotice" xml:space="preserve">
+        <value>變更將在重新啟動程式後生效</value>
+    </data>
+    <data name="Text.Settings.Language" xml:space="preserve">
+        <value>	語言</value>
+    </data>
+    <data name="Text.Settings.LanguageDescription" xml:space="preserve">
+        <value>設定軟體的顯示語言。</value>
+    </data>
+    <data name="Text.Tips.NeedRestart" xml:space="preserve">
+        <value>需要重新啟動</value>
+    </data>
+    <data name="Text.About.OpenSourceLicense" xml:space="preserve">
+        <value>本軟體依據 MIT 開源授權條款進行授權。</value>
+    </data>
+    <data name="Text.About.CompleteCopyrightStatement" xml:space="preserve">
+        <value>完整版權聲明</value>
+    </data>
+    <data name="Text.About.CompleteCopyrightStatement.Content" xml:space="preserve">
+        <value>警告： 本軟體包含開源與閉源兩部分。開源模組遵循 MIT 開源授權協議，您可依據該協議條款自由使用、修改及散佈。閉源模組受著作權法及國際版權公約的保護，未經明確授權，任何複製、傳播或使用閉源部分內容的行為，均可能招致嚴厲的民事及刑事法律責任。對於侵權行為，我們將依法在最大範圍內追究相關責任。</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.China" xml:space="preserve">
+        <value>中國大陸及港澳臺</value>
+    </data>
+    <data name="Text.MappedNodeContainer.Section.Globe" xml:space="preserve">
+        <value>全球節點</value>
+    </data>
+    <data name="Text.MappedNodeContainer.SelectedRegion" xml:space="preserve">
+        <value>	已選地區	</value>
+    </data>
+    <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
+        <value>當前地區</value>
+    </data>
+    <data name="Text.Proxy.Mode.Jiahao" xml:space="preserve">
+        <value>地圖檢視</value>
+    </data>
+</root>

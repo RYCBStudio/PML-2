@@ -12,6 +12,7 @@ using Downloader;
 using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
@@ -65,7 +66,7 @@ public class UpdatePageViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "从未检查过更新";
+    } = Languages.Text_Update_NeverChecked;
 
     public DateTime LatestCheckTime
     {
@@ -191,16 +192,16 @@ public class UpdatePageViewModel : ViewModelBase
 
         IterationCount = new IterationCount(100000, IterationType.Many);
         Core.App.CurrentLogger?.Log("正在检查更新", module: EnumLogModule.Update);
-        Status = "正在检查更新";
+        Status = Languages.Text_Update_Checking;
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
         SingleVersionInfo updateInfo = new()
             {
                 data = new SingleVersionInfo.VersionInfo
                 {
-                    changes = ["获取更新失败"],
+                    changes = [Languages.Text_Update_FetchFailed],
                     codename = App.Codename,
                     date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    description = "获取更新失败"
+                    description = Languages.Text_Update_FetchFailed
                 },
                 success = false,
                 version = Core.App.Version
@@ -209,10 +210,10 @@ public class UpdatePageViewModel : ViewModelBase
             {
                 data = new SingleVersionInfo.VersionInfo
                 {
-                    changes = ["获取更新失败"],
+                    changes = [Languages.Text_Update_FetchFailed],
                     codename = App.Codename,
                     date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    description = "获取更新失败"
+                    description = Languages.Text_Update_FetchFailed
                 },
                 success = false,
                 version = Core.App.Version
@@ -226,7 +227,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
             Core.App.CurrentLogger?.Error(ex);
-            Status = "获取更新信息失败";
+            Status = Languages.Text_Update_FetchFailed;
             Icon = ICONS.ERROR;
             IsIdle = false;
             return;
@@ -258,7 +259,7 @@ public class UpdatePageViewModel : ViewModelBase
                 updateInfo = preiewUpdateInfo;
             }
 
-            Status = "检测到新版本: " + latestVersion;
+            Status = Languages.Text_Update_NewVersionDetected + latestVersion;
             LatestVersion = updateInfo.version;
             IsLoading = false;
             IsIdle = false;
@@ -270,7 +271,7 @@ public class UpdatePageViewModel : ViewModelBase
         else
         {
             Core.App.CurrentLogger?.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
-            Status = "当前版本已经是最新版本";
+            Status = Languages.Text_Update_AlreadyLatest;
             Icon = ICONS.LATEST;
             IsLoading = false;
             IsIdle = true;
@@ -285,7 +286,7 @@ public class UpdatePageViewModel : ViewModelBase
         else
         {
             Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
-            Status = "获取更新信息失败";
+            Status = Languages.Text_Update_FetchFailed;
             Icon = ICONS.ERROR;
             IsIdle = false;
             return;
@@ -324,7 +325,7 @@ public class UpdatePageViewModel : ViewModelBase
     public async void DownloadUpdate()
     {
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
-        Status = "正在下载更新";
+        Status = Languages.Text_Update_Downloading;
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
         IsIdle = false;
@@ -338,29 +339,29 @@ public class UpdatePageViewModel : ViewModelBase
         if (OperatingSystem.IsWindows())
         {
             var targetIsAot = ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT";
-            var urlSuffix = targetIsAot ? "%20AOT%20Experimental" : "";
+            var urlSuffix = targetIsAot ? "%20AOT" : "";
             downloadUrl = $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
                           $"{LatestVersion}/pml2_setup%20{LatestVersion}{urlSuffix}.exe";
             tempFileName = $"update_tmp_{LatestVersion}.exe";
-            systemTip = "点击确认打开安装文件所在目录，双击 exe 文件完成安装";
+            systemTip = Languages.Text_Update_InstallTipWindows;
         }
         else if (OperatingSystem.IsMacOS())
         {
             downloadUrl =
                 $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{LatestVersion}-macos-x64.dmg";
             tempFileName = $"update_tmp_{LatestVersion}.dmg";
-            systemTip = "点击确认打开安装文件所在目录，双击 dmg 文件完成安装";
+            systemTip = Languages.Text_Update_InstallTipMacOS;
         }
         else if (OperatingSystem.IsLinux())
         {
             downloadUrl =
                 $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/linux-distributions/pml2-{LatestVersion}-linux-x64.deb";
             tempFileName = $"update_tmp_{LatestVersion}.deb";
-            systemTip = "点击确认打开安装文件所在目录，使用 dpkg -i 命令安装 deb 包";
+            systemTip = Languages.Text_Update_InstallTipLinux;
         }
         else
         {
-            await MessageBox.ShowAsync("暂不支持当前操作系统的自动更新，请手动下载安装包", "不支持的系统",
+            await MessageBox.ShowAsync(Languages.Text_Update_AutoUpdateNotSupported, Languages.Text_Update_UnsupportedSystem,
                 MessageBoxIcon.Error);
             IsLoading = false;
             IsIdle = true;
@@ -404,7 +405,7 @@ public class UpdatePageViewModel : ViewModelBase
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
-        Status = "下载更新完成";
+        Status = Languages.Text_Update_DownloadCompleted;
 
         try
         {
@@ -416,7 +417,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         if (UpdateMethod != 0 || !OperatingSystem.IsWindows())
         {
-            if (await MessageBox.ShowAsync($"{systemTip}", "更新下载完成", ButtonEnum.YesNo) == MessageBoxResult.Yes)
+            if (await MessageBox.ShowAsync($"{systemTip}", Languages.Text_Update_DownloadCompleted, ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
                 OpenFileInExplorer(savePath);
                 return;
@@ -435,14 +436,14 @@ public class UpdatePageViewModel : ViewModelBase
         catch
         {
             Icon = ICONS.ERROR;
-            Status = "备份配置文件失败, 请手动备份配置文件";
+            Status = Languages.Text_Update_BackupConfigFailed;
         }
 
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {
             Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
-            await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
+            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
 
             // 当当前运行时编译类型与目标编译类型一致时，传入 /nocleanup 参数
             var currentType = Core.App.ReleaseFlag;
@@ -461,24 +462,25 @@ public class UpdatePageViewModel : ViewModelBase
         }
     }
 
+    [Obsolete("This method is kept for backward compatibility. Use DownloadUpdate() instead.")]
     public async void DownloadUpdateBak()
     {
         if (OperatingSystem.IsLinux())
         {
-            await MessageBox.ShowAsync("由于技术原因, 目前我们只提供Windows的自动更新服务。请您到最新版本页手动下载并覆盖安装, 或使用安装脚本安装。", "我们都有不顺利的时候",
+            await MessageBox.ShowAsync(Languages.Text_Update_LinuxManualUpdate, Languages.Text_Update_HardTimesCaption,
                 MessageBoxIcon.Warning);
             return;
         }
 
         if (OperatingSystem.IsMacOS())
         {
-            await MessageBox.ShowAsync("由于技术原因, 目前我们只提供Windows的自动更新服务。请您到最新版本页手动下载并覆盖安装。", "我们都有不顺利的时候",
+            await MessageBox.ShowAsync(Languages.Text_Update_MacOSManualUpdate, Languages.Text_Update_HardTimesCaption,
                 MessageBoxIcon.Warning);
             return;
         }
 
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
-        Status = "正在下载更新";
+        Status = Languages.Text_Update_Downloading;
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
         IsIdle = false;
@@ -517,10 +519,10 @@ public class UpdatePageViewModel : ViewModelBase
         IsLoading = false;
         IsIdle = true;
         Icon = ICONS.LATEST;
-        Status = "下载更新完成";
+        Status = Languages.Text_Update_DownloadCompleted;
         if (UpdateMethod != 0)
         {
-            if (await MessageBox.ShowAsync("更新下载完成！点击确认打开安装文件所在目录", "信息", ButtonEnum.YesNo) == MessageBoxResult.Yes)
+            if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info, ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
                 OpenFileInExplorer(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
                 return;
@@ -528,7 +530,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
-        await MessageBox.ShowAsync("即将关闭程序以自动安装更新", "信息", MessageBoxIcon.Info);
+        await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
         Process.Start(
             new ProcessStartInfo(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"))
                 { UseShellExecute = true, Arguments = "/silent /sp- /nocancel" });
@@ -583,7 +585,7 @@ public class UpdatePageViewModel : ViewModelBase
                 }
             }
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        else if (OperatingSystem.IsMacOS())
         {
             // macOS 使用 open
             Process.Start(new ProcessStartInfo

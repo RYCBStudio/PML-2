@@ -6,6 +6,7 @@ using Avalonia.Collections;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels.Controls;
 using ReactiveUI;
@@ -83,10 +84,10 @@ public class NodesContainerViewModel : ViewModelBase
         get;
     } = new()
     {
-        { "all", "全部地区" },
-        { "cn", "中国大陆" },
-        { "cnos", "港澳台" },
-        { "oversea", "海外" }
+        { "all", Languages.Text_Nodes_RegionAll },
+        { "cn", Languages.Text_Nodes_RegionCN },
+        { "cnos", Languages.Text_Nodes_RegionHKMT },
+        { "oversea", Languages.Text_Nodes_RegionOversea }
     };
 
     private string _selectedRegionString = "all";

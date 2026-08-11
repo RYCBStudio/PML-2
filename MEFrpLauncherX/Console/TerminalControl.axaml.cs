@@ -20,6 +20,7 @@ using AvaloniaEdit.Highlighting.Xshd;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using RYCB.PML2.Mixin.TerminalHelper;
 
 // ReSharper disable UnusedMember.Local
@@ -222,7 +223,7 @@ public partial class TerminalControl : UserControl, IDisposable
                     {
                         try
                         {
-                            AppendOutput($"[终端] 进程已退出，退出码: {_process.ExitCode}\n", Brushes.Gray);
+                            AppendOutput($"{string.Format(Languages.Text_Terminal_ProcessExitedFormat, _process.ExitCode)}\n", Brushes.Gray);
                             DisposeProcess(); // 退出后自动清理
                         }
                         catch (Exception ex)
@@ -237,12 +238,12 @@ public partial class TerminalControl : UserControl, IDisposable
                 }
             };
 
-            AppendOutput($"[终端] 已启动 Shell: {_shell}\n", Brushes.Green);
+            AppendOutput($"{string.Format(Languages.Text_Terminal_ShellStartedFormat, _shell)}\n", Brushes.Green);
         }
         catch (Exception ex)
         {
             LogDebug($"启动进程失败: {ex.Message}\n{ex.StackTrace}");
-            AppendOutput($"[错误] 启动终端失败: {ex.Message}\n", Brushes.Red);
+            AppendOutput($"{string.Format(Languages.Text_Terminal_StartFailedFormat, ex.Message)}\n", Brushes.Red);
             DisposeProcess();
         }
     }
@@ -479,7 +480,7 @@ public partial class TerminalControl : UserControl, IDisposable
         catch (Exception ex)
         {
             LogDebug($"输出读取崩溃: {ex.Message}\n{ex.StackTrace}");
-            Dispatcher.UIThread.Post(() => AppendOutput($"[错误] 读取输出失败: {ex.Message}\n", Brushes.Red));
+            Dispatcher.UIThread.Post(() => AppendOutput($"{string.Format(Languages.Text_Terminal_ReadOutputFailedFormat, ex.Message)}\n", Brushes.Red));
         }
     }
 
@@ -541,7 +542,7 @@ public partial class TerminalControl : UserControl, IDisposable
         catch (Exception ex)
         {
             LogDebug($"错误读取崩溃: {ex.Message}\n{ex.StackTrace}");
-            Dispatcher.UIThread.Post(() => AppendOutput($"[错误] 读取错误输出失败: {ex.Message}\n", Brushes.Red));
+            Dispatcher.UIThread.Post(() => AppendOutput($"{string.Format(Languages.Text_Terminal_ReadErrorFailedFormat, ex.Message)}\n", Brushes.Red));
         }
     }
 
@@ -604,7 +605,7 @@ public partial class TerminalControl : UserControl, IDisposable
                     if (!_disposed)
                     {
                         Dispatcher.UIThread.Post(() =>
-                            AppendOutput($"\e[33m错误输出读取失败: {ex.Message}\n\e[0m", Brushes.Red));
+                            AppendOutput($"\e[33m{string.Format(Languages.Text_Terminal_ErrorOutputReadFailedFormat, ex.Message)}\n\e[0m", Brushes.Red));
                     }
 
                     break; // 异常时直接退出循环
@@ -617,7 +618,7 @@ public partial class TerminalControl : UserControl, IDisposable
             if (!_disposed)
             {
                 Dispatcher.UIThread.Post(() =>
-                    AppendOutput($"\e[33m进程状态异常: {ex.Message}\n\e[0m", Brushes.Red));
+                    AppendOutput($"\e[33m{string.Format(Languages.Text_Terminal_ProcessStateAbnormalFormat, ex.Message)}\n\e[0m", Brushes.Red));
             }
         }
         catch (Exception ex)
@@ -625,7 +626,7 @@ public partial class TerminalControl : UserControl, IDisposable
             if (!_disposed)
             {
                 Dispatcher.UIThread.Post(() =>
-                    AppendOutput($"\e[33m错误输出读取失败: {ex.Message}\n\e[0m", Brushes.Red));
+                    AppendOutput($"\e[33m{string.Format(Languages.Text_Terminal_ErrorOutputReadFailedFormat, ex.Message)}\n\e[0m", Brushes.Red));
             }
         }
     }
@@ -675,7 +676,7 @@ public partial class TerminalControl : UserControl, IDisposable
                         AppendOutput(err + "\r\n", Brushes.Red);
                     }
 
-                    AppendOutput($"\r\n进程已退出，退出代码: {_process.ExitCode}\r\n", Brushes.Gray);
+                    AppendOutput($"\r\n{string.Format(Languages.Text_Terminal_ProcessExitedCodeFormat, _process.ExitCode)}\r\n", Brushes.Gray);
                 }
                 catch (InvalidOperationException)
                 {
@@ -742,7 +743,7 @@ public partial class TerminalControl : UserControl, IDisposable
                         AppendOutput(err + "\r\n", Brushes.Red);
                     }
 
-                    AppendOutput($"\r\n进程已退出，退出代码: {_process.ExitCode}\r\n", Brushes.Gray);
+                    AppendOutput($"\r\n{string.Format(Languages.Text_Terminal_ProcessExitedCodeFormat, _process.ExitCode)}\r\n", Brushes.Gray);
                 }
                 catch (InvalidOperationException)
                 {
@@ -798,7 +799,7 @@ public partial class TerminalControl : UserControl, IDisposable
                         AppendOutput(err + "\r\n", Brushes.Red);
                     }
 
-                    AppendOutput($"\r\n进程已退出，退出代码: {_process.ExitCode}\r\n", Brushes.Gray);
+                    AppendOutput($"\r\n{string.Format(Languages.Text_Terminal_ProcessExitedCodeFormat, _process.ExitCode)}\r\n", Brushes.Gray);
                 }
                 catch (InvalidOperationException)
                 {
@@ -937,8 +938,8 @@ public partial class TerminalControl : UserControl, IDisposable
                                 _tunnelErrorInfoShell = onlineSolution?.data ?? new TunnelErrorInfo()
                                 {
                                     Flag = "MT-1",
-                                    Info = "无法获取错误信息",
-                                    Solution = ["请检查网络连接"]
+                                    Info = Languages.Text_Terminal_CannotGetErrorInfo,
+                                    Solution = [Languages.Text_Terminal_CheckNetworkConnection]
                                 };
                             }
 
@@ -970,7 +971,7 @@ public partial class TerminalControl : UserControl, IDisposable
                 if (!_disposed)
                 {
                     Dispatcher.UIThread.Post(() =>
-                        AppendOutput($"\e[31m终端错误: {ex.Message}\n\e[00m", Brushes.Red));
+                        AppendOutput($"\e[31m{string.Format(Languages.Text_Terminal_TerminalErrorFormat, ex.Message)}\n\e[00m", Brushes.Red));
                 }
 
                 break; // 异常时退出线程，避免卡死
@@ -1026,7 +1027,7 @@ public partial class TerminalControl : UserControl, IDisposable
         }
         catch (Exception ex)
         {
-            AppendOutput($"\e[31mFailed to send command: {ex.Message}\r\n\e[00m", Brushes.Red);
+            AppendOutput($"\e[31m{string.Format(Languages.Text_Terminal_SendCommandFailedFormat, ex.Message)}\r\n\e[00m", Brushes.Red);
         }
     }
 
@@ -1058,7 +1059,7 @@ public partial class TerminalControl : UserControl, IDisposable
             }
             catch (Exception ex)
             {
-                AppendOutput($"\e[31mFailed to send command: {ex.Message}\r\n\e[00m", Brushes.Red);
+                AppendOutput($"\e[31m{string.Format(Languages.Text_Terminal_SendCommandFailedFormat, ex.Message)}\r\n\e[00m", Brushes.Red);
                 StartTerminal(_shell); // Try to restart
             }
 
@@ -1108,7 +1109,7 @@ public partial class TerminalControl : UserControl, IDisposable
         {
             if (_process == null || _process.HasExited)
             {
-                AppendOutput("\e[33m没有活动的进程可以中断\r\n\e[00m", Brushes.Yellow);
+                AppendOutput($"\e[33m{Languages.Text_Terminal_NoActiveProcess}\r\n\e[00m", Brushes.Yellow);
                 return;
             }
 
@@ -1129,11 +1130,11 @@ public partial class TerminalControl : UserControl, IDisposable
                 {
                     if (killProcess.ExitCode == 0)
                     {
-                        AppendOutput("\e[32m进程已终止\r\n\e[00m", Brushes.Green);
+                        AppendOutput($"\e[32m{Languages.Text_Terminal_ProcessTerminated}\r\n\e[00m", Brushes.Green);
                     }
                     else
                     {
-                        AppendOutput($"\e[31m终止进程失败，退出代码: {killProcess.ExitCode}\r\n\e[00m", Brushes.Red);
+                        AppendOutput($"\e[31m{string.Format(Languages.Text_Terminal_TerminateFailedCodeFormat, killProcess.ExitCode)}\r\n\e[00m", Brushes.Red);
 
                         // 尝试直接杀死进程
                         try
@@ -1141,18 +1142,18 @@ public partial class TerminalControl : UserControl, IDisposable
                             if (!_process.HasExited)
                             {
                                 _process.Kill();
-                                AppendOutput("\e[33m进程已被强制终止\r\n\e[00m", Brushes.Orange);
+                                AppendOutput($"\e[33m{Languages.Text_Terminal_ProcessForceTerminated}\r\n\e[00m", Brushes.Orange);
                             }
                         }
                         catch (Exception killEx)
                         {
-                            AppendOutput($"\e[31m强制终止失败: {killEx.Message}\r\n\e[00m", Brushes.Red);
+                            AppendOutput($"\e[31m{string.Format(Languages.Text_Terminal_ForceTerminateFailedFormat, killEx.Message)}\r\n\e[00m", Brushes.Red);
                         }
                     }
                 }
                 else
                 {
-                    AppendOutput("\e[31m终止进程超时\r\n\e[00m", Brushes.Red);
+                    AppendOutput($"\e[31m{Languages.Text_Terminal_TerminateTimeout}\r\n\e[00m", Brushes.Red);
                     killProcess.Kill();
                 }
             }
@@ -1174,27 +1175,27 @@ public partial class TerminalControl : UserControl, IDisposable
                         if (!_process.HasExited)
                         {
                             _process.Kill();
-                            AppendOutput("\e[33m进程已被强制终止\r\n\e[00m", Brushes.Orange);
+                            AppendOutput($"\e[33m{Languages.Text_Terminal_ProcessForceTerminated}\r\n\e[00m", Brushes.Orange);
                         }
                         else
                         {
-                            AppendOutput("\e[32m进程已终止\r\n\e[00m", Brushes.Green);
+                            AppendOutput($"\e[32m{Languages.Text_Terminal_ProcessTerminated}\r\n\e[00m", Brushes.Green);
                         }
                     }
                     else
                     {
-                        AppendOutput("\e[32m进程已终止\r\n\e[00m", Brushes.Green);
+                        AppendOutput($"\e[32m{Languages.Text_Terminal_ProcessTerminated}\r\n\e[00m", Brushes.Green);
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppendOutput($"终止进程失败: {ex.Message}\r\n", Brushes.Red);
+                    AppendOutput($"{string.Format(Languages.Text_Terminal_TerminateFailedFormat, ex.Message)}\r\n", Brushes.Red);
                 }
             }
         }
         catch (Exception ex)
         {
-            AppendOutput($"发送中断信号失败: {ex.Message}\r\n", Brushes.Red);
+            AppendOutput($"{string.Format(Languages.Text_Terminal_SendInterruptFailedFormat, ex.Message)}\r\n", Brushes.Red);
         }
     }
 
@@ -1254,7 +1255,7 @@ public partial class TerminalControl : UserControl, IDisposable
         {
             var cd = new TaskDialog
             {
-                Title = "错误详情",
+                Title = Languages.Text_Terminal_ErrorDetailsTitle,
                 SubHeader = $"{_tunnelErrorInfoShell.Flag}: {_tunnelErrorInfoShell.Info}",
                 Content = new TunnelErrorPresenter(_tunnelErrorInfoShell.Solution),
                 Buttons =

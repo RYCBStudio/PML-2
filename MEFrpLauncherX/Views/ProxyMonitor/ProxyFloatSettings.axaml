@@ -1,21 +1,22 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         Width="500" Height="200"
         x:Class="MEFrpLauncherX.Views.ProxyMonitor.ProxyFloatSettings"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        Title="设置">
+        Title="{x:Static languages:Languages.Text_Global_Settings}">
     <StackPanel Margin="5" Spacing="5">
-        <controls:SettingsExpander Header="窗口位置" Description="设置监控栏的窗口位置">
+        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_WindowPosition}" Description="{x:Static languages:Languages.Text_ProxyFloat_WindowPositionDescription}">
             <controls:SettingsExpander.Footer>
                 <ComboBox SelectionChanged="SavePosition" x:Name="PosBox">
-                    <ComboBoxItem Content="左上角" Tag="lt" />
-                    <ComboBoxItem Content="右上角" Tag="rt" />
-                    <ComboBoxItem Content="左下角" Tag="lb" />
-                    <ComboBoxItem Content="右下角" Tag="rb" />
-                    <ComboBoxItem Content="中上" Tag="ct" />
-                    <ComboBoxItem Content="中下" Tag="cb" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopLeft}" Tag="lt" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopRight}" Tag="rt" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_BottomLeft}" Tag="lb" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_BottomRight}" Tag="rb" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopCenter}" Tag="ct" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_BottomCenter}" Tag="cb" />
                 </ComboBox>
             </controls:SettingsExpander.Footer>
         </controls:SettingsExpander>

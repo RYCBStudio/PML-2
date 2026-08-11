@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -157,7 +157,7 @@ public partial class ManageProxyPage : UserControl
                         proxyName = item.proxyName,
                         proxyId = item.proxyId,
                         proxyType = item.proxyType.ToUpper(),
-                        node = node?.name ?? "节点不存在",
+                        node = node?.name ?? Languages.Text_Nodes_NodeNotFound,
                         isBanned = item.isBanned,
                         isOnline = item.isOnline,
                         isDisabled = item.isDisabled,
@@ -204,57 +204,62 @@ public partial class ManageProxyPage : UserControl
             {
                 // 创建原生菜单
                 MainWindow.Instance.NativeMenuBar = [];
+                MainWindow.Instance.NativeMenuBar.NeedsUpdate += (sender, args) =>
+                {
 
-                // 添加应用程序菜单（macOS 第一个菜单）
-                var appMenu = new NativeMenuItem("隧道");
-                var appSubMenu = new NativeMenu();
+                    // 添加应用程序菜单（macOS 第一个菜单）
+                    var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
+                    var appSubMenu = new NativeMenu
+                    {
+                        new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
+                        {
+                            Gesture = KeyGesture.Parse("Ctrl+M"),
+                            Command = ReactiveCommand.Create(() =>
+                            {
+                                MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                            })
+                        },
+                        new NativeMenuItemSeparator(),
+                        new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
+                        {
+                            Gesture = KeyGesture.Parse("Ctrl+D"),
+                            Command = ReactiveCommand.Create(() =>
+                            {
+                                MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                            })
+                        },
+                        new NativeMenuItemSeparator()
+                    };
 
-                appSubMenu.Add(new NativeMenuItem("管理隧道")
-                {
-                    Gesture = KeyGesture.Parse("Ctrl+M"),
-                    Command = ReactiveCommand.Create(() =>
+                    var tmp_launchProxy = new NativeMenu();
+                    foreach (var proxy in proxyViewModel.AllProxies)
                     {
-                        MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
-                    })
-                });
-                appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("创建隧道")
-                {
-                    Gesture = KeyGesture.Parse("Ctrl+D"),
-                    Command = ReactiveCommand.Create(() =>
+                        tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
+                        {
+                            Command = proxy.LaunchProxyCommand
+                        });
+                    }
+
+                    appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_LaunchTunnel)
                     {
-                        MainPageFrameViewModel.Instance?.NavigateToPage("Create");
-                    })
-                });
-                appSubMenu.Add(new NativeMenuItemSeparator());
-                var tmp_launchProxy = new NativeMenu();
-                foreach (var proxy in proxyViewModel.AllProxies)
-                {
-                    tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
-                    {
-                        Command = proxy.LaunchProxyCommand
+                        Menu = tmp_launchProxy
                     });
-                }
-
-                appSubMenu.Add(new NativeMenuItem("启动隧道")
-                {
-                    Menu = tmp_launchProxy
-                });
-                appSubMenu.Add(new NativeMenuItemSeparator());
-                appSubMenu.Add(new NativeMenuItem("退出程序")
-                {
-                    Gesture = KeyGesture.Parse("Ctrl+Q"),
-                    Command = ReactiveCommand.Create(() =>
+                    appSubMenu.Add(new NativeMenuItemSeparator());
+                    appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
                     {
-                        App.Desktop.Shutdown();
-                    })
-                });
+                        Gesture = KeyGesture.Parse("Ctrl+Q"),
+                        Command = ReactiveCommand.Create(() =>
+                        {
+                            App.Desktop.Shutdown();
+                        })
+                    });
 
-                appMenu.Menu = appSubMenu;
-                MainWindow.Instance.NativeMenuBar.Add(appMenu);
+                    appMenu.Menu = appSubMenu;
+                    MainWindow.Instance.NativeMenuBar.Add(appMenu);
 
-                // 设置菜单栏
-                NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
+                    // 设置菜单栏
+                    NativeMenu.SetMenu(MainWindow.Instance, MainWindow.Instance.NativeMenuBar);
+                };
             }
 
             Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);
@@ -297,12 +302,12 @@ public partial class ManageProxyPage : UserControl
                 await new DownloadHelper(this).DownloadMEFrpClient(Environment.OSVersion);
             if (result)
             {
-                await MessageBox.ShowAsync("下载完成", "提示", MessageBoxIcon.Info);
+                await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCompleted, Languages.Caption_Hint, MessageBoxIcon.Info);
             }
         }
         catch (OperationCanceledException)
         {
-            await MessageBox.ShowAsync("下载取消", "提示", MessageBoxIcon.Warning);
+            await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCancelled, Languages.Caption_Hint, MessageBoxIcon.Warning);
         }
     }
 
@@ -310,11 +315,11 @@ public partial class ManageProxyPage : UserControl
     {
         var cd = new ContentDialog
         {
-            Title = "帮助",
+            Title = Languages.Text_ManageProxy_HelpTitle,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
-            CloseButtonText = "关闭",
+            CloseButtonText = Languages.Text_Global_Close,
             Content = new ManageProxyHelp()
         };
         await cd.ShowAsync(Core.App.MainWindow);

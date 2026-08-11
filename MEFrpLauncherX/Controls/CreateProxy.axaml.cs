@@ -96,13 +96,13 @@ public partial class CreateProxy : UserControl
         // 验证前置：先做轻量校验，避免在失败时构造完整 requestData
         if (proxyName.IsNullOrEmpty())
         {
-            await MessageBox.ShowAsync(message: "请输入隧道名");
+            await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_EnterProxyName);
             return false;
         }
 
         if (localIp.IsNullOrEmpty())
         {
-            await MessageBox.ShowAsync(message: "请输入本地地址");
+            await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_EnterLocalAddress);
             return false;
         }
 
@@ -113,7 +113,7 @@ public partial class CreateProxy : UserControl
             if (!(remotePort >= Convert.ToInt32(allowRange[0]) &&
                   remotePort <= Convert.ToInt32(allowRange[1])))
             {
-                await MessageBox.ShowAsync(message: "请输入合法的端口号");
+                await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_EnterValidPort);
                 return false;
             }
         }
@@ -136,7 +136,7 @@ public partial class CreateProxy : UserControl
             hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
             crtPath = proxyType == "https" ? SslPathBox.Text : string.Empty,
             keyPath = proxyType == "https" ? SslKeyBox.Text : string.Empty,
-            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains("不启用")
+            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains(Languages.Text_CreateProxy_NotEnabled)
                 ? ""
                 : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
@@ -267,7 +267,7 @@ public partial class CreateProxy : UserControl
 
         var cd = new ContentDialog
         {
-            Title = "编辑请求头",
+            Title = Languages.Text_CreateProxy_EditRequestHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -294,7 +294,7 @@ public partial class CreateProxy : UserControl
 
         var cd = new ContentDialog
         {
-            Title = "编辑绑定域名",
+            Title = Languages.Text_CreateProxy_EditDomains,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -314,7 +314,7 @@ public partial class CreateProxy : UserControl
         var psv = new PortScannerView();
         var cd = new ContentDialog
         {
-            Title = "查找 Minecraft 端口",
+            Title = Languages.Text_CreateProxy_FindMinecraftPort,
             Content = psv,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -339,7 +339,7 @@ public partial class CreateProxy : UserControl
 
         var cd = new ContentDialog
         {
-            Title = "编辑响应头",
+            Title = Languages.Text_CreateProxy_EditResponseHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -366,7 +366,7 @@ public partial class CreateProxy : UserControl
 
         var cd = new ContentDialog
         {
-            Title = "编辑路径",
+            Title = Languages.Text_CreateProxy_EditLocations,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             DefaultButton = ContentDialogButton.Primary,
@@ -421,22 +421,22 @@ public class CreateProxyViewModel : ViewModelBase
         set;
     }
 
-    [LegalProxyNameValidator(ErrorMessage = "隧道名不能包含: .")]
-    [Required(ErrorMessage = "必填项")]
+    [LegalProxyNameValidator(ErrorMessageResourceName = "Text_Validation_ProxyNameNoDot", ErrorMessageResourceType = typeof(Languages))]
+    [Required(ErrorMessageResourceName = "Text_Validation_Required", ErrorMessageResourceType = typeof(Languages))]
     public string ProxyName
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "";
 
-    [Required(ErrorMessage = "必填项")]
+    [Required(ErrorMessageResourceName = "Text_Validation_Required", ErrorMessageResourceType = typeof(Languages))]
     public string LocalAddress
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "";
 
-    [Required(ErrorMessage = "必填项")]
+    [Required(ErrorMessageResourceName = "Text_Validation_Required", ErrorMessageResourceType = typeof(Languages))]
     public int LocalPort
     {
         get;
@@ -455,7 +455,7 @@ public class CreateProxyViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = [];
 
-    [Required(ErrorMessage = "必填项")]
+    [Required(ErrorMessageResourceName = "Text_Validation_Required", ErrorMessageResourceType = typeof(Languages))]
     public int RemotePort
     {
         get;

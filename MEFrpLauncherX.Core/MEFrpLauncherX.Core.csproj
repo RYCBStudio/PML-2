@@ -6,28 +6,28 @@
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
         <!-- AOT 条件编译符号：在 Release 配置（PublishAot=true）时定义 AOT 宏 -->
-<!--        <DefineConstants Condition="'$(Configuration)' != 'Debug'">$(DefineConstants);AOT</DefineConstants>-->
+        <!--        <DefineConstants Condition="'$(Configuration)' != 'Debug'">$(DefineConstants);AOT</DefineConstants>-->
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.18" />
-        <PackageReference Include="Downloader" Version="5.9.5" />
+        <PackageReference Include="Avalonia" Version="11.3.18"/>
+        <PackageReference Include="Downloader" Version="5.9.5"/>
         <PackageReference Include="FluentAvaloniaUI" Version="2.5.1"/>
-        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.5" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.5"/>
         <PackageReference Include="Message.Avalonia" Version="1.1.0"/>
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
         <PackageReference Include="Microsoft.International.Converters.PinYinConverter" Version="1.0.0"/>
         <PackageReference Include="NPinyin.Core" Version="3.0.0"/>
-        <PackageReference Include="ReactiveUI" Version="23.2.28" />
+        <PackageReference Include="ReactiveUI" Version="23.2.28"/>
         <PackageReference Include="RestSharp" Version="114.0.0"/>
-        <PackageReference Include="Sentry" Version="6.8.0" />
-        <PackageReference Include="SkiaSharp" Version="3.119.4" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.4" />
-        <PackageReference Include="System.Runtime.Caching" Version="10.0.10" />
-        <PackageReference Include="Vecc.YamlDotNet.Analyzers.StaticGenerator" Version="18.1.0" />
-        <PackageReference Include="YamlDotNet" Version="18.1.0" />
+        <PackageReference Include="Sentry" Version="6.8.0"/>
+        <PackageReference Include="SkiaSharp" Version="3.119.4"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.4"/>
+        <PackageReference Include="System.Runtime.Caching" Version="10.0.10"/>
+        <PackageReference Include="Vecc.YamlDotNet.Analyzers.StaticGenerator" Version="18.1.0"/>
+        <PackageReference Include="YamlDotNet" Version="18.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -41,10 +41,10 @@
             <HintPath>G:\VSProj\RYCB.PML.MEFrpCaptchaLib\bin\Release\Dotfuscated\RYCB.PML.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="RYCB.PML2.MEFrpCaptchaLib">
-          <HintPath>..\MEFrpLauncherX\RYCB.PML2.MEFrpCaptchaLib.dll</HintPath>
+            <HintPath>..\MEFrpLauncherX\RYCB.PML2.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="SecretLib">
-          <HintPath>..\MEFrpLauncherX\SecretLib.dll</HintPath>
+            <HintPath>..\MEFrpLauncherX\SecretLib.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -56,14 +56,19 @@
             <SubType>Code</SubType>
         </Compile>
         <Compile Update="Languages\Languages.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Languages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Languages.resx</DependentUpon>
         </Compile>
         <Compile Update="Languages\Languages.en-US.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Languages.en-US.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Languages.en-US.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Languages\Languages.zh-hant.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Languages.zh-hant.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 
@@ -72,14 +77,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Languages\Languages.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Languages.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Languages\Languages.en-US.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Languages.en-US.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Languages\Languages.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Languages\Languages.en-US.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Languages.en-US.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Languages\Languages.zh-hant.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Languages.zh-hant.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

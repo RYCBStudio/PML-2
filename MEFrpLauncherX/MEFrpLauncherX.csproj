@@ -147,10 +147,6 @@
             <DependentUpon>ALPConfigEditor.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Update="Controls\RollingNumberDoubleTextBlock.cs">
-            <DependentUpon>RollingNumberTextBlock.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
     </ItemGroup>
     <ItemGroup>
         <None Update="Resources\ini.xshd">

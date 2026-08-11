@@ -1,9 +1,10 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views;
 
@@ -18,16 +19,16 @@ public partial class ALPControl : UserControl
 
     private async void SetConfig(object? sender, RoutedEventArgs e)
     {
-        if (await MessageBox.ShowAsync("打开配置文件还是输入内容？", "提示",
+        if (await MessageBox.ShowAsync(Languages.Text_ALPControl_ConfigChoicePrompt, Languages.Caption_Hint,
             [
-                new TaskDialogButton("文件", TaskDialogStandardResult.Yes),
-                new TaskDialogButton("内容", TaskDialogStandardResult.No)
+                new TaskDialogButton(Languages.Text_ALPControl_FileButton, TaskDialogStandardResult.Yes),
+                new TaskDialogButton(Languages.Text_ALPControl_ContentButton, TaskDialogStandardResult.No)
             ]) ==
             MessageBoxResult.Yes)
         {
             var cfg = await Core.App.MainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "请选择配置文件",
+                Title = Languages.Text_ALPControl_SelectConfigTitle,
                 AllowMultiple = false,
                 FileTypeFilter = [FilePickerFileTypes.All]
             });

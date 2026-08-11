@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +6,7 @@
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:DataType="viewModels:UserProxyViewModel"
              x:Class="MEFrpLauncherX.Controls.ALPControl">
     <Grid RowDefinitions="Auto, Auto, Auto">
@@ -20,7 +21,7 @@
                             IsVisible="{Binding isBanned}">
             <controls:InfoBadge.IconSource>
                 <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
-                                         Glyph="已封禁" />
+                                         Glyph="{x:Static languages:Languages.Text_Main_UserInfo_AccountStatus_Banned}" />
             </controls:InfoBadge.IconSource>
         </controls:InfoBadge>
         <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7"
@@ -93,8 +94,8 @@
             </StackPanel>
         </StackPanel>
         <WrapPanel Grid.Row="2" ItemSpacing="5">
-            <Button x:Name="SCBtn" Click="SetConfig" IsEnabled="{Binding !UseConfig}" Content="设置配置文件" />
-            <Button x:Name="USCBtn" Click="UnSetConfig" IsEnabled="{Binding UseConfig}" Content="清除配置文件" />
+            <Button x:Name="SCBtn" Click="SetConfig" IsEnabled="{Binding !UseConfig}" Content="{x:Static languages:Languages.Text_Proxy_SetConfig}" />
+            <Button x:Name="USCBtn" Click="UnSetConfig" IsEnabled="{Binding UseConfig}" Content="{x:Static languages:Languages.Text_Proxy_UnsetConfig}" />
         </WrapPanel>
     </Grid>
 </UserControl>

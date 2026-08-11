@@ -21,6 +21,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -32,13 +33,13 @@ public class ThemeEditorViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "新主题";
+    } = Languages.Text_ThemeEditor_NewTheme;
 
     public string Author
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "未知作者";
+    } = Languages.Text_ThemeEditor_UnknownAuthor;
 
     public string Description
     {
@@ -140,10 +141,10 @@ public class ThemeEditorViewModel : ViewModelBase
         get
         {
             if (IsSystemFont)
-                return $"系统字体: {SelectedSystemFont}";
+                return string.Format(Languages.Text_ThemeEditor_SystemFontFormat, SelectedSystemFont);
             if (!string.IsNullOrEmpty(CustomFontFileName))
-                return $"自定义字体: {CustomFontFileName}";
-            return "未选择字体";
+                return string.Format(Languages.Text_ThemeEditor_CustomFontFormat, CustomFontFileName);
+            return Languages.Text_ThemeEditor_NoFontSelected;
         }
     }
 
@@ -425,11 +426,11 @@ public class ThemeEditorViewModel : ViewModelBase
     {
         var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "选择预览图片",
+            Title = Languages.Text_ThemeEditor_PickPreviewImage,
             AllowMultiple = false,
             FileTypeFilter =
             [
-                new FilePickerFileType("图片文件")
+                new FilePickerFileType(Languages.Text_ThemeEditor_ImageFiles)
                 {
                     Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"]
                 }
@@ -444,7 +445,7 @@ public class ThemeEditorViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                Growl.Error($"加载预览图片失败: {ex.Message}");
+                Growl.Error(string.Format(Languages.Text_ThemeEditor_LoadPreviewImageFailed, ex.Message));
             }
         }
     }
@@ -473,11 +474,11 @@ public class ThemeEditorViewModel : ViewModelBase
     {
         var res = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "选择字体文件",
+            Title = Languages.Text_ThemeEditor_PickFontFile,
             AllowMultiple = false,
             FileTypeFilter =
             [
-                new FilePickerFileType("字体文件")
+                new FilePickerFileType(Languages.Text_ThemeEditor_FontFiles)
                 {
                     Patterns = ["*.ttf", "*.otf", "*.ttc"]
                 }
@@ -493,7 +494,7 @@ public class ThemeEditorViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                Growl.Error($"加载字体文件失败: {ex.Message}");
+                Growl.Error(string.Format(Languages.Text_ThemeEditor_LoadFontFailed, ex.Message));
             }
         }
     }
@@ -706,11 +707,11 @@ public class ThemeEditorViewModel : ViewModelBase
             var json = JsonSerializer.Serialize(manifest, App.AppJsonSerializerContext.ThemeManifest);
             File.WriteAllText(savePath, json);
 
-            Growl.Success($"主题已保存到: {savePath}");
+            Growl.Success(string.Format(Languages.Text_ThemeEditor_ThemeSaved, savePath));
         }
         catch (Exception ex)
         {
-            Growl.Error($"保存失败: {ex.Message}");
+            Growl.Error(string.Format(Languages.Text_ThemeEditor_SaveFailed, ex.Message));
         }
     }
 
@@ -767,11 +768,11 @@ public class ThemeEditorViewModel : ViewModelBase
             // 设置临时主题为当前主题
             File.WriteAllText(selectedThemePath, "preview_theme");
 
-            Growl.Info("预览模式已启用，重启应用后恢复原主题");
+            Growl.Info(Languages.Text_ThemeEditor_PreviewEnabled);
 
             // 提示用户重启应用以查看效果
-            var messageBox = MessageBoxManager.GetMessageBoxStandard("预览主题",
-                "主题已应用预览。\n重启应用后会自动恢复原主题。\n\n是否立即重启？",
+            var messageBox = MessageBoxManager.GetMessageBoxStandard(Languages.Text_ThemeEditor_PreviewTheme,
+                Languages.Text_ThemeEditor_PreviewRestartPrompt,
                 ButtonEnum.YesNo, Icon.Question);
 
             messageBox.ShowAsync().ContinueWith(async t =>
@@ -786,7 +787,7 @@ public class ThemeEditorViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Growl.Error($"预览失败: {ex.Message}");
+            Growl.Error(string.Format(Languages.Text_ThemeEditor_PreviewFailed, ex.Message));
         }
     }
 
@@ -794,11 +795,11 @@ public class ThemeEditorViewModel : ViewModelBase
     {
         var dialog = await MainWindow.Instance.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "选择背景图片",
+            Title = Languages.Text_ThemeEditor_PickBackgroundImage,
             AllowMultiple = false,
             FileTypeFilter =
             [
-                new FilePickerFileType("图片文件")
+                new FilePickerFileType(Languages.Text_ThemeEditor_ImageFiles)
                 {
                     Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"]
                 }
@@ -891,7 +892,7 @@ public class ThemeEditorViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            Growl.Error($"加载主题失败: {ex.Message}");
+            Growl.Error(string.Format(Languages.Text_ThemeEditor_LoadThemeFailed, ex.Message));
         }
     }
 

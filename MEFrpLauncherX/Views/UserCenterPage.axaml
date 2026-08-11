@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
     xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
     xmlns:views="clr-namespace:MEFrpLauncherX.Views"
+    xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="views:UserCenterPage"
@@ -21,61 +22,61 @@
 
             <!-- 用户基本信息卡片 -->
             <controls1:SettingsExpander
-                Header="用户信息"
+                Header="{x:Static languages:Languages.Text_UserCenter_UserInfo}"
                 IconSource="ContactInfo"
-                Description="查看和管理您的账户基本信息">
+                Description="{x:Static languages:Languages.Text_UserCenter_UserInfoDescription}">
 
                 <controls1:SettingsExpander.Items>
                     <!-- 第一行信息 -->
-                    <controls1:SettingsExpanderItem Content="用户名">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_Username}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="UserNameText" Text="加载中..." />
+                            <SelectableTextBlock x:Name="UserNameText" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="用户ID">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserId}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="usrId" Text="加载中..." />
+                            <SelectableTextBlock x:Name="usrId" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="注册邮箱">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredEmail}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="regMail" Text="加载中..." />
+                            <SelectableTextBlock x:Name="regMail" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="注册时间">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredTime}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="regTime" Text="加载中..." />
+                            <SelectableTextBlock x:Name="regTime" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
                     <!-- 第二行信息 -->
-                    <controls1:SettingsExpanderItem Content="用户组">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserGroup}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="group" Text="加载中..." />
+                            <SelectableTextBlock x:Name="group" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="账户状态">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AccountStatus}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="status" Text="加载中..." />
+                            <SelectableTextBlock x:Name="status" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="实名状态">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RealNameStatus}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="isRealNamed" Text="加载中..." />
+                            <SelectableTextBlock x:Name="isRealNamed" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="今日签到">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_DailySignIn}">
                         <controls1:SettingsExpanderItem.Footer>
                             <Button
                                 x:Name="TodaySignButton"
                                 Click="Sign"
-                                Content="签到"
+                                Content="{x:Static languages:Languages.Text_UserCenter_SignIn}"
                                 Classes="accent"
                                 IsVisible="False" />
                         </controls1:SettingsExpanderItem.Footer>
@@ -85,32 +86,32 @@
 
             <!-- 流量和隧道信息卡片 -->
             <controls1:SettingsExpander
-                Header="流量与隧道"
+                Header="{x:Static languages:Languages.Text_UserCenter_TrafficAndTunnels}"
                 IconSource="Globe"
-                Description="查看您的流量使用情况和隧道配置">
+                Description="{x:Static languages:Languages.Text_UserCenter_TrafficAndTunnelsDescription}">
 
                 <controls1:SettingsExpander.Items>
-                    <controls1:SettingsExpanderItem Content="剩余流量">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RemainingTraffic}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="traffic" Text="加载中..." FontSize="16" FontWeight="SemiBold" />
+                            <SelectableTextBlock x:Name="traffic" Text="{x:Static languages:Languages.Text_Global_Loading}" FontSize="16" FontWeight="SemiBold" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="隧道数量">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_TunnelCount}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="proxies" Text="加载中..." FontSize="16" FontWeight="SemiBold" />
+                            <SelectableTextBlock x:Name="proxies" Text="{x:Static languages:Languages.Text_Global_Loading}" FontSize="16" FontWeight="SemiBold" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="入站带宽">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_InboundBandwidth}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="inBound" Text="加载中..." />
+                            <SelectableTextBlock x:Name="inBound" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="出站带宽">
+                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_OutboundBandwidth}">
                         <controls1:SettingsExpanderItem.Footer>
-                            <SelectableTextBlock x:Name="outBound" Text="加载中..." />
+                            <SelectableTextBlock x:Name="outBound" Text="{x:Static languages:Languages.Text_Global_Loading}" />
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
                 </controls1:SettingsExpander.Items>
@@ -118,9 +119,9 @@
 
             <!-- 流量统计图表 -->
             <controls1:SettingsExpander
-                Header="流量统计"
+                Header="{x:Static languages:Languages.Text_UserCenter_TrafficStatistics}"
                 IconSource="MapDrive"
-                Description="查看近期流量使用趋势"
+                Description="{x:Static languages:Languages.Text_UserCenter_TrafficStatisticsDescription}"
                 IsExpanded="False">
                 <controls1:SettingsExpanderItem>
                     <Panel MinHeight="300">
@@ -130,18 +131,18 @@
             </controls1:SettingsExpander>
 
             <controls1:SettingsExpander IsExpanded="True"
-                                        Header="域名白名单"
+                                        Header="{x:Static languages:Languages.Text_UserCenter_DomainWhitelist}"
                                         IconSource="CloudSyncComplete"
-                                        Description="查看您的用于「中国大陆(不含港澳台)」节点创建 HTTP/HTTPS 隧道的域名白名单">
+                                        Description="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistDescription}">
                 <StackPanel Spacing="5">
                     <controls1:InfoBar Severity="Informational" IsOpen="True"
-                                       Message="这里是用于「中国大陆(不含港澳台)」节点创建 HTTP/HTTPS 隧道的域名白名单，您的域名需要拥有工业和信息化部的备案记录才可添加。 非中国大陆节点建站，域名无需过白。" />
+                                       Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistInfo}" />
                     <controls1:InfoBar Severity="Warning" IsOpen="True"
-                                       Message="在填写时，请直接填写根域名，例如 mefrp.com, 不要填写 www.mefrp.com 等子域名，免费子域名请勿在此处填写。我们使用实时数据自动过白，提交无效的域名可能导致您被通报！" />
-                    <controls1:InfoBar Severity="Error" IsOpen="True" Message="幻缘映射不提供任何的域名备案服务，请自行根据服务商要求备案。" />
+                                       Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistWarning}" />
+                    <controls1:InfoBar Severity="Error" IsOpen="True" Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistError}" />
                     <Panel>
-                        <controls1:SettingsExpanderItem Content="添加域名" Command="{Binding AddDomainCommand}"
-                                                        Description="{Binding AddedDomains, StringFormat='已添加 {0} 个域名'}"
+                        <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AddDomain}" Command="{Binding AddDomainCommand}"
+                                                        Description="{Binding AddedDomains, StringFormat={x:Static languages:Languages.Text_UserCenter_AddedDomainsCount}}"
                                                         ActionIconSource="ChevronRight" IsClickEnabled="True" />
                         <controls1:ProgressRing HorizontalAlignment="Right" Margin="0 0 25 0" Height="20" IsVisible="{Binding IsWorking}" />
                     </Panel>
@@ -186,7 +187,7 @@
                     <DockPanel HorizontalSpacing="5">
                         <controls1:SymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20" />
                         <TextBlock
-                            Text="账户操作"
+                            Text="{x:Static languages:Languages.Text_UserCenter_AccountOperations}"
                             FontSize="16"
                             FontWeight="SemiBold"
                             Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
@@ -195,7 +196,7 @@
                     <StackPanel Orientation="Horizontal" Spacing="12">
                         <Button
                             Click="ExitLogin"
-                            Content="退出登录"
+                            Content="{x:Static languages:Languages.Text_UserCenter_Logout}"
                             Classes="danger"
                             Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
                             Foreground="{DynamicResource SystemFillColorCriticalBrush}">
@@ -214,14 +215,14 @@
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal" Spacing="8">
                                     <controls1:SymbolIcon Symbol="Globe" />
-                                    <TextBlock Text="前往网页端以完成其他操作" />
+                                    <TextBlock Text="{x:Static languages:Languages.Text_UserCenter_GoToWebPortal}" />
                                 </StackPanel>
                             </Button.Content>
                         </Button>
 
                         <controls1:InfoBadge
                             Theme="{StaticResource AttentionIconInfoBadgeStyle}"
-                            ToolTip.Tip="由于某些原因，网页端的部分功能无法在客户端实现(未开放API)，因此需要您前往网页端进行操作。">
+                            ToolTip.Tip="{x:Static languages:Languages.Text_UserCenter_WebPortalTip}">
                             <controls1:InfoBadge.IconSource>
                                 <controls1:SymbolIconSource Symbol="Help" />
                             </controls1:InfoBadge.IconSource>

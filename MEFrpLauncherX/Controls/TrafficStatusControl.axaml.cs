@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -6,6 +6,7 @@ using LiveChartsCore;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI;
 
@@ -281,14 +282,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
                     {
                         Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "入站流量"
+                        Name = Languages.Text_Traffic_Inbound
                     }); break;
                 case 1:
                     newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficIn),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "入站流量"
+                        Name = Languages.Text_Traffic_Inbound
                     }); break;
             }
         }
@@ -302,14 +303,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
                     {
                         Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "出站流量"
+                        Name = Languages.Text_Traffic_Outbound
                     }); break;
                 case 1:
                     newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(trafficOut),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "出站流量"
+                        Name = Languages.Text_Traffic_Outbound
                     }); break;
             }
         }
@@ -323,14 +324,14 @@ public class TrafficStatusControlViewModel : ViewModelBase
                     {
                         Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "总流量"
+                        Name = Languages.Text_Traffic_Total
                     }); break;
                 case 1:
                     newSeries.Add(new ColumnSeries<long>
                     {
                         Values = new AvaloniaList<long>(totalTraffic),
                         YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = "总流量"
+                        Name = Languages.Text_Traffic_Total
                     }); break;
             }
         }

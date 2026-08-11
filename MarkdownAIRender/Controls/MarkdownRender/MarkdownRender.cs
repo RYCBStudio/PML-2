@@ -16,6 +16,7 @@ using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using MarkdownAIRender.Controls.Images;
 using MarkdownAIRender.Helper;
+using MarkdownAIRender.i18n;
 using TextMateSharp.Grammars;
 using Inline = Avalonia.Controls.Documents.Inline;
 
@@ -540,7 +541,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
 
             var copyButton = new Button
             {
-                Content = "Copy",
+                Content = MdStrings.Copy,
                 Classes = { "MdCopyButton" },
                 FontSize = 12,
                 Height = 24,
@@ -555,8 +556,8 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
                 clipboard.SetTextAsync(fencedCodeBlock.Lines.ToString());
 
                 _notificationManager?.Show(new Notification(
-                    "复制成功",
-                    "复制成功",
+                    MdStrings.CopySucceeded,
+                    MdStrings.CopySucceeded,
                     NotificationType.Success));
             };
 

@@ -147,7 +147,7 @@
         <Grid
             IsVisible="{Binding !IsMEFrp}"
             Grid.Row="2" RowDefinitions="Auto,Auto, Auto, Auto, Auto" Classes="animated main">
-            <controls1:IconContent Symbol="Cancel" Label="还未实现" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <controls1:IconContent Symbol="Cancel" Label="{x:Static languages:Languages.Text_Global_NotImplemented}" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
     </Grid>
 </UserControl>

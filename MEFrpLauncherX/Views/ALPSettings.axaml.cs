@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;
@@ -30,7 +31,7 @@ public partial class ALPSettings : Window
                     })
                 .ToList()));
         Close();
-        Growl.Success("保存成功");
+        Growl.Success(Languages.Text_ALPSettings_SaveSuccess);
     }
 
     private void Close(object? sender, RoutedEventArgs e) => Close();

@@ -2,6 +2,7 @@
 
 using System.Net.Sockets;
 using System.Text;
+using MEFrpLauncherX.Core.Languages;
 
 namespace RYCB.PML2.Extensions.MinecraftExtension;
 
@@ -113,12 +114,12 @@ public class PortScannerService
                     if (await IsMinecraftServerAsync(client, cancellationToken))
                     {
                         result.ServiceName = "Minecraft Server";
-                        result.Description = "我的世界游戏服务器";
+                        result.Description = Languages.Text_MinecraftExtension_MinecraftServerDesc;
                     }
                     else
                     {
-                        result.ServiceName = "未知服务";
-                        result.Description = "开放端口";
+                        result.ServiceName = Languages.Text_MinecraftExtension_UnknownService;
+                        result.Description = Languages.Text_MinecraftExtension_OpenPort;
                     }
 
                     client.Close();

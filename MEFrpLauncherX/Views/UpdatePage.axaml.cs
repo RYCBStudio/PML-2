@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;
@@ -108,11 +109,11 @@ public class UpdateChannelBoxItemToDescConverter : IValueConverter
         return value is int index
             ? index switch
             {
-                0 => "接收应用稳定版的更新,包含较新且稳定的特性和改进。",
-                1 => "提前预览下一个版本中应用的功能,包含较新的特性和改进,可能存在少量缺陷。",
-                _ => "未知渠道"
+                0 => Languages.Text_Update_StableChannelDesc,
+                1 => Languages.Text_Update_PreviewChannelDesc,
+                _ => Languages.Text_Update_UnknownChannel
             }
-            : "未知渠道";
+            : Languages.Text_Update_UnknownChannel;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

@@ -14,6 +14,7 @@ using System.Web;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.Vulkan;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI.Avalonia;
@@ -352,6 +353,9 @@ internal partial class Program
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
     {
+        // 渲染设置独立于 ConfigManager (后者在 Avalonia 初始化后才可用), 从 Config/Render.json 直接读取
+        var renderSettings = RenderConfigManager.Load();
+
         FontManagerOptions options = new();
         if (OperatingSystem.IsLinux())
         {
@@ -371,18 +375,61 @@ internal partial class Program
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .With(new Win32PlatformOptions
+            .With(BuildWin32Options(renderSettings))
+            .With(new X11PlatformOptions()
             {
-                WinUICompositionBackdropCornerRadius = 0.0f,
+                RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
+                {
+                    "VULKAN" => [X11RenderingMode.Vulkan],
+                    "OPENGL" => [X11RenderingMode.Glx, X11RenderingMode.Egl],
+                    "SOFTWARE" => [X11RenderingMode.Software],
+                    _ =>
+                    [
+                        X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Egl,
+                        X11RenderingMode.Software
+                    ]
+                }
             })
             .With(new SkiaOptions
             {
-                MaxGpuResourceSizeBytes = 256 * 1024 * 1024 // 256 MB
+                MaxGpuResourceSizeBytes = (long)NormalizeGpuMemory(renderSettings.GpuMemoryLimitMb) * 1024 * 1024
             })
             .UseReactiveUI(cfg =>
             {
             });
     }
+
+    private static Win32PlatformOptions BuildWin32Options(RenderSettings renderSettings)
+    {
+        var win32Options = new Win32PlatformOptions
+        {
+            WinUICompositionBackdropCornerRadius = 0.0f,
+            RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
+            {
+                "VULKAN" => [Win32RenderingMode.Vulkan],
+                "OPENGL" => [Win32RenderingMode.AngleEgl, Win32RenderingMode.Wgl],
+                "SOFTWARE" => [Win32RenderingMode.Software],
+                _ =>
+                [
+                    Win32RenderingMode.Vulkan, Win32RenderingMode.AngleEgl, Win32RenderingMode.Wgl,
+                    Win32RenderingMode.Software
+                ]
+            }
+        };
+        if (renderSettings.LowLatencyRendering)
+        {
+            win32Options.CompositionMode =
+                [Win32CompositionMode.LowLatencyDxgiSwapChain, Win32CompositionMode.WinUIComposition];
+        }
+
+        return win32Options;
+    }
+
+    private static int NormalizeGpuMemory(int value) => value switch
+    {
+        128 or 512 or 1024 => value,
+        _ => 256
+    };
 
     private static void ProcessUnhandledExceptions(object sender, UnhandledExceptionEventArgs e)
     {

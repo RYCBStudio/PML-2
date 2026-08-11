@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -20,6 +21,7 @@ using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Services;
+using MEFrpLauncherX.Styling;
 using MEFrpLauncherX.Views;
 
 namespace MEFrpLauncherX;
@@ -31,7 +33,11 @@ public class App : Application
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
 
-    public static FluentAvaloniaTheme? FATheme;
+    public static FluentAvaloniaTheme? FATheme
+    {
+        get;
+        private set;
+    }
 
     public static IClassicDesktopStyleApplicationLifetime Desktop
     {
@@ -43,6 +49,15 @@ public class App : Application
 
     public override void Initialize()
     {
+        // 必须在加载 App.axaml 前设置 Culture，
+        // 否则 Styles 中的 {x:Static languages:...} 会以默认(zh-CN)资源被提前固化
+        Languages.Culture = ConfigManager.CurrentConfig.Language switch
+        {
+            "zh-CN" => new CultureInfo("zh-CN"),
+            "en-US" => new CultureInfo("en-US"),
+            "zh-Hant" => new CultureInfo("zh-Hant"),
+            _ => CultureInfo.CurrentCulture
+        };
         AvaloniaXamlLoader.Load(this);
         _ = Core.App.Initialize();
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
@@ -60,27 +75,27 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Languages.Culture = ConfigManager.CurrentConfig.Language switch
-        {
-            "zh-CN" => new CultureInfo("zh-CN"),
-            "en-US" => new CultureInfo("en-US"),
-            _ => CultureInfo.CurrentCulture
-        };
-        #if DEBUG
-        Languages.Culture = new CultureInfo("en-US");
+#if DEBUG
+        //Languages.Culture = new CultureInfo("en-US");
         Debug.WriteLine("CurrentCulture: " + CultureInfo.CurrentCulture);
-        #endif
-        AppAnalytics.Setup(
-            "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
-            Core.App.Version);
-        if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
+#endif
+        // 按配置应用动画程度 (0=关闭 1=精简 2=标准)
+        AnimationStyles.Apply(ConfigManager.CurrentConfig.AnimationLevel);
+        if (!Design.IsDesignMode)
         {
-            AppAnalytics.EnableAnalytics();
+            AppAnalytics.Setup(
+                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
+                Core.App.Version);
+
+            if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
+            {
+                AppAnalytics.EnableAnalytics();
+            }
         }
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            SplashService?.UpdateProgress(10, "正在加载主题...");
+            SplashService?.UpdateProgress(10, Languages.Text_App_LoadingTheme);
             FATheme = Current.Styles.OfType<FluentAvaloniaTheme>().First();
             var currentTheme = ConfigManager.CurrentConfig.Theme.ToLower() switch
             {
@@ -136,7 +151,7 @@ public class App : Application
             }
 
             CONTINUE:
-            SplashService?.UpdateProgress(30, "正在创建主窗口");
+            SplashService?.UpdateProgress(30, Languages.Text_App_CreatingMainWindow);
             Current?.RequestedThemeVariant = currentTheme;
             var mainWindow = new MainWindow
             {

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MEFrpLauncherX.Core.Languages;
 
 namespace MEFrpLauncherX.ViewModels.Controls;
 
@@ -113,10 +114,10 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
 
     public string RegionDisplay => Region switch
     {
-        "cn" => "中国大陆",
-        "cnos" => "港澳台",
-        "oversea" => "海外",
-        _ => "未知"
+        "cn" => Languages.Text_Nodes_RegionCN,
+        "cnos" => Languages.Text_Nodes_RegionHKMT,
+        "oversea" => Languages.Text_Nodes_RegionOversea,
+        _ => Languages.Text_Nodes_RegionUnknown
     };
 
     public bool IsOverloaded => _cachedIsOverloaded ??= LoadPercent >= 85;

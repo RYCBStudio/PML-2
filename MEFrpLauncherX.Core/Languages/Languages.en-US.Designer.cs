@@ -69,11 +69,1831 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tip.
+        /// </summary>
+        public static string Caption_Hint {
+            get {
+                return ResourceManager.GetString("Caption.Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string Caption_Info {
+            get {
+                return ResourceManager.GetString("Caption.Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string Caption_Success {
+            get {
+                return ResourceManager.GetString("Caption.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Caption_Warning {
+            get {
+                return ResourceManager.GetString("Caption.Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About ME Frp.
+        /// </summary>
+        public static string Text_About_AboutMEFrp {
+            get {
+                return ResourceManager.GetString("Text.About.AboutMEFrp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I understand, proceed.
+        /// </summary>
+        public static string Text_About_AcknowledgeAndGo {
+            get {
+                return ResourceManager.GetString("Text.About.AcknowledgeAndGo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete Copyright Statement.
+        /// </summary>
+        public static string Text_About_CompleteCopyrightStatement {
+            get {
+                return ResourceManager.GetString("Text.About.CompleteCopyrightStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: This software consists of both open-source and closed-source components. The open-source modules are licensed under the MIT License, permitting free use, modification, and distribution in accordance with its terms. The closed-source modules are protected by copyright law and international treaties. Any unauthorized reproduction, distribution, or use of these proprietary components may result in severe civil and criminal penalties. Legal action will be pursued to the fullest extent permitted by law..
+        /// </summary>
+        public static string Text_About_CompleteCopyrightStatement_Content {
+            get {
+                return ResourceManager.GetString("Text.About.CompleteCopyrightStatement.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy group number.
+        /// </summary>
+        public static string Text_About_CopyGroupNumber {
+            get {
+                return ResourceManager.GetString("Text.About.CopyGroupNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily Quote.
+        /// </summary>
+        public static string Text_About_DailyHitokoto {
+            get {
+                return ResourceManager.GetString("Text.About.DailyHitokoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Documentation opened. If it is not accessible, please choose one of the following mirrors: .
+        /// </summary>
+        public static string Text_About_DocOpened {
+            get {
+                return ResourceManager.GetString("Text.About.DocOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your feedback has been submitted successfully. We will process it as soon as possible..
+        /// </summary>
+        public static string Text_About_FeedbackEmailBody {
+            get {
+                return ResourceManager.GetString("Text.About.FeedbackEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback submitted successfully | RYCB Studio.
+        /// </summary>
+        public static string Text_About_FeedbackEmailSubject {
+            get {
+                return ResourceManager.GetString("Text.About.FeedbackEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback submitted.
+        /// </summary>
+        public static string Text_About_FeedbackSubmitted {
+            get {
+                return ResourceManager.GetString("Text.About.FeedbackSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friendly Links.
+        /// </summary>
+        public static string Text_About_FriendlyLinks {
+            get {
+                return ResourceManager.GetString("Text.About.FriendlyLinks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group number copied to clipboard.
+        /// </summary>
+        public static string Text_About_GroupNumberCopied {
+            get {
+                return ResourceManager.GetString("Text.About.GroupNumberCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please ask questions kindly and sincerely. Any provocation or illegal behavior will result in immediate removal..
+        /// </summary>
+        public static string Text_About_GroupRules {
+            get {
+                return ResourceManager.GetString("Text.About.GroupRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help Docs.
+        /// </summary>
+        public static string Text_About_HelpDocs {
+            get {
+                return ResourceManager.GetString("Text.About.HelpDocs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hitokoto Developer.
+        /// </summary>
+        public static string Text_About_HitokotoAuthor {
+            get {
+                return ResourceManager.GetString("Text.About.HitokotoAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Express the charm of words with code, and write the magnificence of mountains and rivers with code..
+        /// </summary>
+        public static string Text_About_HitokotoFallback {
+            get {
+                return ResourceManager.GetString("Text.About.HitokotoFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hitokoto &quot;Hitokoto Developer Center&quot;.
+        /// </summary>
+        public static string Text_About_HitokotoSource {
+            get {
+                return ResourceManager.GetString("Text.About.HitokotoSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ME Frp Version.
+        /// </summary>
+        public static string Text_About_MEFrpVersion {
+            get {
+                return ResourceManager.GetString("Text.About.MEFrpVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microsoft-style Chinese.
+        /// </summary>
+        public static string Text_About_MicrosoftStyleChinese {
+            get {
+                return ResourceManager.GetString("Text.About.MicrosoftStyleChinese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official Lark Group.
+        /// </summary>
+        public static string Text_About_OfficialFeishuGroup {
+            get {
+                return ResourceManager.GetString("Text.About.OfficialFeishuGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official QQ Group 1.
+        /// </summary>
+        public static string Text_About_OfficialQQGroup1 {
+            get {
+                return ResourceManager.GetString("Text.About.OfficialQQGroup1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official QQ Group 2.
+        /// </summary>
+        public static string Text_About_OfficialQQGroup2 {
+            get {
+                return ResourceManager.GetString("Text.About.OfficialQQGroup2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open ME Frp Client Folder.
+        /// </summary>
+        public static string Text_About_OpenClientFolder {
+            get {
+                return ResourceManager.GetString("Text.About.OpenClientFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Source Software.
+        /// </summary>
+        public static string Text_About_OpenSource {
+            get {
+                return ResourceManager.GetString("Text.About.OpenSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This software is licensed under the MIT License..
+        /// </summary>
+        public static string Text_About_OpenSourceLicense {
+            get {
+                return ResourceManager.GetString("Text.About.OpenSourceLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Source Software.
+        /// </summary>
+        public static string Text_About_OpenSourceSoftware {
+            get {
+                return ResourceManager.GetString("Text.About.OpenSourceSoftware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Powered by open-source software and ME Frp..
+        /// </summary>
+        public static string Text_About_PoweredBy {
+            get {
+                return ResourceManager.GetString("Text.About.PoweredBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy Policy.
+        /// </summary>
+        public static string Text_About_PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("Text.About.PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report an Issue.
+        /// </summary>
+        public static string Text_About_ReportIssue {
+            get {
+                return ResourceManager.GetString("Text.About.ReportIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mirror 1.
+        /// </summary>
+        public static string Text_About_Source1 {
+            get {
+                return ResourceManager.GetString("Text.About.Source1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mirror 2.
+        /// </summary>
+        public static string Text_About_Source2 {
+            get {
+                return ResourceManager.GetString("Text.About.Source2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support Email.
+        /// </summary>
+        public static string Text_About_SupportEmail {
+            get {
+                return ResourceManager.GetString("Text.About.SupportEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Throw Exception.
+        /// </summary>
+        public static string Text_About_ThrowException {
+            get {
+                return ResourceManager.GetString("Text.About.ThrowException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Agreement.
+        /// </summary>
+        public static string Text_About_UserAgreement {
+            get {
+                return ResourceManager.GetString("Text.About.UserAgreement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add selected to auto-launch queue -&gt;.
+        /// </summary>
+        public static string Text_ALP_AddToQueue {
+            get {
+                return ResourceManager.GetString("Text.ALP.AddToQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;- Remove selected from auto-launch queue.
+        /// </summary>
+        public static string Text_ALP_RemoveFromQueue {
+            get {
+                return ResourceManager.GetString("Text.ALP.RemoveFromQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search proxies: Pinyin and command syntax supported.
+        /// </summary>
+        public static string Text_ALP_SearchWatermark {
+            get {
+                return ResourceManager.GetString("Text.ALP.SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select proxies to auto-launch.
+        /// </summary>
+        public static string Text_ALP_Title {
+            get {
+                return ResourceManager.GetString("Text.ALP.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to paste. Please check the clipboard contents..
+        /// </summary>
+        public static string Text_ALPConfigEditor_PasteFailed {
+            get {
+                return ResourceManager.GetString("Text.ALPConfigEditor.PasteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configuration file has been modified. Save before returning?.
+        /// </summary>
+        public static string Text_ALPConfigEditor_SaveConfirm {
+            get {
+                return ResourceManager.GetString("Text.ALPConfigEditor.SaveConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a path to save the configuration file.
+        /// </summary>
+        public static string Text_ALPConfigEditor_SavePathTitle {
+            get {
+                return ResourceManager.GetString("Text.ALPConfigEditor.SavePathTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a configuration file or enter the contents?.
+        /// </summary>
+        public static string Text_ALPControl_ConfigChoicePrompt {
+            get {
+                return ResourceManager.GetString("Text.ALPControl.ConfigChoicePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content.
+        /// </summary>
+        public static string Text_ALPControl_ContentButton {
+            get {
+                return ResourceManager.GetString("Text.ALPControl.ContentButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string Text_ALPControl_FileButton {
+            get {
+                return ResourceManager.GetString("Text.ALPControl.FileButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a configuration file.
+        /// </summary>
+        public static string Text_ALPControl_SelectConfigTitle {
+            get {
+                return ResourceManager.GetString("Text.ALPControl.SelectConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved successfully..
+        /// </summary>
+        public static string Text_ALPSettings_SaveSuccess {
+            get {
+                return ResourceManager.GetString("Text.ALPSettings.SaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to retrieve API information.
+        /// </summary>
+        public static string Text_Api_CannotGetApiInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.CannotGetApiInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done, return code: {0}.
+        /// </summary>
+        public static string Text_Api_DoneCodeFormat {
+            get {
+                return ResourceManager.GetString("Text.Api.DoneCodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching error information.
+        /// </summary>
+        public static string Text_Api_FetchingErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.FetchingErrorInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching {0}.
+        /// </summary>
+        public static string Text_Api_FetchingFormat {
+            get {
+                return ResourceManager.GetString("Text.Api.FetchingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching latest version.
+        /// </summary>
+        public static string Text_Api_FetchingLatestVersion {
+            get {
+                return ResourceManager.GetString("Text.Api.FetchingLatestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching software notice.
+        /// </summary>
+        public static string Text_Api_FetchingSoftwareNotice {
+            get {
+                return ResourceManager.GetString("Text.Api.FetchingSoftwareNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected node information.
+        /// </summary>
+        public static string Text_Api_OpConnectedNodeInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpConnectedNodeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailed user information.
+        /// </summary>
+        public static string Text_Api_OpExtraUserInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpExtraUserInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FrpToken information.
+        /// </summary>
+        public static string Text_Api_OpFrpTokenInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpFrpTokenInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ICP domain list.
+        /// </summary>
+        public static string Text_Api_OpIcpDomainList {
+            get {
+                return ResourceManager.GetString("Text.Api.OpIcpDomainList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node information.
+        /// </summary>
+        public static string Text_Api_OpNodeInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpNodeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node status.
+        /// </summary>
+        public static string Text_Api_OpNodeStatus {
+            get {
+                return ResourceManager.GetString("Text.Api.OpNodeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notice.
+        /// </summary>
+        public static string Text_Api_OpNotice {
+            get {
+                return ResourceManager.GetString("Text.Api.OpNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Important notice.
+        /// </summary>
+        public static string Text_Api_OpPopupNotice {
+            get {
+                return ResourceManager.GetString("Text.Api.OpPopupNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel list.
+        /// </summary>
+        public static string Text_Api_OpProxyList {
+            get {
+                return ResourceManager.GetString("Text.Api.OpProxyList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public information.
+        /// </summary>
+        public static string Text_Api_OpPublicInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpPublicInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System status.
+        /// </summary>
+        public static string Text_Api_OpSystemStatus {
+            get {
+                return ResourceManager.GetString("Text.Api.OpSystemStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API origin fallback failed. Unable to retrieve API information.
+        /// </summary>
+        public static string Text_Api_OriginFallbackFailed {
+            get {
+                return ResourceManager.GetString("Text.Api.OriginFallbackFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request failed: {0}.
+        /// </summary>
+        public static string Text_Api_RequestFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Api.RequestFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to send.
+        /// </summary>
+        public static string Text_Api_SendFailed {
+            get {
+                return ResourceManager.GetString("Text.Api.SendFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating main window.
+        /// </summary>
+        public static string Text_App_CreatingMainWindow {
+            get {
+                return ResourceManager.GetString("Text.App.CreatingMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading theme....
+        /// </summary>
+        public static string Text_App_LoadingTheme {
+            get {
+                return ResourceManager.GetString("Text.App.LoadingTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a photo.
+        /// </summary>
+        public static string Text_Appearance_ChoosePhoto {
+            get {
+                return ResourceManager.GetString("Text.Appearance.ChoosePhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Files.
+        /// </summary>
+        public static string Text_Appearance_ImageFiles {
+            get {
+                return ResourceManager.GetString("Text.Appearance.ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent Images.
+        /// </summary>
+        public static string Text_Appearance_RecentImages {
+            get {
+                return ResourceManager.GetString("Text.Appearance.RecentImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string Text_Appearance_Select {
+            get {
+                return ResourceManager.GetString("Text.Appearance.Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a background.
+        /// </summary>
+        public static string Text_Appearance_SelectBackgroundTitle {
+            get {
+                return ResourceManager.GetString("Text.Appearance.SelectBackgroundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Fill Mode.
+        /// </summary>
+        public static string Text_AppearanceSettings_BackgroundFillMode {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.BackgroundFillMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set whether the background image should fill the entire window up to the title bar..
+        /// </summary>
+        public static string Text_AppearanceSettings_BackgroundFillModeDescription {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.BackgroundFillModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Opacity.
+        /// </summary>
+        public static string Text_AppearanceSettings_BackgroundOpacity {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.BackgroundOpacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sometimes the background image may affect the viewing experience. Choose an opacity to adjust..
+        /// </summary>
+        public static string Text_AppearanceSettings_BackgroundOpacityDescription {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.BackgroundOpacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear All Backgrounds.
+        /// </summary>
+        public static string Text_AppearanceSettings_ClearAllBackgrounds {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.ClearAllBackgrounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customize Home Page.
+        /// </summary>
+        public static string Text_AppearanceSettings_CustomizeHomePage {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.CustomizeHomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can choose what content to display on the home page..
+        /// </summary>
+        public static string Text_AppearanceSettings_CustomizeHomePageDescription {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.CustomizeHomePageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill to Title Bar.
+        /// </summary>
+        public static string Text_AppearanceSettings_FillToTitleBar {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.FillToTitleBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill Window Only.
+        /// </summary>
+        public static string Text_AppearanceSettings_FillToWindowOnly {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.FillToWindowOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string Text_AppearanceSettings_Restore {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose Accent Color.
+        /// </summary>
+        public static string Text_AppearanceSettings_SelectAccentColor {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.SelectAccentColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a Background.
+        /// </summary>
+        public static string Text_AppearanceSettings_SelectBackground {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.SelectBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software Notices.
+        /// </summary>
+        public static string Text_AppearanceSettings_SoftwareNotice {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.SoftwareNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string Text_AppearanceSettings_Statistics {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Info.
+        /// </summary>
+        public static string Text_AppearanceSettings_SystemInfo {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.SystemInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Notices.
+        /// </summary>
+        public static string Text_AppearanceSettings_SystemNotice {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.SystemNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close / Cancel launch.
+        /// </summary>
+        public static string Text_ConfigEditor_CloseAndCancelLaunch {
+            get {
+                return ResourceManager.GetString("Text.ConfigEditor.CloseAndCancelLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config file type: .
+        /// </summary>
+        public static string Text_ConfigEditor_FileType {
+            get {
+                return ResourceManager.GetString("Text.ConfigEditor.FileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save and run.
+        /// </summary>
+        public static string Text_ConfigEditor_SaveAndRun {
+            get {
+                return ResourceManager.GetString("Text.ConfigEditor.SaveAndRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit config file.
+        /// </summary>
+        public static string Text_ConfigEditor_Title {
+            get {
+                return ResourceManager.GetString("Text.ConfigEditor.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes..
+        /// </summary>
+        public static string Text_ConfigEditor_UnsavedChanges {
+            get {
+                return ResourceManager.GetString("Text.ConfigEditor.UnsavedChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration copied to clipboard.
+        /// </summary>
+        public static string Text_ConfigPreviewer_CopiedToClipboard {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.CopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INI File.
+        /// </summary>
+        public static string Text_ConfigPreviewer_IniFile {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.IniFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JSON File.
+        /// </summary>
+        public static string Text_ConfigPreviewer_JsonFile {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.JsonFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Configuration File.
+        /// </summary>
+        public static string Text_ConfigPreviewer_SaveConfigTitle {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.SaveConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration saved to {0}.
+        /// </summary>
+        public static string Text_ConfigPreviewer_SavedFormat {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.SavedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config file preview.
+        /// </summary>
+        public static string Text_ConfigPreviewer_Title {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TOML File.
+        /// </summary>
+        public static string Text_ConfigPreviewer_TomlFile {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.TomlFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YAML File.
+        /// </summary>
+        public static string Text_ConfigPreviewer_YamlFile {
+            get {
+                return ResourceManager.GetString("Text.ConfigPreviewer.YamlFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matches: {0}.
+        /// </summary>
+        public static string Text_ConfigSelect_Matches {
+            get {
+                return ResourceManager.GetString("Text.ConfigSelect.Matches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}d {1}h.
+        /// </summary>
+        public static string Text_Converters_DaysHoursFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.DaysHoursFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string Text_Converters_Disabled {
+            get {
+                return ResourceManager.GetString("Text.Converters.Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string Text_Converters_Enabled {
+            get {
+                return ResourceManager.GetString("Text.Converters.Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}h {1}m.
+        /// </summary>
+        public static string Text_Converters_HoursMinutesFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.HoursMinutesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}m.
+        /// </summary>
+        public static string Text_Converters_MinutesFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.MinutesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string Text_Converters_No {
+            get {
+                return ResourceManager.GetString("Text.Converters.No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string Text_Converters_Offline {
+            get {
+                return ResourceManager.GetString("Text.Converters.Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline {0} ago.
+        /// </summary>
+        public static string Text_Converters_OfflineAgoFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.OfflineAgoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online.
+        /// </summary>
+        public static string Text_Converters_Online {
+            get {
+                return ResourceManager.GetString("Text.Converters.Online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online for {0}.
+        /// </summary>
+        public static string Text_Converters_OnlineForFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.OnlineForFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overloaded.
+        /// </summary>
+        public static string Text_Converters_Overloaded {
+            get {
+                return ResourceManager.GetString("Text.Converters.Overloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}s.
+        /// </summary>
+        public static string Text_Converters_SecondsFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.SecondsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Banned.
+        /// </summary>
+        public static string Text_Converters_StatusBanned {
+            get {
+                return ResourceManager.GetString("Text.Converters.StatusBanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        public static string Text_Converters_StatusNormal {
+            get {
+                return ResourceManager.GetString("Text.Converters.StatusNormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic exceeded.
+        /// </summary>
+        public static string Text_Converters_StatusTrafficExceeded {
+            get {
+                return ResourceManager.GetString("Text.Converters.StatusTrafficExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Text_Converters_Unknown {
+            get {
+                return ResourceManager.GetString("Text.Converters.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown status ({0}).
+        /// </summary>
+        public static string Text_Converters_UnknownStatusFormat {
+            get {
+                return ResourceManager.GetString("Text.Converters.UnknownStatusFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Text_Converters_Yes {
+            get {
+                return ResourceManager.GetString("Text.Converters.Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access Key.
+        /// </summary>
+        public static string Text_CreateProxy_AccessKey {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.AccessKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the access key.
+        /// </summary>
+        public static string Text_CreateProxy_AccessKeyDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.AccessKeyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Settings.
+        /// </summary>
+        public static string Text_CreateProxy_AdvancedSettings {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.AdvancedSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip: Only recommended for technical users. Please make sure your configuration is correct, otherwise the tunnel may fail to start..
+        /// </summary>
+        public static string Text_CreateProxy_AdvancedSettingsDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.AdvancedSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allowed port range: {0}.
+        /// </summary>
+        public static string Text_CreateProxy_AllowedPortRange {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.AllowedPortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic Settings.
+        /// </summary>
+        public static string Text_CreateProxy_BasicSettings {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.BasicSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following are required settings for creating a tunnel..
+        /// </summary>
+        public static string Text_CreateProxy_BasicSettingsDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.BasicSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bind Domains.
+        /// </summary>
+        public static string Text_CreateProxy_BindDomains {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.BindDomains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the domains to bind.
+        /// </summary>
+        public static string Text_CreateProxy_BindDomainsDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.BindDomainsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create the tunnel..
+        /// </summary>
+        public static string Text_CreateProxy_CreateFailed {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.CreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully created a same-named {0} tunnel..
+        /// </summary>
+        public static string Text_CreateProxy_CreateSameNameSuccessFormat {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.CreateSameNameSuccessFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel created successfully..
+        /// </summary>
+        public static string Text_CreateProxy_CreateSuccess {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.CreateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Request Headers.
+        /// </summary>
+        public static string Text_CreateProxy_CustomRequestHeaders {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.CustomRequestHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Response Headers.
+        /// </summary>
+        public static string Text_CreateProxy_CustomResponseHeaders {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.CustomResponseHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string Text_CreateProxy_Disabled {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Bound Domains.
+        /// </summary>
+        public static string Text_CreateProxy_EditDomains {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EditDomains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Locations.
+        /// </summary>
+        public static string Text_CreateProxy_EditLocations {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EditLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Request Headers.
+        /// </summary>
+        public static string Text_CreateProxy_EditRequestHeaders {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EditRequestHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Response Headers.
+        /// </summary>
+        public static string Text_CreateProxy_EditResponseHeaders {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EditResponseHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Compression.
+        /// </summary>
+        public static string Text_CreateProxy_EnableCompression {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EnableCompression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Encryption.
+        /// </summary>
+        public static string Text_CreateProxy_EnableEncryption {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EnableEncryption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a local address.
+        /// </summary>
+        public static string Text_CreateProxy_EnterLocalAddress {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EnterLocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a tunnel name.
+        /// </summary>
+        public static string Text_CreateProxy_EnterProxyName {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EnterProxyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid port number.
+        /// </summary>
+        public static string Text_CreateProxy_EnterValidPort {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.EnterValidPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Minecraft Port.
+        /// </summary>
+        public static string Text_CreateProxy_FindMinecraftPort {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.FindMinecraftPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Remote Free Port.
+        /// </summary>
+        public static string Text_CreateProxy_GetRemotePort {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.GetRemotePort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the username and password.
+        /// </summary>
+        public static string Text_CreateProxy_HttpBasicAuthDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.HttpBasicAuthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nodes are still loading. Please try again..
+        /// </summary>
+        public static string Text_CreateProxy_LoadingNodesRetry {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.LoadingNodesRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Address.
+        /// </summary>
+        public static string Text_CreateProxy_LocalAddress {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.LocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the local address, format example: 127.0.0.1.
+        /// </summary>
+        public static string Text_CreateProxy_LocalAddressPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.LocalAddressPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Port.
+        /// </summary>
+        public static string Text_CreateProxy_LocalPort {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.LocalPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the path routing rules of the HTTP tunnel..
+        /// </summary>
+        public static string Text_CreateProxy_LocationsDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.LocationsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The node is overloaded and cannot accept any more tunnels..
+        /// </summary>
+        public static string Text_CreateProxy_NodeOverloaded {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.NodeOverloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No matching nodes were found. Please select manually..
+        /// </summary>
+        public static string Text_CreateProxy_NoMatchingNodes {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.NoMatchingNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No available nodes were found in the &quot;{0}&quot; area. Please select manually..
+        /// </summary>
+        public static string Text_CreateProxy_NoNodesInAreaFormat {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.NoNodesInAreaFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not enabled.
+        /// </summary>
+        public static string Text_CreateProxy_NotEnabled {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.NotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the password.
+        /// </summary>
+        public static string Text_CreateProxy_PasswordPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PasswordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol Type.
+        /// </summary>
+        public static string Text_CreateProxy_ProtocolType {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ProtocolType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel Name.
+        /// </summary>
+        public static string Text_CreateProxy_ProxyName {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ProxyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the tunnel name.
+        /// </summary>
+        public static string Text_CreateProxy_ProxyNamePlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ProxyNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Port.
+        /// </summary>
+        public static string Text_CreateProxy_RemotePort {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.RemotePort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same as tunnel protocol (HTTP).
+        /// </summary>
+        public static string Text_CreateProxy_SameAsHttp {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SameAsHttp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same as tunnel protocol (HTTPS).
+        /// </summary>
+        public static string Text_CreateProxy_SameAsHttps {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SameAsHttps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security Options.
+        /// </summary>
+        public static string Text_CreateProxy_SecurityOptions {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SecurityOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a node..
+        /// </summary>
+        public static string Text_CreateProxy_SelectANode {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SelectANode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select an area on the map..
+        /// </summary>
+        public static string Text_CreateProxy_SelectAreaOnMap {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SelectAreaOnMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source Protocol.
+        /// </summary>
+        public static string Text_CreateProxy_SourceProtocol {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SourceProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSL Certificate Path.
+        /// </summary>
+        public static string Text_CreateProxy_SslCertPath {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SslCertPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the SSL certificate path (e.g. ./server.crt).
+        /// </summary>
+        public static string Text_CreateProxy_SslCertPathPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SslCertPathPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSL Key Path.
+        /// </summary>
+        public static string Text_CreateProxy_SslKeyPath {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SslKeyPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the SSL key path (e.g. ./server.key).
+        /// </summary>
+        public static string Text_CreateProxy_SslKeyPathPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SslKeyPathPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path relative to mefrpc is recommended..
+        /// </summary>
+        public static string Text_CreateProxy_SslPathDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SslPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transmission Protocol.
+        /// </summary>
+        public static string Text_CreateProxy_TransmissionProtocol {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TransmissionProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QUIC provides TCP-like reliability while overcoming TCP&apos;s performance bottleneck, and can optimize latency in some scenarios..
+        /// </summary>
+        public static string Text_CreateProxy_TransmissionProtocolDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TransmissionProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the username.
+        /// </summary>
+        public static string Text_CreateProxy_UsernamePlaceholder {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.UsernamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AList/OpenList is an open-source cloud drive aggregation tool that supports unified management of multiple cloud drives, file browsing and video playback. The default HTTP port is 5244 and the HTTPS port is 5245. It provides WebDAV services, making it easy to connect local and cloud data..
+        /// </summary>
+        public static string Text_CreateProxyGuide_AListDesc {
+            get {
+                return ResourceManager.GetString("Text.CreateProxyGuide.AListDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Minecraft Bedrock Edition multiplayer server that supports mods and plugin extensions. The default TCP port is 19132, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends..
+        /// </summary>
+        public static string Text_CreateProxyGuide_MinecraftBedrockDesc {
+            get {
+                return ResourceManager.GetString("Text.CreateProxyGuide.MinecraftBedrockDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Minecraft Java Edition multiplayer server that supports mods and plugin extensions. The default TCP port is 25565, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends..
+        /// </summary>
+        public static string Text_CreateProxyGuide_MinecraftJavaDesc {
+            get {
+                return ResourceManager.GetString("Text.CreateProxyGuide.MinecraftJavaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RDP (Remote Desktop Protocol) is a remote access protocol developed by Microsoft. It uses TCP port 3389 by default, allowing users to remotely control a computer through a graphical interface over the network..
+        /// </summary>
+        public static string Text_CreateProxyGuide_RDPDesc {
+            get {
+                return ResourceManager.GetString("Text.CreateProxyGuide.RDPDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote Desktop Connection.
+        /// </summary>
+        public static string Text_CreateProxyGuide_RDPName {
+            get {
+                return ResourceManager.GetString("Text.CreateProxyGuide.RDPName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///Current source: {1}
+        ///Download speed: {0}
+        ///------------------
+        ///JOKE_PLACEHOLDER
+        ///------------------.
+        /// </summary>
+        public static string Text_Download_ContentFooter {
+            get {
+                return ResourceManager.GetString("Text.Download.ContentFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait, downloading file
+        ///File name: {0}.
+        /// </summary>
+        public static string Text_Download_ContentHeaderFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.ContentHeaderFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing new MEFrpClient.
+        /// </summary>
+        public static string Text_Download_InstallingClient {
+            get {
+                return ResourceManager.GetString("Text.Download.InstallingClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We all have rough times.
+        ///Roll back wattage. Sit back and relax.
+        ///Good things are on the way
+        ///Hi. We&apos;re getting things ready for you.
+        ///You are being successful!
+        ///Hey, long time no see!
+        ///You&apos;ve completed 30%
+        ///Do! Boom! Cha-cha-cha Push-push
+        ///OneDrive: You have only 17179869184 GB of avaliable space
+        ///F R E E  O F  C H A R G E
+        ///Wondering how much battery is left? Don&apos;t worry about it anymore.
+        ///Countdown to happiness
+        ///Windows 10 isn&apos;t for all of us, it&apos;s for each of us.
+        ///You and your PC need to restart.
+        ///Heads  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Text_Download_Jokes {
+            get {
+                return ResourceManager.GetString("Text.Download.Jokes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading ME Frp client.
+        /// </summary>
+        public static string Text_Download_SubHeader {
+            get {
+                return ResourceManager.GetString("Text.Download.SubHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PML Ⅱ is downloading files.
+        /// </summary>
+        public static string Text_Download_Title {
+            get {
+                return ResourceManager.GetString("Text.Download.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Text_Download_UnknownPlatform {
+            get {
+                return ResourceManager.GetString("Text.Download.UnknownPlatform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Tunnel.
+        /// </summary>
+        public static string Text_EditProxy_Title {
+            get {
+                return ResourceManager.GetString("Text.EditProxy.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        public static string Text_Feedback_Content {
+            get {
+                return ResourceManager.GetString("Text.Feedback.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your feedback.
+        /// </summary>
+        public static string Text_Feedback_ContentWatermark {
+            get {
+                return ResourceManager.GetString("Text.Feedback.ContentWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Text_Feedback_Email {
+            get {
+                return ResourceManager.GetString("Text.Feedback.Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your email.
+        /// </summary>
+        public static string Text_Feedback_EmailWatermark {
+            get {
+                return ResourceManager.GetString("Text.Feedback.EmailWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Text_Global_Add {
+            get {
+                return ResourceManager.GetString("Text.Global.Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Text_Global_Back {
+            get {
+                return ResourceManager.GetString("Text.Global.Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Text_Global_Cancel {
             get {
                 return ResourceManager.GetString("Text.Global.Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Text_Global_Close {
+            get {
+                return ResourceManager.GetString("Text.Global.Close", resourceCulture);
             }
         }
         
@@ -87,11 +1907,209 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string Text_Global_Copy {
+            get {
+                return ResourceManager.GetString("Text.Global.Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Text_Global_Delete {
+            get {
+                return ResourceManager.GetString("Text.Global.Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable.
+        /// </summary>
+        public static string Text_Global_Disable {
+            get {
+                return ResourceManager.GetString("Text.Global.Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Text_Global_Edit {
+            get {
+                return ResourceManager.GetString("Text.Global.Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        public static string Text_Global_Enable {
+            get {
+                return ResourceManager.GetString("Text.Global.Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Text_Global_Exit {
+            get {
+                return ResourceManager.GetString("Text.Global.Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed.
         /// </summary>
         public static string Text_Global_Failed {
             get {
                 return ResourceManager.GetString("Text.Global.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Text_Global_Help {
+            get {
+                return ResourceManager.GetString("Text.Global.Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter value.
+        /// </summary>
+        public static string Text_Global_InputValue {
+            get {
+                return ResourceManager.GetString("Text.Global.InputValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string Text_Global_Loading {
+            get {
+                return ResourceManager.GetString("Text.Global.Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Text_Global_Next {
+            get {
+                return ResourceManager.GetString("Text.Global.Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string Text_Global_No {
+            get {
+                return ResourceManager.GetString("Text.Global.No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data.
+        /// </summary>
+        public static string Text_Global_NoData {
+            get {
+                return ResourceManager.GetString("Text.Global.NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not implemented yet.
+        /// </summary>
+        public static string Text_Global_NotImplemented {
+            get {
+                return ResourceManager.GetString("Text.Global.NotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string Text_Global_Off {
+            get {
+                return ResourceManager.GetString("Text.Global.Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string Text_Global_On {
+            get {
+                return ResourceManager.GetString("Text.Global.On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation completed successfully.
+        /// </summary>
+        public static string Text_Global_OperationSuccess {
+            get {
+                return ResourceManager.GetString("Text.Global.OperationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste.
+        /// </summary>
+        public static string Text_Global_Paste {
+            get {
+                return ResourceManager.GetString("Text.Global.Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read-only.
+        /// </summary>
+        public static string Text_Global_ReadOnly {
+            get {
+                return ResourceManager.GetString("Text.Global.ReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Text_Global_Refresh {
+            get {
+                return ResourceManager.GetString("Text.Global.Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Text_Global_Save {
+            get {
+                return ResourceManager.GetString("Text.Global.Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Text_Global_Settings {
+            get {
+                return ResourceManager.GetString("Text.Global.Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Static Header - Test.
+        /// </summary>
+        public static string Text_Global_StaticHeaderTest {
+            get {
+                return ResourceManager.GetString("Text.Global.StaticHeaderTest", resourceCulture);
             }
         }
         
@@ -105,11 +2123,146 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type: .
+        /// </summary>
+        public static string Text_Global_Type {
+            get {
+                return ResourceManager.GetString("Text.Global.Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error.
+        /// </summary>
+        public static string Text_Global_UnknownError {
+            get {
+                return ResourceManager.GetString("Text.Global.UnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Text_Global_Yes {
+            get {
+                return ResourceManager.GetString("Text.Global.Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header name.
+        /// </summary>
+        public static string Text_Headers_NameWatermark {
+            get {
+                return ResourceManager.GetString("Text.Headers.NameWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header value.
+        /// </summary>
+        public static string Text_Headers_ValueWatermark {
+            get {
+                return ResourceManager.GetString("Text.Headers.ValueWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Important Notice.
+        /// </summary>
+        public static string Text_Home_ImportantNotice {
+            get {
+                return ResourceManager.GetString("Text.Home.ImportantNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load user data: {0}.
+        /// </summary>
+        public static string Text_Home_LoadUserDataFailed {
+            get {
+                return ResourceManager.GetString("Text.Home.LoadUserDataFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network service unavailable, return code: {0}.
+        /// </summary>
+        public static string Text_Home_NetworkUnavailableFormat {
+            get {
+                return ResourceManager.GetString("Text.Home.NetworkUnavailableFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CAPTCHA method.
         /// </summary>
         public static string Text_Login_AuthMode {
             get {
                 return ResourceManager.GetString("Text.Login.AuthMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifying: step {0}/5.
+        /// </summary>
+        public static string Text_Login_CaptchaStep {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the captcha.
+        /// </summary>
+        public static string Text_Login_EnterCaptcha {
+            get {
+                return ResourceManager.GetString("Text.Login.EnterCaptcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signed in from stored account.
+        /// </summary>
+        public static string Text_Login_LocalStoredLogin {
+            get {
+                return ResourceManager.GetString("Text.Login.LocalStoredLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logging in.
+        /// </summary>
+        public static string Text_Login_LoggingIn {
+            get {
+                return ResourceManager.GetString("Text.Login.LoggingIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logging in... {0:F2}%.
+        /// </summary>
+        public static string Text_Login_LoggingInProgress {
+            get {
+                return ResourceManager.GetString("Text.Login.LoggingInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log In.
+        /// </summary>
+        public static string Text_Login_Login {
+            get {
+                return ResourceManager.GetString("Text.Login.Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Failed.
+        /// </summary>
+        public static string Text_Login_LoginFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.LoginFailed", resourceCulture);
             }
         }
         
@@ -177,11 +2330,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Use new account&gt;.
+        /// </summary>
+        public static string Text_Login_UseNewAccount {
+            get {
+                return ResourceManager.GetString("Text.Login.UseNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Text_Login_Username {
             get {
                 return ResourceManager.GetString("Text.Login.Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation Failed.
+        /// </summary>
+        public static string Text_Login_ValidationFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.ValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation failed: {0}.
+        /// </summary>
+        public static string Text_Login_ValidationFailedWithMsg {
+            get {
+                return ResourceManager.GetString("Text.Login.ValidationFailedWithMsg", resourceCulture);
             }
         }
         
@@ -497,6 +2677,5572 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Main_UserInfo_Title {
             get {
                 return ResourceManager.GetString("Text.Main.UserInfo.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agree.
+        /// </summary>
+        public static string Text_MainWindow_Agree {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.Agree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to close the console automatically.
+        /// </summary>
+        public static string Text_MainWindow_CannotCloseConsole {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.CannotCloseConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decline.
+        /// </summary>
+        public static string Text_MainWindow_Decline {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Text_MainWindow_Exit {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing system tray.
+        /// </summary>
+        public static string Text_MainWindow_InitTray {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.InitTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading configuration.
+        /// </summary>
+        public static string Text_MainWindow_LoadingConfig {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.LoadingConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please log in first.
+        /// </summary>
+        public static string Text_MainWindow_LoginFirst {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.LoginFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Main Window.
+        /// </summary>
+        public static string Text_MainWindow_OpenMainWindow {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.OpenMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Terminal.
+        /// </summary>
+        public static string Text_MainWindow_OpenTerminal {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.OpenTerminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ### PML 2 Privacy Policy (Key Edition)
+        ///**Important notice:** We use [Sentry](https://sentry.io) for error tracking and performance monitoring to improve software stability. Data is stored on Sentry&apos;s servers located in the European Union.
+        ///### 1. Scope of Information Collection
+        ///- **Personal data**: username, email address, tunnel information (such as average API duration, launch failures, etc.)
+        ///- **Device data**: device identifiers, operating system version, crash stacks and error logs
+        ///- **Usage behavio [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Text_MainWindow_PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PML 2 is running.
+        /// </summary>
+        public static string Text_MainWindow_TrayToolTip {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.TrayToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version ({0}) has been detected. Please go to the &quot;Updates&quot; page for details.
+        /// </summary>
+        public static string Text_MainWindow_UpdateDetectedFormat {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.UpdateDetectedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update detected: {0} → {1}.
+        /// </summary>
+        public static string Text_MainWindow_UpdateDetectedTitleFormat {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.UpdateDetectedTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Tunnel.
+        /// </summary>
+        public static string Text_ManageProxy_CreateTunnel {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.CreateTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download cancelled.
+        /// </summary>
+        public static string Text_ManageProxy_DownloadCancelled {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.DownloadCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download completed.
+        /// </summary>
+        public static string Text_ManageProxy_DownloadCompleted {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.DownloadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Text_ManageProxy_ExitApp {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.ExitApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Text_ManageProxy_HelpTitle {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.HelpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch Tunnel.
+        /// </summary>
+        public static string Text_ManageProxy_LaunchTunnel {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.LaunchTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Tunnels.
+        /// </summary>
+        public static string Text_ManageProxy_ManageTunnels {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.ManageTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnels.
+        /// </summary>
+        public static string Text_ManageProxy_MenuTunnels {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.MenuTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color Meanings.
+        /// </summary>
+        public static string Text_ManageProxyHelp_ColorMeaning {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.ColorMeaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel offline.
+        /// </summary>
+        public static string Text_ManageProxyHelp_ExampleOffline {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.ExampleOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel offline and disabled.
+        /// </summary>
+        public static string Text_ManageProxyHelp_ExampleOfflineDisabled {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.ExampleOfflineDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel online.
+        /// </summary>
+        public static string Text_ManageProxyHelp_ExampleOnline {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.ExampleOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Examples.
+        /// </summary>
+        public static string Text_ManageProxyHelp_Examples {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.Examples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Green: tunnel online.
+        /// </summary>
+        public static string Text_ManageProxyHelp_GreenOnline {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.GreenOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to x is the node name, pinyin supported.
+        /// </summary>
+        public static string Text_ManageProxyHelp_NDescription {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.NDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search all tunnels whose node name contains &quot;节点1&quot;.
+        /// </summary>
+        public static string Text_ManageProxyHelp_NExample {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.NExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /n:Node1.
+        /// </summary>
+        public static string Text_ManageProxyHelp_NExampleValue {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.NExampleValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n is the node ID.
+        /// </summary>
+        public static string Text_ManageProxyHelp_NidDescription {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.NidDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search all tunnels whose node ID contains &quot;1&quot;.
+        /// </summary>
+        public static string Text_ManageProxyHelp_NidExample {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.NidExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n is the tunnel ID.
+        /// </summary>
+        public static string Text_ManageProxyHelp_PidDescription {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.PidDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search all tunnels whose tunnel ID contains &quot;1&quot;.
+        /// </summary>
+        public static string Text_ManageProxyHelp_PidExample {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.PidExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Red: tunnel offline.
+        /// </summary>
+        public static string Text_ManageProxyHelp_RedOffline {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.RedOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Commands.
+        /// </summary>
+        public static string Text_ManageProxyHelp_SearchCommands {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.SearchCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The search syntax is not universal. It currently only applies to this software. You can make this request to other software developers..
+        /// </summary>
+        public static string Text_ManageProxyHelp_SearchSyntaxNote {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.SearchSyntaxNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yellow: tunnel disabled.
+        /// </summary>
+        public static string Text_ManageProxyHelp_YellowDisabled {
+            get {
+                return ResourceManager.GetString("Text.ManageProxyHelp.YellowDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Region.
+        /// </summary>
+        public static string Text_MappedNodeContainer_CurrentRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.CurrentRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to China (incl. HK, MO, TW).
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_China {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.China", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global Nodes.
+        /// </summary>
+        public static string Text_MappedNodeContainer_Section_Globe {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.Section.Globe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Region.
+        /// </summary>
+        public static string Text_MappedNodeContainer_SelectedRegion {
+            get {
+                return ResourceManager.GetString("Text.MappedNodeContainer.SelectedRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minecraft game server.
+        /// </summary>
+        public static string Text_MinecraftExtension_MinecraftServerDesc {
+            get {
+                return ResourceManager.GetString("Text.MinecraftExtension.MinecraftServerDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open port.
+        /// </summary>
+        public static string Text_MinecraftExtension_OpenPort {
+            get {
+                return ResourceManager.GetString("Text.MinecraftExtension.OpenPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown service.
+        /// </summary>
+        public static string Text_MinecraftExtension_UnknownService {
+            get {
+                return ResourceManager.GetString("Text.MinecraftExtension.UnknownService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string Text_Nav_About {
+            get {
+                return ResourceManager.GetString("Text.Nav.About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Tunnel.
+        /// </summary>
+        public static string Text_Nav_CreateProxy {
+            get {
+                return ResourceManager.GetString("Text.Nav.CreateProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Text_Nav_Home {
+            get {
+                return ResourceManager.GetString("Text.Nav.Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Tunnels.
+        /// </summary>
+        public static string Text_Nav_ManageProxy {
+            get {
+                return ResourceManager.GetString("Text.Nav.ManageProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node Monitoring.
+        /// </summary>
+        public static string Text_Nav_NodesMonitoring {
+            get {
+                return ResourceManager.GetString("Text.Nav.NodesMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugins.
+        /// </summary>
+        public static string Text_Nav_Plugins {
+            get {
+                return ResourceManager.GetString("Text.Nav.Plugins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Text_Nav_Settings {
+            get {
+                return ResourceManager.GetString("Text.Nav.Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal.
+        /// </summary>
+        public static string Text_Nav_Terminal {
+            get {
+                return ResourceManager.GetString("Text.Nav.Terminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Themes.
+        /// </summary>
+        public static string Text_Nav_Themes {
+            get {
+                return ResourceManager.GetString("Text.Nav.Themes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Text_Nav_Update {
+            get {
+                return ResourceManager.GetString("Text.Nav.Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Center.
+        /// </summary>
+        public static string Text_Nav_UserCenter {
+            get {
+                return ResourceManager.GetString("Text.Nav.UserCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only high-traffic-allowed nodes.
+        /// </summary>
+        public static string Text_Nodes_Filter_AllowHighTraffic {
+            get {
+                return ResourceManager.GetString("Text.Nodes.Filter.AllowHighTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only site-capable nodes.
+        /// </summary>
+        public static string Text_Nodes_Filter_CanBuildSite {
+            get {
+                return ResourceManager.GetString("Text.Nodes.Filter.CanBuildSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only non-overloaded nodes.
+        /// </summary>
+        public static string Text_Nodes_Filter_NotOverLoaded {
+            get {
+                return ResourceManager.GetString("Text.Nodes.Filter.NotOverLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get node status (code={0}).
+        /// </summary>
+        public static string Text_Nodes_GetStatusFailedCodeFormat {
+            get {
+                return ResourceManager.GetString("Text.Nodes.GetStatusFailedCodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get node status: {0}.
+        /// </summary>
+        public static string Text_Nodes_GetStatusFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Nodes.GetStatusFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node not found.
+        /// </summary>
+        public static string Text_Nodes_NodeNotFound {
+            get {
+                return ResourceManager.GetString("Text.Nodes.NodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Regions.
+        /// </summary>
+        public static string Text_Nodes_RegionAll {
+            get {
+                return ResourceManager.GetString("Text.Nodes.RegionAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mainland China.
+        /// </summary>
+        public static string Text_Nodes_RegionCN {
+            get {
+                return ResourceManager.GetString("Text.Nodes.RegionCN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HK/Macau/TW.
+        /// </summary>
+        public static string Text_Nodes_RegionHKMT {
+            get {
+                return ResourceManager.GetString("Text.Nodes.RegionHKMT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overseas.
+        /// </summary>
+        public static string Text_Nodes_RegionOversea {
+            get {
+                return ResourceManager.GetString("Text.Nodes.RegionOversea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Text_Nodes_RegionUnknown {
+            get {
+                return ResourceManager.GetString("Text.Nodes.RegionUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use /d:&lt;KEYWORD&gt; to search descriptions.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_Description {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameter: search by name directly.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_NoParam {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.NoParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pinyin search slows down searching and may cause the program to appear frozen..
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_PerfWarning_Message {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.PerfWarning.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Known Performance Warning.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_PerfWarning_Title {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.PerfWarning.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use /pd:&lt;PINYIN&gt; to search descriptions by pinyin.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_PinyinDescription {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.PinyinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use /pn:&lt;PINYIN&gt; to search names by pinyin.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_PinyinName {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.PinyinName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Help.
+        /// </summary>
+        public static string Text_Nodes_SearchHelp_Title {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchHelp.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search nodes.
+        /// </summary>
+        public static string Text_Nodes_SearchWatermark {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current connections.
+        /// </summary>
+        public static string Text_Nodes_SortCurrentConnections {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortCurrentConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today&apos;s traffic.
+        /// </summary>
+        public static string Text_Nodes_SortDailyTraffic {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortDailyTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load percentage.
+        /// </summary>
+        public static string Text_Nodes_SortLoadPercent {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortLoadPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node ID.
+        /// </summary>
+        public static string Text_Nodes_SortNodeId {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortNodeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online tunnels.
+        /// </summary>
+        public static string Text_Nodes_SortOnlineTunnels {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortOnlineTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uptime.
+        /// </summary>
+        public static string Text_Nodes_SortUptime {
+            get {
+                return ResourceManager.GetString("Text.Nodes.SortUptime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /d:&lt;KEYWORD&gt; to search descriptions.
+        /// </summary>
+        public static string Text_NodesContainer_HelpDescSearch {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.HelpDescSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameters: search by name directly.
+        /// </summary>
+        public static string Text_NodesContainer_HelpNoParams {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.HelpNoParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /pd:&lt;PINYIN&gt; to search descriptions by pinyin.
+        /// </summary>
+        public static string Text_NodesContainer_HelpPinyinDesc {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.HelpPinyinDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /pn:&lt;PINYIN&gt; to search names by pinyin.
+        /// </summary>
+        public static string Text_NodesContainer_HelpPinyinName {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.HelpPinyinName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only high-traffic nodes.
+        /// </summary>
+        public static string Text_NodesContainer_OnlyHighTraffic {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.OnlyHighTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only non-overloaded nodes.
+        /// </summary>
+        public static string Text_NodesContainer_OnlyNotOverloaded {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.OnlyNotOverloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only site-buildable nodes.
+        /// </summary>
+        public static string Text_NodesContainer_OnlySiteBuildable {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.OnlySiteBuildable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using pinyin search will slow down searching and cause the program to appear frozen..
+        /// </summary>
+        public static string Text_NodesContainer_PerformanceWarningMessage {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.PerformanceWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Known Performance Warning.
+        /// </summary>
+        public static string Text_NodesContainer_PerformanceWarningTitle {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.PerformanceWarningTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string Text_NodesContainer_Region_All {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.Region_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HK, MO &amp; TW.
+        /// </summary>
+        public static string Text_NodesContainer_Region_HKMOTW {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.Region_HKMOTW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mainland China.
+        /// </summary>
+        public static string Text_NodesContainer_Region_MainlandChina {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.Region_MainlandChina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overseas.
+        /// </summary>
+        public static string Text_NodesContainer_Region_Overseas {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.Region_Overseas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Nodes.
+        /// </summary>
+        public static string Text_NodesContainer_SearchNodes {
+            get {
+                return ResourceManager.GetString("Text.NodesContainer.SearchNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connections: {0}.
+        /// </summary>
+        public static string Text_NodesMonitoring_ConnectionCountFormat {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.ConnectionCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descending.
+        /// </summary>
+        public static string Text_NodesMonitoring_Descending {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.Descending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load:.
+        /// </summary>
+        public static string Text_NodesMonitoring_Load {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} node(s) in total.
+        /// </summary>
+        public static string Text_NodesMonitoring_NodesCountFormat {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.NodesCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Nodes.
+        /// </summary>
+        public static string Text_NodesMonitoring_OnlineNodes {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.OnlineNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Tunnels.
+        /// </summary>
+        public static string Text_NodesMonitoring_OnlineTunnels {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.OnlineTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Users.
+        /// </summary>
+        public static string Text_NodesMonitoring_OnlineUsers {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.OnlineUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search nodes....
+        /// </summary>
+        public static string Text_NodesMonitoring_SearchNodes {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.SearchNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Inbound Traffic.
+        /// </summary>
+        public static string Text_NodesMonitoring_TotalInboundTraffic {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.TotalInboundTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Nodes.
+        /// </summary>
+        public static string Text_NodesMonitoring_TotalNodes {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.TotalNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Outbound Traffic.
+        /// </summary>
+        public static string Text_NodesMonitoring_TotalOutboundTraffic {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.TotalOutboundTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnels: {0}.
+        /// </summary>
+        public static string Text_NodesMonitoring_TunnelCountFormat {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.TunnelCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version: {0}.
+        /// </summary>
+        public static string Text_NodesMonitoring_VersionFormat {
+            get {
+                return ResourceManager.GetString("Text.NodesMonitoring.VersionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Published: {0}.
+        /// </summary>
+        public static string Text_Notice_PublishDate {
+            get {
+                return ResourceManager.GetString("Text.Notice.PublishDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance.
+        /// </summary>
+        public static string Text_Notice_TypeMaintenance {
+            get {
+                return ResourceManager.GetString("Text.Notice.TypeMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notice.
+        /// </summary>
+        public static string Text_Notice_TypeNotice {
+            get {
+                return ResourceManager.GetString("Text.Notice.TypeNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version.
+        /// </summary>
+        public static string Text_Notice_TypeUpdate {
+            get {
+                return ResourceManager.GetString("Text.Notice.TypeUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to read the file.
+        /// </summary>
+        public static string Text_Plugin_CannotReadFile {
+            get {
+                return ResourceManager.GetString("Text.Plugin.CannotReadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found.
+        /// </summary>
+        public static string Text_Plugin_FileNotFound {
+            get {
+                return ResourceManager.GetString("Text.Plugin.FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while reading the file.
+        /// </summary>
+        public static string Text_Plugin_ReadFileError {
+            get {
+                return ResourceManager.GetString("Text.Plugin.ReadFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author: .
+        /// </summary>
+        public static string Text_PluginList_AuthorPrefix {
+            get {
+                return ResourceManager.GetString("Text.PluginList.AuthorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to read the plugin file content..
+        /// </summary>
+        public static string Text_PluginList_CannotReadPluginContent {
+            get {
+                return ResourceManager.GetString("Text.PluginList.CannotReadPluginContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Uninstall.
+        /// </summary>
+        public static string Text_PluginList_ConfirmUninstallCaption {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ConfirmUninstallCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        public static string Text_PluginList_Disabled {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to download and install: {0}.
+        /// </summary>
+        public static string Text_PluginList_DownloadInstallFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.DownloadInstallFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Selected Plugins.
+        /// </summary>
+        public static string Text_PluginList_DownloadSelected {
+            get {
+                return ResourceManager.GetString("Text.PluginList.DownloadSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag and drop plugin files here.
+        /// </summary>
+        public static string Text_PluginList_DropPluginFileHere {
+            get {
+                return ResourceManager.GetString("Text.PluginList.DropPluginFileHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string Text_PluginList_Enabled {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to fetch the online plugin list.
+        /// </summary>
+        public static string Text_PluginList_FetchOnlineListFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.FetchOnlineListFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Functions: .
+        /// </summary>
+        public static string Text_PluginList_Functions {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Functions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully installed {0} plugin(s).
+        /// </summary>
+        public static string Text_PluginList_InstalledCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.InstalledCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully installed {0} online plugin(s).
+        /// </summary>
+        public static string Text_PluginList_InstalledOnlineCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.InstalledOnlineCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to install plugin: {0}.
+        /// </summary>
+        public static string Text_PluginList_InstallFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.InstallFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install Plugin.
+        /// </summary>
+        public static string Text_PluginList_InstallPlugin {
+            get {
+                return ResourceManager.GetString("Text.PluginList.InstallPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install Plugin(s).
+        /// </summary>
+        public static string Text_PluginList_InstallPluginTitle {
+            get {
+                return ResourceManager.GetString("Text.PluginList.InstallPluginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin list refreshed.
+        /// </summary>
+        public static string Text_PluginList_ListRefreshed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ListRefreshed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Plugins.
+        /// </summary>
+        public static string Text_PluginList_LocalPlugins {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LocalPlugins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No plugins.
+        /// </summary>
+        public static string Text_PluginList_NoPlugins {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoPlugins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the Install Plugin button above to add a YAML plugin file.
+        /// </summary>
+        public static string Text_PluginList_NoPluginsHint {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoPluginsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded {0} online plugin(s).
+        /// </summary>
+        public static string Text_PluginList_OnlineLoadedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.OnlineLoadedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Folder.
+        /// </summary>
+        public static string Text_PluginList_OpenFolder {
+            get {
+                return ResourceManager.GetString("Text.PluginList.OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin Market.
+        /// </summary>
+        public static string Text_PluginList_PluginMarket {
+            get {
+                return ResourceManager.GetString("Text.PluginList.PluginMarket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin source: {0}.
+        /// </summary>
+        public static string Text_PluginList_PluginSourceTitleFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.PluginSourceTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to read plugin YAML: {0}.
+        /// </summary>
+        public static string Text_PluginList_ReadYamlFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ReadYamlFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to refresh online plugins: {0}.
+        /// </summary>
+        public static string Text_PluginList_RefreshOnlineFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.RefreshOnlineFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Help.
+        /// </summary>
+        public static string Text_PluginList_SearchHelp {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /author:&lt;KEYWORD&gt; to search authors.
+        /// </summary>
+        public static string Text_PluginList_SearchHelpAuthor {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All parameters are case-insensitive..
+        /// </summary>
+        public static string Text_PluginList_SearchHelpCaseInsensitive {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpCaseInsensitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /desc:&lt;KEYWORD&gt; to search descriptions.
+        /// </summary>
+        public static string Text_PluginList_SearchHelpDesc {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /id:&lt;KEYWORD&gt; to search IDs.
+        /// </summary>
+        public static string Text_PluginList_SearchHelpId {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter /name:&lt;KEYWORD&gt; to search names.
+        /// </summary>
+        public static string Text_PluginList_SearchHelpName {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parameters: directly search plugins whose ID/name/author contains the entered text.
+        /// </summary>
+        public static string Text_PluginList_SearchHelpNoParams {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchHelpNoParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search plugins.
+        /// </summary>
+        public static string Text_PluginList_SearchPlugins {
+            get {
+                return ResourceManager.GetString("Text.PluginList.SearchPlugins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable/Disable.
+        /// </summary>
+        public static string Text_PluginList_ToggleEnable {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ToggleEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Triggers: .
+        /// </summary>
+        public static string Text_PluginList_Triggers {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Triggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uninstall.
+        /// </summary>
+        public static string Text_PluginList_Uninstall {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Uninstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to uninstall plugin &apos;{0}&apos;?
+        ///
+        ///This operation will delete the plugin file and cannot be undone..
+        /// </summary>
+        public static string Text_PluginList_UninstallConfirmFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UninstallConfirmFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin uninstalled.
+        /// </summary>
+        public static string Text_PluginList_Uninstalled {
+            get {
+                return ResourceManager.GetString("Text.PluginList.Uninstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to uninstall plugin: {0}.
+        /// </summary>
+        public static string Text_PluginList_UninstallFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UninstallFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Source.
+        /// </summary>
+        public static string Text_PluginList_ViewSource {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ViewSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YAML Plugin Files.
+        /// </summary>
+        public static string Text_PluginList_YamlPluginFiles {
+            get {
+                return ResourceManager.GetString("Text.PluginList.YamlPluginFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Closed.
+        /// </summary>
+        public static string Text_PortScan_Closed {
+            get {
+                return ResourceManager.GetString("Text.PortScan.Closed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the target IP address.
+        /// </summary>
+        public static string Text_PortScan_EnterTargetIp {
+            get {
+                return ResourceManager.GetString("Text.PortScan.EnterTargetIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string Text_PortScan_Open {
+            get {
+                return ResourceManager.GetString("Text.PortScan.Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port {0} copied to clipboard.
+        /// </summary>
+        public static string Text_PortScan_PortCopiedFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.PortCopiedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port numbers must be numeric.
+        /// </summary>
+        public static string Text_PortScan_PortMustBeNumber {
+            get {
+                return ResourceManager.GetString("Text.PortScan.PortMustBeNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port numbers must be between 1-65535.
+        /// </summary>
+        public static string Text_PortScan_PortRange {
+            get {
+                return ResourceManager.GetString("Text.PortScan.PortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port {0} selected.
+        /// </summary>
+        public static string Text_PortScan_PortSelectedFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.PortSelectedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick scan completed, found {0} possible MC port(s).
+        /// </summary>
+        public static string Text_PortScan_QuickScanCompletedFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.QuickScanCompletedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick scanning common MC ports....
+        /// </summary>
+        public static string Text_PortScan_QuickScanning {
+            get {
+                return ResourceManager.GetString("Text.PortScan.QuickScanning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready.
+        /// </summary>
+        public static string Text_PortScan_Ready {
+            get {
+                return ResourceManager.GetString("Text.PortScan.Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan cancelled.
+        /// </summary>
+        public static string Text_PortScan_ScanCancelled {
+            get {
+                return ResourceManager.GetString("Text.PortScan.ScanCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan completed, found {0} open port(s).
+        /// </summary>
+        public static string Text_PortScan_ScanCompletedFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.ScanCompletedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan error: {0}.
+        /// </summary>
+        public static string Text_PortScan_ScanErrorFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.ScanErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanned {0}/{1} ports.
+        /// </summary>
+        public static string Text_PortScan_ScannedProgressFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScan.ScannedProgressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanning....
+        /// </summary>
+        public static string Text_PortScan_Scanning {
+            get {
+                return ResourceManager.GetString("Text.PortScan.Scanning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start port cannot be greater than end port.
+        /// </summary>
+        public static string Text_PortScan_StartGreaterEnd {
+            get {
+                return ResourceManager.GetString("Text.PortScan.StartGreaterEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping scan....
+        /// </summary>
+        public static string Text_PortScan_StoppingScan {
+            get {
+                return ResourceManager.GetString("Text.PortScan.StoppingScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Results.
+        /// </summary>
+        public static string Text_PortScanner_ClearResults {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.ClearResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common Ports.
+        /// </summary>
+        public static string Text_PortScanner_CommonPorts {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.CommonPorts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Selected Port.
+        /// </summary>
+        public static string Text_PortScanner_CopySelectedPort {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.CopySelectedPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End port.
+        /// </summary>
+        public static string Text_PortScanner_EndPort {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.EndPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Localhost.
+        /// </summary>
+        public static string Text_PortScanner_Localhost {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.Localhost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port: {0}.
+        /// </summary>
+        public static string Text_PortScanner_PortFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.PortFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port Range:.
+        /// </summary>
+        public static string Text_PortScanner_PortRange {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.PortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Scan MC Ports.
+        /// </summary>
+        public static string Text_PortScanner_QuickScan {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.QuickScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ({0} open port(s) in total).
+        /// </summary>
+        public static string Text_PortScanner_ResultCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.ResultCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan Results.
+        /// </summary>
+        public static string Text_PortScanner_ScanResults {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.ScanResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan Settings.
+        /// </summary>
+        public static string Text_PortScanner_ScanSettings {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.ScanSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start port.
+        /// </summary>
+        public static string Text_PortScanner_StartPort {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.StartPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Scan.
+        /// </summary>
+        public static string Text_PortScanner_StartScan {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.StartScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Scan.
+        /// </summary>
+        public static string Text_PortScanner_StopScan {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.StopScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target IP:.
+        /// </summary>
+        public static string Text_PortScanner_TargetIp {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.TargetIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g., 127.0.0.1.
+        /// </summary>
+        public static string Text_PortScanner_TargetIpPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.TargetIpPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MC Port Scanner.
+        /// </summary>
+        public static string Text_PortScanner_Title {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use This Port.
+        /// </summary>
+        public static string Text_PortScanner_UseThisPort {
+            get {
+                return ResourceManager.GetString("Text.PortScanner.UseThisPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Batch Delete.
+        /// </summary>
+        public static string Text_Proxy_BatchDelete {
+            get {
+                return ResourceManager.GetString("Text.Proxy.BatchDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Batch Disable.
+        /// </summary>
+        public static string Text_Proxy_BatchDisable {
+            get {
+                return ResourceManager.GetString("Text.Proxy.BatchDisable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Batch Enable.
+        /// </summary>
+        public static string Text_Proxy_BatchEnable {
+            get {
+                return ResourceManager.GetString("Text.Proxy.BatchEnable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Batch Launch.
+        /// </summary>
+        public static string Text_Proxy_BatchLaunch {
+            get {
+                return ResourceManager.GetString("Text.Proxy.BatchLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Selection.
+        /// </summary>
+        public static string Text_Proxy_ClearSelection {
+            get {
+                return ResourceManager.GetString("Text.Proxy.ClearSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailed Description.
+        /// </summary>
+        public static string Text_Proxy_DetailedDescription {
+            get {
+                return ResourceManager.GetString("Text.Proxy.DetailedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download ME Frp Client.
+        /// </summary>
+        public static string Text_Proxy_DownloadMEFClient {
+            get {
+                return ResourceManager.GetString("Text.Proxy.DownloadMEFClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Proxy Wizard.
+        /// </summary>
+        public static string Text_Proxy_Guide_Title {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to the Create Proxy Wizard. Please select the service you want to map..
+        /// </summary>
+        public static string Text_Proxy_Guide_Welcome {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expert.
+        /// </summary>
+        public static string Text_Proxy_Mode_Expert {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Mode.Expert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guided.
+        /// </summary>
+        public static string Text_Proxy_Mode_Guide {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Mode.Guide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map View.
+        /// </summary>
+        public static string Text_Proxy_Mode_Jiahao {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Mode.Jiahao", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string Text_Proxy_PageLoading {
+            get {
+                return ResourceManager.GetString("Text.Proxy.PageLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} tunnel(s) selected.
+        /// </summary>
+        public static string Text_Proxy_SelectedCount {
+            get {
+                return ResourceManager.GetString("Text.Proxy.SelectedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set config file.
+        /// </summary>
+        public static string Text_Proxy_SetConfig {
+            get {
+                return ResourceManager.GetString("Text.Proxy.SetConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear config file.
+        /// </summary>
+        public static string Text_Proxy_UnsetConfig {
+            get {
+                return ResourceManager.GetString("Text.Proxy.UnsetConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom center.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_BottomCenter {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.BottomCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom left.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_BottomLeft {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.BottomLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom right.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_BottomRight {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.BottomRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top center.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_TopCenter {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.TopCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top left.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_TopLeft {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.TopLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top right.
+        /// </summary>
+        public static string Text_ProxyFloat_Position_TopRight {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Position.TopRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh traffic.
+        /// </summary>
+        public static string Text_ProxyFloat_RefreshTraffic {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.RefreshTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window position.
+        /// </summary>
+        public static string Text_ProxyFloat_WindowPosition {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.WindowPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the window position of the monitor bar.
+        /// </summary>
+        public static string Text_ProxyFloat_WindowPositionDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.WindowPositionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Tunnels.
+        /// </summary>
+        public static string Text_ProxyFloat_WindowTitle {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate Files.
+        /// </summary>
+        public static string Text_ProxySSL_CertFiles {
+            get {
+                return ResourceManager.GetString("Text.ProxySSL.CertFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private Key Files.
+        /// </summary>
+        public static string Text_ProxySSL_KeyFiles {
+            get {
+                return ResourceManager.GetString("Text.ProxySSL.KeyFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a file.
+        /// </summary>
+        public static string Text_ProxySSL_SelectFileTitle {
+            get {
+                return ResourceManager.GetString("Text.ProxySSL.SelectFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Settings.
+        /// </summary>
+        public static string Text_Settings_Account {
+            get {
+                return ResourceManager.GetString("Text.Settings.Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set account-related options.
+        /// </summary>
+        public static string Text_Settings_AccountDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AccountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Settings.
+        /// </summary>
+        public static string Text_Settings_Advanced {
+            get {
+                return ResourceManager.GetString("Text.Settings.Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes to the following settings may lead to instability or crashes. Only proceed if you understand these options..
+        /// </summary>
+        public static string Text_Settings_Advanced_Caution_Message {
+            get {
+                return ResourceManager.GetString("Text.Settings.Advanced.Caution.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modify the software’s advanced settings..
+        /// </summary>
+        public static string Text_Settings_Advanced_Description {
+            get {
+                return ResourceManager.GetString("Text.Settings.Advanced.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes to these settings may be risky. Operate with care..
+        /// </summary>
+        public static string Text_Settings_Advanced_Warning_Message {
+            get {
+                return ResourceManager.GetString("Text.Settings.Advanced.Warning.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string Text_Settings_Animation_Off {
+            get {
+                return ResourceManager.GetString("Text.Settings.Animation.Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reduced.
+        /// </summary>
+        public static string Text_Settings_Animation_Reduced {
+            get {
+                return ResourceManager.GetString("Text.Settings.Animation.Reduced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        public static string Text_Settings_Animation_Standard {
+            get {
+                return ResourceManager.GetString("Text.Settings.Animation.Standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Animation level.
+        /// </summary>
+        public static string Text_Settings_AnimationLevel {
+            get {
+                return ResourceManager.GetString("Text.Settings.AnimationLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjusts how rich the entrance and transition animations are. Turning animations off can improve responsiveness..
+        /// </summary>
+        public static string Text_Settings_AnimationLevelDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AnimationLevelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string Text_Settings_Appearance {
+            get {
+                return ResourceManager.GetString("Text.Settings.Appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customize the appearance of the program.
+        /// </summary>
+        public static string Text_Settings_AppearanceDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AppearanceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-launch some tunnels on startup.
+        /// </summary>
+        public static string Text_Settings_AutoLaunch {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set which tunnels to auto-launch on startup. Note: &quot;startup&quot; here means software startup..
+        /// </summary>
+        public static string Text_Settings_AutoLaunchDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoLaunchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Login.
+        /// </summary>
+        public static string Text_Settings_AutoLogin {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set to log in automatically when the software starts..
+        /// </summary>
+        public static string Text_Settings_AutoLoginDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoLoginDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Sign-in.
+        /// </summary>
+        public static string Text_Settings_AutoSignIn {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoSignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set to sign in automatically when the software starts..
+        /// </summary>
+        public static string Text_Settings_AutoSignInDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoSignInDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start on Boot.
+        /// </summary>
+        public static string Text_Settings_AutoStart {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-start entry added successfully.
+        /// </summary>
+        public static string Text_Settings_AutoStartAdded {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoStartAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to change auto-start settings.
+        /// </summary>
+        public static string Text_Settings_AutoStartChangeFailed {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoStartChangeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set whether the software starts on boot. Note: &quot;boot&quot; here means user sign-in..
+        /// </summary>
+        public static string Text_Settings_AutoStartDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoStartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-start entry removed successfully.
+        /// </summary>
+        public static string Text_Settings_AutoStartRemoved {
+            get {
+                return ResourceManager.GetString("Text.Settings.AutoStartRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Settings.
+        /// </summary>
+        public static string Text_Settings_Background {
+            get {
+                return ResourceManager.GetString("Text.Settings.Background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the stretch mode of the window background.
+        /// </summary>
+        public static string Text_Settings_BackgroundDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.BackgroundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browser Validation.
+        /// </summary>
+        public static string Text_Settings_Captcha_Explicit {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.Explicit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opens the validation page in a browser and requires manually copying the result. Friendly to Arm processors..
+        /// </summary>
+        public static string Text_Settings_Captcha_ExplicitDesc {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.ExplicitDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Recommended) Browser Validation.
+        /// </summary>
+        public static string Text_Settings_Captcha_ExplicitRecommended {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.ExplicitRecommended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Implicit Validation.
+        /// </summary>
+        public static string Text_Settings_Captcha_Implicit {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.Implicit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validates within the app with no extra steps. Friendly to x64 processors, but may take a long time on Arm-based processors..
+        /// </summary>
+        public static string Text_Settings_Captcha_ImplicitDesc {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.ImplicitDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Recommended) Implicit Validation.
+        /// </summary>
+        public static string Text_Settings_Captcha_ImplicitRecommended {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.ImplicitRecommended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Recommended) .
+        /// </summary>
+        public static string Text_Settings_Captcha_RecommendedPrefix {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.RecommendedPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown mode.
+        /// </summary>
+        public static string Text_Settings_Captcha_UnknownMode {
+            get {
+                return ResourceManager.GetString("Text.Settings.Captcha.UnknownMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CAPTCHA Mode.
+        /// </summary>
+        public static string Text_Settings_CaptchaMode {
+            get {
+                return ResourceManager.GetString("Text.Settings.CaptchaMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the CAPTCHA method when signing in..
+        /// </summary>
+        public static string Text_Settings_CaptchaModeDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.CaptchaModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        public static string Text_Settings_Custom {
+            get {
+                return ResourceManager.GetString("Text.Settings.Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customize &quot;Tunnel Monitor&quot; bar.
+        /// </summary>
+        public static string Text_Settings_CustomProxyMonitorBar {
+            get {
+                return ResourceManager.GetString("Text.Settings.CustomProxyMonitorBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to days.
+        /// </summary>
+        public static string Text_Settings_Days {
+            get {
+                return ResourceManager.GetString("Text.Settings.Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do not show request responses.
+        /// </summary>
+        public static string Text_Settings_DoNotShowResponse {
+            get {
+                return ResourceManager.GetString("Text.Settings.DoNotShowResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set whether the software should show request responses in the UI. Note: this option only applies to successful requests..
+        /// </summary>
+        public static string Text_Settings_DoNotShowResponseDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.DoNotShowResponseDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Settings.
+        /// </summary>
+        public static string Text_Settings_Download {
+            get {
+                return ResourceManager.GetString("Text.Settings.Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the download options of the software.
+        /// </summary>
+        public static string Text_Settings_DownloadDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.DownloadDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ME Frp Client Download Source.
+        /// </summary>
+        public static string Text_Settings_DownloadSource {
+            get {
+                return ResourceManager.GetString("Text.Settings.DownloadSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Official source.
+        /// </summary>
+        public static string Text_Settings_DownloadSource_Official {
+            get {
+                return ResourceManager.GetString("Text.Settings.DownloadSource.Official", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TPCA (default).
+        /// </summary>
+        public static string Text_Settings_DownloadSource_TPCA {
+            get {
+                return ResourceManager.GetString("Text.Settings.DownloadSource.TPCA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the ME Frp client download source. Default is the TPCA source..
+        /// </summary>
+        public static string Text_Settings_DownloadSourceDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.DownloadSourceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string Text_Settings_Engine_Default {
+            get {
+                return ResourceManager.GetString("Text.Settings.Engine.Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GPU memory allocation.
+        /// </summary>
+        public static string Text_Settings_GpuMemory {
+            get {
+                return ResourceManager.GetString("Text.Settings.GpuMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper limit of the GPU resource cache for rendering. A larger cache reduces repeated reloading. Takes effect after a restart..
+        /// </summary>
+        public static string Text_Settings_GpuMemoryDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.GpuMemoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do not disable tunnels when force-kicking them.
+        /// </summary>
+        public static string Text_Settings_KickWithoutDisable {
+            get {
+                return ResourceManager.GetString("Text.Settings.KickWithoutDisable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ME Frp website disables tunnels when force-kicking them. With this option, we can re-enable tunnels after force-kicking..
+        /// </summary>
+        public static string Text_Settings_KickWithoutDisableDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.KickWithoutDisableDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Text_Settings_Language {
+            get {
+                return ResourceManager.GetString("Text.Settings.Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the software’s display language..
+        /// </summary>
+        public static string Text_Settings_LanguageDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Linux, sh is always used in default mode to ensure compatibility..
+        /// </summary>
+        public static string Text_Settings_LinuxShNotice {
+            get {
+                return ResourceManager.GetString("Text.Settings.LinuxShNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Expiration Days.
+        /// </summary>
+        public static string Text_Settings_LoginExpireDays {
+            get {
+                return ResourceManager.GetString("Text.Settings.LoginExpireDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the login expiration days. You need to sign in again after changing this..
+        /// </summary>
+        public static string Text_Settings_LoginExpireDaysDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.LoginExpireDaysDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low latency rendering.
+        /// </summary>
+        public static string Text_Settings_LowLatency {
+            get {
+                return ResourceManager.GetString("Text.Settings.LowLatency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses a low-latency swap chain to reduce frame latency and make animations smoother, but disables some window composition effects. Takes effect after a restart..
+        /// </summary>
+        public static string Text_Settings_LowLatencyDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.LowLatencyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material.
+        /// </summary>
+        public static string Text_Settings_Material {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acrylic.
+        /// </summary>
+        public static string Text_Settings_Material_Acrylic {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material.Acrylic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blur.
+        /// </summary>
+        public static string Text_Settings_Material_Blur {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material.Blur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mica.
+        /// </summary>
+        public static string Text_Settings_Material_Mica {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material.Mica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Text_Settings_Material_None {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material.None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transparent.
+        /// </summary>
+        public static string Text_Settings_Material_Transparent {
+            get {
+                return ResourceManager.GetString("Text.Settings.Material.Transparent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the transparency effect and material of the window background.
+        /// </summary>
+        public static string Text_Settings_MaterialDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.MaterialDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize to system tray on close instead of closing directly.
+        /// </summary>
+        public static string Text_Settings_MinimizeToTray {
+            get {
+                return ResourceManager.GetString("Text.Settings.MinimizeToTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabling this option lets the software run in the background..
+        /// </summary>
+        public static string Text_Settings_MinimizeToTrayDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.MinimizeToTrayDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Settings.
+        /// </summary>
+        public static string Text_Settings_Other {
+            get {
+                return ResourceManager.GetString("Text.Settings.Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set some miscellaneous options..
+        /// </summary>
+        public static string Text_Settings_OtherDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.OtherDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable multi-threaded download.
+        /// </summary>
+        public static string Text_Settings_ParallelDownload {
+            get {
+                return ResourceManager.GetString("Text.Settings.ParallelDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabling multi-threaded download can improve download speed to some extent..
+        /// </summary>
+        public static string Text_Settings_ParallelDownloadDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.ParallelDownloadDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multi-threaded Download Settings.
+        /// </summary>
+        public static string Text_Settings_ParallelDownloadSettings {
+            get {
+                return ResourceManager.GetString("Text.Settings.ParallelDownloadSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the number of threads for multi-threaded download..
+        /// </summary>
+        public static string Text_Settings_ParallelDownloadSettingsDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.ParallelDownloadSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Tunnel Monitor&quot; bar [BETA].
+        /// </summary>
+        public static string Text_Settings_ProxyMonitorBar {
+            get {
+                return ResourceManager.GetString("Text.Settings.ProxyMonitorBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Tunnel Monitor&quot; is a new feature we launched that can monitor the inbound and outbound traffic of running tunnels..
+        /// </summary>
+        public static string Text_Settings_ProxyMonitorBarDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.ProxyMonitorBarDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string Text_Settings_Rendering_Auto {
+            get {
+                return ResourceManager.GetString("Text.Settings.Rendering.Auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software rendering.
+        /// </summary>
+        public static string Text_Settings_Rendering_Software {
+            get {
+                return ResourceManager.GetString("Text.Settings.Rendering.Software", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rendering mode.
+        /// </summary>
+        public static string Text_Settings_RenderingMode {
+            get {
+                return ResourceManager.GetString("Text.Settings.RenderingMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selects the graphics API used to render the interface. Takes effect after a restart..
+        /// </summary>
+        public static string Text_Settings_RenderingModeDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.RenderingModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes will take effect after restarting the application.
+        /// </summary>
+        public static string Text_Settings_RestartRequiredNotice {
+            get {
+                return ResourceManager.GetString("Text.Settings.RestartRequiredNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set tunnels to launch.
+        /// </summary>
+        public static string Text_Settings_SetTunnelsToLaunch {
+            get {
+                return ResourceManager.GetString("Text.Settings.SetTunnelsToLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup Settings.
+        /// </summary>
+        public static string Text_Settings_Startup {
+            get {
+                return ResourceManager.GetString("Text.Settings.Startup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the startup options of the program.
+        /// </summary>
+        public static string Text_Settings_StartupDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.StartupDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill.
+        /// </summary>
+        public static string Text_Settings_Stretch_Fill {
+            get {
+                return ResourceManager.GetString("Text.Settings.Stretch.Fill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string Text_Settings_Stretch_None {
+            get {
+                return ResourceManager.GetString("Text.Settings.Stretch.None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uniform.
+        /// </summary>
+        public static string Text_Settings_Stretch_Uniform {
+            get {
+                return ResourceManager.GetString("Text.Settings.Stretch.Uniform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uniform To Fill.
+        /// </summary>
+        public static string Text_Settings_Stretch_UniformToFill {
+            get {
+                return ResourceManager.GetString("Text.Settings.Stretch.UniformToFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal Engine.
+        /// </summary>
+        public static string Text_Settings_TerminalEngine {
+            get {
+                return ResourceManager.GetString("Text.Settings.TerminalEngine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set which terminal engine the software should use. In some cases, a specific terminal engine may cause the software to crash..
+        /// </summary>
+        public static string Text_Settings_TerminalEngineDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.TerminalEngineDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal Settings.
+        /// </summary>
+        public static string Text_Settings_TerminalSettings {
+            get {
+                return ResourceManager.GetString("Text.Settings.TerminalSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the default CLI of the software..
+        /// </summary>
+        public static string Text_Settings_TerminalSettingsDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.TerminalSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Text_Settings_Theme {
+            get {
+                return ResourceManager.GetString("Text.Settings.Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Text_Settings_Theme_Dark {
+            get {
+                return ResourceManager.GetString("Text.Settings.Theme.Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string Text_Settings_Theme_Light {
+            get {
+                return ResourceManager.GetString("Text.Settings.Theme.Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow System.
+        /// </summary>
+        public static string Text_Settings_Theme_System {
+            get {
+                return ResourceManager.GetString("Text.Settings.Theme.System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the color theme of the program.
+        /// </summary>
+        public static string Text_Settings_ThemeDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.ThemeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to threads.
+        /// </summary>
+        public static string Text_Settings_Threads {
+            get {
+                return ResourceManager.GetString("Text.Settings.Threads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many threads may reduce download speed. The recommended number of threads is 8~32..
+        /// </summary>
+        public static string Text_Settings_TooManyThreadsWarning {
+            get {
+                return ResourceManager.GetString("Text.Settings.TooManyThreadsWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel Settings.
+        /// </summary>
+        public static string Text_Settings_TunnelSettings {
+            get {
+                return ResourceManager.GetString("Text.Settings.TunnelSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set tunnel-related options.
+        /// </summary>
+        public static string Text_Settings_TunnelSettingsDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.TunnelSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applying theme....
+        /// </summary>
+        public static string Text_Splash_ApplyingTheme {
+            get {
+                return ResourceManager.GetString("Text.Splash.ApplyingTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate File.
+        /// </summary>
+        public static string Text_SSL_CertFile {
+            get {
+                return ResourceManager.GetString("Text.SSL.CertFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SSL certificate file for https tunnels..
+        /// </summary>
+        public static string Text_SSL_CertFileDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.CertFileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate file, extension usually .crt or .pem.
+        /// </summary>
+        public static string Text_SSL_CertFileWatermark {
+            get {
+                return ResourceManager.GetString("Text.SSL.CertFileWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel Configuration File.
+        /// </summary>
+        public static string Text_SSL_ConfigFile {
+            get {
+                return ResourceManager.GetString("Text.SSL.ConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring SSL certificates for https tunnels requires launching with a configuration file..
+        /// </summary>
+        public static string Text_SSL_ConfigFileDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.ConfigFileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access Domain.
+        /// </summary>
+        public static string Text_SSL_Domain {
+            get {
+                return ResourceManager.GetString("Text.SSL.Domain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the access domain of the tunnel..
+        /// </summary>
+        public static string Text_SSL_DomainDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.DomainDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http(s) Tunnel Settings.
+        /// </summary>
+        public static string Text_SSL_HttpTunnelSettings {
+            get {
+                return ResourceManager.GetString("Text.SSL.HttpTunnelSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private Key File.
+        /// </summary>
+        public static string Text_SSL_KeyFile {
+            get {
+                return ResourceManager.GetString("Text.SSL.KeyFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The private key file for https tunnels..
+        /// </summary>
+        public static string Text_SSL_KeyFileDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.KeyFileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private key file, extension usually .key.
+        /// </summary>
+        public static string Text_SSL_KeyFileWatermark {
+            get {
+                return ResourceManager.GetString("Text.SSL.KeyFileWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Address.
+        /// </summary>
+        public static string Text_SSL_LocalAddress {
+            get {
+                return ResourceManager.GetString("Text.SSL.LocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The local address to penetrate..
+        /// </summary>
+        public static string Text_SSL_LocalAddressDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.LocalAddressDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local address, usually x.x.x.x:xxx.
+        /// </summary>
+        public static string Text_SSL_LocalAddressWatermark {
+            get {
+                return ResourceManager.GetString("Text.SSL.LocalAddressWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Name.
+        /// </summary>
+        public static string Text_SSL_ProxyName {
+            get {
+                return ResourceManager.GetString("Text.SSL.ProxyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The proxy name is the unique identifier of this tunnel service, used to distinguish different proxy configurations..
+        /// </summary>
+        public static string Text_SSL_ProxyNameDescription {
+            get {
+                return ResourceManager.GetString("Text.SSL.ProxyNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSL Configuration.
+        /// </summary>
+        public static string Text_SSL_Title {
+            get {
+                return ResourceManager.GetString("Text.SSL.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to retrieve error information.
+        /// </summary>
+        public static string Text_Terminal_CannotGetErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.Terminal.CannotGetErrorInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check the network connection.
+        /// </summary>
+        public static string Text_Terminal_CheckNetworkConnection {
+            get {
+                return ResourceManager.GetString("Text.Terminal.CheckNetworkConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Output.
+        /// </summary>
+        public static string Text_Terminal_ClearOutput {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ClearOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Current Tab.
+        /// </summary>
+        public static string Text_Terminal_CloseTab {
+            get {
+                return ResourceManager.GetString("Text.Terminal.CloseTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter command....
+        /// </summary>
+        public static string Text_Terminal_CommandWatermark {
+            get {
+                return ResourceManager.GetString("Text.Terminal.CommandWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Console {0}.
+        /// </summary>
+        public static string Text_Terminal_ConsoleTabFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ConsoleTabFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string Text_Terminal_DefaultTab {
+            get {
+                return ResourceManager.GetString("Text.Terminal.DefaultTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error details.
+        /// </summary>
+        public static string Text_Terminal_ErrorDetailsTitle {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ErrorDetailsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to read error output: {0}.
+        /// </summary>
+        public static string Text_Terminal_ErrorOutputReadFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ErrorOutputReadFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to force terminate: {0}.
+        /// </summary>
+        public static string Text_Terminal_ForceTerminateFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ForceTerminateFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave empty if unsure; enter cancel to exit
+        ///Available variables:
+        ///{mefrpc} - ME Frp Client executable path (including file name)
+        ///{mefrpcp} - ME Frp Client executable directory
+        ///{startup} - Program startup directory.
+        /// </summary>
+        public static string Text_Terminal_InputPrompt {
+            get {
+                return ResourceManager.GetString("Text.Terminal.InputPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter command line and arguments.
+        /// </summary>
+        public static string Text_Terminal_InputTitle {
+            get {
+                return ResourceManager.GetString("Text.Terminal.InputTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Console.
+        /// </summary>
+        public static string Text_Terminal_NewConsole {
+            get {
+                return ResourceManager.GetString("Text.Terminal.NewConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no active process to interrupt.
+        /// </summary>
+        public static string Text_Terminal_NoActiveProcess {
+            get {
+                return ResourceManager.GetString("Text.Terminal.NoActiveProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process exited, exit code: {0}.
+        /// </summary>
+        public static string Text_Terminal_ProcessExitedCodeFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ProcessExitedCodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Terminal] Process exited with code: {0}.
+        /// </summary>
+        public static string Text_Terminal_ProcessExitedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ProcessExitedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process was forcibly terminated.
+        /// </summary>
+        public static string Text_Terminal_ProcessForceTerminated {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ProcessForceTerminated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abnormal process state: {0}.
+        /// </summary>
+        public static string Text_Terminal_ProcessStateAbnormalFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ProcessStateAbnormalFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process terminated.
+        /// </summary>
+        public static string Text_Terminal_ProcessTerminated {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ProcessTerminated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Error] Failed to read error output: {0}.
+        /// </summary>
+        public static string Text_Terminal_ReadErrorFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ReadErrorFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Error] Failed to read output: {0}.
+        /// </summary>
+        public static string Text_Terminal_ReadOutputFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ReadOutputFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to send command: {0}.
+        /// </summary>
+        public static string Text_Terminal_SendCommandFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.SendCommandFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Ctrl+C Signal (terminate current operation).
+        /// </summary>
+        public static string Text_Terminal_SendCtrlC {
+            get {
+                return ResourceManager.GetString("Text.Terminal.SendCtrlC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to send interrupt signal: {0}.
+        /// </summary>
+        public static string Text_Terminal_SendInterruptFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.SendInterruptFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Terminal] Shell started: {0}.
+        /// </summary>
+        public static string Text_Terminal_ShellStartedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ShellStartedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Error] Failed to start terminal: {0}.
+        /// </summary>
+        public static string Text_Terminal_StartFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.StartFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal error: {0}.
+        /// </summary>
+        public static string Text_Terminal_TerminalErrorFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.TerminalErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to terminate process, exit code: {0}.
+        /// </summary>
+        public static string Text_Terminal_TerminateFailedCodeFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.TerminateFailedCodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to terminate process: {0}.
+        /// </summary>
+        public static string Text_Terminal_TerminateFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Terminal.TerminateFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process termination timed out.
+        /// </summary>
+        public static string Text_Terminal_TerminateTimeout {
+            get {
+                return ResourceManager.GetString("Text.Terminal.TerminateTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting files....
+        /// </summary>
+        public static string Text_Terminal_Unpacking {
+            get {
+                return ResourceManager.GetString("Text.Terminal.Unpacking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Details.
+        /// </summary>
+        public static string Text_Terminal_ViewDetails {
+            get {
+                return ResourceManager.GetString("Text.Terminal.ViewDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit Console Documentation.
+        /// </summary>
+        public static string Text_Terminal_VisitConsoleDoc {
+            get {
+                return ResourceManager.GetString("Text.Terminal.VisitConsoleDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit ME Frp Documentation.
+        /// </summary>
+        public static string Text_Terminal_VisitMEFDoc {
+            get {
+                return ResourceManager.GetString("Text.Terminal.VisitMEFDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accent Color Animation.
+        /// </summary>
+        public static string Text_ThemeEditor_AccentAnimation {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.AccentAnimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Color.
+        /// </summary>
+        public static string Text_ThemeEditor_AddColor {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.AddColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author:.
+        /// </summary>
+        public static string Text_ThemeEditor_Author {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Color:.
+        /// </summary>
+        public static string Text_ThemeEditor_BackgroundColor {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.BackgroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Image:.
+        /// </summary>
+        public static string Text_ThemeEditor_BackgroundImage {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.BackgroundImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Settings.
+        /// </summary>
+        public static string Text_ThemeEditor_BackgroundSettings {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.BackgroundSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic Information.
+        /// </summary>
+        public static string Text_ThemeEditor_BasicInfo {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.BasicInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string Text_ThemeEditor_Browse {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color Sequence (cycles from top to bottom).
+        /// </summary>
+        public static string Text_ThemeEditor_ColorSequence {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ColorSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color Value:.
+        /// </summary>
+        public static string Text_ThemeEditor_ColorValue {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ColorValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Font File.
+        /// </summary>
+        public static string Text_ThemeEditor_CustomFontFile {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.CustomFontFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom font: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_CustomFontFormat {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.CustomFontFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description:.
+        /// </summary>
+        public static string Text_ThemeEditor_Description {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration (seconds):.
+        /// </summary>
+        public static string Text_ThemeEditor_Duration {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:N2} s.
+        /// </summary>
+        public static string Text_ThemeEditor_DurationSeconds {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.DurationSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Color.
+        /// </summary>
+        public static string Text_ThemeEditor_EditColor {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.EditColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill Mode:.
+        /// </summary>
+        public static string Text_ThemeEditor_FillMode {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.FillMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font File:.
+        /// </summary>
+        public static string Text_ThemeEditor_FontFile {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.FontFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Files.
+        /// </summary>
+        public static string Text_ThemeEditor_FontFiles {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.FontFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font Settings.
+        /// </summary>
+        public static string Text_ThemeEditor_FontSettings {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.FontSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Background.
+        /// </summary>
+        public static string Text_ThemeEditor_ImageBackground {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ImageBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Files.
+        /// </summary>
+        public static string Text_ThemeEditor_ImageFiles {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ImageFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layer Opacity:.
+        /// </summary>
+        public static string Text_ThemeEditor_LayerOpacity {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.LayerOpacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load font file: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_LoadFontFailed {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.LoadFontFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load preview image: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_LoadPreviewImageFailed {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.LoadPreviewImageFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load theme: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_LoadThemeFailed {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.LoadThemeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Down.
+        /// </summary>
+        public static string Text_ThemeEditor_MoveDown {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.MoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Up.
+        /// </summary>
+        public static string Text_ThemeEditor_MoveUp {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.MoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Theme.
+        /// </summary>
+        public static string Text_ThemeEditor_NewTheme {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.NewTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No font selected.
+        /// </summary>
+        public static string Text_ThemeEditor_NoFontSelected {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.NoFontSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Background Image.
+        /// </summary>
+        public static string Text_ThemeEditor_PickBackgroundImage {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PickBackgroundImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Font File.
+        /// </summary>
+        public static string Text_ThemeEditor_PickFontFile {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PickFontFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Preview Image.
+        /// </summary>
+        public static string Text_ThemeEditor_PickPreviewImage {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PickPreviewImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset Colors:.
+        /// </summary>
+        public static string Text_ThemeEditor_PresetColors {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PresetColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview mode enabled; the original theme will be restored after restarting.
+        /// </summary>
+        public static string Text_ThemeEditor_PreviewEnabled {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PreviewEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview failed: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_PreviewFailed {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PreviewFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview Image:.
+        /// </summary>
+        public static string Text_ThemeEditor_PreviewImage {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PreviewImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The theme preview has been applied.
+        ///The original theme will be restored automatically after restart.
+        ///
+        ///Restart now?.
+        /// </summary>
+        public static string Text_ThemeEditor_PreviewRestartPrompt {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PreviewRestartPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview Theme.
+        /// </summary>
+        public static string Text_ThemeEditor_PreviewTheme {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.PreviewTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Color.
+        /// </summary>
+        public static string Text_ThemeEditor_RemoveColor {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.RemoveColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_SaveFailed {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Theme.
+        /// </summary>
+        public static string Text_ThemeEditor_SaveTheme {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SaveTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a color on the left to edit.
+        /// </summary>
+        public static string Text_ThemeEditor_SelectColorHint {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SelectColorHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Font:.
+        /// </summary>
+        public static string Text_ThemeEditor_SelectFont {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SelectFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Image.
+        /// </summary>
+        public static string Text_ThemeEditor_SelectImage {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SelectImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solid Color Background.
+        /// </summary>
+        public static string Text_ThemeEditor_SolidColorBackground {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SolidColorBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Font.
+        /// </summary>
+        public static string Text_ThemeEditor_SystemFont {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SystemFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System font: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_SystemFontFormat {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.SystemFontFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Name:.
+        /// </summary>
+        public static string Text_ThemeEditor_ThemeName {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ThemeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme saved to: {0}.
+        /// </summary>
+        public static string Text_ThemeEditor_ThemeSaved {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.ThemeSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Editor.
+        /// </summary>
+        public static string Text_ThemeEditor_Title {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Author.
+        /// </summary>
+        public static string Text_ThemeEditor_UnknownAuthor {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.UnknownAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version:.
+        /// </summary>
+        public static string Text_ThemeEditor_Version {
+            get {
+                return ResourceManager.GetString("Text.ThemeEditor.Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Selected.
+        /// </summary>
+        public static string Text_Themes_ApplySelected {
+            get {
+                return ResourceManager.GetString("Text.Themes.ApplySelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default theme has been restored. Please restart the app to apply..
+        /// </summary>
+        public static string Text_Themes_DefaultThemeRestored {
+            get {
+                return ResourceManager.GetString("Text.Themes.DefaultThemeRestored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete theme &apos;{0}&apos;?.
+        /// </summary>
+        public static string Text_Themes_DeleteConfirmFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.DeleteConfirmFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Selected.
+        /// </summary>
+        public static string Text_Themes_DeleteSelected {
+            get {
+                return ResourceManager.GetString("Text.Themes.DeleteSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download failed: {0}.
+        /// </summary>
+        public static string Text_Themes_DownloadFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.DownloadFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Selected.
+        /// </summary>
+        public static string Text_Themes_DownloadSelected {
+            get {
+                return ResourceManager.GetString("Text.Themes.DownloadSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Selected.
+        /// </summary>
+        public static string Text_Themes_EditSelected {
+            get {
+                return ResourceManager.GetString("Text.Themes.EditSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to fetch online themes: {0}.
+        /// </summary>
+        public static string Text_Themes_FetchOnlineFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.FetchOnlineFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Text_Themes_Import {
+            get {
+                return ResourceManager.GetString("Text.Themes.Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Importing theme {0}.
+        /// </summary>
+        public static string Text_Themes_ImportingThemeFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.ImportingThemeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Theme(s).
+        /// </summary>
+        public static string Text_Themes_ImportThemeTitle {
+            get {
+                return ResourceManager.GetString("Text.Themes.ImportThemeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Themes.
+        /// </summary>
+        public static string Text_Themes_LocalThemes {
+            get {
+                return ResourceManager.GetString("Text.Themes.LocalThemes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string Text_Themes_New {
+            get {
+                return ResourceManager.GetString("Text.Themes.New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online Themes.
+        /// </summary>
+        public static string Text_Themes_OnlineThemes {
+            get {
+                return ResourceManager.GetString("Text.Themes.OnlineThemes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Documentation.
+        /// </summary>
+        public static string Text_Themes_OpenDocs {
+            get {
+                return ResourceManager.GetString("Text.Themes.OpenDocs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Folder.
+        /// </summary>
+        public static string Text_Themes_OpenFolder {
+            get {
+                return ResourceManager.GetString("Text.Themes.OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to =====================
+        ///Version: {0}
+        ///Author: {1}
+        ///=====================
+        ///You can find the packaged theme file in {2}..
+        /// </summary>
+        public static string Text_Themes_PackageInfoFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.PackageInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Selected.
+        /// </summary>
+        public static string Text_Themes_PackageSelected {
+            get {
+                return ResourceManager.GetString("Text.Themes.PackageSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Packaging theme.
+        /// </summary>
+        public static string Text_Themes_PackagingTheme {
+            get {
+                return ResourceManager.GetString("Text.Themes.PackagingTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore Default.
+        /// </summary>
+        public static string Text_Themes_RestoreDefault {
+            get {
+                return ResourceManager.GetString("Text.Themes.RestoreDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore Default Theme.
+        /// </summary>
+        public static string Text_Themes_RestoreDefaultCaption {
+            get {
+                return ResourceManager.GetString("Text.Themes.RestoreDefaultCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to restore the default theme?
+        ///
+        ///This will delete the currently selected theme configuration file, and takes effect after restarting..
+        /// </summary>
+        public static string Text_Themes_RestoreDefaultConfirm {
+            get {
+                return ResourceManager.GetString("Text.Themes.RestoreDefaultConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to restore the default theme: {0}.
+        /// </summary>
+        public static string Text_Themes_RestoreDefaultFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.RestoreDefaultFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search....
+        /// </summary>
+        public static string Text_Themes_Search {
+            get {
+                return ResourceManager.GetString("Text.Themes.Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme applied.
+        /// </summary>
+        public static string Text_Themes_ThemeApplied {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme deleted.
+        /// </summary>
+        public static string Text_Themes_ThemeDeleted {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme download completed.
+        /// </summary>
+        public static string Text_Themes_ThemeDownloaded {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to download the theme.
+        /// </summary>
+        public static string Text_Themes_ThemeDownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeDownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Files.
+        /// </summary>
+        public static string Text_Themes_ThemeFiles {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme name: {0}.
+        /// </summary>
+        public static string Text_Themes_ThemeNameFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemeNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme packaging completed!.
+        /// </summary>
+        public static string Text_Themes_ThemePackageCompleted {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemePackageCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme packaged.
+        /// </summary>
+        public static string Text_Themes_ThemePackaged {
+            get {
+                return ResourceManager.GetString("Text.Themes.ThemePackaged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Settings.
+        /// </summary>
+        public static string Text_Themes_Title {
+            get {
+                return ResourceManager.GetString("Text.Themes.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting theme: {0}%.
+        /// </summary>
+        public static string Text_Themes_UnpackingFormat {
+            get {
+                return ResourceManager.GetString("Text.Themes.UnpackingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart required.
+        /// </summary>
+        public static string Text_Tips_NeedRestart {
+            get {
+                return ResourceManager.GetString("Text.Tips.NeedRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bar chart.
+        /// </summary>
+        public static string Text_Traffic_BarChart {
+            get {
+                return ResourceManager.GetString("Text.Traffic.BarChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inbound Traffic.
+        /// </summary>
+        public static string Text_Traffic_Inbound {
+            get {
+                return ResourceManager.GetString("Text.Traffic.Inbound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line chart.
+        /// </summary>
+        public static string Text_Traffic_LineChart {
+            get {
+                return ResourceManager.GetString("Text.Traffic.LineChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outbound Traffic.
+        /// </summary>
+        public static string Text_Traffic_Outbound {
+            get {
+                return ResourceManager.GetString("Text.Traffic.Outbound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last {0} days.
+        /// </summary>
+        public static string Text_Traffic_RecentDays {
+            get {
+                return ResourceManager.GetString("Text.Traffic.RecentDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Traffic.
+        /// </summary>
+        public static string Text_Traffic_Total {
+            get {
+                return ResourceManager.GetString("Text.Traffic.Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom (WIP): .
+        /// </summary>
+        public static string Text_Traffic_Zoom {
+            get {
+                return ResourceManager.GetString("Text.Traffic.Zoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load: .
+        /// </summary>
+        public static string Text_Tunnel_Load {
+            get {
+                return ResourceManager.GetString("Text.Tunnel.Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot connect to the local service.
+        /// </summary>
+        public static string Text_TunnelError_InfoCannotConnectLocal {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoCannotConnectLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to the node.
+        /// </summary>
+        public static string Text_TunnelError_InfoConnectNodeFailed {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoConnectNodeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user does not have permission to use this node.
+        /// </summary>
+        public static string Text_TunnelError_InfoNoNodePermission {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoNoNodePermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The port is not within the allowed range.
+        /// </summary>
+        public static string Text_TunnelError_InfoPortNotAllowed {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoPortNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic exhausted.
+        /// </summary>
+        public static string Text_TunnelError_InfoTrafficExhausted {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoTrafficExhausted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel is disabled.
+        /// </summary>
+        public static string Text_TunnelError_InfoTunnelDisabled {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoTunnelDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The node hosting the tunnel does not exist.
+        /// </summary>
+        public static string Text_TunnelError_InfoTunnelNodeNotExist {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoTunnelNodeNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel does not exist.
+        /// </summary>
+        public static string Text_TunnelError_InfoTunnelNotExist {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoTunnelNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel is online.
+        /// </summary>
+        public static string Text_TunnelError_InfoTunnelOnline {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.InfoTunnelOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the node is online.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckNodeOnline {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckNodeOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the node is reachable.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckNodeReachable {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckNodeReachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the user has permission to use this node.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckPermission {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the port is within the allowed range.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckPort {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the port is open.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckPortOpen {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckPortOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the service has been started.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckServiceStarted {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckServiceStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the traffic is exhausted.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckTraffic {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the tunnel exists.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckTunnelExists {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckTunnelExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the node hosting the tunnel exists.
+        /// </summary>
+        public static string Text_TunnelError_SolutionCheckTunnelNode {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionCheckTunnelNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If this was not you, please contact the administrator for assistance..
+        /// </summary>
+        public static string Text_TunnelError_SolutionContactAdmin {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionContactAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check whether the tunnel is disabled (it is disabled when the tunnel is forcibly taken offline), and re-enable it..
+        /// </summary>
+        public static string Text_TunnelError_SolutionTunnelDisabledDetail {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.SolutionTunnelDisabledDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are already on the latest version.
+        /// </summary>
+        public static string Text_Update_AlreadyLatest {
+            get {
+                return ResourceManager.GetString("Text.Update.AlreadyLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic updates are not yet supported on the current operating system. Please download the installer manually.
+        /// </summary>
+        public static string Text_Update_AutoUpdateNotSupported {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoUpdateNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to back up the configuration file. Please back it up manually.
+        /// </summary>
+        public static string Text_Update_BackupConfigFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.BackupConfigFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Text_Update_Changelog {
+            get {
+                return ResourceManager.GetString("Text.Update.Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release Preview Channel.
+        /// </summary>
+        public static string Text_Update_Channel_Preview {
+            get {
+                return ResourceManager.GetString("Text.Update.Channel.Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stable Channel.
+        /// </summary>
+        public static string Text_Update_Channel_Stable {
+            get {
+                return ResourceManager.GetString("Text.Update.Channel.Stable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string Text_Update_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Text.Update.CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking for updates.
+        /// </summary>
+        public static string Text_Update_Checking {
+            get {
+                return ResourceManager.GetString("Text.Update.Checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Compile Type.
+        /// </summary>
+        public static string Text_Update_CompileType {
+            get {
+                return ResourceManager.GetString("Text.Update.CompileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AOT (Precompiled).
+        /// </summary>
+        public static string Text_Update_CompileType_AOT {
+            get {
+                return ResourceManager.GetString("Text.Update.CompileType.AOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common.
+        /// </summary>
+        public static string Text_Update_CompileType_Common {
+            get {
+                return ResourceManager.GetString("Text.Update.CompileType.Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the compile type of the installer to download (AOT or Common). When the target type matches the current runtime type, the installer will not perform the automatic cleanup..
+        /// </summary>
+        public static string Text_Update_CompileTypeDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.CompileTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download and Install Update.
+        /// </summary>
+        public static string Text_Update_DownloadAndInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadAndInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update downloaded.
+        /// </summary>
+        public static string Text_Update_DownloadCompleted {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update downloaded! Click OK to open the folder containing the installer.
+        /// </summary>
+        public static string Text_Update_DownloadCompletedOpenDir {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadCompletedOpenDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading update.
+        /// </summary>
+        public static string Text_Update_Downloading {
+            get {
+                return ResourceManager.GetString("Text.Update.Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get update information.
+        /// </summary>
+        public static string Text_Update_FetchFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.FetchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We all have hard times.
+        /// </summary>
+        public static string Text_Update_HardTimesCaption {
+            get {
+                return ResourceManager.GetString("Text.Update.HardTimesCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click OK to open the folder containing the installer, then install the deb package with the dpkg -i command.
+        /// </summary>
+        public static string Text_Update_InstallTipLinux {
+            get {
+                return ResourceManager.GetString("Text.Update.InstallTipLinux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click OK to open the folder containing the installer, then double-click the dmg file to complete the installation.
+        /// </summary>
+        public static string Text_Update_InstallTipMacOS {
+            get {
+                return ResourceManager.GetString("Text.Update.InstallTipMacOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click OK to open the folder containing the installer, then double-click the exe file to complete the installation.
+        /// </summary>
+        public static string Text_Update_InstallTipWindows {
+            get {
+                return ResourceManager.GetString("Text.Update.InstallTipWindows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep Configuration.
+        /// </summary>
+        public static string Text_Update_KeepProfile {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set whether the app should keep the current configuration. Note: some new versions may add or change configuration; forcing an overwrite may cause unexpected consequences..
+        /// </summary>
+        public static string Text_Update_KeepProfileDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepProfileDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last checked: {0}.
+        /// </summary>
+        public static string Text_Update_LastCheckTimeFormat {
+            get {
+                return ResourceManager.GetString("Text.Update.LastCheckTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For technical reasons, automatic updates are currently only available on Windows. Please download the latest version manually and overwrite-install it, or use the install script..
+        /// </summary>
+        public static string Text_Update_LinuxManualUpdate {
+            get {
+                return ResourceManager.GetString("Text.Update.LinuxManualUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For technical reasons, automatic updates are currently only available on Windows. Please download the latest version manually and overwrite-install it..
+        /// </summary>
+        public static string Text_Update_MacOSManualUpdate {
+            get {
+                return ResourceManager.GetString("Text.Update.MacOSManualUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates have never been checked.
+        /// </summary>
+        public static string Text_Update_NeverChecked {
+            get {
+                return ResourceManager.GetString("Text.Update.NeverChecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version detected: .
+        /// </summary>
+        public static string Text_Update_NewVersionDetected {
+            get {
+                return ResourceManager.GetString("Text.Update.NewVersionDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview features of the next version early, containing newer features and improvements, with possibly a few defects..
+        /// </summary>
+        public static string Text_Update_PreviewChannelDesc {
+            get {
+                return ResourceManager.GetString("Text.Update.PreviewChannelDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application will close now to install the update automatically.
+        /// </summary>
+        public static string Text_Update_RestartToInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.RestartToInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receive stable updates of the app, containing relatively new and stable features and improvements..
+        /// </summary>
+        public static string Text_Update_StableChannelDesc {
+            get {
+                return ResourceManager.GetString("Text.Update.StableChannelDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown channel.
+        /// </summary>
+        public static string Text_Update_UnknownChannel {
+            get {
+                return ResourceManager.GetString("Text.Update.UnknownChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported system.
+        /// </summary>
+        public static string Text_Update_UnsupportedSystem {
+            get {
+                return ResourceManager.GetString("Text.Update.UnsupportedSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Channel.
+        /// </summary>
+        public static string Text_Update_UpdateChannel {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control the target version for app updates. Release cadence and stability vary by channel; some channels may contain unstable features, so use with caution..
+        /// </summary>
+        public static string Text_Update_UpdateChannelDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateChannelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates and download.
+        /// </summary>
+        public static string Text_Update_UpdateMethod_AutoDownload {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateMethod.AutoDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically check for updates and install.
+        /// </summary>
+        public static string Text_Update_UpdateMethod_AutoInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateMethod.AutoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manually check for updates and install.
+        /// </summary>
+        public static string Text_Update_UpdateMethod_ManualInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateMethod.ManualInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Mode.
+        /// </summary>
+        public static string Text_Update_UpdateMode {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the app&apos;s update mode..
+        /// </summary>
+        public static string Text_Update_UpdateModeDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Settings.
+        /// </summary>
+        public static string Text_Update_UpdateSettings {
+            get {
+                return ResourceManager.GetString("Text.Update.UpdateSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latest in cloud: {0}           Local version: {1}               Codename:.
+        /// </summary>
+        public static string Text_Update_VersionInfoFormat {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionInfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip: &quot;Latest in cloud&quot; may return the local version, because the local version is the latest..
+        /// </summary>
+        public static string Text_Update_VersionInfoTip {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Operations.
+        /// </summary>
+        public static string Text_UserCenter_AccountOperations {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AccountOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Status.
+        /// </summary>
+        public static string Text_UserCenter_AccountStatus {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AccountStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Domain.
+        /// </summary>
+        public static string Text_UserCenter_AddDomain {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AddDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add ICP-filed domain.
+        /// </summary>
+        public static string Text_UserCenter_AddDomainTitle {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AddDomainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} domain(s) added.
+        /// </summary>
+        public static string Text_UserCenter_AddedDomainsCount {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AddedDomainsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add failed.
+        /// </summary>
+        public static string Text_UserCenter_AddFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.AddFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today&apos;s Sign-in.
+        /// </summary>
+        public static string Text_UserCenter_DailySignIn {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DailySignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete failed.
+        /// </summary>
+        public static string Text_UserCenter_DeleteFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Added: {0}.
+        /// </summary>
+        public static string Text_UserCenter_DomainAdded {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted: {0}.
+        /// </summary>
+        public static string Text_UserCenter_DomainDeleted {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This ICP-filed domain already exists.
+        /// </summary>
+        public static string Text_UserCenter_DomainExists {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter an ICP-filed domain.
+        /// </summary>
+        public static string Text_UserCenter_DomainWatermark {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Domain Whitelist.
+        /// </summary>
+        public static string Text_UserCenter_DomainWhitelist {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWhitelist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View your domain whitelist for creating HTTP/HTTPS tunnels on &quot;Mainland China (excluding HK/MO/TW)&quot; nodes.
+        /// </summary>
+        public static string Text_UserCenter_DomainWhitelistDescription {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWhitelistDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ME Frp does not provide any domain ICP filing services. Please complete the filing yourself according to your service provider&apos;s requirements..
+        /// </summary>
+        public static string Text_UserCenter_DomainWhitelistError {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWhitelistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the domain whitelist for creating HTTP/HTTPS tunnels on &quot;Mainland China (excluding HK/MO/TW)&quot; nodes. Your domain can only be added if it has an ICP filing record with the Ministry of Industry and Information Technology. Domains for sites hosted on non-mainland-China nodes do not need to be whitelisted..
+        /// </summary>
+        public static string Text_UserCenter_DomainWhitelistInfo {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWhitelistInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When filling in, please enter the root domain directly, e.g. mefrp.com. Do not enter subdomains such as www.mefrp.com, and do not enter free subdomains here. We use real-time data to automatically whitelist domains; submitting invalid domains may result in you being reported!.
+        /// </summary>
+        public static string Text_UserCenter_DomainWhitelistWarning {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.DomainWhitelistWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to the web portal to complete other operations.
+        /// </summary>
+        public static string Text_UserCenter_GoToWebPortal {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.GoToWebPortal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inbound Bandwidth.
+        /// </summary>
+        public static string Text_UserCenter_InboundBandwidth {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.InboundBandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid ICP-filed domain.
+        /// </summary>
+        public static string Text_UserCenter_InvalidDomain {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.InvalidDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Out.
+        /// </summary>
+        public static string Text_UserCenter_Logout {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to sign out? The application will restart after signing out..
+        /// </summary>
+        public static string Text_UserCenter_LogoutConfirm {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.LogoutConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ICP-filed domains.
+        /// </summary>
+        public static string Text_UserCenter_NoDomains {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.NoDomains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outbound Bandwidth.
+        /// </summary>
+        public static string Text_UserCenter_OutboundBandwidth {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.OutboundBandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not verified.
+        /// </summary>
+        public static string Text_UserCenter_RealNameNotVerified {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RealNameNotVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real-name Status.
+        /// </summary>
+        public static string Text_UserCenter_RealNameStatus {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RealNameStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verified.
+        /// </summary>
+        public static string Text_UserCenter_RealNameVerified {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RealNameVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Text_UserCenter_RegisteredEmail {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RegisteredEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Time.
+        /// </summary>
+        public static string Text_UserCenter_RegisteredTime {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RegisteredTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining Traffic.
+        /// </summary>
+        public static string Text_UserCenter_RemainingTraffic {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.RemainingTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signed in.
+        /// </summary>
+        public static string Text_UserCenter_SignedIn {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.SignedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign in.
+        /// </summary>
+        public static string Text_UserCenter_SignIn {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.SignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign-in failed.
+        /// </summary>
+        public static string Text_UserCenter_SignInFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.SignInFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign-in succeeded.
+        /// </summary>
+        public static string Text_UserCenter_SignInSuccess {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.SignInSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Banned.
+        /// </summary>
+        public static string Text_UserCenter_StatusBanned {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.StatusBanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        public static string Text_UserCenter_StatusNormal {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.StatusNormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic exceeded.
+        /// </summary>
+        public static string Text_UserCenter_StatusTrafficExceeded {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.StatusTrafficExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown status.
+        /// </summary>
+        public static string Text_UserCenter_StatusUnknown {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.StatusUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic and Tunnels.
+        /// </summary>
+        public static string Text_UserCenter_TrafficAndTunnels {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.TrafficAndTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View your traffic usage and tunnel configuration.
+        /// </summary>
+        public static string Text_UserCenter_TrafficAndTunnelsDescription {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.TrafficAndTunnelsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic Statistics.
+        /// </summary>
+        public static string Text_UserCenter_TrafficStatistics {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.TrafficStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View recent traffic usage trends.
+        /// </summary>
+        public static string Text_UserCenter_TrafficStatisticsDescription {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.TrafficStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel Count.
+        /// </summary>
+        public static string Text_UserCenter_TunnelCount {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.TunnelCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Group.
+        /// </summary>
+        public static string Text_UserCenter_UserGroup {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.UserGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User ID.
+        /// </summary>
+        public static string Text_UserCenter_UserId {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.UserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Information.
+        /// </summary>
+        public static string Text_UserCenter_UserInfo {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.UserInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View and manage your account&apos;s basic information.
+        /// </summary>
+        public static string Text_UserCenter_UserInfoDescription {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.UserInfoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Text_UserCenter_Username {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For some reasons, certain features of the web portal cannot be implemented in the client (API not available), so you need to go to the web portal to perform them..
+        /// </summary>
+        public static string Text_UserCenter_WebPortalTip {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.WebPortalTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Banned.
+        /// </summary>
+        public static string Text_UserProxy_Banned {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.Banned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} file verification failed, the client needs to be re-downloaded. Close this window to try launching directly; click &quot;No&quot; to cancel the launch.
+        ///Please note: we are not responsible for any consequences caused by running any unofficial file (different from the file verification values we provide)..
+        /// </summary>
+        public static string Text_UserProxy_ClientFileCheckFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ClientFileCheckFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch configuration generated for tunnel {0}.
+        /// </summary>
+        public static string Text_UserProxy_ConfigGeneratedFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ConfigGeneratedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete these {0} tunnels?.
+        /// </summary>
+        public static string Text_UserProxy_ConfirmDeleteMultipleFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ConfirmDeleteMultipleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Deletion.
+        /// </summary>
+        public static string Text_UserProxy_ConfirmDeleteTitle {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ConfirmDeleteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Address.
+        /// </summary>
+        public static string Text_UserProxy_CopyAddress {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.CopyAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created from node: {0}.
+        /// </summary>
+        public static string Text_UserProxy_CreatedFromNodeFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.CreatedFromNodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel deleted successfully: {0}.
+        /// </summary>
+        public static string Text_UserProxy_DeleteSucceededFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DeleteSucceededFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailed Info.
+        /// </summary>
+        public static string Text_UserProxy_DetailedInfo {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP mapping type.
+        /// </summary>
+        public static string Text_UserProxy_DetailHttpMappingType {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailHttpMappingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last close time.
+        /// </summary>
+        public static string Text_UserProxy_DetailLastCloseTime {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailLastCloseTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last start time.
+        /// </summary>
+        public static string Text_UserProxy_DetailLastStartTime {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailLastStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link address.
+        /// </summary>
+        public static string Text_UserProxy_DetailLinkAddress {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailLinkAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local address.
+        /// </summary>
+        public static string Text_UserProxy_DetailLocalAddress {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailLocalAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local port.
+        /// </summary>
+        public static string Text_UserProxy_DetailLocalPort {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailLocalPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to * For more information (domain resolution, etc.), please visit the official website..
+        /// </summary>
+        public static string Text_UserProxy_DetailMoreInfoWebsite {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailMoreInfoWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protocol type.
+        /// </summary>
+        public static string Text_UserProxy_DetailProtocolType {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailProtocolType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security option.
+        /// </summary>
+        public static string Text_UserProxy_DetailSecurityOption {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailSecurityOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transport protocol.
+        /// </summary>
+        public static string Text_UserProxy_DetailTransportProtocol {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.DetailTransportProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Text_UserProxy_Download {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force Offline.
+        /// </summary>
+        public static string Text_UserProxy_ForceOffline {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ForceOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate Config File.
+        /// </summary>
+        public static string Text_UserProxy_GenerateConfig {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.GenerateConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel launch cancelled due to an internal error: {0}
+        ///Details: {1}.
+        /// </summary>
+        public static string Text_UserProxy_LaunchCancelledErrorFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchCancelledErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel launch cancelled: {0}.
+        /// </summary>
+        public static string Text_UserProxy_LaunchCancelledFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchCancelledFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel launched successfully: {0}.
+        /// </summary>
+        public static string Text_UserProxy_LaunchSucceededFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchSucceededFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Tunnel.
+        /// </summary>
+        public static string Text_UserProxy_LaunchTunnel {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run with Config File.
+        /// </summary>
+        public static string Text_UserProxy_LaunchViaConfig {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchViaConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More Options.
+        /// </summary>
+        public static string Text_UserProxy_MoreOptions {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.MoreOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSL Certificate Configuration.
+        /// </summary>
+        public static string Text_UserProxy_SslCertConfig {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.SslCertConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Tunnel.
+        /// </summary>
+        public static string Text_UserProxy_StopTunnel {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.StopTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel Details.
+        /// </summary>
+        public static string Text_UserProxy_TunnelDetails {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel information copied.
+        /// </summary>
+        public static string Text_UserProxy_TunnelInfoCopied {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelInfoCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your ME Frp email.
+        /// </summary>
+        public static string Text_Validation_EmailRequired {
+            get {
+                return ResourceManager.GetString("Text.Validation.EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel name cannot contain: ..
+        /// </summary>
+        public static string Text_Validation_ProxyNameNoDot {
+            get {
+                return ResourceManager.GetString("Text.Validation.ProxyNameNoDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required.
+        /// </summary>
+        public static string Text_Validation_Required {
+            get {
+                return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
             }
         }
     }

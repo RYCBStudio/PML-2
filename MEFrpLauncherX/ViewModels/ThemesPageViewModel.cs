@@ -182,16 +182,16 @@ public class ThemesPageViewModel : ViewModelBase
             AllowMultiple = true,
             FileTypeFilter =
             [
-                new FilePickerFileType("主题文件")
+                new FilePickerFileType(Languages.Text_Themes_ThemeFiles)
                 {
                     Patterns = ["*.pmla"]
                 }
             ],
-            SuggestedFileType = new FilePickerFileType("主题文件")
+            SuggestedFileType = new FilePickerFileType(Languages.Text_Themes_ThemeFiles)
             {
                 Patterns = ["*.pmla"]
             },
-            Title = "导入主题",
+            Title = Languages.Text_Themes_ImportThemeTitle,
             SuggestedStartLocation =
                 await MainWindow.Instance.StorageProvider.TryGetFolderFromPathAsync(Path.Combine(Core.App.StartupPath,
                     "Config", "Themes"))
@@ -206,7 +206,7 @@ public class ThemesPageViewModel : ViewModelBase
         for (var i = 0; i < total; i++)
         {
             var storageFile = res[i];
-            MainWindowViewModel.Instance.AppMessage = $"正在导入主题 {storageFile.Name}";
+            MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Themes_ImportingThemeFormat, storageFile.Name);
             MainWindowViewModel.Instance.Progress = cnt;
             PMLAHelper.UnpackPmla(storageFile.TryGetLocalPath(),
                 Path.Combine(Core.App.StartupPath, "Config", "Themes",
@@ -279,7 +279,7 @@ public class ThemesPageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, $"获取在线主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Themes_FetchOnlineFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -305,17 +305,17 @@ public class ThemesPageViewModel : ViewModelBase
             var success = await _themeService.DownloadThemeAsync(SelectedOnlineTheme, downloadPath);
             if (success)
             {
-                await MessageBoxManager.GetMessageBoxStandard("成功", "主题下载完成", ButtonEnum.Ok, Icon.Info).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Success, Languages.Text_Themes_ThemeDownloaded, ButtonEnum.Ok, Icon.Info).ShowAsync();
                 RefreshLocalThemes();
             }
             else
             {
-                await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, "主题下载失败", ButtonEnum.Ok, Icon.Error).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, Languages.Text_Themes_ThemeDownloadFailed, ButtonEnum.Ok, Icon.Error).ShowAsync();
             }
         }
         catch (Exception ex)
         {
-            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, $"下载失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+            await MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Themes_DownloadFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
         finally
@@ -329,7 +329,7 @@ public class ThemesPageViewModel : ViewModelBase
         if (SelectedLocalTheme == null) return;
 
         _themeService.ApplyTheme(SelectedLocalTheme.Path);
-        Growl.Success("主题已应用");
+        Growl.Success(Languages.Text_Themes_ThemeApplied);
     }
 
     private async Task DeleteLocalThemeAsync()
@@ -337,13 +337,13 @@ public class ThemesPageViewModel : ViewModelBase
         if (SelectedLocalTheme == null) return;
 
         var result = await MessageBoxManager
-            .GetMessageBoxStandard("确认", $"确定要删除主题 '{SelectedLocalTheme.Name}' 吗？", ButtonEnum.YesNo, Icon.Question)
+            .GetMessageBoxStandard(Languages.Text_Global_Confirm, string.Format(Languages.Text_Themes_DeleteConfirmFormat, SelectedLocalTheme.Name), ButtonEnum.YesNo, Icon.Question)
             .ShowAsync();
         if (result == ButtonResult.Yes)
         {
             _themeService.DeleteTheme(SelectedLocalTheme.Path);
             RefreshLocalThemes();
-            Growl.Success("主题已删除");
+            Growl.Success(Languages.Text_Themes_ThemeDeleted);
         }
     }
 
@@ -361,14 +361,12 @@ public class ThemesPageViewModel : ViewModelBase
         var path = Path.Combine(Core.App.StartupPath, "Config", "Themes Output");
         var td = new TaskDialog
         {
-            Title = "正在打包主题",
+            Title = Languages.Text_Themes_PackagingTheme,
             ShowProgressBar = true,
             IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-            SubHeader = "主题名: " + SelectedLocalTheme.Name,
-            Content =
-                $"=====================\n版本: {SelectedLocalTheme.Version}" +
-                $"\n作者: {SelectedLocalTheme.Author}\n=====================" +
-                $"\n您可以在{path}中找到打包后的主题文件。",
+            SubHeader = string.Format(Languages.Text_Themes_ThemeNameFormat, SelectedLocalTheme.Name),
+            Content = string.Format(Languages.Text_Themes_PackageInfoFormat, SelectedLocalTheme.Version,
+                SelectedLocalTheme.Author, path),
             Buttons =
             {
                 btn
@@ -389,12 +387,12 @@ public class ThemesPageViewModel : ViewModelBase
         {
             td.Hide(TaskDialogStandardResult.OK);
         });
-        Growl.Success("主题已打包");
-        await MessageBox.ShowAsync("主题打包完成!", buttons:
+        Growl.Success(Languages.Text_Themes_ThemePackaged);
+        await MessageBox.ShowAsync(Languages.Text_Themes_ThemePackageCompleted, buttons:
         [
             new TaskDialogButton
             {
-                Text = "打开文件夹",
+                Text = Languages.Text_Themes_OpenFolder,
                 Command = new RelayCommand(_ =>
                 {
                     Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
@@ -413,8 +411,8 @@ public class ThemesPageViewModel : ViewModelBase
     private async Task RestoreDefaultThemeAsync()
     {
         var result = await MessageBoxManager
-            .GetMessageBoxStandard("恢复默认主题",
-                "确定要恢复默认主题吗？\n\n这将删除当前选择的主题配置文件，需要重启程序后生效。",
+            .GetMessageBoxStandard(Languages.Text_Themes_RestoreDefaultCaption,
+                Languages.Text_Themes_RestoreDefaultConfirm,
                 ButtonEnum.YesNo, Icon.Question)
             .ShowAsync();
 
@@ -432,15 +430,15 @@ public class ThemesPageViewModel : ViewModelBase
             RefreshLocalThemes();
 
             await MessageBoxManager
-                .GetMessageBoxStandard("提示",
-                    "默认主题已恢复，请重启程序以生效。",
+                .GetMessageBoxStandard(Languages.Caption_Hint,
+                    Languages.Text_Themes_DefaultThemeRestored,
                     ButtonEnum.Ok, Icon.Info)
                 .ShowAsync();
         }
         catch (Exception ex)
         {
             await MessageBoxManager
-                .GetMessageBoxStandard(Languages.Caption_Error, $"恢复默认主题失败: {ex.Message}", ButtonEnum.Ok, Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Themes_RestoreDefaultFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
     }

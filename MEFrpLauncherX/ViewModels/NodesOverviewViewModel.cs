@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Threading;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI;
 
@@ -18,7 +19,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     {
         SelectedSortOption = SortOptions[0];
         RefreshCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
-        LoadDataAsync();
+        LoadDataAsync().ConfigureAwait(false);
     }
 
     public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
@@ -78,12 +79,12 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         get;
     } =
     [
-        new("节点ID", nameof(InfoClasses.NodeStatus.nodeId)),
-        new("在线隧道数", nameof(InfoClasses.NodeStatus.onlineProxy)),
-        new("当前连接数", nameof(InfoClasses.NodeStatus.curConns)),
-        new("负载百分比", nameof(InfoClasses.NodeStatus.loadPercent)),
-        new("今日总流量", "DailyTraffic"),
-        new("运行时长", nameof(InfoClasses.NodeStatus.uptime))
+        new(Languages.Text_Nodes_SortNodeId, nameof(InfoClasses.NodeStatus.nodeId)),
+        new(Languages.Text_Nodes_SortOnlineTunnels, nameof(InfoClasses.NodeStatus.onlineProxy)),
+        new(Languages.Text_Nodes_SortCurrentConnections, nameof(InfoClasses.NodeStatus.curConns)),
+        new(Languages.Text_Nodes_SortLoadPercent, nameof(InfoClasses.NodeStatus.loadPercent)),
+        new(Languages.Text_Nodes_SortDailyTraffic, "DailyTraffic"),
+        new(Languages.Text_Nodes_SortUptime, nameof(InfoClasses.NodeStatus.uptime))
     ];
 
     // 统计属性
@@ -135,7 +136,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
             var res = await Task.Run(MEFrpApiConverter.GetNodesStatusAsync);
             if (res.code != 200)
             {
-                ErrorMessage = $"获取节点状态失败 (code={res.code})";
+                ErrorMessage = string.Format(Languages.Text_Nodes_GetStatusFailedCodeFormat, res.code);
                 IsLoading = false;
                 return;
             }
@@ -149,7 +150,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"获取节点状态失败: {ex.Message}";
+            ErrorMessage = string.Format(Languages.Text_Nodes_GetStatusFailedFormat, ex.Message);
         }
         finally
         {

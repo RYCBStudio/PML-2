@@ -6,6 +6,7 @@ using Avalonia.Controls.Documents;
 using Avalonia.Layout;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
+using MarkdownAIRender.i18n;
 using Markdig.Extensions.Alerts;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
@@ -141,11 +142,11 @@ public static partial class HtmlBlockRenderer
     {
         return type.ToLower() switch
         {
-            "tip" => "提示",
-            "note" => "注意",
-            "warning" => "警告",
-            "caution" => "重要",
-            _ => "信息"
+            "tip" => MdStrings.AlertTip,
+            "note" => MdStrings.AlertNote,
+            "warning" => MdStrings.AlertWarning,
+            "caution" => MdStrings.AlertCaution,
+            _ => MdStrings.AlertInfo
         };
     }
 

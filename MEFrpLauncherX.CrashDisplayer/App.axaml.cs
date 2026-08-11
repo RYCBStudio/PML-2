@@ -25,6 +25,7 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
+                Title = CrashStrings.CrashTitle,
                 DataContext = new MainViewModel(desktop.Args?[0] ?? "", desktop.Args?[1] ?? "")
             };
         }

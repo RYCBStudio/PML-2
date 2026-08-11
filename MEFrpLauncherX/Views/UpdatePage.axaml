@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.UpdatePage"
              x:DataType="viewModels:UpdatePageViewModel">
@@ -37,16 +38,16 @@
                 </TextBlock>
                 <TextBlock Grid.Column="1" Text="{Binding Status}" FontFamily="{StaticResource GlobalFontFamily}"
                            Theme="{StaticResource SubtitleTextBlockStyle}" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LatestCheckTime, StringFormat='上次检查时间：{0}'}"
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LatestCheckTime, StringFormat={x:Static languages:Languages.Text_Update_LastCheckTimeFormat}}"
                            FontFamily="{StaticResource GlobalFontFamily}"
                            Theme="{StaticResource BodyTextBlockStyle}" />
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="下载并安装更新"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_DownloadAndInstall}"
                             IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
-                    <Button HorizontalAlignment="Left" Content="检查更新" Classes.accent="{Binding !HasNewVersion}"
+                    <Button HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_CheckForUpdates}" Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdateCommand}" />
                 </StackPanel>
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Vertical">
@@ -58,20 +59,20 @@
                                      IsIndeterminate="{Binding IsIdle}" />
                     </DockPanel>
                     <TabControl ClipToBounds="False" Padding="0" Margin="0" Classes="compact">
-                        <TabItem Header="更新日志">
+                        <TabItem Header="{x:Static languages:Languages.Text_Update_Changelog}">
                             <DockPanel HorizontalSpacing="5">
                                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10">
                                     <TextBlock Theme="{StaticResource BodyStrongTextBlockStyle}"
                                                IsVisible="{Binding  !LatestVersion, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static core:App.Version}}">
                                         <TextBlock.Text>
                                             <MultiBinding
-                                                StringFormat="云端最新: {0}           本地版本: {1}               版本代号:">
+                                                StringFormat="{x:Static languages:Languages.Text_Update_VersionInfoFormat}">
                                                 <Binding Path="LatestVersion" />
                                                 <Binding Source="{x:Static core:App.Version}" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                         <ToolTip.Tip>
-                                            提示: "云端最新"可能返回本地版本, 因为本地版本是最新的。
+                                            <x:Static Member="languages:Languages.Text_Update_VersionInfoTip" />
                                         </ToolTip.Tip>
                                     </TextBlock>
                                     <controls:InfoBadge>
@@ -96,45 +97,45 @@
                                 </ItemsControl>
                             </DockPanel>
                         </TabItem>
-                        <TabItem Header="更新设置">
+                        <TabItem Header="{x:Static languages:Languages.Text_Update_UpdateSettings}">
                             <StackPanel Classes="animated">
-                                <controls:SettingsExpander Header="更新模式" Description="设置应用的更新模式。">
+                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_UpdateMode}" Description="{x:Static languages:Languages.Text_Update_UpdateModeDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateMethodBox" SelectedIndex="{Binding UpdateMethod}"
                                                   SelectionChanged="UpdateMethodChange">
-                                            <ComboBoxItem Tag="ds">自动检查更新并安装</ComboBoxItem>
-                                            <ComboBoxItem Tag="dd">自动检查更新并下载</ComboBoxItem>
-                                            <ComboBoxItem Tag="md">手动检查更新并安装</ComboBoxItem>
+                                            <ComboBoxItem Tag="ds" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoInstall}" />
+                                            <ComboBoxItem Tag="dd" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoDownload}" />
+                                            <ComboBoxItem Tag="md" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_ManualInstall}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="保留配置"
-                                                           Description="设置应用是否应该保留当前配置。请注意: 某些新版本可能新增或更改了配置, 强行覆盖可能会导致意想不到的后果。">
+                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_KeepProfile}"
+                                                           Description="{x:Static languages:Languages.Text_Update_KeepProfileDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged" />
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="更新渠道"
-                                                           Description="控制应用的更新目标版本。版本的发行节奏和稳定程度因更新通道而异,部分通道可能包含不稳定的功能,请谨慎使用。"
+                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_UpdateChannel}"
+                                                           Description="{x:Static languages:Languages.Text_Update_UpdateChannelDescription}"
                                                            IsExpanded="True">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateChannelBox" SelectedIndex="{Binding UpdateChannel}"
                                                   SelectionChanged="UpdateChannelChange">
-                                            <ComboBoxItem Tag="Stable">稳定通道</ComboBoxItem>
-                                            <ComboBoxItem Tag="Preview">发布预览通道</ComboBoxItem>
+                                            <ComboBoxItem Tag="Stable" Content="{x:Static languages:Languages.Text_Update_Channel_Stable}" />
+                                            <ComboBoxItem Tag="Preview" Content="{x:Static languages:Languages.Text_Update_Channel_Preview}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                     <controls:SettingsExpanderItem
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="目标编译类型"
-                                                           Description="选择下载安装包的编译类型（AOT 或常规）。当目标类型与当前运行时类型一致时，安装程序将不执行自动清理操作。">
+                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_CompileType}"
+                                                           Description="{x:Static languages:Languages.Text_Update_CompileTypeDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="CompileTypeBox" SelectedIndex="{Binding TargetCompileType}"
                                                   SelectionChanged="CompileTypeChange">
-                                            <ComboBoxItem Tag="AOT">AOT（预编译）</ComboBoxItem>
-                                            <ComboBoxItem Tag="Common">常规</ComboBoxItem>
+                                            <ComboBoxItem Tag="AOT" Content="{x:Static languages:Languages.Text_Update_CompileType_AOT}" />
+                                            <ComboBoxItem Tag="Common" Content="{x:Static languages:Languages.Text_Update_CompileType_Common}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
 using RestSharp;
@@ -140,7 +141,7 @@ public static class MEFrpApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = $"正在获取{operationName}";
+        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_FetchingFormat, operationName);
 
         using var client = CreateClient(endpoint);
 
@@ -152,7 +153,7 @@ public static class MEFrpApiConverter
             var fallBack = new ApiInfo<T>
             {
                 code = 0,
-                message = "无法获取api信息",
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
                 data = default
             };
             HandleResponse(fallBack);
@@ -164,7 +165,7 @@ public static class MEFrpApiConverter
             return new ApiInfo<T>
             {
                 code = 502,
-                message = "API回源失败, 无法获取api信息",
+                message = Languages.Languages.Text_Api_OriginFallbackFailed,
                 data = default
             };
         }
@@ -174,12 +175,12 @@ public static class MEFrpApiConverter
             new ApiInfo<T>
             {
                 code = 0,
-                message = "无法获取api信息",
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
                 data = default
             };
 
         HandleResponse(result);
-        MainWindowViewModel.Instance?.AppMessage = $"完成, 返回代码: {result.code}";
+        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
         return result;
     }
 
@@ -218,7 +219,7 @@ public static class MEFrpApiConverter
         await AppAnalytics.TrackCostAsync("api.icp.domain-list", async () =>
         {
             result = await ExecuteRequestAsync<List<IcpDomain>>(CreateRequest(), "auth/user/icpDomain/list",
-                "ICP备案域名列表");
+                Languages.Languages.Text_Api_OpIcpDomainList);
         });
         return result;
     }
@@ -263,7 +264,7 @@ public static class MEFrpApiConverter
         ApiInfo<SystemStatus?> result = null;
         await AppAnalytics.TrackCostAsync("api.system.status", async () =>
         {
-            result = await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status", "系统状态")
+            result = await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status", Languages.Languages.Text_Api_OpSystemStatus)
                 .ConfigureAwait(false);
         });
         return result;
@@ -275,7 +276,7 @@ public static class MEFrpApiConverter
     /// <returns></returns>
     public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
     {
-        var result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", "重要公告");
+        var result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", Languages.Languages.Text_Api_OpPopupNotice);
         return result;
     }
 
@@ -285,7 +286,7 @@ public static class MEFrpApiConverter
     /// <returns>公告内容</returns>
     public static async Task<ApiInfo<string>> GetNoticeAsync()
     {
-        return await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", "公告");
+        return await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", Languages.Languages.Text_Api_OpNotice);
     }
 
     /// <summary>
@@ -294,7 +295,7 @@ public static class MEFrpApiConverter
     /// <returns>公共信息</returns>
     public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
     {
-        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", "公共信息");
+        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", Languages.Languages.Text_Api_OpPublicInfo);
         CurrentPublicInfo = result;
         return result;
     }
@@ -308,7 +309,7 @@ public static class MEFrpApiConverter
         ApiInfo<ExtraUserInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.user-info", async () =>
         {
-            result = await ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info", "详细的用户信息");
+            result = await ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info", Languages.Languages.Text_Api_OpExtraUserInfo);
         });
         return result;
     }
@@ -388,7 +389,7 @@ public static class MEFrpApiConverter
         ApiInfo<NodeStatus[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.status", async () =>
         {
-            result = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status", "节点状态");
+            result = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status", Languages.Languages.Text_Api_OpNodeStatus);
         });
 
         if (result is not { data: not null })
@@ -415,7 +416,7 @@ public static class MEFrpApiConverter
         ApiInfo<NodeInfo[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.info", async () =>
         {
-            result = await ExecuteRequestAsync<NodeInfo[]>(CreateRequest(), "auth/node/list", "节点信息");
+            result = await ExecuteRequestAsync<NodeInfo[]>(CreateRequest(), "auth/node/list", Languages.Languages.Text_Api_OpNodeInfo);
         });
         return result;
     }
@@ -429,7 +430,7 @@ public static class MEFrpApiConverter
         ApiInfo<NodeNameList[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.name-list", async () =>
         {
-            result = await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList", "已连接节点信息");
+            result = await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList", Languages.Languages.Text_Api_OpConnectedNodeInfo);
         });
         return result;
     }
@@ -619,7 +620,7 @@ public static class MEFrpApiConverter
         ApiInfo<ProxyInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.proxy.list", async () =>
         {
-            result = await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", "隧道列表");
+            result = await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", Languages.Languages.Text_Api_OpProxyList);
         });
         return result;
     }
@@ -633,7 +634,7 @@ public static class MEFrpApiConverter
         ApiInfo<FrpTokenInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.proxy.token", async () =>
         {
-            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", "FrpToken信息");
+            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", Languages.Languages.Text_Api_OpFrpTokenInfo);
         });
         return result;
     }
@@ -892,7 +893,7 @@ public static class MEFrpApiConverter
             result = new ApiInfo<TrafficStatus>
             {
                 code = (int)response.StatusCode,
-                message = $"请求失败: {(int)response.StatusCode}",
+                message = string.Format(Languages.Languages.Text_Api_RequestFailedFormat, (int)response.StatusCode),
                 data = default
             };
         }

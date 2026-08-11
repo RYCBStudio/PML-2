@@ -7,6 +7,7 @@
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:services="clr-namespace:MEFrpLauncherX.Services;assembly=MEFrpLauncherX.Plugin"
              xmlns:services1="clr-namespace:MEFrpLauncherX.Plugin.Services;assembly=MEFrpLauncherX.Plugin"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.PluginListPage"
              x:DataType="vm:PluginListViewModel">
@@ -16,10 +17,10 @@
 
     <UserControl.Styles>
         <Style Selector="TextBlock.Enabled">
-            <Setter Property="Text" Value="已启用" />
+            <Setter Property="Text" Value="{x:Static languages:Languages.Text_PluginList_Enabled}" />
         </Style>
         <Style Selector="TextBlock.Disabled">
-            <Setter Property="Text" Value="已禁用" />
+            <Setter Property="Text" Value="{x:Static languages:Languages.Text_PluginList_Disabled}" />
         </Style>
         <Style Selector="Border.Enabled">
             <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBackgroundBrush}" />
@@ -32,7 +33,7 @@
     <TabControl Classes="compact">
         <TabItem Classes="compact">
             <TabItem.Header>
-                <controls1:IconContent Symbol="Folder" Label="本地插件" />
+                <controls1:IconContent Symbol="Folder" Label="{x:Static languages:Languages.Text_PluginList_LocalPlugins}" />
             </TabItem.Header>
             <Grid RowDefinitions="Auto, *" Margin="10" DragDrop.AllowDrop="True">
                 <Interaction.Behaviors>
@@ -62,27 +63,27 @@
                     <Grid RowDefinitions="8* 2*" RowSpacing="3" MaxHeight="100">
                         <controls:FontIcon Glyph="&#xF8AA;" FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            FontSize="40" />
-                        <TextBlock Grid.Row="1" Text="拖拽插件文件到此处" FontSize="16" VerticalAlignment="Center"
+                        <TextBlock Grid.Row="1" Text="{x:Static languages:Languages.Text_PluginList_DropPluginFileHere}" FontSize="16" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                     </Grid>
                 </Border>
                 <controls:CommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
                     <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarButton IconSource="Add" Label="安装插件"
+                        <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
                                                    Command="{Binding InstallPluginCommand}" />
-                        <controls:CommandBarButton IconSource="Refresh" Label="刷新"
+                        <controls:CommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                    Command="{Binding ReloadPluginsCommand}" />
-                        <controls:CommandBarButton IconSource="OpenFile" Label="打开目录"
+                        <controls:CommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_PluginList_OpenFolder}"
                                                    Command="{Binding OpenPluginFolderCommand}"
                                                    CommandParameter="plugins" />
                         <controls:CommandBarSeparator />
-                        <controls:CommandBarButton IconSource="Code" Label="查看源码"
+                        <controls:CommandBarButton IconSource="Code" Label="{x:Static languages:Languages.Text_PluginList_ViewSource}"
                                                    Command="{Binding ViewYamlCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                        <controls:CommandBarButton IconSource="Accept" Label="启用/禁用"
+                        <controls:CommandBarButton IconSource="Accept" Label="{x:Static languages:Languages.Text_PluginList_ToggleEnable}"
                                                    Command="{Binding TogglePluginCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                        <controls:CommandBarButton IconSource="Delete" Label="卸载"
+                        <controls:CommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_PluginList_Uninstall}"
                                                    Command="{Binding UninstallPluginCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
                     </controls:CommandBar.PrimaryCommands>
@@ -124,13 +125,13 @@
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <TextBlock FontSize="11"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                <Run Text="触发器: " />
+                                                <Run Text="{x:Static languages:Languages.Text_PluginList_Triggers}" />
                                                 <Run Text="{Binding TriggerCount}"
                                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                                             </TextBlock>
                                             <TextBlock FontSize="11"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                <Run Text="函数: " />
+                                                <Run Text="{x:Static languages:Languages.Text_PluginList_Functions}" />
                                                 <Run Text="{Binding FunctionCount}"
                                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                                             </TextBlock>
@@ -139,7 +140,7 @@
                                     <TextBlock FontSize="11"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                VerticalAlignment="Center">
-                                        <Run Text="作者: " />
+                                        <Run Text="{x:Static languages:Languages.Text_PluginList_AuthorPrefix}" />
                                         <Run Text="{Binding Author}" />
                                     </TextBlock>
                                 </StackPanel>
@@ -156,10 +157,10 @@
                 <Border Grid.Row="1" IsHitTestVisible="False" IsVisible="{Binding IsEmpty}"
                         VerticalAlignment="Center" HorizontalAlignment="Center">
                     <StackPanel Spacing="12" HorizontalAlignment="Center">
-                        <TextBlock Text="暂无插件" FontSize="18"
+                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_NoPlugins}" FontSize="18"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    HorizontalAlignment="Center" />
-                        <TextBlock Text="点击上方安装插件按钮添加 YAML 插件文件"
+                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_NoPluginsHint}"
                                    FontSize="13"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    HorizontalAlignment="Center" />
@@ -169,7 +170,7 @@
         </TabItem>
         <TabItem>
             <TabItem.Header>
-                <controls1:IconContent Symbol="Globe" Label="插件市场" />
+                <controls1:IconContent Symbol="Globe" Label="{x:Static languages:Languages.Text_PluginList_PluginMarket}" />
             </TabItem.Header>
             <Grid RowDefinitions="Auto, *" Margin="10">
                 <controls:CommandBar DefaultLabelPosition="Right">
@@ -178,7 +179,7 @@
                             <StackPanel Orientation="Horizontal" Spacing="5">
                             <AutoCompleteBox VerticalAlignment="Center" FilterMode="StartsWith"
                                              MinimumPopulateDelay="0:0:0:0.3" MinimumPrefixLength="1" MinWidth="200"
-                                             Watermark="搜索插件" Text="{Binding OnlineSearchText}" />
+                                             Watermark="{x:Static languages:Languages.Text_PluginList_SearchPlugins}" Text="{Binding OnlineSearchText}" />
                             <ToggleButton x:Name="HelpBtn">
                                 <ToggleButton.Content>
                                     <controls:SymbolIcon Symbol="Help" />
@@ -186,16 +187,16 @@
                             </ToggleButton>
                             <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
                                                   Target="{Binding #HelpBtn}"
-                                                  Title="搜索帮助"
+                                                  Title="{x:Static languages:Languages.Text_PluginList_SearchHelp}"
                                                   IconSource="Help">
                                 <controls:TeachingTip.Content>
                                     <StackPanel Spacing="3">
-                                        <TextBlock>无参数:直接搜索包含输入文本的ID/名称/作者的插件</TextBlock>
-                                        <TextBlock>输入/desc:&lt;KEYWORD&gt;以搜索描述</TextBlock>
-                                        <TextBlock>输入/author:&lt;KEYWORD&gt;以搜索作者</TextBlock>
-                                        <TextBlock>输入/id:&lt;KEYWORD&gt;以搜索id</TextBlock>
-                                        <TextBlock>输入/name:&lt;KEYWORD&gt;以搜索名称</TextBlock>
-                                        <TextBlock>所有参数均忽略大小写。</TextBlock>
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpNoParams}" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpDesc}" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpAuthor}" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpId}" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpName}" />
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpCaseInsensitive}" />
                                     </StackPanel>
                                 </controls:TeachingTip.Content>
                                 <controls:TeachingTip.CloseButtonContent>
@@ -205,9 +206,9 @@
                             </StackPanel>
                         </controls:CommandBarElementContainer>
                         <controls:CommandBarSeparator />
-                        <controls:CommandBarButton Label="刷新" IconSource="Refresh"
+                        <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
                                                    Command="{Binding RefreshOnlinePluginsCommand}" />
-                        <controls:CommandBarButton Label="下载所选插件" IconSource="Download"
+                        <controls:CommandBarButton Label="{x:Static languages:Languages.Text_PluginList_DownloadSelected}" IconSource="Download"
                                                    Command="{Binding DownloadSelectedPluginsCommand}" />
                     </controls:CommandBar.PrimaryCommands>
                 </controls:CommandBar>
@@ -245,7 +246,7 @@
                                     <TextBlock FontSize="12"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                VerticalAlignment="Center">
-                                        <Run Text="作者: " />
+                                        <Run Text="{x:Static languages:Languages.Text_PluginList_AuthorPrefix}" />
                                         <Run Text="{Binding Author}" />
                                     </TextBlock>
                                 </StackPanel>
@@ -265,13 +266,13 @@
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <TextBlock FontSize="11"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                <Run Text="触发器: " />
+                                                <Run Text="{x:Static languages:Languages.Text_PluginList_Triggers}" />
                                                 <Run Text="{Binding TriggerCount}"
                                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                                             </TextBlock>
                                             <TextBlock FontSize="11"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                                <Run Text="函数: " />
+                                                <Run Text="{x:Static languages:Languages.Text_PluginList_Functions}" />
                                                 <Run Text="{Binding FunctionCount}"
                                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                                             </TextBlock>

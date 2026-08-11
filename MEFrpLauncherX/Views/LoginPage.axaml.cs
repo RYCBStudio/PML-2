@@ -76,7 +76,7 @@ public partial class LoginPage : UserControl
                 {
                     data = stored,
                     code = 200,
-                    message = "本地已存登录"
+                    message = Languages.Text_Login_LocalStoredLogin
                 };
 
                 UserCache.CurrentUser = stored;
@@ -108,7 +108,7 @@ public partial class LoginPage : UserControl
                 new Uri("https://www.mefrp.com/3rdparty/captcha?client=PML%202"));
             var cd = new ContentDialog
             {
-                Title = "请输入验证码",
+                Title = Languages.Text_Login_EnterCaptcha,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 DefaultButton = ContentDialogButton.Primary,
                 IsSecondaryButtonEnabled = false,
@@ -121,16 +121,16 @@ public partial class LoginPage : UserControl
                 : nil;
         }
 
-        MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤1/5";
+        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 1);
         var c = CaptchaHelper.GetChallengeContent();
         MainWindowViewModel.Instance.Progress = 20.0;
 
-        MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤2/5";
+        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 2);
         var ci = await MEFrpApiConverter.PostChallengeAsync(JsonSerializer.Serialize(c,
             App.AppJsonSerializerContext.ChallengeInfo));
 
         MainWindowViewModel.Instance.Progress = 40.0;
-        MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤3/5";
+        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 3);
         var (rb, err) = await CaptchaHelper.GetRedeemBody(ci);
 
         MainWindowViewModel.Instance.Progress = 60.0;
@@ -138,12 +138,12 @@ public partial class LoginPage : UserControl
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
                 MessageBoxManager
-                    .GetMessageBoxStandard("验证失败", err, icon: Icon.Error)
+                    .GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, err, icon: Icon.Error)
                     .ShowAsync());
             return string.Empty;
         }
 
-        MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤4/5";
+        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 4);
         var (ri, _err) =
             await MEFrpApiConverter.GetRedeemAsync(
                 JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
@@ -153,14 +153,14 @@ public partial class LoginPage : UserControl
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
                 MessageBoxManager
-                    .GetMessageBoxStandard("验证失败", _err, icon: Icon.Error)
+                    .GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, _err, icon: Icon.Error)
                     .ShowAsync());
             return string.Empty;
         }
 
         // 1. 获取验证码
         Core.App.CurrentLogger.Log("开始获取验证码...");
-        MainWindowViewModel.Instance.AppMessage = "正在人机验证 步骤5/5";
+        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 5);
         MainWindowViewModel.Instance.Progress = 90.0;
         var captchaResult = CaptchaHelper.GetCaptchaCode(ri);
         MainWindowViewModel.Instance.Progress = 100.0;
@@ -181,7 +181,7 @@ public partial class LoginPage : UserControl
             UsrNameBox.IsEnabled = false;
             PwdBox.IsReadOnly = true;
             LoginBtn.IsEnabled = false;
-            LoginBtn.Content = new LoadingTip("登录中");
+            LoginBtn.Content = new LoadingTip(Languages.Text_Login_LoggingIn);
             (sender as Control)?.IsEnabled = false;
             CaptchaHelper.Init((progress, current, completed, nonce) =>
             {
@@ -233,9 +233,9 @@ public partial class LoginPage : UserControl
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
                     MessageBoxManager
-                        .GetMessageBoxStandard("登录失败", message, icon: Icon.Error)
+                        .GetMessageBoxStandard(Languages.Text_Login_LoginFailed, message, icon: Icon.Error)
                         .ShowAsync());
-                LoginBtn.Content = "登录";
+                LoginBtn.Content = Languages.Text_Login_Login;
             }
         }
         catch (OperationCanceledException)
@@ -243,12 +243,11 @@ public partial class LoginPage : UserControl
             // 用户取消了操作
             Core.App.CurrentLogger.Log("用户取消操作");
         }
-
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard(Languages.Caption_Error, $"验证失败: {ex.Message}", icon: Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Login_ValidationFailedWithMsg, ex.Message), icon: Icon.Error)
                 .ShowAsync();
         }
         finally

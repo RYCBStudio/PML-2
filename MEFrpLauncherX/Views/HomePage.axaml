@@ -166,7 +166,7 @@
                                 <Button DockPanel.Dock="Right"
                                         Width="28" Height="28"
                                         Padding="0"
-                                        ToolTip.Tip="复制"
+                                        ToolTip.Tip="{x:Static languages:Languages.Text_Global_Copy}"
                                         Command="{Binding CopyUserIdCommand}">
                                     <controls:SymbolIcon Symbol="Copy" FontSize="12" />
                                 </Button>
@@ -196,7 +196,7 @@
                                 <Button DockPanel.Dock="Right"
                                         Width="28" Height="28"
                                         Padding="0"
-                                        ToolTip.Tip="复制"
+                                        ToolTip.Tip="{x:Static languages:Languages.Text_Global_Copy}"
                                         Command="{Binding CopyEmailCommand}">
                                     <controls:SymbolIcon Symbol="Copy" FontSize="12" />
                                 </Button>

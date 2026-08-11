@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
         xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
@@ -12,11 +12,11 @@
     </Window.Resources>
     <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*,*">
         <controls1:ProgressRing Grid.ColumnSpan="3" Grid.RowSpan="2" IsVisible="{Binding IsLoading}" />
-        <TextBlock Grid.ColumnSpan="2" Text="请选择要自启动的隧道" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <TextBlock Grid.ColumnSpan="2" Text="{x:Static languages:Languages.Text_ALP_Title}" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Theme="{StaticResource TitleTextBlockStyle}" />
         <Grid HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" RowDefinitions="Auto, *, Auto">
             <AutoCompleteBox x:Name="SearchBox" FilterMode="StartsWith" MinimumPrefixLength="1"
-                             Text="{Binding SearchText}" Watermark="搜索隧道:支持拼音和命令语法" Width="200" />
+                             Text="{Binding SearchText}" Watermark="{x:Static languages:Languages.Text_ALP_SearchWatermark}" Width="200" />
             <ListBox SelectedItem="{Binding SelectedLeft}" Grid.Row="1"
                      ItemsSource="{Binding FilteredProxies}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -39,7 +39,7 @@
                                                  IsVisible="{Binding isBanned}">
                                 <controls1:InfoBadge.IconSource>
                                     <controls1:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
-                                                              Glyph="已封禁" />
+                                                              Glyph="{x:Static languages:Languages.Text_Main_UserInfo_AccountStatus_Banned}" />
                                 </controls1:InfoBadge.IconSource>
                             </controls1:InfoBadge>
                             <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7"
@@ -115,12 +115,12 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Grid.Row="2" HorizontalAlignment="Center" Content="将所选项加入自启动队列 -&gt;"
+            <Button Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static languages:Languages.Text_ALP_AddToQueue}"
                     Command="{Binding TransferSelectedProxyToRightCommand}" CommandParameter="{Binding SelectedLeft}" />
         </Grid>
         <Grid HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" RowDefinitions="Auto, *, Auto">
             <AutoCompleteBox x:Name="SearchBox1" FilterMode="StartsWith" MinimumPrefixLength="1"
-                             Text="{Binding SearchText1}" Watermark="搜索隧道:支持拼音和命令语法" Width="200" />
+                             Text="{Binding SearchText1}" Watermark="{x:Static languages:Languages.Text_ALP_SearchWatermark}" Width="200" />
             <ListBox x:Name="AutoLaunchList" SelectedItem="{Binding SelectedRight}" Grid.Row="1"
                      ItemsSource="{Binding AddedProxies}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -135,12 +135,12 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Grid.Row="2" HorizontalAlignment="Center" Content="&lt;- 将所选项移出自启动队列"
+            <Button Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static languages:Languages.Text_ALP_RemoveFromQueue}"
                     Command="{Binding TransferSelectedProxyToLeftCommand}" CommandParameter="{Binding SelectedRight}" />
         </Grid>
         <StackPanel HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                     Orientation="Horizontal" Spacing="10">
-            <Button Content="保存" Click="SaveSettings" Classes="accent" />
+            <Button Content="{x:Static languages:Languages.Text_Global_Save}" Click="SaveSettings" Classes="accent" />
             <Button Content="{x:Static languages:Languages.Text_Global_Cancel}" Click="Close" />
         </StackPanel>
     </Grid>

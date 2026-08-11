@@ -1,9 +1,10 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="320"
              x:Class="MEFrpLauncherX.Console.TerminalControl">
     <Grid RowDefinitions="Auto,*,Auto" ZIndex="1" Classes="animated">
@@ -25,7 +26,7 @@
                     <controls:SymbolIcon x:Name="SolutionIcon" DockPanel.Dock="Left" Symbol="Checkmark"
                                          Foreground="{DynamicResource SystemFillColorSuccessBrush}" />
                     <HyperlinkButton DockPanel.Dock="Right" Click="ViewErrorDetails">
-                        <TextBlock>查看详情</TextBlock>
+                        <TextBlock Text="{x:Static languages:Languages.Text_Terminal_ViewDetails}" />
                     </HyperlinkButton>
                     <TextBlock x:Name="SolutionBox"
                                IsVisible="{Binding Path=#SolutionBox.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
@@ -41,7 +42,7 @@
         <TextBox x:Name="InputBox"
                  Grid.Row="2"
                  Margin="0,5,0,0"
-                 Watermark="Enter command..."
+                 Watermark="{x:Static languages:Languages.Text_Terminal_CommandWatermark}"
                  FontFamily="{StaticResource Jbm}"
                  FontSize="14" />
     </Grid>

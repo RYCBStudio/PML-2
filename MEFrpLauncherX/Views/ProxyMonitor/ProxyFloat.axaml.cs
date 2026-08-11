@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.WindowServices;
 using MEFrpLauncherX.NetworkMonitoring;
 using ReactiveUI;
@@ -106,7 +107,7 @@ public class ProxyFloatViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "在线隧道";
+    } = Languages.Text_ProxyFloat_WindowTitle;
 
     public AvaloniaList<string> Proxies
     {
