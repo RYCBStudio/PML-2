@@ -339,7 +339,7 @@ public class UpdatePageViewModel : ViewModelBase
         if (OperatingSystem.IsWindows())
         {
             var targetIsAot = ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT";
-            var urlSuffix = targetIsAot ? "%20AOT%20Experimental" : "";
+            var urlSuffix = targetIsAot ? "%20AOT" : "";
             downloadUrl = $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
                           $"{LatestVersion}/pml2_setup%20{LatestVersion}{urlSuffix}.exe";
             tempFileName = $"update_tmp_{LatestVersion}.exe";
@@ -462,6 +462,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
     }
 
+    [Obsolete("This method is kept for backward compatibility. Use DownloadUpdate() instead.")]
     public async void DownloadUpdateBak()
     {
         if (OperatingSystem.IsLinux())
@@ -584,7 +585,7 @@ public class UpdatePageViewModel : ViewModelBase
                 }
             }
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        else if (OperatingSystem.IsMacOS())
         {
             // macOS 使用 open
             Process.Start(new ProcessStartInfo

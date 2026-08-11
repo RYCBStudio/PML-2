@@ -2789,4 +2789,13 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Tips.NeedRestart" xml:space="preserve">
         <value>Restart required</value>
     </data>
+    <data name="Text.About.OpenSourceLicense" xml:space="preserve">
+        <value>This software is licensed under the MIT License.</value>
+    </data>
+    <data name="Text.About.CompleteCopyrightStatement" xml:space="preserve">
+        <value>Complete Copyright Statement</value>
+    </data>
+    <data name="Text.About.CompleteCopyrightStatement.Content" xml:space="preserve">
+        <value>Warning: This software consists of both open-source and closed-source components. The open-source modules are licensed under the MIT License, permitting free use, modification, and distribution in accordance with its terms. The closed-source modules are protected by copyright law and international treaties. Any unauthorized reproduction, distribution, or use of these proprietary components may result in severe civil and criminal penalties. Legal action will be pursued to the fullest extent permitted by law.</value>
+    </data>
 </root>

@@ -123,6 +123,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Copyright Statement.
+        /// </summary>
+        public static string Text_About_CompleteCopyrightStatement {
+            get {
+                return ResourceManager.GetString("Text.About.CompleteCopyrightStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: This software consists of both open-source and closed-source components. The open-source modules are licensed under the MIT License, permitting free use, modification, and distribution in accordance with its terms. The closed-source modules are protected by copyright law and international treaties. Any unauthorized reproduction, distribution, or use of these proprietary components may result in severe civil and criminal penalties. Legal action will be pursued to the fullest extent permitted by law..
+        /// </summary>
+        public static string Text_About_CompleteCopyrightStatement_Content {
+            get {
+                return ResourceManager.GetString("Text.About.CompleteCopyrightStatement.Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy group number.
         /// </summary>
         public static string Text_About_CopyGroupNumber {
@@ -299,6 +317,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_About_OpenSource {
             get {
                 return ResourceManager.GetString("Text.About.OpenSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This software is licensed under the MIT License..
+        /// </summary>
+        public static string Text_About_OpenSourceLicense {
+            get {
+                return ResourceManager.GetString("Text.About.OpenSourceLicense", resourceCulture);
             }
         }
         

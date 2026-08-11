@@ -77,7 +77,7 @@ public partial class MainWindow : AppWindow, IDisposable
                 _ => WindowTransparencyLevel.None
             };
         }
-
+        
         TransparencyLevelHint = [preferredTLH];
 
         #endregion
@@ -95,8 +95,6 @@ public partial class MainWindow : AppWindow, IDisposable
         #endregion
 
         InitializeComponent();
-
-
         Loaded += OnLoaded;
         /*
         // if (OperatingSystem.IsWindows())
@@ -412,7 +410,8 @@ public partial class MainWindow : AppWindow, IDisposable
             var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
             if (hasNew)
             {
-                Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest), string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
+                Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
+                    string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
             }
 
             _updateChecked = true;
@@ -447,7 +446,8 @@ public partial class MainWindow : AppWindow, IDisposable
                 MainPageFrameViewModel.TerminalPage = MainPageFrameViewModel.Instance.CurrentPage as TerminalPage;
             })
         });
-        tmpCM.Items.Add(new NativeMenuItem { Header = Languages.Text_MainWindow_Exit, Command = new RelayCommand(Exit) });
+        tmpCM.Items.Add(
+            new NativeMenuItem { Header = Languages.Text_MainWindow_Exit, Command = new RelayCommand(Exit) });
         return tmpCM;
     }
 
@@ -460,7 +460,8 @@ public partial class MainWindow : AppWindow, IDisposable
         catch (Win32Exception ex)
         {
             Core.App.CurrentLogger.Error(ex);
-            MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Warning, Languages.Text_MainWindow_CannotCloseConsole,
+            MessageBoxManager.GetMessageBoxStandard(Languages.Caption_Warning,
+                Languages.Text_MainWindow_CannotCloseConsole,
                 ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Warning).ShowAsync();
         }
 
@@ -477,7 +478,8 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             Show();
             MessageBoxManager
-                .GetMessageBoxStandard("", Languages.Text_MainWindow_LoginFirst, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Forbidden).ShowAsync();
+                .GetMessageBoxStandard("", Languages.Text_MainWindow_LoginFirst, ButtonEnum.Ok,
+                    MsBox.Avalonia.Enums.Icon.Forbidden).ShowAsync();
         }
     }
 

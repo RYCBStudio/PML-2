@@ -11,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 using MarkdownAIRender.Controls.MarkdownRender;
+using MarkdownAIRender.Helper;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -391,7 +392,7 @@ public partial class AboutPage : UserControl
     {
         Process.Start(new ProcessStartInfo
         {
-            FileName = "https://docs.rycb.tech/pml-2/privacy",
+            FileName = "https://docs.rycb.tech/pml-2/policy",
             UseShellExecute = true
         });
     }
@@ -482,6 +483,10 @@ public partial class AboutPage : UserControl
         }
     }
 
+    private void Gh_Click(object? sender, RoutedEventArgs e)
+    {
+        UrlHelper.OpenUrl("https://github.com/RYCBStudio/PML-2");
+    }
     #endregion
 
     #region HTTP请求
@@ -616,6 +621,19 @@ public partial class AboutPage : UserControl
     private void OpenProxyFloat(object? sender, RoutedEventArgs e) => new ProxyMonitor.ProxyFloat().Show();
 
     #endregion
+
+    private async void CP_Click(object? sender, RoutedEventArgs e)
+    {
+        var cd = new ContentDialog()
+        {
+            Title = Languages.Text_About_CompleteCopyrightStatement,
+            Content = Languages.Text_About_CompleteCopyrightStatement_Content,
+            PrimaryButtonText = Languages.Text_Global_Confirm,
+            CloseButtonText = Languages.Text_Global_Cancel,
+            DefaultButton = ContentDialogButton.Primary
+        };
+        await cd.ShowAsync();
+    }
 }
 
 public class HitokotoResource

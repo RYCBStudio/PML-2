@@ -29,54 +29,79 @@
     <ScrollViewer>
         <Panel>
             <StackPanel Margin="10" Classes="animated">
-                <controls1:SettingsExpander
-                    Footer="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}"
-                    IsExpanded="True">
-                    <controls1:SettingsExpander.Header>
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <Image
-                                Width="20"
-                                Margin="5,0,5,0"
-                                Source="/Assets/meflx.png"
-                                Stretch="UniformToFill" />
-                            <TextBlock
-                                FontFamily="{StaticResource GlobalFontFamily}"
-                                Theme="{StaticResource BodyStrongTextBlockStyle}"
-                                PointerPressed="EnableDebugMode">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="PML {0} ({1})">
-                                        <Binding Source="{x:Static core:App.Version}" />
-                                        <Binding Source="{x:Static core:App.ReleaseFlag}" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                <controls1:SettingsExpander Description="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
+                                            IsExpanded="True">
+                    <controls1:SettingsExpander.IconSource>
+                        <controls1:ImageIconSource
+                            Source="/Assets/meflx.png">
+                        </controls1:ImageIconSource>
+                    </controls1:SettingsExpander.IconSource>
+                    <controls1:SettingsExpander.Footer>
+                        <StackPanel>
+                            <TextBlock Margin="20 0 0  0"
+                                Text="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" />
+                            <StackPanel Orientation="Horizontal" >
+                                <HyperlinkButton
+                                    Click="UA_Click"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="-1"
+                                    Background="Transparent"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    FontFamily="{StaticResource GlobalFontFamily}">
+                                    <TextBlock
+                                        Text="{x:Static languages:Languages.Text_About_UserAgreement}" />
+                                </HyperlinkButton>
+                                <HyperlinkButton
+                                    Click="Privacy_Click"
+                                    BorderBrush="Transparent"
+                                    Background="Transparent"
+                                    BorderThickness="-1"
+                                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                    FontFamily="{StaticResource GlobalFontFamily}">
+                                    <TextBlock
+                                        Text="{x:Static languages:Languages.Text_About_PrivacyPolicy}" />
+                                </HyperlinkButton>
+                            </StackPanel>
                         </StackPanel>
+                    </controls1:SettingsExpander.Footer>
+                    <controls1:SettingsExpander.Header>
+                        <TextBlock
+                            FontFamily="{StaticResource GlobalFontFamily}"
+                            Theme="{StaticResource BodyStrongTextBlockStyle}"
+                            PointerPressed="EnableDebugMode">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="PML {0} ({1})">
+                                    <Binding Source="{x:Static core:App.Version}" />
+                                    <Binding Source="{x:Static core:App.ReleaseFlag}" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </controls1:SettingsExpander.Header>
-                    <controls1:SettingsExpanderItem Content="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
-                                                    Description="{x:Static languages:Languages.Text_About_PoweredBy}">
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_OpenSourceLicense}"
+                        Description="{x:Static languages:Languages.Text_About_PoweredBy}">
                         <controls1:SettingsExpanderItem.Footer>
-
                             <StackPanel>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <HyperlinkButton
-                                        Click="UA_Click"
+                                        Click="CP_Click"
                                         BorderBrush="Transparent"
                                         BorderThickness="-1"
                                         Background="Transparent"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="{x:Static languages:Languages.Text_About_UserAgreement}" />
+                                            Text="{x:Static languages:Languages.Text_About_CompleteCopyrightStatement}" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
-                                        Click="Privacy_Click"
+                                        Click="Gh_Click"
                                         BorderBrush="Transparent"
-                                        Background="Transparent"
                                         BorderThickness="-1"
+                                        Background="Transparent"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <TextBlock
-                                            Text="{x:Static languages:Languages.Text_About_PrivacyPolicy}" />
+                                            Text="Github" />
                                     </HyperlinkButton>
                                     <HyperlinkButton
                                         Click="Doc_Click"
@@ -109,7 +134,8 @@
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <DockPanel HorizontalSpacing="4">
                                             <controls1:ProgressRing IsVisible="{Binding IsSubmittingFeedback}"
-                                                                    Maximum="3" Value="{Binding SubmitProgress, Mode=OneWay}"
+                                                                    Maximum="3"
+                                                                    Value="{Binding SubmitProgress, Mode=OneWay}"
                                                                     IsIndeterminate="False"
                                                                     DockPanel.Dock="Right" VerticalAlignment="Top"
                                                                     Height="12">
@@ -127,7 +153,8 @@
                                     </HyperlinkButton>
                                 </StackPanel>
                                 <WrapPanel ItemSpacing="5" x:Name="DebugPanel" IsVisible="False">
-                                    <Button Content="{x:Static languages:Languages.Text_About_ThrowException}" Click="Debug_ThrowException" />
+                                    <Button Content="{x:Static languages:Languages.Text_About_ThrowException}"
+                                            Click="Debug_ThrowException" />
                                     <Button Content="TestCaptchaSolution" Click="Debug_TestSolve" />
                                     <Button Content="TestForProxyFloat" Click="OpenProxyFloat" />
                                     <Button Content="TestMarkdown" Click="Debug_TestMarkdown" />
