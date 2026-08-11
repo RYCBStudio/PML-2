@@ -49,7 +49,7 @@ public class App : Application
 
     public override void Initialize()
     {
-        _ = Core.App.Initialize();
+        Core.App.Initialize().ConfigureAwait(true);
         // 必须在加载 App.axaml 前设置 Culture，
         // 否则 Styles 中的 {x:Static languages:...} 会以默认(zh-CN)资源被提前固化
         Languages.Culture = ConfigManager.CurrentConfig.Language switch
