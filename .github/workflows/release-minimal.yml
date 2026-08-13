@@ -110,17 +110,19 @@ jobs:
           DMG="$(pwd)/dist/pml2-${V}-macos-x64.dmg"
           rm -f "$DMG"
 
+          sips -g pixelWidth -g pixelHeight pml2-dmg-background.png
+
           create-dmg \
             --volname "PML 2" \
-            --background "$BG" \
+            --background "$(pwd)/pml2-dmg-background.png" \
             --window-pos 200 120 \
             --window-size 660 420 \
             --icon-size 128 \
             --icon "PML 2.app" 182 206 \
             --hide-extension "PML 2.app" \
             --app-drop-link 500 219 \
-            "$DMG" \
-            "$STAGE/"
+            "out.dmg" \
+            stage/
 
           ls -lh "$DMG"
 
