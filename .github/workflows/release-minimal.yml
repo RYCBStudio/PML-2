@@ -84,16 +84,15 @@ jobs:
 
           create-dmg \
             --volname "PML 2" \
-            --background "$BG" \
+            --background "pml2-dmg-background.png" \
             --window-pos 200 120 \
             --window-size 660 420 \
             --icon-size 128 \
-            --icon "$BUNDLE" 150 210 \
-            --hide-extension "$BUNDLE" \
+            --icon "PML 2.app" 150 210 \
+            --hide-extension "PML 2.app" \
             --app-drop-link 510 210 \
             "$DMG" \
-            "$STAGE/"
-
+            "$STAGE"
           ls -lh "$DMG"
 
       - uses: actions/upload-artifact@v4
