@@ -116,11 +116,11 @@ jobs:
             --window-pos 200 120 \
             --window-size 660 420 \
             --icon-size 128 \
-            --icon "$BUNDLE" 150 210 \
-            --hide-extension "$BUNDLE" \
-            --app-drop-link 510 210 \
+            --icon "PML 2.app" 182 206 \
+            --hide-extension "PML 2.app" \
+            --app-drop-link 500 219 \
             "$DMG" \
-            "$(pwd)/$STAGE/"
+            "$STAGE/"
 
           ls -lh "$DMG"
 
