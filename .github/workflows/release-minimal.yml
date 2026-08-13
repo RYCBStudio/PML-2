@@ -115,12 +115,11 @@ jobs:
           create-dmg \
             --volname "PML 2" \
             --background "$BG" \
-            --window-pos 200 120 \
-            --window-size 580 369 \
+            --window-size 660 420 \
             --icon-size 128 \
-            --icon "PML 2.app" 182 206 \
+            --icon "PML 2.app" 160 210 \
+            --app-drop-link 515 210 \
             --hide-extension "PML 2.app" \
-            --app-drop-link 500 219 \
             "$DMG" \
             "$STAGE/"
 
