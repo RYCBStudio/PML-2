@@ -69,22 +69,23 @@ jobs:
       - name: Build .app + DMG
         run: |
           set -euo pipefail
+
           V="${{ inputs.version }}"
           V="${V#v}"
+
           OUT="${{ env.PUBLISH_OUT }}"
           EXE="$APP_EXE"
           BUNDLE="$APP_BUNDLE_NAME"
-          create-dmg --version
-          brew info create-dmg
 
-          BG="$(cd "$(dirname "$DMG_BACKGROUND")" && pwd)/$(basename "$DMG_BACKGROUND")"
-          echo "Background: $BG"
-          ls -la "$BG"
-
-          STAGE=dmg-stage
+          STAGE="$(pwd)/dmg-stage"
           rm -rf "$STAGE"
+          mkdir -p "$STAGE"
+
           APP="$STAGE/$BUNDLE"
-          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+
+          mkdir -p "$APP/Contents/MacOS"
+          mkdir -p "$APP/Contents/Resources"
+
           cp -a "$OUT/." "$APP/Contents/MacOS/"
           chmod +x "$APP/Contents/MacOS/$EXE"
 
@@ -105,26 +106,51 @@ jobs:
           </dict>
           </plist>
           EOF
+
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
+
           xattr -cr "$APP" || true
 
+          #
+          # Finder 模板
+          #
+          mkdir -p "$STAGE/.background"
+
+          cp installer/macos/.DS_Store \
+            "$STAGE/.DS_Store"
+
+          cp installer/macos/.background/pml2-dmg-background.png \
+            "$STAGE/.background/"
+
+          ln -s /Applications "$STAGE/Applications"
+
           mkdir -p dist
-          DMG="$(pwd)/dist/pml2-${V}-macos-x64.dmg"
-          rm -f "$DMG"
 
-          sips -g pixelWidth -g pixelHeight pml2-dmg-background.png
+          RW_DMG="$(pwd)/dist/pml2-rw.dmg"
+          FINAL_DMG="$(pwd)/dist/pml2-${V}-macos-x64.dmg"
 
-          bash -x "$(which create-dmg)" \
-            --background "$BG" \
-            --volname "PML 2" \
-            --window-size 660 420 \
-            --icon-size 128 \
-            --icon "PML 2.app" 182 206 \
-            --app-drop-link 500 219 \
-            "$DMG" \
-            "$STAGE"
+          rm -f "$RW_DMG" "$FINAL_DMG"
 
-          ls -lh "$DMG"
+          echo "Creating writable DMG..."
+
+          hdiutil create \
+            -volname "PML 2" \
+            -srcfolder "$STAGE" \
+            -ov \
+            -format UDRW \
+            "$RW_DMG"
+
+          echo "Compressing..."
+
+          hdiutil convert \
+            "$RW_DMG" \
+            -format UDZO \
+            -imagekey zlib-level=9 \
+            -o "$FINAL_DMG"
+
+          rm "$RW_DMG"
+
+          ls -lh "$FINAL_DMG"
 
       - uses: actions/upload-artifact@v4
         with:
