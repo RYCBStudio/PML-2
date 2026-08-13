@@ -14,8 +14,10 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
-  # publish 目录里的实际可执行文件名，若不同请改这里
   APP_EXE: MEFrpLauncherX
+  # macOS .app 显示名（与 create-dmg --icon 一致）
+  APP_BUNDLE_NAME: 'PML 2.app'
+  DMG_BACKGROUND: installer/macos/pml2-dmg-background.png
 
 jobs:
   build:
@@ -63,7 +65,6 @@ jobs:
           else
             V="${GITHUB_REF_NAME#v}"
           fi
-          # 去掉可能的前导 v
           V="${V#v}"
           echo "version=$V" >> $GITHUB_OUTPUT
           echo "Resolved version: $V"
@@ -128,13 +129,9 @@ jobs:
           TGZ="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.gz"
           TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
 
-          # tar.gz：先 tar 再 gzip（避免 -czf 和 -C 组合踩坑）
           tar -C "$OUT" -cf - . | gzip -9 > "dist/${TGZ}"
-
-          # tar.zst：先 tar 再 zstd（Linux/macOS 通用，不依赖 GNU -I）
           tar -C "$OUT" -cf - . | zstd -T0 -19 -o "dist/${TZST}"
 
-          # 完整性检查（失败会直接退出）
           gzip -t "dist/${TGZ}"
           zstd -t "dist/${TZST}"
 
@@ -165,13 +162,12 @@ jobs:
           PKG_ARCH="${{ matrix.pkg_arch }}"
           OUT="./publish/${RID}"
           ROOT="pkgroot"
-          EXE="${{ env.APP_EXE }}"   # publish 里的真实二进制，如 MEFrpLauncherX
+          EXE="${{ env.APP_EXE }}"
 
           rm -rf "$ROOT"
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
           cp -a "$OUT/." "$ROOT/opt/pml-2/"
 
-          # /usr/bin/pml-2 → 启动 /opt/pml-2 下主程序
           cat > "$ROOT/usr/bin/pml-2" << EOF
           #!/bin/sh
           exec /opt/pml-2/${EXE} "\$@"
@@ -220,7 +216,103 @@ jobs:
           nfpm package -f nfpm.yaml -p deb -t "dist/pml2-${V}-linux-${ARCH}.deb"
           nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-${V}-linux-${ARCH}.rpm"
           ls -lh dist/*.deb dist/*.rpm
-          
+
+      # ---------- 自定义 DMG（仅 macOS）----------
+      - name: Install create-dmg
+        if: matrix.os_name == 'macos'
+        run: brew list create-dmg &>/dev/null || brew install create-dmg
+
+      - name: Build .app + custom DMG
+        if: matrix.os_name == 'macos'
+        shell: bash
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          RID="${{ matrix.rid }}"
+          ARCH="${{ matrix.arch }}"
+          OUT="./publish/${RID}"
+          EXE="${{ env.APP_EXE }}"
+          BUNDLE="${{ env.APP_BUNDLE_NAME }}"
+          BG="${{ env.DMG_BACKGROUND }}"
+
+          if [ ! -f "$BG" ]; then
+            echo "Missing DMG background: $BG"
+            echo "请将背景图提交到仓库: installer/macos/pml2-dmg-background.png"
+            exit 1
+          fi
+
+          # --- 组装 .app ---
+          STAGE="dmg-stage"
+          rm -rf "$STAGE"
+          APP="$STAGE/$BUNDLE"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+
+          cp -a "$OUT/." "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/${EXE}"
+
+          # 可选 icns
+          if [ -f installer/macos/AppIcon.icns ]; then
+            cp installer/macos/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+            ICON_KEY='    <key>CFBundleIconFile</key><string>AppIcon</string>'
+          else
+            ICON_KEY=''
+          fi
+
+          cat > "$APP/Contents/Info.plist" << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key>
+            <string>${EXE}</string>
+            <key>CFBundleIdentifier</key>
+            <string>tech.rycb.pml2</string>
+            <key>CFBundleName</key>
+            <string>PML 2</string>
+            <key>CFBundleDisplayName</key>
+            <string>PML 2</string>
+            <key>CFBundlePackageType</key>
+            <string>APPL</string>
+            <key>CFBundleShortVersionString</key>
+            <string>${V}</string>
+            <key>CFBundleVersion</key>
+            <string>${V}</string>
+            <key>LSMinimumSystemVersion</key>
+            <string>13.0</string>
+            <key>NSHighResolutionCapable</key>
+            <true/>
+          ${ICON_KEY}
+          </dict>
+          </plist>
+          EOF
+
+          echo -n 'APPL????' > "$APP/Contents/PkgInfo"
+
+          # 清隔离属性，减少 CI/本机诡异问题
+          xattr -cr "$APP" || true
+
+          mkdir -p dist
+          DMG="dist/pml2-${V}-macos-${ARCH}.dmg"
+          rm -f "$DMG"
+
+          # 与你提供的 create-dmg 参数一致
+          # --app-drop-link 已生成 Applications，无需再 --icon Applications
+          create-dmg \
+            --volname "PML 2" \
+            --background "$BG" \
+            --window-pos 200 120 \
+            --window-size 660 420 \
+            --icon-size 128 \
+            --icon "$BUNDLE" 150 210 \
+            --hide-extension "$BUNDLE" \
+            --app-drop-link 510 210 \
+            "$DMG" \
+            "$STAGE/"
+
+          ls -lh "$DMG"
+          # 基本校验
+          hdiutil verify "$DMG" || true
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
