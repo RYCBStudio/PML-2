@@ -7,6 +7,11 @@ on:
         description: '版本号（不带 v）'
         required: true
         type: string
+      force_rebuild:
+        description: '忽略缓存，强制重新 publish'
+        required: false
+        default: false
+        type: boolean
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -14,6 +19,7 @@ env:
   APP_EXE: MEFrpLauncherX
   APP_BUNDLE_NAME: 'PML 2.app'
   DMG_BACKGROUND: installer/macos/pml2-dmg-background.png
+  PUBLISH_OUT: publish/osx-x64
 
 jobs:
   dmg:
@@ -21,20 +27,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-dotnet@v4
+      - name: Cache publish output
+        id: cache-publish
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PUBLISH_OUT }}
+          # 代码或工程文件变了就失效；只调 DMG 时可命中
+          key: publish-osx-x64-${{ hashFiles(env.PROJECT, 'MEFrpLauncherX/**/*.cs', 'MEFrpLauncherX/**/*.csproj', 'MEFrpLauncherX.Core/**/*.cs', 'MEFrpLauncherX.Core/**/*.csproj') }}
+          restore-keys: |
+            publish-osx-x64-
+
+      - name: Setup .NET
+        if: steps.cache-publish.outputs.cache-hit != 'true' || inputs.force_rebuild
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Publish R2R (osx-x64)
+        if: steps.cache-publish.outputs.cache-hit != 'true' || inputs.force_rebuild
         run: |
           set -euo pipefail
-          OUT=./publish/osx-x64
+          OUT="${{ env.PUBLISH_OUT }}"
+          rm -rf "$OUT"
           mkdir -p "$OUT"
           dotnet publish "$PROJECT" \
             -c Release -r osx-x64 --self-contained true \
             -p:PublishReadyToRun=true -p:PublishTrimmed=true \
             -o "$OUT" --nologo -v q
           chmod +x "$OUT/$APP_EXE"
+          echo "Publish done, files: $(find "$OUT" -type f | wc -l)"
+
+      - name: Ensure executable bit
+        run: |
+          set -euo pipefail
+          test -d "${{ env.PUBLISH_OUT }}" || { echo "publish 目录不存在"; exit 1; }
+          chmod +x "${{ env.PUBLISH_OUT }}/$APP_EXE"
 
       - name: Install create-dmg
         run: brew list create-dmg &>/dev/null || brew install create-dmg
@@ -44,12 +71,13 @@ jobs:
           set -euo pipefail
           V="${{ inputs.version }}"
           V="${V#v}"
-          OUT=./publish/osx-x64
+          OUT="${{ env.PUBLISH_OUT }}"
           EXE="$APP_EXE"
           BUNDLE="$APP_BUNDLE_NAME"
-          BG="$DMG_BACKGROUND"
 
-          test -f "$BG" || { echo "缺少 $BG"; exit 1; }
+          BG="$(cd "$(dirname "$DMG_BACKGROUND")" && pwd)/$(basename "$DMG_BACKGROUND")"
+          echo "Background: $BG"
+          ls -la "$BG"
 
           STAGE=dmg-stage
           rm -rf "$STAGE"
@@ -79,7 +107,7 @@ jobs:
           xattr -cr "$APP" || true
 
           mkdir -p dist
-          DMG="dist/pml2-${V}-macos-x64.dmg"
+          DMG="$(pwd)/dist/pml2-${V}-macos-x64.dmg"
           rm -f "$DMG"
 
           create-dmg \
@@ -88,11 +116,12 @@ jobs:
             --window-pos 200 120 \
             --window-size 660 420 \
             --icon-size 128 \
-            --icon "PML 2.app" 150 210 \
-            --hide-extension "PML 2.app" \
+            --icon "$BUNDLE" 150 210 \
+            --hide-extension "$BUNDLE" \
             --app-drop-link 510 210 \
             "$DMG" \
-            "$STAGE"
+            "$(pwd)/$STAGE/"
+
           ls -lh "$DMG"
 
       - uses: actions/upload-artifact@v4
