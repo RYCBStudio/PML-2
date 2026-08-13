@@ -16,44 +16,33 @@
         Title="{x:Static languages:Languages.Text_ConfigEditor_Title}">
     <Grid RowDefinitions="Auto, *" RowSpacing="4" Margin="3" Classes="animated">
         <DockPanel>
-            <StackPanel x:Name="UnSavedTip" DockPanel.Dock="Right" Orientation="Horizontal" Spacing="3">
-                <controls:SymbolIcon Symbol="SaveLocal" FontSize="20" VerticalAlignment="Center" />
-                <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_UnsavedChanges}" VerticalAlignment="Center" />
-            </StackPanel>
+            <controls:InfoBar x:Name="UnSavedTip" DockPanel.Dock="Right" IconSource="SaveLocal" IsOpen="True"
+                              Severity="Warning" IsClosable="False"
+                              Message="{x:Static languages:Languages.Text_ConfigEditor_UnsavedChanges}" />
             <StackPanel Orientation="Horizontal" Spacing="5">
-                <Button VerticalAlignment="Center" Click="OnPasteClicked" Classes="accent">
-                    <Button.Content>
-                        <DockPanel HorizontalSpacing="3">
-                            <controls:SymbolIcon Symbol="Paste" DockPanel.Dock="Left" />
-                            <TextBlock Text="{x:Static languages:Languages.Text_Global_Paste}" />
-                        </DockPanel>
-                    </Button.Content>
-                </Button>
-                <Button VerticalAlignment="Center" Click="OnSaveClicked">
-                    <Button.Content>
-                        <DockPanel HorizontalSpacing="3">
-                            <controls:SymbolIcon Symbol="Save" DockPanel.Dock="Left" />
-                            <TextBlock Text="{x:Static languages:Languages.Text_Global_Save}" />
-                        </DockPanel>
-                    </Button.Content>
-                </Button>
-                <Button VerticalAlignment="Center" Click="OnCancelClicked">
-                    <Button.Content>
-                        <DockPanel HorizontalSpacing="3">
-                            <controls:SymbolIcon Symbol="Cancel" DockPanel.Dock="Left" />
-                            <TextBlock Text="{x:Static languages:Languages.Text_Global_Cancel}" />
-                        </DockPanel>
-                    </Button.Content>
-                </Button>
-                <StackPanel Orientation="Horizontal" Spacing="3">
-                    <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_FileType}" />
-                    <ComboBox x:Name="FileTypeComboBox" SelectionChanged="ChangeSyntaxHighlight">
-                        <ComboBoxItem Content="JSON" />
-                        <ComboBoxItem Content="YAML" />
-                        <ComboBoxItem Content="TOML" />
-                        <ComboBoxItem Content="INI" />
-                    </ComboBox>
-                </StackPanel>
+                <controls:CommandBar DefaultLabelPosition="Right">
+                    <controls:CommandBar.PrimaryCommands>
+                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnPasteClicked"
+                                                   Label="{x:Static languages:Languages.Text_Global_Paste}" IconSource="Paste" />
+                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnSaveClicked" Label="{x:Static languages:Languages.Text_Global_Save}"
+                                                   IconSource="Save" />
+                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnCancelClicked" Label="{x:Static languages:Languages.Text_Global_Cancel}"
+                                                   IconSource="Cancel" />
+                        <controls:CommandBarSeparator />
+                        <controls:CommandBarElementContainer Margin="10 0  0 0">
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_FileType}" />
+                                <ComboBox VerticalAlignment="Center" x:Name="FileTypeComboBox"
+                                          SelectionChanged="ChangeSyntaxHighlight">
+                                    <ComboBoxItem Content="JSON" />
+                                    <ComboBoxItem Content="YAML" />
+                                    <ComboBoxItem Content="TOML" />
+                                    <ComboBoxItem Content="INI" />
+                                </ComboBox>
+                            </StackPanel>
+                        </controls:CommandBarElementContainer>
+                    </controls:CommandBar.PrimaryCommands>
+                </controls:CommandBar>
             </StackPanel>
         </DockPanel>
         <avaloniaEdit:TextEditor ShowLineNumbers="True" x:Name="ConfigEdit" Grid.Row="1" />

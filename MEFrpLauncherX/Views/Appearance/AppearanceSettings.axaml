@@ -3,7 +3,7 @@
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:appearance="clr-namespace:MEFrpLauncherX.Views.Appearance"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
-        Width="500" Height="300"
+        Width="600" Height="400"
         x:Class="MEFrpLauncherX.Views.Appearance.AppearanceSettings"
         CanResize="False"
         WindowStartupLocation="CenterOwner"

@@ -5,13 +5,14 @@
              xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="UserControl"
              x:Class="MEFrpLauncherX.Views.ManageProxyPage"
              FontFamily="{StaticResource GlobalFontFamily}"
-             x:DataType="views:ProxyViewModel">
+             x:DataType="viewModels:ManageProxyViewModel">
     <Design.DataContext>
-        <views:ProxyViewModel />
+        <viewModels:ManageProxyViewModel />
     </Design.DataContext>
 
     <Grid Classes="animated" RowDefinitions="Auto,Auto,*">

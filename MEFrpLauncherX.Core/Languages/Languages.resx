@@ -2810,4 +2810,106 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
         <value>当前地区</value>
     </data>
+    <data name="Text.About.ReportIssue.Method" xml:space="preserve">
+        <value>请选择您的反馈渠道。源1为官方渠道, 将通过您的邮箱进行处理; 源2为Github渠道, 将通过 Github Issue 进行处理。</value>
+    </data>
+    <data name="Text.About.ToolBox.Title" xml:space="preserve">
+        <value>工具箱</value>
+    </data>
+    <data name="Text.About.ToolBox.Description" xml:space="preserve">
+        <value>本页面提供多种实用工具，供您选用。</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog" xml:space="preserve">
+        <value>导出软件日志</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Description" xml:space="preserve">
+        <value>将日志目录中的所有日志文件导出到您选择的文件夹，便于提交反馈</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.SelectFolder" xml:space="preserve">
+        <value>选择日志导出位置</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.NoLogs" xml:space="preserve">
+        <value>日志目录中没有可导出的日志文件</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Success" xml:space="preserve">
+        <value>日志已导出到</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Failed" xml:space="preserve">
+        <value>导出日志失败，请稍后重试</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache" xml:space="preserve">
+        <value>清理缓存</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Description" xml:space="preserve">
+        <value>清理 Cache 与 Logs 目录中超过指定时长的旧文件，释放磁盘空间</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Title" xml:space="preserve">
+        <value>清理缓存与日志</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.CacheSize" xml:space="preserve">
+        <value>缓存目录（Cache）</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.LogsSize" xml:space="preserve">
+        <value>日志目录（Logs）</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Retention" xml:space="preserve">
+        <value>保留时长</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day1" xml:space="preserve">
+        <value>超过 1 天</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day3" xml:space="preserve">
+        <value>超过 3 天</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day7" xml:space="preserve">
+        <value>超过 7 天（一周）</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day30" xml:space="preserve">
+        <value>超过 30 天</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.All" xml:space="preserve">
+        <value>全部清理</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Clean" xml:space="preserve">
+        <value>开始清理</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Cleaning" xml:space="preserve">
+        <value>正在清理...</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Done" xml:space="preserve">
+        <value>清理完成：已删除 {0} 个文件，释放 {1}</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Nothing" xml:space="preserve">
+        <value>没有需要清理的文件</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Failed" xml:space="preserve">
+        <value>清理过程中出现错误，请查看日志</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenLogsFolder" xml:space="preserve">
+        <value>打开日志目录</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenLogsFolder.Description" xml:space="preserve">
+        <value>在文件管理器中打开日志文件夹</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenRootFolder" xml:space="preserve">
+        <value>打开软件目录</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenRootFolder.Description" xml:space="preserve">
+        <value>在文件管理器中打开软件根目录（含配置、缓存与日志）</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics" xml:space="preserve">
+        <value>复制诊断信息</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Description" xml:space="preserve">
+        <value>复制软件版本与系统信息到剪贴板，便于提交反馈</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Copied" xml:space="preserve">
+        <value>诊断信息已复制到剪贴板</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Failed" xml:space="preserve">
+        <value>复制诊断信息失败</value>
+    </data>
+    <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
+        <value>你知道吗？</value>
+    </data>
 </root>

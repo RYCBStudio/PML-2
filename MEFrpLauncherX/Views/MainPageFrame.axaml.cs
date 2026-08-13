@@ -45,12 +45,23 @@ public static class Extensions
         {
             Dispatcher.UIThread.Invoke((Action)(() =>
                 ctrl.IsVisible = true));
+
+            if (ctrl is InfoBar bar)
+            {
+                bar.IsOpen = true;
+            }
         }
 
         public void Hide()
         {
             Dispatcher.UIThread.Invoke((Action)(() =>
                 ctrl.IsVisible = false));
+            
+            
+            if (ctrl is InfoBar bar)
+            {
+                bar.IsOpen = false;
+            }
         }
 
         public void Collapse()

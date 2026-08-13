@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="380"
+             x:Class="MEFrpLauncherX.Controls.CacheCleanupDialog">
+    <StackPanel Spacing="14" MinWidth="420">
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Border Grid.Column="0" CornerRadius="8" BorderThickness="1" Padding="12"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel Spacing="4">
+                    <TextBlock FontSize="12" Opacity="0.7"
+                               Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_CacheSize}" />
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap"
+                               Text="{Binding CacheSizeText, RelativeSource={RelativeSource AncestorType=controls:CacheCleanupDialog}, FallbackValue='--'}" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" CornerRadius="8" BorderThickness="1" Padding="12"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel Spacing="4">
+                    <TextBlock FontSize="12" Opacity="0.7"
+                               Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_LogsSize}" />
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap"
+                               Text="{Binding LogsSizeText, RelativeSource={RelativeSource AncestorType=controls:CacheCleanupDialog}, FallbackValue='--'}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+        <TextBlock FontWeight="SemiBold" Opacity="0.8"
+                   Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Retention}" />
+        <StackPanel Orientation="Horizontal" Spacing="14">
+            <RadioButton x:Name="Day1Rb" GroupName="Retention"
+                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day1}" />
+            <RadioButton x:Name="Day3Rb" GroupName="Retention"
+                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day3}" />
+            <RadioButton x:Name="Day7Rb" GroupName="Retention" IsChecked="True"
+                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day7}" />
+            <RadioButton x:Name="Day30Rb" GroupName="Retention"
+                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day30}" />
+            <RadioButton x:Name="AllRb" GroupName="Retention"
+                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_All}" />
+        </StackPanel>
+        <TextBlock x:Name="ResultText" TextWrapping="Wrap" IsVisible="False" />
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button x:Name="CleanButton" Classes="Accent"
+                    Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Clean}"
+                    Click="Clean_Click" />
+            <fluent:ProgressRing x:Name="CleanProgress" IsIndeterminate="True" IsVisible="False"
+                                 Width="18" Height="18" VerticalAlignment="Center" />
+            <TextBlock x:Name="CleaningText" IsVisible="False" VerticalAlignment="Center" Opacity="0.7"
+                       Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Cleaning}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

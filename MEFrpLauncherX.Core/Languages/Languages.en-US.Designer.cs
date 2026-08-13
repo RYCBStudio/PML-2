@@ -159,7 +159,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Documentation opened. If it is not accessible, please choose one of the following mirrors: .
+        ///   Looks up a localized string similar to Documentation opened. If it is not accessible, please choose one of the following channels: .
         /// </summary>
         public static string Text_About_DocOpened {
             get {
@@ -366,7 +366,16 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mirror 1.
+        ///   Looks up a localized string similar to Please select your feedback channel. Channel 1 is the official channel, where we will process your feedback via your email address. Channel 2 is the GitHub channel, where we will process your feedback via GitHub Issues..
+        /// </summary>
+        public static string Text_About_ReportIssue_Method {
+            get {
+                return ResourceManager.GetString("Text.About.ReportIssue.Method", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channel 1.
         /// </summary>
         public static string Text_About_Source1 {
             get {
@@ -375,7 +384,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mirror 2.
+        ///   Looks up a localized string similar to Channel 2.
         /// </summary>
         public static string Text_About_Source2 {
             get {
@@ -398,6 +407,294 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_About_ThrowException {
             get {
                 return ResourceManager.GetString("Text.About.ThrowException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Cache.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove old files older than the specified period in the Cache and Logs directories to free up disk space.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear everything.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_All {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cache Directory.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_CacheSize {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.CacheSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Cleaning.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Clean {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleaning....
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Cleaning {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Cleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Older than 1 day.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day1 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Older than 3 days.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day3 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Older than 30 days.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day30 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Older than 7 days (a week).
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day7 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleanup complete: {0} file(s) removed, {1} freed.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Done {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred during cleanup, please check the logs.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs Directory.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_LogsSize {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.LogsSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No files need to be cleaned.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Nothing {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Nothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retention Period.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Retention {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Retention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Cache and Logs.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Title {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Diagnostics.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagnostics copied to the clipboard.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Copied {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Copied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy the app version and system info to the clipboard for feedback.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to copy diagnostics.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Various useful tools are available here..
+        /// </summary>
+        public static string Text_About_ToolBox_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Logs.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all log files to the folder you choose for submitting feedback.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to export logs, please try again later.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No log files found in the log directory.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_NoLogs {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.NoLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the export location.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_SelectFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs exported to.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Success {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Logs Folder.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenLogsFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the log folder in the file manager.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenLogsFolder_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenLogsFolder.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open App Folder.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenRootFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenRootFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the app root folder (config, cache and logs) in the file manager.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenRootFolder_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenRootFolder.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toolbox.
+        /// </summary>
+        public static string Text_About_ToolBox_Title {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.Title", resourceCulture);
             }
         }
         
@@ -1730,6 +2027,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxyGuide_RDPName {
             get {
                 return ResourceManager.GetString("Text.CreateProxyGuide.RDPName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	Did you know?.
+        /// </summary>
+        public static string Text_DailyTip_DoYouKnow {
+            get {
+                return ResourceManager.GetString("Text.DailyTip.DoYouKnow", resourceCulture);
             }
         }
         

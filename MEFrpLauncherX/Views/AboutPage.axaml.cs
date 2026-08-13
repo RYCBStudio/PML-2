@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -9,6 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MarkdownAIRender.Helper;
@@ -16,6 +18,7 @@ using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia.ViewModels.Commands;
 using RestSharp;
@@ -446,40 +449,51 @@ public partial class AboutPage : UserControl
     {
         vm.SubmitProgress = 0;
         vm.IsSubmittingFeedback = true;
-        var feedbackForm = new FeedbackForm();
-        var cd = new ContentDialog
+        var askForm = new ContentDialog()
         {
-            Content = feedbackForm,
-            IsPrimaryButtonEnabled = true,
-            PrimaryButtonText = Languages.Text_Global_Confirm,
-            MinHeight = 200,
-            DefaultButton = ContentDialogButton.Primary,
-            CloseButtonText = Languages.Text_Global_Cancel,
+            Content = Languages.Text_About_ReportIssue_Method,
+            PrimaryButtonText = Languages.Text_About_Source1,
+            CloseButtonText = Languages.Text_About_Source2,
+            DefaultButton = ContentDialogButton.Primary
         };
-        var res = await cd.ShowAsync();
-        if (!(feedbackForm.Email.IsNullOrEmpty() ||
-              feedbackForm.Feedback.IsNullOrEmpty()) || res == ContentDialogResult.Primary)
+        var askFormResult = await askForm.ShowAsync();
+        if (askFormResult == ContentDialogResult.Primary)
         {
-            //var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
-            //if (res.success)
-            //{
-            vm.SubmitProgress = 0.4;
-            await RYCBApiConverter.SendEmailAsync("html", "rycbqyf@163.com",
-                $"收到反馈: {feedbackForm.Feedback} <br>用户邮箱:{feedbackForm.Email} <br>时间:{DateTime.Now:O}",
-                "收到反馈 | RYCB 内部通知");
-            vm.SubmitProgress = 1.5;
-            await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email, Languages.Text_About_FeedbackEmailBody,
-                Languages.Text_About_FeedbackEmailSubject);
-            vm.SubmitProgress = 2.6;
-            Growl.Success(Languages.Text_About_FeedbackSubmitted);
-            vm.SubmitProgress = 3;
-            await Task.Delay(500);
-            vm.IsSubmittingFeedback = false;
-            //}
-            //else
-            //{
-            //    Growl.Error(res.message, "反馈提交失败");
-            //}
+            var feedbackForm = new FeedbackForm();
+            var cd = new ContentDialog
+            {
+                Content = feedbackForm,
+                IsPrimaryButtonEnabled = true,
+                PrimaryButtonText = Languages.Text_Global_Confirm,
+                MinHeight = 200,
+                DefaultButton = ContentDialogButton.Primary,
+                CloseButtonText = Languages.Text_Global_Cancel,
+            };
+            var res = await cd.ShowAsync();
+            if (!(feedbackForm.Email.IsNullOrEmpty() ||
+                  feedbackForm.Feedback.IsNullOrEmpty()) || res == ContentDialogResult.Primary)
+            {
+                //var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
+                //if (res.success)
+                //{
+                vm.SubmitProgress = 0.4;
+                await RYCBApiConverter.SendEmailAsync("html", "rycbqyf@163.com",
+                    $"收到反馈: {feedbackForm.Feedback} <br>用户邮箱:{feedbackForm.Email} <br>时间:{DateTime.Now:O}",
+                    "收到反馈 | RYCB 内部通知");
+                vm.SubmitProgress = 1.5;
+                await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email,
+                    Languages.Text_About_FeedbackEmailBody,
+                    Languages.Text_About_FeedbackEmailSubject);
+                vm.SubmitProgress = 2.6;
+                Growl.Success(Languages.Text_About_FeedbackSubmitted);
+                vm.SubmitProgress = 3;
+                await Task.Delay(500);
+                vm.IsSubmittingFeedback = false;
+            }
+        }
+        else
+        {
+            UrlHelper.OpenUrl("https://github.com/RYCBStudio/PML-2/issues");
         }
     }
 
@@ -487,6 +501,20 @@ public partial class AboutPage : UserControl
     {
         UrlHelper.OpenUrl("https://github.com/RYCBStudio/PML-2");
     }
+
+    private async void CP_Click(object? sender, RoutedEventArgs e)
+    {
+        var cd = new ContentDialog()
+        {
+            Title = Languages.Text_About_CompleteCopyrightStatement,
+            Content = Languages.Text_About_CompleteCopyrightStatement_Content,
+            PrimaryButtonText = Languages.Text_Global_Confirm,
+            CloseButtonText = Languages.Text_Global_Cancel,
+            DefaultButton = ContentDialogButton.Primary
+        };
+        await cd.ShowAsync();
+    }
+
     #endregion
 
     #region HTTP请求
@@ -622,18 +650,129 @@ public partial class AboutPage : UserControl
 
     #endregion
 
-    private async void CP_Click(object? sender, RoutedEventArgs e)
+    #region 工具箱
+
+    private async void ExportLog(object? sender, RoutedEventArgs e)
     {
-        var cd = new ContentDialog()
+        try
         {
-            Title = Languages.Text_About_CompleteCopyrightStatement,
-            Content = Languages.Text_About_CompleteCopyrightStatement_Content,
-            PrimaryButtonText = Languages.Text_Global_Confirm,
-            CloseButtonText = Languages.Text_Global_Cancel,
-            DefaultButton = ContentDialogButton.Primary
+            var folders = await Core.App.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                Title = Languages.Text_About_ToolBox_ExportLog_SelectFolder,
+                AllowMultiple = false
+            });
+            if (folders.Count == 0)
+            {
+                return;
+            }
+
+            var exportDir = await Task.Run(() => ToolboxService.ExportLogs(folders[0].Path.LocalPath));
+            if (exportDir == null)
+            {
+                await MessageBox.ShowAsync(Languages.Text_About_ToolBox_ExportLog_NoLogs, Languages.Caption_Hint,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            Growl.Success($"{Languages.Text_About_ToolBox_ExportLog_Success}\n{exportDir}");
+            OpenFolderInExplorer(exportDir);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, port: EnumLogPort.Client, module: EnumLogModule.Main);
+            await MessageBox.ShowAsync(Languages.Text_About_ToolBox_ExportLog_Failed, Languages.Caption_Error,
+                MessageBoxIcon.Error);
+        }
+    }
+
+    private async void ClearCache(object? sender, RoutedEventArgs e)
+    {
+        var dialog = new CacheCleanupDialog();
+        var cd = new ContentDialog
+        {
+            Title = Languages.Text_About_ToolBox_ClearCache_Dialog_Title,
+            Content = dialog,
+            CloseButtonText = Languages.Text_Global_Close,
         };
         await cd.ShowAsync();
     }
+
+    private void OpenLogsFolder(object? sender, RoutedEventArgs e)
+    {
+        var logsDir = Path.Combine(Core.App.StartupPath, "Logs");
+        if (!Directory.Exists(logsDir))
+        {
+            Directory.CreateDirectory(logsDir);
+        }
+
+        OpenFolderInExplorer(logsDir);
+    }
+
+    private void OpenRootFolder(object? sender, RoutedEventArgs e) => OpenFolderInExplorer(Core.App.StartupPath);
+
+    private async void CopyDiagnostics(object? sender, RoutedEventArgs e)
+    {
+        var info = $"""
+                   PML {Core.App.Version} ({Core.App.ReleaseFlag})
+                   MEFrp Client: {Core.App.MEFrpVersion}
+                   OS: {Environment.OSVersion.VersionString} ({RuntimeInformation.OSArchitecture})
+                   Runtime: {RuntimeInformation.FrameworkDescription}
+                   Culture: {CultureInfo.CurrentUICulture.Name}
+                   """;
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        if (clipboard != null)
+        {
+            await clipboard.SetTextAsync(info);
+            Growl.Success(Languages.Text_About_ToolBox_CopyDiagnostics_Copied);
+        }
+        else
+        {
+            Growl.Error(Languages.Text_About_ToolBox_CopyDiagnostics_Failed);
+        }
+    }
+
+    /// <summary>
+    ///     在系统文件管理器中打开指定文件夹（跨平台）。
+    /// </summary>
+    private void OpenFolderInExplorer(string folderPath)
+    {
+        try
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer",
+                    Arguments = $"\"{folderPath}\"",
+                    UseShellExecute = true
+                });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "open",
+                    Arguments = $"\"{folderPath}\"",
+                    UseShellExecute = true
+                });
+            }
+            else
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "xdg-open",
+                    Arguments = $"\"{folderPath}\"",
+                    UseShellExecute = true
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, port: EnumLogPort.Client, module: EnumLogModule.Main);
+        }
+    }
+
+    #endregion
 }
 
 public class HitokotoResource

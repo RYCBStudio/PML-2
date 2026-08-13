@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -49,6 +50,7 @@ public class App : Application
 
     public override void Initialize()
     {
+        Core.App.Initialize().ConfigureAwait(true);
         // 必须在加载 App.axaml 前设置 Culture，
         // 否则 Styles 中的 {x:Static languages:...} 会以默认(zh-CN)资源被提前固化
         Languages.Culture = ConfigManager.CurrentConfig.Language switch
@@ -59,7 +61,6 @@ public class App : Application
             _ => CultureInfo.CurrentCulture
         };
         AvaloniaXamlLoader.Load(this);
-        _ = Core.App.Initialize();
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -158,8 +159,22 @@ public class App : Application
                 DataContext = new MainWindowViewModel()
             };
             desktop.MainWindow = mainWindow;
-            desktop.Exit += (sender, args) =>
+            desktop.Exit += async (sender, args) =>
             {
+                try
+                {
+                    // 触发插件事件：应用退出
+                    await PluginService.Instance.TriggerAsync("app.exit", new Dictionary<string, object>
+                    {
+                        ["version"] = Core.App.Version,
+                        ["os"] = Environment.OSVersion.Platform.ToString()
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger?.Error(ex, "触发 app.exit 插件事件失败");
+                }
+
                 Core.App.CurrentLogger?.Dispose();
             };
             Desktop = desktop;

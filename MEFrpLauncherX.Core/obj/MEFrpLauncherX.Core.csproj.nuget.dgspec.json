@@ -56,11 +56,11 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.18, )"
+              "version": "[11.3.20, )"
             },
             "Avalonia.Skia": {
               "target": "Package",
-              "version": "[11.3.18, )"
+              "version": "[11.3.20, )"
             },
             "Avalonia.Svg": {
               "target": "Package",
@@ -449,7 +449,7 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.18, )"
+              "version": "[11.3.20, )"
             },
             "Downloader": {
               "target": "Package",
@@ -482,6 +482,10 @@
             "NPinyin.Core": {
               "target": "Package",
               "version": "[3.0.0, )"
+            },
+            "Notify.NET": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             },
             "ReactiveUI": {
               "target": "Package",

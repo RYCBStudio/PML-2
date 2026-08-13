@@ -129,7 +129,11 @@ public partial class MainWindow : AppWindow, IDisposable
         // }
         */
         Activated += OnActivated;
-
+        Opened += (s, e) =>
+        {
+            Focus();
+            Activate();
+        };
         Instance = this;
     }
 
@@ -412,6 +416,13 @@ public partial class MainWindow : AppWindow, IDisposable
             {
                 Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
                     string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
+
+                // 触发插件事件：检测到新版本
+                _ = PluginService.Instance.TriggerAsync("app.update.available", new Dictionary<string, object>
+                {
+                    ["currentVersion"] = Core.App.Version,
+                    ["latestVersion"] = latest
+                });
             }
 
             _updateChecked = true;

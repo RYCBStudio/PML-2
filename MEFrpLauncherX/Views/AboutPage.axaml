@@ -39,8 +39,8 @@
                     <controls1:SettingsExpander.Footer>
                         <StackPanel>
                             <TextBlock Margin="20 0 0  0"
-                                Text="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" />
-                            <StackPanel Orientation="Horizontal" >
+                                       Text="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" />
+                            <StackPanel Orientation="Horizontal">
                                 <HyperlinkButton
                                     Click="UA_Click"
                                     BorderBrush="Transparent"
@@ -164,7 +164,7 @@
 
                     </controls1:SettingsExpanderItem>
                 </controls1:SettingsExpander>
-                <controls1:SettingsExpander IsExpanded="True">
+                <controls1:SettingsExpander>
                     <controls1:SettingsExpander.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image
@@ -244,7 +244,6 @@
                         </controls1:SettingsExpanderItem.Footer>
                     </controls1:SettingsExpanderItem>
                 </controls1:SettingsExpander>
-
                 <controls1:SettingsExpander Background="Transparent"
                                             FontFamily="{StaticResource GlobalFontFamily}" IsExpanded="True">
                     <controls1:SettingsExpander.Header>
@@ -281,6 +280,31 @@
                             </controls:TypingControl.Text>
                         </controls:TypingControl>
                     </StackPanel>
+                </controls1:SettingsExpander>
+
+                <controls1:SettingsExpander IconSource="Repair"
+                                            Header="{x:Static languages:Languages.Text_About_ToolBox_Title}"
+                                            Description="{x:Static languages:Languages.Text_About_ToolBox_Description}">
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_ToolBox_ExportLog}"
+                        Description="{x:Static languages:Languages.Text_About_ToolBox_ExportLog_Description}"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="ExportLog" />
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache}"
+                        Description="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Description}"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="ClearCache" />
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder}"
+                        Description="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder_Description}"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="OpenLogsFolder" />
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_ToolBox_OpenRootFolder}"
+                        Description="{x:Static languages:Languages.Text_About_ToolBox_OpenRootFolder_Description}"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="OpenRootFolder" />
+                    <controls1:SettingsExpanderItem
+                        Content="{x:Static languages:Languages.Text_About_ToolBox_CopyDiagnostics}"
+                        Description="{x:Static languages:Languages.Text_About_ToolBox_CopyDiagnostics_Description}"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="CopyDiagnostics" />
                 </controls1:SettingsExpander>
             </StackPanel>
         </Panel>

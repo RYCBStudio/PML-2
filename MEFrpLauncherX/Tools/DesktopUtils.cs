@@ -32,12 +32,7 @@ public static class DesktopUtils
             {
                 // Linux / macOS: 使用 shell 脚本延迟重启
                 var tempSh = Path.Combine(Path.GetTempPath(), $"restart-{Environment.ProcessId}.sh");
-                await File.WriteAllTextAsync(tempSh, $"""
-                                                     #!/bin/sh
-                                                     sleep 1
-                                                     "{Environment.ProcessPath}" >/dev/null 2>&1 &
-                                                     rm "$0"
-                                                     """);
+                await File.WriteAllTextAsync(tempSh, $"#!/bin/sh\nsleep 1\n\"{Environment.ProcessPath}\" >/dev/null 2>&1 &\nrm \"$0\"");
                 File.SetUnixFileMode(tempSh,
                     UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute |
                     UnixFileMode.GroupRead | UnixFileMode.GroupExecute |

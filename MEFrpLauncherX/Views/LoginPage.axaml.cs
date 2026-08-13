@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using FluentAvalonia.UI.Controls;
+using MarkdownAIRender.Helper;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
@@ -301,7 +302,7 @@ public partial class LoginPage : UserControl
     }
 
     private void SignUpBtn_OnClick(object? sender, RoutedEventArgs e) =>
-        Core.Extensions.OpenUrl("https://www.mefrp.com/auth/register");
+        UrlHelper.OpenUrl("https://www.mefrp.com/auth/register");
 
     private void AutoLogin(object? sender, RoutedEventArgs e)
     {

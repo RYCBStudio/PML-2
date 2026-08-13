@@ -1,7 +1,8 @@
 <Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i18n="clr-namespace:MarkdownAIRender.i18n">
+    xmlns:i18n="clr-namespace:MarkdownAIRender.i18n"
+    xmlns:md="clr-namespace:MarkdownAIRender.Controls.MarkdownRender">
     <!--  默认主题  -->
 
     <Styles.Resources>
@@ -134,11 +135,10 @@
         <Setter Property="LineHeight" Value="26" />
     </Style>
 
-    <Style Selector="SelectableTextBlock.MdLink">
-        <Setter Property="TextWrapping" Value="Wrap" />
-        <Setter Property="Foreground" Value="{DynamicResource Blue7}" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="TextDecorations" Value="Underline" />
+    <!--  链接：使用用户主题色，按下时下划线迅速划过  -->
+    <Style Selector="md|MarkdownLink">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
     </Style>
 
     <Style Selector="TextBox.markdown">
@@ -186,24 +186,29 @@
         <Setter Property="Foreground" Value="{DynamicResource Grey9}" />
     </Style>
 
-    <Style Selector="SelectableTextBlock.MdLink">
-        <Setter Property="Foreground" Value="{DynamicResource Blue3}" />
+    <Style Selector="md|MarkdownLink:pointerover">
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
     </Style>
 
-    <Style Selector="SelectableTextBlock.MdLink:hover">
-        <Setter Property="Foreground" Value="{DynamicResource Blue1}" />
+    <Style Selector="md|MarkdownLink:pressed">
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource AccentTextFillColorTertiaryBrush}" />
     </Style>
 
-    <Style Selector="SelectableTextBlock.MdLink:pressed">
-        <Setter Property="Foreground" Value="{DynamicResource Blue0}" />
+    <!--  链接下划线：hover 时宽度从 0 过渡到整个链接宽度并保持，形成“划过”效果  -->
+    <Style Selector="md|MarkdownLink Border.MdLinkUnderline">
+        <Setter Property="Background" Value="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Width" Duration="0:0:0.250" Easing="0.1,0.9,0.2,1.0" />
+            </Transitions>
+        </Setter>
     </Style>
 
-    <Style Selector="SelectableTextBlock.MdLink:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource Grey6}" />
-    </Style>
-
-    <Style Selector="SelectableTextBlock.MdLink:disabled:hover">
-        <Setter Property="Foreground" Value="{DynamicResource Grey5}" />
+    <Style Selector="md|MarkdownLink:pressed Border.MdLinkUnderline">
+        <Setter Property="Background" Value="{DynamicResource AccentTextFillColorTertiaryBrush}" />
     </Style>
 
     <Style Selector="Button.MdCopyButton">

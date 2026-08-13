@@ -11,29 +11,31 @@
 
   <!-- Native runtime libraries for each platform -->
   <!-- These are built from src/Porta.Pty.Native and placed in the runtimes folder -->
-  <!-- Copied to the output runtimes/<rid>/native/ layout so DllImport("libporta_pty") resolves at runtime -->
+  <!-- Copied to the output runtimes/<rid>/native/ layout; a NativeLibrary resolver in -->
+  <!-- PlatformServices.cs loads them, since DllImport alone does not probe runtimes/ -->
+  <!-- When a RuntimeIdentifier is specified, only the matching platform is copied -->
   <ItemGroup>
     <None Include="Native/linux-x64/native/libporta_pty.so"
           Link="runtimes/linux-x64/native/libporta_pty.so"
           CopyToOutputDirectory="PreserveNewest"
-          Condition="Exists('Native/linux-x64/native/libporta_pty.so')" />
+          Condition="Exists('Native/linux-x64/native/libporta_pty.so') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'linux-x64')" />
     <None Include="Native/linux-arm64/native/libporta_pty.so"
           Link="runtimes/linux-arm64/native/libporta_pty.so"
           CopyToOutputDirectory="PreserveNewest"
-          Condition="Exists('Native/linux-arm64/native/libporta_pty.so')" />
+          Condition="Exists('Native/linux-arm64/native/libporta_pty.so') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'linux-arm64')" />
     <None Include="Native/osx-x64/native/libporta_pty.dylib"
           Link="runtimes/osx-x64/native/libporta_pty.dylib"
           CopyToOutputDirectory="PreserveNewest"
-          Condition="Exists('Native/osx-x64/native/libporta_pty.dylib')" />
+          Condition="Exists('Native/osx-x64/native/libporta_pty.dylib') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'osx-x64')" />
     <None Include="Native/osx-arm64/native/libporta_pty.dylib"
           Link="runtimes/osx-arm64/native/libporta_pty.dylib"
           CopyToOutputDirectory="PreserveNewest"
-          Condition="Exists('Native/osx-arm64/native/libporta_pty.dylib')" />
+          Condition="Exists('Native/osx-arm64/native/libporta_pty.dylib') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'osx-arm64')" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" /> -->
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.236" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NativeMethods.txt" />

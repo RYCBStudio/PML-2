@@ -1711,13 +1711,13 @@
         <value>Group number copied to clipboard</value>
     </data>
     <data name="Text.About.DocOpened" xml:space="preserve">
-        <value>Documentation opened. If it is not accessible, please choose one of the following mirrors: </value>
+        <value>Documentation opened. If it is not accessible, please choose one of the following channels: </value>
     </data>
     <data name="Text.About.Source1" xml:space="preserve">
-        <value>Mirror 1</value>
+        <value>Channel 1</value>
     </data>
     <data name="Text.About.Source2" xml:space="preserve">
-        <value>Mirror 2</value>
+        <value>Channel 2</value>
     </data>
     <data name="Text.About.FeedbackEmailBody" xml:space="preserve">
         <value>Your feedback has been submitted successfully. We will process it as soon as possible.</value>
@@ -2809,5 +2809,107 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
         <value>Current Region</value>
+    </data>
+    <data name="Text.About.ReportIssue.Method" xml:space="preserve">
+        <value>Please select your feedback channel. Channel 1 is the official channel, where we will process your feedback via your email address. Channel 2 is the GitHub channel, where we will process your feedback via GitHub Issues.</value>
+    </data>
+    <data name="Text.About.ToolBox.Title" xml:space="preserve">
+        <value>Toolbox</value>
+    </data>
+    <data name="Text.About.ToolBox.Description" xml:space="preserve">
+        <value>Various useful tools are available here.</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog" xml:space="preserve">
+        <value>Export Logs</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Description" xml:space="preserve">
+        <value>Export all log files to the folder you choose for submitting feedback</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.SelectFolder" xml:space="preserve">
+        <value>Choose the export location</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.NoLogs" xml:space="preserve">
+        <value>No log files found in the log directory</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Success" xml:space="preserve">
+        <value>Logs exported to</value>
+    </data>
+    <data name="Text.About.ToolBox.ExportLog.Failed" xml:space="preserve">
+        <value>Failed to export logs, please try again later</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache" xml:space="preserve">
+        <value>Clear Cache</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Description" xml:space="preserve">
+        <value>Remove old files older than the specified period in the Cache and Logs directories to free up disk space</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Title" xml:space="preserve">
+        <value>Clear Cache and Logs</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.CacheSize" xml:space="preserve">
+        <value>Cache Directory</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.LogsSize" xml:space="preserve">
+        <value>Logs Directory</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Retention" xml:space="preserve">
+        <value>Retention Period</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day1" xml:space="preserve">
+        <value>Older than 1 day</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day3" xml:space="preserve">
+        <value>Older than 3 days</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day7" xml:space="preserve">
+        <value>Older than 7 days (a week)</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Day30" xml:space="preserve">
+        <value>Older than 30 days</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.All" xml:space="preserve">
+        <value>Clear everything</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Clean" xml:space="preserve">
+        <value>Start Cleaning</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Cleaning" xml:space="preserve">
+        <value>Cleaning...</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Done" xml:space="preserve">
+        <value>Cleanup complete: {0} file(s) removed, {1} freed</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Nothing" xml:space="preserve">
+        <value>No files need to be cleaned</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Failed" xml:space="preserve">
+        <value>An error occurred during cleanup, please check the logs</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenLogsFolder" xml:space="preserve">
+        <value>Open Logs Folder</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenLogsFolder.Description" xml:space="preserve">
+        <value>Open the log folder in the file manager</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenRootFolder" xml:space="preserve">
+        <value>Open App Folder</value>
+    </data>
+    <data name="Text.About.ToolBox.OpenRootFolder.Description" xml:space="preserve">
+        <value>Open the app root folder (config, cache and logs) in the file manager</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics" xml:space="preserve">
+        <value>Copy Diagnostics</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Description" xml:space="preserve">
+        <value>Copy the app version and system info to the clipboard for feedback</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Copied" xml:space="preserve">
+        <value>Diagnostics copied to the clipboard</value>
+    </data>
+    <data name="Text.About.ToolBox.CopyDiagnostics.Failed" xml:space="preserve">
+        <value>Failed to copy diagnostics</value>
+    </data>
+    <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
+        <value>	Did you know?</value>
     </data>
 </root>

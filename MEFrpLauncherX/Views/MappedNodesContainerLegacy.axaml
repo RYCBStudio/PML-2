@@ -19,8 +19,8 @@
             <Setter Property="Fill" Value="{DynamicResource ControlAltFillColorTertiaryBrush}" />
             <Setter Property="Transitions">
                 <Transitions>
-                    <BrushTransition Property="Stroke" Duration="0:0:0.1" Easing="CircularEaseInOut" />
-                    <BrushTransition Property="Fill" Duration="0:0:0.1" Easing="CircularEaseInOut" />
+                    <BrushTransition Property="Stroke" Duration="0:0:0.25" Easing="CircularEaseInOut" />
+                    <BrushTransition Property="Fill" Duration="0:0:0.25" Easing="CircularEaseInOut" />
                 </Transitions>
             </Setter>
         </Style>

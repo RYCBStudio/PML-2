@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:views="clr-namespace:MEFrpLauncherX.Views"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
@@ -42,8 +41,8 @@
                             VerticalAlignment="Center"
                             Spacing="12">
                     <fa:ProgressRing IsIndeterminate="True"
-                                           HorizontalAlignment="Center"
-                                           Width="48" Height="48" />
+                                     HorizontalAlignment="Center"
+                                     Width="48" Height="48" />
                     <TextBlock Text="{x:Static languages:Languages.Text_Proxy_PageLoading}"
                                HorizontalAlignment="Center"
                                FontFamily="{StaticResource GlobalFontFamily}"
@@ -51,24 +50,18 @@
                 </StackPanel>
             </Border>
         </Grid>
-
-        <StackPanel Grid.Row="2"
-                    Spacing="5"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <Button
-                Click="Refresh"
-                Content="{x:Static languages:Languages.Text_Global_Refresh}"
-                FontFamily="{StaticResource GlobalFontFamily}" />
-            <Button
-                Click="Back"
-                Content="{x:Static languages:Languages.Text_Global_Back}"
-                FontFamily="{StaticResource GlobalFontFamily}" />
-            <Button
-                x:Name="NextBtn"
-                Click="Next"
-                Content="{x:Static languages:Languages.Text_Global_Next}"
-                FontFamily="{StaticResource GlobalFontFamily}" />
-        </StackPanel>
+        <Separator Grid.Row="2" VerticalAlignment="Top" />
+        <fa:CommandBar Grid.Row="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+            <fa:CommandBar.PrimaryCommands>
+                <fa:CommandBarButton Click="Refresh" IconSource="Refresh"
+                                     Label="{x:Static languages:Languages.Text_Global_Refresh}" />
+                <fa:CommandBarButton Click="Back" IconSource="Back"
+                                     Label="{x:Static languages:Languages.Text_Global_Back}" />
+                <fa:CommandBarButton x:Name="NextBtn"
+                                     Click="Next" IconSource="Forward"
+                                     Label="{x:Static languages:Languages.Text_Global_Next}">
+                </fa:CommandBarButton>
+            </fa:CommandBar.PrimaryCommands>
+        </fa:CommandBar>
     </Grid>
 </UserControl>
