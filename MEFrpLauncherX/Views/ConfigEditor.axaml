@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="600"
         WindowStartupLocation="CenterOwner"
@@ -14,17 +15,25 @@
     <Grid RowDefinitions="Auto,*">
 
         <StackPanel Margin="5" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_ConfigEditor_Title}"
+            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}"
+                       Text="{x:Static languages:Languages.Text_ConfigEditor_Title}"
                        FontWeight="Bold" />
             <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Global_Type}" />
             <TextBlock VerticalAlignment="Center" x:Name="ConfigTypeTextBlock" />
 
-
-            <Button VerticalContentAlignment="Center" Margin="8,0,0,0" Click="CloseButton_Click" Content="{x:Static languages:Languages.Text_ConfigEditor_CloseAndCancelLaunch}" />
-            <Button Click="CopyButton_Click" Content="{x:Static languages:Languages.Text_Global_Copy}" />
-            <Button Click="SaveButton_Click" Content="{x:Static languages:Languages.Text_Global_Save}" />
-
-            <Button Click="SaveAndRunButton_Click" Content="{x:Static languages:Languages.Text_ConfigEditor_SaveAndRun}" />
+            <controls:CommandBar DefaultLabelPosition="Right">
+                <controls:CommandBar.PrimaryCommands>
+                    <controls:CommandBarButton VerticalContentAlignment="Center" Margin="8,0,0,0"
+                                               Click="CloseButton_Click" IconSource="Cancel"
+                                               Label="{x:Static languages:Languages.Text_ConfigEditor_CloseAndCancelLaunch}" />
+                    <controls:CommandBarButton Click="CopyButton_Click" IconSource="Copy"
+                                               Label="{x:Static languages:Languages.Text_Global_Copy}" />
+                    <controls:CommandBarButton Click="SaveButton_Click" IconSource="Save"
+                                               Label="{x:Static languages:Languages.Text_Global_Save}" />
+                    <controls:CommandBarButton Click="SaveAndRunButton_Click" IconSource="Next"
+                                               Label="{x:Static languages:Languages.Text_ConfigEditor_SaveAndRun}" />
+                </controls:CommandBar.PrimaryCommands>
+            </controls:CommandBar>
         </StackPanel>
 
         <avaloniaEdit:TextEditor

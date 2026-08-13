@@ -366,6 +366,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 请选择您的反馈渠道。源1为官方渠道, 将通过您的邮箱进行处理; 源2为Github渠道, 将通过 Github Issue 进行处理。.
+        /// </summary>
+        public static string Text_About_ReportIssue_Method {
+            get {
+                return ResourceManager.GetString("Text.About.ReportIssue.Method", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 源1.
         /// </summary>
         public static string Text_About_Source1 {
@@ -398,6 +407,294 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_About_ThrowException {
             get {
                 return ResourceManager.GetString("Text.About.ThrowException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清理缓存.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清理 Cache 与 Logs 目录中超过指定时长的旧文件，释放磁盘空间.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 全部清理.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_All {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 缓存目录（Cache）.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_CacheSize {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.CacheSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开始清理.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Clean {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在清理....
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Cleaning {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Cleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 超过 1 天.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day1 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 超过 3 天.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day3 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 超过 30 天.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day30 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 超过 7 天（一周）.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Day7 {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清理完成：已删除 {0} 个文件，释放 {1}.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Done {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清理过程中出现错误，请查看日志.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日志目录（Logs）.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_LogsSize {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.LogsSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 没有需要清理的文件.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Nothing {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Nothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留时长.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Retention {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Retention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清理缓存与日志.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_Title {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 复制诊断信息.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 诊断信息已复制到剪贴板.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Copied {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Copied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 复制软件版本与系统信息到剪贴板，便于提交反馈.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 复制诊断信息失败.
+        /// </summary>
+        public static string Text_About_ToolBox_CopyDiagnostics_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.CopyDiagnostics.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 本页面提供多种实用工具，供您选用。.
+        /// </summary>
+        public static string Text_About_ToolBox_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 导出软件日志.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 将日志目录中的所有日志文件导出到您选择的文件夹，便于提交反馈.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 导出日志失败，请稍后重试.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Failed {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日志目录中没有可导出的日志文件.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_NoLogs {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.NoLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择日志导出位置.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_SelectFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日志已导出到.
+        /// </summary>
+        public static string Text_About_ToolBox_ExportLog_Success {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ExportLog.Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开日志目录.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenLogsFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 在文件管理器中打开日志文件夹.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenLogsFolder_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenLogsFolder.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开软件目录.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenRootFolder {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenRootFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 在文件管理器中打开软件根目录（含配置、缓存与日志）.
+        /// </summary>
+        public static string Text_About_ToolBox_OpenRootFolder_Description {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.OpenRootFolder.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 工具箱.
+        /// </summary>
+        public static string Text_About_ToolBox_Title {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.Title", resourceCulture);
             }
         }
         
@@ -1730,6 +2027,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxyGuide_RDPName {
             get {
                 return ResourceManager.GetString("Text.CreateProxyGuide.RDPName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你知道吗？.
+        /// </summary>
+        public static string Text_DailyTip_DoYouKnow {
+            get {
+                return ResourceManager.GetString("Text.DailyTip.DoYouKnow", resourceCulture);
             }
         }
         

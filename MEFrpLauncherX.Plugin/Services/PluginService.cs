@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using System.Text.Json;
 using AvaloniaEdit.Utils;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Plugin.Engine;
 using YamlDotNet.Serialization;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
@@ -35,6 +37,7 @@ public class PluginService
     /// </summary>
     public void LoadPlugins()
     {
+        var sw = Stopwatch.StartNew();
         try
         {
             _plugins.Clear();
@@ -56,12 +59,22 @@ public class PluginService
             _hotReload.Start(_pluginsFolder);
 
             IsLoaded = true;
-            App.CurrentLogger.Log($"插件系统已加载 {_plugins.Count} 个插件", module: EnumLogModule.Custom,
-                customModuleName: "Plugin");
+            sw.Stop();
+            var enabledCount = _plugins.Count(p => p.IsEnabled);
+            App.CurrentLogger.Log(
+                $"插件系统已加载 {_plugins.Count} 个插件(启用 {enabledCount} 个, 禁用 {_disabledPlugins.Count} 个), 耗时 {sw.ElapsedMilliseconds}ms",
+                module: EnumLogModule.Plugin);
+            AppAnalytics.TrackAction("plugin.load", new Dictionary<string, string>
+            {
+                ["count"] = _plugins.Count.ToString(),
+                ["enabled"] = enabledCount.ToString(),
+                ["costMs"] = sw.ElapsedMilliseconds.ToString()
+            });
         }
         catch (Exception ex)
         {
-            App.CurrentLogger.Error(ex, "插件加载失败");
+            App.CurrentLogger.Error(ex, "插件加载失败", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, "plugin.load");
         }
     }
 
@@ -86,6 +99,8 @@ public class PluginService
     /// </summary>
     public void ReloadPlugins()
     {
+        App.CurrentLogger.Log("正在重新加载所有插件", module: EnumLogModule.Plugin);
+        AppAnalytics.TrackAction("plugin.reload");
         _hotReload?.Stop();
         LoadPlugins();
     }
@@ -99,6 +114,10 @@ public class PluginService
         var info = _plugins.FirstOrDefault(p => p.Id == pluginId);
         if (info != null) info.IsEnabled = true;
         SaveDisabledList();
+        App.CurrentLogger.Log($"已启用插件: {pluginId}", module: EnumLogModule.Plugin);
+        AppAnalytics.TrackAction("plugin.enable", new Dictionary<string, string> { ["pluginId"] = pluginId });
+        // 触发插件事件：插件启用
+        _ = TriggerAsync("plugin.enable", new Dictionary<string, object> { ["pluginId"] = pluginId });
     }
 
     /// <summary>
@@ -110,6 +129,10 @@ public class PluginService
         var info = _plugins.FirstOrDefault(p => p.Id == pluginId);
         if (info != null) info.IsEnabled = false;
         SaveDisabledList();
+        App.CurrentLogger.Log($"已禁用插件: {pluginId}", module: EnumLogModule.Plugin);
+        AppAnalytics.TrackAction("plugin.disable", new Dictionary<string, string> { ["pluginId"] = pluginId });
+        // 触发插件事件：插件禁用
+        _ = TriggerAsync("plugin.disable", new Dictionary<string, object> { ["pluginId"] = pluginId });
     }
 
     /// <summary>
@@ -125,13 +148,18 @@ public class PluginService
             Data = data ?? new Dictionary<string, object>()
         };
 
+        var sw = Stopwatch.StartNew();
         try
         {
             await _engine.TriggerAsync(eventName, ctx);
+            sw.Stop();
+            App.CurrentLogger.LogDebug($"插件事件 {eventName} 执行完成, 耗时 {sw.ElapsedMilliseconds}ms",
+                module: EnumLogModule.Plugin);
         }
         catch (Exception ex)
         {
-            App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败");
+            App.CurrentLogger.Error(ex, $"插件事件 {eventName} 执行失败", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, $"plugin.trigger:{eventName}");
         }
     }
 
@@ -155,11 +183,20 @@ public class PluginService
 
             File.Copy(sourcePath, destPath, overwrite);
             ReloadPlugins();
+            App.CurrentLogger.Log($"已安装插件文件: {destFileName}", module: EnumLogModule.Plugin);
+            AppAnalytics.TrackAction("plugin.install", new Dictionary<string, string>
+            {
+                ["file"] = destFileName,
+                ["overwrite"] = overwrite.ToString()
+            });
+            // 触发插件事件：插件安装
+            _ = TriggerAsync("plugin.install", new Dictionary<string, object> { ["file"] = destFileName });
             return true;
         }
         catch (Exception ex)
         {
-            App.CurrentLogger.Error(ex, "安装插件失败");
+            App.CurrentLogger.Error(ex, "安装插件失败", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, "plugin.install");
             return false;
         }
     }
@@ -181,11 +218,20 @@ public class PluginService
             _disabledPlugins.Remove(pluginId);
             SaveDisabledList();
             ReloadPlugins();
+            App.CurrentLogger.Log($"已卸载插件: {info.Name} ({pluginId})", module: EnumLogModule.Plugin);
+            AppAnalytics.TrackAction("plugin.uninstall", new Dictionary<string, string> { ["pluginId"] = pluginId });
+            // 触发插件事件：插件卸载
+            _ = TriggerAsync("plugin.uninstall", new Dictionary<string, object>
+            {
+                ["pluginId"] = pluginId,
+                ["pluginName"] = info.Name
+            });
             return true;
         }
         catch (Exception ex)
         {
-            App.CurrentLogger.Error(ex, "卸载插件失败");
+            App.CurrentLogger.Error(ex, "卸载插件失败", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, "plugin.uninstall");
             return false;
         }
     }
@@ -248,15 +294,24 @@ public class PluginService
         }
         catch (Exception ex)
         {
-            App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}");
+            App.CurrentLogger.Warning($"解析插件元数据失败: {filePath}, {ex.Message}", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, "plugin.parse-meta");
             return null;
         }
     }
 
     private void SaveDisabledList()
     {
-        var path = Path.Combine(_pluginsFolder, ".disabled");
-        File.WriteAllText(path, JsonSerializer.Serialize([.. _disabledPlugins], App.AppJsonSerializerContext.ListString));
+        try
+        {
+            var path = Path.Combine(_pluginsFolder, ".disabled");
+            File.WriteAllText(path,
+                JsonSerializer.Serialize([.. _disabledPlugins], App.AppJsonSerializerContext.ListString));
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, "保存插件禁用列表失败", module: EnumLogModule.Plugin);
+        }
     }
 
     private void LoadDisabledList()
@@ -273,9 +328,9 @@ public class PluginService
                     _disabledPlugins.AddRange(list);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // 忽略
+                App.CurrentLogger.Warning($"读取插件禁用列表失败: {ex.Message}", module: EnumLogModule.Plugin);
             }
         }
     }

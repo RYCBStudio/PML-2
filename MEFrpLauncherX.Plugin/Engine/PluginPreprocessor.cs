@@ -1,14 +1,15 @@
 using System.Text;
+using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Core;
 using YamlDotNet.Serialization;
 
 namespace MEFrpLauncherX.Plugin.Engine;
 
-
 public class PluginPreprocessor
 {
-    private readonly IDeserializer _deserializer = new StaticDeserializerBuilder(new YamlModelStaticContext()).Build();
+    private readonly IDeserializer _deserializer = new StaticDeserializerBuilder(new YamlModelStaticContext())
+        .WithCaseInsensitivePropertyMatching().Build();
 
     public PluginDefinition Process(string pluginFilePath, FunctionRegistry funcRegistry)
     {
@@ -42,6 +43,7 @@ public class PluginPreprocessor
         }
         catch (FileNotFoundException e)
         {
+            App.CurrentLogger.Warning($"插件文件不存在: {path}, {e.Message}", module: EnumLogModule.Plugin);
             return new RawPlugin()
             {
                 Id = "错误",
@@ -50,6 +52,7 @@ public class PluginPreprocessor
         }
         catch (IOException e)
         {
+            App.CurrentLogger.Warning($"插件文件读取失败: {path}, {e.Message}", module: EnumLogModule.Plugin);
             return new RawPlugin()
             {
                 Id = "错误",
@@ -58,6 +61,7 @@ public class PluginPreprocessor
         }
         catch (Exception e)
         {
+            App.CurrentLogger.Warning($"插件文件读取异常: {path}, {e.Message}", module: EnumLogModule.Plugin);
             return new RawPlugin()
             {
                 Id = "错误",
@@ -76,7 +80,14 @@ public class PluginPreprocessor
                 var includePath = line.Split(':')[1].Trim().Trim('"', '\'');
                 var fullPath = Path.Combine(baseDir, includePath);
                 if (File.Exists(fullPath))
+                {
                     sb.AppendLine(File.ReadAllText(fullPath));
+                }
+                else
+                {
+                    App.CurrentLogger.Warning($"插件 {path} 的 include 文件不存在: {fullPath}",
+                        module: EnumLogModule.Plugin);
+                }
             }
             else
             {
@@ -84,6 +95,18 @@ public class PluginPreprocessor
             }
         }
 
-        return _deserializer.Deserialize<RawPlugin>(sb.ToString());
+        try
+        {
+            return _deserializer.Deserialize<RawPlugin>(sb.ToString());
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Warning($"插件 YAML 解析失败: {path}, {ex.Message}", module: EnumLogModule.Plugin);
+            return new RawPlugin()
+            {
+                Id = "错误",
+                Name = Languages.Text_Plugin_ReadFileError,
+            };
+        }
     }
 }

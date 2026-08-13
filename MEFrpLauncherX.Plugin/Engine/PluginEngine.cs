@@ -1,3 +1,4 @@
+using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Condition;
 using MEFrpLauncherX.Plugin.Core;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
@@ -19,6 +20,7 @@ public class PluginEngine : IAction
             ["log"] = new LogAction(),
             ["http_request"] = new HttpRequestAction(),
             ["python_run"] = new PythonAction(),
+            ["notify"] = new NotifyAction()
         };
         // call_function 指令：通过 this (IAction) 作为子动作分发器
         _callFuncAction = new CallFunctionAction(_funcRegistry, this);
@@ -45,37 +47,89 @@ public class PluginEngine : IAction
     public void LoadAll(string pluginsFolder)
     {
         var preprocessor = new PluginPreprocessor();
+        var loaded = 0;
+        var failed = 0;
         foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
         {
-            var plugin = preprocessor.Process(file, _funcRegistry);
-            if (plugin.Id == "错误") continue;
-            foreach (var trigger in plugin.Triggers)
+            try
             {
-                if (!_triggerMap.ContainsKey(trigger.On))
-                    _triggerMap[trigger.On] = new List<PluginDefinition>();
-                _triggerMap[trigger.On].Add(plugin);
+                var plugin = preprocessor.Process(file, _funcRegistry);
+                if (plugin.Id == "错误")
+                {
+                    failed++;
+                    continue;
+                }
+
+                loaded++;
+                foreach (var trigger in plugin.Triggers)
+                {
+                    if (!_triggerMap.ContainsKey(trigger.On))
+                        _triggerMap[trigger.On] = new List<PluginDefinition>();
+                    _triggerMap[trigger.On].Add(plugin);
+                }
+            }
+            catch (Exception ex)
+            {
+                failed++;
+                App.CurrentLogger.Warning($"加载插件文件失败: {file}, {ex.Message}", module: EnumLogModule.Plugin);
             }
         }
+
+        App.CurrentLogger.Log(
+            $"插件引擎加载完成: 成功 {loaded} 个, 失败 {failed} 个, 监听事件 {_triggerMap.Count} 种, 注册函数 {_funcRegistry.Count} 个",
+            module: EnumLogModule.Plugin);
     }
 
     public async Task TriggerAsync(string eventName, ExecutionContext context)
     {
-        if (!_triggerMap.TryGetValue(eventName, out var plugins)) return;
+        if (!_triggerMap.TryGetValue(eventName, out var plugins))
+        {
+            App.CurrentLogger.LogDebug($"插件事件 {eventName} 无订阅插件, 跳过", module: EnumLogModule.Plugin);
+            return;
+        }
+
+        App.CurrentLogger.LogDebug($"插件事件 {eventName} 触发, 命中 {plugins.Count} 个插件", module: EnumLogModule.Plugin);
         foreach (var plugin in plugins)
         {
-            foreach (var trigger in plugin.Triggers)
+            foreach (var trigger in plugin.Triggers.Where(trigger => trigger.On == eventName))
             {
-                if (trigger.On != eventName) continue;
                 // 条件判断
                 if (!string.IsNullOrEmpty(trigger.Condition))
                 {
-                    var condition = ConditionParser.Parse(trigger.Condition);
-                    if (!condition.Evaluate(context)) continue;
+                    bool matched;
+                    try
+                    {
+                        var condition = ConditionParser.Parse(trigger.Condition);
+                        matched = condition.Evaluate(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        App.CurrentLogger.Warning(
+                            $"插件 {plugin.Id} 条件解析/求值失败: {trigger.Condition}, {ex.Message}",
+                            module: EnumLogModule.Plugin);
+                        continue;
+                    }
+
+                    if (!matched)
+                    {
+                        App.CurrentLogger.LogDebug($"插件 {plugin.Id} 条件不满足, 跳过事件 {eventName}",
+                            module: EnumLogModule.Plugin);
+                        continue;
+                    }
                 }
+
                 // 执行动作
+                App.CurrentLogger.LogDebug($"插件 {plugin.Id} 开始执行事件 {eventName} 的 {trigger.Actions.Count} 个动作",
+                    module: EnumLogModule.Plugin);
+                var ctx = new ExecutionContext()
+                {
+                    PluginId = plugin.Name,
+                    Variables = context.Variables,
+                    Data = context.Data
+                };
                 foreach (var actionDef in trigger.Actions)
                 {
-                    await ExecuteAction(actionDef, context);
+                    await ExecuteAction(actionDef, ctx);
                 }
             }
         }
@@ -83,11 +137,23 @@ public class PluginEngine : IAction
 
     public async Task ExecuteAction(ActionDefinition def, ExecutionContext ctx)
     {
-        if (_builtinActions.TryGetValue(def.Name, out var action))
+        if (!_builtinActions.TryGetValue(def.Name, out var action))
+        {
+            App.CurrentLogger.Warning($"未知插件指令: {def.Name} (插件: {ctx.PluginId})", module: EnumLogModule.Plugin);
+            return;
+        }
+
+        try
         {
             // 模板替换（简单实现）
             var resolved = ResolveTemplates(def.Params, ctx);
             await action.ExecuteAsync(ctx, resolved);
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, $"插件指令 {def.Name} 执行失败 (插件: {ctx.PluginId})",
+                module: EnumLogModule.Plugin);
+            throw;
         }
     }
 
@@ -97,6 +163,7 @@ public class PluginEngine : IAction
     public void Unload()
     {
         _triggerMap.Clear();
+        App.CurrentLogger.LogDebug("插件引擎已卸载所有插件", module: EnumLogModule.Plugin);
     }
 
     /// <summary>
@@ -116,6 +183,8 @@ public class PluginEngine : IAction
             if (kv.Value is string str && str.Contains("{{") && str.Contains("}}"))
             {
                 // 仅支持 {{ctx.variables.xxx}} 或 {{ctx.data.xxx}}
+                str = str.Substring(str.IndexOf("{{", StringComparison.Ordinal),
+                    str.LastIndexOf("}}", StringComparison.Ordinal) - str.IndexOf("{{", StringComparison.Ordinal) + 2);
                 var path = str.Replace("{{", "").Replace("}}", "");
                 var val = PropertyAccessor.GetValue(ctx, path);
                 resolved[kv.Key] = val ?? str;
@@ -125,6 +194,7 @@ public class PluginEngine : IAction
                 resolved[kv.Key] = kv.Value;
             }
         }
+
         return resolved;
     }
 }

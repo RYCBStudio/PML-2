@@ -35,6 +35,13 @@ namespace Iciclecreek.TerminalWindow
         private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
         private bool _processExitHandled;  // Prevent double notification
 
+        // Completes when the pty connection has been created (LaunchProcess finished).
+        // SendToPtyAsync waits for it so input sent right after the tab is created
+        // (before the Loaded event / before LaunchProcess completes) is not silently dropped.
+        private TaskCompletionSource _ptyReady = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private bool _ptyReadyTimedOut;
+        private bool _launching;
+
         // Cursor blinking
         private DispatcherTimer _cursorBlinkTimer;
         private bool _cursorBlinkOn = true;
@@ -44,6 +51,14 @@ namespace Iciclecreek.TerminalWindow
 
         // Unique identifier for this terminal instance (for debugging)
         private readonly Guid _instanceId = Guid.NewGuid();
+
+        // Serializes writes to the XTerm buffer (it is not thread-safe; the reader
+        // thread, the pty watcher thread and the UI thread may all write to it).
+        private readonly object _terminalLock = new();
+
+        // Set PTY_DEBUG=1 to get verbose PTY input/output tracing on the console.
+        private static readonly bool PtyDebugTrace =
+            Environment.GetEnvironmentVariable("PTY_DEBUG") == "1";
 
         private sealed record CachedTextRun(FormattedText Text, int StartX, int CellCount, IBrush Background);
 
@@ -739,9 +754,14 @@ namespace Iciclecreek.TerminalWindow
             // Only process input if this terminal has focus
             if (!IsFocused)
             {
+                if (PtyDebugTrace)
+                    Console.WriteLine($"[{_instanceId}] OnKeyDown({e.Key}): not focused, ignoring");
                 base.OnKeyDown(e);
                 return;
             }
+
+            if (PtyDebugTrace)
+                Console.WriteLine($"[{_instanceId}] OnKeyDown({e.Key}, mods={e.KeyModifiers}, symbol={e.KeySymbol})");
 
             // Capture the connection reference locally
             var ptyConnection = _ptyConnection;
@@ -944,7 +964,8 @@ namespace Iciclecreek.TerminalWindow
 
             try
             {
-                Debug.WriteLine($"[TerminalView] OnTextInput: Sending '{e.Text}' to PTY");
+                if (PtyDebugTrace)
+                    Console.WriteLine($"[{_instanceId}] OnTextInput: sending '{EscapeForLog(e.Text)}' to PTY");
                 await SendToPtyAsync(e.Text).ConfigureAwait(false);
                 e.Handled = true;
             }
@@ -1405,25 +1426,79 @@ namespace Iciclecreek.TerminalWindow
         {
             // Capture the connection reference locally to avoid any potential race conditions
             var ptyConnection = _ptyConnection;
+            if (ptyConnection == null && !string.IsNullOrEmpty(data))
+            {
+                // The pty may still be launching (e.g. commands sent right after the tab
+                // was created, before its Loaded event fired, or while the terminal page
+                // was not yet visible). Kick the launch if needed, then wait for it
+                // instead of silently dropping the data.
+                if (IsLoaded && !string.IsNullOrEmpty(Process))
+                {
+                    Dispatcher.UIThread.Post(LaunchProcess);
+                }
+
+                if (_ptyReadyTimedOut)
+                    return;
+
+                try
+                {
+                    // Generous timeout: the pty can only launch once the terminal
+                    // tab/page becomes visible and OnLoaded fires.
+                    await _ptyReady.Task.WaitAsync(TimeSpan.FromSeconds(1500), ct).ConfigureAwait(false);
+                    ptyConnection = _ptyConnection;
+                }
+                catch (TimeoutException)
+                {
+                    _ptyReadyTimedOut = true;
+                    lock (_terminalLock)
+                    {
+                        Console.WriteLine("\r\n[PTY] Terminal did not become ready within 30s, input dropped.\r\n");
+                        _terminal.Buffer.ScrollToBottom();
+                    }
+
+                    this.RequestInvalidate();
+                    return;
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+            }
+
             if (ptyConnection == null || string.IsNullOrEmpty(data))
                 return;
+
+            if (PtyDebugTrace)
+                Console.WriteLine($"[{_instanceId}] SendToPtyAsync: {Utf8NoBom.GetByteCount(data)} bytes, data={EscapeForLog(data)}");
 
             await _semaphore.WaitAsync(ct).ConfigureAwait(false);
             try
             {
                 var bytes = Utf8NoBom.GetBytes(data);
-                await ptyConnection.WriterStream.WriteAsync(bytes, 0, bytes.Length, ct).ConfigureAwait(false);
+                await ptyConnection.WriterStream.WriteAsync(bytes, ct).ConfigureAwait(false);
                 await ptyConnection.WriterStream.FlushAsync(ct).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[{_instanceId}] Error writing to PTY: {ex.Message}");
+                Console.WriteLine($"[{_instanceId}] Error writing to PTY: {ex}");
+                // On GUI apps (Linux/macOS) Console output is not visible, so surface the
+                // error directly in the terminal view instead of swallowing it silently.
+                lock (_terminalLock)
+                {
+                    _terminal.WriteLine($"\r\n[PTY] Error writing to PTY: [{ex.GetType().Name}] {ex.Message}\r\n");
+                    _terminal.Buffer.ScrollToBottom();
+                }
+
+                this.RequestInvalidate();
             }
             finally
             {
                 _semaphore.Release();
             }
         }
+
+        private static string EscapeForLog(string data) =>
+            data.Replace("\r", "\\r").Replace("\n", "\\n").Replace("\u001b", "\\e");
 
         private XT.Input.Key? ConvertAvaloniaKeyToXTermKey(Key key)
         {
@@ -1602,6 +1677,11 @@ namespace Iciclecreek.TerminalWindow
 
         private async void LaunchProcess()
         {
+            // Guard against concurrent launches (OnLoaded and SendToPtyAsync may both trigger it)
+            if (_launching || _ptyConnection != null)
+                return;
+
+            _launching = true;
             CleanupProcess();
             string processToLaunch = null!;
             try
@@ -1632,19 +1712,36 @@ namespace Iciclecreek.TerminalWindow
                 }
 
                 _ptyConnection = await PtyProvider.SpawnAsync(options, _processCts.Token);
+                _ptyReady.TrySetResult();
 
                 // Subscribe to process exit event for reliable exit detection
                 _ptyConnection.ProcessExited += OnPtyProcessExited;
 
                 // Start reading from the PTY connection
                 _ = Task.Run(async () => await ReadPtyOutputAsync(_processCts.Token), _processCts.Token);
+            
+                // Grab keyboard focus so keystrokes are delivered to the terminal immediately
+                // (a terminal is an input-first control; without this, keys go nowhere until the
+                // user clicks into the view, which is easy to miss on Linux/macOS).
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (!IsFocused)
+                    {
+                        Focus();
+                    }
+                });
             }
             catch (Exception ex)
             {
+                _ptyReady.TrySetResult(); // Wake up waiters; they will see _ptyConnection == null and give up
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     _terminal.WriteLine($"Error launching process: [{ex.GetType()}]{ex.Message}\nSuspect: {ex.StackTrace}\nFilename: {processToLaunch}");
                 });
+            }
+            finally
+            {
+                _launching = false;
             }
         }
 
@@ -1665,8 +1762,11 @@ namespace Iciclecreek.TerminalWindow
                             _processExitHandled = true;
                             var exitCode = _ptyConnection?.ExitCode ?? 0;
 
-                            _terminal.WriteLine($"\nProcess exited with code: {exitCode}\n");
-                            _terminal.Buffer.ScrollToBottom();
+                            lock (_terminalLock)
+                            {
+                                _terminal.WriteLine($"\nProcess exited with code: {exitCode}\n");
+                                _terminal.Buffer.ScrollToBottom();
+                            }
 
                             this.RequestInvalidate();
                         }
@@ -1674,7 +1774,13 @@ namespace Iciclecreek.TerminalWindow
                     }
 
                     var output = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    _terminal.Write(output);
+                    if (PtyDebugTrace)
+                        Console.WriteLine($"[{_instanceId}] PTY output: {bytesRead} bytes, data={EscapeForLog(output)}");
+
+                    lock (_terminalLock)
+                    {
+                        _terminal.Write(output);
+                    }
 
                     // Auto-scroll to bottom when new content arrives, but only in normal buffer.
                     // Alternate buffer (used by full-screen apps like vim, htop, asciiquarium)
@@ -1697,8 +1803,12 @@ namespace Iciclecreek.TerminalWindow
             }
             catch (Exception ex)
             {
-                _terminal.WriteLine($"\nError reading from process: {ex.Message}\n");
-                _terminal.Buffer.ScrollToBottom();
+                lock (_terminalLock)
+                {
+                    _terminal.WriteLine($"\nError reading from process: {ex.Message}\n");
+                    _terminal.Buffer.ScrollToBottom();
+                }
+
                 this.RequestInvalidate();
             }
         }
@@ -1711,8 +1821,12 @@ namespace Iciclecreek.TerminalWindow
                 return;
             _processExitHandled = true;
 
-            _terminal.WriteLine($"\nProcess exited with code: {e.ExitCode}\n");
-            _terminal.Buffer.ScrollToBottom();
+            lock (_terminalLock)
+            {
+                _terminal.WriteLine($"\nProcess exited with code: {e.ExitCode}\n");
+                _terminal.Buffer.ScrollToBottom();
+            }
+
             this.RequestInvalidate();
 
             Dispatcher.UIThread.InvokeAsync(() =>
@@ -1730,6 +1844,10 @@ namespace Iciclecreek.TerminalWindow
         private void CleanupProcess()
         {
             _processCts?.Cancel();
+
+            // Allow a future launch attempt to wait again (the TaskCompletionSource itself
+            // is one-shot and stays completed for the lifetime of this TerminalView).
+            _ptyReadyTimedOut = false;
 
             if (_ptyConnection != null)
             {

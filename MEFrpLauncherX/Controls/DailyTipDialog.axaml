@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:MarkdownAIRender="https://github.com/AIDotNet/Markdown.AIRender"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.DailyTipDialog">
+    <Grid RowDefinitions="Auto, *">
+        <TextBlock Text="{x:Static languages:Languages.Text_DailyTip_DoYouKnow}"
+                   Theme="{StaticResource SubtitleTextBlockStyle}" />
+        <MarkdownAIRender:MarkdownRender Grid.Row="1" x:Name="TipContent"/>
+    </Grid>
+</UserControl>

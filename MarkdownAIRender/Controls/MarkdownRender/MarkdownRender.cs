@@ -434,78 +434,34 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
 
     private Control CreateHeading(HeadingBlock headingBlock)
     {
-        var container = new List<object>();
+        var mdClassName = headingBlock.Level <= 6 ? $"MdH{headingBlock.Level}" : "MdHn";
 
-        if (headingBlock.Inline != null)
-        {
-            var controls = ConvertInlineContainer(headingBlock.Inline);
-            foreach (var inl in controls)
-            {
-                switch (inl)
-                {
-                    case Inline inline:
-                    {
-                        if (container.LastOrDefault() is SelectableTextBlock span)
-                        {
-                            span.Inlines?.Add(inline);
-                        }
-                        else
-                        {
-                            var mdClassName = headingBlock.Level <= 6 ? $"MdH{headingBlock.Level}" : "MdHn";
-
-                            var border = new Border();
-                            border.AddMdClass(mdClassName);
-
-                            span = new SelectableTextBlock
-                            {
-                                Inlines = new InlineCollection(),
-                                TextWrapping = TextWrapping.WrapWithOverflow
-                            };
-                            span.AddMdClass(mdClassName);
-                            span.Inlines?.Add(inline);
-                            container.Add(span);
-                            // border.Child = span;
-                            // container.Add(border);
-                        }
-
-                        break;
-                    }
-                    case Control ctrl:
-                        container.Add(ctrl);
-                        break;
-                }
-            }
-        }
-
-        var panel = new StackPanel
-        {
-            Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch // 确保拉伸
-        };
-
+        // 整个标题使用单个文本块，保证其中的链接、行内代码等非纯文本部分
+        // 也能继承标题的字号与字重
         var textBlock = new SelectableTextBlock
         {
-            TextWrapping = TextWrapping, HorizontalAlignment = HorizontalAlignment.Stretch
+            TextWrapping = TextWrapping.WrapWithOverflow,
+            HorizontalAlignment = HorizontalAlignment.Stretch
         };
+        textBlock.AddMdClass(mdClassName);
 
         if (headingBlock.Inline != null)
         {
-            ConvertInlineContainer(headingBlock.Inline);
-            foreach (var control in container)
+            foreach (var item in ConvertInlineContainer(headingBlock.Inline))
             {
-                if (control is Inline inline)
+                switch (item)
                 {
-                    textBlock.Inlines.Add(inline);
-                }
-                else if (control is Control ctrl)
-                {
-                    // 处理嵌套控件
-                    panel.Children.Add(ctrl);
+                    case Inline inline:
+                        textBlock.Inlines.Add(inline);
+                        break;
+                    case Control ctrl:
+                        textBlock.Inlines.Add(ctrl);
+                        break;
                 }
             }
         }
 
-        panel.Children.Add(textBlock);
-        return panel;
+        return textBlock;
     }
 
     private Control CreateCodeBlock(FencedCodeBlock fencedCodeBlock)
@@ -699,7 +655,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
             child = child.NextSibling;
         }
 
-        return results;
+        return PostProcessHtmlMarkers(results);
     }
 
     private List<object> ConvertInline(Markdig.Syntax.Inlines.Inline mdInline)
@@ -727,14 +683,14 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
                 return [new LineBreak()];
 
             case LiteralInline literalInline:
-                return _suppressNextSibling ? [new Run()] : [new Run(literalInline.Content.ToString())];
+                return [new Run(literalInline.Content.ToString())];
 
             case HtmlInline htmlInline:
-                return [CreateHtmlInline(htmlInline)];
+                return [new HtmlTagMarker(htmlInline.Tag)];
 
             default:
                 // 其它情况：简单转成文字
-                return _suppressNextSibling ? [new Run(mdInline.ToString())] : [new Run()];
+                return [new Run(mdInline.ToString())];
         }
     }
 
@@ -809,56 +765,127 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
         return null;
     }
 
-    private HtmlInline? _previousHtmlInline;
-    private bool _suppressNextSibling;
+    /// <summary>
+    ///     Markdown 内联 HTML 标签的占位标记，供 <see cref="PostProcessHtmlMarkers" /> 配对处理
+    /// </summary>
+    private sealed record HtmlTagMarker(string Tag);
 
-    private Inline CreateHtmlInline(HtmlInline htmlInline)
+    private static readonly Regex HtmlTagNameRegex = new(@"^</?\s*([a-zA-Z][a-zA-Z0-9]*)", RegexOptions.Compiled);
+
+    private static readonly HashSet<string> HtmlVoidTags =
+        new(StringComparer.OrdinalIgnoreCase) { "br", "hr", "img", "input", "wbr" };
+
+    /// <summary>
+    ///     配对处理内联 HTML 开/闭标签标记，把中间的内容包装成对应的样式控件，支持嵌套。
+    /// </summary>
+    private static List<object> PostProcessHtmlMarkers(List<object> items)
     {
-        if (Regex.IsMatch(htmlInline.Tag, @"</\w+>"))
+        if (!items.Exists(i => i is HtmlTagMarker))
         {
-            var _field_previousHtmlInline = _previousHtmlInline;
-            _previousHtmlInline = null;
-            _suppressNextSibling = false;
-            return HtmlBlockRenderer.ParseHtmlInline(_field_previousHtmlInline, htmlInline.Tag);
+            return items;
         }
 
-        _previousHtmlInline = htmlInline;
-        _suppressNextSibling = true;
+        var output = new List<object>(items.Count);
+        var stack = new Stack<(string Name, string Attrs, int Index)>();
 
-        // 否则返回原始文本
-        return new Run();
+        foreach (var item in items)
+        {
+            if (item is not HtmlTagMarker marker)
+            {
+                output.Add(item);
+                continue;
+            }
+
+            var tag = marker.Tag.Trim();
+            var nameMatch = HtmlTagNameRegex.Match(tag);
+            if (!nameMatch.Success)
+            {
+                continue;
+            }
+
+            var name = nameMatch.Groups[1].Value.ToLowerInvariant();
+            var isClose = tag.StartsWith("</");
+            var attrs = tag[nameMatch.Length..].TrimEnd('>');
+
+            if (isClose)
+            {
+                // 仅处理与栈顶匹配的闭合标签，忽略不匹配的
+                if (stack.Count > 0 && stack.Peek().Name == name)
+                {
+                    var (openName, openAttrs, openIndex) = stack.Pop();
+                    var content = output.GetRange(openIndex + 1, output.Count - openIndex - 1);
+                    output.RemoveRange(openIndex, output.Count - openIndex);
+
+                    var wrapped = HtmlBlockRenderer.WrapInlineHtmlContent(openName, openAttrs, content);
+                    switch (wrapped)
+                    {
+                        case Inline inline:
+                            output.Add(inline);
+                            break;
+                        case Control control:
+                            output.Add(control);
+                            break;
+                        default:
+                            // 无需包装的标签：内容原样保留
+                            output.AddRange(content);
+                            break;
+                    }
+                }
+
+                continue;
+            }
+
+            // 空元素标签
+            if (HtmlVoidTags.Contains(name) || tag.EndsWith("/>"))
+            {
+                if (name == "br")
+                {
+                    output.Add(new LineBreak());
+                }
+
+                continue;
+            }
+
+            stack.Push((name, attrs, output.Count));
+            output.Add(marker);
+        }
+
+        // 清理未闭合标签残留的标记
+        output.RemoveAll(o => o is HtmlTagMarker);
+        return output;
     }
 
-    private Inline CreateHyperlinkInline(LinkInline linkInline)
+    private object CreateHyperlinkInline(LinkInline linkInline)
     {
-        foreach (var inline in linkInline)
+        var content = new SelectableTextBlock { TextWrapping = TextWrapping.Wrap };
+        var hasContent = false;
+
+        foreach (var item in ConvertInlineContainer(linkInline))
         {
-            if (inline is LiteralInline literalInline)
+            switch (item)
             {
-                var span = new Span();
-                var label = new SelectableTextBlock
-                {
-                    Classes = { "MdLink" },
-                    Text = literalInline.Content.ToString(),
-                    TextWrapping = TextWrapping.Wrap,
-                    Cursor = new Cursor(StandardCursorType.Hand)
-                };
-
-                label.Tapped += (sender, e) =>
-                {
-                    if (!string.IsNullOrEmpty(linkInline.Url))
-                    {
-                        UrlHelper.OpenUrl(linkInline.Url);
-                    }
-                };
-
-                span.Inlines.Add(label);
-                return span;
+                case Inline inline:
+                    content.Inlines.Add(inline);
+                    hasContent = true;
+                    break;
+                case Control control:
+                    content.Inlines.Add(control);
+                    hasContent = true;
+                    break;
             }
         }
 
-        // 如果没有 literalInline，就简单换行
-        return new LineBreak();
+        if (!hasContent)
+        {
+            // 如果没有内容，就简单换行
+            return new LineBreak();
+        }
+
+        return new MarkdownLink
+        {
+            Url = linkInline.Url,
+            LinkContent = content
+        };
     }
 
     #endregion

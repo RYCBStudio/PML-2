@@ -217,9 +217,9 @@ public class NodesContainerViewModel : ViewModelBase
             FilteredNodes.Clear();
 
             var statusArray = statusInfo.NodesStatus;
-            if (statusArray is null || statusArray.Length < 1)
+            if (statusArray?.Length == 0)
             {
-                statusArray = (await MEFrpApiConverter.GetNodesStatusAsync()).data;
+                statusArray = (await MEFrpApiConverter.EnsureNodesStatusInfoAsync())?.NodesStatus;
             }
 
             // 预构建状态字典，O(1) 查找
@@ -227,8 +227,8 @@ public class NodesContainerViewModel : ViewModelBase
 
             var nodesList = await Task.Run(() =>
             {
-                var list = new List<TunnelNodeViewModel>(listInfo.NodesList.Length);
-                foreach (var node in listInfo.NodesList)
+                var list = new List<TunnelNodeViewModel>(listInfo.NodesList?.Length ?? 0);
+                foreach (var node in listInfo.NodesList ?? [])
                 {
                     statusDict.TryGetValue(node.nodeId, out var status);
                     var allowTypes = node.allowType?.Split(';')
@@ -326,16 +326,16 @@ public class NodesContainerViewModel : ViewModelBase
 
             var filteredNodes = await Task.Run(() =>
             {
-                return allNodes.Where(node =>
+                return allNodes
+                    .Where(node =>
                         MeetsSearchCriteriaCore(node, searchText) &&
                         IsRegionMeetsCore(node, regionString) &&
                         (!filterSite || node.CanBuildSite) &&
                         (!filterTraffic || node.AllowHighTraffic) &&
-                        (!filterOverload || node.IsNotOverloaded))
-                    .ToList();
+                        (!filterOverload || node.IsNotOverloaded));
             });
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Post(() =>
             {
                 FilteredNodes.Clear();
                 FilteredNodes.AddRange(filteredNodes);

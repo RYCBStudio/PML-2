@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
 namespace MEFrpLauncherX.Plugin.Condition;
 
@@ -20,6 +21,16 @@ public static class PropertyAccessor
             else if (current is IList list && int.TryParse(part, out var index) && index >= 0 && index < list.Count)
             {
                 current = list[index];
+            }
+            else if (current is ExecutionContext ctx)
+            {
+                current = ctx.Data;
+                if (current is Dictionary<string, object> ctx_data)
+                {
+                    current = ctx_data.GetValueOrDefault(parts.Last());
+                    if (current == null) current = ctx_data.GetValueOrDefault(part);
+                    break;
+                }
             }
             else
             {

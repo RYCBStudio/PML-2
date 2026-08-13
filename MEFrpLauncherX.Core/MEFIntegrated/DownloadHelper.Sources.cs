@@ -21,6 +21,22 @@ public partial class DownloadHelper
         }
     };
 
+    private readonly Dictionary<PlatformID, string> armRetryDownloadUrls = new()
+    {
+        {
+            PlatformID.Win32NT,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_windows_arm64.exe"
+        },
+        {
+            PlatformID.Unix,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_linux_arm64.tar"
+        },
+        {
+            PlatformID.MacOSX,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_darwin_arm64.tar"
+        }
+    };
+
     private readonly Dictionary<PlatformID, string> downloadUrls = new()
     {
         {
@@ -34,6 +50,22 @@ public partial class DownloadHelper
         {
             PlatformID.MacOSX,
             "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc-darwin_amd64.tar"
+        }
+    };
+
+    private readonly Dictionary<PlatformID, string> downloadRetryUrls = new()
+    {
+        {
+            PlatformID.Win32NT,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_windows_amd64.exe"
+        },
+        {
+            PlatformID.Unix,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_linux_amd64.tar"
+        },
+        {
+            PlatformID.MacOSX,
+            "https://alist.yealqp.cn/download/mefrp-distributions/mefrpc_darwin_amd64.tar"
         }
     };
 

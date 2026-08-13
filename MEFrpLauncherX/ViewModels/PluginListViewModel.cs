@@ -17,6 +17,7 @@ using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Services;
@@ -191,6 +192,10 @@ public class PluginListViewModel : ViewModelBase
             }
 
             LoadPlugins();
+            AppAnalytics.TrackAction("plugin.install.drop", new Dictionary<string, string>
+            {
+                ["installed"] = installed.ToString()
+            });
             Growl.Success(string.Format(Languages.Text_PluginList_InstalledCountFormat, installed));
         });
         RefreshOnlinePluginsCommand = ReactiveCommand.CreateFromTask(RefreshOnlinePluginsAsync);
@@ -317,11 +322,16 @@ public class PluginListViewModel : ViewModelBase
 
             OnlinePlugins = [.. result];
             FilteredOnlinePlugins = [.. result];
+            AppAnalytics.TrackAction("plugin.market.refresh", new Dictionary<string, string>
+            {
+                ["count"] = result.Count.ToString()
+            });
             Growl.Success(string.Format(Languages.Text_PluginList_OnlineLoadedCountFormat, result.Count));
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex, "刷新在线插件失败");
+            AppAnalytics.CaptureException(ex, "plugin.market.refresh");
             await MessageBoxManager
                 .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_RefreshOnlineFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
@@ -384,11 +394,17 @@ public class PluginListViewModel : ViewModelBase
             }
 
             LoadPlugins();
+            AppAnalytics.TrackAction("plugin.market.download", new Dictionary<string, string>
+            {
+                ["selected"] = SelectedOnlinePlugins.Count.ToString(),
+                ["installed"] = installed.ToString()
+            });
             Growl.Success(string.Format(Languages.Text_PluginList_InstalledOnlineCountFormat, installed));
         }
         catch (Exception ex)
         {
             Core.App.CurrentLogger.Error(ex, "下载在线插件失败");
+            AppAnalytics.CaptureException(ex, "plugin.market.download");
             await MessageBoxManager
                 .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_DownloadInstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
@@ -428,6 +444,7 @@ public class PluginListViewModel : ViewModelBase
     {
         _pluginService.ReloadPlugins();
         LoadPlugins();
+        AppAnalytics.TrackAction("plugin.list.reload");
         Growl.Success(Languages.Text_PluginList_ListRefreshed);
     }
 
@@ -456,10 +473,16 @@ public class PluginListViewModel : ViewModelBase
             var installed = files.Count(file => _pluginService.InstallPlugin(file.TryGetLocalPath()));
 
             LoadPlugins();
+            AppAnalytics.TrackAction("plugin.install.local", new Dictionary<string, string>
+            {
+                ["selected"] = files.Count.ToString(),
+                ["installed"] = installed.ToString()
+            });
             Growl.Success(string.Format(Languages.Text_PluginList_InstalledCountFormat, installed));
         }
         catch (Exception ex)
         {
+            AppAnalytics.CaptureException(ex, "plugin.install.local");
             await MessageBoxManager
                 .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_InstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
@@ -489,6 +512,7 @@ public class PluginListViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+            AppAnalytics.CaptureException(ex, "plugin.uninstall.ui");
             await MessageBoxManager
                 .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_UninstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();

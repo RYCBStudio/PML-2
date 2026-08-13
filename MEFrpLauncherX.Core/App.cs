@@ -6,6 +6,8 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Windowing;
 using Message.Avalonia;
+using Notify.NET.Abstractions;
+using Notify.NET.Extensions;
 
 namespace MEFrpLauncherX.Core;
 
@@ -45,6 +47,12 @@ public class App : IDisposable
         set;
     }
 
+    public static INotificationService NotificationService
+    {
+        get;
+        set;
+    }
+
     public static Visual MainVisual
     {
         get;
@@ -79,6 +87,7 @@ public class App : IDisposable
             WriteIndented = true,
             PropertyNameCaseInsensitive = true
         });
+
         // 使用 Path.Combine 处理跨平台路径
         var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
@@ -102,66 +111,16 @@ public class App : IDisposable
             {
                 Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "Themes"));
             }
+
             SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
                 ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
                 : null;
             await RYCBApiConverter.InitializeAsync();
-        }
-    }
-}
-
-public static class Extensions
-{
-    public static Process OpenUrl(string url)
-    {
-        return Process.Start(new ProcessStartInfo(url)
-        {
-            UseShellExecute = true
-        })!;
-    }
-
-    /// <param name="str">待检查的字符串</param>
-    extension(string str)
-    {
-        /// <summary>
-        ///     判断字符串是否为空或null
-        /// </summary>
-        /// <returns>是否为空或null.</returns>
-        public bool IsNullOrEmpty() => string.IsNullOrEmpty(str);
-
-        /// <summary>
-        ///     将字符串的指定部分大写
-        /// </summary>
-        /// <param name="startIndex">开始大写的索引</param>
-        /// <param name="length">修改的长度</param>
-        /// <returns>修改后的字符串</returns>
-        public string ToUpper(int startIndex, int length = 1)
-        {
-            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, length).ToUpper(),
-                str.AsSpan(startIndex + length));
-        }
-
-        /// <summary>
-        ///     将字符串的指定部分小写
-        /// </summary>
-        /// <param name="startIndex">开始小写的索引</param>
-        /// <param name="length">修改的长度</param>
-        /// <returns>修改后的字符串</returns>
-        public string ToLower(int startIndex, int length = 1)
-        {
-            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, length).ToLower(),
-                str.AsSpan(startIndex + length));
-        }
-
-        /// <summary>
-        ///     判断字符串是否以指定的后缀结尾
-        /// </summary>
-        /// <param name="suffixes">要判断的后缀, 多个后缀用<c>,</c>分隔</param>
-        /// <returns></returns>
-        public bool EndsWithEx(string suffixes)
-        {
-            var possibleSuffix = suffixes.Split(',');
-            return possibleSuffix.Any(str.ToLower().EndsWith);
+            NotificationService = ServiceCollectionExtensions.CreateNotificationService(opts =>
+            {
+                opts.AppName = "PML 2";
+                opts.AppUserModelId = "tech.rycb.pml2";
+            });
         }
     }
 }

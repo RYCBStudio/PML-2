@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using Avalonia.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Tools;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
@@ -19,17 +21,17 @@ public class MainPageFrameViewModel : ViewModelBase
         NeedRestart = false || Design.IsDesignMode;
 
         // 初始化命令
-        NavigateToHomeCommand = CreateNavigationCommand(() => new HomePage());
-        NavigateToCreateProxyCommand = CreateNavigationCommand(() => new CreateProxyPage());
-        NavigateToManageProxyCommand = CreateNavigationCommand(() => new ManageProxyPage());
-        NavigateToNodesMonitoringCommand = CreateNavigationCommand(() => new NodesMonitoringPage());
-        NavigateToUserCenterCommand = CreateNavigationCommand(() => new UserCenterPage());
-        NavigateToSettingsCommand = CreateNavigationCommand(() => new SettingsPage());
-        NavigateToAboutCommand = CreateNavigationCommand(() => AboutPage ?? new AboutPage());
-        NavigateToTerminalCommand = CreateNavigationCommand(() => TerminalPage ?? new TerminalPage());
-        NavigateToUpdateCommand = CreateNavigationCommand(() => UpdatePage ?? new UpdatePage());
-        NavigateToThemeCommand = CreateNavigationCommand(() => new ThemesPage());
-        NavigateToPluginCommand = CreateNavigationCommand(() => new PluginListPage());
+        NavigateToHomeCommand = CreateNavigationCommand("Home", () => new HomePage());
+        NavigateToCreateProxyCommand = CreateNavigationCommand("CreateProxy", () => new CreateProxyPage());
+        NavigateToManageProxyCommand = CreateNavigationCommand("ManageProxy", () => new ManageProxyPage());
+        NavigateToNodesMonitoringCommand = CreateNavigationCommand("NodesMonitoring", () => new NodesMonitoringPage());
+        NavigateToUserCenterCommand = CreateNavigationCommand("UserCenter", () => new UserCenterPage());
+        NavigateToSettingsCommand = CreateNavigationCommand("Settings", () => new SettingsPage());
+        NavigateToAboutCommand = CreateNavigationCommand("About", () => AboutPage ?? new AboutPage());
+        NavigateToTerminalCommand = CreateNavigationCommand("Terminal", () => TerminalPage ?? new TerminalPage());
+        NavigateToUpdateCommand = CreateNavigationCommand("Update", () => UpdatePage ?? new UpdatePage());
+        NavigateToThemeCommand = CreateNavigationCommand("Theme", () => new ThemesPage());
+        NavigateToPluginCommand = CreateNavigationCommand("Plugin", () => new PluginListPage());
 
         RestartCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -200,7 +202,7 @@ public class MainPageFrameViewModel : ViewModelBase
         }
     }
 
-    private ReactiveCommand<Unit, Unit> CreateNavigationCommand(Func<UserControl> pageFactory)
+    private ReactiveCommand<Unit, Unit> CreateNavigationCommand(string pageName, Func<UserControl> pageFactory)
     {
         return ReactiveCommand.Create(() =>
         {
@@ -210,6 +212,12 @@ public class MainPageFrameViewModel : ViewModelBase
                 IsLoading = true;
                 var page = pageFactory();
                 CurrentPage = page;
+
+                // 触发插件事件：页面导航
+                _ = PluginService.Instance.TriggerAsync("page.navigate", new Dictionary<string, object>
+                {
+                    ["page"] = pageName
+                });
             }
             finally
             {

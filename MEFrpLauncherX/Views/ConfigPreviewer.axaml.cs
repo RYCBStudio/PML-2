@@ -37,20 +37,23 @@ public partial class ConfigPreviewer : Window
         ConfigTypeTextBlock.Text = type.ToUpper();
     }
 
-    public ConfigPreviewer(string type, string config)
+    /// <summary>
+    /// Used for designer only.
+    /// </summary>
+    public ConfigPreviewer()
     {
         InitializeComponent();
-        _type = type;
-        _config = config;
+        _type = "TOML";
+        _config = @"F:\VSProj\repos\MEFrpLauncherX\MEFrpLauncherX\bin\Debug\net10.0\Config\frp\PML_26_1_pre2_Test_Create_Normal.toml";
+        _proxyname = "debug";
         Loaded += ConfigPreviewer_Loaded;
-        ConfigTypeTextBlock.Text = type.ToUpper();
+        ConfigTypeTextBlock.Text = _type.ToUpper();
     }
 
     public ConfigPreviewer(string file)
     {
         InitializeComponent();
         _type = Path.GetExtension(file).Remove(0, 1);
-        ;
         _config = file;
         Loaded += ConfigPreviewer_Loaded;
         ConfigTypeTextBlock.Text = _type.ToUpper();

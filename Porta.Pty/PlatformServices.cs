@@ -1,10 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace Porta.Pty
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
     using System.Runtime.InteropServices;
 
     /// <summary>
@@ -39,6 +41,10 @@ namespace Porta.Pty
 
         static PlatformServices()
         {
+            // DllImport 默认只探测应用根目录，不会查找 runtimes/<rid>/native 下
+            // 手动拷贝的本机库，因此需要注册自定义解析器。
+            NativeLibrary.SetDllImportResolver(typeof(PlatformServices).Assembly, ResolvePortaPtyLibrary);
+
             if (IsWindows)
             {
                 PtyProviderLazy = WindowsProviderLazy;
@@ -78,10 +84,80 @@ namespace Porta.Pty
         /// </summary>
         public static IDictionary<string, string> PtyEnvironment { get; }
 
-        private static bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        private static bool IsLinux => OperatingSystem.IsLinux();
 
-        private static bool IsMac => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        private static bool IsMac => OperatingSystem.IsMacOS();
+        private static bool IsWindows => OperatingSystem.IsWindows();
 
-        private static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        /// <summary>
+        /// Resolves the native shim (porta_pty.dll / libporta_pty.so / libporta_pty.dylib)
+        /// from runtimes/&lt;rid&gt;/native, falling back to the application root directory.
+        /// </summary>
+        private static IntPtr ResolvePortaPtyLibrary(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            if (libraryName.IndexOf("porta_pty", StringComparison.Ordinal) < 0)
+            {
+                return IntPtr.Zero;
+            }
+
+            foreach (string candidate in EnumerateLibraryCandidates())
+            {
+                if (File.Exists(candidate) && NativeLibrary.TryLoad(candidate, out IntPtr handle))
+                {
+                    return handle;
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+
+        private static IEnumerable<string> EnumerateLibraryCandidates()
+        {
+            string fileName = IsMac
+                    ? "libporta_pty.dylib"
+                    : "libporta_pty.so";
+
+            string baseDir = AppContext.BaseDirectory;
+            foreach (string rid in EnumerateRuntimeIdentifiers())
+            {
+                yield return Path.Combine(baseDir, "runtimes", rid, "native", fileName);
+            }
+
+            yield return Path.Combine(baseDir, fileName);
+        }
+
+        /// <summary>
+        /// Returns candidate RIDs in priority order: the exact RID, the musl-stripped
+        /// variant (e.g. linux-musl-x64 -&gt; linux-x64) and the portable OS-arch RID.
+        /// </summary>
+        private static IEnumerable<string> EnumerateRuntimeIdentifiers()
+        {
+            string rid = RuntimeInformation.RuntimeIdentifier;
+            yield return rid;
+
+            string arch = RuntimeInformation.OSArchitecture switch
+            {
+                Architecture.X64 => "x64",
+                Architecture.Arm64 => "arm64",
+                Architecture.X86 => "x86",
+                Architecture.Arm => "arm",
+                _ => string.Empty,
+            };
+
+            string osPrefix = IsWindows ? "win" : IsMac ? "osx" : "linux";
+            if (arch.Length > 0)
+            {
+                string portableRid = $"{osPrefix}-{arch}";
+                if (!string.Equals(portableRid, rid, StringComparison.OrdinalIgnoreCase))
+                {
+                    yield return portableRid;
+                }
+
+                if (rid.StartsWith("linux-musl-", StringComparison.OrdinalIgnoreCase))
+                {
+                    yield return $"linux-{arch}";
+                }
+            }
+        }
     }
 }

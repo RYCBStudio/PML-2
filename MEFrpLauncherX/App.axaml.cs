@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -158,8 +159,22 @@ public class App : Application
                 DataContext = new MainWindowViewModel()
             };
             desktop.MainWindow = mainWindow;
-            desktop.Exit += (sender, args) =>
+            desktop.Exit += async (sender, args) =>
             {
+                try
+                {
+                    // 触发插件事件：应用退出
+                    await PluginService.Instance.TriggerAsync("app.exit", new Dictionary<string, object>
+                    {
+                        ["version"] = Core.App.Version,
+                        ["os"] = Environment.OSVersion.Platform.ToString()
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Core.App.CurrentLogger?.Error(ex, "触发 app.exit 插件事件失败");
+                }
+
                 Core.App.CurrentLogger?.Dispose();
             };
             Desktop = desktop;

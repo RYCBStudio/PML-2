@@ -82,7 +82,7 @@ public class UserProxyViewModel : ViewModelBase
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
     }
 
-    public List<string> Locations
+    public List<string>? Locations
     {
         get;
         set;
@@ -196,13 +196,13 @@ public class UserProxyViewModel : ViewModelBase
         private set;
     }
 
-    public Dictionary<string, string> RequestHeaders
+    public Dictionary<string, string>? RequestHeaders
     {
         get;
         set;
     }
 
-    public Dictionary<string, string> ResponseHeaders
+    public Dictionary<string, string>? ResponseHeaders
     {
         get;
         set;

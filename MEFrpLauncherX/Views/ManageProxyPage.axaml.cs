@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -20,7 +17,6 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels;
-using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
 using MessageBox = MEFrpLauncherX.Core.Controls.MessageBox;
 
@@ -28,15 +24,14 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ManageProxyPage : UserControl
 {
-    private readonly ProxyViewModel proxyViewModel;
-    private bool _isFirstLoad = true;
+    private readonly ManageProxyViewModel _manageProxyViewModel;
     private bool _isLoadingProxies;
 
     public ManageProxyPage()
     {
         InitializeComponent();
-        proxyViewModel = new ProxyViewModel();
-        DataContext = proxyViewModel;
+        _manageProxyViewModel = new ManageProxyViewModel();
+        DataContext = _manageProxyViewModel;
         AttachedToVisualTree += ManageProxyPage_Loaded;
         SearchBox.ItemsSource = new List<string> { "/pid:", "/nid:", "/n:" }.OrderBy(x => x);
     }
@@ -44,12 +39,20 @@ public partial class ManageProxyPage : UserControl
     public static ManageProxyPage Instance
     {
         get;
-        set;
+        private set;
     }
 
-    private void ManageProxyPage_Loaded(object sender, VisualTreeAttachmentEventArgs e)
+    private async void ManageProxyPage_Loaded(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        LoadProxies();
+        try
+        {
+            await LoadProxies();
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, "LoadProxies failed");
+        }
+
         Instance = this;
     }
 
@@ -68,18 +71,12 @@ public partial class ManageProxyPage : UserControl
         {
             Core.App.CurrentLogger.LogDebug("Starting LoadProxies");
             // Avalonia animations work differently - you might need to implement fade effects differently
-            proxyViewModel.AllProxies.Clear();
-            proxyViewModel.FilteredProxies.Clear();
+            _manageProxyViewModel.AllProxies.Clear();
+            _manageProxyViewModel.FilteredProxies.Clear();
             await Task.Run(async () =>
             {
-                InfoClasses.ProxyInfo userProxies = null;
-                try
-                {
-                    userProxies = (await MEFrpApiConverter.GetProxiesAsync()).data;
-                }
-                catch
-                {
-                }
+                var userProxies =
+                    (await MEFrpApiConverter.GetProxiesAsync()).data ?? new InfoClasses.ProxyInfo();
                 // var currentNodesListInfo = MEFrpApiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
                 //
@@ -150,7 +147,7 @@ public partial class ManageProxyPage : UserControl
                 {
                     var node = userProxies.nodes.FirstOrDefault(n => n.nodeId == item.nodeId);
 
-                    proxyViewModel.AllProxies.Add(new UserProxyViewModel(item.domain)
+                    _manageProxyViewModel.AllProxies.Add(new UserProxyViewModel(item.domain)
                     {
                         // Same property assignments as original
                         username = item.username,
@@ -199,14 +196,13 @@ public partial class ManageProxyPage : UserControl
                     });
                 }
             });
-            proxyViewModel.FilterProxies();
+            _manageProxyViewModel.FilterProxies();
             if (OperatingSystem.IsMacOS())
             {
                 // 创建原生菜单
                 MainWindow.Instance.NativeMenuBar = [];
                 MainWindow.Instance.NativeMenuBar.NeedsUpdate += (sender, args) =>
                 {
-
                     // 添加应用程序菜单（macOS 第一个菜单）
                     var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
                     var appSubMenu = new NativeMenu
@@ -232,7 +228,7 @@ public partial class ManageProxyPage : UserControl
                     };
 
                     var tmp_launchProxy = new NativeMenu();
-                    foreach (var proxy in proxyViewModel.AllProxies)
+                    foreach (var proxy in _manageProxyViewModel.AllProxies)
                     {
                         tmp_launchProxy.Add(new NativeMenuItem(proxy.proxyName)
                         {
@@ -262,7 +258,8 @@ public partial class ManageProxyPage : UserControl
                 };
             }
 
-            Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " + proxyViewModel.AllProxies.Count);
+            Core.App.CurrentLogger.LogDebug("Loading over. AllFilteredProxies: " +
+                                            _manageProxyViewModel.AllProxies.Count);
             await Dispatcher.UIThread.InvokeAsync(() =>
                 MainPageFrameViewModel.Instance?.IsLoading = false);
         }
@@ -279,19 +276,12 @@ public partial class ManageProxyPage : UserControl
         }
     }
 
-    private void RefreshProxies(object sender, RoutedEventArgs e) => LoadProxies();
+    private async void RefreshProxies(object sender, RoutedEventArgs e) => await LoadProxies();
 
     private void Entry(object sender, RoutedEventArgs e)
     {
         // Implement animation if needed
         BatchOperationArea.IsVisible = true;
-    }
-
-    private void UnEntry(object sender, RoutedEventArgs e) => BatchOperationArea.IsVisible = false;
-
-    private void BatchOperationArea_IsVisibleChanged(object sender, RoutedEventArgs e)
-    {
-        // Handle visibility changes if needed
     }
 
     private async void DownloadMEFClient(object? sender, RoutedEventArgs e)
@@ -302,12 +292,14 @@ public partial class ManageProxyPage : UserControl
                 await new DownloadHelper(this).DownloadMEFrpClient(Environment.OSVersion);
             if (result)
             {
-                await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCompleted, Languages.Caption_Hint, MessageBoxIcon.Info);
+                await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCompleted, Languages.Caption_Hint,
+                    MessageBoxIcon.Info);
             }
         }
         catch (OperationCanceledException)
         {
-            await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCancelled, Languages.Caption_Hint, MessageBoxIcon.Warning);
+            await MessageBox.ShowAsync(Languages.Text_ManageProxy_DownloadCancelled, Languages.Caption_Hint,
+                MessageBoxIcon.Warning);
         }
     }
 
@@ -326,265 +318,6 @@ public partial class ManageProxyPage : UserControl
     }
 }
 
-public sealed class ProxyViewModel : ViewModelBase
-{
-    public ProxyViewModel()
-    {
-        SelectedProxies = [];
-        SwitchViewCommand = new RelayCommand<ViewMode>(mode => CurrentViewMode = mode);
-        SelectProxyCommand = new RelayCommand<UserProxyViewModel>(SelectProxy);
-        DeselectProxyCommand = new RelayCommand<UserProxyViewModel>(DeselectProxy);
-        ToggleSelectProxyCommand = new RelayCommand<UserProxyViewModel>(ToggleSelectProxy);
-        ClearSelectionCommand = new RelayCommand(ClearSelection);
-    }
-
-    public string SearchText
-    {
-        get;
-        set
-        {
-            field = value;
-            FilterProxies();
-        }
-    } = string.Empty;
-
-    public bool IsDetailedMode
-    {
-        get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            // 当详细模式改变时，更新所有代理的详细状态
-            UpdateAllProxiesDetailedStatus(value);
-        }
-    }
-
-
-    public ObservableCollection<UserProxyViewModel> FilteredProxies
-    {
-        get;
-    } = [];
-
-    public ObservableCollection<UserProxyViewModel> AllProxies
-    {
-        get;
-        set;
-    } = [];
-
-    public ICommand LaunchProxyCommand
-    {
-        get;
-    }
-
-    public ICommand LaunchMultiProxyCommand
-    {
-        get;
-    }
-
-    public ICommand EditProxyCommand
-    {
-        get;
-    }
-
-    public ICommand ForceOfflineProxyCommand
-    {
-        get;
-    }
-
-    public ICommand DisableProxyCommand
-    {
-        get;
-    }
-
-    public ICommand EnableProxyCommand
-    {
-        get;
-    }
-
-    public ICommand DeleteProxyCommand
-    {
-        get;
-    }
-
-    public ICommand GenerateLaunchConfigCommand
-    {
-        get;
-    }
-
-    public ICommand ShowExtraInfoCommand
-    {
-        get;
-    }
-
-    public ViewMode CurrentViewMode
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    } = ViewMode.Grid;
-
-    public ICommand SwitchViewCommand
-    {
-        get;
-    }
-
-    public ICommand SelectProxyCommand
-    {
-        get;
-    }
-
-    public ICommand DeselectProxyCommand
-    {
-        get;
-    }
-
-    public ICommand ToggleSelectProxyCommand
-    {
-        get;
-    }
-
-    public ICommand ClearSelectionCommand
-    {
-        get;
-    }
-
-    public NotifyingCollection<UserProxyViewModel> SelectedProxies
-    {
-        get;
-        set
-        {
-            if (field != null)
-            {
-                field.CollectionChangedWithNotification -= OnSelectionChanged;
-            }
-
-            field = value;
-
-            if (field != null)
-            {
-                field.CollectionChangedWithNotification += OnSelectionChanged;
-            }
-
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsAnyProxySelected));
-        }
-    }
-
-    public bool IsAnyProxySelected => SelectedProxies?.Count > 1;
-
-    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase);
-
-    public bool IsNoData
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public async void FilterProxies()
-    {
-        MainPageFrameViewModel.Instance.IsLoading = true;
-        Core.App.CurrentLogger.LogDebug("开始筛选隧道");
-        FilteredProxies.Clear();
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            var filtered = AllProxies.Where(proxy =>
-                string.IsNullOrEmpty(SearchText) ||
-                proxy.proxyName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                PinYinHelper.ConvertToAllSpell(proxy.proxyName)
-                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/pid:") &&
-                 proxy.proxyId.ToString().Contains(SearchText[5..])) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/n:") &&
-                 (proxy.node.Contains(SearchText[3..]) ||
-                  PinYinHelper.ConvertToAllSpell(proxy.node)
-                      .Contains(SearchText[3..], StringComparison.OrdinalIgnoreCase))) ||
-                (SearchText.Replace(" ", string.Empty).StartsWith("/nid:") &&
-                 proxy.nodeId.ToString().Contains(SearchText[5..])));
-            foreach (var proxy in filtered)
-            {
-                FilteredProxies.Add(proxy);
-            }
-        });
-        IsNoData = FilteredProxies.Count == 0;
-
-        MainPageFrameViewModel.Instance.IsLoading = false;
-        Core.App.CurrentLogger.LogDebug("筛选完成，数量: " + FilteredProxies.Count);
-    }
-
-    private void UpdateAllProxiesDetailedStatus(bool isDetailed)
-    {
-        foreach (var proxy in FilteredProxies)
-        {
-            proxy.Detailed = isDetailed;
-        }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    private void SelectProxy(UserProxyViewModel proxy)
-    {
-        if (proxy == null || proxy.IsSelected)
-        {
-            return;
-        }
-
-        proxy.IsSelected = true;
-        SelectedProxies.Add(proxy);
-    }
-
-    private void DeselectProxy(UserProxyViewModel proxy)
-    {
-        if (proxy == null || !proxy.IsSelected)
-        {
-            return;
-        }
-
-        proxy.IsSelected = false;
-        SelectedProxies.Remove(proxy);
-    }
-
-    private void ToggleSelectProxy(UserProxyViewModel proxy)
-    {
-        if (proxy == null)
-        {
-            return;
-        }
-
-        proxy.IsSelected = !proxy.IsSelected;
-
-        if (proxy.IsSelected)
-        {
-            if (!SelectedProxies.Contains(proxy))
-            {
-                SelectedProxies.Add(proxy); // 现在这会自动触发通知
-            }
-        }
-        else
-        {
-            SelectedProxies.Remove(proxy); // 现在这会自动触发通知
-        }
-    }
-
-    // 添加清除选择的方法
-    public void ClearSelection(object s)
-    {
-        foreach (var proxy in SelectedProxies.ToList())
-        {
-            proxy.IsSelected = false;
-        }
-
-        SelectedProxies.Clear();
-    }
-
-    private void OnSelectionChanged(object sender, EventArgs e) => OnPropertyChanged(nameof(IsAnyProxySelected));
-}
-
 public class NotifyingCollection<T> : ObservableCollection<T>
 {
     public event EventHandler CollectionChangedWithNotification;
@@ -593,32 +326,6 @@ public class NotifyingCollection<T> : ObservableCollection<T>
     {
         base.OnCollectionChanged(e);
         CollectionChangedWithNotification?.Invoke(this, EventArgs.Empty);
-    }
-}
-
-public class RelayCommand<T> : ICommand
-{
-    private readonly Predicate<T> _canExecute;
-    private readonly Action<T> _execute;
-
-    public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
-    {
-        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
-    }
-
-    public bool CanExecute(object parameter) => _canExecute?.Invoke((T)parameter) ?? true;
-
-    public void Execute(object parameter) => _execute((T)parameter);
-
-    public event EventHandler CanExecuteChanged
-    {
-        add
-        {
-        }
-        remove
-        {
-        }
     }
 }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Tools;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
@@ -243,6 +245,19 @@ public partial class UserCenterPage : UserControl
         if (result != ButtonResult.Yes)
         {
             return;
+        }
+
+        // 触发插件事件：用户登出（重启前等待执行完成）
+        try
+        {
+            await PluginService.Instance.TriggerAsync("user.logout", new Dictionary<string, object>
+            {
+                ["username"] = UserCache.CurrentUser?.username ?? ""
+            });
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, "触发 user.logout 插件事件失败");
         }
 
         UserCache.Logout();

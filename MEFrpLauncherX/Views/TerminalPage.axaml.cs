@@ -129,7 +129,7 @@ public partial class TerminalPage : UserControl
                      Content: TerminalView alternativeTerminalView
                  })
         {
-            await alternativeTerminalView.SendToPtyAsync("clear \r");
+            await alternativeTerminalView.SendToPtyAsync(OperatingSystem.IsWindows() ? "clear \r" : "clear\n");
         }
     }
 
@@ -138,6 +138,8 @@ public partial class TerminalPage : UserControl
         var index = MainTabCtrl.SelectedIndex;
         if (index >= 0 && index < MainTabCtrl.Items.Count)
         {
+            var closedTabName = (MainTabCtrl.Items[index] as TabItem)?.Header?.ToString() ?? "";
+
             // 安全释放终端资源
             if (MainTabCtrl.Items[index] is TabItem { Content: TerminalControl terminalControl })
             {
@@ -149,7 +151,7 @@ public partial class TerminalPage : UserControl
                          Content: TerminalView alternativeTerminalView
                      })
             {
-                await alternativeTerminalView.SendToPtyAsync("exit \r");
+                await alternativeTerminalView.SendToPtyAsync(OperatingSystem.IsWindows() ? "exit \r" : "exit\n");
                 alternativeTerminalView.Terminal.Dispose();
             }
 
@@ -159,6 +161,12 @@ public partial class TerminalPage : UserControl
             {
                 MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
             }
+
+            // 触发插件事件：代理停止
+            _ = PluginService.Instance.TriggerAsync("proxy.stop", new Dictionary<string, object>
+            {
+                ["proxyName"] = closedTabName
+            });
         }
     }
 
@@ -324,8 +332,8 @@ public partial class TerminalPage : UserControl
             {
                 await terminal.SendCommandAsync("cd /" + Path.Combine("opt", "pml-2"));
                 await terminal.SendCommandAsync($"""
-                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
-                                                """);
+                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
+                                                 """);
                 await terminal.SendCommandAsync("tar -xvf " +
                                                 Path.Combine(Core.App.StartupPath, "bin",
                                                     "mefrpc.tar") +
@@ -340,15 +348,21 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
-                await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + " \r");
+                await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + "\n");
                 await terminal1.SendToPtyAsync($""" 
-                                               echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
-                                               """ + " \r");
+                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
+                                                """ + "\n");
                 await terminal1.SendToPtyAsync("tar -xvf " +
                                                Path.Combine(Core.App.StartupPath, "bin",
                                                    "mefrpc.tar") +
                                                $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
-                                               " \r");
+                                               "\n");
+                if (isMEFrpCExe)
+                {
+                    // 修改5: 移除CurrentConhostId检查，直接发送命令
+                    Core.App.CurrentLogger.Log(res, EnumLogType.Debug);
+                    await terminal1.SendToPtyAsync(res + "\n");
+                }
             }
         }
         else if (OperatingSystem.IsMacOS())
@@ -365,8 +379,8 @@ public partial class TerminalPage : UserControl
             {
                 await terminal.SendCommandAsync("cd " + Core.App.StartupPath);
                 await terminal.SendCommandAsync($"""
-                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
-                                                """);
+                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
+                                                 """);
                 await terminal.SendCommandAsync("tar -xvf " +
                                                 Path.Combine(Core.App.StartupPath, "bin",
                                                     "mefrpc.tar") +
@@ -381,24 +395,29 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
-                await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + " \r");
+                await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + "\n");
                 await terminal1.SendToPtyAsync($""" 
-                                               echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
-                                               """ + " \r");
+                                                echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
+                                                """ + "\n");
                 await terminal1.SendToPtyAsync("tar -xvf " +
                                                Path.Combine(Core.App.StartupPath, "bin",
                                                    "mefrpc.tar") +
                                                $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
-                                               " \r");
+                                               "\n");
+                if (isMEFrpCExe)
+                {
+                    // 修改5: 移除CurrentConhostId检查，直接发送命令
+                    Core.App.CurrentLogger.Log(res, EnumLogType.Debug);
+                    await terminal1.SendToPtyAsync(res + "\n");
+                }
             }
         }
 
         // 触发插件事件：代理启动
-        _ = PluginService.Instance.TriggerAsync("proxy.start", new Dictionary<string, object>
+        await PluginService.Instance.TriggerAsync("proxy.start", new Dictionary<string, object>
         {
-            ["proxyName"] = consoleTitle,
-            ["command"] = rs
-        });
+            ["proxyName"] = consoleTitle
+        }).ConfigureAwait(false);
     }
 
     private string GetArchiveFileName()

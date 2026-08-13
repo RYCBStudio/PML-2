@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 
@@ -21,6 +21,7 @@ public class LogUtil : IDisposable
         { EnumLogModule.NodesMonitoring, "节点监控" },
         { EnumLogModule.About, "关于" },
         { EnumLogModule.Terminal, "终端" },
+        { EnumLogModule.Plugin, "插件" },
         { EnumLogPort.Client, "客户端" },
         { EnumLogPort.Server, "服务端" },
         { EnumLogType.Info, "信息" },
@@ -392,7 +393,12 @@ public enum EnumLogModule
     /// <summary>
     ///     页面 - 终端/控制台
     /// </summary>
-    Terminal
+    Terminal,
+
+    /// <summary>
+    ///     插件系统
+    /// </summary>
+    Plugin
 }
 
 public enum EnumLogType

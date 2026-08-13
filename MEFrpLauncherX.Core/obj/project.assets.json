@@ -2,11 +2,11 @@
   "version": 4,
   "targets": {
     "net10.0": {
-      "Avalonia/11.3.18": {
+      "Avalonia/11.3.20": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "11.3.18",
+          "Avalonia.Remote.Protocol": "11.3.20",
           "MicroCom.Runtime": "0.11.0"
         },
         "compile": {
@@ -135,7 +135,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/11.3.18": {
+      "Avalonia.Remote.Protocol/11.3.20": {
         "type": "package",
         "compile": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -623,6 +623,36 @@
           "buildTransitive/net8.0/Microsoft.Extensions.Logging.Abstractions.targets": {}
         }
       },
+      "Microsoft.Extensions.Options/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+          "Microsoft.Extensions.Primitives": "2.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Options.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Options.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.International.Converters.PinYinConverter/1.0.0": {
         "type": "package",
         "compile": {
@@ -630,6 +660,41 @@
         },
         "runtime": {
           "lib/ChnCharInfo.dll": {}
+        }
+      },
+      "Notify.NET/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+          "Microsoft.Extensions.Options": "2.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/Notify.NET.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Notify.NET.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/osx-arm64/native/libMacNotifyWrapper.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/libMacNotifyWrapper.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-arm64/native/WinToastWrapper.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/WinToastWrapper.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/WinToastWrapper.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
         }
       },
       "NPinyin.Core/3.0.0": {
@@ -1224,7 +1289,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "Avalonia": "11.3.18",
+          "Avalonia": "11.3.20",
           "Avalonia.Skia": "11.3.18",
           "Avalonia.Svg": "11.3.0",
           "FluentAvaloniaUI": "2.5.1",
@@ -1246,10 +1311,10 @@
     }
   },
   "libraries": {
-    "Avalonia/11.3.18": {
-      "sha512": "2C4UxhWUObWGgYKWic1x5BMMWGJP6SElb91WeOxs+X/iR26rtkqpxFFwwo50FXS9AyYnHfk8QKXDEfe7oT/kZA==",
+    "Avalonia/11.3.20": {
+      "sha512": "nbT+swxCTTvtXxNZC7ZOBGq6GKE5G8PpQ9rDw4+fKvzpbUqPgVVoUfnTGUY+Y+THvuAQN0Xyk/R7flyKYADX0w==",
       "type": "package",
-      "path": "avalonia/11.3.18",
+      "path": "avalonia/11.3.20",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1257,7 +1322,7 @@
         "Icon.png",
         "analyzers/dotnet/cs/Avalonia.Analyzers.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.11.3.18.nupkg.sha512",
+        "avalonia.11.3.20.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1483,15 +1548,15 @@
         "readme.md"
       ]
     },
-    "Avalonia.Remote.Protocol/11.3.18": {
-      "sha512": "vw+6ZfgTuu72dA9aVWn6u56t2nrBd5MoMU0wo/qI9XJAl/c0oYYphIvwLvJP1JorubQY4UE3d0ac8ULBhrGBiA==",
+    "Avalonia.Remote.Protocol/11.3.20": {
+      "sha512": "ZOKQmS0qetctZjK001FNAq8zxH7D3jZk9MkJP3cx7/Z6Ch4C3g0iAzGM/ND7/l6ki2sV/qEHzGvQZ02zB2GYOw==",
       "type": "package",
-      "path": "avalonia.remote.protocol/11.3.18",
+      "path": "avalonia.remote.protocol/11.3.20",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.remote.protocol.11.3.18.nupkg.sha512",
+        "avalonia.remote.protocol.11.3.20.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net6.0/Avalonia.Remote.Protocol.dll",
         "lib/net6.0/Avalonia.Remote.Protocol.xml",
@@ -2172,6 +2237,32 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Microsoft.Extensions.Options/2.1.0": {
+      "sha512": "VOM1pPMi9+7/4Vc9aPLU8btHOBQy1+AvpqxLxFI2OVtqGv+1klPaV59g9R6aSt2U7ijfB3TjvAO4Tc/cn9/hxA==",
+      "type": "package",
+      "path": "microsoft.extensions.options/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
+        "microsoft.extensions.options.2.1.0.nupkg.sha512",
+        "microsoft.extensions.options.nuspec"
+      ]
+    },
+    "Microsoft.Extensions.Primitives/2.1.0": {
+      "sha512": "gMwH6wgWOPfyfLfMLEP+ZF7/MSJq35e0xxKEYUjt8veEznY45nBVqdfI876+9SFQq2ChcqKf2UyYc2XYj2v27w==",
+      "type": "package",
+      "path": "microsoft.extensions.primitives/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
+        "microsoft.extensions.primitives.2.1.0.nupkg.sha512",
+        "microsoft.extensions.primitives.nuspec"
+      ]
+    },
     "Microsoft.International.Converters.PinYinConverter/1.0.0": {
       "sha512": "hEs/VPwGFeVNLf2Wc6k2bMYF71zE6x+lW4MfebRAjkVbAbaa4DbEmdFRfSBymvGLtdsCUvXo2aa/yFKYSCYmEQ==",
       "type": "package",
@@ -2182,6 +2273,24 @@
         "lib/ChnCharInfo.dll",
         "microsoft.international.converters.pinyinconverter.1.0.0.nupkg.sha512",
         "microsoft.international.converters.pinyinconverter.nuspec"
+      ]
+    },
+    "Notify.NET/1.1.0": {
+      "sha512": "q8IRwGM4D6gTjwCi07UxTnSr8AmYmm3gS1ngLnFFX/BSj+HAKQHDtLndsni++U4d9EdRSQb35vMSAEUZBXTomw==",
+      "type": "package",
+      "path": "notify.net/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/netstandard2.1/Notify.NET.dll",
+        "notify.net.1.1.0.nupkg.sha512",
+        "notify.net.nuspec",
+        "runtimes/osx-arm64/native/libMacNotifyWrapper.dylib",
+        "runtimes/osx-x64/native/libMacNotifyWrapper.dylib",
+        "runtimes/win-arm64/native/WinToastWrapper.dll",
+        "runtimes/win-x64/native/WinToastWrapper.dll",
+        "runtimes/win-x86/native/WinToastWrapper.dll"
       ]
     },
     "NPinyin.Core/3.0.0": {
@@ -3059,7 +3168,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 11.3.18",
+      "Avalonia >= 11.3.20",
       "Downloader >= 5.9.5",
       "FluentAvaloniaUI >= 2.5.1",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.5",
@@ -3069,6 +3178,7 @@
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "NPinyin.Core >= 3.0.0",
+      "Notify.NET >= 1.1.0",
       "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
       "Sentry >= 6.8.0",
@@ -3140,7 +3250,7 @@
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[11.3.18, )"
+            "version": "[11.3.20, )"
           },
           "Downloader": {
             "target": "Package",
@@ -3173,6 +3283,10 @@
           "NPinyin.Core": {
             "target": "Package",
             "version": "[3.0.0, )"
+          },
+          "Notify.NET": {
+            "target": "Package",
+            "version": "[1.1.0, )"
           },
           "ReactiveUI": {
             "target": "Package",
@@ -3222,12 +3336,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
-            "version": "[10.0.9, 10.0.9]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
