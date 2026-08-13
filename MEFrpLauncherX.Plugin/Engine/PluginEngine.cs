@@ -18,9 +18,10 @@ public class PluginEngine : IAction
         _builtinActions = new Dictionary<string, IAction>
         {
             ["log"] = new LogAction(),
-            ["http_request"] = new HttpRequestAction(),
+            //["http_request"] = new HttpRequestAction(),
             ["python_run"] = new PythonAction(),
-            ["notify"] = new NotifyAction()
+            ["notify"] = new NotifyAction(),
+            ["local_run"] = new LocalRunAction()
         };
         // call_function 指令：通过 this (IAction) 作为子动作分发器
         _callFuncAction = new CallFunctionAction(_funcRegistry, this);

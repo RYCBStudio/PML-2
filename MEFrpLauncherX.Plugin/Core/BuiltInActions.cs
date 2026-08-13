@@ -72,6 +72,35 @@ public class NotifyAction : IAction
     }
 }
 
+public class LocalRunAction : IAction
+{
+    public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        var exe = args?["exe"]?.ToString() ?? "";
+        var argsList = args?.GetValueOrDefault("args")?.ToString() ?? "";
+        var createNoWindow = args?.GetValueOrDefault("create_no_window")?.ToString() ?? "true";
+        var useShellExecute = args?.GetValueOrDefault("use_shell_execute")?.ToString() ?? "false";
+
+        try
+        {
+            await Process.Start(new ProcessStartInfo()
+            {
+                FileName = exe,
+                Arguments = string.Join(' ', argsList),
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = useShellExecute == "true",
+                CreateNoWindow = createNoWindow == "true"
+            })?.WaitForExitAsync()!;
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Warning($"插件 {ctx.PluginId} local_run 执行失败: {exe} {argsList}: \n{ex}",
+                module: EnumLogModule.Plugin);
+        }
+    }
+}
+
 public class PythonAction : IAction
 {
     public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
