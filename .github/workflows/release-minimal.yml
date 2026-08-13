@@ -1,0 +1,102 @@
+name: DMG osx-x64 (minimal)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（不带 v）'
+        required: true
+        type: string
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
+  APP_EXE: MEFrpLauncherX
+  APP_BUNDLE_NAME: 'PML 2.app'
+  DMG_BACKGROUND: installer/macos/pml2-dmg-background.png
+
+jobs:
+  dmg:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish R2R (osx-x64)
+        run: |
+          set -euo pipefail
+          OUT=./publish/osx-x64
+          mkdir -p "$OUT"
+          dotnet publish "$PROJECT" \
+            -c Release -r osx-x64 --self-contained true \
+            -p:PublishReadyToRun=true -p:PublishTrimmed=true \
+            -o "$OUT" --nologo -v q
+          chmod +x "$OUT/$APP_EXE"
+
+      - name: Install create-dmg
+        run: brew list create-dmg &>/dev/null || brew install create-dmg
+
+      - name: Build .app + DMG
+        run: |
+          set -euo pipefail
+          V="${{ inputs.version }}"
+          V="${V#v}"
+          OUT=./publish/osx-x64
+          EXE="$APP_EXE"
+          BUNDLE="$APP_BUNDLE_NAME"
+          BG="$DMG_BACKGROUND"
+
+          test -f "$BG" || { echo "缺少 $BG"; exit 1; }
+
+          STAGE=dmg-stage
+          rm -rf "$STAGE"
+          APP="$STAGE/$BUNDLE"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp -a "$OUT/." "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/$EXE"
+
+          cat > "$APP/Contents/Info.plist" << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key><string>${EXE}</string>
+            <key>CFBundleIdentifier</key><string>tech.rycb.pml2</string>
+            <key>CFBundleName</key><string>PML 2</string>
+            <key>CFBundleDisplayName</key><string>PML 2</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>${V}</string>
+            <key>CFBundleVersion</key><string>${V}</string>
+            <key>LSMinimumSystemVersion</key><string>13.0</string>
+            <key>NSHighResolutionCapable</key><true/>
+          </dict>
+          </plist>
+          EOF
+          echo -n 'APPL????' > "$APP/Contents/PkgInfo"
+          xattr -cr "$APP" || true
+
+          mkdir -p dist
+          DMG="dist/pml2-${V}-macos-x64.dmg"
+          rm -f "$DMG"
+
+          create-dmg \
+            --volname "PML 2" \
+            --background "$BG" \
+            --window-pos 200 120 \
+            --window-size 660 420 \
+            --icon-size 128 \
+            --icon "$BUNDLE" 150 210 \
+            --hide-extension "$BUNDLE" \
+            --app-drop-link 510 210 \
+            "$DMG" \
+            "$STAGE/"
+
+          ls -lh "$DMG"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pml2-macos-x64-dmg
+          path: dist/*.dmg
