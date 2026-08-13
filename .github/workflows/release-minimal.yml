@@ -114,16 +114,15 @@ jobs:
 
           sips -g pixelWidth -g pixelHeight pml2-dmg-background.png
 
-          create-dmg \
-            --volname "PML 2" \
+          bash -x "$(which create-dmg)" \
             --background "$BG" \
+            --volname "PML 2" \
             --window-size 660 420 \
             --icon-size 128 \
-            --icon "PML 2.app" 160 210 \
-            --app-drop-link 515 210 \
-            --hide-extension "PML 2.app" \
+            --icon "PML 2.app" 182 206 \
+            --app-drop-link 500 219 \
             "$DMG" \
-            "$STAGE/"
+            "$STAGE"
 
           ls -lh "$DMG"
 
