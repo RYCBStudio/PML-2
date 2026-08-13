@@ -119,8 +119,7 @@ jobs:
           cp installer/macos/.DS_Store \
             "$STAGE/.DS_Store"
 
-          cp installer/macos/.background/pml2-dmg-background.png \
-            "$STAGE/.background/"
+          cp -a installer/macos/. "$STAGE/"
 
           ln -s /Applications "$STAGE/Applications"
 
