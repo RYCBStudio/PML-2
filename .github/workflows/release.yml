@@ -15,7 +15,6 @@ env:
   DOTNET_VERSION: '10.0.x'
   PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
   APP_EXE: MEFrpLauncherX
-  # macOS .app 显示名（与 create-dmg --icon 一致）
   APP_BUNDLE_NAME: 'PML 2.app'
 
 jobs:
@@ -30,21 +29,49 @@ jobs:
             os_name: linux
             arch: x64
             pkg_arch: amd64
+            mode: r2r
           - rid: linux-arm64
             os: ubuntu-latest
             os_name: linux
             arch: arm64
             pkg_arch: arm64
+            mode: r2r
+          - rid: linux-x64
+            os: ubuntu-latest
+            os_name: linux
+            arch: x64
+            pkg_arch: amd64
+            mode: aot
+          - rid: linux-arm64
+            os: ubuntu-latest
+            os_name: linux
+            arch: arm64
+            pkg_arch: arm64
+            mode: aot
           - rid: osx-x64
             os: macos-latest
             os_name: macos
             arch: x64
             pkg_arch: x64
+            mode: r2r
           - rid: osx-arm64
             os: macos-latest
             os_name: macos
             arch: arm64
             pkg_arch: arm64
+            mode: r2r
+          - rid: osx-x64
+            os: macos-latest
+            os_name: macos
+            arch: x64
+            pkg_arch: x64
+            mode: aot
+          - rid: osx-arm64
+            os: macos-latest
+            os_name: macos
+            arch: arm64
+            pkg_arch: arm64
+            mode: aot
 
     steps:
       - name: Checkout
@@ -65,35 +92,55 @@ jobs:
             V="${GITHUB_REF_NAME#v}"
           fi
           V="${V#v}"
-          echo "version=$V" >> $GITHUB_OUTPUT
+          echo "version=$V" >> "$GITHUB_OUTPUT"
           echo "Resolved version: $V"
 
-      - name: Publish (ReadyToRun)
+      - name: Publish
         shell: bash
         run: |
           set -euo pipefail
-          OUT="./publish/${{ matrix.rid }}"
+          RID="${{ matrix.rid }}"
+          MODE="${{ matrix.mode }}"
+          OUT="./publish/\( {RID}- \){MODE}"
           mkdir -p "$OUT"
-          dotnet publish "${{ env.PROJECT }}" \
-            -c Release \
-            -r "${{ matrix.rid }}" \
-            --self-contained true \
-            -p:PublishReadyToRun=true \
-            -p:PublishTrimmed=true \
-            -o "$OUT" \
-            --nologo -v q
-          if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
-            chmod +x "$OUT/${{ env.APP_EXE }}"
+          echo "Publishing to: $OUT"
+
+          if [ "$MODE" = "aot" ]; then
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "$RID" \
+              --self-contained true \
+              -p:PublishAot=true \
+              -p:PublishTrimmed=true \
+              -o "$OUT" \
+              --nologo -v q
+          else
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "$RID" \
+              --self-contained true \
+              -p:PublishReadyToRun=true \
+              -p:PublishTrimmed=true \
+              -o "$OUT" \
+              --nologo -v q
           fi
-          echo "Publish OK, file count: $(find "$OUT" -type f | wc -l)"
+
+          if [ -f "\( OUT/ \){{ env.APP_EXE }}" ]; then
+            chmod +x "\( OUT/ \){{ env.APP_EXE }}"
+          else
+            echo "WARNING: executable not found: \( OUT/ \){{ env.APP_EXE }}"
+            ls -la "$OUT" | head -50
+          fi
+          echo "Publish OK ($MODE), files: $(find "$OUT" -type f | wc -l)"
 
       - name: Inject Sentry DSN
         shell: bash
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
-          OUT="./publish/${{ matrix.rid }}"
-          if [ -n "$SENTRY_DSN" ]; then
+          set -euo pipefail
+          OUT="./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}"
+          if [ -n "${SENTRY_DSN:-}" ]; then
             printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
             echo "sentry.json injected"
           else
@@ -109,36 +156,32 @@ jobs:
         run: brew list zstd &>/dev/null || brew install zstd
 
       - name: Pack tar.gz + tar.zst
-        id: pack
         shell: bash
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
           RID="${{ matrix.rid }}"
+          MODE="${{ matrix.mode }}"
           OS_NAME="${{ matrix.os_name }}"
           ARCH="${{ matrix.arch }}"
-          OUT="./publish/${RID}"
+          OUT="./publish/\( {RID}- \){MODE}"
           mkdir -p dist
 
           if [ ! -d "$OUT" ]; then
             echo "Publish dir missing: $OUT"
+            ls -la ./publish || true
             exit 1
           fi
 
-          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.gz"
-          TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
+          TGZ="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.gz"
+          TZST="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.zst"
 
-          tar -C "$OUT" -cf - . | gzip -9 > "dist/${TGZ}"
-          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "dist/${TZST}"
-
+          tar -C "\( OUT" -cf - . | gzip -9 > "dist/ \){TGZ}"
+          tar -C "\( OUT" -cf - . | zstd -T0 -19 -o "dist/ \){TZST}"
           gzip -t "dist/${TGZ}"
           zstd -t "dist/${TZST}"
+          ls -lh dist/
 
-          ls -lh dist/ || true
-          echo "tgz=${TGZ}" >> "$GITHUB_OUTPUT"
-          echo "tzst=${TZST}" >> "$GITHUB_OUTPUT"
-
-      # ---------- deb + rpm（仅 Linux）----------
       - name: Install nFPM
         if: matrix.os_name == 'linux'
         shell: bash
@@ -157,11 +200,17 @@ jobs:
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
           RID="${{ matrix.rid }}"
+          MODE="${{ matrix.mode }}"
           ARCH="${{ matrix.arch }}"
           PKG_ARCH="${{ matrix.pkg_arch }}"
-          OUT="./publish/${RID}"
+          OUT="./publish/\( {RID}- \){MODE}"
           ROOT="pkgroot"
           EXE="${{ env.APP_EXE }}"
+
+          if [ ! -d "$OUT" ]; then
+            echo "Publish dir missing: $OUT"
+            exit 1
+          fi
 
           rm -rf "$ROOT"
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
@@ -172,7 +221,7 @@ jobs:
           exec /opt/pml-2/${EXE} "\$@"
           EOF
           chmod +x "$ROOT/usr/bin/pml-2"
-          chmod +x "$ROOT/opt/pml-2/${EXE}" 2>/dev/null || true
+          chmod +x "\( ROOT/opt/pml-2/ \){EXE}" 2>/dev/null || true
 
           cat > "$ROOT/usr/share/applications/pml-2.desktop" << 'EOF'
           [Desktop Entry]
@@ -186,16 +235,21 @@ jobs:
           StartupNotify=true
           EOF
 
+          PKG_NAME="pml-2"
+          if [ "$MODE" = "aot" ]; then
+            PKG_NAME="pml-2-aot"
+          fi
+
           cat > nfpm.yaml << EOF
-          name: pml-2
+          name: ${PKG_NAME}
           arch: ${PKG_ARCH}
           platform: linux
           version: ${V}
           section: utils
           priority: optional
-          maintainer: RYCB Studio <support@rycb.tech>
+          maintainer: RYCB Studio <im@rycb.tech>
           description: |
-            PML 2 is a cross-platform graphical launcher for ME Frp.
+            PML 2 is a cross-platform graphical launcher for ME Frp (${MODE}).
           vendor: RYCB Studio
           homepage: https://www.rycb.tech/pml-2
           license: MIT
@@ -212,11 +266,10 @@ jobs:
           EOF
 
           mkdir -p dist
-          nfpm package -f nfpm.yaml -p deb -t "dist/pml2-${V}-linux-${ARCH}.deb"
-          nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-${V}-linux-${ARCH}.rpm"
+          nfpm package -f nfpm.yaml -p deb -t "dist/pml2-\( {V}-linux- \){ARCH}-${MODE}.deb"
+          nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-\( {V}-linux- \){ARCH}-${MODE}.rpm"
           ls -lh dist/*.deb dist/*.rpm
 
-      # ---------- 自定义 DMG（仅 macOS）----------
       - name: Build .app + custom DMG
         if: matrix.os_name == 'macos'
         shell: bash
@@ -230,13 +283,21 @@ jobs:
           EXE="${{ env.APP_EXE }}"
           BUNDLE="${{ env.APP_BUNDLE_NAME }}"
 
+          echo "RID=$RID MODE=$MODE OUT=$OUT"
+          if [ ! -d "$OUT" ]; then
+            echo "Publish dir missing: $OUT"
+            ls -la ./publish || true
+            exit 1
+          fi
+          ls -la "$OUT" | head -20
+
           STAGE="dmg-stage"
           rm -rf "$STAGE"
           APP="$STAGE/$BUNDLE"
           mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
-          cp -a "$OUT/." "$APP/Contents/MacOS/"
-          chmod +x "\( APP/Contents/MacOS/ \){EXE}"
+          cp -a "${OUT}/." "$APP/Contents/MacOS/"
+          chmod +x "\( APP/Contents/MacOS/ \){EXE}" || true
 
           if [ -f installer/macos/AppIcon.icns ]; then
             cp installer/macos/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
@@ -265,7 +326,7 @@ jobs:
             <key>CFBundleVersion</key>
             <string>${V}</string>
             <key>LSMinimumSystemVersion</key>
-            <string>12.0</string>
+            <string>13.0</string>
             <key>NSHighResolutionCapable</key>
             <true/>
           ${ICON_KEY}
@@ -276,14 +337,13 @@ jobs:
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
           xattr -cr "$APP" || true
 
-          # Finder 模板（与原先相同）
           mkdir -p "$STAGE/.background"
           cp installer/macos/.DS_Store "$STAGE/.DS_Store"
           cp -a installer/macos/. "$STAGE/"
-          ln -s /Applications "$STAGE/Applications"
+          ln -sf /Applications "$STAGE/Applications"
 
           mkdir -p dist
-          RW_DMG="\( (pwd)/dist/pml2-rw- \){MODE}.dmg"
+          RW_DMG="\( (pwd)/dist/pml2-rw- \){ARCH}-${MODE}.dmg"
           FINAL_DMG="\( (pwd)/dist/pml2- \){V}-macos-\( {ARCH}- \){MODE}.dmg"
           rm -f "$RW_DMG" "$FINAL_DMG"
 
@@ -309,7 +369,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}
+          name: pml2-\( {{ steps.ver.outputs.version }}- \){{ matrix.rid }}-${{ matrix.mode }}
           path: dist/*
           if-no-files-found: error
 
@@ -329,7 +389,6 @@ jobs:
         run: |
           mkdir -p upload
           find artifacts -type f -exec cp -v {} upload/ \;
-          echo "======== Release files ========"
           ls -lh upload/
 
       - name: Create GitHub Release
