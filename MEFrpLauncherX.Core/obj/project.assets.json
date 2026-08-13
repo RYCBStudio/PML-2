@@ -148,10 +148,10 @@
           }
         }
       },
-      "Avalonia.Skia/11.3.18": {
+      "Avalonia.Skia/11.3.20": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "11.3.18",
+          "Avalonia": "11.3.20",
           "HarfBuzzSharp": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.1",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "8.3.1.1",
@@ -1290,7 +1290,7 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "Avalonia": "11.3.20",
-          "Avalonia.Skia": "11.3.18",
+          "Avalonia.Skia": "11.3.20",
           "Avalonia.Svg": "11.3.0",
           "FluentAvaloniaUI": "2.5.1",
           "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.5",
@@ -1566,15 +1566,15 @@
         "lib/netstandard2.0/Avalonia.Remote.Protocol.xml"
       ]
     },
-    "Avalonia.Skia/11.3.18": {
-      "sha512": "/B4aXmNRNjG8I5U/a1xJI+bIi0XO6DDzS3mBrIKlVnJRY2CyZiUeESRQXLnIU77Z9TvqkUROs+D47s085YjFtA==",
+    "Avalonia.Skia/11.3.20": {
+      "sha512": "Kfje1DNaaJg8gQfLQSTc1BCPKxQGk3JfsPbJWMRleUuoWKXfwB3syCRB0j7n52GvZsVT71yJuxBdGp3doy074g==",
       "type": "package",
-      "path": "avalonia.skia/11.3.18",
+      "path": "avalonia.skia/11.3.20",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "avalonia.skia.11.3.18.nupkg.sha512",
+        "avalonia.skia.11.3.20.nupkg.sha512",
         "avalonia.skia.nuspec",
         "lib/net6.0/Avalonia.Skia.dll",
         "lib/net6.0/Avalonia.Skia.xml",

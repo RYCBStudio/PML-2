@@ -60,7 +60,7 @@
             },
             "Avalonia.Skia": {
               "target": "Package",
-              "version": "[11.3.18, )"
+              "version": "[11.3.20, )"
             },
             "Avalonia.Svg": {
               "target": "Package",
