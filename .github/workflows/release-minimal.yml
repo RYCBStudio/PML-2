@@ -116,13 +116,13 @@ jobs:
             --volname "PML 2" \
             --background "$(pwd)/pml2-dmg-background.png" \
             --window-pos 200 120 \
-            --window-size 660 420 \
+            --window-size 580 369 \
             --icon-size 128 \
             --icon "PML 2.app" 182 206 \
             --hide-extension "PML 2.app" \
             --app-drop-link 500 219 \
-            "out.dmg" \
-            stage/
+            "$DMG" \
+            "$STAGE/"
 
           ls -lh "$DMG"
 
