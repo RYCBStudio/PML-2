@@ -114,7 +114,7 @@ jobs:
 
           create-dmg \
             --volname "PML 2" \
-            --background "$(pwd)/pml2-dmg-background.png" \
+            --background "$BG" \
             --window-pos 200 120 \
             --window-size 580 369 \
             --icon-size 128 \
