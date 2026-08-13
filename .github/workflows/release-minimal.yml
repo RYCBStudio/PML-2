@@ -74,6 +74,8 @@ jobs:
           OUT="${{ env.PUBLISH_OUT }}"
           EXE="$APP_EXE"
           BUNDLE="$APP_BUNDLE_NAME"
+          create-dmg --version
+          brew info create-dmg
 
           BG="$(cd "$(dirname "$DMG_BACKGROUND")" && pwd)/$(basename "$DMG_BACKGROUND")"
           echo "Background: $BG"
