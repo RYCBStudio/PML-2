@@ -63,9 +63,6 @@ jobs:
           test -d "${{ env.PUBLISH_OUT }}" || { echo "publish 目录不存在"; exit 1; }
           chmod +x "${{ env.PUBLISH_OUT }}/$APP_EXE"
 
-      - name: Install create-dmg
-        run: brew list create-dmg &>/dev/null || brew install create-dmg
-
       - name: Build .app + DMG
         run: |
           set -euo pipefail
