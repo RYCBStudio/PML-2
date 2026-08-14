@@ -24,6 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Linux R2R
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
@@ -36,6 +37,7 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: r2r
+          # Linux AOT
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
@@ -48,6 +50,7 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: aot
+          # macOS R2R
           - rid: osx-x64
             os: macos-latest
             os_name: macos
@@ -60,6 +63,7 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: r2r
+          # macOS AOT
           - rid: osx-x64
             os: macos-latest
             os_name: macos
@@ -99,16 +103,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          RID="${{ matrix.rid }}"
-          MODE="${{ matrix.mode }}"
-          OUT="./publish/\( {RID}- \){MODE}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
           mkdir -p "$OUT"
-          echo "Publishing to: $OUT"
+          echo "Publishing -> $OUT"
 
-          if [ "$MODE" = "aot" ]; then
+          if [ "${{ matrix.mode }}" = "aot" ]; then
             dotnet publish "${{ env.PROJECT }}" \
               -c Release \
-              -r "$RID" \
+              -r "${{ matrix.rid }}" \
               --self-contained true \
               -p:PublishAot=true \
               -p:PublishTrimmed=true \
@@ -117,7 +119,7 @@ jobs:
           else
             dotnet publish "${{ env.PROJECT }}" \
               -c Release \
-              -r "$RID" \
+              -r "${{ matrix.rid }}" \
               --self-contained true \
               -p:PublishReadyToRun=true \
               -p:PublishTrimmed=true \
@@ -125,13 +127,15 @@ jobs:
               --nologo -v q
           fi
 
-          if [ -f "\( OUT/ \){{ env.APP_EXE }}" ]; then
-            chmod +x "\( OUT/ \){{ env.APP_EXE }}"
+          echo "Publish output (first 30 entries):"
+          ls -la "$OUT" | head -30
+
+          if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
+            chmod +x "$OUT/${{ env.APP_EXE }}"
           else
-            echo "WARNING: executable not found: \( OUT/ \){{ env.APP_EXE }}"
-            ls -la "$OUT" | head -50
+            echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
           fi
-          echo "Publish OK ($MODE), files: $(find "$OUT" -type f | wc -l)"
+          echo "Publish OK (${{ matrix.mode }}), files: $(find "$OUT" -type f | wc -l)"
 
       - name: Inject Sentry DSN
         shell: bash
@@ -139,7 +143,7 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
           set -euo pipefail
-          OUT="./publish/\( {{ matrix.rid }}- \){{ matrix.mode }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
           if [ -n "${SENTRY_DSN:-}" ]; then
             printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
             echo "sentry.json injected"
@@ -160,27 +164,29 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          RID="${{ matrix.rid }}"
-          MODE="${{ matrix.mode }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
           OS_NAME="${{ matrix.os_name }}"
           ARCH="${{ matrix.arch }}"
-          OUT="./publish/\( {RID}- \){MODE}"
-          mkdir -p dist
+          MODE="${{ matrix.mode }}"
 
+          mkdir -p "$DIST"
+          echo "Packing from: $OUT"
           if [ ! -d "$OUT" ]; then
-            echo "Publish dir missing: $OUT"
-            ls -la ./publish || true
+            echo "ERROR: publish dir missing: $OUT"
+            ls -la "${{ github.workspace }}/publish" || true
             exit 1
           fi
 
-          TGZ="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.gz"
-          TZST="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.zst"
+          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.gz"
+          TZST="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.zst"
 
-          tar -C "\( OUT" -cf - . | gzip -9 > "dist/ \){TGZ}"
-          tar -C "\( OUT" -cf - . | zstd -T0 -19 -o "dist/ \){TZST}"
-          gzip -t "dist/${TGZ}"
-          zstd -t "dist/${TZST}"
-          ls -lh dist/
+          tar -C "$OUT" -cf - . | gzip -9 > "$DIST/$TGZ"
+          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "$DIST/$TZST"
+
+          gzip -t "$DIST/$TGZ"
+          zstd -t "$DIST/$TZST"
+          ls -lh "$DIST"
 
       - name: Install nFPM
         if: matrix.os_name == 'linux'
@@ -199,16 +205,16 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          RID="${{ matrix.rid }}"
-          MODE="${{ matrix.mode }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           PKG_ARCH="${{ matrix.pkg_arch }}"
-          OUT="./publish/\( {RID}- \){MODE}"
-          ROOT="pkgroot"
+          MODE="${{ matrix.mode }}"
+          ROOT="${{ github.workspace }}/pkgroot"
           EXE="${{ env.APP_EXE }}"
 
           if [ ! -d "$OUT" ]; then
-            echo "Publish dir missing: $OUT"
+            echo "ERROR: publish dir missing: $OUT"
             exit 1
           fi
 
@@ -221,7 +227,7 @@ jobs:
           exec /opt/pml-2/${EXE} "\$@"
           EOF
           chmod +x "$ROOT/usr/bin/pml-2"
-          chmod +x "\( ROOT/opt/pml-2/ \){EXE}" 2>/dev/null || true
+          chmod +x "$ROOT/opt/pml-2/${EXE}" 2>/dev/null || true
 
           cat > "$ROOT/usr/share/applications/pml-2.desktop" << 'EOF'
           [Desktop Entry]
@@ -240,7 +246,7 @@ jobs:
             PKG_NAME="pml-2-aot"
           fi
 
-          cat > nfpm.yaml << EOF
+          cat > "${{ github.workspace }}/nfpm.yaml" << EOF
           name: ${PKG_NAME}
           arch: ${PKG_ARCH}
           platform: linux
@@ -265,10 +271,10 @@ jobs:
               dst: /usr/share/applications/pml-2.desktop
           EOF
 
-          mkdir -p dist
-          nfpm package -f nfpm.yaml -p deb -t "dist/pml2-\( {V}-linux- \){ARCH}-${MODE}.deb"
-          nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-\( {V}-linux- \){ARCH}-${MODE}.rpm"
-          ls -lh dist/*.deb dist/*.rpm
+          mkdir -p "$DIST"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.deb"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.rpm"
+          ls -lh "$DIST"/*.deb "$DIST"/*.rpm
 
       - name: Build .app + custom DMG
         if: matrix.os_name == 'macos'
@@ -276,31 +282,29 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          RID="${{ matrix.rid }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           MODE="${{ matrix.mode }}"
-          OUT="./publish/\( {RID}- \){MODE}"
           EXE="${{ env.APP_EXE }}"
           BUNDLE="${{ env.APP_BUNDLE_NAME }}"
+          STAGE="${{ github.workspace }}/dmg-stage"
 
-          echo "RID=$RID MODE=$MODE OUT=$OUT"
+          echo "DMG from: $OUT (mode=$MODE arch=$ARCH)"
           if [ ! -d "$OUT" ]; then
-            echo "Publish dir missing: $OUT"
-            ls -la ./publish || true
+            echo "ERROR: publish dir missing: $OUT"
+            ls -la "${{ github.workspace }}/publish" || true
             exit 1
           fi
-          ls -la "$OUT" | head -20
 
-          STAGE="dmg-stage"
           rm -rf "$STAGE"
           APP="$STAGE/$BUNDLE"
           mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp -a "$OUT/." "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/${EXE}" || true
 
-          cp -a "${OUT}/." "$APP/Contents/MacOS/"
-          chmod +x "\( APP/Contents/MacOS/ \){EXE}" || true
-
-          if [ -f installer/macos/AppIcon.icns ]; then
-            cp installer/macos/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+          if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
+            cp "${{ github.workspace }}/installer/macos/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
             ICON_KEY='    <key>CFBundleIconFile</key><string>AppIcon</string>'
           else
             ICON_KEY=''
@@ -337,14 +341,15 @@ jobs:
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
           xattr -cr "$APP" || true
 
+          # Finder 模板（与原先相同：.DS_Store + installer/macos 资源）
           mkdir -p "$STAGE/.background"
-          cp installer/macos/.DS_Store "$STAGE/.DS_Store"
-          cp -a installer/macos/. "$STAGE/"
+          cp "${{ github.workspace }}/installer/macos/.DS_Store" "$STAGE/.DS_Store"
+          cp -a "${{ github.workspace }}/installer/macos/." "$STAGE/"
           ln -sf /Applications "$STAGE/Applications"
 
-          mkdir -p dist
-          RW_DMG="\( (pwd)/dist/pml2-rw- \){ARCH}-${MODE}.dmg"
-          FINAL_DMG="\( (pwd)/dist/pml2- \){V}-macos-\( {ARCH}- \){MODE}.dmg"
+          mkdir -p "$DIST"
+          RW_DMG="$DIST/pml2-rw-${ARCH}-${MODE}.dmg"
+          FINAL_DMG="$DIST/pml2-${V}-macos-${ARCH}-${MODE}.dmg"
           rm -f "$RW_DMG" "$FINAL_DMG"
 
           echo "Creating writable DMG (${MODE})..."
@@ -369,8 +374,8 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pml2-\( {{ steps.ver.outputs.version }}- \){{ matrix.rid }}-${{ matrix.mode }}
-          path: dist/*
+          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}
+          path: ${{ github.workspace }}/dist/*
           if-no-files-found: error
 
   release:
@@ -389,6 +394,7 @@ jobs:
         run: |
           mkdir -p upload
           find artifacts -type f -exec cp -v {} upload/ \;
+          echo "======== Release files ========"
           ls -lh upload/
 
       - name: Create GitHub Release
