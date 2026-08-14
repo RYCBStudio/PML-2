@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux R2R
+          # Linux R2R（x64 runner 交叉即可）
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
@@ -37,7 +37,7 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: r2r
-          # Linux AOT
+          # Linux AOT：x64 原生；arm64 用 ARM runner 避免交叉链接失败
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
@@ -45,7 +45,7 @@ jobs:
             pkg_arch: amd64
             mode: aot
           - rid: linux-arm64
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             os_name: linux
             arch: arm64
             pkg_arch: arm64
@@ -105,7 +105,7 @@ jobs:
           set -euo pipefail
           OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
           mkdir -p "$OUT"
-          echo "Publishing -> $OUT"
+          echo "Publishing -> $OUT (rid=${{ matrix.rid }} mode=${{ matrix.mode }})"
 
           if [ "${{ matrix.mode }}" = "aot" ]; then
             dotnet publish "${{ env.PROJECT }}" \
@@ -127,15 +127,14 @@ jobs:
               --nologo -v q
           fi
 
-          echo "Publish output (first 30 entries):"
-          ls -la "$OUT" | head -30
-
+          # 禁止 ls|head + pipefail 触发 Broken pipe
+          echo "Publish file count: $(find "$OUT" -type f | wc -l)"
           if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
             chmod +x "$OUT/${{ env.APP_EXE }}"
           else
             echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
+            find "$OUT" -maxdepth 1 -type f | head -20 || true
           fi
-          echo "Publish OK (${{ matrix.mode }}), files: $(find "$OUT" -type f | wc -l)"
 
       - name: Inject Sentry DSN
         shell: bash
@@ -153,7 +152,9 @@ jobs:
 
       - name: Install zstd (Ubuntu)
         if: matrix.os_name == 'linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y zstd
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y zstd
 
       - name: Install zstd (macOS)
         if: matrix.os_name == 'macos'
@@ -186,7 +187,7 @@ jobs:
 
           gzip -t "$DIST/$TGZ"
           zstd -t "$DIST/$TZST"
-          ls -lh "$DIST"
+          ls -lh "$DIST" || true
 
       - name: Install nFPM
         if: matrix.os_name == 'linux'
@@ -274,7 +275,7 @@ jobs:
           mkdir -p "$DIST"
           nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.deb"
           nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.rpm"
-          ls -lh "$DIST"/*.deb "$DIST"/*.rpm
+          ls -lh "$DIST"/*.deb "$DIST"/*.rpm || true
 
       - name: Build .app + custom DMG
         if: matrix.os_name == 'macos'
@@ -341,7 +342,7 @@ jobs:
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
           xattr -cr "$APP" || true
 
-          # Finder 模板（与原先相同：.DS_Store + installer/macos 资源）
+          # Finder 模板（保持原流程）
           mkdir -p "$STAGE/.background"
           cp "${{ github.workspace }}/installer/macos/.DS_Store" "$STAGE/.DS_Store"
           cp -a "${{ github.workspace }}/installer/macos/." "$STAGE/"
@@ -368,7 +369,7 @@ jobs:
             -o "$FINAL_DMG"
 
           rm -f "$RW_DMG"
-          ls -lh "$FINAL_DMG"
+          ls -lh "$FINAL_DMG" || true
           hdiutil verify "$FINAL_DMG" || true
 
       - name: Upload artifacts
@@ -395,7 +396,7 @@ jobs:
           mkdir -p upload
           find artifacts -type f -exec cp -v {} upload/ \;
           echo "======== Release files ========"
-          ls -lh upload/
+          ls -lh upload/ || true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
