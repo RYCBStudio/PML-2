@@ -45,6 +45,11 @@ public partial class TerminalControl : UserControl, IDisposable
     private string _shell;
     private TunnelErrorInfo _tunnelErrorInfoShell;
 
+    /// <summary>
+    ///     程序输出事件（26.3 M3）：stdout/stderr 文本与进程退出通知；在 UI 线程触发。
+    /// </summary>
+    public event Action<string>? OutputReceived;
+
     public TerminalControl()
     {
         InitializeComponent();
@@ -224,6 +229,7 @@ public partial class TerminalControl : UserControl, IDisposable
                         try
                         {
                             AppendOutput($"{string.Format(Languages.Text_Terminal_ProcessExitedFormat, _process.ExitCode)}\n", Brushes.Gray);
+                            OutputReceived?.Invoke($"\nProcess exited with code: {_process.ExitCode}\n");
                             DisposeProcess(); // 退出后自动清理
                         }
                         catch (Exception ex)
@@ -432,6 +438,7 @@ public partial class TerminalControl : UserControl, IDisposable
                 {
                     OutputBox.Document.Insert(OutputBox.Document.TextLength, text);
                     OutputBox.ScrollToEnd();
+                    OutputReceived?.Invoke(text);
                     // 保留错误解析逻辑
                     try
                     {
@@ -531,6 +538,7 @@ public partial class TerminalControl : UserControl, IDisposable
                 {
                     OutputBox.Document.Insert(OutputBox.Document.TextLength, errorText);
                     OutputBox.ScrollToEnd();
+                    OutputReceived?.Invoke(errorText);
                 });
                 await Task.Delay(50, ct);
             }

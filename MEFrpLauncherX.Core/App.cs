@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Windowing;
+using MEFrpLauncherX.Core.Services;
 using Message.Avalonia;
 using Notify.NET.Abstractions;
 using Notify.NET.Extensions;
@@ -13,7 +14,7 @@ namespace MEFrpLauncherX.Core;
 
 public class App : IDisposable
 {
-    public const string Version = "26.2.1";
+    public const string Version = "26.3.0";
     public const string MEFrpVersion = "0.67.1_20260626_af59eefd";
 
     public static string Flag = "Desktop";
@@ -71,6 +72,15 @@ public class App : IDisposable
         private set;
     }
 
+    /// <summary>
+    ///     节点延迟/连通性探测服务（全局单例）
+    /// </summary>
+    public static INodeProbeService NodeProbeService
+    {
+        get;
+        private set;
+    }
+
     public void Dispose() => CurrentLogger?.Dispose();
 
     public static async Task Initialize(bool externalUse = false)
@@ -87,6 +97,8 @@ public class App : IDisposable
             WriteIndented = true,
             PropertyNameCaseInsensitive = true
         });
+
+        NodeProbeService = new NodeProbeService();
 
         // 使用 Path.Combine 处理跨平台路径
         var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");

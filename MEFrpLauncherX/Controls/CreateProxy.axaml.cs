@@ -14,6 +14,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.ViewModels.Controls;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
@@ -191,6 +192,118 @@ public partial class CreateProxy : UserControl
         {
             ProtocolCbBox.SelectedIndex = 0;
         }
+    }
+
+    /// <summary>常用端口快捷按钮：将 Tag 中的端口号填入本地端口</summary>
+    private void QuickPort_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: string tag } && int.TryParse(tag, out var port))
+        {
+            _createProxyViewModel.LocalPort = port;
+        }
+    }
+
+    /// <summary>套用选中模板到当前表单</summary>
+    private async void ApplyTemplate_Click(object? sender, RoutedEventArgs e)
+    {
+        var tpl = _createProxyViewModel.SelectedTemplate;
+        if (tpl is null)
+        {
+            await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_SelectTemplateFirst);
+            return;
+        }
+
+        _createProxyViewModel.LocalAddress = tpl.LocalAddress.IsNullOrEmpty() ? "127.0.0.1" : tpl.LocalAddress;
+        if (tpl.LocalPort > 0)
+        {
+            _createProxyViewModel.LocalPort = tpl.LocalPort;
+        }
+
+        if (!tpl.Protocol.IsNullOrEmpty())
+        {
+            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? new List<object?>();
+            var idx = items.FindIndex(item =>
+                string.Equals(item?.ToString(), tpl.Protocol, StringComparison.OrdinalIgnoreCase));
+            if (idx >= 0)
+            {
+                ProtocolCbBox.SelectedIndex = idx;
+            }
+        }
+
+        if (tpl.RemotePort is > 0)
+        {
+            _createProxyViewModel.RemotePort = tpl.RemotePort.Value;
+        }
+
+        EnableCryptoCBox.IsChecked = tpl.UseEncryption;
+        EnableCompressCBox.IsChecked = tpl.UseCompression;
+        Growl.Success(Languages.Text_CreateProxy_TemplateApplied);
+    }
+
+    /// <summary>将当前表单参数保存为模板</summary>
+    private async void SaveTemplate_Click(object? sender, RoutedEventArgs e)
+    {
+        var name = _createProxyViewModel.TemplateName?.Trim();
+        if (name.IsNullOrEmpty())
+        {
+            await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_TemplateNameRequired);
+            return;
+        }
+
+        var tpl = new ProxyTemplate
+        {
+            Name = name,
+            LocalAddress = _createProxyViewModel.LocalAddress,
+            LocalPort = _createProxyViewModel.LocalPort,
+            Protocol = ProtocolCbBox.SelectedItem?.ToString()?.ToLower(),
+            RemotePort = ProtocolCbBox.SelectedItem?.ToString()?.ToLower() is "tcp" or "udp"
+                ? _createProxyViewModel.RemotePort
+                : null,
+            UseEncryption = EnableCryptoCBox.IsChecked ?? false,
+            UseCompression = EnableCompressCBox.IsChecked ?? false
+        };
+
+        var saved = false;
+        ConfigManager.UpdateConfig(cfg =>
+        {
+            cfg.ProxyTemplates ??= [];
+            var existing = cfg.ProxyTemplates.FirstOrDefault(t =>
+                string.Equals(t.Name, name, StringComparison.OrdinalIgnoreCase));
+            if (existing is not null)
+            {
+                cfg.ProxyTemplates.Remove(existing);
+            }
+
+            cfg.ProxyTemplates.Add(tpl);
+            saved = true;
+        });
+
+        if (saved)
+        {
+            _createProxyViewModel.Templates = ConfigManager.CurrentConfig.ProxyTemplates;
+            _createProxyViewModel.SelectedTemplate = tpl;
+            Growl.Success(Languages.Text_CreateProxy_TemplateSaved);
+        }
+    }
+
+    /// <summary>删除选中的模板</summary>
+    private async void DeleteTemplate_Click(object? sender, RoutedEventArgs e)
+    {
+        var tpl = _createProxyViewModel.SelectedTemplate;
+        if (tpl is null)
+        {
+            await MessageBox.ShowAsync(message: Languages.Text_CreateProxy_SelectTemplateFirst);
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg =>
+        {
+            cfg.ProxyTemplates?.RemoveAll(t =>
+                string.Equals(t.Name, tpl.Name, StringComparison.OrdinalIgnoreCase));
+        });
+        _createProxyViewModel.Templates = ConfigManager.CurrentConfig.ProxyTemplates;
+        _createProxyViewModel.SelectedTemplate = null;
+        Growl.Success(Languages.Text_CreateProxy_TemplateDeleted);
     }
 
     public async void GetRemotePort_Click(object sender, RoutedEventArgs e)
@@ -415,6 +528,13 @@ public class LegalProxyNameValidator : ValidationAttribute
 
 public class CreateProxyViewModel : ViewModelBase
 {
+    public CreateProxyViewModel()
+    {
+        // 本地地址默认值优先取配置（Settings.json -> CreateProxyDefaults），缺省 127.0.0.1
+        LocalAddress = ConfigManager.CurrentConfig.CreateProxyDefaults?.LocalAddress ?? "127.0.0.1";
+        Templates = ConfigManager.CurrentConfig.ProxyTemplates ?? [];
+    }
+
     public TunnelNodeViewModel TunnelNode
     {
         get;
@@ -485,4 +605,25 @@ public class CreateProxyViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "";
+
+    /// <summary>已保存的创建模板（持久化于 Settings.json）</summary>
+    public List<ProxyTemplate> Templates
+    {
+        get;
+        set;
+    }
+
+    /// <summary>当前选中的模板</summary>
+    public ProxyTemplate? SelectedTemplate
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>保存模板时输入的名称</summary>
+    public string? TemplateName
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 }

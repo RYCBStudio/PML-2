@@ -7,7 +7,7 @@
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="380"
              x:Class="MEFrpLauncherX.Controls.CacheCleanupDialog">
-    <StackPanel Spacing="14" MinWidth="420">
+    <StackPanel Spacing="14" MinWidth="420" Margin="10">
         <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
             <Border Grid.Column="0" CornerRadius="8" BorderThickness="1" Padding="12"
                     BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
@@ -15,7 +15,7 @@
                 <StackPanel Spacing="4">
                     <TextBlock FontSize="12" Opacity="0.7"
                                Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_CacheSize}" />
-                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap"
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" x:Name="Cache"
                                Text="{Binding CacheSizeText, RelativeSource={RelativeSource AncestorType=controls:CacheCleanupDialog}, FallbackValue='--'}" />
                 </StackPanel>
             </Border>
@@ -25,28 +25,30 @@
                 <StackPanel Spacing="4">
                     <TextBlock FontSize="12" Opacity="0.7"
                                Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_LogsSize}" />
-                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap"
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" x:Name="LogsCache"
                                Text="{Binding LogsSizeText, RelativeSource={RelativeSource AncestorType=controls:CacheCleanupDialog}, FallbackValue='--'}" />
                 </StackPanel>
             </Border>
         </Grid>
-        <TextBlock FontWeight="SemiBold" Opacity="0.8"
-                   Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Retention}" />
-        <StackPanel Orientation="Horizontal" Spacing="14">
-            <RadioButton x:Name="Day1Rb" GroupName="Retention"
-                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day1}" />
-            <RadioButton x:Name="Day3Rb" GroupName="Retention"
-                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day3}" />
-            <RadioButton x:Name="Day7Rb" GroupName="Retention" IsChecked="True"
-                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day7}" />
-            <RadioButton x:Name="Day30Rb" GroupName="Retention"
-                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Day30}" />
-            <RadioButton x:Name="AllRb" GroupName="Retention"
-                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_All}" />
-        </StackPanel>
+        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" BorderThickness="1"
+                Padding="12"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+            <Grid ColumnSpacing="5" RowSpacing="5" RowDefinitions="Auto, *" ColumnDefinitions="8*, 2*" >
+                <TextBlock FontWeight="SemiBold" Opacity="0.8" Grid.Row="0"
+                           Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Retention}" />
+                <StackPanel Orientation="Horizontal" Spacing="5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">
+                    <TextBlock IsVisible="{Binding #DaysSlider.Value, Converter={x:Static controls:DaysToVisibilityConverterReverse.Instance}}"
+                               Text="{Binding #DaysSlider.Value, StringFormat='{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Days} '}" />
+                    <TextBlock IsVisible="{Binding #DaysSlider.Value, Converter={x:Static controls:DaysToVisibilityConverter.Instance}}"
+                               Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_AllTime}" />
+                </StackPanel>
+                <Slider Grid.Row="1" x:Name="DaysSlider" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="366"
+                        Value="7" ValueChanged="RefreshTrash" />
+            </Grid>
+        </Border>
         <TextBlock x:Name="ResultText" TextWrapping="Wrap" IsVisible="False" />
         <StackPanel Orientation="Horizontal" Spacing="10">
-            <Button x:Name="CleanButton" Classes="Accent"
+            <Button x:Name="CleanButton" Classes="accent"
                     Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Clean}"
                     Click="Clean_Click" />
             <fluent:ProgressRing x:Name="CleanProgress" IsIndeterminate="True" IsVisible="False"

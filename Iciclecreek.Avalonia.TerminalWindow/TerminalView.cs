@@ -306,6 +306,13 @@ namespace Iciclecreek.TerminalWindow
         public event EventHandler<ProcessExitedEventArgs>? ProcessExited;
 
         /// <summary>
+        /// Event raised when new output text is received from the PTY process
+        /// (including the "Process exited with code" notification).
+        /// Invoked on the PTY reading thread; subscribers must marshal to the UI thread if needed.
+        /// </summary>
+        public event Action<string>? OutputReceived;
+
+        /// <summary>
         /// Event raised when the terminal title changes.
         /// </summary>
         public event EventHandler<TitleChangedEventArgs>? TitleChanged;
@@ -1768,6 +1775,8 @@ namespace Iciclecreek.TerminalWindow
                                 _terminal.Buffer.ScrollToBottom();
                             }
 
+                            OutputReceived?.Invoke($"\nProcess exited with code: {exitCode}\n");
+
                             this.RequestInvalidate();
                         }
                         break;
@@ -1781,6 +1790,8 @@ namespace Iciclecreek.TerminalWindow
                     {
                         _terminal.Write(output);
                     }
+
+                    OutputReceived?.Invoke(output);
 
                     // Auto-scroll to bottom when new content arrives, but only in normal buffer.
                     // Alternate buffer (used by full-screen apps like vim, htop, asciiquarium)
@@ -1826,6 +1837,8 @@ namespace Iciclecreek.TerminalWindow
                 _terminal.WriteLine($"\nProcess exited with code: {e.ExitCode}\n");
                 _terminal.Buffer.ScrollToBottom();
             }
+
+            OutputReceived?.Invoke($"\nProcess exited with code: {e.ExitCode}\n");
 
             this.RequestInvalidate();
 

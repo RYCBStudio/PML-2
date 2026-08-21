@@ -117,6 +117,14 @@ namespace Iciclecreek.TerminalWindow
 
         public XTerm.Terminal Terminal => _terminalView!.Terminal;
 
+        /// <summary>
+        /// Event raised when new output text is received from the underlying terminal.
+        /// Invoked on the PTY reading thread; subscribers must marshal to the UI thread if needed.
+        /// </summary>
+        public event Action<string>? OutputReceived;
+
+        private void OnInnerOutputReceived(string output) => OutputReceived?.Invoke(output);
+
 
         public void WaitForExit(int ms) => _terminalView!.WaitForExit(ms);
 
@@ -160,6 +168,7 @@ namespace Iciclecreek.TerminalWindow
             if (_terminalView != null)
             {
                 _terminalView.PropertyChanged -= OnTerminalViewPropertyChanged;
+                _terminalView.OutputReceived -= OnInnerOutputReceived;
             }
 
             // Get template parts
@@ -172,6 +181,7 @@ namespace Iciclecreek.TerminalWindow
                 _scrollBar.Scroll += OnScrollBarScroll;
                 _terminalView.Options = Options ?? new XTerm.Options.TerminalOptions();
                 _terminalView.PropertyChanged += OnTerminalViewPropertyChanged;
+                _terminalView.OutputReceived += OnInnerOutputReceived;
                 // (no window event hooking needed)
             }
         }

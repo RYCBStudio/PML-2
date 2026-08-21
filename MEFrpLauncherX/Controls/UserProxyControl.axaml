@@ -13,7 +13,6 @@
              IsEnabled="{Binding !isBanned}"
              FontFamily="{StaticResource GlobalFontFamily}"
              x:DataType="viewModels:UserProxyViewModel">
-    <!-- TODO: 记得换回去-->
     <Design.DataContext>
         <viewModels:UserProxyViewModel />
     </Design.DataContext>
@@ -215,9 +214,8 @@
                 </controls1:InfoBadge>
             </Grid>
             <!-- Other fields -->
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Spacing="5">
                 <StackPanel
-                    Margin="5"
                     Orientation="Horizontal">
                     <Label
                         VerticalAlignment="Center"
@@ -235,8 +233,46 @@
                         </Label.Content>
                     </Label>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                        Text="{Binding ProbeStatusText, StringFormat='Ping: {0}'}"
+                        IsVisible="{Binding ProbeStatusText, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}" />
+                    <controls1:ProgressRing
+                        Width="12"
+                        Height="12"
+                        IsIndeterminate="True"
+                        IsVisible="{Binding IsProbing}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                        Text="{x:Static languages:Languages.Text_Nodes_Probing}"
+                        IsVisible="{Binding IsProbing}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        FontWeight="SemiBold"
+                        Foreground="{Binding StatusBrush}"
+                        Text="{Binding StatusText}"
+                        IsVisible="{Binding StatusText, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}" />
+                    <SelectableTextBlock
+                        VerticalAlignment="Center"
+                        MaxWidth="230"
+                        Text="{Binding LastErrorSummary}"
+                        TextWrapping="Wrap"
+                        FontSize="11"
+                        Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                        IsVisible="{Binding HasError}" />
+                </StackPanel>
                 <StackPanel
-                    Margin="5"
                     Orientation="Horizontal">
                     <TextBlock x:Name="TypeIdentifier" IsVisible="False"
                                Text="{Binding proxyType, 
@@ -416,6 +452,27 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Center" IsVisible="{Binding Detailed}"
                                 Text="{x:Static languages:Languages.Text_UserProxy_CopyAddress}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    x:Name="CopyErrorBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding CopyErrorCommand}"
+                    CommandParameter="{Binding}"
+                    IsVisible="{Binding HasError}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Danger">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Text="&#xE16F;" />
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center" IsVisible="{Binding Detailed}"
+                                Text="{x:Static languages:Languages.Text_UserProxy_CopyErrorInfo}" />
                         </StackPanel>
                     </Button.Content>
                 </Button>

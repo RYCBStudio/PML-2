@@ -255,7 +255,8 @@ public partial class TerminalPage : UserControl
         }
     }
 
-    public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "")
+    public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "",
+        Action<string>? onOutput = null)
     {
         TabItem newTab;
         if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
@@ -289,6 +290,21 @@ public partial class TerminalPage : UserControl
 
         MainTabCtrl.Items.Add(newTab);
         MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
+
+        // 26.3 M3: 可选订阅程序输出（Original=TerminalControl / PTY=TerminalView 两引擎都要接）
+        if (onOutput != null)
+        {
+            switch (newTab.Content)
+            {
+                case TerminalControl tc:
+                    tc.OutputReceived += onOutput;
+                    break;
+                case TerminalView tv:
+                    tv.OutputReceived += onOutput;
+                    break;
+            }
+        }
+
         if (OperatingSystem.IsWindows())
         {
             var res = rs.Replace("{mefrpc}",

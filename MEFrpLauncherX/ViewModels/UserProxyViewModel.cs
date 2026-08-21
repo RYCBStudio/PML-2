@@ -4,26 +4,53 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Views;
 using MEFrpLauncherX.Views.ProxyMonitor;
 using MsBox.Avalonia.ViewModels.Commands;
+using Notify.NET.Abstractions;
+using Notify.NET.Builder;
 using ReactiveUI;
 using ProxyFloat = MEFrpLauncherX.Views.ProxyMonitor.ProxyFloat;
 
 namespace MEFrpLauncherX.ViewModels;
 
+/// <summary>隧道运行状态（26.3 M3）</summary>
+public enum TunnelStatus
+{
+    Idle,
+    Starting,
+    Running,
+    Reconnecting,
+    Stopped,
+    Failed
+}
+
 public class UserProxyViewModel : ViewModelBase
 {
+    // 26.3 M3: 状态徽标颜色（与 Fluent 语义色近似）
+    private static readonly IBrush _statusBrushIdle = new SolidColorBrush(Color.FromArgb(255, 138, 138, 138));
+    private static readonly IBrush _statusBrushStarting = new SolidColorBrush(Color.FromArgb(255, 0, 120, 212));
+    private static readonly IBrush _statusBrushRunning = new SolidColorBrush(Color.FromArgb(255, 15, 123, 15));
+    private static readonly IBrush _statusBrushReconnecting = new SolidColorBrush(Color.FromArgb(255, 202, 80, 16));
+    private static readonly IBrush _statusBrushStopped = new SolidColorBrush(Color.FromArgb(255, 108, 108, 108));
+    private static readonly IBrush _statusBrushFailed = new SolidColorBrush(Color.FromArgb(255, 196, 43, 28));
+
+    private CancellationTokenSource? _startupTimeoutCts;
+
     public UserProxyViewModel()
     {
         try
@@ -49,6 +76,7 @@ public class UserProxyViewModel : ViewModelBase
         LaunchProxyViaConfigCommand = new RelayCommand<UserProxyViewModel>(LaunchProxyViaConfig);
         EditSSLCommand = new RelayCommand<UserProxyViewModel>(EditSSL);
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
+        CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
     }
 
     public UserProxyViewModel(string _domain)
@@ -80,6 +108,13 @@ public class UserProxyViewModel : ViewModelBase
         LaunchProxyViaConfigCommand = new RelayCommand<UserProxyViewModel>(LaunchProxyViaConfig);
         EditSSLCommand = new RelayCommand<UserProxyViewModel>(EditSSL);
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
+        CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(2000);
+            await ProbeAsync();
+        });
     }
 
     public List<string>? Locations
@@ -180,8 +215,18 @@ public class UserProxyViewModel : ViewModelBase
 
     public bool isOnline
     {
-        get;
-        set;
+        get => field;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            this.RaisePropertyChanged();
+            RefreshTunnelStatus();
+        }
     }
 
     public string domain
@@ -361,14 +406,34 @@ public class UserProxyViewModel : ViewModelBase
 
     public bool IsLaunched
     {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get => field;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            this.RaisePropertyChanged();
+            RefreshTunnelStatus();
+        }
     }
 
     public bool IsLoading
     {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get => field;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            this.RaisePropertyChanged();
+            RefreshTunnelStatus();
+        }
     }
 
     public bool Detailed
@@ -377,6 +442,133 @@ public class UserProxyViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    /// <summary>统一隧道运行状态（26.3 M3）</summary>
+    public TunnelStatus TunnelStatus
+    {
+        get => field;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(StatusText));
+            this.RaisePropertyChanged(nameof(StatusBrush));
+            this.RaisePropertyChanged(nameof(HasError));
+        }
+    }
+
+    /// <summary>状态徽标文案；Idle 返回空串（不显示）</summary>
+    public string StatusText => TunnelStatus switch
+    {
+        TunnelStatus.Starting => Languages.Text_TunnelStatus_Starting,
+        TunnelStatus.Running => Languages.Text_TunnelStatus_Running,
+        TunnelStatus.Reconnecting => Languages.Text_TunnelStatus_Reconnecting,
+        TunnelStatus.Stopped => Languages.Text_TunnelStatus_Stopped,
+        TunnelStatus.Failed => Languages.Text_TunnelStatus_Failed,
+        _ => string.Empty
+    };
+
+    /// <summary>状态徽标颜色</summary>
+    public IBrush StatusBrush => TunnelStatus switch
+    {
+        TunnelStatus.Starting => _statusBrushStarting,
+        TunnelStatus.Running => _statusBrushRunning,
+        TunnelStatus.Reconnecting => _statusBrushReconnecting,
+        TunnelStatus.Stopped => _statusBrushStopped,
+        TunnelStatus.Failed => _statusBrushFailed,
+        _ => _statusBrushIdle
+    };
+
+    /// <summary>是否处于失败态且存在可复制的原因摘要</summary>
+    public bool HasError => TunnelStatus == TunnelStatus.Failed && !string.IsNullOrEmpty(LastErrorSummary);
+
+    /// <summary>最近终端输出（滚动保留最近 20 行）</summary>
+    public string LastOutputBuffer
+    {
+        get => field;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>最近一次失败原因（映射后的可读文案，非原始输出）</summary>
+    public string LastErrorSummary
+    {
+        get => field;
+        private set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(HasError));
+        }
+    }
+
+    /// <summary>节点延迟（毫秒），探测失败为 null</summary>
+    public long? LatencyMs
+    {
+        get => field;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(ProbeStatusText));
+        }
+    }
+
+    /// <summary>最近一次探测状态</summary>
+    public ProbeStatus ProbeStatus
+    {
+        get => field;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(ProbeStatusText));
+        }
+    }
+
+    /// <summary>最近一次探测时间；null 表示尚未探测</summary>
+    public DateTimeOffset? MeasuredAt
+    {
+        get => field;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(ProbeStatusText));
+        }
+    }
+
+    /// <summary>是否正在探测</summary>
+    public bool IsProbing
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     探测状态展示文案：
+    ///     Ok 显示延迟毫秒；Timeout/Error/NotProbeable 显示对应徽标；未探测返回空串。
+    /// </summary>
+    public string ProbeStatusText => MeasuredAt == null
+        ? string.Empty
+        : ProbeStatus switch
+        {
+            ProbeStatus.Ok => LatencyMs.HasValue
+                ? LatencyMs <= 0
+                    ? Languages.Text_Nodes_ProbeFailed
+                    : string.Format(Languages.Text_Nodes_LatencyMsFormat, LatencyMs.Value)
+                : Languages.Text_Nodes_ProbeFailed,
+            ProbeStatus.Timeout => Languages.Text_Nodes_ProbeTimeout,
+            ProbeStatus.Error => Languages.Text_Nodes_ProbeFailed,
+            ProbeStatus.NotProbeable => Languages.Text_Nodes_ProbeNotAvailable,
+            _ => string.Empty
+        };
+
     public ICommand EditSSLCommand
     {
         get;
@@ -384,6 +576,12 @@ public class UserProxyViewModel : ViewModelBase
     }
 
     public ICommand CopyInfoCommand
+    {
+        get;
+        set;
+    }
+
+    public ICommand CopyErrorCommand
     {
         get;
         set;
@@ -418,7 +616,6 @@ public class UserProxyViewModel : ViewModelBase
                     SearchOption.TopDirectoryOnly)
                 .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
                     .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase))
-
         ];
 
         var configFile = string.Empty;
@@ -465,7 +662,8 @@ public class UserProxyViewModel : ViewModelBase
                 Core.App.CurrentLogger.Log($"使用配置文件启动单个隧道操作失败: {ex.Message}", port: EnumLogPort.Client,
                     module: EnumLogModule.Main);
                 Core.App.CurrentLogger.Error(ex);
-                Growl.Error(string.Format(Languages.Text_UserProxy_LaunchCancelledErrorFormat, proxy?.proxyName, ex.Message));
+                Growl.Error(string.Format(Languages.Text_UserProxy_LaunchCancelledErrorFormat, proxy?.proxyName,
+                    ex.Message));
                 return;
             }
         }
@@ -498,6 +696,7 @@ public class UserProxyViewModel : ViewModelBase
             IsLoading = false;
             return;
         }
+
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
@@ -525,7 +724,7 @@ public class UserProxyViewModel : ViewModelBase
                 Md5Hash:
                 "3b667ad96332c3ded5f53fd0f3a35d07|7877aebbb5d28b075fe6ff5f823863ce|" + //v0.67.0_20260214_7d549bc1
                 "e2d4e8cd4fbd4f14d8101aaf4baaacec|a2b4fa6b50b05c3ebf5b888e2e07590c|" + //v0.67.0_20260302_f1907e56
-                "aef147c9899db111714f60396e4b28a5|8255cc73f6ddf23be05de69e75f80aee"    //v0.67.1_20260626_af59eefd
+                "aef147c9899db111714f60396e4b28a5|8255cc73f6ddf23be05de69e75f80aee" //v0.67.1_20260626_af59eefd
             )
             : OperatingSystem.IsLinux()
                 ? (FileName: "mefrpc.tar",
@@ -604,32 +803,46 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log("启动单个隧道操作", port: EnumLogPort.Client, module: EnumLogModule.Main);
         var proxy = para as UserProxyViewModel;
         Core.App.CurrentLogger.Log($"正在启动隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
-
-        // 检查客户端文件有效性
-        var validationResult = await IsClientFileValidAsync();
-        if (validationResult == 0) // 用户取消启动
+        try
         {
+            // 检查客户端文件有效性
+            var validationResult = await IsClientFileValidAsync();
+            if (validationResult == 0) // 用户取消启动
+            {
+                IsLoading = false;
+                return;
+            }
+
+            var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
+
+            if (ConfigManager.CurrentConfig.PMSettings.Enabled)
+            {
+                ProxyFloat.Instance ??= new ProxyFloat();
+                ProxyFloat.Instance?.Show();
+            }
+
+            var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {proxy.proxyId}";
+            MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
+            // 26.3 M3: 订阅终端输出，滚动保留最近 20 行并做错误特征检测
+            MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName,
+                OnTerminalOutputAsync);
+            ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
             IsLoading = false;
-            return;
+            MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
+            MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
+            Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy.proxyName));
+            IsLaunched = true;
+            TunnelStatus = TunnelStatus.Running;
+            ScheduleStartupTimeoutCheck();
         }
-
-        var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
-
-        if (ConfigManager.CurrentConfig.PMSettings.Enabled)
+        catch (Exception ex)
         {
-            ProxyFloat.Instance ??= new ProxyFloat();
-            ProxyFloat.Instance?.Show();
+            Core.App.CurrentLogger.Error(ex);
+            LastErrorSummary = TunnelErrorMapper.Map(apiError: ex.Message).Summary;
+            TunnelStatus = TunnelStatus.Failed;
+            IsLoading = false;
+            Growl.Error(string.Format(Languages.Text_UserProxy_LaunchFailedFormat, proxy?.proxyName, LastErrorSummary));
         }
-
-        var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {proxy.proxyId}";
-        MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
-        MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
-        ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
-        IsLoading = false;
-        MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
-        MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
-        Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy.proxyName));
-        IsLaunched = true;
     }
 
 // 类似地修改其他命令方法(DisableProxy, EnableProxy, DeleteProxy等)
@@ -640,7 +853,10 @@ public class UserProxyViewModel : ViewModelBase
             case UserProxyViewModel proxy:
                 DeleteSingleProxy(proxy);
                 break;
-            case IList<UserProxyViewModel> proxies when await MessageBox.ShowAsync(string.Format(Languages.Text_UserProxy_ConfirmDeleteMultipleFormat, proxies.Count),
+            case IList<UserProxyViewModel> proxies when await MessageBox.ShowAsync(
+                                                            string.Format(
+                                                                Languages.Text_UserProxy_ConfirmDeleteMultipleFormat,
+                                                                proxies.Count),
                                                             Languages.Text_UserProxy_ConfirmDeleteTitle,
                                                             [
                                                                 TaskDialogButton.YesButton,
@@ -848,10 +1064,169 @@ public class UserProxyViewModel : ViewModelBase
         Growl.Success(Languages.Text_UserProxy_TunnelInfoCopied);
     }
 
-    private void StopProxy(UserProxyViewModel obj)
+    private async void StopProxy(UserProxyViewModel obj)
     {
-        TerminalPage.Instance.SendCtrlCCommandToSelected(obj.proxyName);
+        await TerminalPage.Instance.SendCtrlCCommandToSelected(obj.proxyName);
         ForceOfflineProxy(obj);
         IsLaunched = false;
+        TunnelStatus = TunnelStatus.Stopped;
+    }
+
+    /// <summary>
+    ///     探测本隧道所在节点的连通性与延迟。
+    ///     探测目标：<see cref="Node" />.hostname + <c>remotePort</c>（与 location 展示一致）；
+    ///     hostname 为空或 remotePort 非法时直接置 NotProbeable，不发网络请求。
+    /// </summary>
+    public async Task ProbeAsync(CancellationToken ct = default)
+    {
+        var hostname = Node?.hostname;
+        if (string.IsNullOrWhiteSpace(hostname) || remotePort <= 0)
+        {
+            LatencyMs = null;
+            ProbeStatus = ProbeStatus.NotProbeable;
+            MeasuredAt = DateTimeOffset.Now;
+            return;
+        }
+
+        IsProbing = true;
+        try
+        {
+            var result = await Core.App.NodeProbeService.ProbeAsync(hostname, remotePort, ct);
+            LatencyMs = result.LatencyMs;
+            ProbeStatus = result.Status;
+            MeasuredAt = result.MeasuredAt;
+        }
+        finally
+        {
+            IsProbing = false;
+        }
+    }
+
+    /// <summary>
+    ///     根据 IsLoading / IsLaunched / isOnline 推导运行状态；
+    ///     Failed / Stopped 为显式终态，不在此覆盖。
+    /// </summary>
+    private void RefreshTunnelStatus()
+    {
+        if (TunnelStatus is TunnelStatus.Failed or TunnelStatus.Stopped)
+        {
+            return;
+        }
+
+        if (IsLoading && !IsLaunched)
+        {
+            TunnelStatus = TunnelStatus.Starting;
+        }
+        else if (IsLaunched && isOnline)
+        {
+            TunnelStatus = TunnelStatus.Running;
+        }
+        else if (IsLaunched && !isOnline)
+        {
+            TunnelStatus = TunnelStatus.Reconnecting;
+        }
+        else
+        {
+            TunnelStatus = TunnelStatus.Idle;
+        }
+    }
+
+    /// <summary>终端输出回调（PTY 读取线程触发，回 UI 线程更新状态与错误检测）</summary>
+    private void OnTerminalOutputAsync(string output)
+    {
+        Dispatcher.UIThread.Post(async () =>
+        {
+            // 已停止 / 已失败：不再更新状态
+            if (TunnelStatus is TunnelStatus.Stopped or TunnelStatus.Failed)
+            {
+                return;
+            }
+
+            // 有输出说明进程存活，取消启动超时检查
+            CancelStartupTimeout();
+
+            // 滚动保留最近 20 行
+            var merged = LastOutputBuffer + output;
+            var lines = merged.Replace("\r", string.Empty)
+                .Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            LastOutputBuffer = string.Join('\n', lines.TakeLast(20));
+
+            // 错误特征检测（认证失败 / 端口占用 / 节点不可达 / 进程崩溃）
+            var info = TunnelErrorMapper.Map(LastOutputBuffer);
+            if (info.Category != TunnelErrorCategory.Unknown)
+            {
+                LastErrorSummary = info.Summary;
+                TunnelStatus = TunnelStatus.Failed;
+                IsLoading = false;
+                var request = NotificationBuilder
+                    .Create(string.Format(Languages.Text_ProxyStart_StartFailed, proxyName))
+                    .WithBody(LastErrorSummary)
+                    .AddButton(Languages.Text_UserProxy_CopyErrorInfo, _ =>
+                    {
+                        CopyError(this);
+                    })
+                    .AddButton(Languages.Text_Global_Dismiss)
+                    .WithUrgency(NotificationUrgency.Critical)
+                    .WithExpiration(TimeSpan.FromSeconds(2))
+                    .OnActivated(id => Program.ActivateExistingInstance())
+                    .Build();
+                if (Core.App.NotificationService.IsSupported)
+                {
+                    await Core.App.NotificationService.ShowAsync(request);
+                }
+            }
+        });
+    }
+
+    /// <summary>启动后超时检测：30 秒内无输出且未确认在线 → 节点不可达</summary>
+    private void ScheduleStartupTimeoutCheck()
+    {
+        CancelStartupTimeout();
+        _startupTimeoutCts = new CancellationTokenSource();
+        var ct = _startupTimeoutCts.Token;
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(30), ct);
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    if (TunnelStatus is TunnelStatus.Starting or TunnelStatus.Reconnecting)
+                    {
+                        LastErrorSummary = TunnelErrorMapper.MapTimeout().Summary;
+                        TunnelStatus = TunnelStatus.Failed;
+                        IsLoading = false;
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                // 正常取消
+            }
+        }, ct);
+    }
+
+    private void CancelStartupTimeout()
+    {
+        try
+        {
+            _startupTimeoutCts?.Cancel();
+            _startupTimeoutCts?.Dispose();
+        }
+        catch (ObjectDisposedException)
+        {
+            // 并发取消时忽略
+        }
+
+        _startupTimeoutCts = null;
+    }
+
+    /// <summary>复制错误信息（应用版本 + mefrpc 版本 + 失败摘要），便于反馈排查</summary>
+    private async void CopyError(UserProxyViewModel obj)
+    {
+        var clipboard = Core.App.MainWindow.Clipboard;
+        await clipboard.SetTextAsync(
+            $"PML2 {Core.App.Version} / mefrpc {Core.App.MEFrpVersion}\n{obj.LastErrorSummary}");
+        Growl.Success(Languages.Text_UserProxy_ErrorCopied);
     }
 }

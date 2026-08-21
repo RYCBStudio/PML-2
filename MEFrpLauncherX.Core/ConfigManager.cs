@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using MEFrpLauncherX.Core.Models;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
@@ -553,6 +554,11 @@ public static class ConfigManager
                 Position = "rt",
                 Enabled = false
             },
+            CreateProxyDefaults = new CreateProxyDefaults
+            {
+                LocalAddress = "127.0.0.1"
+            },
+            ProxyTemplates = [],
             AnimationLevel = 2
         };
     }
@@ -679,6 +685,20 @@ public class AppConfig
     }
 
     public PFSConfig PMSettings
+    {
+        get;
+        set;
+    }
+
+    /// <summary>创建隧道表单默认值</summary>
+    public CreateProxyDefaults CreateProxyDefaults
+    {
+        get;
+        set;
+    }
+
+    /// <summary>创建隧道模板列表（重启后仍在）</summary>
+    public List<ProxyTemplate> ProxyTemplates
     {
         get;
         set;

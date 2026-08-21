@@ -402,6 +402,27 @@
     <data name="Text.Proxy.ClearSelection" xml:space="preserve">
         <value>清除选择</value>
     </data>
+    <data name="Text.Nodes.LatencyMsFormat" xml:space="preserve">
+        <value>{0} ms</value>
+    </data>
+    <data name="Text.Nodes.ProbeTimeout" xml:space="preserve">
+        <value>超时</value>
+    </data>
+    <data name="Text.Nodes.ProbeFailed" xml:space="preserve">
+        <value>失败</value>
+    </data>
+    <data name="Text.Nodes.Probing" xml:space="preserve">
+        <value>探测中</value>
+    </data>
+    <data name="Text.Nodes.ProbeNotAvailable" xml:space="preserve">
+        <value>不可探测</value>
+    </data>
+    <data name="Text.ManageProxy.RefreshLatency" xml:space="preserve">
+        <value>刷新测速</value>
+    </data>
+    <data name="Text.ManageProxy.CancelProbe" xml:space="preserve">
+        <value>取消测速</value>
+    </data>
     <data name="Text.Nodes.SearchWatermark" xml:space="preserve">
         <value>搜索节点</value>
     </data>
@@ -851,6 +872,42 @@
     </data>
     <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
         <value>以下是创建隧道的必填设置。</value>
+    </data>
+    <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
+        <value>常用端口:</value>
+    </data>
+    <data name="Text.CreateProxy.Templates" xml:space="preserve">
+        <value>模板</value>
+    </data>
+    <data name="Text.CreateProxy.TemplatesDescription" xml:space="preserve">
+        <value>保存常用隧道参数，创建时一键套用</value>
+    </data>
+    <data name="Text.CreateProxy.ApplyTemplate" xml:space="preserve">
+        <value>套用模板</value>
+    </data>
+    <data name="Text.CreateProxy.SaveTemplate" xml:space="preserve">
+        <value>存为当前为模板</value>
+    </data>
+    <data name="Text.CreateProxy.DeleteTemplate" xml:space="preserve">
+        <value>删除模板</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameWatermark" xml:space="preserve">
+        <value>模板名称</value>
+    </data>
+    <data name="Text.CreateProxy.SelectTemplateFirst" xml:space="preserve">
+        <value>请先选择一个模板</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameRequired" xml:space="preserve">
+        <value>请输入模板名称</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateApplied" xml:space="preserve">
+        <value>模板已套用</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateSaved" xml:space="preserve">
+        <value>模板已保存</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateDeleted" xml:space="preserve">
+        <value>模板已删除</value>
     </data>
     <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
         <value>隧道名称</value>
@@ -1445,6 +1502,48 @@
     </data>
     <data name="Text.UserProxy.CopyAddress" xml:space="preserve">
         <value>复制地址</value>
+    </data>
+    <data name="Text.TunnelStatus.Idle" xml:space="preserve">
+        <value>空闲</value>
+    </data>
+    <data name="Text.TunnelStatus.Starting" xml:space="preserve">
+        <value>启动中</value>
+    </data>
+    <data name="Text.TunnelStatus.Running" xml:space="preserve">
+        <value>运行中</value>
+    </data>
+    <data name="Text.TunnelStatus.Reconnecting" xml:space="preserve">
+        <value>重连中</value>
+    </data>
+    <data name="Text.TunnelStatus.Stopped" xml:space="preserve">
+        <value>已停止</value>
+    </data>
+    <data name="Text.TunnelStatus.Failed" xml:space="preserve">
+        <value>失败</value>
+    </data>
+    <data name="Text.TunnelError.AuthFailed" xml:space="preserve">
+        <value>认证失败：登录凭证无效或已过期，请重新登录后重试</value>
+    </data>
+    <data name="Text.TunnelError.PortInUse" xml:space="preserve">
+        <value>端口被占用：远程端口已被其他隧道或服务占用，请更换端口后重试</value>
+    </data>
+    <data name="Text.TunnelError.NodeUnreachable" xml:space="preserve">
+        <value>节点不可达：无法连接节点或节点未确认在线，请检查网络后重试</value>
+    </data>
+    <data name="Text.TunnelError.ProcessCrashedFormat" xml:space="preserve">
+        <value>进程异常退出（退出码 {0}）：mefrpc 客户端意外终止</value>
+    </data>
+    <data name="Text.TunnelError.Unknown" xml:space="preserve">
+        <value>未知错误：请复制错误信息反馈给开发者</value>
+    </data>
+    <data name="Text.UserProxy.CopyErrorInfo" xml:space="preserve">
+        <value>复制错误信息</value>
+    </data>
+    <data name="Text.UserProxy.ErrorCopied" xml:space="preserve">
+        <value>错误信息已复制</value>
+    </data>
+    <data name="Text.UserProxy.LaunchFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 启动失败: {1}</value>
     </data>
     <data name="Text.Global.Delete" xml:space="preserve">
         <value>删除</value>
@@ -2855,17 +2954,8 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.About.ToolBox.ClearCache.Dialog.Retention" xml:space="preserve">
         <value>保留时长</value>
     </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day1" xml:space="preserve">
-        <value>超过 1 天</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day3" xml:space="preserve">
-        <value>超过 3 天</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day7" xml:space="preserve">
-        <value>超过 7 天（一周）</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day30" xml:space="preserve">
-        <value>超过 30 天</value>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Days" xml:space="preserve">
+        <value>超过 {0} 天</value>
     </data>
     <data name="Text.About.ToolBox.ClearCache.Dialog.All" xml:space="preserve">
         <value>全部清理</value>
@@ -2911,5 +3001,17 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
         <value>你知道吗？</value>
+    </data>
+    <data name="Text.ProxyStart.StartFailed" xml:space="preserve">
+        <value>隧道 {0} 启动失败</value>
+    </data>
+    <data name="Text.TunnelError.LocalServiceUnavailable" xml:space="preserve">
+        <value>本地服务未启动</value>
+    </data>
+    <data name="Text.Global.Dismiss" xml:space="preserve">
+        <value>关闭</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.AllTime" xml:space="preserve">
+        <value>全部</value>
     </data>
 </root>

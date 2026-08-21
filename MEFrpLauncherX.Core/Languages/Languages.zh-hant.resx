@@ -394,6 +394,27 @@
     <data name="Text.Proxy.ClearSelection" xml:space="preserve">
         <value>清除選取</value>
     </data>
+    <data name="Text.Nodes.LatencyMsFormat" xml:space="preserve">
+        <value>{0} ms</value>
+    </data>
+    <data name="Text.Nodes.ProbeTimeout" xml:space="preserve">
+        <value>逾時</value>
+    </data>
+    <data name="Text.Nodes.ProbeFailed" xml:space="preserve">
+        <value>失敗</value>
+    </data>
+    <data name="Text.Nodes.Probing" xml:space="preserve">
+        <value>探測中</value>
+    </data>
+    <data name="Text.Nodes.ProbeNotAvailable" xml:space="preserve">
+        <value>不可探測</value>
+    </data>
+    <data name="Text.ManageProxy.RefreshLatency" xml:space="preserve">
+        <value>重新整理測速</value>
+    </data>
+    <data name="Text.ManageProxy.CancelProbe" xml:space="preserve">
+        <value>取消測速</value>
+    </data>
     <data name="Text.Nodes.SearchWatermark" xml:space="preserve">
         <value>搜尋節點</value>
     </data>
@@ -843,6 +864,42 @@
     </data>
     <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
         <value>以下是建立通道的必填設定。</value>
+    </data>
+    <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
+        <value>常用連接埠:</value>
+    </data>
+    <data name="Text.CreateProxy.Templates" xml:space="preserve">
+        <value>範本</value>
+    </data>
+    <data name="Text.CreateProxy.TemplatesDescription" xml:space="preserve">
+        <value>儲存常用隧道參數，建立時一鍵套用</value>
+    </data>
+    <data name="Text.CreateProxy.ApplyTemplate" xml:space="preserve">
+        <value>套用範本</value>
+    </data>
+    <data name="Text.CreateProxy.SaveTemplate" xml:space="preserve">
+        <value>儲存為範本</value>
+    </data>
+    <data name="Text.CreateProxy.DeleteTemplate" xml:space="preserve">
+        <value>刪除範本</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameWatermark" xml:space="preserve">
+        <value>範本名稱</value>
+    </data>
+    <data name="Text.CreateProxy.SelectTemplateFirst" xml:space="preserve">
+        <value>請先選擇一個範本</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameRequired" xml:space="preserve">
+        <value>請輸入範本名稱</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateApplied" xml:space="preserve">
+        <value>範本已套用</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateSaved" xml:space="preserve">
+        <value>範本已儲存</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateDeleted" xml:space="preserve">
+        <value>範本已刪除</value>
     </data>
     <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
         <value>通道名稱</value>
@@ -1434,6 +1491,48 @@
     </data>
     <data name="Text.UserProxy.CopyAddress" xml:space="preserve">
         <value>複製位址</value>
+    </data>
+    <data name="Text.TunnelStatus.Idle" xml:space="preserve">
+        <value>閒置</value>
+    </data>
+    <data name="Text.TunnelStatus.Starting" xml:space="preserve">
+        <value>啟動中</value>
+    </data>
+    <data name="Text.TunnelStatus.Running" xml:space="preserve">
+        <value>執行中</value>
+    </data>
+    <data name="Text.TunnelStatus.Reconnecting" xml:space="preserve">
+        <value>重新連線中</value>
+    </data>
+    <data name="Text.TunnelStatus.Stopped" xml:space="preserve">
+        <value>已停止</value>
+    </data>
+    <data name="Text.TunnelStatus.Failed" xml:space="preserve">
+        <value>失敗</value>
+    </data>
+    <data name="Text.TunnelError.AuthFailed" xml:space="preserve">
+        <value>認證失敗：登入憑證無效或已過期，請重新登入後重試</value>
+    </data>
+    <data name="Text.TunnelError.PortInUse" xml:space="preserve">
+        <value>連接埠被佔用：遠端連接埠已被其他隧道或服務佔用，請更換連接埠後重試</value>
+    </data>
+    <data name="Text.TunnelError.NodeUnreachable" xml:space="preserve">
+        <value>節點無法連線：無法連線到節點或節點未確認上線，請檢查網路後重試</value>
+    </data>
+    <data name="Text.TunnelError.ProcessCrashedFormat" xml:space="preserve">
+        <value>程序異常退出（退出碼 {0}）：mefrpc 用戶端意外終止</value>
+    </data>
+    <data name="Text.TunnelError.Unknown" xml:space="preserve">
+        <value>未知錯誤：請複製錯誤資訊回報給開發者</value>
+    </data>
+    <data name="Text.UserProxy.CopyErrorInfo" xml:space="preserve">
+        <value>複製錯誤資訊</value>
+    </data>
+    <data name="Text.UserProxy.ErrorCopied" xml:space="preserve">
+        <value>錯誤資訊已複製</value>
+    </data>
+    <data name="Text.UserProxy.LaunchFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 啟動失敗: {1}</value>
     </data>
     <data name="Text.Global.Delete" xml:space="preserve">
         <value>刪除</value>
@@ -2850,17 +2949,8 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.About.ToolBox.ClearCache.Dialog.Retention" xml:space="preserve">
         <value>保留時長</value>
     </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day1" xml:space="preserve">
-        <value>超過 1 天</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day3" xml:space="preserve">
-        <value>超過 3 天</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day7" xml:space="preserve">
-        <value>超過 7 天（一週）</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day30" xml:space="preserve">
-        <value>超過 30 天</value>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Days" xml:space="preserve">
+        <value>超過 {0} 天</value>
     </data>
     <data name="Text.About.ToolBox.ClearCache.Dialog.All" xml:space="preserve">
         <value>全部清理</value>
@@ -2906,5 +2996,17 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
         <value>你知道嗎？</value>
+    </data>
+    <data name="Text.ProxyStart.StartFailed" xml:space="preserve">
+        <value>隧道 {0} 啟動失敗</value>
+    </data>
+    <data name="Text.TunnelError.LocalServiceUnavailable" xml:space="preserve">
+        <value>本地服務未啟動</value>
+    </data>
+    <data name="Text.Global.Dismiss" xml:space="preserve">
+        <value>關閉</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.AllTime" xml:space="preserve">
+        <value>全部</value>
     </data>
 </root>

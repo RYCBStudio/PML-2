@@ -402,6 +402,27 @@
     <data name="Text.Proxy.ClearSelection" xml:space="preserve">
         <value>Clear Selection</value>
     </data>
+    <data name="Text.Nodes.LatencyMsFormat" xml:space="preserve">
+        <value>{0} ms</value>
+    </data>
+    <data name="Text.Nodes.ProbeTimeout" xml:space="preserve">
+        <value>Timeout</value>
+    </data>
+    <data name="Text.Nodes.ProbeFailed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="Text.Nodes.Probing" xml:space="preserve">
+        <value>Probing...</value>
+    </data>
+    <data name="Text.Nodes.ProbeNotAvailable" xml:space="preserve">
+        <value>Not probeable</value>
+    </data>
+    <data name="Text.ManageProxy.RefreshLatency" xml:space="preserve">
+        <value>Refresh latency</value>
+    </data>
+    <data name="Text.ManageProxy.CancelProbe" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
     <data name="Text.Nodes.SearchWatermark" xml:space="preserve">
         <value>Search nodes</value>
     </data>
@@ -845,6 +866,42 @@
     </data>
     <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
         <value>The following are required settings for creating a tunnel.</value>
+    </data>
+    <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
+        <value>Quick ports:</value>
+    </data>
+    <data name="Text.CreateProxy.Templates" xml:space="preserve">
+        <value>Templates</value>
+    </data>
+    <data name="Text.CreateProxy.TemplatesDescription" xml:space="preserve">
+        <value>Save common tunnel parameters and apply them with one click when creating</value>
+    </data>
+    <data name="Text.CreateProxy.ApplyTemplate" xml:space="preserve">
+        <value>Apply Template</value>
+    </data>
+    <data name="Text.CreateProxy.SaveTemplate" xml:space="preserve">
+        <value>Save as Template</value>
+    </data>
+    <data name="Text.CreateProxy.DeleteTemplate" xml:space="preserve">
+        <value>Delete Template</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameWatermark" xml:space="preserve">
+        <value>Template name</value>
+    </data>
+    <data name="Text.CreateProxy.SelectTemplateFirst" xml:space="preserve">
+        <value>Please select a template first</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateNameRequired" xml:space="preserve">
+        <value>Please enter a template name</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateApplied" xml:space="preserve">
+        <value>Template applied</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateSaved" xml:space="preserve">
+        <value>Template saved</value>
+    </data>
+    <data name="Text.CreateProxy.TemplateDeleted" xml:space="preserve">
+        <value>Template deleted</value>
     </data>
     <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
         <value>Tunnel Name</value>
@@ -1436,6 +1493,48 @@
     </data>
     <data name="Text.UserProxy.CopyAddress" xml:space="preserve">
         <value>Copy Address</value>
+    </data>
+    <data name="Text.TunnelStatus.Idle" xml:space="preserve">
+        <value>Idle</value>
+    </data>
+    <data name="Text.TunnelStatus.Starting" xml:space="preserve">
+        <value>Starting</value>
+    </data>
+    <data name="Text.TunnelStatus.Running" xml:space="preserve">
+        <value>Running</value>
+    </data>
+    <data name="Text.TunnelStatus.Reconnecting" xml:space="preserve">
+        <value>Reconnecting</value>
+    </data>
+    <data name="Text.TunnelStatus.Stopped" xml:space="preserve">
+        <value>Stopped</value>
+    </data>
+    <data name="Text.TunnelStatus.Failed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="Text.TunnelError.AuthFailed" xml:space="preserve">
+        <value>Authentication failed: login credentials are invalid or expired. Please sign in again and retry.</value>
+    </data>
+    <data name="Text.TunnelError.PortInUse" xml:space="preserve">
+        <value>Port in use: the remote port is already occupied by another tunnel or service. Please change the port and retry.</value>
+    </data>
+    <data name="Text.TunnelError.NodeUnreachable" xml:space="preserve">
+        <value>Node unreachable: unable to connect to the node or the node is not confirmed online. Please check your network and retry.</value>
+    </data>
+    <data name="Text.TunnelError.ProcessCrashedFormat" xml:space="preserve">
+        <value>Process crashed (exit code {0}): the mefrpc client terminated unexpectedly.</value>
+    </data>
+    <data name="Text.TunnelError.Unknown" xml:space="preserve">
+        <value>Unknown error: please copy the error info and report it to the developer.</value>
+    </data>
+    <data name="Text.UserProxy.CopyErrorInfo" xml:space="preserve">
+        <value>Copy Error Info</value>
+    </data>
+    <data name="Text.UserProxy.ErrorCopied" xml:space="preserve">
+        <value>Error info copied</value>
+    </data>
+    <data name="Text.UserProxy.LaunchFailedFormat" xml:space="preserve">
+        <value>Failed to launch tunnel {0}: {1}</value>
     </data>
     <data name="Text.Global.Delete" xml:space="preserve">
         <value>Delete</value>
@@ -2855,17 +2954,8 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.About.ToolBox.ClearCache.Dialog.Retention" xml:space="preserve">
         <value>Retention Period</value>
     </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day1" xml:space="preserve">
-        <value>Older than 1 day</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day3" xml:space="preserve">
-        <value>Older than 3 days</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day7" xml:space="preserve">
-        <value>Older than 7 days (a week)</value>
-    </data>
-    <data name="Text.About.ToolBox.ClearCache.Dialog.Day30" xml:space="preserve">
-        <value>Older than 30 days</value>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.Days" xml:space="preserve">
+        <value>Older than {0} day(s)</value>
     </data>
     <data name="Text.About.ToolBox.ClearCache.Dialog.All" xml:space="preserve">
         <value>Clear everything</value>
@@ -2911,5 +3001,17 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
         <value>	Did you know?</value>
+    </data>
+    <data name="Text.ProxyStart.StartFailed" xml:space="preserve">
+        <value>Tunnel {0} failed to start.</value>
+    </data>
+    <data name="Text.TunnelError.LocalServiceUnavailable" xml:space="preserve">
+        <value>	Local service is not running.</value>
+    </data>
+    <data name="Text.Global.Dismiss" xml:space="preserve">
+        <value>Dismiss</value>
+    </data>
+    <data name="Text.About.ToolBox.ClearCache.Dialog.AllTime" xml:space="preserve">
+        <value>All</value>
     </data>
 </root>

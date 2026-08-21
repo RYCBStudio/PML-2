@@ -206,7 +206,7 @@ internal partial class Program
         }, token);
     }
 
-    private static void ActivateExistingInstance()
+    internal static void ActivateExistingInstance()
     {
         try
         {
