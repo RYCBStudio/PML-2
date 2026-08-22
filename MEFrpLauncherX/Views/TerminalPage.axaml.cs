@@ -63,7 +63,8 @@ public partial class TerminalPage : UserControl
         if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
         {
             terminalControl.SendCtrlCCommand();
-            ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
+            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步
+            ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
@@ -84,7 +85,8 @@ public partial class TerminalPage : UserControl
             }
 
             terminalControl.SendCtrlCCommand();
-            ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
+            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步
+            ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
@@ -97,6 +99,8 @@ public partial class TerminalPage : UserControl
             }
 
             await alternativeTerminalView.SendCtrlC();
+            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步（PTY 引擎）
+            ProxyFloatViewModel.ReportTunnelStopped(header);
         }
     }
 
@@ -104,9 +108,11 @@ public partial class TerminalPage : UserControl
     {
         foreach (var item in MainTabCtrl.Items)
         {
-            if (item is TabItem { Content: TerminalControl terminalControl })
+            if (item is TabItem { Content: TerminalControl terminalControl } tabItem)
             {
                 terminalControl.SendCtrlCCommand();
+                // 26.3 M6b-Extended：全部停止 → 悬浮窗状态同步
+                ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
             }
             else if (item is TabItem
                      {
@@ -161,6 +167,9 @@ public partial class TerminalPage : UserControl
             {
                 MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
             }
+
+            // 26.3 M6b-Extended：隧道标签关闭 → 悬浮窗移除该项
+            ProxyFloatViewModel.ReportTunnelRemoved(closedTabName);
 
             // 触发插件事件：代理停止
             _ = PluginService.Instance.TriggerAsync("proxy.stop", new Dictionary<string, object>
@@ -434,6 +443,12 @@ public partial class TerminalPage : UserControl
         {
             ["proxyName"] = consoleTitle
         }).ConfigureAwait(false);
+
+        // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（仅具名隧道，手动终端不进入）
+        if (!consoleTitle.IsNullOrEmpty())
+        {
+            ProxyFloatViewModel.ReportTunnelStarted(consoleTitle);
+        }
     }
 
     private string GetArchiveFileName()

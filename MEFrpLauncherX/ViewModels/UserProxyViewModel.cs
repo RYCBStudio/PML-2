@@ -458,6 +458,12 @@ public class UserProxyViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(StatusText));
             this.RaisePropertyChanged(nameof(StatusBrush));
             this.RaisePropertyChanged(nameof(HasError));
+
+            // 26.3 M6b-Extended：与流量悬浮窗同步状态细节（Running/Reconnecting/Failed）
+            if (value is TunnelStatus.Running or TunnelStatus.Reconnecting or TunnelStatus.Failed)
+            {
+                ProxyFloatViewModel.ReportTunnelStatus(proxyName, value, LastErrorSummary);
+            }
         }
     }
 
@@ -699,7 +705,8 @@ public class UserProxyViewModel : ViewModelBase
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
-        ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
+        // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（TerminalPage 内也会报告，此处保持既有语义）
+        ProxyFloatViewModel.ReportTunnelStarted(proxy.proxyName);
         IsLoading = false;
         MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
         MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
@@ -826,7 +833,8 @@ public class UserProxyViewModel : ViewModelBase
             // 26.3 M3: 订阅终端输出，滚动保留最近 20 行并做错误特征检测
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName,
                 OnTerminalOutputAsync);
-            ProxyFloatViewModel.Instance?.Proxies.Add(proxy.proxyName);
+            // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（TerminalPage 内也会报告，此处保持既有语义）
+            ProxyFloatViewModel.ReportTunnelStarted(proxy.proxyName);
             IsLoading = false;
             MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
             MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;

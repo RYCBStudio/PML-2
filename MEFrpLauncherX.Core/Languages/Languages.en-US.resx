@@ -285,6 +285,30 @@
     <data name="Text.ProxyFloat.RefreshTraffic" xml:space="preserve">
         <value>Refresh traffic</value>
     </data>
+    <data name="Text.ProxyFloat.CloseFloat" xml:space="preserve">
+        <value>Close Float Window</value>
+    </data>
+    <data name="Text.ProxyFloat.ClickThrough" xml:space="preserve">
+        <value>Click-through</value>
+    </data>
+    <data name="Text.ProxyFloat.ClickThroughDescription" xml:space="preserve">
+        <value>Allow mouse clicks to pass through the float window without affecting the windows below it (off by default)</value>
+    </data>
+    <data name="Text.ProxyFloat.ShowChart" xml:space="preserve">
+        <value>Show traffic chart</value>
+    </data>
+    <data name="Text.ProxyFloat.ShowChartDescription" xml:space="preserve">
+        <value>Show a real-time traffic line chart in the float window</value>
+    </data>
+    <data name="Text.ProxyFloat.Opacity" xml:space="preserve">
+        <value>Opacity</value>
+    </data>
+    <data name="Text.ProxyFloat.OpacityDescription" xml:space="preserve">
+        <value>Adjust the overall opacity of the float window</value>
+    </data>
+    <data name="Text.ProxyFloat.NoRunningTunnels" xml:space="preserve">
+        <value>No tunnels running</value>
+    </data>
     <data name="Text.ProxyFloat.WindowPosition" xml:space="preserve">
         <value>Window position</value>
     </data>
@@ -1881,6 +1905,18 @@
     <data name="Text.Update.DownloadCompletedOpenDir" xml:space="preserve">
         <value>Update downloaded! Click OK to open the folder containing the installer</value>
     </data>
+    <data name="Text.Update.DownloadFailed" xml:space="preserve">
+        <value>Update download failed. Retry, or switch the download source in Settings if it keeps failing</value>
+    </data>
+    <data name="Text.Update.VerifyFailed" xml:space="preserve">
+        <value>Downloaded file failed verification. The file may be corrupted, please retry</value>
+    </data>
+    <data name="Text.Update.RetryDownload" xml:space="preserve">
+        <value>Retry download</value>
+    </data>
+    <data name="Text.Update.FetchFailedTip" xml:space="preserve">
+        <value>Failed to get update information: check your network connection and try again; if it keeps failing, switch the download source in Settings</value>
+    </data>
     <data name="Text.ThemeEditor.NewTheme" xml:space="preserve">
         <value>New Theme</value>
     </data>
@@ -2312,6 +2348,15 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
     </data>
     <data name="Text.MainWindow.Exit" xml:space="preserve">
         <value>Exit</value>
+    </data>
+    <data name="Text.MainWindow.About" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Text.MainWindow.StopAllTunnels" xml:space="preserve">
+        <value>Stop All Tunnels</value>
+    </data>
+    <data name="Text.MainWindow.AutoRestoreFailed" xml:space="preserve">
+        <value>Failed to auto-restore tunnels. Check the Terminal page for details</value>
     </data>
     <data name="Text.MainWindow.CannotCloseConsole" xml:space="preserve">
         <value>Unable to close the console automatically</value>

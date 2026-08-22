@@ -48,6 +48,8 @@ public class UpdatePageViewModel : ViewModelBase
         };
 
         CheckUpdateCommand = ReactiveCommand.Create(CheckUpdate);
+        RetryDownloadCommand = ReactiveCommand.Create(RetryDownload);
+        DownloadUpdateCommand = ReactiveCommand.Create(DownloadUpdate);
     }
 
     public bool HasNewVersion
@@ -162,6 +164,34 @@ public class UpdatePageViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> CheckUpdateCommand { get; }
 
     /// <summary>
+    ///     下载失败（网络/校验），显示「重试下载」按钮
+    /// </summary>
+    public bool HasDownloadFailed
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     失败提示（状态文本 ToolTip，含切源指引）
+    /// </summary>
+    public string? FailureTip
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     重试下载
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> RetryDownloadCommand { get; }
+
+    /// <summary>
+    ///     下载并安装更新（绑定入口，禁止直接绑定方法）
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> DownloadUpdateCommand { get; }
+
+    /// <summary>
     ///     检查更新
     /// </summary>
     /// <returns>(是否最新, 最新版本)</returns>
@@ -228,6 +258,7 @@ public class UpdatePageViewModel : ViewModelBase
             Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
             Core.App.CurrentLogger?.Error(ex);
             Status = Languages.Text_Update_FetchFailed;
+            FailureTip = Languages.Text_Update_FetchFailedTip;
             Icon = ICONS.ERROR;
             IsIdle = false;
             return;
@@ -264,6 +295,7 @@ public class UpdatePageViewModel : ViewModelBase
             IsLoading = false;
             IsIdle = false;
             HasNewVersion = true;
+            FailureTip = null;
             Codename = updateInfo.data.codename;
             Changelog.Clear();
             Changelog.AddRange(updateInfo.data.changes);
@@ -275,6 +307,7 @@ public class UpdatePageViewModel : ViewModelBase
             Icon = ICONS.LATEST;
             IsLoading = false;
             IsIdle = true;
+            FailureTip = null;
         }
 
         if (updateInfo is { success: true, data.changes.Length: > 0 })
@@ -287,6 +320,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
             Status = Languages.Text_Update_FetchFailed;
+            FailureTip = Languages.Text_Update_FetchFailedTip;
             Icon = ICONS.ERROR;
             IsIdle = false;
             return;
@@ -329,6 +363,8 @@ public class UpdatePageViewModel : ViewModelBase
         Icon = ICONS.DOWNLOAD;
         IsLoading = true;
         IsIdle = false;
+        HasDownloadFailed = false;
+        FailureTip = null;
         ProgressValue = 0;
 
         // ===== 1. 按系统拼接下载链接和临时文件名 =====
@@ -338,24 +374,19 @@ public class UpdatePageViewModel : ViewModelBase
 
         if (OperatingSystem.IsWindows())
         {
-            var targetIsAot = ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT";
-            var urlSuffix = targetIsAot ? "%20AOT" : "";
-            downloadUrl = $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
-                          $"{LatestVersion}/pml2_setup%20{LatestVersion}{urlSuffix}.exe";
+            downloadUrl = BuildUpdateDownloadUrl(PlatformID.Win32NT, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.exe";
             systemTip = Languages.Text_Update_InstallTipWindows;
         }
         else if (OperatingSystem.IsMacOS())
         {
-            downloadUrl =
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{LatestVersion}-macos-x64.dmg";
+            downloadUrl = BuildUpdateDownloadUrl(PlatformID.MacOSX, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.dmg";
             systemTip = Languages.Text_Update_InstallTipMacOS;
         }
         else if (OperatingSystem.IsLinux())
         {
-            downloadUrl =
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/linux-distributions/pml2-{LatestVersion}-linux-x64.deb";
+            downloadUrl = BuildUpdateDownloadUrl(PlatformID.Unix, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.deb";
             systemTip = Languages.Text_Update_InstallTipLinux;
         }
@@ -398,7 +429,24 @@ public class UpdatePageViewModel : ViewModelBase
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
 
         var savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
-        await downloader.DownloadFileTaskAsync(downloadUrl, savePath);
+
+        // ===== 3.5 下载（失败不再静默：明确文案 + 重试入口） =====
+        try
+        {
+            await downloader.DownloadFileTaskAsync(downloadUrl, savePath);
+        }
+        catch (Exception ex)
+        {
+            EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, ex);
+            return;
+        }
+
+        // 校验下载产物：文件必须存在且非空，否则视为下载/校验失败（禁止静默失败）
+        if (!File.Exists(savePath) || new FileInfo(savePath).Length <= 0)
+        {
+            EnterDownloadFailedState(Languages.Text_Update_VerifyFailed, null, isVerify: true);
+            return;
+        }
 
         // ===== 4. 下载完成后处理 =====
         Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
@@ -460,6 +508,58 @@ public class UpdatePageViewModel : ViewModelBase
                     { UseShellExecute = true, Arguments = installArgs });
             App.Desktop.Shutdown();
         }
+    }
+
+    /// <summary>
+    ///     按平台拼接应用更新包下载地址。
+    ///     <br />
+    ///     当前仅有 alist 主源（无备源），失败时 UI 会提示前往「设置」切换下载源后重试。
+    /// </summary>
+    private static string BuildUpdateDownloadUrl(PlatformID platform, string latestVersion)
+    {
+        return platform switch
+        {
+            PlatformID.Win32NT =>
+                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT" ? "%20AOT" : "")}.exe",
+            PlatformID.MacOSX =>
+                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{latestVersion}-macos-x64.dmg",
+            PlatformID.Unix =>
+                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/linux-distributions/pml2-{latestVersion}-linux-x64.deb",
+            _ => throw new NotSupportedException($"Unsupported platform: {platform}")
+        };
+    }
+
+    /// <summary>
+    ///     进入下载失败态：展示明确文案与「重试下载」按钮，杜绝静默失败。
+    /// </summary>
+    private void EnterDownloadFailedState(string status, Exception? ex, bool isVerify = false)
+    {
+        Core.App.CurrentLogger?.Log($"更新下载失败: {status}", EnumLogType.Error, module: EnumLogModule.Update);
+        if (ex != null)
+        {
+            Core.App.CurrentLogger?.Error(ex);
+        }
+
+        Status = status;
+        Icon = ICONS.ERROR;
+        IsLoading = false;
+        IsIdle = true;
+        HasDownloadFailed = true;
+        FailureTip = isVerify ? Languages.Text_Update_VerifyFailed : Languages.Text_Update_DownloadFailed;
+        try
+        {
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+        }
+        catch
+        {
+        }
+    }
+
+    private void RetryDownload()
+    {
+        HasDownloadFailed = false;
+        FailureTip = null;
+        DownloadUpdate();
     }
 
     [Obsolete("This method is kept for backward compatibility. Use DownloadUpdate() instead.")]

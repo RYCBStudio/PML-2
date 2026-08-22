@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
-        Width="500" Height="200"
+        Width="500" Height="340"
         x:Class="MEFrpLauncherX.Views.ProxyMonitor.ProxyFloatSettings"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
@@ -18,6 +18,25 @@
                     <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopCenter}" Tag="ct" />
                     <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_BottomCenter}" Tag="cb" />
                 </ComboBox>
+            </controls:SettingsExpander.Footer>
+        </controls:SettingsExpander>
+        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_ClickThrough}"
+                                   Description="{x:Static languages:Languages.Text_ProxyFloat_ClickThroughDescription}">
+            <controls:SettingsExpander.Footer>
+                <ToggleSwitch x:Name="ClickThroughSwitch" IsCheckedChanged="ClickThroughChanged" />
+            </controls:SettingsExpander.Footer>
+        </controls:SettingsExpander>
+        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_ShowChart}"
+                                   Description="{x:Static languages:Languages.Text_ProxyFloat_ShowChartDescription}">
+            <controls:SettingsExpander.Footer>
+                <ToggleSwitch x:Name="ShowChartSwitch" IsCheckedChanged="ShowChartChanged" />
+            </controls:SettingsExpander.Footer>
+        </controls:SettingsExpander>
+        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_Opacity}"
+                                   Description="{x:Static languages:Languages.Text_ProxyFloat_OpacityDescription}">
+            <controls:SettingsExpander.Footer>
+                <Slider x:Name="OpacitySlider" Minimum="0.5" Maximum="1" Width="160"
+                        ValueChanged="OpacityChanged" />
             </controls:SettingsExpander.Footer>
         </controls:SettingsExpander>
     </StackPanel>

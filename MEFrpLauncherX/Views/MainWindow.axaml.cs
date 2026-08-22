@@ -25,6 +25,7 @@ using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Plugin.Services;
+using MEFrpLauncherX.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.ProxyMonitor;
 using MsBox.Avalonia;
@@ -210,29 +211,28 @@ public partial class MainWindow : AppWindow, IDisposable
         };
         if (OperatingSystem.IsMacOS())
         {
-            // 创建原生菜单
+            // 创建原生菜单（26.3 M5：macOS 原生菜单 L1，命令与主界面同源）
+            // 注：macOS 点红灯关窗默认 = 退出（HideInsteadOfClose=false）；
+            //     开启「关闭时最小化到托盘」后关窗 ≠ 退出，退出请走菜单 / ⌘Q。
             NativeMenuBar = [];
 
-            // 添加应用程序菜单（macOS 第一个菜单）
-            var appMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
+            // 应用菜单（macOS 第一个菜单：关于 / 设置 / 退出）
+            var appMenu = new NativeMenuItem("PML 2");
             var appSubMenu = new NativeMenu();
-
-            // 添加标准 macOS 菜单项
-            appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
+            appSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_About)
             {
-                Gesture = KeyGesture.Parse("Ctrl+M"),
                 Command = ReactiveCommand.Create(() =>
                 {
-                    MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                    MainPageFrameViewModel.Instance?.NavigateToPage("About");
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
-            appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
+            appSubMenu.Add(new NativeMenuItem(Languages.Text_Global_Settings)
             {
-                Gesture = KeyGesture.Parse("Ctrl+D"),
+                Gesture = KeyGesture.Parse("Ctrl+,"),
                 Command = ReactiveCommand.Create(() =>
                 {
-                    MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                    AppShellCommands.Instance.OpenSettings();
                 })
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
@@ -241,12 +241,46 @@ public partial class MainWindow : AppWindow, IDisposable
                 Gesture = KeyGesture.Parse("Ctrl+Q"),
                 Command = ReactiveCommand.Create(() =>
                 {
-                    App.Desktop.Shutdown();
+                    AppShellCommands.Instance.ExitApplication();
                 })
             });
-
             appMenu.Menu = appSubMenu;
             NativeMenuBar.Add(appMenu);
+
+            // 隧道菜单（管理 / 创建 / 显示主窗口 / 停止全部隧道）
+            var tunnelsMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
+            var tunnelsSubMenu = new NativeMenu();
+            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
+            {
+                Gesture = KeyGesture.Parse("Ctrl+M"),
+                Command = ReactiveCommand.Create(() =>
+                {
+                    MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
+                })
+            });
+            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
+            {
+                Gesture = KeyGesture.Parse("Ctrl+D"),
+                Command = ReactiveCommand.Create(() =>
+                {
+                    MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+                })
+            });
+            tunnelsSubMenu.Add(new NativeMenuItemSeparator());
+            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_OpenMainWindow)
+            {
+                Command = ReactiveCommand.Create(() =>
+                {
+                    AppShellCommands.Instance.ShowMainWindow();
+                })
+            });
+            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_StopAllTunnels)
+            {
+                Command = ReactiveCommand.CreateFromTask(() =>
+                    AppShellCommands.Instance.StopAllTunnelsAsync())
+            });
+            tunnelsMenu.Menu = tunnelsSubMenu;
+            NativeMenuBar.Add(tunnelsMenu);
 
             // 设置菜单栏
             NativeMenu.SetMenu(this, NativeMenuBar);
@@ -304,21 +338,30 @@ public partial class MainWindow : AppWindow, IDisposable
             return;
         }
 
-        Hide();
-        var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
-        foreach (var alp in ConfigManager.CurrentConfig.AutoLaunchProxies)
+        try
         {
-            if (alp.UseConfig)
+            Hide();
+            var frpt = await MEFrpApiConverter.GetFrpTokenAsync();
+            foreach (var alp in ConfigManager.CurrentConfig.AutoLaunchProxies)
             {
-                var configFile = alp.Config;
-                var cmd = $"{{mefrpc}} -c {configFile}";
-                MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
+                if (alp.UseConfig)
+                {
+                    var configFile = alp.Config;
+                    var cmd = $"{{mefrpc}} -c {configFile}";
+                    MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
+                }
+                else
+                {
+                    var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {alp.Id}";
+                    MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
+                }
             }
-            else
-            {
-                var cmd = $"{{mefrpc}} -t {frpt.data?.token} -p {alp.Id}";
-                MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, alp.Name);
-            }
+        }
+        catch (Exception ex)
+        {
+            // 26.3 M7：恢复隧道失败不静默，写日志并提示（下次打开可见）
+            Core.App.CurrentLogger?.Error(ex, "自动恢复隧道失败");
+            Growl.Error(Languages.Text_MainWindow_AutoRestoreFailed);
         }
     }
 
@@ -445,7 +488,7 @@ public partial class MainWindow : AppWindow, IDisposable
             Header = Languages.Text_MainWindow_OpenMainWindow,
             Command = new RelayCommand(o =>
             {
-                NotifyIcon_DoubleClick();
+                AppShellCommands.Instance.ShowMainWindow();
             })
         });
         tmpCM.Items.Add(new NativeMenuItem
@@ -457,12 +500,28 @@ public partial class MainWindow : AppWindow, IDisposable
                 MainPageFrameViewModel.TerminalPage = MainPageFrameViewModel.Instance.CurrentPage as TerminalPage;
             })
         });
+        tmpCM.Items.Add(new NativeMenuItemSeparator());
+        tmpCM.Items.Add(new NativeMenuItem
+        {
+            Header = Languages.Text_MainWindow_StopAllTunnels,
+            Command = new RelayCommand(async o =>
+            {
+                await AppShellCommands.Instance.StopAllTunnelsAsync();
+            })
+        });
+        tmpCM.Items.Add(new NativeMenuItemSeparator());
         tmpCM.Items.Add(
             new NativeMenuItem { Header = Languages.Text_MainWindow_Exit, Command = new RelayCommand(Exit) });
         return tmpCM;
     }
 
-    private void Exit(object sender)
+    private void Exit(object sender) => ExitApplication();
+
+    /// <summary>
+    ///     退出应用：先向所有终端发送 Ctrl+C 停止隧道，再关闭应用。
+    ///     托盘 / macOS 菜单 / 悬浮窗统一走 <see cref="Services.AppShellCommands" />。
+    /// </summary>
+    internal void ExitApplication()
     {
         try
         {
@@ -479,7 +538,7 @@ public partial class MainWindow : AppWindow, IDisposable
         App.Desktop.Shutdown();
     }
 
-    private void NotifyIcon_DoubleClick()
+    internal void NotifyIcon_DoubleClick()
     {
         if (UserCache.CurrentUser is not null)
         {

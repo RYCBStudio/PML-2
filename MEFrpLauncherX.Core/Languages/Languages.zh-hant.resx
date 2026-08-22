@@ -280,6 +280,30 @@
     <data name="Text.ProxyFloat.RefreshTraffic" xml:space="preserve">
         <value>重新整理流量</value>
     </data>
+    <data name="Text.ProxyFloat.CloseFloat" xml:space="preserve">
+        <value>關閉懸浮窗</value>
+    </data>
+    <data name="Text.ProxyFloat.ClickThrough" xml:space="preserve">
+        <value>視窗穿透</value>
+    </data>
+    <data name="Text.ProxyFloat.ClickThroughDescription" xml:space="preserve">
+        <value>滑鼠可以穿透懸浮窗，不影響操作其下方的視窗（預設關閉）</value>
+    </data>
+    <data name="Text.ProxyFloat.ShowChart" xml:space="preserve">
+        <value>顯示流量圖表</value>
+    </data>
+    <data name="Text.ProxyFloat.ShowChartDescription" xml:space="preserve">
+        <value>在懸浮窗中顯示即時流量折線圖</value>
+    </data>
+    <data name="Text.ProxyFloat.Opacity" xml:space="preserve">
+        <value>不透明度</value>
+    </data>
+    <data name="Text.ProxyFloat.OpacityDescription" xml:space="preserve">
+        <value>調整懸浮窗的整體不透明度</value>
+    </data>
+    <data name="Text.ProxyFloat.NoRunningTunnels" xml:space="preserve">
+        <value>暫無執行中的隧道</value>
+    </data>
     <data name="Text.ProxyFloat.WindowPosition" xml:space="preserve">
         <value>視窗位置</value>
     </data>
@@ -1873,6 +1897,18 @@
     <data name="Text.Update.DownloadCompletedOpenDir" xml:space="preserve">
         <value>更新下載完成！點選確認開啟安裝檔所在目錄</value>
     </data>
+    <data name="Text.Update.DownloadFailed" xml:space="preserve">
+        <value>更新下載失敗，請重試；若持續失敗，可在「設定」中切換下載來源</value>
+    </data>
+    <data name="Text.Update.VerifyFailed" xml:space="preserve">
+        <value>下載檔案驗證失敗，檔案可能已損毀，請重試</value>
+    </data>
+    <data name="Text.Update.RetryDownload" xml:space="preserve">
+        <value>重試下載</value>
+    </data>
+    <data name="Text.Update.FetchFailedTip" xml:space="preserve">
+        <value>取得更新資訊失敗：請檢查網路連線後重試；若持續失敗，可在「設定」中切換下載來源</value>
+    </data>
     <data name="Text.ThemeEditor.NewTheme" xml:space="preserve">
         <value>新主題</value>
     </data>
@@ -2304,6 +2340,15 @@ ___
     </data>
     <data name="Text.MainWindow.Exit" xml:space="preserve">
         <value>退出</value>
+    </data>
+    <data name="Text.MainWindow.About" xml:space="preserve">
+        <value>關於</value>
+    </data>
+    <data name="Text.MainWindow.StopAllTunnels" xml:space="preserve">
+        <value>全部停止隧道</value>
+    </data>
+    <data name="Text.MainWindow.AutoRestoreFailed" xml:space="preserve">
+        <value>自動恢復隧道失敗，請到終端機頁面查看詳情</value>
     </data>
     <data name="Text.MainWindow.CannotCloseConsole" xml:space="preserve">
         <value>無法自動關閉主控台</value>

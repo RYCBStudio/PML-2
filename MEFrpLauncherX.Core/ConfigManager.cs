@@ -864,6 +864,33 @@ public class PFSConfig
         get;
         set;
     }
+
+    /// <summary>
+    ///     窗口穿透（默认关闭：悬浮窗正常接收鼠标）
+    /// </summary>
+    public bool ClickThrough
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     显示实时流量折线图（默认开启）
+    /// </summary>
+    public bool ShowChart
+    {
+        get;
+        set;
+    } = true;
+
+    /// <summary>
+    ///     悬浮窗不透明度（0.5–1.0）
+    /// </summary>
+    public double Opacity
+    {
+        get;
+        set;
+    } = 0.92;
 }
 
 public class ALPConfig
