@@ -60,6 +60,13 @@ public class MainPageFrameViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = new HomePage();
 
+    // 当前导航选中项（对应 NavigationView 菜单项的 Tag），代码导航时用于同步选中指示条
+    public string SelectedTag
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = "Home";
+
     public bool IsLoading
     {
         get;
@@ -165,39 +172,51 @@ public class MainPageFrameViewModel : ViewModelBase
         {
             case "Home":
                 NavigateToHomeCommand.Execute().Subscribe();
+                SelectedTag = "Home";
                 break;
             case "Create":
                 NavigateToCreateProxyCommand.Execute().Subscribe();
+                SelectedTag = "Create";
                 break;
             case "Manage":
                 NavigateToManageProxyCommand.Execute().Subscribe();
+                SelectedTag = "Manage";
                 break;
             case "User":
                 NavigateToUserCenterCommand.Execute().Subscribe();
+                SelectedTag = "User";
                 break;
             case "Monitoring":
                 NavigateToNodesMonitoringCommand.Execute().Subscribe();
+                SelectedTag = "Monitoring";
                 break;
             case "Settings":
                 NavigateToSettingsCommand.Execute().Subscribe();
+                SelectedTag = "Settings";
                 break;
             case "Terminal":
                 NavigateToTerminalCommand.Execute().Subscribe();
+                SelectedTag = "Terminal";
                 break;
             case "About":
                 NavigateToAboutCommand.Execute().Subscribe();
+                SelectedTag = "About";
                 break;
             case "Update":
                 NavigateToUpdateCommand.Execute().Subscribe();
+                SelectedTag = "Update";
                 break;
             case "Theme":
                 NavigateToThemeCommand.Execute().Subscribe();
+                SelectedTag = "Theme";
                 break;
             case "Plugin":
                 NavigateToPluginCommand.Execute().Subscribe();
+                SelectedTag = "Plugin";
                 break;
             default:
                 NavigateToHomeCommand.Execute().Subscribe();
+                SelectedTag = "Home";
                 break;
         }
     }

@@ -15,7 +15,8 @@
         <vm:MainPageFrameViewModel />
     </Design.DataContext>
     <Grid Margin="10">
-        <controls:NavigationView PaneDisplayMode="Auto" CompactPaneLength="33" IsPaneOpen="{Binding IsMenuOpen}"
+        <controls:NavigationView x:Name="NavView" PaneDisplayMode="Auto" CompactPaneLength="33"
+                                 IsPaneOpen="{Binding IsMenuOpen}"
                                  IsSettingsVisible="False" ItemInvoked="OnNavigationViewItemInvoked"
                                  Background="Transparent">
             <controls:NavigationView.MenuItems>

@@ -181,17 +181,26 @@ public class ProxyFloatViewModel : ViewModelBase
             }
         };
         ChartXAxes = [new Axis { IsVisible = false }];
-        ChartYAxes = [new Axis { Labeler = ProcessFileSize, MinLimit = 0 }];
+        ChartYAxes = [new Axis { Labeler = ProcessFileSize, MinLimit = 0, LabelsRotation = 30, LabelsDensity = 1.25f, IsVisible = false}];
     }
 
     /// <summary>刷新流量</summary>
-    public ReactiveCommand<Unit, Unit> RefreshTrafficCommand { get; }
+    public ReactiveCommand<Unit, Unit> RefreshTrafficCommand
+    {
+        get;
+    }
 
     /// <summary>打开悬浮窗设置</summary>
-    public ReactiveCommand<Unit, Unit> OpenSettingsCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenSettingsCommand
+    {
+        get;
+    }
 
     /// <summary>关闭悬浮窗（不退出应用）</summary>
-    public ReactiveCommand<Unit, Unit> CloseFloatCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseFloatCommand
+    {
+        get;
+    }
 
     public string WindowTitle
     {
@@ -271,7 +280,8 @@ public class ProxyFloatViewModel : ViewModelBase
     public LiveChartsCore.Measure.Margin ChartDrawMargin
     {
         get;
-    } = new(2); 
+    } = new(0);
+
 
     // ===== 隧道状态同步（M6b-Extended）=====
 
@@ -510,7 +520,10 @@ public class FloatTunnelItem : ViewModelBase
         _status = status;
     }
 
-    public string Name { get; }
+    public string Name
+    {
+        get;
+    }
 
     public TunnelStatus Status
     {
@@ -531,7 +544,11 @@ public class FloatTunnelItem : ViewModelBase
     }
 
     /// <summary>失败摘要（Failed 时有值）</summary>
-    public string? ErrorSummary { get; set; }
+    public string? ErrorSummary
+    {
+        get;
+        set;
+    }
 
     /// <summary>状态徽标文案</summary>
     public string StatusText => Status switch

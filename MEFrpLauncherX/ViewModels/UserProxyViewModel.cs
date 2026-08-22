@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -1249,4 +1251,29 @@ public class UserProxyViewModel : ViewModelBase
             $"PML2 {Core.App.Version} / mefrpc {Core.App.MEFrpVersion}\n{obj.LastErrorSummary}");
         Growl.Success(Languages.Text_UserProxy_ErrorCopied);
     }
+}
+
+public class TunnelStatusConverter : IValueConverter
+{
+    public static TunnelStatusConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is TunnelStatus status && (status switch
+        {
+            TunnelStatus.Starting => "Starting",
+            TunnelStatus.Running => "Running",
+            TunnelStatus.Reconnecting => "Reconnecting",
+            TunnelStatus.Idle => "Idle",
+            TunnelStatus.Failed => "Failed",
+            TunnelStatus.Stopped => "Stopped",
+            _ => "Unknown"
+        }).Equals(parameter?.ToString() ?? "");
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }

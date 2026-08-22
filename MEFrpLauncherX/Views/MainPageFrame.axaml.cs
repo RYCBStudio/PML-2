@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -17,6 +18,31 @@ public partial class MainPageFrame : UserControl
         DataContext = viewModel;
         MainPageFrameViewModel.Instance = viewModel;
         MainPageFrameViewModel.Instance.IsLoading = true;
+
+        // 非点击导航（代码调用 NavigateToPage，如托盘/悬浮窗/页面内跳转）时，同步 NavigationView 选中指示条
+        viewModel.PropertyChanged += OnViewModelPropertyChanged;
+    }
+
+    private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(MainPageFrameViewModel.SelectedTag))
+        {
+            SyncNavSelection(((MainPageFrameViewModel)sender).SelectedTag);
+        }
+    }
+
+    // 按 Tag 找到对应的菜单项并设为选中，驱动 NavigationView 移动指示条（设置 SelectedItem 是权威选中路径）
+    private void SyncNavSelection(string tag)
+    {
+        foreach (var item in NavView.MenuItems)
+        {
+            if (item is NavigationViewItem navItem &&
+                string.Equals(navItem.Tag?.ToString(), tag, StringComparison.Ordinal))
+            {
+                NavView.SelectedItem = navItem;
+                return;
+            }
+        }
     }
 
     private void OnNavigationViewItemInvoked(object sender, NavigationViewItemInvokedEventArgs e)
