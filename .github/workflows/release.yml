@@ -16,6 +16,10 @@ env:
   PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
   APP_EXE: MEFrpLauncherX
   APP_BUNDLE_NAME: 'PML 2.app'
+  CRASH_PROJECT: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+  SPLASH_PROJECT: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
   build:
@@ -24,19 +28,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux R2R（x64 runner 交叉即可）
-          # - rid: linux-x64
-          #   os: ubuntu-latest
-          #   os_name: linux
-          #   arch: x64
-          #   pkg_arch: amd64
-          #   mode: r2r
-          # - rid: linux-arm64
-          #   os: ubuntu-latest
-          #   os_name: linux
-          #   arch: arm64
-          #   pkg_arch: arm64
-          #   mode: r2r
           # Linux AOT：x64 原生；arm64 用 ARM runner 避免交叉链接失败
           - rid: linux-x64
             os: ubuntu-latest
@@ -50,19 +41,6 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: aot
-          # macOS R2R
-          # - rid: osx-x64
-          #   os: macos-latest
-          #   os_name: macos
-          #   arch: x64
-          #   pkg_arch: x64
-          #   mode: r2r
-          # - rid: osx-arm64
-          #   os: macos-latest
-          #   os_name: macos
-          #   arch: arm64
-          #   pkg_arch: arm64
-          #   mode: r2r
           # macOS AOT
           - rid: osx-x64
             os: macos-latest
@@ -86,6 +64,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install native AOT toolchain (Linux)
+        if: matrix.os_name == 'linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y clang zlib1g-dev
+
       - name: Resolve version
         id: ver
         shell: bash
@@ -99,7 +83,87 @@ jobs:
           echo "version=$V" >> "$GITHUB_OUTPUT"
           echo "Resolved version: $V"
 
-      - name: Publish
+      # ---------- CrashDisplayer & Splash：缓存 + AOT 构建 ----------
+      - name: Cache CrashDisplayer & Splash
+        id: cache-tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools-cache/${{ matrix.rid }}/CrashDisplayer
+            tools-cache/${{ matrix.rid }}/Splash
+          key: tools-${{ matrix.rid }}-${{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
+          restore-keys: |
+            tools-${{ matrix.rid }}-
+
+      - name: Publish CrashDisplayer (AOT + SingleFile)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="tools-cache/${{ matrix.rid }}/CrashDisplayer"
+          mkdir -p "$OUT"
+
+          dotnet publish "${{ env.CRASH_PROJECT }}" \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishAot=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # 清理符号文件
+          find "$OUT" -type f \( \
+            -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
+            -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
+            -name "*.lib" -o -name "*.map" \
+          \) -delete 2>/dev/null || true
+
+          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+
+          echo "===== CrashDisplayer (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Publish Splash (AOT + SingleFile)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="tools-cache/${{ matrix.rid }}/Splash"
+          mkdir -p "$OUT"
+
+          dotnet publish "${{ env.SPLASH_PROJECT }}" \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishAot=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # 清理符号文件
+          find "$OUT" -type f \( \
+            -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
+            -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
+            -name "*.lib" -o -name "*.map" \
+          \) -delete 2>/dev/null || true
+
+          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+
+          echo "===== Splash (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Publish main app
         shell: bash
         run: |
           set -euo pipefail
@@ -127,7 +191,6 @@ jobs:
               --nologo -v q
           fi
 
-          # 禁止 ls|head + pipefail 触发 Broken pipe
           echo "Publish file count: $(find "$OUT" -type f | wc -l)"
           if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
             chmod +x "$OUT/${{ env.APP_EXE }}"
@@ -135,6 +198,66 @@ jobs:
             echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
             find "$OUT" -maxdepth 1 -type f | head -20 || true
           fi
+
+      - name: Place CrashDisplayer & Splash into Tools/
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          TOOLS="$OUT/Tools"
+          mkdir -p "$TOOLS"
+
+          CRASH_SRC="tools-cache/${{ matrix.rid }}/CrashDisplayer"
+          SPLASH_SRC="tools-cache/${{ matrix.rid }}/Splash"
+
+          # CrashDisplayer：保持原名，整目录内容拷入 Tools（SingleFile 通常只有一个可执行文件）
+          if [ -d "$CRASH_SRC" ]; then
+            # 找到主可执行文件（无扩展名或与项目相关）
+            # 优先拷贝所有文件，保留原名
+            cp -a "$CRASH_SRC"/. "$TOOLS/"
+            echo "CrashDisplayer copied to $TOOLS"
+            ls -lh "$TOOLS" || true
+          else
+            echo "ERROR: CrashDisplayer cache/build missing: $CRASH_SRC"
+            exit 1
+          fi
+
+          # Splash：重命名为 splash（小写），放入 Tools/
+          if [ -d "$SPLASH_SRC" ]; then
+            # 找主可执行文件：通常是无扩展名的二进制
+            MAIN_EXE=""
+            for f in "$SPLASH_SRC"/*; do
+              [ -f "$f" ] || continue
+              base=$(basename "$f")
+              # 跳过已知非主程序文件
+              case "$base" in
+                *.json|*.pdb|*.dbg|*.config|*.xml) continue ;;
+              esac
+              if [ -x "$f" ] || [[ "$base" != *.* ]]; then
+                MAIN_EXE="$f"
+                break
+              fi
+            done
+            if [ -z "$MAIN_EXE" ]; then
+              # fallback：取第一个文件
+              MAIN_EXE=$(find "$SPLASH_SRC" -type f -print -quit)
+            fi
+            if [ -n "$MAIN_EXE" ] && [ -f "$MAIN_EXE" ]; then
+              cp -a "$MAIN_EXE" "$TOOLS/splash"
+              chmod +x "$TOOLS/splash"
+              echo "Splash renamed to splash and placed at $TOOLS/splash"
+            else
+              echo "ERROR: could not find Splash executable in $SPLASH_SRC"
+              ls -la "$SPLASH_SRC" || true
+              exit 1
+            fi
+          else
+            echo "ERROR: Splash cache/build missing: $SPLASH_SRC"
+            exit 1
+          fi
+
+          echo "===== Tools/ final contents ====="
+          ls -lh "$TOOLS" || true
 
       - name: Inject Sentry DSN
         shell: bash
@@ -304,6 +427,8 @@ jobs:
           cp -a "$OUT/." "$APP/Contents/MacOS/"
           chmod +x "$APP/Contents/MacOS/${EXE}" || true
           chmod +x "$APP/Contents/MacOS/Tools/splash" || true
+          # CrashDisplayer 若在 Tools 下也一并赋权
+          find "$APP/Contents/MacOS/Tools" -type f -exec chmod +x {} \; 2>/dev/null || true
 
           if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
             cp "${{ github.workspace }}/installer/macos/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
