@@ -124,9 +124,9 @@ public partial class SettingsPage : UserControl
             var renderConfig = RenderConfigManager.Load();
             RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
             {
-                "VULKAN" => 1,
-                "OPENGL" => 2,
-                "SOFTWARE" => 3,
+                "VULKAN" => OperatingSystem.IsMacOS()? 2: 1,
+                "OPENGL" => 3,
+                "SOFTWARE" => 4,
                 _ => 0
             };
             GpuMemoryBox.SelectedIndex = renderConfig.GpuMemoryLimitMb switch
