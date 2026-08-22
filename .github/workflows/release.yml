@@ -25,18 +25,18 @@ jobs:
       matrix:
         include:
           # Linux R2R（x64 runner 交叉即可）
-          - rid: linux-x64
-            os: ubuntu-latest
-            os_name: linux
-            arch: x64
-            pkg_arch: amd64
-            mode: r2r
-          - rid: linux-arm64
-            os: ubuntu-latest
-            os_name: linux
-            arch: arm64
-            pkg_arch: arm64
-            mode: r2r
+          # - rid: linux-x64
+          #   os: ubuntu-latest
+          #   os_name: linux
+          #   arch: x64
+          #   pkg_arch: amd64
+          #   mode: r2r
+          # - rid: linux-arm64
+          #   os: ubuntu-latest
+          #   os_name: linux
+          #   arch: arm64
+          #   pkg_arch: arm64
+          #   mode: r2r
           # Linux AOT：x64 原生；arm64 用 ARM runner 避免交叉链接失败
           - rid: linux-x64
             os: ubuntu-latest
@@ -51,18 +51,18 @@ jobs:
             pkg_arch: arm64
             mode: aot
           # macOS R2R
-          - rid: osx-x64
-            os: macos-latest
-            os_name: macos
-            arch: x64
-            pkg_arch: x64
-            mode: r2r
-          - rid: osx-arm64
-            os: macos-latest
-            os_name: macos
-            arch: arm64
-            pkg_arch: arm64
-            mode: r2r
+          # - rid: osx-x64
+          #   os: macos-latest
+          #   os_name: macos
+          #   arch: x64
+          #   pkg_arch: x64
+          #   mode: r2r
+          # - rid: osx-arm64
+          #   os: macos-latest
+          #   os_name: macos
+          #   arch: arm64
+          #   pkg_arch: arm64
+          #   mode: r2r
           # macOS AOT
           - rid: osx-x64
             os: macos-latest
