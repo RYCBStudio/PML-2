@@ -385,10 +385,13 @@ internal partial class Program
                 UseRegionDirtyRectClipping = true,
                 UseSaveLayerRootClip = true
             })
+            .With(new MacOSPlatformOptions()
+            {
+                DisableDefaultApplicationMenuItems = true
+            })
             .UseReactiveUI(cfg =>
             {
             });
-        ;
         if (renderSettings.RenderingMode.ToUpperInvariant() is "VULKAN" or "OPENGL" or "SOFTWARE")
         {
             builder
@@ -404,6 +407,20 @@ internal partial class Program
                         [
                             X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Egl,
                             X11RenderingMode.Software
+                        ]
+                    }
+                })
+                .With(new AvaloniaNativePlatformOptions()
+                {
+                    RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
+                    {
+                        "VULKAN" => [AvaloniaNativeRenderingMode.Metal],
+                        "OPENGL" => [AvaloniaNativeRenderingMode.OpenGl],
+                        "SOFTWARE" => [AvaloniaNativeRenderingMode.Software],
+                        _ =>
+                        [
+                            AvaloniaNativeRenderingMode.Metal, AvaloniaNativeRenderingMode.OpenGl,
+                            AvaloniaNativeRenderingMode.Software
                         ]
                     }
                 });

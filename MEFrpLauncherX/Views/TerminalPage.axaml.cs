@@ -241,10 +241,16 @@ public partial class TerminalPage : UserControl
                 ? TerminalControl.GetDefaultShell()
                 : captchaResult.Trim();
 
-            // 变量替换
-            var res = shell.Replace("{mefrpc}", Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe"))
-                .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin"))
-                .Replace("{startup}", Core.App.StartupPath);
+            // 变量替换（客户端路径按平台生成；macOS/Linux 路径可能含空格，加引号包裹）
+            var res = shell.Replace("{mefrpc}", OperatingSystem.IsWindows()
+                    ? Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")
+                    : '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
+                .Replace("{mefrpcp}", OperatingSystem.IsWindows()
+                    ? Path.Combine(Core.App.StartupPath, "bin")
+                    : '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()) + '"')
+                .Replace("{startup}", OperatingSystem.IsWindows()
+                    ? Core.App.StartupPath
+                    : '"' + Core.App.StartupPath + '"');
             var isMEFrpCExe = shell.Contains("{mefrpc}");
 
             if (newTab.Content is TerminalControl terminal)
@@ -346,8 +352,8 @@ public partial class TerminalPage : UserControl
         }
         else if (OperatingSystem.IsLinux())
         {
-            var res = rs.Replace("{mefrpc}",
-                    Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc"))
+            var res = rs.Replace("{mefrpc}", '"' +
+                    Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
                 .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()))
                 .Replace("{startup}", Core.App.StartupPath);
 
@@ -360,10 +366,10 @@ public partial class TerminalPage : UserControl
                 await terminal.SendCommandAsync($"""
                                                  echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                  """);
-                await terminal.SendCommandAsync("tar -xvf " +
+                await terminal.SendCommandAsync("tar -xvf \"" +
                                                 Path.Combine(Core.App.StartupPath, "bin",
                                                     "mefrpc.tar") +
-                                                $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1");
+                                                $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1");
                 if (isMEFrpCExe)
                 {
                     // 修改5: 移除CurrentConhostId检查，直接发送命令
@@ -378,10 +384,10 @@ public partial class TerminalPage : UserControl
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                 """ + "\n");
-                await terminal1.SendToPtyAsync("tar -xvf " +
+                await terminal1.SendToPtyAsync("tar -xvf \"" +
                                                Path.Combine(Core.App.StartupPath, "bin",
                                                    "mefrpc.tar") +
-                                               $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
+                                               $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1" +
                                                "\n");
                 if (isMEFrpCExe)
                 {
@@ -393,24 +399,25 @@ public partial class TerminalPage : UserControl
         }
         else if (OperatingSystem.IsMacOS())
         {
+            // macOS 应用路径含空格（如 /Applications/PML 2.app/...），必须加引号包裹
             var res = rs.Replace("{mefrpc}",
-                    Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc"))
-                .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()))
-                .Replace("{startup}", Core.App.StartupPath);
+                    '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
+                .Replace("{mefrpcp}", '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()) + '"')
+                .Replace("{startup}", '"' + Core.App.StartupPath + '"');
 
             var isMEFrpCExe = rs.Contains("{mefrpc}");
 
 
             if (newTab.Content is TerminalControl terminal)
             {
-                await terminal.SendCommandAsync("cd " + Core.App.StartupPath);
+                await terminal.SendCommandAsync("cd \"" + Core.App.StartupPath + '"');
                 await terminal.SendCommandAsync($"""
                                                  echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                  """);
-                await terminal.SendCommandAsync("tar -xvf " +
+                await terminal.SendCommandAsync("tar -xvf \"" +
                                                 Path.Combine(Core.App.StartupPath, "bin",
                                                     "mefrpc.tar") +
-                                                $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1");
+                                                $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1");
                 if (isMEFrpCExe)
                 {
                     // 修改5: 移除CurrentConhostId检查，直接发送命令
@@ -421,14 +428,14 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
-                await terminal1.SendToPtyAsync("cd " + Core.App.StartupPath + "\n");
+                await terminal1.SendToPtyAsync("cd \"" + Core.App.StartupPath + "\"\n");
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                 """ + "\n");
-                await terminal1.SendToPtyAsync("tar -xvf " +
+                await terminal1.SendToPtyAsync("tar -xvf \"" +
                                                Path.Combine(Core.App.StartupPath, "bin",
                                                    "mefrpc.tar") +
-                                               $" -C {Path.Combine(Core.App.StartupPath, "bin")} > /dev/null 2>&1" +
+                                               $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1" +
                                                "\n");
                 if (isMEFrpCExe)
                 {

@@ -229,7 +229,7 @@ public partial class MainWindow : AppWindow, IDisposable
             appSubMenu.Add(new NativeMenuItemSeparator());
             appSubMenu.Add(new NativeMenuItem(Languages.Text_Global_Settings)
             {
-                Gesture = KeyGesture.Parse("Ctrl+,"),
+                Gesture = KeyGesture.Parse("⌘+,"),
                 Command = ReactiveCommand.Create(() =>
                 {
                     AppShellCommands.Instance.OpenSettings();
@@ -238,7 +238,7 @@ public partial class MainWindow : AppWindow, IDisposable
             appSubMenu.Add(new NativeMenuItemSeparator());
             appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
             {
-                Gesture = KeyGesture.Parse("Ctrl+Q"),
+                Gesture = KeyGesture.Parse("⌘+Q"),
                 Command = ReactiveCommand.Create(() =>
                 {
                     AppShellCommands.Instance.ExitApplication();
@@ -252,7 +252,7 @@ public partial class MainWindow : AppWindow, IDisposable
             var tunnelsSubMenu = new NativeMenu();
             tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
             {
-                Gesture = KeyGesture.Parse("Ctrl+M"),
+                Gesture = KeyGesture.Parse("⌘+M"),
                 Command = ReactiveCommand.Create(() =>
                 {
                     MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
@@ -260,7 +260,7 @@ public partial class MainWindow : AppWindow, IDisposable
             });
             tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
             {
-                Gesture = KeyGesture.Parse("Ctrl+D"),
+                Gesture = KeyGesture.Parse("⌘+D"),
                 Command = ReactiveCommand.Create(() =>
                 {
                     MainPageFrameViewModel.Instance?.NavigateToPage("Create");

@@ -346,7 +346,8 @@
                         <ComboBox x:Name="RenderingModeBox" SelectionChanged="RenderingModeChanged">
                             <ComboBoxItem Tag="Auto"
                                           Content="{x:Static languages:Languages.Text_Settings_Rendering_Auto}" />
-                            <ComboBoxItem Tag="Vulkan" Content="Vulkan" />
+                            <ComboBoxItem Tag="Vulkan" Content="Vulkan" IsEnabled="{OnPlatform True, macOS=False}" />
+                            <ComboBoxItem Tag="Vulkan" Content="Metal" IsEnabled="{OnPlatform False, macOS=True}" />
                             <ComboBoxItem Tag="OpenGL" Content="OpenGL" />
                             <ComboBoxItem Tag="Software"
                                           Content="{x:Static languages:Languages.Text_Settings_Rendering_Software}" />
