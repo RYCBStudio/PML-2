@@ -80,7 +80,11 @@ public static class TunnelErrorMapper
             text.Contains("name or service not known", StringComparison.OrdinalIgnoreCase) ||
             text.Contains("no route to host", StringComparison.OrdinalIgnoreCase) ||
             text.Contains("无法连接", StringComparison.OrdinalIgnoreCase) ||
-            text.Contains("连接被拒绝", StringComparison.OrdinalIgnoreCase))
+            text.Contains("连接被拒绝", StringComparison.OrdinalIgnoreCase) ||
+            text.Contains("connection timed out", StringComparison.OrdinalIgnoreCase) ||
+            text.Contains("连接超时", StringComparison.OrdinalIgnoreCase) ||
+            text.Contains("登录节点失败", StringComparison.OrdinalIgnoreCase)
+            )
         {
             return new TunnelErrorInfo(TunnelErrorCategory.NodeUnreachable,
                 Languages.Languages.Text_TunnelError_NodeUnreachable);

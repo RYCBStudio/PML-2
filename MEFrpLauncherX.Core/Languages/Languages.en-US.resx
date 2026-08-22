@@ -3059,4 +3059,7 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.About.ToolBox.ClearCache.Dialog.AllTime" xml:space="preserve">
         <value>All</value>
     </data>
+    <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
+        <value>	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution.</value>
+    </data>
 </root>

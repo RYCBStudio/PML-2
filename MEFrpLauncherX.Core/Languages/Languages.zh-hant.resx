@@ -3054,4 +3054,7 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.About.ToolBox.ClearCache.Dialog.AllTime" xml:space="preserve">
         <value>全部</value>
     </data>
+    <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
+        <value>	開啟視窗穿透後，您將無法手動關閉懸浮視窗，請謹慎操作。</value>
+    </data>
 </root>

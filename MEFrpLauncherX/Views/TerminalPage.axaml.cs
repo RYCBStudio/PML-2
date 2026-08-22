@@ -63,8 +63,8 @@ public partial class TerminalPage : UserControl
         if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
         {
             terminalControl.SendCtrlCCommand();
-            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步
-            ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
+            // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项
+            ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
@@ -77,30 +77,29 @@ public partial class TerminalPage : UserControl
 
     public async Task SendCtrlCCommandToSelected(string header)
     {
-        if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
+        // 按标签头查找对应标签（隧道管理页点「停止」时当前选中项可能不是目标标签，不能依赖 SelectedItem）
+        foreach (var item in MainTabCtrl.Items)
         {
-            if (tabItem.Header?.ToString() != header)
+            if (item is not TabItem { } tabItem || tabItem.Header?.ToString() != header)
             {
+                continue;
+            }
+
+            if (tabItem.Content is TerminalControl terminalControl)
+            {
+                terminalControl.SendCtrlCCommand();
+                // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项
+                ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
                 return;
             }
 
-            terminalControl.SendCtrlCCommand();
-            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步
-            ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
-        }
-        else if (MainTabCtrl.SelectedItem is TabItem
-                 {
-                     Content: TerminalView alternativeTerminalView
-                 })
-        {
-            if (alternativeTerminalView.Terminal.Title != header)
+            if (tabItem.Content is TerminalView alternativeTerminalView)
             {
+                await alternativeTerminalView.SendCtrlC();
+                // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项（PTY 引擎）
+                ProxyFloatViewModel.ReportTunnelRemoved(header);
                 return;
             }
-
-            await alternativeTerminalView.SendCtrlC();
-            // 26.3 M6b-Extended：隧道停止 → 悬浮窗状态同步（PTY 引擎）
-            ProxyFloatViewModel.ReportTunnelStopped(header);
         }
     }
 
@@ -111,8 +110,8 @@ public partial class TerminalPage : UserControl
             if (item is TabItem { Content: TerminalControl terminalControl } tabItem)
             {
                 terminalControl.SendCtrlCCommand();
-                // 26.3 M6b-Extended：全部停止 → 悬浮窗状态同步
-                ProxyFloatViewModel.ReportTunnelStopped(tabItem.Header?.ToString());
+                // 26.3 M6b-Extended：全部停止 → 悬浮窗移除对应项
+                ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
             }
             else if (item is TabItem
                      {
@@ -120,6 +119,8 @@ public partial class TerminalPage : UserControl
                      })
             {
                 await alternativeTerminalView.SendCtrlC();
+                // 26.3 M6b-Extended：全部停止 → 悬浮窗移除对应项（PTY 引擎）
+                ProxyFloatViewModel.ReportTunnelRemoved(alternativeTerminalView.Terminal.Title);
             }
         }
     }

@@ -11,19 +11,19 @@ public class OpenSourceLibrary
     public string Name
     {
         get;
-        set;
+        init;
     } = string.Empty;
 
     public string Url
     {
         get;
-        set;
+        init;
     } = string.Empty;
 
     public string License
     {
         get;
-        set;
+        init;
     } = string.Empty;
 }
 

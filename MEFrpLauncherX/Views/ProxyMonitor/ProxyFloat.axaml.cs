@@ -74,7 +74,9 @@ public partial class ProxyFloat : Window
     {
         var pm = ConfigManager.CurrentConfig.PMSettings;
         _vm.ShowChart = pm.ShowChart;
-        Opacity = pm.Opacity;
+        // 透明度统一走 VM 绑定（内容层 Border.Opacity）推送，避免直接改 Window.Opacity 与绑定双通道冲突
+        // 及 Win32 上 Window.Opacity(LWA_ALPHA) 与 Transparent 透明合成叠加导致背景不透明的问题
+        _vm.Opacity = pm.Opacity;
         ClickThroughHelper.SetClickThrough(this, pm.ClickThrough);
     }
 
@@ -121,6 +123,11 @@ public partial class ProxyFloat : Window
         {
             ClickThroughHelper.SetClickThrough(this, true);
         }
+    }
+
+    private void HideRequested(object? sender, RoutedEventArgs e)
+    {
+        this.Hide();
     }
 }
 
@@ -260,6 +267,11 @@ public class ProxyFloatViewModel : ViewModelBase
         get;
         private set;
     }
+
+    public LiveChartsCore.Measure.Margin ChartDrawMargin
+    {
+        get;
+    } = new(2); 
 
     // ===== 隧道状态同步（M6b-Extended）=====
 

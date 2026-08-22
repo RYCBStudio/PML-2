@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using Avalonia.Vulkan;
 using MEFrpLauncherX.Core;
@@ -371,32 +372,44 @@ internal partial class Program
             }
         ];
 
-        return AppBuilder.Configure<App>()
+        var builder = AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
             .With(options)
-            .With(BuildWin32Options(renderSettings))
-            .With(new X11PlatformOptions()
-            {
-                RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
-                {
-                    "VULKAN" => [X11RenderingMode.Vulkan],
-                    "OPENGL" => [X11RenderingMode.Glx, X11RenderingMode.Egl],
-                    "SOFTWARE" => [X11RenderingMode.Software],
-                    _ =>
-                    [
-                        X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Egl,
-                        X11RenderingMode.Software
-                    ]
-                }
-            })
             .With(new SkiaOptions
             {
                 MaxGpuResourceSizeBytes = (long)NormalizeGpuMemory(renderSettings.GpuMemoryLimitMb) * 1024 * 1024
             })
+            .With(new CompositionOptions()
+            {
+                UseRegionDirtyRectClipping = true,
+                UseSaveLayerRootClip = true
+            })
             .UseReactiveUI(cfg =>
             {
             });
+        ;
+        if (renderSettings.RenderingMode.ToUpperInvariant() is "VULKAN" or "OPENGL" or "SOFTWARE")
+        {
+            builder
+                .With(BuildWin32Options(renderSettings))
+                .With(new X11PlatformOptions()
+                {
+                    RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
+                    {
+                        "VULKAN" => [X11RenderingMode.Vulkan],
+                        "OPENGL" => [X11RenderingMode.Glx, X11RenderingMode.Egl],
+                        "SOFTWARE" => [X11RenderingMode.Software],
+                        _ =>
+                        [
+                            X11RenderingMode.Vulkan, X11RenderingMode.Glx, X11RenderingMode.Egl,
+                            X11RenderingMode.Software
+                        ]
+                    }
+                });
+        }
+
+        return builder;
     }
 
     private static Win32PlatformOptions BuildWin32Options(RenderSettings renderSettings)

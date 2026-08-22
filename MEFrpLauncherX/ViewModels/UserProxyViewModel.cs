@@ -41,6 +41,8 @@ public enum TunnelStatus
 
 public class UserProxyViewModel : ViewModelBase
 {
+    private readonly SemaphoreSlim _signal = new SemaphoreSlim(0, 1);
+
     // 26.3 M3: 状态徽标颜色（与 Fluent 语义色近似）
     private static readonly IBrush _statusBrushIdle = new SolidColorBrush(Color.FromArgb(255, 138, 138, 138));
     private static readonly IBrush _statusBrushStarting = new SolidColorBrush(Color.FromArgb(255, 0, 120, 212));
@@ -110,17 +112,18 @@ public class UserProxyViewModel : ViewModelBase
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
         CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
 
-        Task.Run(async () =>
+        Dispatcher.UIThread.Post(async () =>
         {
-            await Task.Delay(2000);
+            await _signal.WaitAsync();
+            await Task.Delay(1000);
             await ProbeAsync();
-        });
+        }, DispatcherPriority.Background);
     }
 
     public List<string>? Locations
     {
         get;
-        set;
+        init;
     }
 
     public string Config
@@ -144,7 +147,7 @@ public class UserProxyViewModel : ViewModelBase
     public string username
     {
         get;
-        set;
+        init;
     }
 
     public string proxyName
@@ -210,7 +213,7 @@ public class UserProxyViewModel : ViewModelBase
     public string runId
     {
         get;
-        set;
+        init;
     }
 
     public bool isOnline
@@ -232,7 +235,7 @@ public class UserProxyViewModel : ViewModelBase
     public string domain
     {
         get;
-        set;
+        init;
     }
 
     public List<string> Domains
@@ -244,91 +247,91 @@ public class UserProxyViewModel : ViewModelBase
     public Dictionary<string, string>? RequestHeaders
     {
         get;
-        set;
+        init;
     }
 
     public Dictionary<string, string>? ResponseHeaders
     {
         get;
-        set;
+        init;
     }
 
     public int lastStartTime
     {
         get;
-        set;
+        init;
     }
 
     public int lastCloseTime
     {
         get;
-        set;
+        init;
     }
 
     public string clientVersion
     {
         get;
-        set;
+        init;
     }
 
     public string proxyProtocolVersion
     {
         get;
-        set;
+        init;
     }
 
     public bool useEncryption
     {
         get;
-        set;
+        init;
     }
 
     public bool useCompression
     {
         get;
-        set;
+        init;
     }
 
     public string location
     {
         get;
-        set;
+        init;
     }
 
     public string accessKey
     {
         get;
-        set;
+        init;
     }
 
     public string hostHeaderRewrite
     {
         get;
-        set;
+        init;
     }
 
     public string headerXFromWhere
     {
         get;
-        set;
+        init;
     }
 
     public string transportProtocol
     {
         get;
-        set;
+        init;
     }
 
     public string httpUser
     {
         get;
-        set;
+        init;
     }
 
     public string httpPassword
     {
         get;
-        set;
+        init;
     }
 
     public string crtPath
@@ -596,7 +599,14 @@ public class UserProxyViewModel : ViewModelBase
     public InfoClasses.Nodes? Node
     {
         get;
-        set;
+        init
+        {
+            field = value;
+            if (value?.hostname.IsNullOrEmpty() == false)
+            {
+                _signal.Release();
+            }
+        }
     }
 
     public bool ShowExtraMenu
@@ -608,7 +618,7 @@ public class UserProxyViewModel : ViewModelBase
     public string httpPlugin
     {
         get;
-        set;
+        init;
     }
 
     private async void LaunchProxyViaConfig(object parameter)
@@ -1075,6 +1085,8 @@ public class UserProxyViewModel : ViewModelBase
     private async void StopProxy(UserProxyViewModel obj)
     {
         await TerminalPage.Instance.SendCtrlCCommandToSelected(obj.proxyName);
+        // 26.3 M6b：停止 → 悬浮窗移除对应隧道项（与关闭标签页一致；TerminalPage 内也会报告，此处保证链路完整）
+        ProxyFloatViewModel.ReportTunnelRemoved(obj.proxyName);
         ForceOfflineProxy(obj);
         IsLaunched = false;
         TunnelStatus = TunnelStatus.Stopped;

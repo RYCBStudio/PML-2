@@ -101,7 +101,7 @@ public class ProxyType
     public string Category
     {
         get;
-        set;
+        init;
     }
 }
 
@@ -110,13 +110,13 @@ public class PackIcon
     public string Icon
     {
         get;
-        set;
+        init;
     }
 
     public object? IconFontFamily
     {
         get;
-        set;
+        init;
     }
 }
 
