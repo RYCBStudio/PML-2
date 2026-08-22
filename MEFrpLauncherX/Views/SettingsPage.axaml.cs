@@ -283,6 +283,10 @@ public partial class SettingsPage : UserControl
             {
                 SetAutoStartLinux(isAutoStartEnabled);
             }
+            else if (OperatingSystem.IsMacOS())
+            {
+                SetAutoStartMacOS(isAutoStartEnabled);
+            }
 
             // 可以添加其他操作系统支持
             Growl.Success(isAutoStartEnabled
@@ -366,6 +370,50 @@ public partial class SettingsPage : UserControl
             {
                 File.Delete(desktopFile);
             }
+        }
+    }
+
+    /// <summary>
+    ///     macOS 开机自启：写入用户 LaunchAgent plist（登录时由 launchd 启动）
+    /// </summary>
+    private void SetAutoStartMacOS(bool enable)
+    {
+        const string label = "tech.rycb.pml2";
+        var launchAgentsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "Library", "LaunchAgents");
+        var plistPath = Path.Combine(launchAgentsDir, $"{label}.plist");
+        var executablePath = Environment.ProcessPath;
+
+        if (string.IsNullOrEmpty(executablePath))
+        {
+            throw new InvalidOperationException("无法获取可执行文件路径");
+        }
+
+        if (enable)
+        {
+            var plist = $"""
+                         <?xml version="1.0" encoding="UTF-8"?>
+                         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                         <plist version="1.0">
+                         <dict>
+                             <key>Label</key>
+                             <string>{label}</string>
+                             <key>ProgramArguments</key>
+                             <array>
+                                 <string>{executablePath}</string>
+                             </array>
+                             <key>RunAtLoad</key>
+                             <true/>
+                         </dict>
+                         </plist>
+                         """;
+
+            Directory.CreateDirectory(launchAgentsDir);
+            File.WriteAllText(plistPath, plist);
+        }
+        else if (File.Exists(plistPath))
+        {
+            File.Delete(plistPath);
         }
     }
 

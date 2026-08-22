@@ -1,10 +1,14 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using MEFrpLauncherX.Core;
@@ -36,6 +40,7 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
 
             field = value;
             OnPropertyChanged();
+            Cache.Text = field;
         }
     }
 
@@ -51,39 +56,14 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
 
             field = value;
             OnPropertyChanged();
+            LogsCache.Text = field;
         }
     }
 
     /// <summary>
     ///     当前选择的保留天数；null 表示全部清理。
     /// </summary>
-    private int? SelectedDays
-    {
-        get
-        {
-            if (Day1Rb.IsChecked == true)
-            {
-                return 1;
-            }
-
-            if (Day3Rb.IsChecked == true)
-            {
-                return 3;
-            }
-
-            if (Day7Rb.IsChecked == true)
-            {
-                return 7;
-            }
-
-            if (Day30Rb.IsChecked == true)
-            {
-                return 30;
-            }
-
-            return null;
-        }
-    }
+    private int? SelectedDays => DaysSlider.Value == 0 ? null : (int)DaysSlider.Value;
 
     /// <summary>
     ///     重新统计并刷新 Cache / Logs 目录大小显示。
@@ -156,4 +136,58 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+    private async void RefreshTrash(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        await RefreshSizesAsync();
+    }
+}
+
+public class DaysToVisibilityConverter : IValueConverter
+{
+    public static DaysToVisibilityConverter Instance
+    {
+        get;
+    } = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        try
+        {
+            var v = System.Convert.ToDouble(value);
+            return v >= 366;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class DaysToVisibilityConverterReverse : IValueConverter
+{
+    public static DaysToVisibilityConverterReverse Instance
+    {
+        get;
+    } = new();
+    
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        try
+        {
+            var v = System.Convert.ToDouble(value);
+            return v < 366;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }

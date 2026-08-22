@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Threading;
@@ -16,6 +18,8 @@ namespace MEFrpLauncherX.ViewModels;
 
 public sealed class ManageProxyViewModel : ViewModelBase
 {
+    private CancellationTokenSource? _probeCts;
+
     public ManageProxyViewModel()
     {
         SelectedProxies = [];
@@ -24,6 +28,8 @@ public sealed class ManageProxyViewModel : ViewModelBase
         DeselectProxyCommand = new RelayCommand<UserProxyViewModel>(DeselectProxy);
         ToggleSelectProxyCommand = new RelayCommand<UserProxyViewModel>(ToggleSelectProxy);
         ClearSelectionCommand = new RelayCommand(ClearSelection);
+        ProbeAllCommand = ReactiveCommand.CreateFromTask(ProbeAllAsync, this.WhenAnyValue(x => x.IsProbingAll, x => !x));
+        CancelProbeCommand = new RelayCommand(_ => CancelProbe());
     }
 
     public string SearchText
@@ -59,22 +65,7 @@ public sealed class ManageProxyViewModel : ViewModelBase
         set;
     } = [];
 
-    public ICommand LaunchProxyCommand
-    {
-        get;
-    }
-
     public ICommand LaunchMultiProxyCommand
-    {
-        get;
-    }
-
-    public ICommand EditProxyCommand
-    {
-        get;
-    }
-
-    public ICommand ForceOfflineProxyCommand
     {
         get;
     }
@@ -138,6 +129,65 @@ public sealed class ManageProxyViewModel : ViewModelBase
     {
         get;
     }
+
+    /// <summary>批量刷新测速命令（并发受控）</summary>
+    public ReactiveCommand<Unit, Unit> ProbeAllCommand
+    {
+        get;
+    }
+
+    /// <summary>取消批量测速命令</summary>
+    public ICommand CancelProbeCommand
+    {
+        get;
+    }
+
+    /// <summary>是否正在批量测速</summary>
+    public bool IsProbingAll
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     并发探测当前筛选列表内所有隧道的节点延迟。
+    ///     并发上限由 <see cref="Core.App.NodeProbeService" /> 内部闸门（6）保证，
+    ///     全部走异步 IO，不阻塞 UI 线程；页面级取消通过内部 CTS 实现。
+    /// </summary>
+    private async Task ProbeAllAsync()
+    {
+        if (IsProbingAll)
+        {
+            return;
+        }
+
+        var targets = FilteredProxies.ToList();
+        if (targets.Count == 0)
+        {
+            return;
+        }
+
+        _probeCts?.Dispose();
+        _probeCts = new CancellationTokenSource();
+        var ct = _probeCts.Token;
+        IsProbingAll = true;
+        try
+        {
+            await Task.WhenAll(targets.Select(p => p.ProbeAsync(ct)));
+        }
+        catch (OperationCanceledException)
+        {
+            // 用户取消：保留已完成的探测结果
+        }
+        finally
+        {
+            IsProbingAll = false;
+            _probeCts.Dispose();
+            _probeCts = null;
+        }
+    }
+
+    private void CancelProbe() => _probeCts?.Cancel();
 
     public NotifyingCollection<UserProxyViewModel> SelectedProxies
     {

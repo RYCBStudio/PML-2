@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.Styling;
 using RYCB.PML2.MEFrpCaptchaLib;
@@ -62,6 +63,9 @@ namespace MEFrpLauncherX.Core;
 [JsonSerializable(typeof(PFSConfig))]
 [JsonSerializable(typeof(ALPConfig))]
 [JsonSerializable(typeof(List<ALPConfig>))]
+[JsonSerializable(typeof(CreateProxyDefaults))]
+[JsonSerializable(typeof(ProxyTemplate))]
+[JsonSerializable(typeof(List<ProxyTemplate>))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
 [JsonSerializable(typeof(Dictionary<string, object>))]

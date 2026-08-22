@@ -438,6 +438,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_AllTime {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.AllTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cache Directory.
         /// </summary>
         public static string Text_About_ToolBox_ClearCache_Dialog_CacheSize {
@@ -465,38 +474,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Older than 1 day.
+        ///   Looks up a localized string similar to Older than {0} day(s).
         /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day1 {
+        public static string Text_About_ToolBox_ClearCache_Dialog_Days {
             get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Older than 3 days.
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day3 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Older than 30 days.
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day30 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day30", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Older than 7 days (a week).
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day7 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day7", resourceCulture);
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Days", resourceCulture);
             }
         }
         
@@ -1536,6 +1518,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply Template.
+        /// </summary>
+        public static string Text_CreateProxy_ApplyTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ApplyTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic Settings.
         /// </summary>
         public static string Text_CreateProxy_BasicSettings {
@@ -1613,6 +1604,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_CustomResponseHeaders {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.CustomResponseHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Template.
+        /// </summary>
+        public static string Text_CreateProxy_DeleteTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.DeleteTemplate", resourceCulture);
             }
         }
         
@@ -1851,6 +1851,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quick ports:.
+        /// </summary>
+        public static string Text_CreateProxy_QuickPorts {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.QuickPorts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remote Port.
         /// </summary>
         public static string Text_CreateProxy_RemotePort {
@@ -1878,6 +1887,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save as Template.
+        /// </summary>
+        public static string Text_CreateProxy_SaveTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SaveTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security Options.
         /// </summary>
         public static string Text_CreateProxy_SecurityOptions {
@@ -1901,6 +1919,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_SelectAreaOnMap {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.SelectAreaOnMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a template first.
+        /// </summary>
+        public static string Text_CreateProxy_SelectTemplateFirst {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SelectTemplateFirst", resourceCulture);
             }
         }
         
@@ -1955,6 +1982,69 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_SslPathDescription {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.SslPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template applied.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateApplied {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template deleted.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateDeleted {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a template name.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateNameRequired {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template name.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateNameWatermark {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateNameWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates.
+        /// </summary>
+        public static string Text_CreateProxy_Templates {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.Templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template saved.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateSaved {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save common tunnel parameters and apply them with one click when creating.
+        /// </summary>
+        public static string Text_CreateProxy_TemplatesDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplatesDescription", resourceCulture);
             }
         }
         
@@ -2236,6 +2326,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_Disable {
             get {
                 return ResourceManager.GetString("Text.Global.Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dismiss.
+        /// </summary>
+        public static string Text_Global_Dismiss {
+            get {
+                return ResourceManager.GetString("Text.Global.Dismiss", resourceCulture);
             }
         }
         
@@ -2987,11 +3086,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string Text_MainWindow_About {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agree.
         /// </summary>
         public static string Text_MainWindow_Agree {
             get {
                 return ResourceManager.GetString("Text.MainWindow.Agree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to auto-restore tunnels. Check the Terminal page for details.
+        /// </summary>
+        public static string Text_MainWindow_AutoRestoreFailed {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.AutoRestoreFailed", resourceCulture);
             }
         }
         
@@ -3082,6 +3199,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop All Tunnels.
+        /// </summary>
+        public static string Text_MainWindow_StopAllTunnels {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PML 2 is running.
         /// </summary>
         public static string Text_MainWindow_TrayToolTip {
@@ -3105,6 +3231,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_MainWindow_UpdateDetectedTitleFormat {
             get {
                 return ResourceManager.GetString("Text.MainWindow.UpdateDetectedTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Text_ManageProxy_CancelProbe {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.CancelProbe", resourceCulture);
             }
         }
         
@@ -3177,6 +3312,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_ManageProxy_MenuTunnels {
             get {
                 return ResourceManager.GetString("Text.ManageProxy.MenuTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh latency.
+        /// </summary>
+        public static string Text_ManageProxy_RefreshLatency {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.RefreshLatency", resourceCulture);
             }
         }
         
@@ -3541,11 +3685,56 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ms.
+        /// </summary>
+        public static string Text_Nodes_LatencyMsFormat {
+            get {
+                return ResourceManager.GetString("Text.Nodes.LatencyMsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node not found.
         /// </summary>
         public static string Text_Nodes_NodeNotFound {
             get {
                 return ResourceManager.GetString("Text.Nodes.NodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        public static string Text_Nodes_ProbeFailed {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not probeable.
+        /// </summary>
+        public static string Text_Nodes_ProbeNotAvailable {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string Text_Nodes_ProbeTimeout {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probing....
+        /// </summary>
+        public static string Text_Nodes_Probing {
+            get {
+                return ResourceManager.GetString("Text.Nodes.Probing", resourceCulture);
             }
         }
         
@@ -4857,6 +5046,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click-through.
+        /// </summary>
+        public static string Text_ProxyFloat_ClickThrough {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ClickThrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow mouse clicks to pass through the float window without affecting the windows below it (off by default).
+        /// </summary>
+        public static string Text_ProxyFloat_ClickThroughDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ClickThroughDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Float Window.
+        /// </summary>
+        public static string Text_ProxyFloat_CloseFloat {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.CloseFloat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution..
+        /// </summary>
+        public static string Text_ProxyFloat_EnableClickThroughWarning {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.EnableClickThroughWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No tunnels running.
+        /// </summary>
+        public static string Text_ProxyFloat_NoRunningTunnels {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.NoRunningTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opacity.
+        /// </summary>
+        public static string Text_ProxyFloat_Opacity {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust the overall opacity of the float window.
+        /// </summary>
+        public static string Text_ProxyFloat_OpacityDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.OpacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bottom center.
         /// </summary>
         public static string Text_ProxyFloat_Position_BottomCenter {
@@ -4920,6 +5172,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show traffic chart.
+        /// </summary>
+        public static string Text_ProxyFloat_ShowChart {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ShowChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show a real-time traffic line chart in the float window.
+        /// </summary>
+        public static string Text_ProxyFloat_ShowChartDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ShowChartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Window position.
         /// </summary>
         public static string Text_ProxyFloat_WindowPosition {
@@ -4970,6 +5240,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_ProxySSL_SelectFileTitle {
             get {
                 return ResourceManager.GetString("Text.ProxySSL.SelectFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel {0} failed to start..
+        /// </summary>
+        public static string Text_ProxyStart_StartFailed {
+            get {
+                return ResourceManager.GetString("Text.ProxyStart.StartFailed", resourceCulture);
             }
         }
         
@@ -7228,6 +7507,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication failed: login credentials are invalid or expired. Please sign in again and retry..
+        /// </summary>
+        public static string Text_TunnelError_AuthFailed {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.AuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot connect to the local service.
         /// </summary>
         public static string Text_TunnelError_InfoCannotConnectLocal {
@@ -7305,6 +7593,42 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_TunnelError_InfoTunnelOnline {
             get {
                 return ResourceManager.GetString("Text.TunnelError.InfoTunnelOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	Local service is not running..
+        /// </summary>
+        public static string Text_TunnelError_LocalServiceUnavailable {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.LocalServiceUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node unreachable: unable to connect to the node or the node is not confirmed online. Please check your network and retry..
+        /// </summary>
+        public static string Text_TunnelError_NodeUnreachable {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.NodeUnreachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port in use: the remote port is already occupied by another tunnel or service. Please change the port and retry..
+        /// </summary>
+        public static string Text_TunnelError_PortInUse {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.PortInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process crashed (exit code {0}): the mefrpc client terminated unexpectedly..
+        /// </summary>
+        public static string Text_TunnelError_ProcessCrashedFormat {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.ProcessCrashedFormat", resourceCulture);
             }
         }
         
@@ -7404,6 +7728,69 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_TunnelError_SolutionTunnelDisabledDetail {
             get {
                 return ResourceManager.GetString("Text.TunnelError.SolutionTunnelDisabledDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error: please copy the error info and report it to the developer..
+        /// </summary>
+        public static string Text_TunnelError_Unknown {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        public static string Text_TunnelStatus_Failed {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Idle.
+        /// </summary>
+        public static string Text_TunnelStatus_Idle {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reconnecting.
+        /// </summary>
+        public static string Text_TunnelStatus_Reconnecting {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Reconnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string Text_TunnelStatus_Running {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting.
+        /// </summary>
+        public static string Text_TunnelStatus_Starting {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        public static string Text_TunnelStatus_Stopped {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Stopped", resourceCulture);
             }
         }
         
@@ -7543,6 +7930,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update download failed. Retry, or switch the download source in Settings if it keeps failing.
+        /// </summary>
+        public static string Text_Update_DownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading update.
         /// </summary>
         public static string Text_Update_Downloading {
@@ -7557,6 +7953,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_FetchFailed {
             get {
                 return ResourceManager.GetString("Text.Update.FetchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get update information: check your network connection and try again; if it keeps failing, switch the download source in Settings.
+        /// </summary>
+        public static string Text_Update_FetchFailedTip {
+            get {
+                return ResourceManager.GetString("Text.Update.FetchFailedTip", resourceCulture);
             }
         }
         
@@ -7678,6 +8083,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retry download.
+        /// </summary>
+        public static string Text_Update_RetryDownload {
+            get {
+                return ResourceManager.GetString("Text.Update.RetryDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receive stable updates of the app, containing relatively new and stable features and improvements..
         /// </summary>
         public static string Text_Update_StableChannelDesc {
@@ -7773,6 +8187,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_UpdateSettings {
             get {
                 return ResourceManager.GetString("Text.Update.UpdateSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded file failed verification. The file may be corrupted, please retry.
+        /// </summary>
+        public static string Text_Update_VerifyFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.VerifyFailed", resourceCulture);
             }
         }
         
@@ -8291,6 +8714,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy Error Info.
+        /// </summary>
+        public static string Text_UserProxy_CopyErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.CopyErrorInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created from node: {0}.
         /// </summary>
         public static string Text_UserProxy_CreatedFromNodeFormat {
@@ -8417,6 +8849,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error info copied.
+        /// </summary>
+        public static string Text_UserProxy_ErrorCopied {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ErrorCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force Offline.
         /// </summary>
         public static string Text_UserProxy_ForceOffline {
@@ -8450,6 +8891,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_UserProxy_LaunchCancelledFormat {
             get {
                 return ResourceManager.GetString("Text.UserProxy.LaunchCancelledFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to launch tunnel {0}: {1}.
+        /// </summary>
+        public static string Text_UserProxy_LaunchFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchFailedFormat", resourceCulture);
             }
         }
         

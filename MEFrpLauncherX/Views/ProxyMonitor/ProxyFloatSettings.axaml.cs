@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
 
 namespace MEFrpLauncherX.Views.ProxyMonitor;
@@ -22,6 +25,9 @@ public partial class ProxyFloatSettings : Window
                 "cb" => 5,
                 _ => 0
             };
+            ClickThroughSwitch.IsChecked = ConfigManager.CurrentConfig.PMSettings.ClickThrough;
+            ShowChartSwitch.IsChecked = ConfigManager.CurrentConfig.PMSettings.ShowChart;
+            OpacitySlider.Value = ConfigManager.CurrentConfig.PMSettings.Opacity;
             _init = true;
         };
     }
@@ -53,5 +59,48 @@ public partial class ProxyFloatSettings : Window
         {
             config.PMSettings.Position = tag;
         });
+    }
+
+    private void ClickThroughChanged(object? sender, RoutedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config =>
+        {
+            config.PMSettings.ClickThrough = (sender as ToggleSwitch)?.IsChecked ?? false;
+        });
+        ProxyFloat.Instance?.ApplySettings();
+    }
+
+    private void ShowChartChanged(object? sender, RoutedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config =>
+        {
+            config.PMSettings.ShowChart = (sender as ToggleSwitch)?.IsChecked ?? true;
+        });
+        ProxyFloat.Instance?.ApplySettings();
+    }
+
+    private void OpacityChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        var value = Math.Clamp(Math.Round(e.NewValue, 2), 0.5, 1.0);
+        ConfigManager.UpdateConfig(config =>
+        {
+            config.PMSettings.Opacity = value;
+        });
+        ProxyFloat.Instance?.ApplySettings();
     }
 }

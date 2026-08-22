@@ -97,6 +97,14 @@
                                     Maximum="65535"
                                     Minimum="0"
                                     Value="{Binding LocalPort}" />
+                                <TextBlock VerticalAlignment="Center"
+                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           Text="{x:Static languages:Languages.Text_CreateProxy_QuickPorts}" />
+                                <Button Content="80" Tag="80" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
+                                <Button Content="443" Tag="443" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
+                                <Button Content="22" Tag="22" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
+                                <Button Content="25565" Tag="25565" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
                             </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
@@ -325,6 +333,48 @@
                                 OnContent="{x:Static languages:Languages.Text_Global_Yes}"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 IsChecked="False" />
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                </fa:SettingsExpander>
+                <fa:SettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_Templates}"
+                                     IconSource="SaveLocal"
+                                     Description="{x:Static languages:Languages.Text_CreateProxy_TemplatesDescription}">
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_ApplyTemplate}">
+                        <fa:SettingsExpanderItem.Footer>
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <ComboBox
+                                    x:Name="TemplateComboBox"
+                                    Margin="5"
+                                    Width="180"
+                                    ItemsSource="{Binding Templates}"
+                                    DisplayMemberBinding="{Binding Name}"
+                                    SelectedItem="{Binding SelectedTemplate}"
+                                    FontFamily="{StaticResource GlobalFontFamily}" />
+                                <Button Click="ApplyTemplate_Click"
+                                        Content="{x:Static languages:Languages.Text_CreateProxy_ApplyTemplate}"
+                                        FontFamily="{StaticResource GlobalFontFamily}" />
+                            </StackPanel>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_SaveTemplate}">
+                        <fa:SettingsExpanderItem.Footer>
+                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                <TextBox
+                                    x:Name="TemplateNameBox"
+                                    Margin="5"
+                                    Width="180"
+                                    Text="{Binding TemplateName}"
+                                    Watermark="{x:Static languages:Languages.Text_CreateProxy_TemplateNameWatermark}"
+                                    FontFamily="{StaticResource GlobalFontFamily}" />
+                                <Button Click="SaveTemplate_Click"
+                                        Content="{x:Static languages:Languages.Text_CreateProxy_SaveTemplate}"
+                                        FontFamily="{StaticResource GlobalFontFamily}"
+                                        Classes="Success" />
+                                <Button Click="DeleteTemplate_Click"
+                                        Content="{x:Static languages:Languages.Text_CreateProxy_DeleteTemplate}"
+                                        FontFamily="{StaticResource GlobalFontFamily}"
+                                        Classes="Danger" />
+                            </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                 </fa:SettingsExpander>

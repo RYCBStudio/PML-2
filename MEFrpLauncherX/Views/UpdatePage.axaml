@@ -37,7 +37,11 @@
                     </TextBlock.Styles>
                 </TextBlock>
                 <TextBlock Grid.Column="1" Text="{Binding Status}" FontFamily="{StaticResource GlobalFontFamily}"
-                           Theme="{StaticResource SubtitleTextBlockStyle}" />
+                           Theme="{StaticResource SubtitleTextBlockStyle}">
+                    <ToolTip.Tip>
+                        <TextBlock Text="{Binding FailureTip}" />
+                    </ToolTip.Tip>
+                </TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LatestCheckTime, StringFormat={x:Static languages:Languages.Text_Update_LastCheckTimeFormat}}"
                            FontFamily="{StaticResource GlobalFontFamily}"
                            Theme="{StaticResource BodyTextBlockStyle}" />
@@ -46,9 +50,12 @@
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
                     <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_DownloadAndInstall}"
                             IsVisible="{Binding HasNewVersion}"
-                            Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdate}" />
+                            Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdateCommand}" />
                     <Button HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_CheckForUpdates}" Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdateCommand}" />
+                    <Button HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_RetryDownload}"
+                            IsVisible="{Binding HasDownloadFailed}" Classes.accent="True"
+                            Command="{Binding RetryDownloadCommand}" />
                 </StackPanel>
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Vertical">
                     <Separator VerticalAlignment="Top" />

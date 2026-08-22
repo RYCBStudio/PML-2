@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using MEFrpLauncherX.Core.Models;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
@@ -553,6 +554,11 @@ public static class ConfigManager
                 Position = "rt",
                 Enabled = false
             },
+            CreateProxyDefaults = new CreateProxyDefaults
+            {
+                LocalAddress = "127.0.0.1"
+            },
+            ProxyTemplates = [],
             AnimationLevel = 2
         };
     }
@@ -679,6 +685,20 @@ public class AppConfig
     }
 
     public PFSConfig PMSettings
+    {
+        get;
+        set;
+    }
+
+    /// <summary>创建隧道表单默认值</summary>
+    public CreateProxyDefaults CreateProxyDefaults
+    {
+        get;
+        set;
+    }
+
+    /// <summary>创建隧道模板列表（重启后仍在）</summary>
+    public List<ProxyTemplate> ProxyTemplates
     {
         get;
         set;
@@ -844,6 +864,33 @@ public class PFSConfig
         get;
         set;
     }
+
+    /// <summary>
+    ///     窗口穿透（默认关闭：悬浮窗正常接收鼠标）
+    /// </summary>
+    public bool ClickThrough
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     显示实时流量折线图（默认开启）
+    /// </summary>
+    public bool ShowChart
+    {
+        get;
+        set;
+    } = true;
+
+    /// <summary>
+    ///     悬浮窗不透明度（0.5–1.0）
+    /// </summary>
+    public double Opacity
+    {
+        get;
+        set;
+    } = 0.92;
 }
 
 public class ALPConfig

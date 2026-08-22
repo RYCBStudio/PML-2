@@ -63,7 +63,8 @@ public partial class TerminalPage : UserControl
         if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
         {
             terminalControl.SendCtrlCCommand();
-            ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
+            // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项
+            ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
         }
         else if (MainTabCtrl.SelectedItem is TabItem
                  {
@@ -76,27 +77,29 @@ public partial class TerminalPage : UserControl
 
     public async Task SendCtrlCCommandToSelected(string header)
     {
-        if (MainTabCtrl.SelectedItem is TabItem { Content: TerminalControl terminalControl } tabItem)
+        // 按标签头查找对应标签（隧道管理页点「停止」时当前选中项可能不是目标标签，不能依赖 SelectedItem）
+        foreach (var item in MainTabCtrl.Items)
         {
-            if (tabItem.Header?.ToString() != header)
+            if (item is not TabItem { } tabItem || tabItem.Header?.ToString() != header)
             {
+                continue;
+            }
+
+            if (tabItem.Content is TerminalControl terminalControl)
+            {
+                terminalControl.SendCtrlCCommand();
+                // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项
+                ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
                 return;
             }
 
-            terminalControl.SendCtrlCCommand();
-            ProxyFloatViewModel.Instance?.Proxies.Remove(tabItem.Header?.ToString());
-        }
-        else if (MainTabCtrl.SelectedItem is TabItem
-                 {
-                     Content: TerminalView alternativeTerminalView
-                 })
-        {
-            if (alternativeTerminalView.Terminal.Title != header)
+            if (tabItem.Content is TerminalView alternativeTerminalView)
             {
+                await alternativeTerminalView.SendCtrlC();
+                // 26.3 M6b-Extended：隧道停止 → 悬浮窗移除该项（PTY 引擎）
+                ProxyFloatViewModel.ReportTunnelRemoved(header);
                 return;
             }
-
-            await alternativeTerminalView.SendCtrlC();
         }
     }
 
@@ -104,9 +107,11 @@ public partial class TerminalPage : UserControl
     {
         foreach (var item in MainTabCtrl.Items)
         {
-            if (item is TabItem { Content: TerminalControl terminalControl })
+            if (item is TabItem { Content: TerminalControl terminalControl } tabItem)
             {
                 terminalControl.SendCtrlCCommand();
+                // 26.3 M6b-Extended：全部停止 → 悬浮窗移除对应项
+                ProxyFloatViewModel.ReportTunnelRemoved(tabItem.Header?.ToString());
             }
             else if (item is TabItem
                      {
@@ -114,6 +119,8 @@ public partial class TerminalPage : UserControl
                      })
             {
                 await alternativeTerminalView.SendCtrlC();
+                // 26.3 M6b-Extended：全部停止 → 悬浮窗移除对应项（PTY 引擎）
+                ProxyFloatViewModel.ReportTunnelRemoved(alternativeTerminalView.Terminal.Title);
             }
         }
     }
@@ -161,6 +168,9 @@ public partial class TerminalPage : UserControl
             {
                 MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
             }
+
+            // 26.3 M6b-Extended：隧道标签关闭 → 悬浮窗移除该项
+            ProxyFloatViewModel.ReportTunnelRemoved(closedTabName);
 
             // 触发插件事件：代理停止
             _ = PluginService.Instance.TriggerAsync("proxy.stop", new Dictionary<string, object>
@@ -255,7 +265,8 @@ public partial class TerminalPage : UserControl
         }
     }
 
-    public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "")
+    public async void CreateNewTerminalWithoutNotification(string rs, string consoleTitle = "",
+        Action<string>? onOutput = null)
     {
         TabItem newTab;
         if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
@@ -289,6 +300,21 @@ public partial class TerminalPage : UserControl
 
         MainTabCtrl.Items.Add(newTab);
         MainTabCtrl.SelectedIndex = MainTabCtrl.Items.Count - 1;
+
+        // 26.3 M3: 可选订阅程序输出（Original=TerminalControl / PTY=TerminalView 两引擎都要接）
+        if (onOutput != null)
+        {
+            switch (newTab.Content)
+            {
+                case TerminalControl tc:
+                    tc.OutputReceived += onOutput;
+                    break;
+                case TerminalView tv:
+                    tv.OutputReceived += onOutput;
+                    break;
+            }
+        }
+
         if (OperatingSystem.IsWindows())
         {
             var res = rs.Replace("{mefrpc}",
@@ -418,6 +444,12 @@ public partial class TerminalPage : UserControl
         {
             ["proxyName"] = consoleTitle
         }).ConfigureAwait(false);
+
+        // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（仅具名隧道，手动终端不进入）
+        if (!consoleTitle.IsNullOrEmpty())
+        {
+            ProxyFloatViewModel.ReportTunnelStarted(consoleTitle);
+        }
     }
 
     private string GetArchiveFileName()

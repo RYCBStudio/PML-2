@@ -7,13 +7,13 @@
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:meFrpLauncherX="clr-namespace:MEFrpLauncherX"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.UserProxyControl"
              x:CompileBindings="True"
              IsEnabled="{Binding !isBanned}"
              FontFamily="{StaticResource GlobalFontFamily}"
              x:DataType="viewModels:UserProxyViewModel">
-    <!-- TODO: 记得换回去-->
     <Design.DataContext>
         <viewModels:UserProxyViewModel />
     </Design.DataContext>
@@ -165,6 +165,38 @@
             </controls1:CommandBarElementContainer>
         </controls1:CommandBarFlyout>
     </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Idle">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorDefaultBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Starting">
+            <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Running">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Stopped">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Reconnecting">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Failed">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+        </Style>
+        <Style Selector="TextBlock.Unknown">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorNeutralBrush}" />
+        </Style>
+        <Style Selector="TextBlock.PingGood">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+        </Style>
+        <Style Selector="TextBlock.PingIntermediate">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+        <Style Selector="TextBlock.PingBad">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+    </UserControl.Styles>
     <Border MaxWidth="300"
             Padding="10"
             CornerRadius="8"
@@ -215,9 +247,8 @@
                 </controls1:InfoBadge>
             </Grid>
             <!-- Other fields -->
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Spacing="5">
                 <StackPanel
-                    Margin="5"
                     Orientation="Horizontal">
                     <Label
                         VerticalAlignment="Center"
@@ -235,8 +266,57 @@
                         </Label.Content>
                     </Label>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        Text="{Binding ProbeStatusText, StringFormat='Ping: {0}'}"
+                        Classes.PingGood="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Good'}"
+                        Classes.PingIntermediate="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Intermediate'}"
+                        Classes.PingBad="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Bad'}"
+                        IsVisible="{Binding ProbeStatusText, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}" />
+                    <controls1:ProgressRing
+                        Width="12"
+                        Height="12"
+                        IsIndeterminate="True"
+                        IsVisible="{Binding IsProbing}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        Classes.PingGood="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Good'}"
+                        Classes.PingIntermediate="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Intermediate'}"
+                        Classes.PingBad="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Bad'}"
+                        Text="{x:Static languages:Languages.Text_Nodes_Probing}"
+                        IsVisible="{Binding IsProbing}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        FontSize="11"
+                        FontWeight="SemiBold"
+                        Foreground="{Binding StatusBrush}"
+                        Text="{Binding StatusText}"
+                        Classes.Idle="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Idle'}"
+                        Classes.Starting="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Starting'}"
+                        Classes.Running="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Running'}"
+                        Classes.Stopped="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Stopped'}"
+                        Classes.Reconnecting="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Reconnecting'}"
+                        Classes.Failed="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Failed'}"
+                        Classes.Unknown="{Binding TunnelStatus, Converter={x:Static viewModels:TunnelStatusConverter.Instance}, ConverterParameter='Unknown'}"
+                        IsVisible="{Binding StatusText, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}" />
+                    <SelectableTextBlock
+                        VerticalAlignment="Center"
+                        MaxWidth="230"
+                        Text="{Binding LastErrorSummary}"
+                        TextWrapping="Wrap"
+                        FontSize="11"
+                        Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                        IsVisible="{Binding HasError}" />
+                </StackPanel>
                 <StackPanel
-                    Margin="5"
                     Orientation="Horizontal">
                     <TextBlock x:Name="TypeIdentifier" IsVisible="False"
                                Text="{Binding proxyType, 
@@ -416,6 +496,27 @@
                                 Margin="5,0,5,0"
                                 VerticalAlignment="Center" IsVisible="{Binding Detailed}"
                                 Text="{x:Static languages:Languages.Text_UserProxy_CopyAddress}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button
+                    x:Name="CopyErrorBtn"
+                    Margin="5,2,5,2"
+                    Command="{Binding CopyErrorCommand}"
+                    CommandParameter="{Binding}"
+                    IsVisible="{Binding HasError}"
+                    FontFamily="{StaticResource GlobalFontFamily}"
+                    Classes="Danger">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Text="&#xE16F;" />
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center" IsVisible="{Binding Detailed}"
+                                Text="{x:Static languages:Languages.Text_UserProxy_CopyErrorInfo}" />
                         </StackPanel>
                     </Button.Content>
                 </Button>

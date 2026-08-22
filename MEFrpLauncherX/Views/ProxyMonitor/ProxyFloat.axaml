@@ -1,99 +1,125 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:views="clr-namespace:MEFrpLauncherX.Views"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
         xmlns:proxyMonitor="clr-namespace:MEFrpLauncherX.Views.ProxyMonitor"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
-        Opacity="0.8"
-        Height="50"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+        MinWidth="300"
         Background="Transparent"
         ShowInTaskbar="False"
         x:Class="MEFrpLauncherX.Views.ProxyMonitor.ProxyFloat"
         x:DataType="proxyMonitor:ProxyFloatViewModel"
-        CornerRadius="8"
         Loaded="Setup"
         SystemDecorations="None"
         TransparencyLevelHint="Transparent"
         ShowActivated="False"
         WindowStartupLocation="Manual"
-        SizeToContent="Width">
-    <DockPanel Opacity="0.8" Background="{DynamicResource ControlFillColorDefaultBrush}" Margin="10,5,5,10"
-               HorizontalSpacing="5">
-        <StackPanel Margin="5,0,0,0" Orientation="Horizontal" DockPanel.Dock="Left" Spacing="5">
-            <Image Source="/Assets/meflx.png" Stretch="Uniform" Height="20" />
-            <TextBlock
-                FontFamily="{StaticResource GlobalFontFamily}"
-                Theme="{StaticResource BodyStrongTextBlockStyle}"
-                Text="{Binding WindowTitle}" />
-        </StackPanel>
-        <!-- 添加菜单按钮 -->
-        <Button x:Name="MenuButton"
-                DockPanel.Dock="Right"
-                Width="20"
-                Height="20"
-                Margin="5,0,0,0"
-                Background="Transparent"
-                BorderThickness="0"
-                Foreground="White"
-                FontSize="12"
-                Content="⋯"
-                VerticalAlignment="Center">
-            <FlyoutBase.AttachedFlyout>
-                <MenuFlyout Placement="Top">
-                    <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_ProxyFloat_RefreshTraffic}" />
-                    <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_Global_Settings}" />
-                    <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_Global_Exit}" />
-                </MenuFlyout>
-            </FlyoutBase.AttachedFlyout>
-        </Button>
+        SizeToContent="WidthAndHeight">
+    <Design.DataContext>
+        <proxyMonitor:ProxyFloatViewModel />
+    </Design.DataContext>
+    <!-- 透明度由内容层 Border.Opacity 驱动（绑定 VM.Opacity）：
+         Window.Opacity 在 Win32 上走 LWA_ALPHA，与 Transparent 透明合成叠加会导致背景不透明/异常，
+         因此窗口根元素保持 Opacity=1，仅内容层做 alpha 淡化（与旧版 DockPanel.Opacity 方案一致）。 -->
+    <Border CornerRadius="12"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+            Background="{DynamicResource ControlFillColorSecondaryBrush}"
+            BoxShadow="0 8 24 2 #33000000"
+            Margin="6"
+            Opacity="{Binding Opacity}">
+        <StackPanel Orientation="Horizontal" Margin="12,8,10,10" Spacing="8">
 
-        <Grid ColumnDefinitions="*,*">
-            <ItemsControl VerticalAlignment="Center" ItemsSource="{Binding Proxies}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <Ellipse Classes="Success" Height="10" Width="10" />
-                            <TextBlock Text="{Binding}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Grid Grid.Column="1" ColumnDefinitions="*, *" HorizontalAlignment="Right">
-                <!-- 下载流量 -->
-                <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                    <TextBlock
-                        Margin="0,0,5,0"
-                        FontFamily="{StaticResource IconFont}"
-                        FontSize="16"
-                        Foreground="#FF00B894"
-                        Text="&#xe673;"
-                        VerticalAlignment="Center" />
-                    <TextBlock
-                        Text="{Binding TrafficIn, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
-                        VerticalAlignment="Center" />
+            <!-- 隧道状态列表（与终端页启停真实同步） -->
+            <StackPanel Margin="0,6,0,0" Spacing="4">
+                <!-- 标题行 -->
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Image Source="/Assets/meflx.png" Stretch="Uniform" Height="18" VerticalAlignment="Center" />
+                    <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                               Theme="{StaticResource BodyStrongTextBlockStyle}"
+                               Text="{Binding WindowTitle}" VerticalAlignment="Center" />
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding TunnelItems}" MaxHeight="100">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="proxyMonitor:FloatTunnelItem">
+                            <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,2,12,2">
+                                <Ellipse Width="8" Height="8" Fill="{Binding StatusBrush}"
+                                         VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="12"
+                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                           VerticalAlignment="Center">
+                                    <ToolTip.Tip>
+                                        <TextBlock Text="{Binding StatusToolTip}" />
+                                    </ToolTip.Tip>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="{x:Static languages:Languages.Text_ProxyFloat_NoRunningTunnels}"
+                           IsVisible="{Binding HasNoTunnels}"
+                           FontSize="12"
+                           Opacity="0.6"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+
+            <!-- 流量行 -->
+            <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, *" Margin="0,6,0,0" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Spacing="5" HorizontalAlignment="Right">
+                    <TextBlock FontFamily="{StaticResource IconFont}" FontSize="14"
+                               Foreground="#FF00B894" Text="&#xe673;" VerticalAlignment="Center" />
+                    <TextBlock FontFamily="{StaticResource GlobalFontFamily}" FontSize="13"
+                               Text="{Binding TrafficIn, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal" Spacing="5" Margin="14,0,0,0">
+                    <TextBlock FontFamily="{StaticResource IconFont}" FontSize="14"
+                               Foreground="#FF0984E3" Text="&#xe672;" VerticalAlignment="Center" />
+                    <TextBlock FontFamily="{StaticResource GlobalFontFamily}" FontSize="13"
+                               Text="{Binding TrafficOut, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
+                               VerticalAlignment="Center" />
                 </StackPanel>
 
-                <!-- 上传流量 -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center"
-                            Margin="10,0,0,0">
-                    <TextBlock
-                        Margin="0,0,5,0"
-                        FontFamily="{StaticResource IconFont}"
-                        FontSize="16"
-                        Foreground="#FF0984E3"
-                        Text="&#xe672;"
-                        VerticalAlignment="Center" />
-                    <TextBlock
-                        Text="{Binding TrafficOut, Converter={x:Static core:BytesToReadableConverterEx.Instance}}"
-                        VerticalAlignment="Center" />
-                </StackPanel>
+                <!-- 实时流量折线图（可在设置中关闭；显式透明背景，避免 Skia 画布在透明窗口中渲染出不透明块） -->
+                <lvc:CartesianChart Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Stretch" MinWidth="400"
+                                    Height="56"
+                                    Margin="10,0,0,0"
+                                    Background="Transparent"
+                                    DrawMargin="{Binding ChartDrawMargin}"
+                                    IsVisible="{Binding ShowChart}"
+                                    Series="{Binding ChartSeries}"
+                                    XAxes="{Binding ChartXAxes}"
+                                    YAxes="{Binding ChartYAxes}" />
             </Grid>
-        </Grid>
-    </DockPanel>
+
+            <!-- 菜单按钮 -->
+            <Button Name="MenuButton" x:Name="MenuButton"
+                    HorizontalAlignment="Right"
+                    Margin="0,-24,0,0"
+                    Background="Transparent"
+                    BorderThickness="0" Click="HideRequested"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                    VerticalAlignment="Center">
+                <controls:SymbolIcon Symbol="Cancel" />
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout Placement="Top">
+                        <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_ProxyFloat_RefreshTraffic}"
+                                                 Command="{Binding RefreshTrafficCommand}" />
+                        <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_Global_Settings}"
+                                                 Command="{Binding OpenSettingsCommand}" />
+                        <controls:MenuFlyoutItem Text="{x:Static languages:Languages.Text_ProxyFloat_CloseFloat}"
+                                                 Command="{Binding CloseFloatCommand}" />
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
+            </Button>
+        </StackPanel>
+    </Border>
 </Window>

@@ -19,10 +19,12 @@
 
         <!-- Top toolbar -->
         <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Spacing="10">
-            <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_Nav_ManageProxy}" />
+            <TextBlock Theme="{StaticResource TitleTextBlockStyle}"
+                       Text="{x:Static languages:Languages.Text_Nav_ManageProxy}" />
 
             <AutoCompleteBox x:Name="SearchBox" FilterMode="StartsWith" MinimumPrefixLength="1"
-                             Text="{Binding SearchText}" Watermark="{x:Static languages:Languages.Text_ALP_SearchWatermark}" Width="200" />
+                             Text="{Binding SearchText}"
+                             Watermark="{x:Static languages:Languages.Text_ALP_SearchWatermark}" Width="200" />
             <Button Click="OpenHelp">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe83d;" FontFamily="{StaticResource IconFont}" />
@@ -35,13 +37,24 @@
                     <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Global_Refresh}" />
                 </StackPanel>
             </Button>
+            <Button Command="{Binding ProbeAllCommand}" IsVisible="{Binding !IsProbingAll}">
+                <controls:IconContent Symbol="CloudSync"
+                                      Label="{x:Static languages:Languages.Text_ManageProxy_RefreshLatency}" />
+            </Button>
+            <Button Command="{Binding CancelProbeCommand}" IsVisible="{Binding IsProbingAll}" Classes="Warning">
+                <controls:IconContent Symbol="CloudOff"
+                                      Label="{x:Static languages:Languages.Text_ManageProxy_CancelProbe}" />
+            </Button>
             <Button Click="DownloadMEFClient">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe72b;" FontFamily="{StaticResource IconFont}" />
                     <TextBlock Margin="5,0,0,0" Text="{x:Static languages:Languages.Text_Proxy_DownloadMEFClient}" />
                 </StackPanel>
             </Button>
-            <ToggleButton Content="{x:Static languages:Languages.Text_Proxy_DetailedDescription}" IsChecked="{Binding IsDetailedMode, Mode=TwoWay}" />
+            <ToggleButton IsChecked="{Binding IsDetailedMode, Mode=TwoWay}">
+                <controls:IconContent Symbol="ImageAltText"
+                                      Label="{x:Static languages:Languages.Text_Proxy_DetailedDescription}" />
+            </ToggleButton>
         </StackPanel>
 
         <!-- Batch operation area -->

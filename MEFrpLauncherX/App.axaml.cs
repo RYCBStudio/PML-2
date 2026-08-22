@@ -29,7 +29,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public const string Codename = "Magnesium";
+    public const string Codename = "Aluminum";
 #pragma warning disable CA2211
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
@@ -163,6 +163,9 @@ public class App : Application
             {
                 try
                 {
+                    // 26.3 M6b：退出前销毁流量悬浮窗，避免残留置顶窗
+                    Views.ProxyMonitor.ProxyFloat.Instance?.Close();
+
                     // 触发插件事件：应用退出
                     await PluginService.Instance.TriggerAsync("app.exit", new Dictionary<string, object>
                     {

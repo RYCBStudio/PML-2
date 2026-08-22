@@ -15,43 +15,43 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
     public int NodeId
     {
         get;
-        set;
+        init;
     }
 
     public string Name
     {
         get;
-        set;
+        init;
     }
 
     public string Description
     {
         get;
-        set;
+        init;
     }
 
     public List<string> AllowTypes
     {
         get;
-        set;
+        init;
     }
 
     public string AllowPorts
     {
         get;
-        set;
+        init;
     }
 
     public string Bandwidth
     {
         get;
-        set;
+        init;
     }
 
     public int LoadPercent
     {
         get;
-        set
+        init
         {
             if (field != value)
             {
@@ -67,7 +67,7 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
     public bool IsOnline
     {
         get => field;
-        set
+        init
         {
             if (field != value)
             {
@@ -81,7 +81,7 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
     public bool CanBuildSite
     {
         get;
-        set;
+        init;
     }
 
     public bool AllowHighTraffic
@@ -93,7 +93,7 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
     public string Region
     {
         get;
-        set;
+        init;
     }
 
     public bool IsSelected

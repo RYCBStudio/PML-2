@@ -39,7 +39,7 @@ public class ALPSettingsViewModel : ViewModelBase
     public string SearchText
     {
         get;
-        set
+        init
         {
             field = value;
             FilterProxies();
@@ -49,7 +49,7 @@ public class ALPSettingsViewModel : ViewModelBase
     public string SearchText1
     {
         get;
-        set
+        init
         {
             field = value;
             FilterProxies1();

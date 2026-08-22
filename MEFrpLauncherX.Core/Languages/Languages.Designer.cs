@@ -438,6 +438,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 全部.
+        /// </summary>
+        public static string Text_About_ToolBox_ClearCache_Dialog_AllTime {
+            get {
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.AllTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 缓存目录（Cache）.
         /// </summary>
         public static string Text_About_ToolBox_ClearCache_Dialog_CacheSize {
@@ -465,38 +474,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 超过 1 天.
+        ///   Looks up a localized string similar to 超过 {0} 天.
         /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day1 {
+        public static string Text_About_ToolBox_ClearCache_Dialog_Days {
             get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 超过 3 天.
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day3 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 超过 30 天.
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day30 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day30", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 超过 7 天（一周）.
-        /// </summary>
-        public static string Text_About_ToolBox_ClearCache_Dialog_Day7 {
-            get {
-                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Day7", resourceCulture);
+                return ResourceManager.GetString("Text.About.ToolBox.ClearCache.Dialog.Days", resourceCulture);
             }
         }
         
@@ -1536,6 +1518,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 套用模板.
+        /// </summary>
+        public static string Text_CreateProxy_ApplyTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ApplyTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 基本设置.
         /// </summary>
         public static string Text_CreateProxy_BasicSettings {
@@ -1613,6 +1604,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_CustomResponseHeaders {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.CustomResponseHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除模板.
+        /// </summary>
+        public static string Text_CreateProxy_DeleteTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.DeleteTemplate", resourceCulture);
             }
         }
         
@@ -1851,6 +1851,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 常用端口:.
+        /// </summary>
+        public static string Text_CreateProxy_QuickPorts {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.QuickPorts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 远程端口.
         /// </summary>
         public static string Text_CreateProxy_RemotePort {
@@ -1878,6 +1887,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 存为当前为模板.
+        /// </summary>
+        public static string Text_CreateProxy_SaveTemplate {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SaveTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 安全选项.
         /// </summary>
         public static string Text_CreateProxy_SecurityOptions {
@@ -1901,6 +1919,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_SelectAreaOnMap {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.SelectAreaOnMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请先选择一个模板.
+        /// </summary>
+        public static string Text_CreateProxy_SelectTemplateFirst {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.SelectTemplateFirst", resourceCulture);
             }
         }
         
@@ -1955,6 +1982,69 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_SslPathDescription {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.SslPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板已套用.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateApplied {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板已删除.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateDeleted {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请输入模板名称.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateNameRequired {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板名称.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateNameWatermark {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateNameWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板.
+        /// </summary>
+        public static string Text_CreateProxy_Templates {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.Templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板已保存.
+        /// </summary>
+        public static string Text_CreateProxy_TemplateSaved {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplateSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保存常用隧道参数，创建时一键套用.
+        /// </summary>
+        public static string Text_CreateProxy_TemplatesDescription {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.TemplatesDescription", resourceCulture);
             }
         }
         
@@ -2250,6 +2340,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_Disable {
             get {
                 return ResourceManager.GetString("Text.Global.Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 关闭.
+        /// </summary>
+        public static string Text_Global_Dismiss {
+            get {
+                return ResourceManager.GetString("Text.Global.Dismiss", resourceCulture);
             }
         }
         
@@ -3001,11 +3100,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 关于.
+        /// </summary>
+        public static string Text_MainWindow_About {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 同意.
         /// </summary>
         public static string Text_MainWindow_Agree {
             get {
                 return ResourceManager.GetString("Text.MainWindow.Agree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 自动恢复隧道失败，请到终端页查看详情.
+        /// </summary>
+        public static string Text_MainWindow_AutoRestoreFailed {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.AutoRestoreFailed", resourceCulture);
             }
         }
         
@@ -3111,6 +3228,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 全部停止隧道.
+        /// </summary>
+        public static string Text_MainWindow_StopAllTunnels {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PML 2 运行中.
         /// </summary>
         public static string Text_MainWindow_TrayToolTip {
@@ -3134,6 +3260,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_MainWindow_UpdateDetectedTitleFormat {
             get {
                 return ResourceManager.GetString("Text.MainWindow.UpdateDetectedTitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 取消测速.
+        /// </summary>
+        public static string Text_ManageProxy_CancelProbe {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.CancelProbe", resourceCulture);
             }
         }
         
@@ -3206,6 +3341,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_ManageProxy_MenuTunnels {
             get {
                 return ResourceManager.GetString("Text.ManageProxy.MenuTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 刷新测速.
+        /// </summary>
+        public static string Text_ManageProxy_RefreshLatency {
+            get {
+                return ResourceManager.GetString("Text.ManageProxy.RefreshLatency", resourceCulture);
             }
         }
         
@@ -3570,11 +3714,56 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ms.
+        /// </summary>
+        public static string Text_Nodes_LatencyMsFormat {
+            get {
+                return ResourceManager.GetString("Text.Nodes.LatencyMsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 节点不存在.
         /// </summary>
         public static string Text_Nodes_NodeNotFound {
             get {
                 return ResourceManager.GetString("Text.Nodes.NodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 失败.
+        /// </summary>
+        public static string Text_Nodes_ProbeFailed {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 不可探测.
+        /// </summary>
+        public static string Text_Nodes_ProbeNotAvailable {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 超时.
+        /// </summary>
+        public static string Text_Nodes_ProbeTimeout {
+            get {
+                return ResourceManager.GetString("Text.Nodes.ProbeTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 探测中.
+        /// </summary>
+        public static string Text_Nodes_Probing {
+            get {
+                return ResourceManager.GetString("Text.Nodes.Probing", resourceCulture);
             }
         }
         
@@ -4886,6 +5075,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 窗口穿透.
+        /// </summary>
+        public static string Text_ProxyFloat_ClickThrough {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ClickThrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 鼠标可以穿透悬浮窗，不影响操作其下方的窗口（默认关闭）.
+        /// </summary>
+        public static string Text_ProxyFloat_ClickThroughDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ClickThroughDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 关闭悬浮窗.
+        /// </summary>
+        public static string Text_ProxyFloat_CloseFloat {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.CloseFloat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开启窗口穿透将导致您无法再手动关闭悬浮窗, 请谨慎使用。.
+        /// </summary>
+        public static string Text_ProxyFloat_EnableClickThroughWarning {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.EnableClickThroughWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无运行中的隧道.
+        /// </summary>
+        public static string Text_ProxyFloat_NoRunningTunnels {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.NoRunningTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 不透明度.
+        /// </summary>
+        public static string Text_ProxyFloat_Opacity {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 调整悬浮窗的整体不透明度.
+        /// </summary>
+        public static string Text_ProxyFloat_OpacityDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.OpacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 中下.
         /// </summary>
         public static string Text_ProxyFloat_Position_BottomCenter {
@@ -4949,6 +5201,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 显示流量图表.
+        /// </summary>
+        public static string Text_ProxyFloat_ShowChart {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ShowChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 在悬浮窗中显示实时流量折线图.
+        /// </summary>
+        public static string Text_ProxyFloat_ShowChartDescription {
+            get {
+                return ResourceManager.GetString("Text.ProxyFloat.ShowChartDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 窗口位置.
         /// </summary>
         public static string Text_ProxyFloat_WindowPosition {
@@ -4999,6 +5269,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_ProxySSL_SelectFileTitle {
             get {
                 return ResourceManager.GetString("Text.ProxySSL.SelectFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道 {0} 启动失败.
+        /// </summary>
+        public static string Text_ProxyStart_StartFailed {
+            get {
+                return ResourceManager.GetString("Text.ProxyStart.StartFailed", resourceCulture);
             }
         }
         
@@ -7257,6 +7536,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 认证失败：登录凭证无效或已过期，请重新登录后重试.
+        /// </summary>
+        public static string Text_TunnelError_AuthFailed {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.AuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 无法连接到本地服务.
         /// </summary>
         public static string Text_TunnelError_InfoCannotConnectLocal {
@@ -7334,6 +7622,42 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_TunnelError_InfoTunnelOnline {
             get {
                 return ResourceManager.GetString("Text.TunnelError.InfoTunnelOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 本地服务未启动.
+        /// </summary>
+        public static string Text_TunnelError_LocalServiceUnavailable {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.LocalServiceUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 节点不可达：无法连接节点或节点未确认在线，请检查网络后重试.
+        /// </summary>
+        public static string Text_TunnelError_NodeUnreachable {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.NodeUnreachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 端口被占用：远程端口已被其他隧道或服务占用，请更换端口后重试.
+        /// </summary>
+        public static string Text_TunnelError_PortInUse {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.PortInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 进程异常退出（退出码 {0}）：mefrpc 客户端意外终止.
+        /// </summary>
+        public static string Text_TunnelError_ProcessCrashedFormat {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.ProcessCrashedFormat", resourceCulture);
             }
         }
         
@@ -7433,6 +7757,69 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_TunnelError_SolutionTunnelDisabledDetail {
             get {
                 return ResourceManager.GetString("Text.TunnelError.SolutionTunnelDisabledDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 未知错误：请复制错误信息反馈给开发者.
+        /// </summary>
+        public static string Text_TunnelError_Unknown {
+            get {
+                return ResourceManager.GetString("Text.TunnelError.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 失败.
+        /// </summary>
+        public static string Text_TunnelStatus_Failed {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 空闲.
+        /// </summary>
+        public static string Text_TunnelStatus_Idle {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重连中.
+        /// </summary>
+        public static string Text_TunnelStatus_Reconnecting {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Reconnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 运行中.
+        /// </summary>
+        public static string Text_TunnelStatus_Running {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动中.
+        /// </summary>
+        public static string Text_TunnelStatus_Starting {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已停止.
+        /// </summary>
+        public static string Text_TunnelStatus_Stopped {
+            get {
+                return ResourceManager.GetString("Text.TunnelStatus.Stopped", resourceCulture);
             }
         }
         
@@ -7572,6 +7959,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 更新下载失败，请重试；若持续失败，可在「设置」中切换下载源.
+        /// </summary>
+        public static string Text_Update_DownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 正在下载更新.
         /// </summary>
         public static string Text_Update_Downloading {
@@ -7586,6 +7982,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_FetchFailed {
             get {
                 return ResourceManager.GetString("Text.Update.FetchFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 获取更新信息失败：请检查网络连接后重试；若持续失败，可在「设置」中切换下载源.
+        /// </summary>
+        public static string Text_Update_FetchFailedTip {
+            get {
+                return ResourceManager.GetString("Text.Update.FetchFailedTip", resourceCulture);
             }
         }
         
@@ -7707,6 +8112,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 重试下载.
+        /// </summary>
+        public static string Text_Update_RetryDownload {
+            get {
+                return ResourceManager.GetString("Text.Update.RetryDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 接收应用稳定版的更新，包含较新且稳定的特性和改进。.
         /// </summary>
         public static string Text_Update_StableChannelDesc {
@@ -7802,6 +8216,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_UpdateSettings {
             get {
                 return ResourceManager.GetString("Text.Update.UpdateSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下载文件校验失败，文件可能已损坏，请重试.
+        /// </summary>
+        public static string Text_Update_VerifyFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.VerifyFailed", resourceCulture);
             }
         }
         
@@ -8320,6 +8743,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 复制错误信息.
+        /// </summary>
+        public static string Text_UserProxy_CopyErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.CopyErrorInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 创建自节点: {0}.
         /// </summary>
         public static string Text_UserProxy_CreatedFromNodeFormat {
@@ -8446,6 +8878,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 错误信息已复制.
+        /// </summary>
+        public static string Text_UserProxy_ErrorCopied {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.ErrorCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 强制下线.
         /// </summary>
         public static string Text_UserProxy_ForceOffline {
@@ -8479,6 +8920,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_UserProxy_LaunchCancelledFormat {
             get {
                 return ResourceManager.GetString("Text.UserProxy.LaunchCancelledFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道 {0} 启动失败: {1}.
+        /// </summary>
+        public static string Text_UserProxy_LaunchFailedFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.LaunchFailedFormat", resourceCulture);
             }
         }
         
