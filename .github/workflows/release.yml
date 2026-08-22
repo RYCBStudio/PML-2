@@ -303,6 +303,7 @@ jobs:
           mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
           cp -a "$OUT/." "$APP/Contents/MacOS/"
           chmod +x "$APP/Contents/MacOS/${EXE}" || true
+          chmod +x "$APP/Contents/MacOS/Tools/splash" || true
 
           if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
             cp "${{ github.workspace }}/installer/macos/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
@@ -321,7 +322,7 @@ jobs:
             <key>CFBundleIdentifier</key>
             <string>tech.rycb.pml2</string>
             <key>CFBundleName</key>
-            <string>PML 2</string>
+            <string>PML2</string>
             <key>CFBundleDisplayName</key>
             <string>PML 2</string>
             <key>CFBundlePackageType</key>
@@ -331,7 +332,7 @@ jobs:
             <key>CFBundleVersion</key>
             <string>${V}</string>
             <key>LSMinimumSystemVersion</key>
-            <string>13.0</string>
+            <string>12.0</string>
             <key>NSHighResolutionCapable</key>
             <true/>
           ${ICON_KEY}
@@ -340,7 +341,7 @@ jobs:
           EOF
 
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
-          xattr -cr "$APP" || true
+          xattr -crd "$APP" || true
 
           # Finder 模板（保持原流程）
           mkdir -p "$STAGE/.background"
