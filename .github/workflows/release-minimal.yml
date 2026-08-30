@@ -1,0 +1,154 @@
+name: DMG osx-x64 (minimal)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（不带 v）'
+        required: true
+        type: string
+      force_rebuild:
+        description: '忽略缓存，强制重新 publish'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
+  APP_EXE: MEFrpLauncherX
+  APP_BUNDLE_NAME: 'PML 2.app'
+  DMG_BACKGROUND: installer/macos/pml2-dmg-background.png
+  PUBLISH_OUT: publish/osx-x64
+
+jobs:
+  dmg:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache publish output
+        id: cache-publish
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PUBLISH_OUT }}
+          # 代码或工程文件变了就失效；只调 DMG 时可命中
+          key: publish-osx-x64-${{ hashFiles(env.PROJECT, 'MEFrpLauncherX/**/*.cs', 'MEFrpLauncherX/**/*.csproj', 'MEFrpLauncherX.Core/**/*.cs', 'MEFrpLauncherX.Core/**/*.csproj') }}
+          restore-keys: |
+            publish-osx-x64-
+
+      - name: Setup .NET
+        if: steps.cache-publish.outputs.cache-hit != 'true' || inputs.force_rebuild
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish R2R (osx-x64)
+        if: steps.cache-publish.outputs.cache-hit != 'true' || inputs.force_rebuild
+        run: |
+          set -euo pipefail
+          OUT="${{ env.PUBLISH_OUT }}"
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+          dotnet publish "$PROJECT" \
+            -c Release -r osx-x64 --self-contained true \
+            -p:PublishReadyToRun=true -p:PublishTrimmed=true \
+            -o "$OUT" --nologo -v q
+          chmod +x "$OUT/$APP_EXE"
+          echo "Publish done, files: $(find "$OUT" -type f | wc -l)"
+
+      - name: Ensure executable bit
+        run: |
+          set -euo pipefail
+          test -d "${{ env.PUBLISH_OUT }}" || { echo "publish 目录不存在"; exit 1; }
+          chmod +x "${{ env.PUBLISH_OUT }}/$APP_EXE"
+
+      - name: Build .app + DMG
+        run: |
+          set -euo pipefail
+
+          V="${{ inputs.version }}"
+          V="${V#v}"
+
+          OUT="${{ env.PUBLISH_OUT }}"
+          EXE="$APP_EXE"
+          BUNDLE="$APP_BUNDLE_NAME"
+
+          STAGE="$(pwd)/dmg-stage"
+          rm -rf "$STAGE"
+          mkdir -p "$STAGE"
+
+          APP="$STAGE/$BUNDLE"
+
+          mkdir -p "$APP/Contents/MacOS"
+          mkdir -p "$APP/Contents/Resources"
+
+          cp -a "$OUT/." "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/$EXE"
+
+          cat > "$APP/Contents/Info.plist" << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key><string>${EXE}</string>
+            <key>CFBundleIdentifier</key><string>tech.rycb.pml2</string>
+            <key>CFBundleName</key><string>PML 2</string>
+            <key>CFBundleDisplayName</key><string>PML 2</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>${V}</string>
+            <key>CFBundleVersion</key><string>${V}</string>
+            <key>LSMinimumSystemVersion</key><string>13.0</string>
+            <key>NSHighResolutionCapable</key><true/>
+          </dict>
+          </plist>
+          EOF
+
+          echo -n 'APPL????' > "$APP/Contents/PkgInfo"
+
+          xattr -cr "$APP" || true
+
+          #
+          # Finder 模板
+          #
+          mkdir -p "$STAGE/.background"
+
+          cp installer/macos/.DS_Store \
+            "$STAGE/.DS_Store"
+
+          cp -a installer/macos/. "$STAGE/"
+
+          ln -s /Applications "$STAGE/Applications"
+
+          mkdir -p dist
+
+          RW_DMG="$(pwd)/dist/pml2-rw.dmg"
+          FINAL_DMG="$(pwd)/dist/pml2-${V}-macos-x64.dmg"
+
+          rm -f "$RW_DMG" "$FINAL_DMG"
+
+          echo "Creating writable DMG..."
+
+          hdiutil create \
+            -volname "PML 2" \
+            -srcfolder "$STAGE" \
+            -ov \
+            -format UDRW \
+            "$RW_DMG"
+
+          echo "Compressing..."
+
+          hdiutil convert \
+            "$RW_DMG" \
+            -format UDZO \
+            -imagekey zlib-level=9 \
+            -o "$FINAL_DMG"
+
+          rm "$RW_DMG"
+
+          ls -lh "$FINAL_DMG"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pml2-macos-x64-dmg
+          path: dist/*.dmg
