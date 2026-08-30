@@ -14,8 +14,12 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   PROJECT: MEFrpLauncherX/MEFrpLauncherX.csproj
-  # publish 目录里的实际可执行文件名，若不同请改这里
   APP_EXE: MEFrpLauncherX
+  APP_BUNDLE_NAME: 'PML 2.app'
+  CRASH_PROJECT: MEFrpLauncherX.CrashDisplayer/MEFrpLauncherX.CrashDisplayer.csproj
+  SPLASH_PROJECT: RYCB.PML2.Splash/RYCB.PML2.Splash/RYCB.PML2.Splash.csproj
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
   build:
@@ -24,26 +28,58 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Linux R2R（x64 runner 交叉即可）
+          # - rid: linux-x64
+          #   os: ubuntu-latest
+          #   os_name: linux
+          #   arch: x64
+          #   pkg_arch: amd64
+          #   mode: r2r
+          # - rid: linux-arm64
+          #   os: ubuntu-latest
+          #   os_name: linux
+          #   arch: arm64
+          #   pkg_arch: arm64
+          #   mode: r2r
+          # Linux AOT：x64 原生；arm64 用 ARM runner 避免交叉链接失败
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
             arch: x64
             pkg_arch: amd64
+            mode: aot
           - rid: linux-arm64
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             os_name: linux
             arch: arm64
             pkg_arch: arm64
+            mode: aot
+          # macOS R2R
+          # - rid: osx-x64
+          #   os: macos-latest
+          #   os_name: macos
+          #   arch: x64
+          #   pkg_arch: x64
+          #   mode: r2r
+          # - rid: osx-arm64
+          #   os: macos-latest
+          #   os_name: macos
+          #   arch: arm64
+          #   pkg_arch: arm64
+          #   mode: r2r
+          # macOS AOT
           - rid: osx-x64
             os: macos-latest
             os_name: macos
             arch: x64
             pkg_arch: x64
+            mode: aot
           - rid: osx-arm64
             os: macos-latest
             os_name: macos
             arch: arm64
             pkg_arch: arm64
+            mode: aot
 
     steps:
       - name: Checkout
@@ -54,6 +90,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Install native AOT toolchain (Linux)
+        if: matrix.os_name == 'linux'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y clang zlib1g-dev
+
       - name: Resolve version
         id: ver
         shell: bash
@@ -63,37 +105,195 @@ jobs:
           else
             V="${GITHUB_REF_NAME#v}"
           fi
-          # 去掉可能的前导 v
           V="${V#v}"
-          echo "version=$V" >> $GITHUB_OUTPUT
+          echo "version=$V" >> "$GITHUB_OUTPUT"
           echo "Resolved version: $V"
 
-      - name: Publish (ReadyToRun)
+      # ---------- CrashDisplayer & Splash：缓存 + AOT 构建 ----------
+      - name: Cache CrashDisplayer & Splash
+        id: cache-tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools-cache/${{ matrix.rid }}/CrashDisplayer
+            tools-cache/${{ matrix.rid }}/Splash
+          key: tools-${{ matrix.rid }}-${{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
+          restore-keys: |
+            tools-${{ matrix.rid }}-
+
+      - name: Publish CrashDisplayer (AOT + SingleFile)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
         shell: bash
         run: |
           set -euo pipefail
-          OUT="./publish/${{ matrix.rid }}"
+          OUT="tools-cache/${{ matrix.rid }}/CrashDisplayer"
           mkdir -p "$OUT"
-          dotnet publish "${{ env.PROJECT }}" \
+
+          dotnet publish "${{ env.CRASH_PROJECT }}" \
             -c Release \
             -r "${{ matrix.rid }}" \
             --self-contained true \
-            -p:PublishReadyToRun=true \
-            -p:PublishTrimmed=true \
+            -p:PublishAot=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
             -o "$OUT" \
-            --nologo -v q
+            --nologo -v minimal
+
+          # 清理符号文件
+          find "$OUT" -type f \( \
+            -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
+            -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
+            -name "*.lib" -o -name "*.map" \
+          \) -delete 2>/dev/null || true
+
+          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+
+          echo "===== CrashDisplayer (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Publish Splash (AOT + SingleFile)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="tools-cache/${{ matrix.rid }}/Splash"
+          mkdir -p "$OUT"
+
+          dotnet publish "${{ env.SPLASH_PROJECT }}" \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishAot=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # 清理符号文件
+          find "$OUT" -type f \( \
+            -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
+            -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
+            -name "*.lib" -o -name "*.map" \
+          \) -delete 2>/dev/null || true
+
+          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+
+          echo "===== Splash (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Publish main app
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          mkdir -p "$OUT"
+          echo "Publishing -> $OUT (rid=${{ matrix.rid }} mode=${{ matrix.mode }})"
+
+          if [ "${{ matrix.mode }}" = "aot" ]; then
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishAot=true \
+              -p:PublishTrimmed=true \
+              -o "$OUT" \
+              --nologo -v q
+          else
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishReadyToRun=true \
+              -p:PublishTrimmed=true \
+              -o "$OUT" \
+              --nologo -v q
+          fi
+
+          # 禁止 ls|head + pipefail 触发 Broken pipe
+          echo "Publish file count: $(find "$OUT" -type f | wc -l)"
           if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
             chmod +x "$OUT/${{ env.APP_EXE }}"
+          else
+            echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
+            find "$OUT" -maxdepth 1 -type f | head -20 || true
           fi
-          echo "Publish OK, file count: $(find "$OUT" -type f | wc -l)"
+
+      - name: Place CrashDisplayer & Splash into Tools/
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          TOOLS="$OUT/Tools"
+          mkdir -p "$TOOLS"
+
+          CRASH_SRC="tools-cache/${{ matrix.rid }}/CrashDisplayer"
+          SPLASH_SRC="tools-cache/${{ matrix.rid }}/Splash"
+
+          # CrashDisplayer：保持原名，整目录内容拷入 Tools（SingleFile 通常只有一个可执行文件）
+          if [ -d "$CRASH_SRC" ]; then
+            # 找到主可执行文件（无扩展名或与项目相关）
+            # 优先拷贝所有文件，保留原名
+            cp -a "$CRASH_SRC"/. "$TOOLS/"
+            echo "CrashDisplayer copied to $TOOLS"
+            ls -lh "$TOOLS" || true
+          else
+            echo "ERROR: CrashDisplayer cache/build missing: $CRASH_SRC"
+            exit 1
+          fi
+
+          # Splash：重命名为 splash（小写），放入 Tools/
+          if [ -d "$SPLASH_SRC" ]; then
+            # 找主可执行文件：通常是无扩展名的二进制
+            MAIN_EXE=""
+            for f in "$SPLASH_SRC"/*; do
+              [ -f "$f" ] || continue
+              base=$(basename "$f")
+              # 跳过已知非主程序文件
+              case "$base" in
+                *.json|*.pdb|*.dbg|*.config|*.xml) continue ;;
+              esac
+              if [ -x "$f" ] || [[ "$base" != *.* ]]; then
+                MAIN_EXE="$f"
+                break
+              fi
+            done
+            if [ -z "$MAIN_EXE" ]; then
+              # fallback：取第一个文件
+              MAIN_EXE=$(find "$SPLASH_SRC" -type f -print -quit)
+            fi
+            if [ -n "$MAIN_EXE" ] && [ -f "$MAIN_EXE" ]; then
+              cp -a "$MAIN_EXE" "$TOOLS/splash"
+              chmod +x "$TOOLS/splash"
+              echo "Splash renamed to splash and placed at $TOOLS/splash"
+            else
+              echo "ERROR: could not find Splash executable in $SPLASH_SRC"
+              ls -la "$SPLASH_SRC" || true
+              exit 1
+            fi
+          else
+            echo "ERROR: Splash cache/build missing: $SPLASH_SRC"
+            exit 1
+          fi
+
+          echo "===== Tools/ final contents ====="
+          ls -lh "$TOOLS" || true
 
       - name: Inject Sentry DSN
         shell: bash
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
-          OUT="./publish/${{ matrix.rid }}"
-          if [ -n "$SENTRY_DSN" ]; then
+          set -euo pipefail
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          if [ -n "${SENTRY_DSN:-}" ]; then
             printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
             echo "sentry.json injected"
           else
@@ -102,47 +302,40 @@ jobs:
 
       - name: Install zstd (Ubuntu)
         if: matrix.os_name == 'linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y zstd
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y zstd
 
-      - name: Install zstd (macOS)
-        if: matrix.os_name == 'macos'
-        run: brew list zstd &>/dev/null || brew install zstd
-
-      - name: Pack tar.gz + tar.zst
-        id: pack
+      - name: Pack tar.gz + tar.zst (Linux only)
+        if: matrix.os_name == 'linux'
         shell: bash
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          RID="${{ matrix.rid }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
           OS_NAME="${{ matrix.os_name }}"
           ARCH="${{ matrix.arch }}"
-          OUT="./publish/${RID}"
-          mkdir -p dist
+          MODE="${{ matrix.mode }}"
 
+          mkdir -p "$DIST"
+          echo "Packing from: $OUT"
           if [ ! -d "$OUT" ]; then
-            echo "Publish dir missing: $OUT"
+            echo "ERROR: publish dir missing: $OUT"
+            ls -la "${{ github.workspace }}/publish" || true
             exit 1
           fi
 
-          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.gz"
-          TZST="pml2-${V}-${OS_NAME}-${ARCH}-portable.tar.zst"
+          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.gz"
+          TZST="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.zst"
 
-          # tar.gz：先 tar 再 gzip（避免 -czf 和 -C 组合踩坑）
-          tar -C "$OUT" -cf - . | gzip -9 > "dist/${TGZ}"
+          tar -C "$OUT" -cf - . | gzip -9 > "$DIST/$TGZ"
+          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "$DIST/$TZST"
 
-          # tar.zst：先 tar 再 zstd（Linux/macOS 通用，不依赖 GNU -I）
-          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "dist/${TZST}"
+          gzip -t "$DIST/$TGZ"
+          zstd -t "$DIST/$TZST"
+          ls -lh "$DIST" || true
 
-          # 完整性检查（失败会直接退出）
-          gzip -t "dist/${TGZ}"
-          zstd -t "dist/${TZST}"
-
-          ls -lh dist/ || true
-          echo "tgz=${TGZ}" >> "$GITHUB_OUTPUT"
-          echo "tzst=${TZST}" >> "$GITHUB_OUTPUT"
-
-      # ---------- deb + rpm（仅 Linux）----------
       - name: Install nFPM
         if: matrix.os_name == 'linux'
         shell: bash
@@ -160,18 +353,23 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          RID="${{ matrix.rid }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           PKG_ARCH="${{ matrix.pkg_arch }}"
-          OUT="./publish/${RID}"
-          ROOT="pkgroot"
-          EXE="${{ env.APP_EXE }}"   # publish 里的真实二进制，如 MEFrpLauncherX
+          MODE="${{ matrix.mode }}"
+          ROOT="${{ github.workspace }}/pkgroot"
+          EXE="${{ env.APP_EXE }}"
+
+          if [ ! -d "$OUT" ]; then
+            echo "ERROR: publish dir missing: $OUT"
+            exit 1
+          fi
 
           rm -rf "$ROOT"
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
           cp -a "$OUT/." "$ROOT/opt/pml-2/"
 
-          # /usr/bin/pml-2 → 启动 /opt/pml-2 下主程序
           cat > "$ROOT/usr/bin/pml-2" << EOF
           #!/bin/sh
           exec /opt/pml-2/${EXE} "\$@"
@@ -191,7 +389,7 @@ jobs:
           StartupNotify=true
           EOF
 
-          cat > nfpm.yaml << EOF
+          cat > "${{ github.workspace }}/nfpm.yaml" << EOF
           name: pml-2
           arch: ${PKG_ARCH}
           platform: linux
@@ -200,7 +398,7 @@ jobs:
           priority: optional
           maintainer: RYCB Studio <im@rycb.tech>
           description: |
-            PML 2 is a cross-platform graphical launcher for ME Frp.
+            PML 2 is a cross-platform graphical launcher for ME Frp (${MODE}).
           vendor: RYCB Studio
           homepage: https://www.rycb.tech/pml-2
           license: MIT
@@ -216,16 +414,114 @@ jobs:
               dst: /usr/share/applications/pml-2.desktop
           EOF
 
-          mkdir -p dist
-          nfpm package -f nfpm.yaml -p deb -t "dist/pml2-${V}-linux-${ARCH}.deb"
-          nfpm package -f nfpm.yaml -p rpm -t "dist/pml2-${V}-linux-${ARCH}.rpm"
-          ls -lh dist/*.deb dist/*.rpm
-          
+          mkdir -p "$DIST"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.deb"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.rpm"
+          ls -lh "$DIST"/*.deb "$DIST"/*.rpm || true
+
+      - name: Build .app + custom DMG
+        if: matrix.os_name == 'macos'
+        shell: bash
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          DIST="${{ github.workspace }}/dist"
+          ARCH="${{ matrix.arch }}"
+          MODE="${{ matrix.mode }}"
+          EXE="${{ env.APP_EXE }}"
+          BUNDLE="${{ env.APP_BUNDLE_NAME }}"
+          STAGE="${{ github.workspace }}/dmg-stage"
+
+          echo "DMG from: $OUT (mode=$MODE arch=$ARCH)"
+          if [ ! -d "$OUT" ]; then
+            echo "ERROR: publish dir missing: $OUT"
+            ls -la "${{ github.workspace }}/publish" || true
+            exit 1
+          fi
+
+          rm -rf "$STAGE"
+          APP="$STAGE/$BUNDLE"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp -a "$OUT/." "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/${EXE}" || true
+          chmod +x "$APP/Contents/MacOS/Tools/splash" || true
+          # CrashDisplayer 若在 Tools 下也一并赋权
+          find "$APP/Contents/MacOS/Tools" -type f -exec chmod +x {} \; 2>/dev/null || true
+
+          if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
+            cp "${{ github.workspace }}/installer/macos/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
+            ICON_KEY='    <key>CFBundleIconFile</key><string>AppIcon</string>'
+          else
+            ICON_KEY=''
+          fi
+
+          cat > "$APP/Contents/Info.plist" << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleExecutable</key>
+            <string>${EXE}</string>
+            <key>CFBundleIdentifier</key>
+            <string>tech.rycb.pml2</string>
+            <key>CFBundleName</key>
+            <string>PML2</string>
+            <key>CFBundleDisplayName</key>
+            <string>PML 2</string>
+            <key>CFBundlePackageType</key>
+            <string>APPL</string>
+            <key>CFBundleShortVersionString</key>
+            <string>${V}</string>
+            <key>CFBundleVersion</key>
+            <string>${V}</string>
+            <key>LSMinimumSystemVersion</key>
+            <string>12.0</string>
+            <key>NSHighResolutionCapable</key>
+            <true/>
+          ${ICON_KEY}
+          </dict>
+          </plist>
+          EOF
+
+          echo -n 'APPL????' > "$APP/Contents/PkgInfo"
+          xattr -crd "$APP" || true
+
+          # Finder 模板（保持原流程）
+          mkdir -p "$STAGE/.background"
+          cp "${{ github.workspace }}/installer/macos/.DS_Store" "$STAGE/.DS_Store"
+          cp -a "${{ github.workspace }}/installer/macos/." "$STAGE/"
+          ln -sf /Applications "$STAGE/Applications"
+
+          mkdir -p "$DIST"
+          RW_DMG="$DIST/pml2-rw-${ARCH}-${MODE}.dmg"
+          FINAL_DMG="$DIST/pml2-${V}-macos-${ARCH}-${MODE}.dmg"
+          rm -f "$RW_DMG" "$FINAL_DMG"
+
+          echo "Creating writable DMG (${MODE})..."
+          hdiutil create \
+            -volname "PML 2" \
+            -srcfolder "$STAGE" \
+            -ov \
+            -format UDRW \
+            "$RW_DMG"
+
+          echo "Compressing..."
+          hdiutil convert \
+            "$RW_DMG" \
+            -format UDZO \
+            -imagekey zlib-level=9 \
+            -o "$FINAL_DMG"
+
+          rm -f "$RW_DMG"
+          ls -lh "$FINAL_DMG" || true
+          hdiutil verify "$FINAL_DMG" || true
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}
-          path: dist/*
+          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}
+          path: ${{ github.workspace }}/dist/*
           if-no-files-found: error
 
   release:
@@ -245,7 +541,7 @@ jobs:
           mkdir -p upload
           find artifacts -type f -exec cp -v {} upload/ \;
           echo "======== Release files ========"
-          ls -lh upload/
+          ls -lh upload/ || true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -257,3 +553,4 @@ jobs:
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
