@@ -1,0 +1,23 @@
+# 隧道通知（官方示例）
+# 启动 / 停止隧道时发送系统通知。
+# 安装方式：复制本文件到 PML 2 的 Config/Plugins/ 目录，约 1 秒后自动热重载生效。
+id: tech.rycb.plugin.proxy-notify
+name: 隧道通知
+description: 启动与停止隧道时发送系统通知
+author: RYCB Studio
+version: "1.0"
+
+triggers:
+  - on: proxy.start
+    condition: "ctx.data.proxyName != ''"
+    actions:
+      - name: notify
+        params:
+          msg: "已启动：{{ctx.data.proxyName}}"
+
+  - on: proxy.stop
+    condition: "ctx.data.proxyName != ''"
+    actions:
+      - name: notify
+        params:
+          msg: "已停止：{{ctx.data.proxyName}}"

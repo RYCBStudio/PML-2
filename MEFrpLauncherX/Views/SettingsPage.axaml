@@ -93,6 +93,31 @@
                         </ComboBox>
                     </controls:SettingsExpanderItem.Footer>
                 </controls:SettingsExpanderItem>
+                <!-- 26.3.1 M2：启动画面样式 / 自定义背景图 / 开关 -->
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Splash}"
+                                               IconSource="Image"
+                                               Description="{x:Static languages:Languages.Text_Settings_SplashDescription}">
+                    <controls:SettingsExpanderItem.Footer>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ToggleSwitch x:Name="SplashEnabledSwitch" IsCheckedChanged="SplashEnabledChanged"
+                                          VerticalAlignment="Center" />
+                            <ComboBox x:Name="SplashStyleBox" SelectionChanged="SplashStyleChanged"
+                                      MinWidth="110" VerticalAlignment="Center">
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_SplashStyle_Default}"
+                                              Tag="default" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_SplashStyle_Dark}"
+                                              Tag="dark" />
+                                <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_SplashStyle_Minimal}"
+                                              Tag="minimal" />
+                            </ComboBox>
+                            <Button x:Name="SplashCustomImageBtn" Click="SplashCustomImageClicked"
+                                    Classes="accent" VerticalAlignment="Center"
+                                    Content="{x:Static languages:Languages.Text_Settings_SplashCustomImage}" />
+                            <TextBlock Text="{x:Static languages:Languages.Text_Settings_SplashRestartHint}"
+                                       FontSize="12" Opacity="0.7" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </controls:SettingsExpanderItem.Footer>
+                </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
             <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}"
                                        Description="{x:Static languages:Languages.Text_Settings_StartupDescription}">

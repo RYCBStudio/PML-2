@@ -15,11 +15,13 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
@@ -80,6 +82,18 @@ public class PluginListViewModel : ViewModelBase
         get;
     }
 
+    // ---- 表单编辑器入口（26.3.1 S6）----
+
+    public ReactiveCommand<Unit, Unit> NewPluginCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> EditPluginCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<Unit, Unit> DragEnterCommand
     {
         get;
@@ -91,6 +105,20 @@ public class PluginListViewModel : ViewModelBase
     }
 
     public bool IsEmpty => !Plugins.Any();
+
+    // ---- 执行日志（26.3.1 S4）----
+
+    public ObservableCollection<PluginExecutionLogEntry> ExecutionLogs
+    {
+        get;
+    } = [];
+
+    public bool IsLogEmpty => !ExecutionLogs.Any();
+
+    public ReactiveCommand<Unit, Unit> ClearExecutionLogsCommand
+    {
+        get;
+    }
 
     public bool IsDragOver
     {
@@ -147,6 +175,18 @@ public class PluginListViewModel : ViewModelBase
     {
         OnlinePlugins = [];
         FilteredOnlinePlugins = [];
+        ClearExecutionLogsCommand = ReactiveCommand.Create(() =>
+        {
+            _pluginService.ClearExecutionLogs();
+            ExecutionLogs.Clear();
+            this.RaisePropertyChanged(nameof(IsLogEmpty));
+        });
+        // 加载已有执行日志并订阅新增（UI 线程刷新）
+        foreach (var entry in _pluginService.ExecutionLogs)
+        {
+            ExecutionLogs.Add(entry);
+        }
+        _pluginService.ExecutionLogAdded += OnExecutionLogAdded;
         ReloadPluginsCommand = ReactiveCommand.Create(ReloadPlugins);
         InstallPluginCommand = ReactiveCommand.CreateFromTask(InstallPluginAsync);
         UninstallPluginCommand = ReactiveCommand.CreateFromTask(UninstallPluginAsync,
@@ -156,6 +196,9 @@ public class PluginListViewModel : ViewModelBase
         ViewYamlCommand = ReactiveCommand.CreateFromTask(ViewYamlAsync,
             this.WhenAnyValue(x => x.SelectedPlugin, (PluginInfo? p) => p != null));
         OpenPluginFolderCommand = ReactiveCommand.Create<string>(OpenPluginFolder);
+        NewPluginCommand = ReactiveCommand.CreateFromTask(OpenNewPluginEditorAsync);
+        EditPluginCommand = ReactiveCommand.CreateFromTask(OpenEditPluginEditorAsync,
+            this.WhenAnyValue(x => x.SelectedPlugin, (PluginInfo? p) => p != null));
         DragEnterCommand = ReactiveCommand.Create(() =>
         {
             IsDragOver = true;
@@ -409,6 +452,62 @@ public class PluginListViewModel : ViewModelBase
                 .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_PluginList_DownloadInstallFailedFormat, ex.Message), ButtonEnum.Ok, Icon.Error)
                 .ShowAsync();
         }
+    }
+
+    /// <summary>打开表单编辑器：新建插件</summary>
+    private async Task OpenNewPluginEditorAsync()
+    {
+        var vm = new PluginEditor.PluginEditorViewModel();
+        await ShowEditorDialogAsync(vm);
+    }
+
+    /// <summary>打开表单编辑器：编辑选中插件；无法用表单打开时提示并打开插件目录</summary>
+    private async Task OpenEditPluginEditorAsync()
+    {
+        var selected = SelectedPlugin;
+        if (selected == null)
+        {
+            return;
+        }
+
+        var yaml = _pluginService.GetPluginYaml(selected.Id);
+        if (yaml == null)
+        {
+            Growl.Warning(Languages.Text_PluginList_CannotOpenInForm);
+            OpenPluginFolder("plugins");
+            return;
+        }
+
+        try
+        {
+            var vm = new PluginEditor.PluginEditorViewModel(yaml);
+            await ShowEditorDialogAsync(vm);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Warning($"无法用表单打开插件 {selected.Id}: {ex.Message}");
+            Growl.Warning(Languages.Text_PluginList_CannotOpenInForm);
+            OpenPluginFolder("plugins");
+        }
+    }
+
+    private async Task ShowEditorDialogAsync(PluginEditor.PluginEditorViewModel vm)
+    {
+        var window = new PluginEditorWindow(vm);
+        await window.ShowDialog(Core.App.MainWindow);
+        // 保存后刷新列表（热重载由文件监听触发，此处同步一次保证列表即时一致）
+        LoadPlugins();
+    }
+
+    /// <summary>执行日志新增回调（引擎线程触发，回 UI 线程追加）</summary>
+    private void OnExecutionLogAdded(PluginExecutionLogEntry entry)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            ExecutionLogs.Insert(0, entry);
+            while (ExecutionLogs.Count > 200) ExecutionLogs.RemoveAt(ExecutionLogs.Count - 1);
+            this.RaisePropertyChanged(nameof(IsLogEmpty));
+        });
     }
 
     private void LoadPlugins()

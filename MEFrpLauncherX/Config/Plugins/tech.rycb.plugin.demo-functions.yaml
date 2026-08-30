@@ -1,0 +1,34 @@
+# 官方示例：函数库与表达式（26.3.1 M5）
+#
+# 覆盖能力：
+#   1. 条件表达式内置函数：len / upper / lower / coalesce / min / max / now
+#   2. 条件表达式四则运算与括号：+ - * / 与 ()
+#   3. open_url 动作：用系统默认浏览器打开链接
+#
+# 用法：复制到 Config/Plugins/ 目录（或直接用「插件页 → 新建插件」表单粘贴本文件内容），
+#       保存后约 1 秒热重载生效。
+id: tech.rycb.plugin.demo-functions
+name: 函数库演示
+description: 演示条件表达式内置函数、算术运算与 open_url 动作
+author: RYCB Studio
+version: "1.0"
+
+triggers:
+  # 隧道名长度大于 0 且忽略大小写等于 web 时记录日志
+  - on: proxy.start
+    condition: "len(ctx.data.proxyName) > 0 -and upper(ctx.data.proxyName) -eq 'WEB'"
+    actions:
+      - name: log
+        params:
+          msg: "隧道 {{ctx.data.proxyName}} 已启动（名称长度 {{len(ctx.data.proxyName)}}）"
+
+  # 失败分类缺失时视为 timeout，且重试次数不超过 3 次才通知
+  - on: proxy.failed
+    condition: "coalesce(ctx.data.errorCategory, 'timeout') -eq 'timeout' -and min(ctx.variables.retryCount, 3) -le 3"
+    actions:
+      - name: notify
+        params:
+          msg: "隧道 {{ctx.data.proxyName}} 失败：{{ctx.data.errorMessage}}"
+      - name: open_url
+        params:
+          url: "https://docs.rycb.tech/pml-2-plugin/triggers"

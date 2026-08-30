@@ -14,7 +14,7 @@ namespace MEFrpLauncherX.Core;
 
 public class App : IDisposable
 {
-    public const string Version = "26.3.0";
+    public const string Version = "26.3.1";
     public const string MEFrpVersion = "0.67.1_20260626_af59eefd";
 
     public static string Flag = "Desktop";
@@ -26,15 +26,13 @@ public class App : IDisposable
 #endif
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
 
-    public static AppJsonSerializerContext AppJsonSerializerContext;
+    public static AppJsonSerializerContext? AppJsonSerializerContext;
 
     public static string? SelectedTheme
     {
         get;
         set;
     }
-
-    public static WindowNotificationManager? WindowNotificationManager;
 
     public static MessageManager PML2MsgMnger = new()
     {

@@ -7,6 +7,8 @@
              xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              xmlns:services="clr-namespace:MEFrpLauncherX.Services;assembly=MEFrpLauncherX.Plugin"
              xmlns:services1="clr-namespace:MEFrpLauncherX.Plugin.Services;assembly=MEFrpLauncherX.Plugin"
+             xmlns:core="clr-namespace:MEFrpLauncherX.Plugin.Core;assembly=MEFrpLauncherX.Plugin"
+             xmlns:conv="using:MEFrpLauncherX"
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Views.PluginListPage"
@@ -69,7 +71,9 @@
                 </Border>
                 <controls:CommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
                     <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
+                        <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_NewPlugin}"
+                                                   Command="{Binding NewPluginCommand}" />
+                        <controls:CommandBarButton IconSource="Install" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
                                                    Command="{Binding InstallPluginCommand}" />
                         <controls:CommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                    Command="{Binding ReloadPluginsCommand}" />
@@ -77,6 +81,9 @@
                                                    Command="{Binding OpenPluginFolderCommand}"
                                                    CommandParameter="plugins" />
                         <controls:CommandBarSeparator />
+                        <controls:CommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_PluginList_EditPlugin}"
+                                                   Command="{Binding EditPluginCommand}"
+                                                   IsEnabled="{Binding !!SelectedPlugin}" />
                         <controls:CommandBarButton IconSource="Code" Label="{x:Static languages:Languages.Text_PluginList_ViewSource}"
                                                    Command="{Binding ViewYamlCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
@@ -288,6 +295,77 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <controls1:IconContent Symbol="Document"
+                                        Label="{x:Static languages:Languages.Text_PluginList_ExecutionLogs}" />
+            </TabItem.Header>
+            <Grid RowDefinitions="Auto, *" Margin="10">
+                <controls:CommandBar DefaultLabelPosition="Right" Margin="0,0,0,10">
+                    <controls:CommandBar.PrimaryCommands>
+                        <controls:CommandBarButton IconSource="Delete"
+                                                   Label="{x:Static languages:Languages.Text_PluginList_ClearLogs}"
+                                                   Command="{Binding ClearExecutionLogsCommand}" />
+                    </controls:CommandBar.PrimaryCommands>
+                </controls:CommandBar>
+
+                <ListBox Grid.Row="1" ItemsSource="{Binding ExecutionLogs}" Margin="0,0,0,10">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="core:PluginExecutionLogEntry">
+                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto" Margin="8,6"
+                                  Classes="animated">
+                                <!-- 状态色条 -->
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Width="6"
+                                        CornerRadius="3" Margin="0,0,12,0" VerticalAlignment="Stretch"
+                                        Background="{DynamicResource TextFillColorTertiaryBrush}" />
+                                <!-- 首行：时间 + 插件 + 事件 + 状态 -->
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="8"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss}" FontSize="11"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    <TextBlock Text="{Binding PluginId}" FontWeight="Bold" FontSize="13" />
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                        <TextBlock Text="{Binding EventName}" FontSize="11"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    </Border>
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                            IsVisible="{Binding ActionName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                        <TextBlock Text="{Binding ActionName}" FontSize="11"
+                                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+                                    </Border>
+                                    <TextBlock Text="{Binding Status, Converter={x:Static conv:PluginLogStatusConverter.Instance}}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                </StackPanel>
+                                <!-- 次行：消息 -->
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Message}" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" Margin="0,3,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <Border Grid.Row="1" IsHitTestVisible="False" IsVisible="{Binding IsLogEmpty}"
+                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Spacing="12" HorizontalAlignment="Center">
+                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_NoLogs}" FontSize="18"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_NoLogsHint}" FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
             </Grid>
         </TabItem>
     </TabControl>

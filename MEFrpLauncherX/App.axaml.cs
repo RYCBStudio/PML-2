@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -20,6 +21,7 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Styling;
 using MEFrpLauncherX.Core.ViewModels;
+using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Services;
 using MEFrpLauncherX.Styling;
@@ -29,7 +31,7 @@ namespace MEFrpLauncherX;
 
 public class App : Application
 {
-    public const string Codename = "Aluminum";
+    public const string Codename = "Silicon";
 #pragma warning disable CA2211
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
@@ -67,6 +69,40 @@ public class App : Application
             WriteIndented = true,
             PropertyNameCaseInsensitive = true,
         });
+
+        // 26.3.1 S2：注册插件隧道控制桥（proxy.restart 动作依赖；需在插件加载前就绪）
+        ProxyActionBridge.RestartProxy = async proxyName =>
+        {
+            try
+            {
+                var error = "";
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    // 1) 关闭现有终端标签（如存在），等待进程退出释放端口
+                    if (Views.TerminalPage.Instance is { } terminalPage)
+                    {
+                        await terminalPage.CloseTabByNameAsync(proxyName);
+                        await Task.Delay(300);
+                    }
+
+                    // 2) 查找隧道 VM 并重新启动（与主界面同源：LaunchSingleProxy）
+                    var vm = Views.ManageProxyPage.Instance?.DataContext as MEFrpLauncherX.ViewModels.ManageProxyViewModel;
+                    var proxy = vm?.AllProxies.FirstOrDefault(p => p.proxyName == proxyName);
+                    if (proxy == null)
+                    {
+                        error = $"未找到隧道: {proxyName}";
+                        return;
+                    }
+
+                    proxy.LaunchProxyCommand.Execute(proxy);
+                });
+                return string.IsNullOrEmpty(error) ? null : error;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        };
 
         // 初始化插件系统
         PluginService.Instance.LoadPlugins();

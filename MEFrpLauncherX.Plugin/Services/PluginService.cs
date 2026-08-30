@@ -3,8 +3,10 @@ using System.Text.Json;
 using AvaloniaEdit.Utils;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
+using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Engine;
 using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
 namespace MEFrpLauncherX.Plugin.Services;
@@ -26,10 +28,24 @@ public class PluginService
 
     public string PluginsFolder => _pluginsFolder;
 
+    // ---- 执行日志（26.3.1 S4）----
+
+    /// <summary>执行日志只读快照</summary>
+    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => _engine.ExecutionLogs;
+
+    /// <summary>执行日志新增事件（UI 订阅刷新）</summary>
+    public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
+
+    /// <summary>清空执行日志</summary>
+    public void ClearExecutionLogs() => _engine.ClearExecutionLogs();
+
+    private void OnExecutionLogAdded(PluginExecutionLogEntry entry) => ExecutionLogAdded?.Invoke(entry);
+
     private PluginService()
     {
         _pluginsFolder = Path.Combine(App.StartupPath, "Config", "Plugins");
         Directory.CreateDirectory(_pluginsFolder);
+        _engine.ExecutionLogAdded += OnExecutionLogAdded;
     }
 
     /// <summary>
@@ -244,6 +260,57 @@ public class PluginService
         var info = _plugins.FirstOrDefault(p => p.Id == pluginId);
         if (info == null || !File.Exists(info.FilePath)) return null;
         return File.ReadAllText(info.FilePath);
+    }
+
+    // ---- 表单编辑器支持（26.3.1 S6）----
+
+    private static readonly IDeserializer YamlDeserializer =
+        new StaticDeserializerBuilder(new YamlModelStaticContext())
+            .WithCaseInsensitivePropertyMatching()
+            .IgnoreUnmatchedProperties()
+            .Build();
+
+    private static readonly ISerializer YamlSerializer =
+        new StaticSerializerBuilder(new YamlModelStaticContext())
+            .WithNamingConvention(CamelCaseNamingConvention.Instance) // 输出文档 schema 小写字段：id/name/on/actions/params
+            .Build();
+
+    /// <summary>将 YAML 字符串反序列化为插件原始模型（失败抛异常）</summary>
+    public RawPlugin DeserializePluginYaml(string content) => YamlDeserializer.Deserialize<RawPlugin>(content);
+
+    /// <summary>将插件原始模型序列化为 YAML 字符串</summary>
+    public string SerializePluginYaml(RawPlugin plugin) => YamlSerializer.Serialize(plugin);
+
+    /// <summary>
+    ///     校验插件文件名为合法相对文件名（防路径穿越），并一次性完整写入 Config/Plugins。
+    ///     写入后由热重载自动拾取。
+    /// </summary>
+    public bool SavePluginContent(string fileName, string content, out string? error)
+    {
+        error = null;
+        var safeName = Path.GetFileName(fileName);
+        if (safeName != fileName ||
+            !(safeName.EndsWith(".yaml", StringComparison.OrdinalIgnoreCase) ||
+              safeName.EndsWith(".yml", StringComparison.OrdinalIgnoreCase)))
+        {
+            error = $"非法文件名: {fileName}";
+            return false;
+        }
+
+        try
+        {
+            var dest = Path.Combine(_pluginsFolder, safeName);
+            // 完整内容一次性写入，避免保存一半触发重载
+            File.WriteAllText(dest, content);
+            App.CurrentLogger.Log($"插件已保存: {safeName}", module: EnumLogModule.Plugin);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            App.CurrentLogger.Error(ex, $"保存插件失败: {safeName}", module: EnumLogModule.Plugin);
+            return false;
+        }
     }
 
     public PluginInfo ExtractPluginInfoFromContent(string content)

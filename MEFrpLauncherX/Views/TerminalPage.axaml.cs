@@ -146,38 +146,68 @@ public partial class TerminalPage : UserControl
         if (index >= 0 && index < MainTabCtrl.Items.Count)
         {
             var closedTabName = (MainTabCtrl.Items[index] as TabItem)?.Header?.ToString() ?? "";
-
-            // 安全释放终端资源
-            if (MainTabCtrl.Items[index] is TabItem { Content: TerminalControl terminalControl })
-            {
-                terminalControl.SendCtrlCCommand();
-                terminalControl.Dispose(); // 显式释放资源
-            }
-            else if (MainTabCtrl.Items[index] is TabItem
-                     {
-                         Content: TerminalView alternativeTerminalView
-                     })
-            {
-                await alternativeTerminalView.SendToPtyAsync(OperatingSystem.IsWindows() ? "exit \r" : "exit\n");
-                alternativeTerminalView.Terminal.Dispose();
-            }
-
-            MainTabCtrl.Items.RemoveAt(index);
-
-            if (MainTabCtrl.Items.Count > 0)
-            {
-                MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
-            }
-
-            // 26.3 M6b-Extended：隧道标签关闭 → 悬浮窗移除该项
-            ProxyFloatViewModel.ReportTunnelRemoved(closedTabName);
-
-            // 触发插件事件：代理停止
-            _ = PluginService.Instance.TriggerAsync("proxy.stop", new Dictionary<string, object>
-            {
-                ["proxyName"] = closedTabName
-            });
+            await CloseTabByNameAsync(closedTabName);
         }
+    }
+
+    /// <summary>
+    ///     按标签头关闭终端标签（26.3.1 S2：供插件 proxy.restart 等桥接能力复用）。
+    ///     与 CloseButton_Click 行为一致：安全释放终端资源、悬浮窗移除、触发 proxy.stop。
+    /// </summary>
+    public async Task CloseTabByNameAsync(string header)
+    {
+        if (string.IsNullOrEmpty(header))
+        {
+            return;
+        }
+
+        var index = -1;
+        for (var i = 0; i < MainTabCtrl.Items.Count; i++)
+        {
+            if (MainTabCtrl.Items[i] is TabItem { Header: { } h } && h.ToString() == header)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index < 0 || index >= MainTabCtrl.Items.Count)
+        {
+            return;
+        }
+
+        var closedTabName = (MainTabCtrl.Items[index] as TabItem)?.Header?.ToString() ?? "";
+
+        // 安全释放终端资源
+        if (MainTabCtrl.Items[index] is TabItem { Content: TerminalControl terminalControl })
+        {
+            terminalControl.SendCtrlCCommand();
+            terminalControl.Dispose(); // 显式释放资源
+        }
+        else if (MainTabCtrl.Items[index] is TabItem
+                 {
+                     Content: TerminalView alternativeTerminalView
+                 })
+        {
+            await alternativeTerminalView.SendToPtyAsync(OperatingSystem.IsWindows() ? "exit \r" : "exit\n");
+            alternativeTerminalView.Terminal.Dispose();
+        }
+
+        MainTabCtrl.Items.RemoveAt(index);
+
+        if (MainTabCtrl.Items.Count > 0)
+        {
+            MainTabCtrl.SelectedIndex = Math.Min(index, MainTabCtrl.Items.Count - 1);
+        }
+
+        // 26.3 M6b-Extended：隧道标签关闭 → 悬浮窗移除该项
+        ProxyFloatViewModel.ReportTunnelRemoved(closedTabName);
+
+        // 触发插件事件：代理停止
+        _ = PluginService.Instance.TriggerAsync("proxy.stop", new Dictionary<string, object>
+        {
+            ["proxyName"] = closedTabName
+        });
     }
 
     private void NewConsoleButton_Click(object sender, RoutedEventArgs e) => CreateNewTerminal();

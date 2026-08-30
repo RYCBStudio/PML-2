@@ -510,15 +510,20 @@ public static class ConfigManager
         {
             PrivacyAgreed = false,
             IsTelemetryEnabled = false,
-            Skin = Environment.OSVersion.Version.Build >= 22000 ? "Mica" :
-                OperatingSystem.IsMacOS() ? "Acrylic" : "None",
+            Skin = Environment.OSVersion.Version.Build >= 22000
+                ? "Mica"
+                : OperatingSystem.IsMacOS()
+                    ? "Acrylic"
+                    : "None",
             KickWithoutDisable = true,
             HideInsteadOfClose = true,
             ParallelDownload = true,
             ParallelCount = 16,
             AutoStartup = false,
             AutoLaunch = false,
-            AutoLaunchProxies = [],
+            AutoLaunchProxies =
+            [
+            ],
             ExpireDays = 30,
             DoNotShowSuccessMsg = true,
             Theme = "System",
@@ -554,12 +559,22 @@ public static class ConfigManager
                 Position = "rt",
                 Enabled = false
             },
+            TerminalCli = "powershell",
+            AutoLogin = false,
+            AutoSign = false,
+            Language = "zh-CN",
+            TerminalEngineType = "Default",
             CreateProxyDefaults = new CreateProxyDefaults
             {
                 LocalAddress = "127.0.0.1"
             },
-            ProxyTemplates = [],
-            AnimationLevel = 2
+            ProxyTemplates =
+            [
+            ],
+            AnimationLevel = 2,
+            SplashEnabled = true,
+            SplashStyle = "default",
+            SplashCustomImagePath = string.Empty,
         };
     }
 }
@@ -742,6 +757,29 @@ public class AppConfig
         get;
         set;
     } = 2;
+
+    /// <summary>是否显示启动画面（Splash，26.3.1 M2）</summary>
+    public bool SplashEnabled
+    {
+        get;
+        set;
+    } = true;
+
+    /// <summary>
+    ///     Splash 样式：<c>default</c> 默认 / <c>dark</c> 深色 / <c>minimal</c> 简约（26.3.1 M2）
+    /// </summary>
+    public string SplashStyle
+    {
+        get;
+        set;
+    } = "default";
+
+    /// <summary>自定义 Splash 背景图路径（可选；非空且文件存在时优先于 SplashStyle）</summary>
+    public string SplashCustomImagePath
+    {
+        get;
+        set;
+    } = string.Empty;
 }
 
 public class HomeConfig

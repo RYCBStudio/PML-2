@@ -1,3 +1,6 @@
+using System.Collections.Concurrent;
+using System.Text;
+using System.Text.RegularExpressions;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Condition;
 using MEFrpLauncherX.Plugin.Core;
@@ -7,10 +10,33 @@ namespace MEFrpLauncherX.Plugin.Engine;
 
 public class PluginEngine : IAction
 {
+    private const int MaxLogEntries = 200;
     private readonly Dictionary<string, List<PluginDefinition>> _triggerMap = new();
     private readonly FunctionRegistry _funcRegistry = new();
     private readonly Dictionary<string, IAction> _builtinActions;
     private readonly CallFunctionAction _callFuncAction;
+    private readonly ConcurrentQueue<PluginExecutionLogEntry> _executionLogs = new();
+
+    /// <summary>执行日志新增事件（UI 订阅刷新）</summary>
+    public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
+
+    /// <summary>执行日志只读快照（26.3.1 S4）</summary>
+    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => _executionLogs.ToArray();
+
+    /// <summary>清空执行日志</summary>
+    public void ClearExecutionLogs()
+    {
+        while (_executionLogs.TryDequeue(out _))
+        {
+        }
+    }
+
+    private void AddExecutionLog(PluginExecutionLogEntry entry)
+    {
+        _executionLogs.Enqueue(entry);
+        while (_executionLogs.Count > MaxLogEntries) _executionLogs.TryDequeue(out _);
+        ExecutionLogAdded?.Invoke(entry);
+    }
 
     public PluginEngine()
     {
@@ -21,7 +47,11 @@ public class PluginEngine : IAction
             //["http_request"] = new HttpRequestAction(),
             ["python_run"] = new PythonAction(),
             ["notify"] = new NotifyAction(),
-            ["local_run"] = new LocalRunAction()
+            ["local_run"] = new LocalRunAction(),
+            // 26.3.1 S2：重启隧道（能力由主程序经 ProxyActionBridge 注册）
+            ["proxy.restart"] = new ProxyRestartAction(),
+            // 26.3.1 M5：打开 URL（系统默认浏览器）
+            ["open_url"] = new OpenUrlAction()
         };
         // call_function 指令：通过 this (IAction) 作为子动作分发器
         _callFuncAction = new CallFunctionAction(_funcRegistry, this);
@@ -108,6 +138,14 @@ public class PluginEngine : IAction
                         App.CurrentLogger.Warning(
                             $"插件 {plugin.Id} 条件解析/求值失败: {trigger.Condition}, {ex.Message}",
                             module: EnumLogModule.Plugin);
+                        AddExecutionLog(new PluginExecutionLogEntry
+                        {
+                            PluginId = plugin.Id,
+                            EventName = eventName,
+                            Condition = trigger.Condition,
+                            Status = "failed",
+                            Message = $"条件解析/求值失败: {ex.Message}"
+                        });
                         continue;
                     }
 
@@ -115,6 +153,15 @@ public class PluginEngine : IAction
                     {
                         App.CurrentLogger.LogDebug($"插件 {plugin.Id} 条件不满足, 跳过事件 {eventName}",
                             module: EnumLogModule.Plugin);
+                        AddExecutionLog(new PluginExecutionLogEntry
+                        {
+                            PluginId = plugin.Id,
+                            EventName = eventName,
+                            Condition = trigger.Condition,
+                            ConditionMatched = false,
+                            Status = "skipped",
+                            Message = "条件不满足, 已跳过"
+                        });
                         continue;
                     }
                 }
@@ -122,6 +169,15 @@ public class PluginEngine : IAction
                 // 执行动作
                 App.CurrentLogger.LogDebug($"插件 {plugin.Id} 开始执行事件 {eventName} 的 {trigger.Actions.Count} 个动作",
                     module: EnumLogModule.Plugin);
+                AddExecutionLog(new PluginExecutionLogEntry
+                {
+                    PluginId = plugin.Id,
+                    EventName = eventName,
+                    Condition = trigger.Condition,
+                    ConditionMatched = true,
+                    Status = "info",
+                    Message = $"事件命中, 执行 {trigger.Actions.Count} 个动作"
+                });
                 var ctx = new ExecutionContext()
                 {
                     PluginId = plugin.Name,
@@ -141,6 +197,13 @@ public class PluginEngine : IAction
         if (!_builtinActions.TryGetValue(def.Name, out var action))
         {
             App.CurrentLogger.Warning($"未知插件指令: {def.Name} (插件: {ctx.PluginId})", module: EnumLogModule.Plugin);
+            AddExecutionLog(new PluginExecutionLogEntry
+            {
+                PluginId = ctx.PluginId,
+                ActionName = def.Name,
+                Status = "failed",
+                Message = "未知插件指令"
+            });
             return;
         }
 
@@ -149,11 +212,25 @@ public class PluginEngine : IAction
             // 模板替换（简单实现）
             var resolved = ResolveTemplates(def.Params, ctx);
             await action.ExecuteAsync(ctx, resolved);
+            AddExecutionLog(new PluginExecutionLogEntry
+            {
+                PluginId = ctx.PluginId,
+                ActionName = def.Name,
+                Status = "success",
+                Message = "执行成功"
+            });
         }
         catch (Exception ex)
         {
             App.CurrentLogger.Error(ex, $"插件指令 {def.Name} 执行失败 (插件: {ctx.PluginId})",
                 module: EnumLogModule.Plugin);
+            AddExecutionLog(new PluginExecutionLogEntry
+            {
+                PluginId = ctx.PluginId,
+                ActionName = def.Name,
+                Status = "failed",
+                Message = $"执行失败: {ex.Message}"
+            });
             throw;
         }
     }
@@ -176,19 +253,28 @@ public class PluginEngine : IAction
         LoadAll(pluginsFolder);
     }
 
+    private static readonly Regex TemplateRegex = new(@"\{\{(.+?)\}\}", RegexOptions.Compiled);
+
     private Dictionary<string, object> ResolveTemplates(Dictionary<string, object> args, ExecutionContext ctx)
     {
         var resolved = new Dictionary<string, object>();
         foreach (var kv in args)
         {
-            if (kv.Value is string str && str.Contains("{{") && str.Contains("}}"))
+            if (kv.Value is string str && str.Contains("{{"))
             {
-                // 仅支持 {{ctx.variables.xxx}} 或 {{ctx.data.xxx}}
-                str = str.Substring(str.IndexOf("{{", StringComparison.Ordinal),
-                    str.LastIndexOf("}}", StringComparison.Ordinal) - str.IndexOf("{{", StringComparison.Ordinal) + 2);
-                var path = str.Replace("{{", "").Replace("}}", "");
-                var val = PropertyAccessor.GetValue(ctx, path);
-                resolved[kv.Key] = val ?? str;
+                // 支持一条字符串内嵌多个 {{...}} 模板；每个模板可为 ctx 路径或值表达式（含内置函数）
+                var sb = new StringBuilder();
+                var last = 0;
+                foreach (Match m in TemplateRegex.Matches(str))
+                {
+                    sb.Append(str, last, m.Index - last);
+                    var expr = m.Groups[1].Value.Trim();
+                    sb.Append(ResolveTemplate(expr, ctx) ?? m.Value);
+                    last = m.Index + m.Length;
+                }
+
+                sb.Append(str, last, str.Length - last);
+                resolved[kv.Key] = sb.ToString();
             }
             else
             {
@@ -197,5 +283,26 @@ public class PluginEngine : IAction
         }
 
         return resolved;
+    }
+
+    private static object? ResolveTemplate(string expr, ExecutionContext ctx)
+    {
+        // 路径模板：{{ctx.data.xxx}} / {{ctx.variables.xxx}}
+        if (expr.StartsWith("ctx.data.", StringComparison.Ordinal) ||
+            expr.StartsWith("ctx.variables.", StringComparison.Ordinal))
+        {
+            return PropertyAccessor.GetValue(ctx, expr);
+        }
+
+        // 其他视为值表达式（26.3.1 M5）：{{len(ctx.data.proxyName)}} / {{3 + 2}} 等
+        try
+        {
+            var node = ConditionParser.ParseValue(expr);
+            return node.Evaluate(ctx)?.ToString();
+        }
+        catch
+        {
+            return null; // 求值失败保留原始模板文本
+        }
     }
 }

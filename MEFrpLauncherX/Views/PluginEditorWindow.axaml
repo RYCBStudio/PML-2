@@ -1,0 +1,140 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MEFrpLauncherX.ViewModels"
+        xmlns:pedit="clr-namespace:MEFrpLauncherX.ViewModels.PluginEditor"
+        xmlns:p="clr-namespace:MEFrpLauncherX.Plugin.Core;assembly=MEFrpLauncherX.Plugin"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        mc:Ignorable="d" d:DesignWidth="920" d:DesignHeight="720"
+        Width="920" Height="720"
+        MinWidth="720" MinHeight="520"
+        WindowStartupLocation="CenterOwner"
+        x:Class="MEFrpLauncherX.Views.PluginEditorWindow"
+        Title="{x:Static languages:Languages.Text_PluginEditor_Title}">
+    <Grid RowDefinitions="Auto, *, Auto" Margin="14" RowSpacing="10">
+        <!-- 基本信息 -->
+        <StackPanel Grid.Row="0" Spacing="8">
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="8">
+                <TextBox Watermark="tech.rycb.plugin.xxx"
+                         Text="{Binding Draft.Id}" />
+                <TextBox Grid.Column="1" Watermark="{x:Static languages:Languages.Text_PluginEditor_Name}"
+                         Text="{Binding Draft.Name}" />
+            </Grid>
+            <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="8">
+                <TextBox Watermark="{x:Static languages:Languages.Text_PluginEditor_Description}"
+                         Text="{Binding Draft.Description}" />
+                <TextBox Grid.Column="1" Watermark="{x:Static languages:Languages.Text_PluginEditor_Author}"
+                         Text="{Binding Draft.Author}" />
+                <TextBox Grid.Column="2" Watermark="{x:Static languages:Languages.Text_PluginEditor_Version}"
+                         Text="{Binding Draft.Version}" Width="90" />
+            </Grid>
+        </StackPanel>
+
+        <!-- 规则列表 -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Draft.Triggers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="pedit:TriggerDraft">
+                        <Border BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="8" Margin="0,0,0,10" Padding="10">
+                            <StackPanel Spacing="8">
+                                <!-- 事件 + 删除规则 -->
+                                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="8">
+                                    <ComboBox ItemsSource="{Binding $parent[Window].((pedit:PluginEditorViewModel)DataContext).AvailableEvents}"
+                                              SelectedItem="{Binding SelectedEvent}"
+                                              PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_SelectEvent}"
+                                              HorizontalAlignment="Stretch">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="p:PluginEventInfo">
+                                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                    <TextBlock Text="{Binding Description}"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               FontSize="11" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Grid.Column="1" Content="{x:Static languages:Languages.Text_PluginEditor_RemoveTrigger}"
+                                            Command="{Binding $parent[Window].((pedit:PluginEditorViewModel)DataContext).RemoveTriggerCommand}"
+                                            CommandParameter="{Binding}" />
+                                </Grid>
+
+                                <!-- 条件 -->
+                                <TextBox Watermark="ctx.data.proxyName != '' &amp;&amp; ctx.data.count -gt 1"
+                                         Text="{Binding Condition}" />
+
+                                <!-- 动作列表 -->
+                                <ItemsControl ItemsSource="{Binding Actions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="pedit:ActionDraft">
+                                            <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                                                    CornerRadius="6" Padding="8" Margin="0,2,0,2">
+                                                <StackPanel Spacing="6">
+                                                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="8">
+                                                        <ComboBox ItemsSource="{Binding $parent[Window].((pedit:PluginEditorViewModel)DataContext).AvailableActions}"
+                                                                  SelectedItem="{Binding SelectedAction}"
+                                                                  PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_SelectAction}"
+                                                                  HorizontalAlignment="Stretch">
+                                                            <ComboBox.ItemTemplate>
+                                                                <DataTemplate x:DataType="p:PluginActionInfo">
+                                                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                                        <TextBlock Text="{Binding Description}"
+                                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                                   FontSize="11" VerticalAlignment="Center" />
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ComboBox.ItemTemplate>
+                                                        </ComboBox>
+                                                        <Button Grid.Column="1" Content="{x:Static languages:Languages.Text_PluginEditor_RemoveAction}"
+                                                                Command="{Binding $parent[Window].((pedit:PluginEditorViewModel)DataContext).RemoveActionCommand}"
+                                                                CommandParameter="{Binding}" />
+                                                    </Grid>
+                                                    <!-- 参数表单（按注册表动态生成） -->
+                                                    <ItemsControl ItemsSource="{Binding Params}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate x:DataType="pedit:ActionParamDraft">
+                                                                <TextBox Watermark="{Binding Label}"
+                                                                         Text="{Binding Value}"
+                                                                         Margin="0,4" />
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Button Content="{x:Static languages:Languages.Text_PluginEditor_AddAction}"
+                                        Command="{Binding $parent[Window].((pedit:PluginEditorViewModel)DataContext).AddActionCommand}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- 预览 + 校验 + 操作 -->
+        <Grid Grid.Row="2" RowDefinitions="Auto, Auto, Auto" RowSpacing="6">
+            <TextBlock Text="{x:Static languages:Languages.Text_PluginEditor_PreviewYaml}" FontWeight="SemiBold" />
+            <TextBox Grid.Row="1" Text="{Binding PreviewYaml}" IsReadOnly="True" Height="150"
+                     AcceptsReturn="True" TextWrapping="NoWrap"
+                     FontFamily="Consolas, Cascadia Mono, monospace"
+                     FontSize="12" />
+            <Grid Grid.Row="2" ColumnDefinitions="*, Auto, Auto" ColumnSpacing="8" Margin="0,6,0,0">
+                <TextBlock Text="{Binding ValidationMessage}"
+                           Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                           VerticalAlignment="Center" TextWrapping="Wrap" />
+                <Button Grid.Column="1" Content="{x:Static languages:Languages.Text_PluginEditor_RefreshPreview}"
+                        Command="{Binding RefreshPreviewCommand}" />
+                <Button Grid.Column="2" Content="{x:Static languages:Languages.Text_Global_Save}"
+                        Command="{Binding SaveCommand}" Classes="accent" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
