@@ -360,7 +360,10 @@ internal partial class Program
         FontManagerOptions options = new();
         if (OperatingSystem.IsLinux())
         {
-            options.DefaultFamilyName = "Noto Sans CJK SC";
+            // 无字体服务器上系统字体名（如 "Noto Sans CJK SC"）解析不到，
+            // 会在创建窗口时抛 "Could not create glyphTypeface. Font family: $Default" 崩溃。
+            // 默认字体直接指向内嵌的 HarmonyOS Sans SC，完全不依赖系统 fontconfig。
+            options.DefaultFamilyName = "avares://MEFrpLauncherX.Fonts/Fonts/#HarmonyOS Sans SC";
         }
 
         options.FontFallbacks =
