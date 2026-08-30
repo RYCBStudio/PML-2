@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Linux AOT：x64 原生；arm64 用 ARM runner 避免交叉链接失败
+          # ---------- Linux AOT ----------
           - rid: linux-x64
             os: ubuntu-latest
             os_name: linux
@@ -41,19 +41,33 @@ jobs:
             arch: arm64
             pkg_arch: arm64
             mode: aot
-          # macOS AOT
+          # ---------- macOS AOT ----------
           - rid: osx-x64
             os: macos-latest
             os_name: macos
             arch: x64
-            pkg_arch: x64
             mode: aot
           - rid: osx-arm64
             os: macos-latest
             os_name: macos
             arch: arm64
-            pkg_arch: arm64
             mode: aot
+          # ---------- Windows AOT（离线安装包）----------
+          # publish 输出路径必须与 installer/*.iss 中 Source 一致
+          - rid: win-x64
+            os: windows-latest
+            os_name: windows
+            arch: x64
+            mode: aot
+            publish_sub: win-x64-aot
+            iss_script: winx64_aot_offline.iss
+          - rid: win-arm64
+            os: windows-latest
+            os_name: windows
+            arch: arm64
+            mode: aot
+            publish_sub: win-arm64
+            iss_script: winarm64_offline.iss
 
     steps:
       - name: Checkout
@@ -83,7 +97,7 @@ jobs:
           echo "version=$V" >> "$GITHUB_OUTPUT"
           echo "Resolved version: $V"
 
-      # ---------- CrashDisplayer & Splash：缓存 + AOT 构建 ----------
+      # ---------- CrashDisplayer & Splash：缓存 + AOT 构建（全平台统一）----------
       - name: Cache CrashDisplayer & Splash
         id: cache-tools
         uses: actions/cache@v4
@@ -116,15 +130,16 @@ jobs:
             -o "$OUT" \
             --nologo -v minimal
 
-          # 清理符号文件
           find "$OUT" -type f \( \
             -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
             -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
             -name "*.lib" -o -name "*.map" \
           \) -delete 2>/dev/null || true
 
-          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
-          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+          if [[ "${{ matrix.rid }}" != win-* ]]; then
+            find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+            find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+          fi
 
           echo "===== CrashDisplayer (${{ matrix.rid }}) ====="
           ls -lh "$OUT" || true
@@ -150,33 +165,39 @@ jobs:
             -o "$OUT" \
             --nologo -v minimal
 
-          # 清理符号文件
           find "$OUT" -type f \( \
             -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" -o \
             -name "*.dSYM" -o -name "*.ilk" -o -name "*.exp" -o \
             -name "*.lib" -o -name "*.map" \
           \) -delete 2>/dev/null || true
 
-          find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
-          find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+          if [[ "${{ matrix.rid }}" != win-* ]]; then
+            find "$OUT" -type f ! -name "*.*" -exec chmod +x {} \; 2>/dev/null || true
+            find "$OUT" -type f \( -name "*.so" -o -name "*.dylib" \) -exec chmod +x {} \; 2>/dev/null || true
+          fi
 
           echo "===== Splash (${{ matrix.rid }}) ====="
           ls -lh "$OUT" || true
 
+      # ---------- 主程序发布 ----------
+      # Linux/macOS: publish/<rid>-<mode>
+      # Windows:    MEFrpLauncherX/bin/Release/net10.0/<publish_sub>/publish（与 ISS Source 对齐）
       - name: Publish main app
         shell: bash
         run: |
           set -euo pipefail
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          else
+            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          fi
           mkdir -p "$OUT"
           echo "Publishing -> $OUT (rid=${{ matrix.rid }} mode=${{ matrix.mode }})"
 
           if [ "${{ matrix.mode }}" = "aot" ]; then
-            # DefineConstants: 定义 AOT 条件编译符号（与本地 pu.ps1 Set-ProjectMode 注入
-            # "<DefineConstants>$(DefineConstants);AOT</DefineConstants>" 等价）。
-            # 注意: MSBuild 命令行 -p 值不支持 $(...) 引用（会报 "For switch syntax"），
-            # 只能整体覆盖；Release 下默认仅含 TRACE 且代码未使用 #if TRACE，故无影响。
-            # Core 项目 App.cs 的 #if AOT 决定 ReleaseFlag = "AOT"，不传则会变成 "Common"。
+            # DefineConstants: 定义 AOT 条件编译符号（与本地 pu.ps1 Set-ProjectMode 注入等价）
+            # MSBuild 命令行 -p 值不支持 $(...) 引用，只能整体覆盖；
+            # Core 项目 App.cs 的 #if AOT 决定 ReleaseFlag = "AOT"
             dotnet publish "${{ env.PROJECT }}" \
               -c Release \
               -r "${{ matrix.rid }}" \
@@ -197,46 +218,65 @@ jobs:
               --nologo -v q
           fi
 
-          # 禁止 ls|head + pipefail 触发 Broken pipe
           echo "Publish file count: $(find "$OUT" -type f | wc -l)"
-          if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
-            chmod +x "$OUT/${{ env.APP_EXE }}"
-          else
-            echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
-            find "$OUT" -maxdepth 1 -type f | head -20 || true
+          if [ "${{ matrix.os_name }}" != "windows" ]; then
+            if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
+              chmod +x "$OUT/${{ env.APP_EXE }}"
+            else
+              echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
+              find "$OUT" -maxdepth 1 -type f | head -20 || true
+            fi
           fi
 
+      # ---------- 放置 CrashDisplayer & Splash 到 Tools/（全平台统一）----------
       - name: Place CrashDisplayer & Splash into Tools/
         shell: bash
         run: |
           set -euo pipefail
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          else
+            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          fi
           TOOLS="$OUT/Tools"
           mkdir -p "$TOOLS"
 
           CRASH_SRC="tools-cache/${{ matrix.rid }}/CrashDisplayer"
           SPLASH_SRC="tools-cache/${{ matrix.rid }}/Splash"
 
-          # CrashDisplayer：保持原名，整目录内容拷入 Tools（SingleFile 通常只有一个可执行文件）
+          # CrashDisplayer：保持原名，整目录拷入 Tools
           if [ -d "$CRASH_SRC" ]; then
-            # 找到主可执行文件（无扩展名或与项目相关）
-            # 优先拷贝所有文件，保留原名
             cp -a "$CRASH_SRC"/. "$TOOLS/"
             echo "CrashDisplayer copied to $TOOLS"
-            ls -lh "$TOOLS" || true
           else
             echo "ERROR: CrashDisplayer cache/build missing: $CRASH_SRC"
             exit 1
           fi
 
-          # Splash：重命名为 splash（小写），放入 Tools/
-          if [ -d "$SPLASH_SRC" ]; then
-            # 找主可执行文件：通常是无扩展名的二进制
+          # Splash：Unix -> splash；Windows -> splash.exe
+          if [ ! -d "$SPLASH_SRC" ]; then
+            echo "ERROR: Splash cache/build missing: $SPLASH_SRC"
+            exit 1
+          fi
+
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -name "*.exe" -print -quit)
+            if [ -z "$SPLASH_EXE" ]; then
+              SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -print -quit)
+            fi
+            if [ -n "$SPLASH_EXE" ] && [ -f "$SPLASH_EXE" ]; then
+              cp -a "$SPLASH_EXE" "$TOOLS/splash.exe"
+              echo "Splash renamed to splash.exe at $TOOLS"
+            else
+              echo "ERROR: could not find Splash executable in $SPLASH_SRC"
+              ls -la "$SPLASH_SRC" || true
+              exit 1
+            fi
+          else
             MAIN_EXE=""
             for f in "$SPLASH_SRC"/*; do
               [ -f "$f" ] || continue
               base=$(basename "$f")
-              # 跳过已知非主程序文件
               case "$base" in
                 *.json|*.pdb|*.dbg|*.config|*.xml) continue ;;
               esac
@@ -246,21 +286,17 @@ jobs:
               fi
             done
             if [ -z "$MAIN_EXE" ]; then
-              # fallback：取第一个文件
               MAIN_EXE=$(find "$SPLASH_SRC" -type f -print -quit)
             fi
             if [ -n "$MAIN_EXE" ] && [ -f "$MAIN_EXE" ]; then
               cp -a "$MAIN_EXE" "$TOOLS/splash"
               chmod +x "$TOOLS/splash"
-              echo "Splash renamed to splash and placed at $TOOLS/splash"
+              echo "Splash renamed to splash at $TOOLS/splash"
             else
               echo "ERROR: could not find Splash executable in $SPLASH_SRC"
               ls -la "$SPLASH_SRC" || true
               exit 1
             fi
-          else
-            echo "ERROR: Splash cache/build missing: $SPLASH_SRC"
-            exit 1
           fi
 
           echo "===== Tools/ final contents ====="
@@ -272,7 +308,11 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
           set -euo pipefail
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          else
+            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          fi
           if [ -n "${SENTRY_DSN:-}" ]; then
             printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
             echo "sentry.json injected"
@@ -280,6 +320,7 @@ jobs:
             echo "No SENTRY_DSN secret, skip"
           fi
 
+      # ========== Linux 打包 ==========
       - name: Install zstd (Ubuntu)
         if: matrix.os_name == 'linux'
         run: |
@@ -350,8 +391,7 @@ jobs:
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
           cp -a "$OUT/." "$ROOT/opt/pml-2/"
 
-          # Settings.json 单独作为 conffile（deb）/ %config（rpm）打包，
-          # 升级时 dpkg/rpm 会保留用户修改过的配置，不能留在 tree 里（会触发 nfpm content collision）
+          # Settings.json 单独作为 conffile（deb）/ %config（rpm）打包
           mkdir -p "$ROOT/conffiles"
           CONFFILE_ENTRY=""
           if [ -f "$ROOT/opt/pml-2/Config/Settings.json" ]; then
@@ -393,18 +433,44 @@ jobs:
           vendor: RYCB Studio
           homepage: https://www.rycb.tech/pml-2
           license: MIT
-          # Avalonia 的默认字体走系统 fontconfig，无字体的服务器上会
-          # "Could not create glyphTypeface" 崩溃，故声明字体运行时依赖
-          # (nfpm 2.47 中依赖字段为 depends，按格式在 overrides 中分别声明)
+          # 运行时依赖与 install.sh 中 install_system_deps 对齐
+          # （apt/dnf 装包时自动拉取；极旧发行版上 libssl/libicu 版本由发行版提供）
           overrides:
             deb:
               depends:
+                - libx11-6
+                - libice6
+                - libsm6
+                - libfontconfig1
                 - fontconfig
                 - fonts-dejavu-core
+                - ca-certificates
+                - tzdata
+                - libc6
+                - libgcc-s1
+                - libgssapi-krb5-2
+                - libstdc++6
+                - zlib1g
+                - libnotify4
+                - libssl3 | libssl1.1 | libssl1.0.2 | libssl1.0.0
+                - libicu74 | libicu72 | libicu71 | libicu70 | libicu69 | libicu68 | libicu67 | libicu66 | libicu63 | libicu60
             rpm:
               depends:
+                - libX11
+                - libICE
+                - libSM
                 - fontconfig
                 - dejavu-sans-fonts
+                - ca-certificates
+                - tzdata
+                - glibc
+                - libgcc
+                - krb5-libs
+                - libstdc++
+                - zlib
+                - libnotify
+                - openssl
+                - libicu
           contents:
             - src: ${ROOT}/opt/pml-2
               dst: /opt/pml-2
@@ -417,8 +483,6 @@ jobs:
               dst: /usr/share/applications/pml-2.desktop
           EOF
 
-          # conffile 条目（Settings.json 存在时追加）：
-          # deb 中注册为 conffile、rpm 中标记为 %config，升级时保留用户已修改的配置
           if [ "$CONFFILE_ENTRY" = "yes" ]; then
             cat >> "${{ github.workspace }}/nfpm.yaml" << EOF
             - src: ${ROOT}/conffiles/Settings.json
@@ -432,6 +496,7 @@ jobs:
           nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.rpm"
           ls -lh "$DIST"/*.deb "$DIST"/*.rpm || true
 
+      # ========== macOS 打包 ==========
       - name: Build .app + custom DMG
         if: matrix.os_name == 'macos'
         shell: bash
@@ -459,7 +524,6 @@ jobs:
           cp -a "$OUT/." "$APP/Contents/MacOS/"
           chmod +x "$APP/Contents/MacOS/${EXE}" || true
           chmod +x "$APP/Contents/MacOS/Tools/splash" || true
-          # CrashDisplayer 若在 Tools 下也一并赋权
           find "$APP/Contents/MacOS/Tools" -type f -exec chmod +x {} \; 2>/dev/null || true
 
           if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
@@ -500,7 +564,6 @@ jobs:
           echo -n 'APPL????' > "$APP/Contents/PkgInfo"
           xattr -crd "$APP" || true
 
-          # Finder 模板（保持原流程）
           mkdir -p "$STAGE/.background"
           cp "${{ github.workspace }}/installer/macos/.DS_Store" "$STAGE/.DS_Store"
           cp -a "${{ github.workspace }}/installer/macos/." "$STAGE/"
@@ -530,232 +593,14 @@ jobs:
           ls -lh "$FINAL_DMG" || true
           hdiutil verify "$FINAL_DMG" || true
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}
-          path: ${{ github.workspace }}/dist/*
-          if-no-files-found: error
-
-  # ---------- Windows：离线安装包（Inno Setup）----------
-  windows:
-    name: Windows ${{ matrix.arch }} (${{ matrix.mode }} offline)
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # x64：只打包 AOT 离线安装包
-          - rid: win-x64
-            arch: x64
-            mode: aot
-            tool_mode: aot
-            publish_sub: win-x64-aot
-            iss_script: winx64_aot_offline.iss
-            download_pmla: false
-          # arm64：ReadyToRun 离线安装包（与 pu.ps1 一致）
-          - rid: win-arm64
-            arch: arm64
-            mode: rdr
-            tool_mode: rdr
-            publish_sub: win-arm64
-            iss_script: winarm64_offline.iss
-            download_pmla: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Resolve version
-        id: ver
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            V="${{ inputs.version }}"
-          else
-            V="${GITHUB_REF_NAME#v}"
-          fi
-          V="${V#v}"
-          echo "version=$V" >> "$GITHUB_OUTPUT"
-          echo "Resolved version: $V"
-
-      # ---------- CrashDisplayer & Splash（x64: AOT / arm64: ReadyToRun）----------
-      - name: Publish CrashDisplayer (${{ matrix.rid }})
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="${{ github.workspace }}/tools-win/${{ matrix.rid }}/CrashDisplayer"
-          mkdir -p "$OUT"
-          if [ "${{ matrix.tool_mode }}" = "aot" ]; then
-            dotnet publish "${{ env.CRASH_PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishAot=true \
-              -p:PublishSingleFile=true \
-              -p:IncludeNativeLibrariesForSelfExtract=true \
-              -p:EnableCompressionInSingleFile=true \
-              -p:DebugType=none \
-              -p:DebugSymbols=false \
-              -o "$OUT" \
-              --nologo -v minimal
-          else
-            dotnet publish "${{ env.CRASH_PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishReadyToRun=true \
-              -p:PublishSingleFile=true \
-              -p:IncludeNativeLibrariesForSelfExtract=true \
-              -p:EnableCompressionInSingleFile=true \
-              -p:DebugType=none \
-              -p:DebugSymbols=false \
-              -o "$OUT" \
-              --nologo -v minimal
-          fi
-          find "$OUT" -type f \( -name "*.pdb" -o -name "*.ilk" -o -name "*.exp" -o -name "*.lib" \) -delete 2>/dev/null || true
-          echo "===== CrashDisplayer (${{ matrix.rid }}) ====="
-          ls -lh "$OUT" || true
-
-      - name: Publish Splash (${{ matrix.rid }})
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="${{ github.workspace }}/tools-win/${{ matrix.rid }}/Splash"
-          mkdir -p "$OUT"
-          if [ "${{ matrix.tool_mode }}" = "aot" ]; then
-            dotnet publish "${{ env.SPLASH_PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishAot=true \
-              -p:PublishSingleFile=true \
-              -p:IncludeNativeLibrariesForSelfExtract=true \
-              -p:EnableCompressionInSingleFile=true \
-              -p:DebugType=none \
-              -p:DebugSymbols=false \
-              -o "$OUT" \
-              --nologo -v minimal
-          else
-            dotnet publish "${{ env.SPLASH_PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishReadyToRun=true \
-              -p:PublishSingleFile=true \
-              -p:IncludeNativeLibrariesForSelfExtract=true \
-              -p:EnableCompressionInSingleFile=true \
-              -p:DebugType=none \
-              -p:DebugSymbols=false \
-              -o "$OUT" \
-              --nologo -v minimal
-          fi
-          find "$OUT" -type f \( -name "*.pdb" -o -name "*.ilk" -o -name "*.exp" -o -name "*.lib" \) -delete 2>/dev/null || true
-          echo "===== Splash (${{ matrix.rid }}) ====="
-          ls -lh "$OUT" || true
-
-      # ---------- 下载 arm64 CrashDisplayer 组件（arm64 离线包内嵌，参考 pu.ps1 Ensure-WinArm64OfflineComponent）----------
-      - name: Download arm64 CrashDisplayer component
-        if: matrix.download_pmla
-        shell: pwsh
-        run: |
-          $dir = "$env:GITHUB_WORKSPACE/installer/arm64"
-          New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          $url = "https://alist.yealqp.cn/download/ME-Frp%2520PML2/mefrp//windows-distributions/components/arm64/RYCB.MEFrpLauncherX.CrashDisplayer.pmla"
-          try {
-            Invoke-WebRequest -Uri $url -OutFile "$dir/RYCB.MEFrpLauncherX.CrashDisplayer.pmla" -UseBasicParsing
-            Get-Item "$dir/RYCB.MEFrpLauncherX.CrashDisplayer.pmla" | Select-Object Name, Length
-          }
-          catch {
-            Write-Error "arm64 组件下载失败: $($_.Exception.Message)"
-            exit 1
-          }
-
-      # ---------- 主程序：x64 用 AOT，arm64 用 ReadyToRun ----------
-      # 输出目录必须与 installer/*.iss 中 Source 路径一致：
-      #   winx64_aot_offline.iss  -> MEFrpLauncherX/bin/Release/net10.0/win-x64-aot/publish
-      #   winarm64_offline.iss    -> MEFrpLauncherX/bin/Release/net10.0/win-arm64/publish
-      - name: Publish main app (${{ matrix.rid }}, ${{ matrix.mode }})
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
-          mkdir -p "$OUT"
-          if [ "${{ matrix.mode }}" = "aot" ]; then
-            dotnet publish "${{ env.PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishAot=true \
-              -p:PublishTrimmed=true \
-              -p:DefineConstants='AOT' \
-              -o "$OUT" \
-              --nologo -v q
-          else
-            dotnet publish "${{ env.PROJECT }}" \
-              -c Release \
-              -r "${{ matrix.rid }}" \
-              --self-contained true \
-              -p:PublishReadyToRun=true \
-              -p:PublishTrimmed=true \
-              -o "$OUT" \
-              --nologo -v q
-          fi
-          echo "Publish file count: $(find "$OUT" -type f | wc -l)"
-
-      # ---------- 放置 CrashDisplayer & Splash 到 publish 的 Tools/ ----------
-      - name: Place CrashDisplayer & Splash into Tools/
-        shell: bash
-        run: |
-          set -euo pipefail
-          CRASH_SRC="${{ github.workspace }}/tools-win/${{ matrix.rid }}/CrashDisplayer"
-          SPLASH_SRC="${{ github.workspace }}/tools-win/${{ matrix.rid }}/Splash"
-          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
-          TOOLS="$OUT/Tools"
-          mkdir -p "$TOOLS"
-          # CrashDisplayer：保留原名（MEFrpLauncherX.CrashDisplayer.exe）
-          cp -a "$CRASH_SRC"/. "$TOOLS/"
-          # Splash：主可执行文件重命名为 splash.exe（Windows 无扩展名匹配不到，直接取 exe）
-          SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -name "*.exe" -print -quit)
-          if [ -z "$SPLASH_EXE" ]; then
-            SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -print -quit)
-          fi
-          if [ -n "$SPLASH_EXE" ] && [ -f "$SPLASH_EXE" ]; then
-            cp -a "$SPLASH_EXE" "$TOOLS/splash.exe"
-            echo "Splash renamed to splash.exe at $TOOLS"
-          else
-            echo "ERROR: could not find Splash executable in $SPLASH_SRC"
-            ls -la "$SPLASH_SRC" || true
-            exit 1
-          fi
-          echo "===== Tools/ final contents ====="
-          ls -lh "$TOOLS" || true
-
-      # ---------- 注入 Sentry DSN ----------
-      - name: Inject Sentry DSN
-        shell: bash
-        env:
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-        run: |
-          set -euo pipefail
-          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
-          if [ -n "${SENTRY_DSN:-}" ]; then
-            printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
-            echo "sentry.json injected"
-          else
-            echo "No SENTRY_DSN secret, skip"
-          fi
-
-      # ---------- Inno Setup：安装 + 生成临时 ISS + 编译离线安装包 ----------
+      # ========== Windows 打包（Inno Setup 离线安装包）==========
       - name: Install Inno Setup
+        if: matrix.os_name == 'windows'
         shell: pwsh
         run: choco install innosetup -y --no-progress
 
       - name: Build offline installer (ISCC)
+        if: matrix.os_name == 'windows'
         shell: pwsh
         env:
           VERSION: ${{ steps.ver.outputs.version }}
@@ -764,54 +609,48 @@ jobs:
           $ws = $env:GITHUB_WORKSPACE
           $V = $env:VERSION
 
-          # 定位 ISCC.exe
           $iscc = Get-ChildItem "C:\Program Files*\Inno Setup*\ISCC.exe" -ErrorAction SilentlyContinue |
                   Select-Object -First 1
           if (-not $iscc) { throw "ISCC.exe not found" }
           Write-Host "ISCC: $($iscc.FullName)"
 
-          # 生成临时 ISS：把硬编码的本地路径前缀替换为 CI 工作区路径
-          function New-TempIss {
-            param([string]$Template, [string]$Version)
-            $content = Get-Content $Template -Raw
-            # 正/反斜杠两种写法都要替换：F:\VSProj\repos\MEFrpLauncherX\MEFrpLauncherX -> $ws\MEFrpLauncherX
-            $content = $content.Replace('F:\VSProj\repos\MEFrpLauncherX\MEFrpLauncherX', "$ws\MEFrpLauncherX")
-            $content = $content.Replace('F:/VSProj/repos/MEFrpLauncherX/MEFrpLauncherX', ($ws -replace '\\','/') + '/MEFrpLauncherX')
-            # 版本号：若原值带 " AOT" 后缀则保留后缀（与 pu.ps1 Compile-InnoSetup 一致）
-            if ($content -match '(?m)^#define MyAppVersion ".*? AOT"') {
-              $content = [regex]::Replace($content, '(?m)^#define MyAppVersion ".*?"', "#define MyAppVersion `"$Version AOT`"")
-            }
-            else {
-              $content = [regex]::Replace($content, '(?m)^#define MyAppVersion ".*?"', "#define MyAppVersion `"$Version`"")
-            }
-            # 输出目录指向 CI dist（模板硬编码为本地 artifacts 目录）
-            $content = [regex]::Replace($content, '(?m)^OutputDir=.*$', "OutputDir=$($ws -replace '\\','/')/dist")
-            $temp = Join-Path (Split-Path $Template) ("temp_" + (Split-Path $Template -Leaf))
-            Set-Content -Path $temp -Value $content -Encoding UTF8
-            Write-Host "Generated temp ISS: $temp"
-            return $temp
-          }
-
           New-Item -ItemType Directory -Force -Path "$ws/dist" | Out-Null
 
-          $temp = New-TempIss -Template "$ws/installer/${{ matrix.iss_script }}" -Version $V
-          Write-Host "Compiling $temp ..."
-          & $iscc.FullName $temp
+          # ISS 使用相对路径（相对 installer/），无需替换硬编码盘符路径。
+          # 通过 /D 注入版本与输出目录（脚本内为 #ifndef，可被命令行覆盖）。
+          $iss = Join-Path $ws "installer/${{ matrix.iss_script }}"
+          if (-not (Test-Path $iss)) { throw "ISS not found: $iss" }
+
+          $verDefine = if ("${{ matrix.rid }}" -eq "win-x64" -and "${{ matrix.mode }}" -eq "aot") {
+            "$V AOT"
+          } else {
+            $V
+          }
+          $outDir = Join-Path $ws "dist"
+
+          Write-Host "Compiling $iss"
+          Write-Host "  MyAppVersion=$verDefine"
+          Write-Host "  OutDir=$outDir"
+
+          & $iscc.FullName `
+            "/DMyAppVersion=$verDefine" `
+            "/DOutDir=$outDir" `
+            $iss
           if ($LASTEXITCODE -ne 0) { throw "ISCC failed for ${{ matrix.iss_script }}" }
-          Remove-Item $temp -Force
 
           Write-Host "===== dist ====="
           Get-ChildItem "$ws/dist" | Select-Object Name, Length
 
+      # ---------- 上传产物 ----------
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}-offline
+          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}${{ matrix.os_name == 'windows' && '-offline' || '' }}
           path: ${{ github.workspace }}/dist/*
           if-no-files-found: error
 
   release:
-    needs: [build, windows]
+    needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     permissions:
@@ -839,4 +678,3 @@ jobs:
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
