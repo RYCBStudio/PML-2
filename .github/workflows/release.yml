@@ -198,12 +198,18 @@ jobs:
           echo "Publishing -> $OUT (rid=${{ matrix.rid }} mode=${{ matrix.mode }})"
 
           if [ "${{ matrix.mode }}" = "aot" ]; then
+            # DefineConstants: 定义 AOT 条件编译符号（与本地 pu.ps1 Set-ProjectMode 注入
+            # "<DefineConstants>$(DefineConstants);AOT</DefineConstants>" 等价）。
+            # 注意: MSBuild 命令行 -p 值不支持 $(...) 引用（会报 "For switch syntax"），
+            # 只能整体覆盖；Release 下默认仅含 TRACE 且代码未使用 #if TRACE，故无影响。
+            # Core 项目 App.cs 的 #if AOT 决定 ReleaseFlag = "AOT"，不传则会变成 "Common"。
             dotnet publish "${{ env.PROJECT }}" \
               -c Release \
               -r "${{ matrix.rid }}" \
               --self-contained true \
               -p:PublishAot=true \
               -p:PublishTrimmed=true \
+              -p:DefineConstants='AOT' \
               -o "$OUT" \
               --nologo -v q
           else
@@ -370,6 +376,17 @@ jobs:
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
           cp -a "$OUT/." "$ROOT/opt/pml-2/"
 
+          # Settings.json 单独作为 conffile（deb）/ %config（rpm）打包，
+          # 升级时 dpkg/rpm 会保留用户修改过的配置，不能留在 tree 里（会触发 nfpm content collision）
+          mkdir -p "$ROOT/conffiles"
+          CONFFILE_ENTRY=""
+          if [ -f "$ROOT/opt/pml-2/Config/Settings.json" ]; then
+            mv "$ROOT/opt/pml-2/Config/Settings.json" "$ROOT/conffiles/Settings.json"
+            CONFFILE_ENTRY="yes"
+          else
+            echo "WARNING: Settings.json not found in publish output, skip conffile packaging"
+          fi
+
           cat > "$ROOT/usr/bin/pml-2" << EOF
           #!/bin/sh
           exec /opt/pml-2/${EXE} "\$@"
@@ -402,6 +419,18 @@ jobs:
           vendor: RYCB Studio
           homepage: https://www.rycb.tech/pml-2
           license: MIT
+          # Avalonia 的默认字体走系统 fontconfig，无字体的服务器上会
+          # "Could not create glyphTypeface" 崩溃，故声明字体运行时依赖
+          # (nfpm 2.47 中依赖字段为 depends，按格式在 overrides 中分别声明)
+          overrides:
+            deb:
+              depends:
+                - fontconfig
+                - fonts-dejavu-core
+            rpm:
+              depends:
+                - fontconfig
+                - dejavu-sans-fonts
           contents:
             - src: ${ROOT}/opt/pml-2
               dst: /opt/pml-2
@@ -413,6 +442,16 @@ jobs:
             - src: ${ROOT}/usr/share/applications/pml-2.desktop
               dst: /usr/share/applications/pml-2.desktop
           EOF
+
+          # conffile 条目（Settings.json 存在时追加）：
+          # deb 中注册为 conffile、rpm 中标记为 %config，升级时保留用户已修改的配置
+          if [ "$CONFFILE_ENTRY" = "yes" ]; then
+            cat >> "${{ github.workspace }}/nfpm.yaml" << EOF
+            - src: ${ROOT}/conffiles/Settings.json
+              dst: /opt/pml-2/Config/Settings.json
+              type: config
+          EOF
+          fi
 
           mkdir -p "$DIST"
           nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.deb"
