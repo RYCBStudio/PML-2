@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\VSProj\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj": {}
+    "F:\\VSProj\\repos\\MEFrpLauncherX\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj": {}
   },
   "projects": {
-    "G:\\VSProj\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj": {
+    "F:\\VSProj\\repos\\MEFrpLauncherX\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\VSProj\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj",
+        "projectUniqueName": "F:\\VSProj\\repos\\MEFrpLauncherX\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj",
         "projectName": "RYCB.PML2.Splash",
-        "projectPath": "G:\\VSProj\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj",
+        "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\RYCB.PML2.Splash.csproj",
         "packagesPath": "G:\\.Nuget\\packages",
-        "outputPath": "G:\\VSProj\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\obj\\",
+        "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\RYCB.PML2.Splash\\RYCB.PML2.Splash\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -26,11 +26,12 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "G:\\dotnet\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
+            "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {}
           }
@@ -45,33 +46,34 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.11, )"
+              "version": "[11.3.17, )"
             },
             "Avalonia.Desktop": {
               "target": "Package",
-              "version": "[11.3.11, )"
+              "version": "[11.3.17, )"
             },
             "Avalonia.Diagnostics": {
               "include": "None",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[11.3.11, )"
+              "version": "[11.3.17, )"
             },
             "Avalonia.Fonts.Inter": {
               "target": "Package",
-              "version": "[11.3.11, )"
+              "version": "[11.3.17, )"
             },
             "Avalonia.Themes.Fluent": {
               "target": "Package",
-              "version": "[11.3.11, )"
+              "version": "[11.3.17, )"
             },
             "CommunityToolkit.Mvvm": {
               "target": "Package",
@@ -80,13 +82,13 @@
             "Microsoft.DotNet.ILCompiler": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[10.0.2, )",
+              "version": "[10.0.9, )",
               "autoReferenced": true
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[10.0.2, )",
+              "version": "[10.0.9, )",
               "autoReferenced": true
             },
             "SkiaSharp": {
@@ -124,23 +126,23 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[10.0.2, 10.0.2]"
+              "version": "[10.0.9, 10.0.9]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.NativeAOT.win-x64",
-              "version": "[10.0.2, 10.0.2]"
+              "version": "[10.0.9, 10.0.9]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[10.0.2, 10.0.2]"
+              "version": "[10.0.9, 10.0.9]"
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[10.0.2, 10.0.2]"
+              "version": "[10.0.9, 10.0.9]"
             },
             {
               "name": "runtime.win-x64.Microsoft.DotNet.ILCompiler",
-              "version": "[10.0.2, 10.0.2]"
+              "version": "[10.0.9, 10.0.9]"
             }
           ],
           "frameworkReferences": {
@@ -148,7 +150,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.400-preview.0.26322.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

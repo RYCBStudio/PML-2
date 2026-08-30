@@ -25,7 +25,7 @@
             <!-- 背景图片 -->
             <Image x:Name="ImgBackground" Source="/Assets/splash_background.png" Stretch="UniformToFill" />
 
-            <Border Background="#4C000000" Margin="8" CornerRadius="8" Padding="6">
+            <Border x:Name="ContentBorder" Background="#4C000000" Margin="8" CornerRadius="8" Padding="6">
                 <!-- 内容层：使用半透明背景提升可读性 -->
                 <Panel> <!-- 半透明白色背景 -->
                     <!-- 顶部标题 -->
@@ -44,12 +44,21 @@
                     </StackPanel>
 
                     <!-- 底部品牌标识 -->
-                    <TextBlock HorizontalAlignment="Right"
+                    <TextBlock x:Name="TbBrand" HorizontalAlignment="Right"
                                VerticalAlignment="Bottom"
                                Text="RYCBStudio"
                                FontSize="12"
                                Foreground="AliceBlue"
                                Opacity="0.8" /> <!-- 降低透明度，减少干扰 -->
+
+                    <!-- 26.3.1 M1：主程序进度（NamedPipe 推送） -->
+                    <StackPanel VerticalAlignment="Bottom" Margin="10" Spacing="4"
+                                IsVisible="{Binding ShowProgress}">
+                        <TextBlock x:Name="TbStatus" Text="{Binding StatusText}" FontSize="12" Foreground="White"
+                                   TextTrimming="CharacterEllipsis" MaxWidth="420" />
+                        <ProgressBar x:Name="PbProgress" Minimum="0" Maximum="100" Value="{Binding Progress}" Height="4"
+                                     Foreground="White" />
+                    </StackPanel>
                 </Panel>
             </Border>
         </Grid>

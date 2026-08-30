@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
@@ -120,6 +121,14 @@ public partial class SettingsPage : UserControl
                 0 => 0,
                 1 => 1,
                 _ => 2
+            };
+            // 26.3.1 M2：启动画面样式 / 开关
+            SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
+            SplashStyleBox.SelectedIndex = ConfigManager.CurrentConfig.SplashStyle switch
+            {
+                "dark" => 1,
+                "minimal" => 2,
+                _ => 0
             };
             var renderConfig = RenderConfigManager.Load();
             RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
@@ -673,6 +682,52 @@ public partial class SettingsPage : UserControl
             config.Language = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "";
         });
         MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void SplashEnabledChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(config =>
+            config.SplashEnabled = (sender as ToggleSwitch)?.IsChecked == true);
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private void SplashStyleChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        var style = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
+        ConfigManager.UpdateConfig(config => config.SplashStyle = style);
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private async void SplashCustomImageClicked(object? sender, RoutedEventArgs e)
+    {
+        var files = await Core.App.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = Core.Languages.Languages.Text_Settings_SplashCustomImage,
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType(Core.Languages.Languages.Text_Settings_SplashCustomImage)
+                {
+                    Patterns = ["*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif", "*.webp"]
+                }
+            ]
+        });
+        if (files.Count > 0)
+        {
+            var path = files[0].TryGetLocalPath() ?? files[0].Path.AbsolutePath;
+            await ConfigManager.UpdateConfigAsync(config => config.SplashCustomImagePath = path);
+            MainPageFrameViewModel.Instance.NeedRestart = true;
+        }
     }
 }
 

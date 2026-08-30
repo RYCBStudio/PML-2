@@ -80,6 +80,13 @@
         <None Update="Resources\splash.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <!-- 26.3.1 M2：内置 Splash 样式预设图 -->
+        <None Update="Resources\splash-dark.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\splash-minimal.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>
@@ -166,9 +173,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Remove="artifacts\**"/>
-        <None Update="Config\Settings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Update="Plugins\*.yaml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>Config\Plugins\%(Filename)%(Extension)</TargetPath>

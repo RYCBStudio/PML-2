@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.MEFIntegrated;
@@ -51,6 +51,7 @@ namespace MEFrpLauncherX;
 [JsonSerializable(typeof(SingleApiInfo<TunnelErrorInfo>))]
 [JsonSerializable(typeof(SingleApiInfo<NoticeContent[]>))]
 [JsonSerializable(typeof(TunnelErrorInfo))]
+[JsonSerializable(typeof(SplashPipeMessage))]
 [JsonSerializable(typeof(AppConfig))]
 [JsonSerializable(typeof(UpdateSettings))]
 [JsonSerializable(typeof(BackgroundSettings))]

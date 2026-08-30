@@ -1,0 +1,25 @@
+# 断线卫士（官方示例）
+# 隧道失败（proxy.failed）时：写日志 + 系统通知 + 自动重启（26.3.1 新增事件/动作）。
+# 安装方式：复制本文件到 PML 2 的 Config/Plugins/ 目录，约 1 秒后自动热重载生效。
+#
+# 数据字段：ctx.data.proxyName（隧道名）、ctx.data.errorMessage（可读失败摘要）、
+#           ctx.data.errorCategory（AuthenticationFailed / PortInUse / NodeUnreachable / ProcessCrashed / ...）
+id: tech.rycb.plugin.proxy-guard
+name: 断线卫士
+description: 隧道失败时通知并自动重启
+author: RYCB Studio
+version: "1.0"
+
+triggers:
+  - on: proxy.failed
+    condition: "ctx.data.proxyName != ''"
+    actions:
+      - name: log
+        params:
+          msg: "proxy.failed: {{ctx.data.proxyName}} {{ctx.data.errorMessage}}"
+      - name: notify
+        params:
+          msg: "隧道 {{ctx.data.proxyName}} 异常：{{ctx.data.errorMessage}}"
+      - name: proxy.restart
+        params:
+          proxyName: "{{ctx.data.proxyName}}"

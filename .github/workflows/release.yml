@@ -1,4 +1,4 @@
-name: Release (Linux / macOS)
+name: Release (Linux / macOS / Windows)
 
 on:
   push:
@@ -537,8 +537,281 @@ jobs:
           path: ${{ github.workspace }}/dist/*
           if-no-files-found: error
 
+  # ---------- Windows：离线安装包（Inno Setup）----------
+  windows:
+    name: Windows ${{ matrix.arch }} (${{ matrix.mode }} offline)
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # x64：只打包 AOT 离线安装包
+          - rid: win-x64
+            arch: x64
+            mode: aot
+            tool_mode: aot
+            publish_sub: win-x64-aot
+            iss_script: winx64_aot_offline.iss
+            download_pmla: false
+          # arm64：ReadyToRun 离线安装包（与 pu.ps1 一致）
+          - rid: win-arm64
+            arch: arm64
+            mode: rdr
+            tool_mode: rdr
+            publish_sub: win-arm64
+            iss_script: winarm64_offline.iss
+            download_pmla: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          V="${V#v}"
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "Resolved version: $V"
+
+      # ---------- CrashDisplayer & Splash（x64: AOT / arm64: ReadyToRun）----------
+      - name: Publish CrashDisplayer (${{ matrix.rid }})
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/tools-win/${{ matrix.rid }}/CrashDisplayer"
+          mkdir -p "$OUT"
+          if [ "${{ matrix.tool_mode }}" = "aot" ]; then
+            dotnet publish "${{ env.CRASH_PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishAot=true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:EnableCompressionInSingleFile=true \
+              -p:DebugType=none \
+              -p:DebugSymbols=false \
+              -o "$OUT" \
+              --nologo -v minimal
+          else
+            dotnet publish "${{ env.CRASH_PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishReadyToRun=true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:EnableCompressionInSingleFile=true \
+              -p:DebugType=none \
+              -p:DebugSymbols=false \
+              -o "$OUT" \
+              --nologo -v minimal
+          fi
+          find "$OUT" -type f \( -name "*.pdb" -o -name "*.ilk" -o -name "*.exp" -o -name "*.lib" \) -delete 2>/dev/null || true
+          echo "===== CrashDisplayer (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      - name: Publish Splash (${{ matrix.rid }})
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/tools-win/${{ matrix.rid }}/Splash"
+          mkdir -p "$OUT"
+          if [ "${{ matrix.tool_mode }}" = "aot" ]; then
+            dotnet publish "${{ env.SPLASH_PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishAot=true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:EnableCompressionInSingleFile=true \
+              -p:DebugType=none \
+              -p:DebugSymbols=false \
+              -o "$OUT" \
+              --nologo -v minimal
+          else
+            dotnet publish "${{ env.SPLASH_PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishReadyToRun=true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:EnableCompressionInSingleFile=true \
+              -p:DebugType=none \
+              -p:DebugSymbols=false \
+              -o "$OUT" \
+              --nologo -v minimal
+          fi
+          find "$OUT" -type f \( -name "*.pdb" -o -name "*.ilk" -o -name "*.exp" -o -name "*.lib" \) -delete 2>/dev/null || true
+          echo "===== Splash (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" || true
+
+      # ---------- 下载 arm64 CrashDisplayer 组件（arm64 离线包内嵌，参考 pu.ps1 Ensure-WinArm64OfflineComponent）----------
+      - name: Download arm64 CrashDisplayer component
+        if: matrix.download_pmla
+        shell: pwsh
+        run: |
+          $dir = "$env:GITHUB_WORKSPACE/installer/arm64"
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
+          $url = "https://alist.yealqp.cn/download/ME-Frp%2520PML2/mefrp//windows-distributions/components/arm64/RYCB.MEFrpLauncherX.CrashDisplayer.pmla"
+          try {
+            Invoke-WebRequest -Uri $url -OutFile "$dir/RYCB.MEFrpLauncherX.CrashDisplayer.pmla" -UseBasicParsing
+            Get-Item "$dir/RYCB.MEFrpLauncherX.CrashDisplayer.pmla" | Select-Object Name, Length
+          }
+          catch {
+            Write-Error "arm64 组件下载失败: $($_.Exception.Message)"
+            exit 1
+          }
+
+      # ---------- 主程序：x64 用 AOT，arm64 用 ReadyToRun ----------
+      # 输出目录必须与 installer/*.iss 中 Source 路径一致：
+      #   winx64_aot_offline.iss  -> MEFrpLauncherX/bin/Release/net10.0/win-x64-aot/publish
+      #   winarm64_offline.iss    -> MEFrpLauncherX/bin/Release/net10.0/win-arm64/publish
+      - name: Publish main app (${{ matrix.rid }}, ${{ matrix.mode }})
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          mkdir -p "$OUT"
+          if [ "${{ matrix.mode }}" = "aot" ]; then
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishAot=true \
+              -p:PublishTrimmed=true \
+              -p:DefineConstants='AOT' \
+              -o "$OUT" \
+              --nologo -v q
+          else
+            dotnet publish "${{ env.PROJECT }}" \
+              -c Release \
+              -r "${{ matrix.rid }}" \
+              --self-contained true \
+              -p:PublishReadyToRun=true \
+              -p:PublishTrimmed=true \
+              -o "$OUT" \
+              --nologo -v q
+          fi
+          echo "Publish file count: $(find "$OUT" -type f | wc -l)"
+
+      # ---------- 放置 CrashDisplayer & Splash 到 publish 的 Tools/ ----------
+      - name: Place CrashDisplayer & Splash into Tools/
+        shell: bash
+        run: |
+          set -euo pipefail
+          CRASH_SRC="${{ github.workspace }}/tools-win/${{ matrix.rid }}/CrashDisplayer"
+          SPLASH_SRC="${{ github.workspace }}/tools-win/${{ matrix.rid }}/Splash"
+          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          TOOLS="$OUT/Tools"
+          mkdir -p "$TOOLS"
+          # CrashDisplayer：保留原名（MEFrpLauncherX.CrashDisplayer.exe）
+          cp -a "$CRASH_SRC"/. "$TOOLS/"
+          # Splash：主可执行文件重命名为 splash.exe（Windows 无扩展名匹配不到，直接取 exe）
+          SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -name "*.exe" -print -quit)
+          if [ -z "$SPLASH_EXE" ]; then
+            SPLASH_EXE=$(find "$SPLASH_SRC" -maxdepth 1 -type f -print -quit)
+          fi
+          if [ -n "$SPLASH_EXE" ] && [ -f "$SPLASH_EXE" ]; then
+            cp -a "$SPLASH_EXE" "$TOOLS/splash.exe"
+            echo "Splash renamed to splash.exe at $TOOLS"
+          else
+            echo "ERROR: could not find Splash executable in $SPLASH_SRC"
+            ls -la "$SPLASH_SRC" || true
+            exit 1
+          fi
+          echo "===== Tools/ final contents ====="
+          ls -lh "$TOOLS" || true
+
+      # ---------- 注入 Sentry DSN ----------
+      - name: Inject Sentry DSN
+        shell: bash
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          set -euo pipefail
+          OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          if [ -n "${SENTRY_DSN:-}" ]; then
+            printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
+            echo "sentry.json injected"
+          else
+            echo "No SENTRY_DSN secret, skip"
+          fi
+
+      # ---------- Inno Setup：安装 + 生成临时 ISS + 编译离线安装包 ----------
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+
+      - name: Build offline installer (ISCC)
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ws = $env:GITHUB_WORKSPACE
+          $V = $env:VERSION
+
+          # 定位 ISCC.exe
+          $iscc = Get-ChildItem "C:\Program Files*\Inno Setup*\ISCC.exe" -ErrorAction SilentlyContinue |
+                  Select-Object -First 1
+          if (-not $iscc) { throw "ISCC.exe not found" }
+          Write-Host "ISCC: $($iscc.FullName)"
+
+          # 生成临时 ISS：把硬编码的本地路径前缀替换为 CI 工作区路径
+          function New-TempIss {
+            param([string]$Template, [string]$Version)
+            $content = Get-Content $Template -Raw
+            # 正/反斜杠两种写法都要替换：F:\VSProj\repos\MEFrpLauncherX\MEFrpLauncherX -> $ws\MEFrpLauncherX
+            $content = $content.Replace('F:\VSProj\repos\MEFrpLauncherX\MEFrpLauncherX', "$ws\MEFrpLauncherX")
+            $content = $content.Replace('F:/VSProj/repos/MEFrpLauncherX/MEFrpLauncherX', ($ws -replace '\\','/') + '/MEFrpLauncherX')
+            # 版本号：若原值带 " AOT" 后缀则保留后缀（与 pu.ps1 Compile-InnoSetup 一致）
+            if ($content -match '(?m)^#define MyAppVersion ".*? AOT"') {
+              $content = [regex]::Replace($content, '(?m)^#define MyAppVersion ".*?"', "#define MyAppVersion `"$Version AOT`"")
+            }
+            else {
+              $content = [regex]::Replace($content, '(?m)^#define MyAppVersion ".*?"', "#define MyAppVersion `"$Version`"")
+            }
+            # 输出目录指向 CI dist（模板硬编码为本地 artifacts 目录）
+            $content = [regex]::Replace($content, '(?m)^OutputDir=.*$', "OutputDir=$($ws -replace '\\','/')/dist")
+            $temp = Join-Path (Split-Path $Template) ("temp_" + (Split-Path $Template -Leaf))
+            Set-Content -Path $temp -Value $content -Encoding UTF8
+            Write-Host "Generated temp ISS: $temp"
+            return $temp
+          }
+
+          New-Item -ItemType Directory -Force -Path "$ws/dist" | Out-Null
+
+          $temp = New-TempIss -Template "$ws/installer/${{ matrix.iss_script }}" -Version $V
+          Write-Host "Compiling $temp ..."
+          & $iscc.FullName $temp
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed for ${{ matrix.iss_script }}" }
+          Remove-Item $temp -Force
+
+          Write-Host "===== dist ====="
+          Get-ChildItem "$ws/dist" | Select-Object Name, Length
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}-offline
+          path: ${{ github.workspace }}/dist/*
+          if-no-files-found: error
+
   release:
-    needs: build
+    needs: [build, windows]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     permissions:

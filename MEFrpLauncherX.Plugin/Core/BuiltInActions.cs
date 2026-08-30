@@ -72,6 +72,33 @@ public class NotifyAction : IAction
     }
 }
 
+/// <summary>打开 URL 动作（26.3.1 M5）：用系统默认浏览器打开链接</summary>
+public class OpenUrlAction : IAction
+{
+    public Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        var url = args?.GetValueOrDefault("url")?.ToString() ?? "";
+        if (string.IsNullOrEmpty(url))
+        {
+            App.CurrentLogger.Warning($"插件 {ctx.PluginId} open_url 缺少 url 参数", module: EnumLogModule.Plugin);
+            return Task.CompletedTask;
+        }
+
+        try
+        {
+            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+            App.CurrentLogger.LogDebug($"插件 {ctx.PluginId} open_url: {url}", module: EnumLogModule.Plugin);
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Warning($"插件 {ctx.PluginId} open_url 失败: {url}, {ex.Message}",
+                module: EnumLogModule.Plugin);
+        }
+
+        return Task.CompletedTask;
+    }
+}
+
 public class LocalRunAction : IAction
 {
     public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
@@ -233,6 +260,45 @@ public class ConditionalAction : IAction
                     await _inner.ExecuteAsync(ctx, actionDef.Params);
                 }
             }
+        }
+    }
+}
+
+/// <summary>
+///     重启隧道动作（26.3.1 S2）：按 <c>proxyName</c> 停止并重新启动隧道。
+///     实际能力由主程序通过 <see cref="ProxyActionBridge" /> 注册，插件引擎本身不持有隧道生命周期。
+/// </summary>
+public class ProxyRestartAction : IAction
+{
+    public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        var proxyName = args?.GetValueOrDefault("proxyName")?.ToString() ?? "";
+        if (string.IsNullOrEmpty(proxyName))
+        {
+            App.CurrentLogger.Warning($"插件 {ctx.PluginId} proxy.restart 缺少 proxyName 参数",
+                module: EnumLogModule.Plugin);
+            return;
+        }
+
+        if (ProxyActionBridge.RestartProxy == null)
+        {
+            App.CurrentLogger.Warning(
+                $"插件 {ctx.PluginId} proxy.restart 不可用：主程序未注册隧道重启能力",
+                module: EnumLogModule.Plugin);
+            return;
+        }
+
+        var error = await ProxyActionBridge.RestartProxy(proxyName);
+        if (error != null)
+        {
+            App.CurrentLogger.Warning($"插件 {ctx.PluginId} proxy.restart 失败: {proxyName}: {error}",
+                module: EnumLogModule.Plugin);
+        }
+        else
+        {
+            // 权限记录：插件动作执行了隧道控制（无权限模型时的审计痕迹）
+            App.CurrentLogger.Log($"插件 {ctx.PluginId} 执行了 proxy.restart: {proxyName}",
+                module: EnumLogModule.Plugin);
         }
     }
 }

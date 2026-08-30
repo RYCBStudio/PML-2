@@ -2039,6 +2039,81 @@
     <data name="Text.PluginList.ReadYamlFailedFormat" xml:space="preserve">
         <value>读取插件 YAML 失败: {0}</value>
     </data>
+    <data name="Text.PluginList.ExecutionLogs" xml:space="preserve">
+        <value>执行日志</value>
+    </data>
+    <data name="Text.PluginList.ClearLogs" xml:space="preserve">
+        <value>清空日志</value>
+    </data>
+    <data name="Text.PluginList.NoLogs" xml:space="preserve">
+        <value>暂无执行日志</value>
+    </data>
+    <data name="Text.PluginList.NoLogsHint" xml:space="preserve">
+        <value>插件事件触发与动作执行后将在此显示记录</value>
+    </data>
+    <data name="Text.PluginList.LogStatusInfo" xml:space="preserve">
+        <value>执行</value>
+    </data>
+    <data name="Text.PluginList.LogStatusSuccess" xml:space="preserve">
+        <value>成功</value>
+    </data>
+    <data name="Text.PluginList.LogStatusFailed" xml:space="preserve">
+        <value>失败</value>
+    </data>
+    <data name="Text.PluginList.LogStatusSkipped" xml:space="preserve">
+        <value>跳过</value>
+    </data>
+    <data name="Text.PluginList.NewPlugin" xml:space="preserve">
+        <value>新建插件</value>
+    </data>
+    <data name="Text.PluginList.EditPlugin" xml:space="preserve">
+        <value>打开编辑</value>
+    </data>
+    <data name="Text.PluginList.CannotOpenInForm" xml:space="preserve">
+        <value>无法用表单打开该插件，已打开插件目录，请手动编辑 YAML</value>
+    </data>
+    <data name="Text.PluginEditor.Title" xml:space="preserve">
+        <value>插件编辑器</value>
+    </data>
+    <data name="Text.PluginEditor.Id" xml:space="preserve">
+        <value>插件 ID</value>
+    </data>
+    <data name="Text.PluginEditor.Name" xml:space="preserve">
+        <value>名称</value>
+    </data>
+    <data name="Text.PluginEditor.Description" xml:space="preserve">
+        <value>描述</value>
+    </data>
+    <data name="Text.PluginEditor.Author" xml:space="preserve">
+        <value>作者</value>
+    </data>
+    <data name="Text.PluginEditor.Version" xml:space="preserve">
+        <value>版本</value>
+    </data>
+    <data name="Text.PluginEditor.SelectEvent" xml:space="preserve">
+        <value>选择事件...</value>
+    </data>
+    <data name="Text.PluginEditor.RemoveTrigger" xml:space="preserve">
+        <value>删除规则</value>
+    </data>
+    <data name="Text.PluginEditor.Condition" xml:space="preserve">
+        <value>条件（可选，支持算术 + - * / 与括号）</value>
+    </data>
+    <data name="Text.PluginEditor.SelectAction" xml:space="preserve">
+        <value>选择动作...</value>
+    </data>
+    <data name="Text.PluginEditor.RemoveAction" xml:space="preserve">
+        <value>删除</value>
+    </data>
+    <data name="Text.PluginEditor.AddAction" xml:space="preserve">
+        <value>添加动作</value>
+    </data>
+    <data name="Text.PluginEditor.PreviewYaml" xml:space="preserve">
+        <value>预览 YAML</value>
+    </data>
+    <data name="Text.PluginEditor.RefreshPreview" xml:space="preserve">
+        <value>刷新预览</value>
+    </data>
     <data name="Text.Themes.ThemeFiles" xml:space="preserve">
         <value>主题文件</value>
     </data>
@@ -2354,6 +2429,39 @@ ___
     </data>
     <data name="Text.MainWindow.StopAllTunnels" xml:space="preserve">
         <value>全部停止隧道</value>
+    </data>
+    <data name="Text.MainWindow.MenuFile" xml:space="preserve">
+        <value>文件</value>
+    </data>
+    <data name="Text.MainWindow.OpenLogDirectory" xml:space="preserve">
+        <value>打开日志目录</value>
+    </data>
+    <data name="Text.MainWindow.RefreshProxies" xml:space="preserve">
+        <value>刷新隧道列表</value>
+    </data>
+    <data name="Text.MainWindow.MenuNodes" xml:space="preserve">
+        <value>节点</value>
+    </data>
+    <data name="Text.MainWindow.NodesMonitoring" xml:space="preserve">
+        <value>节点监控</value>
+    </data>
+    <data name="Text.MainWindow.RefreshNodes" xml:space="preserve">
+        <value>刷新节点</value>
+    </data>
+    <data name="Text.MainWindow.MenuView" xml:space="preserve">
+        <value>查看</value>
+    </data>
+    <data name="Text.MainWindow.ToggleProxyFloat" xml:space="preserve">
+        <value>流量悬浮窗</value>
+    </data>
+    <data name="Text.MainWindow.MenuHelp" xml:space="preserve">
+        <value>帮助</value>
+    </data>
+    <data name="Text.MainWindow.Documentation" xml:space="preserve">
+        <value>官方文档</value>
+    </data>
+    <data name="Text.MainWindow.CheckUpdate" xml:space="preserve">
+        <value>检查更新</value>
     </data>
     <data name="Text.MainWindow.AutoRestoreFailed" xml:space="preserve">
         <value>自动恢复隧道失败，请到终端页查看详情</value>
@@ -2896,6 +3004,30 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Settings.Animation.Standard" xml:space="preserve">
         <value>标准</value>
+    </data>
+    <data name="Text.Settings.Splash" xml:space="preserve">
+        <value>启动画面</value>
+    </data>
+    <data name="Text.Settings.SplashDescription" xml:space="preserve">
+        <value>选择启动画面样式, 支持自定义背景图, 更改后于下次启动生效</value>
+    </data>
+    <data name="Text.Settings.SplashStyle" xml:space="preserve">
+        <value>启动画面样式</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Default" xml:space="preserve">
+        <value>默认</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Dark" xml:space="preserve">
+        <value>深色</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Minimal" xml:space="preserve">
+        <value>简约</value>
+    </data>
+    <data name="Text.Settings.SplashCustomImage" xml:space="preserve">
+        <value>自定义背景图</value>
+    </data>
+    <data name="Text.Settings.SplashRestartHint" xml:space="preserve">
+        <value>更改将在下次启动时生效</value>
     </data>
     <data name="Text.Settings.RenderingMode" xml:space="preserve">
         <value>渲染模式</value>

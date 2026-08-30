@@ -58,17 +58,12 @@ internal partial class Program
 
         // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"请求
         StartPipeServer();
+        // 26.3.1 M1：Splash 进度管道名（与单实例激活管道 tech.rycb.pml2 严格分离）
+        var splashPipeName = $"tech.rycb.pml2.splash.{Environment.ProcessId}";
         var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
         if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
         {
-            if (File.Exists(splashFile))
-            {
-                var psi = new ProcessStartInfo("/bin/chmod", $"+x \"{splashFile}\"")
-                {
-                    UseShellExecute = false
-                };
-                Process.Start(psi)?.WaitForExit();
-            }
+            File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
         }
 
         System.Console.OutputEncoding = Encoding.UTF8;
@@ -78,32 +73,31 @@ internal partial class Program
         //     return File.Exists(assemblyPath) ? ctx.LoadFromAssemblyPath(assemblyPath) : null;
         // };
 
+        // 26.3.1 M2：早读 Splash 配置（Splash 在 Avalonia/ConfigManager 就绪前启动，直接解析 Settings.json）
+        var splashConfig = ReadSplashConfig();
         try
         {
-            if (!File.Exists(splashFile))
+            if (!splashConfig.Enabled)
+            {
+                System.Console.WriteLine("[INFO] Splash is disabled by user settings.");
+                Core.App.CurrentLogger?.Log("启动画面已由用户设置关闭。", EnumLogType.Debug);
+            }
+            else if (!File.Exists(splashFile))
             {
                 System.Console.WriteLine("\e[33m[WARNING] The Splash file is missing. May need to reinstall.\e[0m");
                 Core.App.CurrentLogger?.Log("启动画面文件缺失。", EnumLogType.Warn);
             }
-#if !DEBUG
-            else if (!DownloadHelper.ValidateFileSimple(splashFile,
-                         "fdce2f73617f8c60f8cbf5e0d82a375b|a56e73829f0d65a205f5670f57b74dff|" +
-                         "e382a771cc77afc9d637a90fe4de2456|7c68220c178750b5a55f44ca2aaaf66a|" +
-                         "a6aa19013912c6063a8b711e7fbbf5b9|e3ced0c893d47a7ea1202fb8d1554753"))
-            {
-                System.Console.WriteLine("\e[33m[WARNING] The Splash file has been modified. May need to reinstall.");
-                System.Console.WriteLine("[警告] 启动画面文件已被修改。可能需要重新安装。\e[0m");
-                Core.App.CurrentLogger?.Log("启动画面文件完整性检查失败。", EnumLogType.Warn);
-            }
-#endif
             else
             {
                 var p = Process.Start(new ProcessStartInfo
                 {
                     FileName = splashFile,
-                    Arguments = $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{GetBackground()}\""
+                    Arguments =
+                        $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{ResolveSplashImage(splashConfig)}\" --style \"{splashConfig.Style}\" --pipe \"{splashPipeName}\""
                 });
                 SplashProcess = p;
+                // 26.3.1 M1：主程序启动阶段进度 → Splash 管道（App.SplashService 由本服务实现）
+                App.SplashService = new Services.PipeSplashService(splashPipeName);
             }
         }
         catch (Exception ex)
@@ -313,6 +307,57 @@ internal partial class Program
         }
 
         return possiblePaths[0];
+    }
+
+    /// <summary>早读 Splash 配置：直接解析 Config/Settings.json（26.3.1 M2，Avalonia 就绪前可用）</summary>
+    private static (bool Enabled, string Style, string CustomImagePath) ReadSplashConfig()
+    {
+        try
+        {
+            var configPath = Path.Combine(Core.App.StartupPath, "Config", "Settings.json");
+            if (!File.Exists(configPath)) return (true, "default", string.Empty);
+            using var doc = JsonDocument.Parse(File.ReadAllText(configPath),
+                new JsonDocumentOptions
+                {
+                    CommentHandling = JsonCommentHandling.Skip,
+                    AllowTrailingCommas = true
+                });
+            var root = doc.RootElement;
+            var hasEnabled = root.TryGetProperty("SplashEnabled", out var enabledProp);
+            var enabled = !hasEnabled || enabledProp.ValueKind == JsonValueKind.True;
+            var style = root.TryGetProperty("SplashStyle", out var styleProp)
+                ? styleProp.GetString() ?? "default"
+                : "default";
+            var custom = root.TryGetProperty("SplashCustomImagePath", out var customProp)
+                ? customProp.GetString() ?? string.Empty
+                : string.Empty;
+            return (enabled, style, custom);
+        }
+        catch
+        {
+            // 解析失败按默认值处理，不影响启动
+            return (true, "default", string.Empty);
+        }
+    }
+
+    /// <summary>按 Splash 配置解析背景图：自定义图片 → 内置样式预设 → 默认图（26.3.1 M2）</summary>
+    private static string ResolveSplashImage((bool Enabled, string Style, string CustomImagePath) cfg)
+    {
+        // 1. 自定义图片优先（校验存在性与扩展名）
+        if (!string.IsNullOrEmpty(cfg.CustomImagePath))
+        {
+            var custom = Path.GetFullPath(cfg.CustomImagePath);
+            if (File.Exists(custom) && IsImageFile(custom)) return custom;
+        }
+
+        // 3. 回退：现有默认图逻辑（找不到时由 Splash 进程自行降级）
+        return GetBackground();
+    }
+
+    private static bool IsImageFile(string path)
+    {
+        var ext = Path.GetExtension(path).ToLowerInvariant();
+        return ext is ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp" or ".bmp";
     }
 
     public static void ProcessStartupArguments(string arg)

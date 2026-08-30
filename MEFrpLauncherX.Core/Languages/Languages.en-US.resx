@@ -2039,6 +2039,81 @@ This operation will delete the plugin file and cannot be undone.</value>
     <data name="Text.PluginList.ReadYamlFailedFormat" xml:space="preserve">
         <value>Failed to read plugin YAML: {0}</value>
     </data>
+    <data name="Text.PluginList.ExecutionLogs" xml:space="preserve">
+        <value>Execution Logs</value>
+    </data>
+    <data name="Text.PluginList.ClearLogs" xml:space="preserve">
+        <value>Clear Logs</value>
+    </data>
+    <data name="Text.PluginList.NoLogs" xml:space="preserve">
+        <value>No execution logs yet</value>
+    </data>
+    <data name="Text.PluginList.NoLogsHint" xml:space="preserve">
+        <value>Records will appear here when plugin events trigger or actions run</value>
+    </data>
+    <data name="Text.PluginList.LogStatusInfo" xml:space="preserve">
+        <value>Run</value>
+    </data>
+    <data name="Text.PluginList.LogStatusSuccess" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="Text.PluginList.LogStatusFailed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="Text.PluginList.LogStatusSkipped" xml:space="preserve">
+        <value>Skipped</value>
+    </data>
+    <data name="Text.PluginList.NewPlugin" xml:space="preserve">
+        <value>New Plugin</value>
+    </data>
+    <data name="Text.PluginList.EditPlugin" xml:space="preserve">
+        <value>Open Editor</value>
+    </data>
+    <data name="Text.PluginList.CannotOpenInForm" xml:space="preserve">
+        <value>Cannot open this plugin in the form editor; the plugin folder has been opened for manual YAML editing</value>
+    </data>
+    <data name="Text.PluginEditor.Title" xml:space="preserve">
+        <value>Plugin Editor</value>
+    </data>
+    <data name="Text.PluginEditor.Id" xml:space="preserve">
+        <value>Plugin ID</value>
+    </data>
+    <data name="Text.PluginEditor.Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Text.PluginEditor.Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="Text.PluginEditor.Author" xml:space="preserve">
+        <value>Author</value>
+    </data>
+    <data name="Text.PluginEditor.Version" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Text.PluginEditor.SelectEvent" xml:space="preserve">
+        <value>Select event...</value>
+    </data>
+    <data name="Text.PluginEditor.RemoveTrigger" xml:space="preserve">
+        <value>Remove Trigger</value>
+    </data>
+    <data name="Text.PluginEditor.Condition" xml:space="preserve">
+        <value>Condition (optional; supports arithmetic + - * / and parentheses)</value>
+    </data>
+    <data name="Text.PluginEditor.SelectAction" xml:space="preserve">
+        <value>Select action...</value>
+    </data>
+    <data name="Text.PluginEditor.RemoveAction" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="Text.PluginEditor.AddAction" xml:space="preserve">
+        <value>Add Action</value>
+    </data>
+    <data name="Text.PluginEditor.PreviewYaml" xml:space="preserve">
+        <value>Preview YAML</value>
+    </data>
+    <data name="Text.PluginEditor.RefreshPreview" xml:space="preserve">
+        <value>Refresh Preview</value>
+    </data>
     <data name="Text.Themes.ThemeFiles" xml:space="preserve">
         <value>Theme Files</value>
     </data>
@@ -2354,6 +2429,39 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
     </data>
     <data name="Text.MainWindow.StopAllTunnels" xml:space="preserve">
         <value>Stop All Tunnels</value>
+    </data>
+    <data name="Text.MainWindow.MenuFile" xml:space="preserve">
+        <value>File</value>
+    </data>
+    <data name="Text.MainWindow.OpenLogDirectory" xml:space="preserve">
+        <value>Open Log Directory</value>
+    </data>
+    <data name="Text.MainWindow.RefreshProxies" xml:space="preserve">
+        <value>Refresh Tunnel List</value>
+    </data>
+    <data name="Text.MainWindow.MenuNodes" xml:space="preserve">
+        <value>Nodes</value>
+    </data>
+    <data name="Text.MainWindow.NodesMonitoring" xml:space="preserve">
+        <value>Node Monitoring</value>
+    </data>
+    <data name="Text.MainWindow.RefreshNodes" xml:space="preserve">
+        <value>Refresh Nodes</value>
+    </data>
+    <data name="Text.MainWindow.MenuView" xml:space="preserve">
+        <value>View</value>
+    </data>
+    <data name="Text.MainWindow.ToggleProxyFloat" xml:space="preserve">
+        <value>Traffic Float Window</value>
+    </data>
+    <data name="Text.MainWindow.MenuHelp" xml:space="preserve">
+        <value>Help</value>
+    </data>
+    <data name="Text.MainWindow.Documentation" xml:space="preserve">
+        <value>Documentation</value>
+    </data>
+    <data name="Text.MainWindow.CheckUpdate" xml:space="preserve">
+        <value>Check for Updates</value>
     </data>
     <data name="Text.MainWindow.AutoRestoreFailed" xml:space="preserve">
         <value>Failed to auto-restore tunnels. Check the Terminal page for details</value>
@@ -2896,6 +3004,30 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Settings.Animation.Standard" xml:space="preserve">
         <value>Standard</value>
+    </data>
+    <data name="Text.Settings.Splash" xml:space="preserve">
+        <value>Startup Screen</value>
+    </data>
+    <data name="Text.Settings.SplashDescription" xml:space="preserve">
+        <value>Choose the startup screen style or a custom background image. Takes effect on the next launch.</value>
+    </data>
+    <data name="Text.Settings.SplashStyle" xml:space="preserve">
+        <value>Startup Screen Style</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Default" xml:space="preserve">
+        <value>Default</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Dark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
+    <data name="Text.Settings.SplashStyle.Minimal" xml:space="preserve">
+        <value>Minimal</value>
+    </data>
+    <data name="Text.Settings.SplashCustomImage" xml:space="preserve">
+        <value>Custom Background Image</value>
+    </data>
+    <data name="Text.Settings.SplashRestartHint" xml:space="preserve">
+        <value>Changes take effect on the next launch</value>
     </data>
     <data name="Text.Settings.RenderingMode" xml:space="preserve">
         <value>Rendering mode</value>

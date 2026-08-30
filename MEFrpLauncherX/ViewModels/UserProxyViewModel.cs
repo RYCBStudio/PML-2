@@ -20,6 +20,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Services;
+using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
 using MEFrpLauncherX.Views.ProxyMonitor;
 using MsBox.Avalonia.ViewModels.Commands;
@@ -862,6 +863,13 @@ public class UserProxyViewModel : ViewModelBase
             TunnelStatus = TunnelStatus.Failed;
             IsLoading = false;
             Growl.Error(string.Format(Languages.Text_UserProxy_LaunchFailedFormat, proxy?.proxyName, LastErrorSummary));
+            // 26.3.1 S1：启动阶段 API 错误 → 插件事件
+            _ = PluginService.Instance.TriggerAsync("proxy.failed", new Dictionary<string, object>
+            {
+                ["proxyName"] = proxy?.proxyName ?? "",
+                ["errorMessage"] = LastErrorSummary,
+                ["errorCategory"] = TunnelErrorCategory.Unknown.ToString()
+            });
         }
     }
 
@@ -1180,6 +1188,13 @@ public class UserProxyViewModel : ViewModelBase
                 LastErrorSummary = info.Summary;
                 TunnelStatus = TunnelStatus.Failed;
                 IsLoading = false;
+                // 26.3.1 S1：隧道失败 → 插件事件（断线卫士订阅）
+                _ = PluginService.Instance.TriggerAsync("proxy.failed", new Dictionary<string, object>
+                {
+                    ["proxyName"] = proxyName,
+                    ["errorMessage"] = LastErrorSummary,
+                    ["errorCategory"] = info.Category.ToString()
+                });
                 var request = NotificationBuilder
                     .Create(string.Format(Languages.Text_ProxyStart_StartFailed, proxyName))
                     .WithBody(LastErrorSummary)
@@ -1218,6 +1233,13 @@ public class UserProxyViewModel : ViewModelBase
                         LastErrorSummary = TunnelErrorMapper.MapTimeout().Summary;
                         TunnelStatus = TunnelStatus.Failed;
                         IsLoading = false;
+                        // 26.3.1 S1：启动超时（节点不可达）→ 插件事件
+                        _ = PluginService.Instance.TriggerAsync("proxy.failed", new Dictionary<string, object>
+                        {
+                            ["proxyName"] = proxyName,
+                            ["errorMessage"] = LastErrorSummary,
+                            ["errorCategory"] = TunnelErrorCategory.NodeUnreachable.ToString()
+                        });
                     }
                 });
             }

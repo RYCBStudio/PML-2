@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
 namespace MEFrpLauncherX.Plugin.Condition;
@@ -11,8 +11,9 @@ public static class PropertyAccessor
         var parts = path.Split('.');
         object? current = root;
 
-        foreach (var part in parts)
+        for (var i = 0; i < parts.Length; i++)
         {
+            var part = parts[i];
             if (current == null) return null;
             if (current is Dictionary<string, object> dict)
             {
@@ -24,11 +25,16 @@ public static class PropertyAccessor
             }
             else if (current is ExecutionContext ctx)
             {
-                current = ctx.Data;
-                if (current is Dictionary<string, object> ctx_data)
+                // 路径形如 ctx.data.xxx / ctx.variables.xxx（首个部分为 ctx，随后是 data/variables 段）
+                current = parts.ElementAtOrDefault(i + 1) switch
                 {
-                    current = ctx_data.GetValueOrDefault(parts.Last());
-                    if (current == null) current = ctx_data.GetValueOrDefault(part);
+                    "data" => ctx.Data,
+                    "variables" => ctx.Variables,
+                    _ => null
+                };
+                if (current is Dictionary<string, object> ctx_dict)
+                {
+                    current = ctx_dict.GetValueOrDefault(parts.Last());
                     break;
                 }
             }

@@ -211,87 +211,118 @@ public partial class MainWindow : AppWindow, IDisposable
         };
         if (OperatingSystem.IsMacOS())
         {
-            // 创建原生菜单（26.3 M5：macOS 原生菜单 L1，命令与主界面同源）
+            // 创建原生菜单（26.3.1 M3：重组 macOS 原生菜单，命令与托盘/主界面同源）
             // 注：macOS 点红灯关窗默认 = 退出（HideInsteadOfClose=false）；
             //     开启「关闭时最小化到托盘」后关窗 ≠ 退出，退出请走菜单 / ⌘Q。
             NativeMenuBar = [];
 
-            // 应用菜单（macOS 第一个菜单：关于 / 设置 / 退出）
+            // ---- 应用菜单（macOS 第一个菜单：关于 / 设置 / 退出）----
             var appMenu = new NativeMenuItem("PML 2");
             var appSubMenu = new NativeMenu();
             appSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_About)
             {
-                Command = ReactiveCommand.Create(() =>
-                {
-                    MainPageFrameViewModel.Instance?.NavigateToPage("About");
-                })
+                Command = ReactiveCommand.Create(() => MainPageFrameViewModel.Instance?.NavigateToPage("About"))
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
             appSubMenu.Add(new NativeMenuItem(Languages.Text_Global_Settings)
             {
                 Gesture = KeyGesture.Parse("⌘+,"),
-                Command = ReactiveCommand.Create(() =>
-                {
-                    AppShellCommands.Instance.OpenSettings();
-                })
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.OpenSettings())
             });
             appSubMenu.Add(new NativeMenuItemSeparator());
             appSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ExitApp)
             {
                 Gesture = KeyGesture.Parse("⌘+Q"),
-                Command = ReactiveCommand.Create(() =>
-                {
-                    AppShellCommands.Instance.ExitApplication();
-                })
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.ExitApplication())
             });
             appMenu.Menu = appSubMenu;
             NativeMenuBar.Add(appMenu);
 
-            // 隧道菜单（管理 / 创建 / 显示主窗口 / 停止全部隧道）
+            // ---- 文件菜单 ----
+            var fileMenu = new NativeMenuItem(Languages.Text_MainWindow_MenuFile);
+            var fileSubMenu = new NativeMenu();
+            fileSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_OpenLogDirectory)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.OpenLogDirectory())
+            });
+            fileMenu.Menu = fileSubMenu;
+            NativeMenuBar.Add(fileMenu);
+
+            // ---- 隧道菜单 ----
             var tunnelsMenu = new NativeMenuItem(Languages.Text_ManageProxy_MenuTunnels);
             var tunnelsSubMenu = new NativeMenu();
             tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_ManageTunnels)
             {
                 Gesture = KeyGesture.Parse("⌘+M"),
-                Command = ReactiveCommand.Create(() =>
-                {
-                    MainPageFrameViewModel.Instance?.NavigateToPage("Manage");
-                })
+                Command = ReactiveCommand.Create(() => MainPageFrameViewModel.Instance?.NavigateToPage("Manage"))
             });
             tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_ManageProxy_CreateTunnel)
             {
                 Gesture = KeyGesture.Parse("⌘+D"),
-                Command = ReactiveCommand.Create(() =>
-                {
-                    MainPageFrameViewModel.Instance?.NavigateToPage("Create");
-                })
+                Command = ReactiveCommand.Create(() => MainPageFrameViewModel.Instance?.NavigateToPage("Create"))
             });
             tunnelsSubMenu.Add(new NativeMenuItemSeparator());
-            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_OpenMainWindow)
-            {
-                Command = ReactiveCommand.Create(() =>
-                {
-                    AppShellCommands.Instance.ShowMainWindow();
-                })
-            });
             tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_StopAllTunnels)
             {
-                Command = ReactiveCommand.CreateFromTask(() =>
-                    AppShellCommands.Instance.StopAllTunnelsAsync())
+                Command = ReactiveCommand.CreateFromTask(() => AppShellCommands.Instance.StopAllTunnelsAsync())
+            });
+            tunnelsSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_RefreshProxies)
+            {
+                Command = ReactiveCommand.CreateFromTask(() => AppShellCommands.Instance.RefreshProxiesAsync())
             });
             tunnelsMenu.Menu = tunnelsSubMenu;
             NativeMenuBar.Add(tunnelsMenu);
 
+            // ---- 节点菜单 ----
+            var nodesMenu = new NativeMenuItem(Languages.Text_MainWindow_MenuNodes);
+            var nodesSubMenu = new NativeMenu();
+            nodesSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_NodesMonitoring)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.ShowNodesMonitoring())
+            });
+            // 重新进入监控页即触发重新加载（页面每次导航新建实例并自动拉取数据）
+            nodesSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_RefreshNodes)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.ShowNodesMonitoring())
+            });
+            nodesMenu.Menu = nodesSubMenu;
+            NativeMenuBar.Add(nodesMenu);
+
+            // ---- 查看菜单 ----
+            var viewMenu = new NativeMenuItem(Languages.Text_MainWindow_MenuView);
+            var viewSubMenu = new NativeMenu();
+            viewSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_OpenMainWindow)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.ShowMainWindow())
+            });
+            viewSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_ToggleProxyFloat)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.ToggleProxyFloat())
+            });
+            viewMenu.Menu = viewSubMenu;
+            NativeMenuBar.Add(viewMenu);
+
+            // ---- 帮助菜单 ----
+            var helpMenu = new NativeMenuItem(Languages.Text_MainWindow_MenuHelp);
+            var helpSubMenu = new NativeMenu();
+            helpSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_Documentation)
+            {
+                Command = ReactiveCommand.Create(() => AppShellCommands.Instance.OpenDocumentation())
+            });
+            helpSubMenu.Add(new NativeMenuItem(Languages.Text_MainWindow_CheckUpdate)
+            {
+                Command = ReactiveCommand.CreateFromTask(() => AppShellCommands.Instance.CheckUpdateAsync())
+            });
+            helpMenu.Menu = helpSubMenu;
+            NativeMenuBar.Add(helpMenu);
+
             // 设置菜单栏
             NativeMenu.SetMenu(this, NativeMenuBar);
         }
-
-        var topLevel = GetTopLevel(this);
-        Core.App.WindowNotificationManager = new WindowNotificationManager(topLevel)
-            { MaxItems = 5, Position = NotificationPosition.BottomRight };
         try
         {
-            Program.SplashProcess.Kill();
+            // 用户设置关闭启动画面时 SplashProcess 为 null，判空跳过
+            Program.SplashProcess?.Kill();
         }
         catch (Exception ex)
         {
