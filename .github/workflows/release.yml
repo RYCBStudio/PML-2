@@ -191,6 +191,7 @@ jobs:
               --nologo -v q
           fi
 
+          # 禁止 ls|head + pipefail 触发 Broken pipe
           echo "Publish file count: $(find "$OUT" -type f | wc -l)"
           if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
             chmod +x "$OUT/${{ env.APP_EXE }}"
@@ -279,11 +280,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y zstd
 
-      - name: Install zstd (macOS)
-        if: matrix.os_name == 'macos'
-        run: brew list zstd &>/dev/null || brew install zstd
-
-      - name: Pack tar.gz + tar.zst
+      - name: Pack tar.gz + tar.zst (Linux only)
+        if: matrix.os_name == 'linux'
         shell: bash
         run: |
           set -euo pipefail
@@ -365,13 +363,8 @@ jobs:
           StartupNotify=true
           EOF
 
-          PKG_NAME="pml-2"
-          if [ "$MODE" = "aot" ]; then
-            PKG_NAME="pml-2-aot"
-          fi
-
           cat > "${{ github.workspace }}/nfpm.yaml" << EOF
-          name: ${PKG_NAME}
+          name: pml-2
           arch: ${PKG_ARCH}
           platform: linux
           version: ${V}
@@ -534,3 +527,4 @@ jobs:
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
