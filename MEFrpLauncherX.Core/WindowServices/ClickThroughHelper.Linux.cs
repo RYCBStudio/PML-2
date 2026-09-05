@@ -57,35 +57,35 @@ public static partial class ClickThroughHelper
 
     // X11 and XShape interop
 
-    [DllImport("libX11", EntryPoint = "XOpenDisplay")]
-    public static extern IntPtr XOpenDisplay(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XOpenDisplay")]
+    public static partial IntPtr XOpenDisplay(IntPtr display);
 
-    [DllImport("libX11", EntryPoint = "XCloseDisplay")]
-    public static extern int XCloseDisplay(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XCloseDisplay")]
+    public static partial int XCloseDisplay(IntPtr display);
 
-    [DllImport("libX11", EntryPoint = "XFlush")]
-    public static extern int XFlush(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XFlush")]
+    public static partial int XFlush(IntPtr display);
 
-    [DllImport("libXext", EntryPoint = "XShapeCombineRectangles")]
-    public static extern void XShapeCombineRectangles(
+    [LibraryImport("libXext", EntryPoint = "XShapeCombineRectangles")]
+    public static partial void XShapeCombineRectangles(
         IntPtr display, IntPtr window, int shape, int x, int y,
         IntPtr rectangles, int n_rects, int op, int ordering);
 
-    [DllImport("libXext", EntryPoint = "XShapeCombineMask")]
-    public static extern void XShapeCombineMask(
+    [LibraryImport("libXext", EntryPoint = "XShapeCombineMask")]
+    public static partial void XShapeCombineMask(
         IntPtr display, IntPtr window, int shape, int x, int y,
         IntPtr mask, int op);
 }
 
 // For Xlib calls
-internal static class Xlib
+internal static partial class Xlib
 {
-    [DllImport("libX11", EntryPoint = "XOpenDisplay")]
-    public static extern IntPtr XOpenDisplay(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XOpenDisplay")]
+    public static partial IntPtr XOpenDisplay(IntPtr display);
 
-    [DllImport("libX11", EntryPoint = "XCloseDisplay")]
-    public static extern int XCloseDisplay(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XCloseDisplay")]
+    public static partial int XCloseDisplay(IntPtr display);
 
-    [DllImport("libX11", EntryPoint = "XFlush")]
-    public static extern int XFlush(IntPtr display);
+    [LibraryImport("libX11", EntryPoint = "XFlush")]
+    public static partial int XFlush(IntPtr display);
 }

@@ -80,6 +80,7 @@ public class PluginEngine : IAction
         var preprocessor = new PluginPreprocessor();
         var loaded = 0;
         var failed = 0;
+        var skippedNonEvent = 0;
         foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
         {
             try
@@ -88,6 +89,13 @@ public class PluginEngine : IAction
                 if (plugin.Id == "错误")
                 {
                     failed++;
+                    continue;
+                }
+
+                // 仅事件类插件参与触发器注册；create-proxy-template 等资源型插件不进入事件引擎
+                if (!string.Equals(plugin.Type, "event", StringComparison.OrdinalIgnoreCase))
+                {
+                    skippedNonEvent++;
                     continue;
                 }
 
@@ -107,7 +115,7 @@ public class PluginEngine : IAction
         }
 
         App.CurrentLogger.Log(
-            $"插件引擎加载完成: 成功 {loaded} 个, 失败 {failed} 个, 监听事件 {_triggerMap.Count} 种, 注册函数 {_funcRegistry.Count} 个",
+            $"插件引擎加载完成: 成功 {loaded} 个, 失败 {failed} 个, 跳过非事件类型 {skippedNonEvent} 个, 监听事件 {_triggerMap.Count} 种, 注册函数 {_funcRegistry.Count} 个",
             module: EnumLogModule.Plugin);
     }
 

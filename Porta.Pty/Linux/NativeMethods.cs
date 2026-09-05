@@ -6,7 +6,7 @@ namespace Porta.Pty.Linux
     using System;
     using System.Runtime.InteropServices;
 
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
         internal const int STDIN_FILENO = 0;
 
@@ -173,31 +173,31 @@ namespace Porta.Pty.Linux
         /// <summary>
         /// Resizes the PTY window.
         /// </summary>
-        [DllImport(LibPortaPty, SetLastError = true)]
-        internal static extern int pty_resize(int masterFd, ushort rows, ushort cols);
+        [LibraryImport(LibPortaPty, SetLastError = true)]
+        internal static partial int pty_resize(int masterFd, ushort rows, ushort cols);
 
         /// <summary>
         /// Sends a signal to the child process.
         /// </summary>
-        [DllImport(LibPortaPty, SetLastError = true)]
-        internal static extern int pty_kill(int pid, int signal);
+        [LibraryImport(LibPortaPty, SetLastError = true)]
+        internal static partial int pty_kill(int pid, int signal);
 
         /// <summary>
         /// Waits for the child process to exit.
         /// </summary>
-        [DllImport(LibPortaPty, SetLastError = true)]
-        internal static extern int pty_waitpid(int pid, ref int status, int options);
+        [LibraryImport(LibPortaPty, SetLastError = true)]
+        internal static partial int pty_waitpid(int pid, ref int status, int options);
 
         /// <summary>
         /// Closes the PTY master file descriptor.
         /// </summary>
-        [DllImport(LibPortaPty, SetLastError = true)]
-        internal static extern int pty_close(int masterFd);
+        [LibraryImport(LibPortaPty, SetLastError = true)]
+        internal static partial int pty_close(int masterFd);
 
         /// <summary>
         /// Gets the last error code from the native library.
         /// </summary>
-        [DllImport(LibPortaPty)]
-        internal static extern int pty_get_errno();
+        [LibraryImport(LibPortaPty)]
+        internal static partial int pty_get_errno();
     }
 }

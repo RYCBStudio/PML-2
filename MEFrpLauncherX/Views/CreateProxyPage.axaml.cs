@@ -14,6 +14,7 @@ using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Models;
+using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.ViewModels.Controls;
 using MsBox.Avalonia;
@@ -27,8 +28,15 @@ public partial class CreateProxyPage : UserControl
 {
     private int _index;
     private CreateProxyPageViewModel _createProxyPageViewModel;
-    private string _targetService;
     internal InfoClasses.CreateProxyRequestData _targetRequest;
+
+    // 引导模式（SelectedType==0）向导状态：与 _index 整数流程隔离（专家/地图仍用 _index）
+    private GuideStage _guideStage = GuideStage.PickTemplate;
+    private readonly NodesContainerViewModel _guideNodesVm;
+    private TunnelNodeViewModel? _guideSelectedNode;
+    private ProxyType? _activeGuideTemplate;
+    private ProxyTemplateExtraTunnelDefinition? _activeExtraTunnel;
+    private CreateProxy? _activeCreateProxyPage;
 
     public CreateProxyPage()
     {
@@ -37,6 +45,10 @@ public partial class CreateProxyPage : UserControl
         _index = 0;
         Instance = this;
         DataContext = _createProxyPageViewModel;
+
+        // 引导候选节点容器：独立 VM，只更新 _guideSelectedNode，避免污染专家/地图模式的选中态
+        _guideNodesVm = new NodesContainerViewModel();
+        _guideNodesVm.NodeSelected += node => _guideSelectedNode = node;
 
         // 附加到可视化树后预热 Tab 页面（后台低优先级）
         AttachedToVisualTree += (_, _) =>
@@ -56,6 +68,13 @@ public partial class CreateProxyPage : UserControl
 
     private async void Next(object sender, RoutedEventArgs e)
     {
+        // 引导模式（SelectedType==0）走独立向导（GuideStage），不参与 _index 整数状态机
+        if (_createProxyPageViewModel.SelectedType == 0)
+        {
+            await HandleGuideNextAsync();
+            return;
+        }
+
         _index++;
         switch (_index)
         {
@@ -172,6 +191,8 @@ public partial class CreateProxyPage : UserControl
                         _index--;
                     }
                 }
+                // 引导模式已迁移为 GuideStage 向导（见 HandleGuideNextAsync），此旧分支保留仅供对照、不可达
+#if false
                 else
                 {
                     var g = _createProxyPageViewModel.CurrentPage as CreateProxyGuide;
@@ -449,6 +470,7 @@ public partial class CreateProxyPage : UserControl
                         }
                     }
                 }
+#endif
 
                 break;
             case 2:
@@ -461,15 +483,7 @@ public partial class CreateProxyPage : UserControl
                 if (await OnCreateProxy?.Invoke()!)
                 {
                     Growl.Success(Languages.Text_CreateProxy_CreateSuccess);
-                    if (_targetService == "rdp")
-                    {
-                        _targetRequest.proxyType = _targetRequest.proxyType.ToLower() == "tcp" ? "udp" : "tcp";
-                        _targetRequest.proxyName = $"{_targetRequest.proxyName}({_targetRequest.proxyType.ToUpper()})";
-                        await MEFrpApiConverter.PostNewTunnelAsync(JsonSerializer.Serialize(_targetRequest,
-                            App.AppJsonSerializerContext.CreateProxyRequestData));
-                        Growl.Success(string.Format(Languages.Text_CreateProxy_CreateSameNameSuccessFormat, _targetRequest.proxyType.ToUpper()));
-                    }
-
+                    // 副隧道（如 RDP 双隧道）已由引导向导在 HandleGuideNextAsync 中统一处理
                     _createProxyPageViewModel.CurrentPage = new OperationSuccess();
                     NextBtn.IsEnabled = false;
                 }
@@ -485,6 +499,13 @@ public partial class CreateProxyPage : UserControl
 
     private async void Back(object sender, RoutedEventArgs e)
     {
+        // 引导模式回退走独立向导（GuideStage）
+        if (_createProxyPageViewModel.SelectedType == 0)
+        {
+            await HandleGuideBackAsync();
+            return;
+        }
+
         if (_index > 0)
         {
             _index--;
@@ -547,8 +568,309 @@ public partial class CreateProxyPage : UserControl
         _isMap = false;
     }
 
+    // ============ 引导模式（SelectedType==0）向导：PickTemplate → PickNode → FillForm → Submit ============
+
+    /// <summary>引导向导：下一步</summary>
+    private async Task HandleGuideNextAsync()
+    {
+        // 若已离开向导中途（如提交成功后切走再回来停在类型页），重置回类型选择
+        if (_guideStage != GuideStage.PickTemplate && _createProxyPageViewModel.CurrentPage is CreateProxyGuide)
+        {
+            _guideStage = GuideStage.PickTemplate;
+            _guideSelectedNode = null;
+        }
+
+        switch (_guideStage)
+        {
+            case GuideStage.PickTemplate:
+            {
+                var g = _createProxyPageViewModel.CurrentPage as CreateProxyGuide;
+                var gVm = g?.DataContext as CreateProxyGuideViewModel;
+                var tpl = gVm?.SelectedType;
+                if (tpl?.SourceTemplate is null)
+                {
+                    await MessageBox.ShowAsync(Languages.Text_Proxy_Guide_SelectTemplate, Languages.Caption_Hint,
+                        ButtonEnum.Ok);
+                    return;
+                }
+
+                // 候选筛选基于已加载节点数据；未就绪时先加载（加载后恢复引导页展示）
+                if (!TryGetLoadedNodes(out var allNodes))
+                {
+                    await _createProxyPageViewModel.LoadDataAsync();
+                    if (!TryGetLoadedNodes(out allNodes))
+                    {
+                        await MessageBox.ShowAsync(Languages.Text_CreateProxy_LoadingNodesRetry, Languages.Caption_Hint,
+                            ButtonEnum.Ok);
+                        return;
+                    }
+
+                    // LoadDataAsync 会把 CurrentPage 切到节点容器，恢复引导类型页
+                    ShowGuideTypePage();
+                }
+
+                var candidates = FilterGuideCandidates(tpl.SourceTemplate.NodeFilter, allNodes);
+                if (candidates.Count == 0)
+                {
+                    await MessageBox.ShowAsync(Languages.Text_CreateProxy_NoMatchingNodes, Languages.Caption_Hint,
+                        ButtonEnum.Ok);
+                    return;
+                }
+
+                _activeGuideTemplate = tpl;
+                _activeExtraTunnel = null;
+                ShowGuideCandidatePage(candidates);
+                _guideStage = GuideStage.PickNode;
+                break;
+            }
+
+            case GuideStage.PickNode:
+            {
+                var node = _guideSelectedNode;
+                if (node is null || _activeGuideTemplate?.SourceTemplate is null)
+                {
+                    await MessageBox.ShowAsync(Languages.Text_CreateProxy_SelectANode, Languages.Caption_Hint,
+                        ButtonEnum.Ok);
+                    return;
+                }
+
+                _activeCreateProxyPage = BuildCreateProxyFromTemplate(node, _activeGuideTemplate.SourceTemplate);
+                _activeExtraTunnel = _activeGuideTemplate.SourceTemplate.ExtraTunnel;
+                _createProxyPageViewModel.CurrentPage = _activeCreateProxyPage;
+                _guideStage = GuideStage.FillForm;
+                break;
+            }
+
+            case GuideStage.FillForm:
+            {
+                if (OnCreateProxy is null)
+                {
+                    return;
+                }
+
+                var created = await OnCreateProxy.Invoke();
+                if (!created)
+                {
+                    Growl.Error(Languages.Text_CreateProxy_CreateFailed);
+                    return; // 停留在表单
+                }
+
+                Growl.Success(Languages.Text_CreateProxy_CreateSuccess);
+                await CreateExtraTunnelIfDeclaredAsync();
+                _createProxyPageViewModel.CurrentPage = new OperationSuccess();
+                NextBtn.IsEnabled = false;
+                _guideStage = GuideStage.Submit;
+                break;
+            }
+
+            case GuideStage.Submit:
+                break;
+        }
+    }
+
+    /// <summary>引导向导：上一步（Submit→FillForm→PickNode→PickTemplate）</summary>
+    private async Task HandleGuideBackAsync()
+    {
+        switch (_guideStage)
+        {
+            case GuideStage.Submit:
+                // 从成功页返回表单
+                _guideStage = GuideStage.FillForm;
+                NextBtn.IsEnabled = true;
+                if (_activeCreateProxyPage != null)
+                {
+                    _createProxyPageViewModel.CurrentPage = _activeCreateProxyPage;
+                }
+
+                break;
+            case GuideStage.FillForm:
+                // 返回候选容器页，允许改选节点
+                if (_createProxyPageViewModel.pages.TryGetValue("GuidePick", out var pick))
+                {
+                    _createProxyPageViewModel.CurrentPage = pick as Control;
+                }
+
+                _guideStage = GuideStage.PickNode;
+                break;
+            case GuideStage.PickNode:
+                // 返回类型页并清空选择
+                _guideSelectedNode = null;
+                _guideNodesVm.SelectedNode = null;
+                ShowGuideTypePage();
+                _guideStage = GuideStage.PickTemplate;
+                break;
+            case GuideStage.PickTemplate:
+                break;
+        }
+
+        await Task.CompletedTask;
+    }
+
+    /// <summary>取共享已加载的节点全量（pages["Create"] 的 NodesContainer）</summary>
+    private bool TryGetLoadedNodes(out List<TunnelNodeViewModel> allNodes)
+    {
+        allNodes = [];
+        if (_createProxyPageViewModel.pages.TryGetValue("Create", out var ctrl) &&
+            ctrl is NodesContainer nc &&
+            nc.ViewModel.AllNodes.Count > 0)
+        {
+            allNodes = nc.ViewModel.AllNodes;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>显示引导类型页（缓存优先）</summary>
+    private Control ShowGuideTypePage()
+    {
+        if (_createProxyPageViewModel.pages.TryGetValue("Guide", out var control) && control is CreateProxyGuide)
+        {
+            _createProxyPageViewModel.CurrentPage = control as Control;
+            return control as Control;
+        }
+
+        var page = new CreateProxyGuide { DataContext = new CreateProxyGuideViewModel() };
+        _createProxyPageViewModel.pages["Guide"] = page;
+        _createProxyPageViewModel.CurrentPage = page;
+        return page;
+    }
+
+    /// <summary>把候选节点写入引导专用容器并展示（PickNode 步）</summary>
+    private void ShowGuideCandidatePage(List<TunnelNodeViewModel> candidates)
+    {
+        _guideNodesVm.AllNodes = candidates;
+        _guideNodesVm.FilteredNodes.Clear();
+        _guideNodesVm.FilteredNodes.AddRange(candidates);
+        _guideNodesVm.SelectedNode = null;
+        _guideSelectedNode = null;
+
+        if (_createProxyPageViewModel.pages.TryGetValue("GuidePick", out var ctrl) && ctrl is NodesContainerCompact)
+        {
+            _createProxyPageViewModel.CurrentPage = ctrl as Control;
+            return;
+        }
+
+        var page = new NodesContainerCompact(_guideNodesVm);
+        _createProxyPageViewModel.pages["GuidePick"] = page;
+        _createProxyPageViewModel.CurrentPage = page;
+    }
+
+    /// <summary>
+    /// 按模板 nodeFilter 筛选候选节点：
+    /// 首轮 = 在线 + 未过载 + 支持全部 protocols（+带宽下限）；无候选则放宽轮 = 在线 + 支持 fallbackProtocols（+带宽下限）。
+    /// 排序：AllowHighTraffic 降序、LoadPercent 升序。
+    /// </summary>
+    private List<TunnelNodeViewModel> FilterGuideCandidates(ProxyTemplateNodeFilterDefinition filter,
+        List<TunnelNodeViewModel> allNodes)
+    {
+        var protocols = filter.Protocols ?? [];
+        var fallback = filter.FallbackProtocols is { Count: > 0 } ? filter.FallbackProtocols : protocols;
+        var minBw = filter.MinBandwidthMbps;
+
+        bool SupportsAll(List<string> need, TunnelNodeViewModel n) =>
+            need.Count == 0 || need.All(proto => n.AllowTypes.Any(t =>
+                string.Equals(t, proto, StringComparison.OrdinalIgnoreCase)));
+
+        bool MeetsBandwidth(TunnelNodeViewModel n) =>
+            minBw <= 0 ||
+            (!string.IsNullOrWhiteSpace(n.Bandwidth) && ParseBandwidthToMbps(n.Bandwidth) >= minBw);
+
+        static IEnumerable<TunnelNodeViewModel> Ranked(IEnumerable<TunnelNodeViewModel> source) =>
+            source.OrderByDescending(n => n.AllowHighTraffic).ThenBy(n => n.LoadPercent);
+
+        var primary = Ranked(allNodes.Where(n =>
+            n.IsOnline && n.IsNotOverloaded && SupportsAll(protocols, n) && MeetsBandwidth(n))).ToList();
+        if (primary.Count > 0)
+        {
+            return primary;
+        }
+
+        return Ranked(allNodes.Where(n =>
+            n.IsOnline && SupportsAll(fallback, n) && MeetsBandwidth(n))).ToList();
+    }
+
+    /// <summary>按模板 create 声明构建并预填创建表单（FillForm 步）</summary>
+    private CreateProxy BuildCreateProxyFromTemplate(TunnelNodeViewModel node, ProxyTemplateDefinition tpl)
+    {
+        var create = tpl.Create ?? new ProxyTemplateCreateDefinition();
+        var cp = new CreateProxy(node)
+        {
+            PreferredProtocol = create.Protocol
+        };
+
+        var displayName = _activeGuideTemplate?.Name ?? tpl.Name;
+        cp.ViewModel.ProxyName = (create.ProxyName ?? "")
+            .Replace("{name}", displayName, StringComparison.Ordinal)
+            .Replace("{nodeId}", node.NodeId.ToString());
+        cp.ViewModel.LocalAddress = string.IsNullOrWhiteSpace(create.LocalAddress) ? "127.0.0.1" : create.LocalAddress;
+        if (create.LocalPort > 0)
+        {
+            cp.ViewModel.LocalPort = create.LocalPort;
+        }
+
+        if (string.Equals(create.RemotePort, "auto", StringComparison.OrdinalIgnoreCase))
+        {
+            cp.GetRemotePort_Click(string.IsNullOrEmpty(create.Protocol) ? "tcp" : create.Protocol, null);
+        }
+        else if (int.TryParse(create.RemotePort, out var fixedPort))
+        {
+            cp.ViewModel.RemotePort = fixedPort;
+        }
+
+        return cp;
+    }
+
+    /// <summary>
+    /// 主隧道创建成功后按模板 extraTunnel 声明补建互补协议隧道（RDP 双隧道）：
+    /// 翻转 proxyType（tcp↔udp），名称追加 nameSuffix（{PROTO}→翻转协议大写）。
+    /// </summary>
+    private async Task CreateExtraTunnelIfDeclaredAsync()
+    {
+        if (_activeExtraTunnel is null || _targetRequest is null)
+        {
+            return;
+        }
+
+        var proto = _targetRequest.proxyType?.ToLower();
+        var flipped = proto switch
+        {
+            "tcp" => "udp",
+            "udp" => "tcp",
+            _ => null
+        };
+        if (flipped is null)
+        {
+            return;
+        }
+
+        var extra = CloneRequest(_targetRequest);
+        extra.proxyType = flipped;
+        var suffix = (_activeExtraTunnel.NameSuffix ?? "").Replace("{PROTO}", flipped.ToUpper(), StringComparison.Ordinal);
+        extra.proxyName = _targetRequest.proxyName + suffix;
+
+        var body = JsonSerializer.Serialize(extra, App.AppJsonSerializerContext.CreateProxyRequestData);
+        if ((await MEFrpApiConverter.PostNewTunnelAsync(body)).code == 200)
+        {
+            Growl.Success(string.Format(Languages.Text_CreateProxy_CreateSameNameSuccessFormat, flipped.ToUpper()));
+        }
+    }
+
+    /// <summary>深拷贝创建请求（经由项目 AOT JSON 上下文）</summary>
+    private static InfoClasses.CreateProxyRequestData CloneRequest(InfoClasses.CreateProxyRequestData source)
+        => JsonSerializer.Deserialize(
+            JsonSerializer.Serialize(source, App.AppJsonSerializerContext.CreateProxyRequestData),
+            App.AppJsonSerializerContext.CreateProxyRequestData)!;
+
     private async void Refresh(object? sender, RoutedEventArgs e)
     {
+        if (_createProxyPageViewModel.SelectedType == 0)
+        {
+            // 引导模式：仅刷新模板条目（候选节点在下次进入 PickNode 时按当前模板重筛）
+            _createProxyPageViewModel.RefreshGuideIfPresent();
+            return;
+        }
+
         await MEFrpApiConverter.EnsureNodesListInfoAsync();
         await MEFrpApiConverter.EnsureNodesStatusInfoAsync();
         switch (_index)
@@ -700,4 +1022,13 @@ public partial class CreateProxyPage : UserControl
 
         return candidates;
     }
+}
+
+/// <summary>引导模式（SelectedType==0）向导阶段：类型 → 候选节点 → 表单 → 提交</summary>
+public enum GuideStage
+{
+    PickTemplate,
+    PickNode,
+    FillForm,
+    Submit
 }

@@ -144,6 +144,8 @@ public class CreateProxyPageViewModel : ViewModelBase
         switch (tabIndex)
         {
             case 0: // 引导版
+                // 切回引导 Tab 时刷新模板条目（模板插件热重载/启停后即时生效）
+                RefreshGuideIfPresent();
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     if (pages.TryGetValue("Guide", out var control))
@@ -224,6 +226,19 @@ public class CreateProxyPageViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// 若引导页已缓存，则重新拉取模板插件条目（热重载/启停后切换回引导 Tab 时刷新）。
+    /// </summary>
+    public void RefreshGuideIfPresent()
+    {
+        if (pages.TryGetValue("Guide", out var control) &&
+            control is CreateProxyGuide guide &&
+            guide.DataContext is CreateProxyGuideViewModel vm)
+        {
+            vm.Refresh();
+        }
+    }
+
+    /// <summary>
     /// 在后台预热 Tab 页面，减少切换延迟
     /// </summary>
     public void PrewarmTabs()
@@ -238,6 +253,11 @@ public class CreateProxyPageViewModel : ViewModelBase
                     DataContext = new CreateProxyGuideViewModel()
                 };
             }, DispatcherPriority.Background);
+        }
+        else
+        {
+            // 已预热过的引导页同步最新模板条目
+            RefreshGuideIfPresent();
         }
     }
 

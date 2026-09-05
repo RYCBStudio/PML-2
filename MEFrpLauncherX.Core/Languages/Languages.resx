@@ -3194,4 +3194,19 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
         <value>开启窗口穿透将导致您无法再手动关闭悬浮窗, 请谨慎使用。</value>
     </data>
+    <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
+        <value>暂无可用隧道模板。请先安装 create-proxy-template 类型插件，或到「插件」页检查其是否启用。</value>
+    </data>
+    <data name="Text.Proxy.Guide.SelectTemplate" xml:space="preserve">
+        <value>请先选择一个隧道模板</value>
+    </data>
+    <data name="Text.PluginList.TypeTemplate" xml:space="preserve">
+        <value>模板插件</value>
+    </data>
+    <data name="Text.PluginList.RequireCoreFormat" xml:space="preserve">
+        <value>需要核心 {0} 或更高</value>
+    </data>
+    <data name="Text.PluginEditor.TypeNotSupported" xml:space="preserve">
+        <value>该插件类型（{0}）不支持表单编辑，请直接编辑 YAML 文件（已为你打开插件目录）。</value>
+    </data>
 </root>

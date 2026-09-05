@@ -3194,4 +3194,19 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
         <value>	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution.</value>
     </data>
+    <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
+        <value>No tunnel templates available. Install a create-proxy-template plugin first, or enable it on the Plugins page.</value>
+    </data>
+    <data name="Text.Proxy.Guide.SelectTemplate" xml:space="preserve">
+        <value>Please select a tunnel template first</value>
+    </data>
+    <data name="Text.PluginList.TypeTemplate" xml:space="preserve">
+        <value>Template plugin</value>
+    </data>
+    <data name="Text.PluginList.RequireCoreFormat" xml:space="preserve">
+        <value>Requires core {0} or higher</value>
+    </data>
+    <data name="Text.PluginEditor.TypeNotSupported" xml:space="preserve">
+        <value>Plugins of type ({0}) cannot be edited in the form editor. Edit the YAML file directly (the plugins folder has been opened).</value>
+    </data>
 </root>

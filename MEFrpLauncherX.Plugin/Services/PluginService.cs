@@ -3,6 +3,7 @@ using System.Text.Json;
 using AvaloniaEdit.Utils;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Engine;
 using YamlDotNet.Serialization;
@@ -329,10 +330,66 @@ public class PluginService
             Author = raw.Author ?? "",
             Version = raw.Version ?? "1.0",
             FilePath = "",
+            Type = raw.Type ?? "event",
+            MinCoreVersion = raw.MinCoreVersion,
+            IsCompatible = PluginPreprocessor.IsCoreSatisfied(raw.MinCoreVersion),
+            TemplateCount = raw.Templates?.Count ?? 0,
             TriggerCount = raw.Triggers?.Count ?? 0,
             FunctionCount = raw.Functions?.Count ?? 0,
             IsEnabled = true
         };
+    }
+
+    /// <summary>
+    /// 收集当前可用的隧道模板条目：仅包含 type=create-proxy-template、未禁用、核心版本兼容的插件。
+    /// 实时扫描 Config/Plugins（调用频率低：进入引导页/热重载/启停时），无需维护缓存。
+    /// </summary>
+    public List<ProxyTemplateEntry> GetEnabledProxyTemplateEntries()
+    {
+        var result = new List<ProxyTemplateEntry>();
+        try
+        {
+            foreach (var file in Directory.GetFiles(_pluginsFolder, "*.yaml", SearchOption.AllDirectories))
+            {
+                try
+                {
+                    var content = File.ReadAllText(file);
+                    var raw = YamlDeserializer.Deserialize<RawPlugin>(content);
+                    if (!string.Equals(raw.Type, "create-proxy-template", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    var pluginId = string.IsNullOrWhiteSpace(raw.Id)
+                        ? Path.GetFileNameWithoutExtension(file)
+                        : raw.Id;
+                    if (_disabledPlugins.Contains(pluginId) || !PluginPreprocessor.IsCoreSatisfied(raw.MinCoreVersion))
+                    {
+                        continue;
+                    }
+
+                    foreach (var template in raw.Templates ?? [])
+                    {
+                        result.Add(new ProxyTemplateEntry
+                        {
+                            PluginId = pluginId,
+                            PluginName = raw.Name,
+                            Definition = template
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    App.CurrentLogger.Warning($"读取模板插件失败: {file}, {ex.Message}", module: EnumLogModule.Plugin);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, "读取模板插件目录失败", module: EnumLogModule.Plugin);
+        }
+
+        return result;
     }
 
     private PluginInfo? ExtractPluginInfo(string filePath)
@@ -354,6 +411,10 @@ public class PluginService
                 Author = raw.Author ?? "",
                 Version = raw.Version ?? "1.0",
                 FilePath = filePath,
+                Type = raw.Type ?? "event",
+                MinCoreVersion = raw.MinCoreVersion,
+                IsCompatible = PluginPreprocessor.IsCoreSatisfied(raw.MinCoreVersion),
+                TemplateCount = raw.Templates?.Count ?? 0,
                 TriggerCount = raw.Triggers?.Count ?? 0,
                 FunctionCount = raw.Functions?.Count ?? 0,
                 IsEnabled = true
@@ -411,9 +472,42 @@ public class PluginInfo
     public string Author { get; set; } = "";
     public string Version { get; set; } = "1.0";
     public string FilePath { get; set; } = "";
+
+    /// <summary>插件类型：event（默认，缺省 type 字段的旧插件）或 create-proxy-template</summary>
+    public string Type { get; set; } = "event";
+
+    /// <summary>要求的最低核心版本（为空表示不限制）</summary>
+    public string? MinCoreVersion { get; set; }
+
+    /// <summary>核心版本是否满足 minCoreVersion（不兼容插件不加载、不提供能力）</summary>
+    public bool IsCompatible { get; set; } = true;
+
+    /// <summary>隧道模板条数（仅 create-proxy-template 类型有意义）</summary>
+    public int TemplateCount { get; set; }
+
     public int TriggerCount { get; set; }
     public int FunctionCount { get; set; }
     public bool IsEnabled { get; set; } = true;
+
+    /// <summary>是否为资源型插件（模板插件等，非事件插件）</summary>
+    public bool IsTemplatePlugin =>
+        !string.Equals(Type, "event", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>核心版本是否不满足插件要求（UI 展示不兼容提示）</summary>
+    public bool IsIncompatible => !IsCompatible;
+
+    /// <summary>不兼容提示（如：需要核心版本 26.3.2 或更高）</summary>
+    public string IncompatibleTip => string.Format(Languages.Text_PluginList_RequireCoreFormat, MinCoreVersion ?? "");
+}
+
+/// <summary>
+/// 来自模板插件的隧道模板条目（含来源插件信息）
+/// </summary>
+public class ProxyTemplateEntry
+{
+    public string PluginId { get; init; } = "";
+    public string PluginName { get; init; } = "";
+    public ProxyTemplateDefinition Definition { get; init; } = new();
 }
 
 /// <summary>
@@ -426,6 +520,9 @@ internal class RawPluginMeta
     public string? Description { get; set; }
     public string? Author { get; set; }
     public string? Version { get; set; }
+    public string? Type { get; set; }
+    public string? MinCoreVersion { get; set; }
+    public List<ProxyTemplateDefinition>? Templates { get; set; }
     public List<object>? Triggers { get; set; }
     public Dictionary<string, object>? Functions { get; set; }
 }

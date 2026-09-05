@@ -30,8 +30,34 @@ public class PluginPreprocessor
         {
             Id = raw.Id,
             Name = raw.Name,
+            Type = raw.Type,
+            MinCoreVersion = raw.MinCoreVersion,
+            IsCompatible = IsCoreSatisfied(raw.MinCoreVersion),
             Triggers = raw.Triggers
         };
+    }
+
+    /// <summary>
+    ///     判断当前核心版本（<see cref="App.Version"/>）是否满足插件的 minCoreVersion。
+    ///     未声明或版本串解析失败一律视为兼容，避免影响旧插件。
+    /// </summary>
+    public static bool IsCoreSatisfied(string? minCoreVersion)
+    {
+        if (string.IsNullOrWhiteSpace(minCoreVersion))
+        {
+            return true;
+        }
+
+        try
+        {
+            return VersionComparer.CompareVersions(App.Version, minCoreVersion) >= 0;
+        }
+        catch (Exception e)
+        {
+            App.CurrentLogger?.Warning($"插件 minCoreVersion 解析失败: {minCoreVersion}, {e.Message}",
+                module: EnumLogModule.Plugin);
+            return true;
+        }
     }
 
     private RawPlugin PreprocessAndDeserialize(string path)

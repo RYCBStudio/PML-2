@@ -9,14 +9,13 @@
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
-        <AssemblyVersion>26.2.0</AssemblyVersion>
+        <AssemblyVersion>26.3.1</AssemblyVersion>
         <NeutralLanguage>zh-Hans</NeutralLanguage>
-        <Version>26.2.0</Version>
-        <ApplicationVersion>26.2.0</ApplicationVersion>
+        <Version>26.3.1</Version>
+        <ApplicationVersion>26.3.1</ApplicationVersion>
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <!-- 开启后可见 AOT 裁剪警告，调试完再改回 true -->
         <SuppressTrimWarnings>true</SuppressTrimWarnings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
@@ -34,20 +33,15 @@
         <MetricsSupport>false</MetricsSupport>
         <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
         <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
-
-<!--        <PublishAot>true</PublishAot>-->
-        <!-- AOT 条件编译符号，确保主项目和引用项目都能正确识别 AOT 发布模式 -->
-<!--        <DefineConstants>$(DefineConstants);AOT</DefineConstants>-->
-        <!-- ReadyToRun 配置（由发布脚本控制） -->
-        <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
-        <!-- <PublishReadyToRunComposite>true</PublishReadyToRunComposite> -->
+        <PublishAot>true</PublishAot>
+        <DefineConstants>$(DefineConstants);AOT</DefineConstants>
     </PropertyGroup>
     <PropertyGroup>
         <AppId>tech.rycb.mefrplauncherx</AppId>
         <AppName>PML 2</AppName>
         <DebControlDescription>功能强大、跨平台的 ME Frp 图形化启动工具。</DebControlDescription>
         <DesktopComment>功能强大、跨平台的 ME Frp 图形化启动工具。</DesktopComment>
-        <DebControlHomepage>https://rycb.mxj.pub/mefl</DebControlHomepage>
+        <DebControlHomepage>https://www.rycb.tech</DebControlHomepage>
         <DebControlSection>utils</DebControlSection>
         <DebControlMaintainer>RYCB Studio</DebControlMaintainer>
         <Png32x32IconFile>Assets\meflx@32x.png</Png32x32IconFile>
@@ -87,6 +81,19 @@
         <None Update="Resources\splash-minimal.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Config\Plugins\tech.rycb.plugin.demo-functions.yaml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Config\Plugins\tech.rycb.plugin.proxy-guard.yaml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Config\Plugins\tech.rycb.plugin.proxy-notify.yaml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Config\Plugins\create-proxy-template.yaml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <TargetPath>Config\Plugins\create-proxy-template.yaml</TargetPath>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>
@@ -106,19 +113,15 @@
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.5" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1"/>
         <PackageReference Include="MessageBox.Avalonia.Markdown" Version="3.2.0"/>
+        <PackageReference Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
         <PackageReference Include="ReactiveUI.Avalonia" Version="11.4.13" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.4" />
         <PackageReference Include="Svg.Model" Version="5.1.1" />
-        <PackageReference Include="System.Runtime.Caching" Version="10.0.10" />
+        <PackageReference Include="System.Runtime.Caching" Version="10.0.11" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.9.6" />
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.9.6" />
         <PackageReference Remove="Packaging.Targets" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="mefrplauncherx.desktop" CopyToPublishDirectory="PreserveNewest">
-            <LinuxPath>/usr/share/applications/meflx.desktop</LinuxPath>
-        </Content>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Iciclecreek.Avalonia.TerminalWindow\Iciclecreek.Avalonia.Terminal.csproj" />

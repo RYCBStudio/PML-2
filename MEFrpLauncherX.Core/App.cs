@@ -122,15 +122,27 @@ public class App : IDisposable
                 Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "Themes"));
             }
 
+            // 26.3.1 S3：通知服务必须在首个 await（SelectedTheme 文件读取 / RYCBApiConverter 网络初始化）之前创建：
+            // App.axaml.cs 对 Initialize() 是 fire-and-forget 调用（未 await），主窗口会先于本方法完成而显示；
+            // 若隧道在其后、此赋值前即失败，OnTerminalOutputAsync 访问未赋值的 NotificationService 会抛 NRE。
+            // 创建失败仅记日志，各消费点需自行判空。
+            try
+            {
+                NotificationService = ServiceCollectionExtensions.CreateNotificationService(opts =>
+                {
+                    opts.AppName = "PML 2";
+                    opts.AppUserModelId = "tech.rycb.pml2";
+                });
+            }
+            catch (Exception ex)
+            {
+                CurrentLogger?.Error(ex, "初始化系统通知服务失败");
+            }
+
             SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
                 ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
                 : null;
             await RYCBApiConverter.InitializeAsync();
-            NotificationService = ServiceCollectionExtensions.CreateNotificationService(opts =>
-            {
-                opts.AppName = "PML 2";
-                opts.AppUserModelId = "tech.rycb.pml2";
-            });
         }
     }
 }

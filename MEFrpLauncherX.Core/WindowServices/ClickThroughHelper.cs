@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using Avalonia.Controls;
 
 namespace MEFrpLauncherX.Core.WindowServices;
@@ -26,11 +26,14 @@ public static partial class ClickThroughHelper
         }
     }
 
-    [DllImport("user32.dll")]
-    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+    // NativeAOT（LibraryImport）按精确导出名解析，不会像 DllImport 那样做 A/W 后缀回退。
+    // user32.dll 没有 GetWindowLong/SetWindowLong 导出，只有 GetWindowLongW/SetWindowLongW（及 A/Ptr 变体），
+    // 必须显式指定 EntryPoint；这里仅操作 32 位 GWL_EXSTYLE 样式值，无需 GetWindowLongPtrW。
+    [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
+    private static partial int GetWindowLong(IntPtr hWnd, int nIndex);
 
-    [DllImport("user32.dll")]
-    private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+    [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW")]
+    private static partial int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     private static void SetClickThroughWindows(Window window, bool enable)
     {

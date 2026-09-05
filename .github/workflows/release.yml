@@ -127,6 +127,7 @@ jobs:
             -p:EnableCompressionInSingleFile=true \
             -p:DebugType=none \
             -p:DebugSymbols=false \
+            -p:IlcGenerateStackTraceData=false -p:IlcGenerateCompleteTypeMetadata=false -p:IlcScanReflection=false -p:IlcDisableReflection=true /p:InvariantGlobalization=true -p:UseSystemResourceKeys=true -p:BuiltInComInteropSupport=false -p:UseSizeOptimizedLinq=true -p:DebugSymbols=false -p:DebugType=none -p:TrimmerRemoveSymbols=true -p:StripSymbols=true -p:TrimmerSingleWarn=true \
             -o "$OUT" \
             --nologo -v minimal
 
@@ -162,6 +163,7 @@ jobs:
             -p:EnableCompressionInSingleFile=true \
             -p:DebugType=none \
             -p:DebugSymbols=false \
+            -p:IlcGenerateStackTraceData=false -p:IlcGenerateCompleteTypeMetadata=false -p:IlcScanReflection=false -p:IlcDisableReflection=true /p:InvariantGlobalization=true -p:UseSystemResourceKeys=true -p:BuiltInComInteropSupport=false -p:UseSizeOptimizedLinq=true -p:DebugSymbols=false -p:DebugType=none -p:TrimmerRemoveSymbols=true -p:StripSymbols=true -p:TrimmerSingleWarn=true \
             -o "$OUT" \
             --nologo -v minimal
 

@@ -9426,5 +9426,50 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无可用隧道模板。请先安装 create-proxy-template 类型插件，或到「插件」页检查其是否启用。.
+        /// </summary>
+        public static string Text_Proxy_Guide_NoTemplates {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.NoTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请先选择一个隧道模板.
+        /// </summary>
+        public static string Text_Proxy_Guide_SelectTemplate {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.SelectTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板插件.
+        /// </summary>
+        public static string Text_PluginList_TypeTemplate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.TypeTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 需要核心 {0} 或更高.
+        /// </summary>
+        public static string Text_PluginList_RequireCoreFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.RequireCoreFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 该插件类型（{0}）不支持表单编辑，请直接编辑 YAML 文件（已为你打开插件目录）。.
+        /// </summary>
+        public static string Text_PluginEditor_TypeNotSupported {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.TypeNotSupported", resourceCulture);
+            }
+        }
     }
 }

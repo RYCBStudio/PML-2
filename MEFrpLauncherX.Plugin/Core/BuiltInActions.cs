@@ -66,9 +66,16 @@ public class NotifyAction : IAction
     public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
     {
         var msg = args?.GetValueOrDefault("msg")?.ToString() ?? "No message";
-        var request = App.NotificationService.RequestNotification($"{ctx.PluginId} | PML 2", msg);
+        // 26.3.1 S3：App.Initialize 为 fire-and-forget，通知服务可能尚未赋值或平台不支持 → 判空跳过
+        var service = App.NotificationService;
+        if (service is not { IsSupported: true })
+        {
+            return;
+        }
+
+        var request = service.RequestNotification($"{ctx.PluginId} | PML 2", msg);
         if (request == null) return;
-        await App.NotificationService.ShowAsync(request);
+        await service.ShowAsync(request);
     }
 }
 

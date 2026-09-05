@@ -61,10 +61,10 @@ internal partial class Program
         // 26.3.1 M1：Splash 进度管道名（与单实例激活管道 tech.rycb.pml2 严格分离）
         var splashPipeName = $"tech.rycb.pml2.splash.{Environment.ProcessId}";
         var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
-        if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
-        {
-            File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
-        }
+        // if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+        // {
+        //     File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
+        // }
 
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>

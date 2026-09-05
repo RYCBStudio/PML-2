@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Management.Infrastructure;
 
 namespace MEFrpLauncherX.NetworkMonitoring;
 
@@ -70,7 +71,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
             return await GetLinuxTrafficDataAsync(interfaceId);
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        if (OperatingSystem.IsMacOS())
         {
             return await GetMacOSTrafficDataAsync(interfaceId);
         }
@@ -121,43 +122,25 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
     private async Task<IEnumerable<NetworkInterfaceInfo>> GetWindowsNetworkInterfacesAsync()
     {
         var interfaces = new List<NetworkInterfaceInfo>();
-
         try
         {
-            // 使用WMIC命令获取网络适配器信息
-            var processStartInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments =
-                    "/c wmic nic where \"NetEnabled=true\" get Name, Description, DeviceID, Speed /format:csv",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8
-            };
+            // CIM替代 wmic nic
+            using var session = CimSession.Create(null);
+            const string query =
+                "SELECT Name,Description,DeviceID,Speed FROM Win32_NetworkAdapter WHERE NetEnabled=true";
+            var results = await Task.Run(() => session.QueryInstances(@"root\cimv2", "WQL", query));
 
-            using var process = Process.Start(processStartInfo);
-            if (process != null)
+            foreach (var instance in results)
             {
-                var output = await process.StandardOutput.ReadToEndAsync();
-                await process.WaitForExitAsync();
-
-                var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines.Skip(2)) // 跳过标题行
+                _ = long.TryParse(instance.CimInstanceProperties["Speed"]?.Value?.ToString(), out long speed);
+                interfaces.Add(new NetworkInterfaceInfo
                 {
-                    var parts = line.Split(',');
-                    if (parts.Length >= 5)
-                    {
-                        interfaces.Add(new NetworkInterfaceInfo
-                        {
-                            Id = parts[1].Trim(), // DeviceID
-                            Name = parts[3].Trim(), // Name
-                            Description = parts[2].Trim(), // Description
-                            IsOperational = true,
-                            Speed = long.TryParse(parts[4].Trim(), out var speed) ? speed : 0
-                        });
-                    }
-                }
+                    Id = instance.CimInstanceProperties["DeviceID"]?.Value?.ToString() ?? "",
+                    Name = instance.CimInstanceProperties["Name"]?.Value?.ToString() ?? "",
+                    Description = instance.CimInstanceProperties["Description"]?.Value?.ToString() ?? "",
+                    IsOperational = true,
+                    Speed = speed
+                });
             }
         }
         catch (Exception ex)
@@ -172,45 +155,33 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
     {
         try
         {
-            // 使用WMIC获取网络流量统计
-            var processStartInfo = new ProcessStartInfo
+            using var session = CimSession.Create(null);
+            // Win32_PerfRawData_Tcpip_NetworkInterface
+            var query = $"""
+                         SELECT BytesReceivedPersec,BytesSentPersec,PacketsReceivedPersec,PacketsSentPersec 
+                                                         FROM Win32_PerfRawData_Tcpip_NetworkInterface WHERE Name='{interfaceId.Replace('(', '[').Replace(')', ']')}'
+                         """;
+            var results = await Task.Run(() => session.QueryInstances(@"root\cimv2", "WQL", query));
+            var cimObj = results.FirstOrDefault();
+            if (cimObj != null)
             {
-                FileName = "cmd.exe",
-                Arguments =
-                    $"/c wmic path Win32_PerfRawData_Tcpip_NetworkInterface where \"Name='{interfaceId.Replace('(', '[').Replace(')', ']')}'\" get BytesReceivedPersec,BytesSentPersec,BytesTotalPersec,PacketsReceivedPersec,PacketsSentPersec /format:csv",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8
-            };
+                _ = long.TryParse(cimObj.CimInstanceProperties["BytesReceivedPersec"]?.Value?.ToString(),
+                    out var bytesReceived);
+                _ = long.TryParse(cimObj.CimInstanceProperties["BytesSentPersec"]?.Value?.ToString(),
+                    out var bytesSent);
+                _ = long.TryParse(cimObj.CimInstanceProperties["PacketsReceivedPersec"]?.Value?.ToString(),
+                    out var packetsReceived);
+                _ = long.TryParse(cimObj.CimInstanceProperties["PacketsSentPersec"]?.Value?.ToString(),
+                    out var packetsSent);
 
-            using var process = Process.Start(processStartInfo);
-            if (process != null)
-            {
-                var output = await process.StandardOutput.ReadToEndAsync();
-                await process.WaitForExitAsync();
-
-                var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                if (lines.Length >= 2)
+                return new NetworkTraffic
                 {
-                    var data = lines[2].Split(',');
-                    if (data.Length >= 6)
-                    {
-                        long.TryParse(data[2].Trim(), out var bytesReceived);
-                        long.TryParse(data[3].Trim(), out var bytesSent);
-                        long.TryParse(data[4].Trim(), out var packetsReceived);
-                        long.TryParse(data[5].Trim(), out var packetsSent);
-
-                        return new NetworkTraffic
-                        {
-                            InterfaceId = interfaceId,
-                            TotalBytesReceived = bytesReceived,
-                            TotalBytesSent = bytesSent,
-                            TotalPacketsReceived = packetsReceived,
-                            TotalPacketsSent = packetsSent
-                        };
-                    }
-                }
+                    InterfaceId = interfaceId,
+                    TotalBytesReceived = bytesReceived,
+                    TotalBytesSent = bytesSent,
+                    TotalPacketsReceived = packetsReceived,
+                    TotalPacketsSent = packetsSent
+                };
             }
         }
         catch (Exception ex)
@@ -222,6 +193,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
     }
 
     #endregion
+
 
     #region Linux Implementation
 
