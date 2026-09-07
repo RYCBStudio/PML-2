@@ -105,7 +105,7 @@ jobs:
           path: |
             tools-cache/${{ matrix.rid }}/CrashDisplayer
             tools-cache/${{ matrix.rid }}/Splash
-          key: tools-${{ matrix.rid }}-${{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
+          key: tools-\( {{ matrix.rid }}- \){{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
           restore-keys: |
             tools-${{ matrix.rid }}-
 
@@ -187,12 +187,12 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ matrix.os_name }}" = "windows" ]; then
-            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+            OUT="\( {{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/ \){{ matrix.publish_sub }}/publish"
           else
-            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+            OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           fi
           mkdir -p "$OUT"
-          echo "Publishing -> $OUT (rid=${{ matrix.rid }} mode=${{ matrix.mode }})"
+          echo "Publishing -> \( OUT (rid= \){{ matrix.rid }} mode=${{ matrix.mode }})"
 
           if [ "${{ matrix.mode }}" = "aot" ]; then
             # DefineConstants: 定义 AOT 条件编译符号（与本地 pu.ps1 Set-ProjectMode 注入等价）
@@ -220,8 +220,8 @@ jobs:
 
           echo "Publish file count: $(find "$OUT" -type f | wc -l)"
           if [ "${{ matrix.os_name }}" != "windows" ]; then
-            if [ -f "$OUT/${{ env.APP_EXE }}" ]; then
-              chmod +x "$OUT/${{ env.APP_EXE }}"
+            if [ -f "\( OUT/ \){{ env.APP_EXE }}" ]; then
+              chmod +x "\( OUT/ \){{ env.APP_EXE }}"
             else
               echo "WARNING: ${{ env.APP_EXE }} not found in $OUT"
               find "$OUT" -maxdepth 1 -type f | head -20 || true
@@ -234,9 +234,9 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ matrix.os_name }}" = "windows" ]; then
-            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+            OUT="\( {{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/ \){{ matrix.publish_sub }}/publish"
           else
-            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+            OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           fi
           TOOLS="$OUT/Tools"
           mkdir -p "$TOOLS"
@@ -309,9 +309,9 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ matrix.os_name }}" = "windows" ]; then
-            OUT="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+            OUT="\( {{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/ \){{ matrix.publish_sub }}/publish"
           else
-            OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+            OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           fi
           if [ -n "${SENTRY_DSN:-}" ]; then
             printf '%s\n' "{\"SentryDsn\":\"${SENTRY_DSN}\"}" > "$OUT/sentry.json"
@@ -333,7 +333,7 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           DIST="${{ github.workspace }}/dist"
           OS_NAME="${{ matrix.os_name }}"
           ARCH="${{ matrix.arch }}"
@@ -347,8 +347,8 @@ jobs:
             exit 1
           fi
 
-          TGZ="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.gz"
-          TZST="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.zst"
+          TGZ="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.gz"
+          TZST="pml2-\( {V}- \){OS_NAME}-\( {ARCH}- \){MODE}-portable.tar.zst"
 
           tar -C "$OUT" -cf - . | gzip -9 > "$DIST/$TGZ"
           tar -C "$OUT" -cf - . | zstd -T0 -19 -o "$DIST/$TZST"
@@ -374,7 +374,7 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           PKG_ARCH="${{ matrix.pkg_arch }}"
@@ -406,7 +406,7 @@ jobs:
           exec /opt/pml-2/${EXE} "\$@"
           EOF
           chmod +x "$ROOT/usr/bin/pml-2"
-          chmod +x "$ROOT/opt/pml-2/${EXE}" 2>/dev/null || true
+          chmod +x "\( ROOT/opt/pml-2/ \){EXE}" 2>/dev/null || true
 
           cat > "$ROOT/usr/share/applications/pml-2.desktop" << 'EOF'
           [Desktop Entry]
@@ -492,8 +492,8 @@ jobs:
           fi
 
           mkdir -p "$DIST"
-          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.deb"
-          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST/pml2-${V}-linux-${ARCH}-${MODE}.rpm"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "\( DIST/pml2- \){V}-linux-\( {ARCH}- \){MODE}.deb"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "\( DIST/pml2- \){V}-linux-\( {ARCH}- \){MODE}.rpm"
           ls -lh "$DIST"/*.deb "$DIST"/*.rpm || true
 
       # ========== macOS 打包 ==========
@@ -503,7 +503,7 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          OUT="\( {{ github.workspace }}/publish/ \){{ matrix.rid }}-${{ matrix.mode }}"
           DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           MODE="${{ matrix.mode }}"
@@ -522,7 +522,7 @@ jobs:
           APP="$STAGE/$BUNDLE"
           mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
           cp -a "$OUT/." "$APP/Contents/MacOS/"
-          chmod +x "$APP/Contents/MacOS/${EXE}" || true
+          chmod +x "\( APP/Contents/MacOS/ \){EXE}" || true
           chmod +x "$APP/Contents/MacOS/Tools/splash" || true
           find "$APP/Contents/MacOS/Tools" -type f -exec chmod +x {} \; 2>/dev/null || true
 
@@ -570,8 +570,8 @@ jobs:
           ln -sf /Applications "$STAGE/Applications"
 
           mkdir -p "$DIST"
-          RW_DMG="$DIST/pml2-rw-${ARCH}-${MODE}.dmg"
-          FINAL_DMG="$DIST/pml2-${V}-macos-${ARCH}-${MODE}.dmg"
+          RW_DMG="\( DIST/pml2-rw- \){ARCH}-${MODE}.dmg"
+          FINAL_DMG="\( DIST/pml2- \){V}-macos-\( {ARCH}- \){MODE}.dmg"
           rm -f "$RW_DMG" "$FINAL_DMG"
 
           echo "Creating writable DMG (${MODE})..."
@@ -618,10 +618,10 @@ jobs:
 
           # ISS 使用相对路径（相对 installer/），无需替换硬编码盘符路径。
           # 通过 /D 注入版本与输出目录（脚本内为 #ifndef，可被命令行覆盖）。
-          $iss = Join-Path $ws "installer/${{ matrix.iss_script }}"
+          $iss = Join-Path \( ws "installer/ \){{ matrix.iss_script }}"
           if (-not (Test-Path $iss)) { throw "ISS not found: $iss" }
 
-          $verDefine = if ("${{ matrix.rid }}" -eq "win-x64" -and "${{ matrix.mode }}" -eq "aot") {
+          \( verDefine = if (" \){{ matrix.rid }}" -eq "win-x64" -and "${{ matrix.mode }}" -eq "aot") {
             "$V AOT"
           } else {
             $V
@@ -645,7 +645,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}${{ matrix.os_name == 'windows' && '-offline' || '' }}
+          name: pml2-\( {{ steps.ver.outputs.version }}- \){{ matrix.rid }}-\( {{ matrix.mode }} \){{ matrix.os_name == 'windows' && '-offline' || '' }}
           path: ${{ github.workspace }}/dist/*
           if-no-files-found: error
 
@@ -656,6 +656,32 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Resolve version & prerelease
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          V="${V#v}"
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "tag=v${V}" >> "$GITHUB_OUTPUT"
+
+          # 版本号含 preview（不区分大小写）时发布为 Pre-Release
+          # 例: 26.3.0-preview1 / 26.3.0-Preview.2 / v26.3.0-PREVIEW
+          if printf '%s' "$V" | grep -qi 'preview'; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "title=PML 2 ${V} (Pre-release)" >> "$GITHUB_OUTPUT"
+            echo "Resolved: version=$V  prerelease=yes"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "title=PML 2 ${V}" >> "$GITHUB_OUTPUT"
+            echo "Resolved: version=$V  prerelease=no"
+          fi
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -671,10 +697,11 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
-          name: PML 2 ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: ${{ steps.meta.outputs.title }}
           files: upload/*
           generate_release_notes: true
           draft: false
+          prerelease: ${{ steps.meta.outputs.prerelease == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
