@@ -493,8 +493,8 @@ jobs:
           fi
 
           mkdir -p "$DIST"
-          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "\( DIST/pml2- \){V}-linux-\( {ARCH}- \){MODE}.deb"
-          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "\( DIST/pml2- \){V}-linux-\( {ARCH}- \){MODE}.rpm"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p deb -t "$DIST"
+          nfpm package -f "${{ github.workspace }}/nfpm.yaml" -p rpm -t "$DIST"
           ls -lh "$DIST"/*.deb "$DIST"/*.rpm || true
 
       # ========== macOS 打包 ==========
