@@ -6,7 +6,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -15,7 +14,6 @@ using Markdig.Extensions.Alerts;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using MarkdownAIRender.Controls.Images;
-using MarkdownAIRender.Helper;
 using MarkdownAIRender.i18n;
 using TextMateSharp.Grammars;
 using Inline = Avalonia.Controls.Documents.Inline;
@@ -259,7 +257,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
             return;
         }
 
-        var container = new StackPanel()
+        var container = new StackPanel
         {
             Spacing = 6,
             HorizontalAlignment = HorizontalAlignment.Stretch, // 确保拉伸

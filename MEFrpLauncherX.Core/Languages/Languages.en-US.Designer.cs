@@ -2375,6 +2375,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Files|*.*.
+        /// </summary>
+        public static string Text_Global_FileType_All {
+            get {
+                return ResourceManager.GetString("Text.Global.FileType.All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.jfif;*.tiff.
+        /// </summary>
+        public static string Text_Global_FileType_Picture {
+            get {
+                return ResourceManager.GetString("Text.Global.FileType.Picture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         public static string Text_Global_Help {
@@ -3122,11 +3140,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string Text_MainWindow_CheckUpdate {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.CheckUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
         public static string Text_MainWindow_Decline {
             get {
                 return ResourceManager.GetString("Text.MainWindow.Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Text_MainWindow_Documentation {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.Documentation", resourceCulture);
             }
         }
         
@@ -3167,6 +3203,60 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string Text_MainWindow_MenuFile {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Text_MainWindow_MenuHelp {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nodes.
+        /// </summary>
+        public static string Text_MainWindow_MenuNodes {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string Text_MainWindow_MenuView {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Node Monitoring.
+        /// </summary>
+        public static string Text_MainWindow_NodesMonitoring {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.NodesMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Log Directory.
+        /// </summary>
+        public static string Text_MainWindow_OpenLogDirectory {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.OpenLogDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Main Window.
         /// </summary>
         public static string Text_MainWindow_OpenMainWindow {
@@ -3199,29 +3289,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop All Tunnels.
+        ///   Looks up a localized string similar to Refresh Nodes.
         /// </summary>
-        public static string Text_MainWindow_StopAllTunnels {
+        public static string Text_MainWindow_RefreshNodes {
             get {
-                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File.
-        /// </summary>
-        public static string Text_MainWindow_MenuFile {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Log Directory.
-        /// </summary>
-        public static string Text_MainWindow_OpenLogDirectory {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.OpenLogDirectory", resourceCulture);
+                return ResourceManager.GetString("Text.MainWindow.RefreshNodes", resourceCulture);
             }
         }
         
@@ -3235,38 +3307,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nodes.
+        ///   Looks up a localized string similar to Stop All Tunnels.
         /// </summary>
-        public static string Text_MainWindow_MenuNodes {
+        public static string Text_MainWindow_StopAllTunnels {
             get {
-                return ResourceManager.GetString("Text.MainWindow.MenuNodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Node Monitoring.
-        /// </summary>
-        public static string Text_MainWindow_NodesMonitoring {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.NodesMonitoring", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh Nodes.
-        /// </summary>
-        public static string Text_MainWindow_RefreshNodes {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.RefreshNodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View.
-        /// </summary>
-        public static string Text_MainWindow_MenuView {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuView", resourceCulture);
+                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
             }
         }
         
@@ -3276,33 +3321,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_MainWindow_ToggleProxyFloat {
             get {
                 return ResourceManager.GetString("Text.MainWindow.ToggleProxyFloat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help.
-        /// </summary>
-        public static string Text_MainWindow_MenuHelp {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Documentation.
-        /// </summary>
-        public static string Text_MainWindow_Documentation {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.Documentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check for Updates.
-        /// </summary>
-        public static string Text_MainWindow_CheckUpdate {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.CheckUpdate", resourceCulture);
             }
         }
         
@@ -4315,6 +4333,141 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Action.
+        /// </summary>
+        public static string Text_PluginEditor_AddAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.AddAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string Text_PluginEditor_Author {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Condition (optional; supports arithmetic + - * / and parentheses).
+        /// </summary>
+        public static string Text_PluginEditor_Condition {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Condition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Text_PluginEditor_Description {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin ID.
+        /// </summary>
+        public static string Text_PluginEditor_Id {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Text_PluginEditor_Name {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview YAML.
+        /// </summary>
+        public static string Text_PluginEditor_PreviewYaml {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.PreviewYaml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Preview.
+        /// </summary>
+        public static string Text_PluginEditor_RefreshPreview {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RefreshPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Text_PluginEditor_RemoveAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RemoveAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Trigger.
+        /// </summary>
+        public static string Text_PluginEditor_RemoveTrigger {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RemoveTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select action....
+        /// </summary>
+        public static string Text_PluginEditor_SelectAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.SelectAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select event....
+        /// </summary>
+        public static string Text_PluginEditor_SelectEvent {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.SelectEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin Editor.
+        /// </summary>
+        public static string Text_PluginEditor_Title {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugins of type ({0}) cannot be edited in the form editor. Edit the YAML file directly (the plugins folder has been opened)..
+        /// </summary>
+        public static string Text_PluginEditor_TypeNotSupported {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.TypeNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string Text_PluginEditor_Version {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author: .
         /// </summary>
         public static string Text_PluginList_AuthorPrefix {
@@ -4324,11 +4477,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot open this plugin in the form editor; the plugin folder has been opened for manual YAML editing.
+        /// </summary>
+        public static string Text_PluginList_CannotOpenInForm {
+            get {
+                return ResourceManager.GetString("Text.PluginList.CannotOpenInForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to read the plugin file content..
         /// </summary>
         public static string Text_PluginList_CannotReadPluginContent {
             get {
                 return ResourceManager.GetString("Text.PluginList.CannotReadPluginContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Logs.
+        /// </summary>
+        public static string Text_PluginList_ClearLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ClearLogs", resourceCulture);
             }
         }
         
@@ -4378,11 +4549,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Editor.
+        /// </summary>
+        public static string Text_PluginList_EditPlugin {
+            get {
+                return ResourceManager.GetString("Text.PluginList.EditPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
         public static string Text_PluginList_Enabled {
             get {
                 return ResourceManager.GetString("Text.PluginList.Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution Logs.
+        /// </summary>
+        public static string Text_PluginList_ExecutionLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ExecutionLogs", resourceCulture);
             }
         }
         
@@ -4468,6 +4657,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        public static string Text_PluginList_LogStatusFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run.
+        /// </summary>
+        public static string Text_PluginList_LogStatusInfo {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipped.
+        /// </summary>
+        public static string Text_PluginList_LogStatusSkipped {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string Text_PluginList_LogStatusSuccess {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Plugin.
+        /// </summary>
+        public static string Text_PluginList_NewPlugin {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NewPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No execution logs yet.
+        /// </summary>
+        public static string Text_PluginList_NoLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Records will appear here when plugin events trigger or actions run.
+        /// </summary>
+        public static string Text_PluginList_NoLogsHint {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoLogsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No plugins.
         /// </summary>
         public static string Text_PluginList_NoPlugins {
@@ -4531,236 +4783,20 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execution Logs.
-        /// </summary>
-        public static string Text_PluginList_ExecutionLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.ExecutionLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Logs.
-        /// </summary>
-        public static string Text_PluginList_ClearLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.ClearLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No execution logs yet.
-        /// </summary>
-        public static string Text_PluginList_NoLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NoLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Records will appear here when plugin events trigger or actions run.
-        /// </summary>
-        public static string Text_PluginList_NoLogsHint {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NoLogsHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run.
-        /// </summary>
-        public static string Text_PluginList_LogStatusInfo {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Success.
-        /// </summary>
-        public static string Text_PluginList_LogStatusSuccess {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed.
-        /// </summary>
-        public static string Text_PluginList_LogStatusFailed {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Skipped.
-        /// </summary>
-        public static string Text_PluginList_LogStatusSkipped {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusSkipped", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Plugin.
-        /// </summary>
-        public static string Text_PluginList_NewPlugin {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NewPlugin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Editor.
-        /// </summary>
-        public static string Text_PluginList_EditPlugin {
-            get {
-                return ResourceManager.GetString("Text.PluginList.EditPlugin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot open this plugin in the form editor; the plugin folder has been opened for manual YAML editing.
-        /// </summary>
-        public static string Text_PluginList_CannotOpenInForm {
-            get {
-                return ResourceManager.GetString("Text.PluginList.CannotOpenInForm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plugin Editor.
-        /// </summary>
-        public static string Text_PluginEditor_Title {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plugin ID.
-        /// </summary>
-        public static string Text_PluginEditor_Id {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Id", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Text_PluginEditor_Name {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string Text_PluginEditor_Description {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Author.
-        /// </summary>
-        public static string Text_PluginEditor_Author {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Author", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Version.
-        /// </summary>
-        public static string Text_PluginEditor_Version {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select event....
-        /// </summary>
-        public static string Text_PluginEditor_SelectEvent {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.SelectEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove Trigger.
-        /// </summary>
-        public static string Text_PluginEditor_RemoveTrigger {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RemoveTrigger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Condition (optional; supports arithmetic + - * / and parentheses).
-        /// </summary>
-        public static string Text_PluginEditor_Condition {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Condition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select action....
-        /// </summary>
-        public static string Text_PluginEditor_SelectAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.SelectAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove.
-        /// </summary>
-        public static string Text_PluginEditor_RemoveAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RemoveAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add Action.
-        /// </summary>
-        public static string Text_PluginEditor_AddAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.AddAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preview YAML.
-        /// </summary>
-        public static string Text_PluginEditor_PreviewYaml {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.PreviewYaml", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh Preview.
-        /// </summary>
-        public static string Text_PluginEditor_RefreshPreview {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RefreshPreview", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Failed to refresh online plugins: {0}.
         /// </summary>
         public static string Text_PluginList_RefreshOnlineFailedFormat {
             get {
                 return ResourceManager.GetString("Text.PluginList.RefreshOnlineFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requires core {0} or higher.
+        /// </summary>
+        public static string Text_PluginList_RequireCoreFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.RequireCoreFormat", resourceCulture);
             }
         }
         
@@ -4851,6 +4887,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_PluginList_Triggers {
             get {
                 return ResourceManager.GetString("Text.PluginList.Triggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template plugin.
+        /// </summary>
+        public static string Text_PluginList_TypeTemplate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.TypeTemplate", resourceCulture);
             }
         }
         
@@ -5289,6 +5334,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No tunnel templates available. Install a create-proxy-template plugin first, or enable it on the Plugins page..
+        /// </summary>
+        public static string Text_Proxy_Guide_NoTemplates {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.NoTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a tunnel template first.
+        /// </summary>
+        public static string Text_Proxy_Guide_SelectTemplate {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.SelectTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Proxy Wizard.
         /// </summary>
         public static string Text_Proxy_Guide_Title {
@@ -5654,78 +5717,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Settings_Animation_Standard {
             get {
                 return ResourceManager.GetString("Text.Settings.Animation.Standard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Startup Screen.
-        /// </summary>
-        public static string Text_Settings_Splash {
-            get {
-                return ResourceManager.GetString("Text.Settings.Splash", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Choose the startup screen style or a custom background image. Takes effect on the next launch.
-        /// </summary>
-        public static string Text_Settings_SplashDescription {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Startup Screen Style.
-        /// </summary>
-        public static string Text_Settings_SplashStyle {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Default.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Default {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dark.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Dark {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Dark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Minimal.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Minimal {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Minimal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom Background Image.
-        /// </summary>
-        public static string Text_Settings_SplashCustomImage {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashCustomImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Changes take effect on the next launch.
-        /// </summary>
-        public static string Text_Settings_SplashRestartHint {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashRestartHint", resourceCulture);
             }
         }
         
@@ -6383,6 +6374,78 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Settings_SetTunnelsToLaunch {
             get {
                 return ResourceManager.GetString("Text.Settings.SetTunnelsToLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup Screen.
+        /// </summary>
+        public static string Text_Settings_Splash {
+            get {
+                return ResourceManager.GetString("Text.Settings.Splash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Background Image.
+        /// </summary>
+        public static string Text_Settings_SplashCustomImage {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashCustomImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the startup screen style or a custom background image. Takes effect on the next launch..
+        /// </summary>
+        public static string Text_Settings_SplashDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes take effect on the next launch.
+        /// </summary>
+        public static string Text_Settings_SplashRestartHint {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashRestartHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup Screen Style.
+        /// </summary>
+        public static string Text_Settings_SplashStyle {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Dark {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Default {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Minimal {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Minimal", resourceCulture);
             }
         }
         
@@ -9272,6 +9335,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate QR Code.
+        /// </summary>
+        public static string Text_UserProxy_GenerateQRCode {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.GenerateQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tunnel launch cancelled due to an internal error: {0}
         ///Details: {1}.
         /// </summary>
@@ -9332,6 +9404,186 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_UserProxy_MoreOptions {
             get {
                 return ResourceManager.GetString("Text.UserProxy.MoreOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	Copied to clipboard.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to generate QR code.	.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeGeneratedFailed {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeGeneratedFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QR code generated successfully..
+        /// </summary>
+        public static string Text_UserProxy_QRCodeGeneratedSuccessfully {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeGeneratedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Color.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_BackgroundColor {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.BackgroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QR code generated successfully. Would you like to view it?.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Caption {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to Clipboard.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_CopyToClipBoard {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.CopyToClipBoard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export As PNG File.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_ExportPng {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.ExportPng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to save QR code..
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_FailedToSave {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.FailedToSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foreground Color.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_ForegroundColor {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.ForegroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Icon {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon Size.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_IconSize {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.IconSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Domain.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_NextDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.NextDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous Domain.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_PreviousDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.PreviousDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	QR code saved successfully..
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SavedSuccessfully {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the domain whose QR code you want to copy.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SelectDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SelectDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Icon File.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SelectIconFile {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SelectIconFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QR Code Settings.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Settings {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Size {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the arrow buttons or the ← → keys to switch domains.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SwitchHint {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SwitchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_View {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.View", resourceCulture);
             }
         }
         

@@ -15,9 +15,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
-using Avalonia.Vulkan;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI.Avalonia;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
@@ -61,10 +59,10 @@ internal partial class Program
         // 26.3.1 M1：Splash 进度管道名（与单实例激活管道 tech.rycb.pml2 严格分离）
         var splashPipeName = $"tech.rycb.pml2.splash.{Environment.ProcessId}";
         var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
-        if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
-        {
-            File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
-        }
+        // if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+        // {
+        //     File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
+        // }
 
         System.Console.OutputEncoding = Encoding.UTF8;
         // AssemblyLoadContext.Default.Resolving += (ctx, assemblyName) =>
@@ -428,12 +426,12 @@ internal partial class Program
             {
                 MaxGpuResourceSizeBytes = (long)NormalizeGpuMemory(renderSettings.GpuMemoryLimitMb) * 1024 * 1024
             })
-            .With(new CompositionOptions()
+            .With(new CompositionOptions
             {
                 UseRegionDirtyRectClipping = true,
                 UseSaveLayerRootClip = true
             })
-            .With(new MacOSPlatformOptions()
+            .With(new MacOSPlatformOptions
             {
                 DisableDefaultApplicationMenuItems = true
             })
@@ -444,7 +442,7 @@ internal partial class Program
         {
             builder
                 .With(BuildWin32Options(renderSettings))
-                .With(new X11PlatformOptions()
+                .With(new X11PlatformOptions
                 {
                     RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
                     {
@@ -458,7 +456,7 @@ internal partial class Program
                         ]
                     }
                 })
-                .With(new AvaloniaNativePlatformOptions()
+                .With(new AvaloniaNativePlatformOptions
                 {
                     RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
                     {

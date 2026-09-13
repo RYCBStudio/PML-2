@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace MEFrpLauncherX.Plugin.Condition;
 
 public static class ConditionParser

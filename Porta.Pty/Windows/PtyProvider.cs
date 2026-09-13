@@ -10,13 +10,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Console;
 using Windows.Win32.System.Threading;
-using static Porta.Pty.Windows.NativeMethods;
+using Microsoft.Win32.SafeHandles;
 using static Windows.Win32.PInvoke;
+using static Porta.Pty.Windows.NativeMethods;
 
 namespace Porta.Pty.Windows
 {

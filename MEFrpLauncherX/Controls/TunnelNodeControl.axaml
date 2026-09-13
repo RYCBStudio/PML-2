@@ -16,6 +16,9 @@
              FontFamily="{StaticResource GlobalFontFamily}"
              mc:Ignorable="d"
              x:DataType="local1:TunnelNodeViewModel">
+    <Design.DataContext>
+        <local1:TunnelNodeViewModel />
+    </Design.DataContext>
     <UserControl.Resources>
         <core:BoolToBadgeHeaderConverter x:Key="BoolToBadgeHeaderConverter" />
     </UserControl.Resources>

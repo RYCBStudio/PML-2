@@ -115,6 +115,22 @@
                                         <TextBlock Text="{Binding Version}" FontSize="11"
                                                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}" />
                                     </Border>
+                                    <!-- 类型徽标：create-proxy-template 等资源型插件 -->
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                            IsVisible="{Binding IsTemplatePlugin}">
+                                        <TextBlock Text="{x:Static languages:Languages.Text_PluginList_TypeTemplate}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    </Border>
+                                    <!-- 核心版本不兼容提示 -->
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                            IsVisible="{Binding IsIncompatible}"
+                                            ToolTip.Tip="{Binding IncompatibleTip}">
+                                        <TextBlock Text="{Binding IncompatibleTip}" FontSize="11"
+                                                   Foreground="{DynamicResource TextFillColorCriticalBrush}" />
+                                    </Border>
                                     <Border CornerRadius="4" Padding="6,1"
                                             Classes.Enabled="{Binding IsEnabled}"
                                             Classes.Disabled="{Binding !IsEnabled}">

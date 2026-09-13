@@ -332,7 +332,7 @@ public partial class EditProxyWindow : Window
 
     private async void OnSaveClicked(object? sender, RoutedEventArgs e)
     {
-        var requestData = new InfoClasses.CreateProxyRequestData()
+        var requestData = new InfoClasses.CreateProxyRequestData
         {
             proxyId = _proxy.proxyId,
             proxyName = _createProxyViewModel.ProxyName,

@@ -478,6 +478,18 @@ public class PluginListViewModel : ViewModelBase
             return;
         }
 
+        // 表单编辑器仅支持事件插件；create-proxy-template 等资源型插件需保留 templates 段，直接编辑 YAML
+        if (!string.Equals(selected.Type, "event", StringComparison.OrdinalIgnoreCase))
+        {
+            await MessageBoxManager
+                .GetMessageBoxStandard(Languages.Caption_Hint,
+                    string.Format(Languages.Text_PluginEditor_TypeNotSupported, selected.Type),
+                    ButtonEnum.Ok, Icon.Warning)
+                .ShowAsync();
+            OpenPluginFolder("plugins");
+            return;
+        }
+
         try
         {
             var vm = new PluginEditor.PluginEditorViewModel(yaml);

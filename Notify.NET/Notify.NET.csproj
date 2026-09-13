@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Notify.NET</AssemblyName>
+    <RootNamespace>Notify.NET</RootNamespace>
+    <PackageId>Notify.NET</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Cross-platform OS notification library for .NET Standard with WinToast (Windows), libnotify (Linux), and UNUserNotificationCenter (macOS) backends.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <!-- Pack the repo-root README into the package -->
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.0" />
+  </ItemGroup>
+
+  <!-- 预编译原生库（Windows）
+       DLL 入库管理（Native/<rid>/native，与 Porta.Pty/Native 布局一致），
+       构建/发布时按 RID 拷入输出 runtimes/<rid>/native/ 布局，
+       NativeLibraryLoader 从 AppContext.BaseDirectory/runtimes/<rid>/native 加载。 -->
+  <ItemGroup>
+    <None Include="Native/win-x64/native/WinToastWrapper.dll"
+          Link="runtimes/win-x64/native/WinToastWrapper.dll"
+          Pack="true"
+          PackagePath="runtimes/win-x64/native/WinToastWrapper.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('Native/win-x64/native/WinToastWrapper.dll') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'win-x64')" />
+    <None Include="Native/win-x86/native/WinToastWrapper.dll"
+          Link="runtimes/win-x86/native/WinToastWrapper.dll"
+          Pack="true"
+          PackagePath="runtimes/win-x86/native/WinToastWrapper.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('Native/win-x86/native/WinToastWrapper.dll') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'win-x86')" />
+    <None Include="Native/win-arm64/native/WinToastWrapper.dll"
+          Link="runtimes/win-arm64/native/WinToastWrapper.dll"
+          Pack="true"
+          PackagePath="runtimes/win-arm64/native/WinToastWrapper.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('Native/win-arm64/native/WinToastWrapper.dll') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'win-arm64')" />
+  </ItemGroup>
+
+  <!-- 预编译原生 dylib（macOS） -->
+  <ItemGroup>
+    <None Include="Native/osx-x64/native/libMacNotifyWrapper.dylib"
+          Link="runtimes/osx-x64/native/libMacNotifyWrapper.dylib"
+          Pack="true"
+          PackagePath="runtimes/osx-x64/native/libMacNotifyWrapper.dylib"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('Native/osx-x64/native/libMacNotifyWrapper.dylib') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'osx-x64')" />
+    <None Include="Native/osx-arm64/native/libMacNotifyWrapper.dylib"
+          Link="runtimes/osx-arm64/native/libMacNotifyWrapper.dylib"
+          Pack="true"
+          PackagePath="runtimes/osx-arm64/native/libMacNotifyWrapper.dylib"
+          CopyToOutputDirectory="PreserveNewest"
+          Condition="Exists('Native/osx-arm64/native/libMacNotifyWrapper.dylib') AND ('$(RuntimeIdentifier)' == '' OR '$(RuntimeIdentifier)' == 'osx-arm64')" />
+  </ItemGroup>
+
+</Project>

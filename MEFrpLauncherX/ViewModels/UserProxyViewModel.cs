@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Input.Platform;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -23,11 +24,12 @@ using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
 using MEFrpLauncherX.Views.ProxyMonitor;
-using MsBox.Avalonia.ViewModels.Commands;
 using Notify.NET.Abstractions;
 using Notify.NET.Builder;
 using ReactiveUI;
 using ProxyFloat = MEFrpLauncherX.Views.ProxyMonitor.ProxyFloat;
+
+// ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -79,9 +81,43 @@ public class UserProxyViewModel : ViewModelBase
         GenerateLaunchConfigCommand = new RelayCommand<object>(GenerateLaunchConfig);
         ShowExtraInfoCommand = new RelayCommand<UserProxyViewModel>(ShowExtraInfo);
         LaunchProxyViaConfigCommand = new RelayCommand<UserProxyViewModel>(LaunchProxyViaConfig);
-        EditSSLCommand = new RelayCommand<UserProxyViewModel>(EditSSL);
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
         CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
+        GenerateQRCodeCommand = new RelayCommand<UserProxyViewModel>(GenerateQRCode);
+
+        if (Design.IsDesignMode)
+        {
+            node = "日本 / 下北泽 114514";
+            proxyName = "homo";
+            proxyType = "tcp";
+            localIp = "127.0.0.1";
+            localPort = 1080;
+            remotePort = 443;
+            nodeId = 114514;
+            proxyId = 19198;
+            username = "homo";
+            isBanned = false;
+            isDisabled = false;
+            allowedProtocols = ["tcp", "udp"];
+            runId = "114514";
+            isOnline = true;
+            isOnline = true;
+            lastStartTime = 1633072800;
+            lastCloseTime = 1633072800;
+            clientVersion = "0.0.1";
+            proxyProtocolVersion = "0.0.1";
+            useEncryption = true;
+            useCompression = true;
+            location = "日本 / 下北泽";
+            accessKey = "114514";
+            hostHeaderRewrite = "homo";
+            headerXFromWhere = "19198";
+            transportProtocol = "tcp";
+            httpUser = "homo";
+            httpPassword = "114514";
+            crtPath = "19198.crt";
+            keyPath = "19198.key";
+        }
     }
 
     public UserProxyViewModel(string _domain)
@@ -111,9 +147,9 @@ public class UserProxyViewModel : ViewModelBase
         GenerateLaunchConfigCommand = new RelayCommand<object>(GenerateLaunchConfig);
         ShowExtraInfoCommand = new RelayCommand<UserProxyViewModel>(ShowExtraInfo);
         LaunchProxyViaConfigCommand = new RelayCommand<UserProxyViewModel>(LaunchProxyViaConfig);
-        EditSSLCommand = new RelayCommand<UserProxyViewModel>(EditSSL);
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
         CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
+        GenerateQRCodeCommand = new RelayCommand<UserProxyViewModel>(GenerateQRCode);
 
         Dispatcher.UIThread.Post(async () =>
         {
@@ -410,6 +446,12 @@ public class UserProxyViewModel : ViewModelBase
         get;
     }
 
+    public ICommand GenerateQRCodeCommand
+    {
+        get;
+    }
+
+
     public bool IsLaunched
     {
         get => field;
@@ -580,12 +622,6 @@ public class UserProxyViewModel : ViewModelBase
             ProbeStatus.NotProbeable => Languages.Text_Nodes_ProbeNotAvailable,
             _ => string.Empty
         };
-
-    public ICommand EditSSLCommand
-    {
-        get;
-        set;
-    }
 
     public ICommand CopyInfoCommand
     {
@@ -919,7 +955,7 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在编辑隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         // 编辑隧道逻辑
         await new EditProxyWindow(proxy).ShowDialog(Core.App.MainWindow);
-        ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies();
     }
 
     private async void ForceOfflineProxy(UserProxyViewModel proxy)
@@ -941,7 +977,7 @@ public class UserProxyViewModel : ViewModelBase
             Process.Start("pkill", "mefrpc")?.WaitForExit(1000);
         }
 
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             MEFrpApiConverter.KickProxy(proxy.proxyId);
             if (ConfigManager.CurrentConfig.KickWithoutDisable)
@@ -949,7 +985,7 @@ public class UserProxyViewModel : ViewModelBase
                 MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false);
             }
 
-            ManageProxyPage.Instance.LoadProxies();
+            await ManageProxyPage.Instance.LoadProxies();
         });
         IsLoading = false;
     }
@@ -961,7 +997,7 @@ public class UserProxyViewModel : ViewModelBase
         // 禁用隧道逻辑
         await Task.Run(() =>
             MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, true));
-        ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
     }
 
@@ -972,7 +1008,7 @@ public class UserProxyViewModel : ViewModelBase
         // 启用隧道逻辑
         await Task.Run(() =>
             MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false));
-        ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies();
         IsLoading = false;
     }
 
@@ -1042,42 +1078,6 @@ public class UserProxyViewModel : ViewModelBase
 
             return "HTTP Basic Auth";
         }
-    }
-
-    private async void EditSSL(UserProxyViewModel obj)
-    {
-        var pss = new ProxySSLSettings(obj);
-        var cd = new ContentDialog
-        {
-            Title = Languages.Text_UserProxy_SslCertConfig,
-            Content = pss,
-            PrimaryButtonText = Languages.Text_Global_Confirm,
-            PrimaryButtonCommand = new RelayCommand(_obj =>
-            {
-            }),
-            CloseButtonText = Languages.Text_Global_Cancel
-        };
-        if (await cd.ShowAsync() != ContentDialogResult.Primary || !pss.Finished)
-        {
-            return;
-        }
-
-        if (!pss.Check())
-        {
-            return;
-        }
-
-        var sSlConfig = pss.GetSSlConfig();
-        var cfgService = new FrpConfigService();
-        var config = cfgService.LoadConfig(pss.Config);
-        cfgService.AddHttpsProxy(config, sSlConfig.GetValueOrDefault("name", ""),
-            sSlConfig.GetValueOrDefault("domain", ""),
-            sSlConfig.GetValueOrDefault("localIp", ""),
-            sSlConfig.GetValueOrDefault("cert", ""),
-            sSlConfig.GetValueOrDefault("key", ""));
-        var content = cfgService.SaveConfig(config, Path.GetExtension(pss.Config).Replace(".", ""));
-        await File.WriteAllTextAsync(pss.Config, content);
-        LaunchViaConfigImpl(obj, pss.Config);
     }
 
     private async void CopyInfo(UserProxyViewModel obj)
@@ -1164,53 +1164,76 @@ public class UserProxyViewModel : ViewModelBase
     /// <summary>终端输出回调（PTY 读取线程触发，回 UI 线程更新状态与错误检测）</summary>
     private void OnTerminalOutputAsync(string output)
     {
-        Dispatcher.UIThread.Post(async () =>
+        Dispatcher.UIThread.Post(async void () =>
         {
-            // 已停止 / 已失败：不再更新状态
-            if (TunnelStatus is TunnelStatus.Stopped or TunnelStatus.Failed)
+            try
             {
-                return;
-            }
-
-            // 有输出说明进程存活，取消启动超时检查
-            CancelStartupTimeout();
-
-            // 滚动保留最近 20 行
-            var merged = LastOutputBuffer + output;
-            var lines = merged.Replace("\r", string.Empty)
-                .Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            LastOutputBuffer = string.Join('\n', lines.TakeLast(20));
-
-            // 错误特征检测（认证失败 / 端口占用 / 节点不可达 / 进程崩溃）
-            var info = TunnelErrorMapper.Map(LastOutputBuffer);
-            if (info.Category != TunnelErrorCategory.Unknown)
-            {
-                LastErrorSummary = info.Summary;
-                TunnelStatus = TunnelStatus.Failed;
-                IsLoading = false;
-                // 26.3.1 S1：隧道失败 → 插件事件（断线卫士订阅）
-                _ = PluginService.Instance.TriggerAsync("proxy.failed", new Dictionary<string, object>
+                // 已停止 / 已失败：不再更新状态
+                if (TunnelStatus is TunnelStatus.Stopped or TunnelStatus.Failed)
                 {
-                    ["proxyName"] = proxyName,
-                    ["errorMessage"] = LastErrorSummary,
-                    ["errorCategory"] = info.Category.ToString()
-                });
-                var request = NotificationBuilder
-                    .Create(string.Format(Languages.Text_ProxyStart_StartFailed, proxyName))
-                    .WithBody(LastErrorSummary)
-                    .AddButton(Languages.Text_UserProxy_CopyErrorInfo, _ =>
-                    {
-                        CopyError(this);
-                    })
-                    .AddButton(Languages.Text_Global_Dismiss)
-                    .WithUrgency(NotificationUrgency.Critical)
-                    .WithExpiration(TimeSpan.FromSeconds(2))
-                    .OnActivated(id => Program.ActivateExistingInstance())
-                    .Build();
-                if (Core.App.NotificationService.IsSupported)
-                {
-                    await Core.App.NotificationService.ShowAsync(request);
+                    return;
                 }
+
+                // 有输出说明进程存活，取消启动超时检查
+                CancelStartupTimeout();
+
+                // 滚动保留最近 20 行
+                var merged = LastOutputBuffer + output;
+                var lines = merged.Replace("\r", string.Empty)
+                    .Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                LastOutputBuffer = string.Join('\n', lines.TakeLast(20));
+
+                // 错误特征检测（认证失败 / 端口占用 / 节点不可达 / 进程崩溃）
+                var info = TunnelErrorMapper.Map(LastOutputBuffer);
+                try
+                {
+                    if (info.Category != TunnelErrorCategory.Unknown)
+                    {
+                        LastErrorSummary = info.Summary;
+                        TunnelStatus = TunnelStatus.Failed;
+                        IsLoading = false;
+                        // 26.3.1 S1：隧道失败 → 插件事件（断线卫士订阅）
+                        _ = PluginService.Instance.TriggerAsync("proxy.failed", new Dictionary<string, object>
+                        {
+                            ["proxyName"] = proxyName,
+                            ["errorMessage"] = LastErrorSummary,
+                            ["errorCategory"] = info.Category.ToString()
+                        });
+                        var request = NotificationBuilder
+                            .Create(string.Format(Languages.Text_ProxyStart_StartFailed, proxyName))
+                            .WithBody(LastErrorSummary)
+                            .AddButton(Languages.Text_UserProxy_CopyErrorInfo, _ =>
+                            {
+                                CopyError(this);
+                            })
+                            .AddButton(Languages.Text_Global_Dismiss)
+                            .WithUrgency(NotificationUrgency.Critical)
+                            .WithExpiration(TimeSpan.FromSeconds(2))
+                            .OnActivated(id => Program.ActivateExistingInstance())
+                            .Build();
+                        // 26.3.1 S3：App.Initialize 为 fire-and-forget，通知服务可能尚未赋值 → 判空
+                        var notification = Core.App.NotificationService;
+                        if (notification is { IsSupported: true })
+                        {
+                            try
+                            {
+                                await notification.ShowAsync(request);
+                            }
+                            catch (Exception e)
+                            {
+                                Core.App.CurrentLogger?.Error(e, "显示通知失败");
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Core.App.CurrentLogger?.Error(e, "错误特征检测失败");
+                }
+            }
+            catch (Exception e)
+            {
+                Core.App.CurrentLogger?.Error(e, "终端输出回调失败");
             }
         });
     }
@@ -1238,7 +1261,7 @@ public class UserProxyViewModel : ViewModelBase
                         {
                             ["proxyName"] = proxyName,
                             ["errorMessage"] = LastErrorSummary,
-                            ["errorCategory"] = TunnelErrorCategory.NodeUnreachable.ToString()
+                            ["errorCategory"] = nameof(TunnelErrorCategory.NodeUnreachable)
                         });
                     }
                 });
@@ -1272,6 +1295,116 @@ public class UserProxyViewModel : ViewModelBase
         await clipboard.SetTextAsync(
             $"PML2 {Core.App.Version} / mefrpc {Core.App.MEFrpVersion}\n{obj.LastErrorSummary}");
         Growl.Success(Languages.Text_UserProxy_ErrorCopied);
+    }
+
+    private async void GenerateQRCode(UserProxyViewModel obj)
+    {
+        try
+        {
+            var items = BuildQRCodeItems(obj);
+            if (items.Count == 0)
+            {
+                Growl.Error(Languages.Text_UserProxy_QRCodeGeneratedFailed);
+                return;
+            }
+
+            var cd = new ContentDialog
+            {
+                Title = Languages.Text_UserProxy_QRCodeView_Caption.Split('.', '。')[0],
+                Content = Languages.Text_UserProxy_QRCodeView_Caption,
+                PrimaryButtonText = Languages.Text_UserProxy_QRCodeView_View,
+                SecondaryButtonText = Languages.Text_UserProxy_QRCodeView_CopyToClipBoard,
+                CloseButtonText = Languages.Text_Global_Close,
+                IsPrimaryButtonEnabled = true,
+                IsSecondaryButtonEnabled = true,
+                DefaultButton = ContentDialogButton.Primary
+            };
+            var res = await cd.ShowAsync();
+            switch (res)
+            {
+                case ContentDialogResult.Primary:
+                {
+                    // 查看：一次性把该代理下全部 domain 的二维码交给控件，由控件内部轮播切换
+                    cd = new ContentDialog
+                    {
+                        Content = new CustomizeQRCode(items),
+                        CloseButtonText = Languages.Text_Global_Close,
+                        FullSizeDesired = true
+                    };
+                    await cd.ShowAsync();
+                    break;
+                }
+                case ContentDialogResult.Secondary:
+                {
+                    // 复制到剪贴板：仅一个 domain 时沿用原有的快速复制；多个 domain 时由用户选择要复制哪一个
+                    var target = items.Count == 1 ? items[0] : await SelectQRCodeItemAsync(items);
+                    if (target is null)
+                    {
+                        break;
+                    }
+
+                    var view = new CustomizeQRCode([target]);
+                    var clipboard = Core.App.MainWindow.Clipboard;
+                    await clipboard.SetBitmapAsync(view.CurrentBitmap);
+                    Growl.Success(Languages.Text_UserProxy_QRCodeCopiedToClipboard);
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Core.App.CurrentLogger.Error(e, "生成二维码失败");
+            Growl.Error(Languages.Text_UserProxy_QRCodeGeneratedFailed);
+        }
+    }
+
+    /// <summary>
+    ///     构建该代理下全部 domain 的二维码条目（每个 domain 一条，内容为对应 domain 本身）；
+    ///     域名列表解析失败时回退为原始 domain 的单个条目，保证旧行为仍然可用。
+    /// </summary>
+    private static List<QRCodeItem> BuildQRCodeItems(UserProxyViewModel obj)
+    {
+        var domains = obj.Domains.Where(d => !string.IsNullOrWhiteSpace(d)).Distinct().ToList();
+        if (domains.Count > 0)
+        {
+            return
+            [
+                .. domains.Select(d => new QRCodeItem(d,
+                    obj.proxyType.Equals("http", StringComparison.OrdinalIgnoreCase) ? $"http://{d}" : $"https://{d}"))
+            ];
+        }
+
+        var raw = obj.domain;
+        return string.IsNullOrWhiteSpace(raw) ? [] : [new QRCodeItem(raw, raw)];
+    }
+
+    /// <summary>多个 domain 时由用户选择要复制到剪贴板的二维码；取消返回 null。</summary>
+    private static async Task<QRCodeItem?> SelectQRCodeItemAsync(IReadOnlyList<QRCodeItem> items)
+    {
+        var list = new ListBox
+        {
+            ItemsSource = items.Select(item => item.Domain).ToList(),
+            SelectedIndex = 0,
+            MinWidth = 280
+        };
+        var cd = new ContentDialog
+        {
+            Title = Languages.Text_UserProxy_QRCodeView_SelectDomain,
+            Content = list,
+            PrimaryButtonText = Languages.Text_UserProxy_QRCodeView_CopyToClipBoard,
+            CloseButtonText = Languages.Text_Global_Close,
+            DefaultButton = ContentDialogButton.Primary
+        };
+        var res = await cd.ShowAsync();
+        if (res != ContentDialogResult.Primary)
+        {
+            return null;
+        }
+
+        var index = list.SelectedIndex;
+        return index >= 0 && index < items.Count ? items[index] : null;
     }
 }
 

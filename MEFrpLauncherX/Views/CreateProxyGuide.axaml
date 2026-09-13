@@ -31,7 +31,8 @@
                 </Style>
             </controls:TypingControl.Styles>
         </controls:TypingControl>
-        <ListBox Grid.Row="2" ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType}">
+        <ListBox Grid.Row="2" ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedType}"
+                 IsVisible="{Binding HasTemplates}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Spacing="5">
@@ -52,5 +53,13 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
+        <!-- 无可用模板插件（create-proxy-template）时显示空态提示 -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8"
+                    IsVisible="{Binding !HasTemplates}">
+            <TextBlock Text="{x:Static languages:Languages.Text_Proxy_Guide_NoTemplates}"
+                       TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Center"
+                       FontFamily="{StaticResource GlobalFontFamily}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
     </Grid>
 </UserControl>

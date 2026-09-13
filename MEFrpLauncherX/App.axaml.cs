@@ -78,6 +78,11 @@ public class App : Application
                 var error = "";
                 await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
                 {
+                    if (TerminalPage.RelaunchAttempts >= 3)
+                    {
+                        error = "终端重试次数过多，请稍后再试";
+                        return;
+                    }
                     // 1) 关闭现有终端标签（如存在），等待进程退出释放端口
                     if (Views.TerminalPage.Instance is { } terminalPage)
                     {
@@ -93,6 +98,8 @@ public class App : Application
                         error = $"未找到隧道: {proxyName}";
                         return;
                     }
+
+                    TerminalPage.RelaunchAttempts++;
 
                     proxy.LaunchProxyCommand.Execute(proxy);
                 });

@@ -248,6 +248,36 @@
           "lib/net8.0/ExCSS.dll": {}
         }
       },
+      "FeatherQR/2.0.0-preview.2": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/FeatherQR.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/FeatherQR.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "FeatherQR.SkiaSharp/2.0.0-preview.2": {
+        "type": "package",
+        "dependencies": {
+          "FeatherQR": "2.0.0-preview.2",
+          "SkiaSharp": "4.148.0"
+        },
+        "compile": {
+          "lib/net10.0/FeatherQR.SkiaSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/FeatherQR.SkiaSharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "FluentAvaloniaUI/2.5.1": {
         "type": "package",
         "dependencies": {
@@ -662,36 +692,62 @@
           "lib/ChnCharInfo.dll": {}
         }
       },
-      "Notify.NET/1.1.0": {
+      "Microsoft.Management.Infrastructure/3.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
-          "Microsoft.Extensions.Options": "2.1.0"
+          "Microsoft.Management.Infrastructure.Runtime.Unix": "3.0.0",
+          "Microsoft.Management.Infrastructure.Runtime.Win": "3.0.0"
         },
         "compile": {
-          "lib/netstandard2.1/Notify.NET.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/Notify.NET.dll": {}
-        },
+          "ref/netstandard1.6/Microsoft.Management.Infrastructure.Native.dll": {},
+          "ref/netstandard1.6/Microsoft.Management.Infrastructure.dll": {}
+        }
+      },
+      "Microsoft.Management.Infrastructure.Runtime.Unix/3.0.0": {
+        "type": "package",
         "runtimeTargets": {
-          "runtimes/osx-arm64/native/libMacNotifyWrapper.dylib": {
-            "assetType": "native",
-            "rid": "osx-arm64"
+          "runtimes/unix/lib/netstandard1.6/Microsoft.Management.Infrastructure.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          }
+        }
+      },
+      "Microsoft.Management.Infrastructure.Runtime.Win/3.0.0": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/win-arm64/lib/netstandard1.6/microsoft.management.infrastructure.dll": {
+            "assetType": "runtime",
+            "rid": "win-arm64"
           },
-          "runtimes/osx-x64/native/libMacNotifyWrapper.dylib": {
-            "assetType": "native",
-            "rid": "osx-x64"
+          "runtimes/win-arm64/lib/netstandard1.6/microsoft.management.infrastructure.native.dll": {
+            "assetType": "runtime",
+            "rid": "win-arm64"
           },
-          "runtimes/win-arm64/native/WinToastWrapper.dll": {
+          "runtimes/win-arm64/native/microsoft.management.infrastructure.native.unmanaged.dll": {
             "assetType": "native",
             "rid": "win-arm64"
           },
-          "runtimes/win-x64/native/WinToastWrapper.dll": {
+          "runtimes/win-x64/lib/netstandard1.6/microsoft.management.infrastructure.dll": {
+            "assetType": "runtime",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/lib/netstandard1.6/microsoft.management.infrastructure.native.dll": {
+            "assetType": "runtime",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/microsoft.management.infrastructure.native.unmanaged.dll": {
             "assetType": "native",
             "rid": "win-x64"
           },
-          "runtimes/win-x86/native/WinToastWrapper.dll": {
+          "runtimes/win-x86/lib/netstandard1.6/microsoft.management.infrastructure.dll": {
+            "assetType": "runtime",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/lib/netstandard1.6/microsoft.management.infrastructure.native.dll": {
+            "assetType": "runtime",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/microsoft.management.infrastructure.native.unmanaged.dll": {
             "assetType": "native",
             "rid": "win-x86"
           }
@@ -808,7 +864,7 @@
           }
         }
       },
-      "Sentry/6.8.0": {
+      "Sentry/6.10.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -834,11 +890,11 @@
           "lib/net8.0/ShimSkiaSharp.dll": {}
         }
       },
-      "SkiaSharp/3.119.4": {
+      "SkiaSharp/4.151.2": {
         "type": "package",
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "3.119.4",
-          "SkiaSharp.NativeAssets.macOS": "3.119.4"
+          "SkiaSharp.NativeAssets.Win32": "4.151.2",
+          "SkiaSharp.NativeAssets.macOS": "4.151.2"
         },
         "compile": {
           "ref/net10.0/SkiaSharp.dll": {}
@@ -992,7 +1048,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/3.119.4": {
+      "SkiaSharp.NativeAssets.macOS/4.151.2": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -1020,7 +1076,7 @@
           "buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets": {}
         }
       },
-      "SkiaSharp.NativeAssets.Win32/3.119.4": {
+      "SkiaSharp.NativeAssets.Win32/4.151.2": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -1053,6 +1109,12 @@
             "assetType": "native",
             "rid": "win-x86"
           }
+        }
+      },
+      "SkiaSharp.QrCode/2.0.0-preview.2": {
+        "type": "package",
+        "dependencies": {
+          "FeatherQR.SkiaSharp": "2.0.0-preview.2"
         }
       },
       "Splat/19.4.1": {
@@ -1142,11 +1204,11 @@
           "lib/net8.0/Svg.Model.dll": {}
         }
       },
-      "System.Configuration.ConfigurationManager/10.0.10": {
+      "System.Configuration.ConfigurationManager/10.0.11": {
         "type": "package",
         "dependencies": {
-          "System.Diagnostics.EventLog": "10.0.10",
-          "System.Security.Cryptography.ProtectedData": "10.0.10"
+          "System.Diagnostics.EventLog": "10.0.11",
+          "System.Security.Cryptography.ProtectedData": "10.0.11"
         },
         "compile": {
           "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
@@ -1162,7 +1224,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "System.Diagnostics.EventLog/10.0.10": {
+      "System.Diagnostics.EventLog/10.0.11": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Diagnostics.EventLog.dll": {
@@ -1204,10 +1266,10 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.Runtime.Caching/10.0.10": {
+      "System.Runtime.Caching/10.0.11": {
         "type": "package",
         "dependencies": {
-          "System.Configuration.ConfigurationManager": "10.0.10"
+          "System.Configuration.ConfigurationManager": "10.0.11"
         },
         "compile": {
           "lib/net10.0/System.Runtime.Caching.dll": {
@@ -1229,7 +1291,7 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/10.0.10": {
+      "System.Security.Cryptography.ProtectedData/10.0.11": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
@@ -1295,7 +1357,7 @@
           "FluentAvaloniaUI": "2.5.1",
           "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.5",
           "Markdig": "1.3.2",
-          "SkiaSharp": "3.119.4",
+          "SkiaSharp": "4.151.2",
           "SkiaSharp.NativeAssets.Linux": "3.119.4",
           "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.4",
           "TextMateSharp": "2.0.4",
@@ -1306,6 +1368,20 @@
         },
         "runtime": {
           "bin/placeholder/MarkdownAIRender.dll": {}
+        }
+      },
+      "Notify.NET/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+          "Microsoft.Extensions.Options": "2.1.0"
+        },
+        "compile": {
+          "bin/placeholder/Notify.NET.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Notify.NET.dll": {}
         }
       }
     }
@@ -1692,6 +1768,50 @@
         "lib/netstandard2.0/ExCSS.dll",
         "lib/netstandard2.1/ExCSS.dll",
         "readme.md"
+      ]
+    },
+    "FeatherQR/2.0.0-preview.2": {
+      "sha512": "pf0+JH2w0c1fvhcX7MLr4MrFzsR01LiUuUuFUAaffrIBYUrp73VdYptOQkt3CsE9WM28Iu0Y0mTQ/rCaGk/ibA==",
+      "type": "package",
+      "path": "featherqr/2.0.0-preview.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "_manifest/spdx_2.2/manifest.spdx.json",
+        "_manifest/spdx_2.2/manifest.spdx.json.sha256",
+        "featherqr.2.0.0-preview.2.nupkg.sha512",
+        "featherqr.nuspec",
+        "lib/net10.0/FeatherQR.dll",
+        "lib/net10.0/FeatherQR.xml",
+        "lib/net8.0/FeatherQR.dll",
+        "lib/net8.0/FeatherQR.xml",
+        "lib/netstandard2.0/FeatherQR.dll",
+        "lib/netstandard2.0/FeatherQR.xml",
+        "lib/netstandard2.1/FeatherQR.dll",
+        "lib/netstandard2.1/FeatherQR.xml"
+      ]
+    },
+    "FeatherQR.SkiaSharp/2.0.0-preview.2": {
+      "sha512": "C4hQglfjYS+id6XksxjcHvSVO9OGR192Ux+UHnubcL8s8+NsggmvANTsd0wTkMrT/qHNVbNJEO+cwRSlMxcAeA==",
+      "type": "package",
+      "path": "featherqr.skiasharp/2.0.0-preview.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "_manifest/spdx_2.2/manifest.spdx.json",
+        "_manifest/spdx_2.2/manifest.spdx.json.sha256",
+        "featherqr.skiasharp.2.0.0-preview.2.nupkg.sha512",
+        "featherqr.skiasharp.nuspec",
+        "lib/net10.0/FeatherQR.SkiaSharp.dll",
+        "lib/net10.0/FeatherQR.SkiaSharp.xml",
+        "lib/net8.0/FeatherQR.SkiaSharp.dll",
+        "lib/net8.0/FeatherQR.SkiaSharp.xml",
+        "lib/netstandard2.0/FeatherQR.SkiaSharp.dll",
+        "lib/netstandard2.0/FeatherQR.SkiaSharp.xml",
+        "lib/netstandard2.1/FeatherQR.SkiaSharp.dll",
+        "lib/netstandard2.1/FeatherQR.SkiaSharp.xml"
       ]
     },
     "FluentAvaloniaUI/2.5.1": {
@@ -2275,22 +2395,70 @@
         "microsoft.international.converters.pinyinconverter.nuspec"
       ]
     },
-    "Notify.NET/1.1.0": {
-      "sha512": "q8IRwGM4D6gTjwCi07UxTnSr8AmYmm3gS1ngLnFFX/BSj+HAKQHDtLndsni++U4d9EdRSQb35vMSAEUZBXTomw==",
+    "Microsoft.Management.Infrastructure/3.0.0": {
+      "sha512": "cGZi0q5IujCTVYKo9h22Pw+UwfZDV82HXO8HTxMG2HqntPlT3Ls8jY6punLp4YzCypJNpfCAu2kae3TIyuAiJw==",
       "type": "package",
-      "path": "notify.net/1.1.0",
+      "path": "microsoft.management.infrastructure/3.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "README.md",
-        "lib/netstandard2.1/Notify.NET.dll",
-        "notify.net.1.1.0.nupkg.sha512",
-        "notify.net.nuspec",
-        "runtimes/osx-arm64/native/libMacNotifyWrapper.dylib",
-        "runtimes/osx-x64/native/libMacNotifyWrapper.dylib",
-        "runtimes/win-arm64/native/WinToastWrapper.dll",
-        "runtimes/win-x64/native/WinToastWrapper.dll",
-        "runtimes/win-x86/native/WinToastWrapper.dll"
+        "_manifest/spdx_2.2/bsi.json",
+        "_manifest/spdx_2.2/manifest.cat",
+        "_manifest/spdx_2.2/manifest.spdx.json",
+        "_manifest/spdx_2.2/manifest.spdx.json.sha256",
+        "microsoft.management.infrastructure.3.0.0.nupkg.sha512",
+        "microsoft.management.infrastructure.nuspec",
+        "ref/net451/Microsoft.Management.Infrastructure.Native.dll",
+        "ref/net451/Microsoft.Management.Infrastructure.dll",
+        "ref/netstandard1.6/Microsoft.Management.Infrastructure.Native.dll",
+        "ref/netstandard1.6/Microsoft.Management.Infrastructure.dll"
+      ]
+    },
+    "Microsoft.Management.Infrastructure.Runtime.Unix/3.0.0": {
+      "sha512": "QZE3uEDvZ0m7LabQvcmNOYHp7v1QPBVMpB/ild0WEE8zqUVAP5y9rRI5we37ImI1bQmW5pZ+3HNC70POPm0jBQ==",
+      "type": "package",
+      "path": "microsoft.management.infrastructure.runtime.unix/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "_manifest/spdx_2.2/bsi.json",
+        "_manifest/spdx_2.2/manifest.cat",
+        "_manifest/spdx_2.2/manifest.spdx.json",
+        "_manifest/spdx_2.2/manifest.spdx.json.sha256",
+        "microsoft.management.infrastructure.runtime.unix.3.0.0.nupkg.sha512",
+        "microsoft.management.infrastructure.runtime.unix.nuspec",
+        "runtimes/unix/lib/netstandard1.6/Microsoft.Management.Infrastructure.dll"
+      ]
+    },
+    "Microsoft.Management.Infrastructure.Runtime.Win/3.0.0": {
+      "sha512": "uwMyWN33+iQ8Wm/n1yoPXgFoiYNd0HzJyoqSVhaQZyJfaQrJR3udgcIHjqa1qbc3lS6kvfuUMN4TrF4U4refCQ==",
+      "type": "package",
+      "path": "microsoft.management.infrastructure.runtime.win/3.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "_manifest/spdx_2.2/bsi.json",
+        "_manifest/spdx_2.2/manifest.cat",
+        "_manifest/spdx_2.2/manifest.spdx.json",
+        "_manifest/spdx_2.2/manifest.spdx.json.sha256",
+        "microsoft.management.infrastructure.runtime.win.3.0.0.nupkg.sha512",
+        "microsoft.management.infrastructure.runtime.win.nuspec",
+        "runtimes/win-arm64/lib/net451/microsoft.management.infrastructure.dll",
+        "runtimes/win-arm64/lib/net451/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-arm64/lib/netstandard1.6/microsoft.management.infrastructure.dll",
+        "runtimes/win-arm64/lib/netstandard1.6/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-arm64/native/microsoft.management.infrastructure.native.unmanaged.dll",
+        "runtimes/win-x64/lib/net451/microsoft.management.infrastructure.dll",
+        "runtimes/win-x64/lib/net451/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-x64/lib/netstandard1.6/microsoft.management.infrastructure.dll",
+        "runtimes/win-x64/lib/netstandard1.6/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-x64/native/microsoft.management.infrastructure.native.unmanaged.dll",
+        "runtimes/win-x86/lib/net451/microsoft.management.infrastructure.dll",
+        "runtimes/win-x86/lib/net451/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-x86/lib/netstandard1.6/microsoft.management.infrastructure.dll",
+        "runtimes/win-x86/lib/netstandard1.6/microsoft.management.infrastructure.native.dll",
+        "runtimes/win-x86/native/microsoft.management.infrastructure.native.unmanaged.dll"
       ]
     },
     "NPinyin.Core/3.0.0": {
@@ -2432,10 +2600,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.8.0": {
-      "sha512": "amUjwslDtdx1p8r6z4APCxM8vHCKG4CBamPpSTwxmTMoBQ2CLwx2m3CaIttJXRT/hw9S5rNfXgjol2OqADytLQ==",
+    "Sentry/6.10.0": {
+      "sha512": "jDiLbMSNuwMNJmJc5l8XaO3bgHxTbBkttqqSLQTDP415ucNM4F/Ckktg3L/Ww6v2Skcwt7wFC7vSW+f8W12Vqg==",
       "type": "package",
-      "path": "sentry/6.8.0",
+      "path": "sentry/6.10.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2484,7 +2652,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.8.0.nupkg.sha512",
+        "sentry.6.10.0.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -2510,30 +2678,29 @@
         "shimskiasharp.nuspec"
       ]
     },
-    "SkiaSharp/3.119.4": {
-      "sha512": "53NOSUZ1Us+91Sm0uCkIivh/k7jOowRErZT2sIWwPFN9mLUvdxnE6rS4sWo4255+Rd2MWUSF+j0NMZHD6Cke+Q==",
+    "SkiaSharp/4.151.2": {
+      "sha512": "zqcEy5E17Tqoh2tEvb4uC2G3ulli5YdsljzZuf93pCc/9gQDMx9VrUInxiqkLMGt+MjQi8hNrf1Uxmq25yyU3A==",
       "type": "package",
-      "path": "skiasharp/3.119.4",
+      "path": "skiasharp/4.151.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "README.md",
         "icon.png",
-        "interactive-extensions/dotnet/SkiaSharp.DotNet.Interactive.dll",
         "lib/net10.0-android36.0/SkiaSharp.dll",
         "lib/net10.0-android36.0/SkiaSharp.pdb",
         "lib/net10.0-android36.0/SkiaSharp.xml",
-        "lib/net10.0-ios26.2/SkiaSharp.dll",
-        "lib/net10.0-ios26.2/SkiaSharp.pdb",
-        "lib/net10.0-maccatalyst26.2/SkiaSharp.dll",
-        "lib/net10.0-maccatalyst26.2/SkiaSharp.pdb",
-        "lib/net10.0-macos26.2/SkiaSharp.dll",
-        "lib/net10.0-macos26.2/SkiaSharp.pdb",
+        "lib/net10.0-ios26.0/SkiaSharp.dll",
+        "lib/net10.0-ios26.0/SkiaSharp.pdb",
+        "lib/net10.0-maccatalyst26.0/SkiaSharp.dll",
+        "lib/net10.0-maccatalyst26.0/SkiaSharp.pdb",
+        "lib/net10.0-macos26.0/SkiaSharp.dll",
+        "lib/net10.0-macos26.0/SkiaSharp.pdb",
         "lib/net10.0-tizen10.0/SkiaSharp.dll",
         "lib/net10.0-tizen10.0/SkiaSharp.pdb",
-        "lib/net10.0-tvos26.2/SkiaSharp.dll",
-        "lib/net10.0-tvos26.2/SkiaSharp.pdb",
+        "lib/net10.0-tvos26.0/SkiaSharp.dll",
+        "lib/net10.0-tvos26.0/SkiaSharp.pdb",
         "lib/net10.0-windows10.0.19041/SkiaSharp.dll",
         "lib/net10.0-windows10.0.19041/SkiaSharp.pdb",
         "lib/net10.0/SkiaSharp.dll",
@@ -2568,11 +2735,11 @@
         "lib/netstandard2.1/SkiaSharp.dll",
         "lib/netstandard2.1/SkiaSharp.pdb",
         "ref/net10.0-android36.0/SkiaSharp.dll",
-        "ref/net10.0-ios26.2/SkiaSharp.dll",
-        "ref/net10.0-maccatalyst26.2/SkiaSharp.dll",
-        "ref/net10.0-macos26.2/SkiaSharp.dll",
+        "ref/net10.0-ios26.0/SkiaSharp.dll",
+        "ref/net10.0-maccatalyst26.0/SkiaSharp.dll",
+        "ref/net10.0-macos26.0/SkiaSharp.dll",
         "ref/net10.0-tizen10.0/SkiaSharp.dll",
-        "ref/net10.0-tvos26.2/SkiaSharp.dll",
+        "ref/net10.0-tvos26.0/SkiaSharp.dll",
         "ref/net10.0-windows10.0.19041/SkiaSharp.dll",
         "ref/net10.0/SkiaSharp.dll",
         "ref/net462/SkiaSharp.dll",
@@ -2589,7 +2756,7 @@
         "ref/net9.0/SkiaSharp.dll",
         "ref/netstandard2.0/SkiaSharp.dll",
         "ref/netstandard2.1/SkiaSharp.dll",
-        "skiasharp.3.119.4.nupkg.sha512",
+        "skiasharp.4.151.2.nupkg.sha512",
         "skiasharp.nuspec"
       ]
     },
@@ -2701,10 +2868,10 @@
         "skiasharp.nativeassets.linux.nodependencies.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.macOS/3.119.4": {
-      "sha512": "fgBOWEqbY012x7gMfJU4ezgz6dfhJb30Z6YdW35h85Zoe39+a8YNbAAwL29ihPfWoppg5AjvyKNzD1oCvlqWwA==",
+    "SkiaSharp.NativeAssets.macOS/4.151.2": {
+      "sha512": "hDGy20k1DJZuKcdbHjwaOfsPeQYY9ty8wJeG1qzJWidPUzrwwvVtTLpDdTiP1M89UWbEYyWAhZo9qOaoYae6iQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.macos/3.119.4",
+      "path": "skiasharp.nativeassets.macos/4.151.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2713,12 +2880,12 @@
         "THIRD-PARTY-NOTICES.txt",
         "build/net462/SkiaSharp.NativeAssets.macOS.targets",
         "build/net48/SkiaSharp.NativeAssets.macOS.targets",
-        "buildTransitive/net10.0-macos26.2/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net10.0-macos26.0/SkiaSharp.NativeAssets.macOS.targets",
         "buildTransitive/net462/SkiaSharp.NativeAssets.macOS.targets",
         "buildTransitive/net48/SkiaSharp.NativeAssets.macOS.targets",
         "buildTransitive/net9.0-macos15.0/SkiaSharp.NativeAssets.macOS.targets",
         "icon.png",
-        "lib/net10.0-macos26.2/_._",
+        "lib/net10.0-macos26.0/_._",
         "lib/net10.0/_._",
         "lib/net462/_._",
         "lib/net48/_._",
@@ -2728,7 +2895,7 @@
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/osx/native/libSkiaSharp.dylib",
-        "skiasharp.nativeassets.macos.3.119.4.nupkg.sha512",
+        "skiasharp.nativeassets.macos.4.151.2.nupkg.sha512",
         "skiasharp.nativeassets.macos.nuspec"
       ]
     },
@@ -2765,10 +2932,10 @@
         "skiasharp.nativeassets.webassembly.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Win32/3.119.4": {
-      "sha512": "XOpbx/4CReO2wYsq2s6rbvdauc6dntG4Zv499sHGTJ87bwZaFXszFkwql3+FIZMc8kUPeaj3Mx2ezIJmo8a1Kg==",
+    "SkiaSharp.NativeAssets.Win32/4.151.2": {
+      "sha512": "sTUHSfWXVYThf/lTG81n8y1gMnr0TiN/2zrApwd0jbGfbsEt9g4+GPsj6UVjjgNLXCI9l5CyzxQ6Zh4fP9ZoVQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.win32/3.119.4",
+      "path": "skiasharp.nativeassets.win32/4.151.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2795,8 +2962,20 @@
         "runtimes/win-x64/native/libSkiaSharp.pdb",
         "runtimes/win-x86/native/libSkiaSharp.dll",
         "runtimes/win-x86/native/libSkiaSharp.pdb",
-        "skiasharp.nativeassets.win32.3.119.4.nupkg.sha512",
+        "skiasharp.nativeassets.win32.4.151.2.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
+      ]
+    },
+    "SkiaSharp.QrCode/2.0.0-preview.2": {
+      "sha512": "CIM+Z6dRdeSMOozTNkQhAvJt/uSOsIMRDvwFUlRTS0+QwxFu6tZ+ckb4oSV7aPWm4oeVowylEyZf4XXs6mTGhg==",
+      "type": "package",
+      "path": "skiasharp.qrcode/2.0.0-preview.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "skiasharp.qrcode.2.0.0-preview.2.nupkg.sha512",
+        "skiasharp.qrcode.nuspec"
       ]
     },
     "Splat/19.4.1": {
@@ -2932,10 +3111,10 @@
         "svg.model.nuspec"
       ]
     },
-    "System.Configuration.ConfigurationManager/10.0.10": {
-      "sha512": "64jtHt9yLYi6VHMF5AwDj6BGM/MZrygv55SXl0MOIkFsFjGwRuxV3/QgEm7NTp3TQIx+YNX4S6dNpY08fJ3+3g==",
+    "System.Configuration.ConfigurationManager/10.0.11": {
+      "sha512": "vFA8K0xj520MnLp+zkpTmLc3LOGUhkIDxHvhfm8Cr4b+ZVVeAXnfe1+2oixuITbsZfr4ALcU2NrAqQKhooX9yw==",
       "type": "package",
-      "path": "system.configuration.configurationmanager/10.0.10",
+      "path": "system.configuration.configurationmanager/10.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2956,15 +3135,15 @@
         "lib/net9.0/System.Configuration.ConfigurationManager.xml",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll",
         "lib/netstandard2.0/System.Configuration.ConfigurationManager.xml",
-        "system.configuration.configurationmanager.10.0.10.nupkg.sha512",
+        "system.configuration.configurationmanager.10.0.11.nupkg.sha512",
         "system.configuration.configurationmanager.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Diagnostics.EventLog/10.0.10": {
-      "sha512": "OvGz3PrzuAI/Sj7LTcXcCe3FClRI1IyRMZjNONcZtFh+Ww7nAtSh4kh08r8KVe/xxkXJPjR0Y1jF7H+N42d4xQ==",
+    "System.Diagnostics.EventLog/10.0.11": {
+      "sha512": "QTXEoQBzz00SFWbo7nAg1Ogd4f99lwqcO9uAJ7MYSLEUR28f6As32QktrqG2Fr9cfAfd1GjLyGYspE7Ipj7P6w==",
       "type": "package",
-      "path": "system.diagnostics.eventlog/10.0.10",
+      "path": "system.diagnostics.eventlog/10.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2994,7 +3173,7 @@
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.Messages.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll",
         "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.xml",
-        "system.diagnostics.eventlog.10.0.10.nupkg.sha512",
+        "system.diagnostics.eventlog.10.0.11.nupkg.sha512",
         "system.diagnostics.eventlog.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3026,10 +3205,10 @@
         "system.reactive.nuspec"
       ]
     },
-    "System.Runtime.Caching/10.0.10": {
-      "sha512": "qXPub77NXudQuVMilGBNlLkgKacwVwubIiSGsGFKQna6GbNNr2HBtQ6DyzWms3JNfPnR7/GJ+ZETFhcMrqNYaw==",
+    "System.Runtime.Caching/10.0.11": {
+      "sha512": "XLPB4tmZbNbglNCFPsDhQs2gv0A86BwLqgbxRfQhIGxAvm+qbLVzRncnSBoI2pCVXUG+o5ACcZ2CN83PBhiJZg==",
       "type": "package",
-      "path": "system.runtime.caching/10.0.10",
+      "path": "system.runtime.caching/10.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3059,15 +3238,15 @@
         "runtimes/win/lib/net8.0/System.Runtime.Caching.xml",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.dll",
         "runtimes/win/lib/net9.0/System.Runtime.Caching.xml",
-        "system.runtime.caching.10.0.10.nupkg.sha512",
+        "system.runtime.caching.10.0.11.nupkg.sha512",
         "system.runtime.caching.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Security.Cryptography.ProtectedData/10.0.10": {
-      "sha512": "BKt0SQgq2lq3ESE68jkeLwv95ypANrPDtkTOIFGcnhg2aRUeUUBDrQlkVDZctrg1WenVcvn5P5XZnuYI7q6rFQ==",
+    "System.Security.Cryptography.ProtectedData/10.0.11": {
+      "sha512": "PNoxCTPb+Tlux+GJyq4c89ddYdpioVSqfGx8pqOF6shCSKwUNNctXhQtRkCICjbJmGrJJsW8NY52kVYO/b8mlQ==",
       "type": "package",
-      "path": "system.security.cryptography.protecteddata/10.0.10",
+      "path": "system.security.cryptography.protecteddata/10.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3094,7 +3273,7 @@
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
-        "system.security.cryptography.protecteddata.10.0.10.nupkg.sha512",
+        "system.security.cryptography.protecteddata.10.0.11.nupkg.sha512",
         "system.security.cryptography.protecteddata.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3164,12 +3343,18 @@
       "type": "project",
       "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
       "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
+    },
+    "Notify.NET/1.0.0": {
+      "type": "project",
+      "path": "../Notify.NET/Notify.NET.csproj",
+      "msbuildProject": "../Notify.NET/Notify.NET.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
       "Avalonia >= 11.3.20",
       "Downloader >= 5.9.5",
+      "FeatherQR.SkiaSharp >= 2.0.0-preview.2",
       "FluentAvaloniaUI >= 2.5.1",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.5",
       "MarkdownAIRender >= 1.0.0",
@@ -3177,15 +3362,17 @@
       "MessageBox.Avalonia >= 3.3.1.1",
       "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
+      "Microsoft.Management.Infrastructure >= 3.0.0",
       "NPinyin.Core >= 3.0.0",
-      "Notify.NET >= 1.1.0",
+      "Notify.NET >= 1.0.0",
       "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.8.0",
-      "SkiaSharp >= 3.119.4",
+      "Sentry >= 6.10.0",
+      "SkiaSharp >= 4.151.2",
       "SkiaSharp.NativeAssets.Linux >= 3.119.4",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.4",
-      "System.Runtime.Caching >= 10.0.10",
+      "SkiaSharp.QrCode >= 2.0.0-preview.2",
+      "System.Runtime.Caching >= 10.0.11",
       "Vecc.YamlDotNet.Analyzers.StaticGenerator >= 18.1.0",
       "YamlDotNet >= 18.1.0"
     ]
@@ -3227,6 +3414,9 @@
           "projectReferences": {
             "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+            },
+            "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
+              "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj"
             }
           }
         }
@@ -3256,6 +3446,10 @@
             "target": "Package",
             "version": "[5.9.5, )"
           },
+          "FeatherQR.SkiaSharp": {
+            "target": "Package",
+            "version": "[2.0.0-preview.2, )"
+          },
           "FluentAvaloniaUI": {
             "target": "Package",
             "version": "[2.5.1, )"
@@ -3280,13 +3474,13 @@
             "target": "Package",
             "version": "[1.0.0, )"
           },
-          "NPinyin.Core": {
+          "Microsoft.Management.Infrastructure": {
             "target": "Package",
             "version": "[3.0.0, )"
           },
-          "Notify.NET": {
+          "NPinyin.Core": {
             "target": "Package",
-            "version": "[1.1.0, )"
+            "version": "[3.0.0, )"
           },
           "ReactiveUI": {
             "target": "Package",
@@ -3298,11 +3492,11 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.8.0, )"
+            "version": "[6.10.0, )"
           },
           "SkiaSharp": {
             "target": "Package",
-            "version": "[3.119.4, )"
+            "version": "[4.151.2, )"
           },
           "SkiaSharp.NativeAssets.Linux": {
             "target": "Package",
@@ -3312,9 +3506,13 @@
             "target": "Package",
             "version": "[3.119.4, )"
           },
+          "SkiaSharp.QrCode": {
+            "target": "Package",
+            "version": "[2.0.0-preview.2, )"
+          },
           "System.Runtime.Caching": {
             "target": "Package",
-            "version": "[10.0.10, )"
+            "version": "[10.0.11, )"
           },
           "Vecc.YamlDotNet.Analyzers.StaticGenerator": {
             "target": "Package",

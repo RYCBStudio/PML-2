@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -78,6 +79,7 @@ public partial class ProxyFloat : Window
         // 及 Win32 上 Window.Opacity(LWA_ALPHA) 与 Transparent 透明合成叠加导致背景不透明的问题
         _vm.Opacity = pm.Opacity;
         ClickThroughHelper.SetClickThrough(this, pm.ClickThrough);
+        Position = WindowPositionHelper.GetPosition(this, pm.Position);
     }
 
     protected override void OnClosed(EventArgs e)
@@ -452,23 +454,26 @@ public class ProxyFloatViewModel : ViewModelBase
 
     private void OnTrafficUpdated(object? sender, NetworkTraffic traffic)
     {
-        // 计算增量流量（从上次更新到现在的变化）
+        // 计算增量流量
         var deltaReceived = traffic.TotalBytesReceived - _lastBytesReceived;
         var deltaSent = traffic.TotalBytesSent - _lastBytesSent;
 
-        // 保存当前值用于下次计算
         _lastBytesReceived = traffic.TotalBytesReceived;
         _lastBytesSent = traffic.TotalBytesSent;
 
-        // 更新UI属性（在UI线程上）
+        // 计算每秒速率（字节/秒）
+        var rateIn = deltaReceived / SampleIntervalSeconds;
+        var rateOut = deltaSent / SampleIntervalSeconds;
+
+        Debug.WriteLine($"[Traffic] DeltaRecv: {deltaReceived} bytes over {SampleIntervalSeconds}s, Rate: {rateIn} B/s");
+
         Dispatcher.UIThread.Post(() =>
         {
-            TrafficIn = (int)Math.Max(0, deltaReceived);
-            TrafficOut = (int)Math.Max(0, deltaSent);
+            TrafficIn = (int)Math.Max(0, rateIn);
+            TrafficOut = (int)Math.Max(0, rateOut);
 
-            // 追加到历史曲线（换算为 B/s），并截断到容量上限
-            AppendHistory(DownloadHistory, deltaReceived / SampleIntervalSeconds);
-            AppendHistory(UploadHistory, deltaSent / SampleIntervalSeconds);
+            AppendHistory(DownloadHistory, rateIn);
+            AppendHistory(UploadHistory, rateOut);
         });
     }
 

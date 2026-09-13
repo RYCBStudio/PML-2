@@ -1,0 +1,100 @@
+# 创建隧道模板（官方内置 create-proxy-template 插件）
+# Schema v2：type 缺省为 event（事件插件），本文件声明为 create-proxy-template 类型，
+# 向"引导版"创建隧道页提供模板条目。可被用户删除/编辑/替换；第三方可提供同类型插件追加模板。
+#
+# 顶层约定：type / minCoreVersion 为新增可选字段（旧核心按事件插件忽略处理，向后兼容）；
+# 隧道名占位符：{name}=模板本地化名，{nodeId}=所选节点ID；remotePort: auto=自动获取远端端口。
+type: create-proxy-template
+id: create-proxy-template
+name: 创建隧道模板
+description: 官方内置的创建隧道引导模板集（AList、Minecraft、远程桌面等）
+author: RYCB Studio
+version: "1.0"
+# minCoreVersion 需与携带本 schema 特性的首个核心版本一致（同步 MEFrpLauncherX.Core/App.cs 的 App.Version 与 csproj 版本号）
+minCoreVersion: "26.3.1"
+
+templates:
+  # ---------------- Web ----------------
+  - id: alist
+    category: Web
+    name: AList/OpenList
+    description: "AList/OpenList是开源网盘聚合工具，支持多网盘统一管理、文件浏览与视频播放。默认HTTP端口5244，HTTPS端口5245，提供WebDAV服务，可轻松实现本地与云端数据互通。"
+    descriptionLocalized:
+      zh-hant: "AList/OpenList是開源網盤聚合工具，支援多網盤統一管理、檔案瀏覽與影片播放。預設HTTP連接埠5244，HTTPS連接埠5245，提供WebDAV服務，可輕鬆實現本機與雲端資料互通。"
+      en: "AList/OpenList is an open-source cloud drive aggregation tool that supports unified management of multiple cloud drives, file browsing and video playback. The default HTTP port is 5244 and the HTTPS port is 5245. It provides WebDAV services, making it easy to connect local and cloud data."
+    icon:
+      pack: SimpleIcons
+      name: AList
+    create:
+      proxyName: "{name}-#{nodeId}"
+      localAddress: "127.0.0.1"
+      localPort: 5244
+      protocol: tcp
+      remotePort: auto
+    nodeFilter:
+      protocols: [tcp]
+      minBandwidthMbps: 100
+
+  # ---------------- Game ----------------
+  - id: mc-java
+    category: Game
+    name: Minecraft Java Edition
+    description: "Minecraft Java版多人游戏服务器，支持模组和插件扩展。默认TCP端口25565，可通过SRV记录隐藏端口，适合与朋友联机建造和探索虚拟世界。"
+    descriptionLocalized:
+      zh-hant: "Minecraft Java版多人遊戲伺服器，支援模組和外掛擴展。預設TCP連接埠25565，可透過SRV記錄隱藏連接埠，適合與朋友連線建造和探索虛擬世界。"
+      en: "A Minecraft Java Edition multiplayer server that supports mods and plugin extensions. The default TCP port is 25565, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends."
+    icon:
+      pack: FileIcons
+      name: Minecraft
+    create:
+      proxyName: "{name}-{nodeId}"
+      localAddress: "127.0.0.1"
+      localPort: 25565
+      protocol: tcp
+    nodeFilter:
+      protocols: [tcp]
+
+  - id: mc-bedrock
+    category: Game
+    name: Minecraft Bedrock Edition
+    description: "Minecraft Bedrock版多人游戏服务器，支持模组和插件扩展。默认UDP端口19132，可通过SRV记录隐藏端口，适合与朋友联机建造和探索虚拟世界。"
+    descriptionLocalized:
+      zh-hant: "Minecraft Bedrock版多人遊戲伺服器，支援模組和外掛擴展。預設UDP連接埠19132，可透過SRV記錄隱藏連接埠，適合與朋友連線建造和探索虛擬世界。"
+      en: "A Minecraft Bedrock Edition multiplayer server that supports mods and plugin extensions. The default UDP port is 19132, and the port can be hidden via SRV records. Perfect for building and exploring virtual worlds with friends."
+    icon:
+      pack: FileIcons
+      name: Minecraft
+    create:
+      proxyName: "{name}-{nodeId}"
+      localAddress: "127.0.0.1"
+      localPort: 19132
+      protocol: udp
+    nodeFilter:
+      protocols: [udp]
+
+  # ---------------- Productivity ----------------
+  - id: rdp
+    category: Productivity
+    name: 远程桌面连接
+    nameLocalized:
+      zh-hant: 遠端桌面連線
+      en: Remote Desktop Connection
+    description: "RDP（远程桌面协议）是微软开发的远程访问协议，默认使用TCP 3389端口，允许用户通过网络图形化控制远程计算机。"
+    descriptionLocalized:
+      zh-hant: "RDP（遠端桌面通訊協定）是微軟開發的遠端存取通訊協定，預設使用TCP 3389連接埠，允許使用者透過網路圖形化控制遠端電腦。"
+      en: "RDP (Remote Desktop Protocol) is a remote access protocol developed by Microsoft. It uses TCP port 3389 by default, allowing users to remotely control a computer through a graphical interface over the network."
+    icon:
+      pack: Lucide
+      name: Airplay
+    create:
+      proxyName: "{name}-#{nodeId}"
+      localAddress: "127.0.0.1"
+      localPort: 3389
+      protocol: tcp
+      remotePort: auto
+    nodeFilter:
+      protocols: [tcp, udp]
+      fallbackProtocols: [tcp]
+    # 主隧道创建成功后自动补建互补协议隧道：名称追加 (UDP)/(TCP)
+    extraTunnel:
+      nameSuffix: "({PROTO})"

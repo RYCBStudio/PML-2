@@ -61,14 +61,38 @@ public class HttpRequestAction : IAction
     }
 }
 
+public class WaitAction : IAction
+{
+    public Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        var time = args?.GetValueOrDefault("time")?.ToString() ?? "0";
+        return GetUnit(time) switch
+        {
+            "ms" => Task.Delay(TimeSpan.FromMilliseconds(double.Parse(time[..^1]))),
+            "s" => Task.Delay(TimeSpan.FromSeconds(double.Parse(time[..^1]))),
+            "m" => Task.Delay(TimeSpan.FromMinutes(double.Parse(time[..^1]))),
+            _ => Task.Delay(TimeSpan.FromSeconds(double.Parse(time)))
+        };
+
+        string GetUnit(string t) => t[^1..];
+    }
+}
+
 public class NotifyAction : IAction
 {
     public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
     {
         var msg = args?.GetValueOrDefault("msg")?.ToString() ?? "No message";
-        var request = App.NotificationService.RequestNotification($"{ctx.PluginId} | PML 2", msg);
+        // 26.3.1 S3：App.Initialize 为 fire-and-forget，通知服务可能尚未赋值或平台不支持 → 判空跳过
+        var service = App.NotificationService;
+        if (service is not { IsSupported: true })
+        {
+            return;
+        }
+
+        var request = service.RequestNotification($"{ctx.PluginId} | PML 2", msg);
         if (request == null) return;
-        await App.NotificationService.ShowAsync(request);
+        await service.ShowAsync(request);
     }
 }
 
@@ -110,7 +134,7 @@ public class LocalRunAction : IAction
 
         try
         {
-            await Process.Start(new ProcessStartInfo()
+            await Process.Start(new ProcessStartInfo
             {
                 FileName = exe,
                 Arguments = string.Join(' ', argsList),

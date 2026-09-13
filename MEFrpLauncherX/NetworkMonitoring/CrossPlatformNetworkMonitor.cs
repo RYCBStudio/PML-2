@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Management.Infrastructure;
 
 namespace MEFrpLauncherX.NetworkMonitoring;
 
@@ -70,7 +71,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
             return await GetLinuxTrafficDataAsync(interfaceId);
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        if (OperatingSystem.IsMacOS())
         {
             return await GetMacOSTrafficDataAsync(interfaceId);
         }
@@ -121,43 +122,114 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
     private async Task<IEnumerable<NetworkInterfaceInfo>> GetWindowsNetworkInterfacesAsync()
     {
         var interfaces = new List<NetworkInterfaceInfo>();
-
         try
         {
-            // 使用WMIC命令获取网络适配器信息
-            var processStartInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments =
-                    "/c wmic nic where \"NetEnabled=true\" get Name, Description, DeviceID, Speed /format:csv",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8
-            };
+            // 1. 使用 System.Net.NetworkInformation 获取所有启用的网卡
+            var nics = NetworkInterface.GetAllNetworkInterfaces()
+                .Where(n => n.OperationalStatus == OperationalStatus.Up &&
+                            n.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
+                            n.NetworkInterfaceType != NetworkInterfaceType.Tunnel &&
+                            !n.Description.Contains("Virtual", StringComparison.OrdinalIgnoreCase) &&
+                            !n.Description.Contains("Hyper-V", StringComparison.OrdinalIgnoreCase) &&
+                            !n.Description.Contains("VirtualBox", StringComparison.OrdinalIgnoreCase))
+                .ToList();
 
-            using var process = Process.Start(processStartInfo);
-            if (process != null)
-            {
-                var output = await process.StandardOutput.ReadToEndAsync();
-                await process.WaitForExitAsync();
+            if (nics.Count == 0)
+                return interfaces;
 
-                var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                foreach (var line in lines.Skip(2)) // 跳过标题行
+            // 2. 查询 WMI 获取所有性能计数器实例名称
+            using var session = CimSession.Create(null);
+            var perfInstances = await Task.Run(() => session.QueryInstances(
+                @"root\cimv2", "WQL", "SELECT Name FROM Win32_PerfRawData_Tcpip_NetworkInterface"));
+            var perfNames = perfInstances
+                .Select(obj => obj.CimInstanceProperties["Name"]?.Value?.ToString())
+                .Where(n => !string.IsNullOrEmpty(n))
+                .ToList();
+
+            Debug.WriteLine("可用性能计数器名称: " + string.Join(", ", perfNames));
+
+            // 3. 查询 Win32_NetworkAdapter 获取 DeviceID（用于索引匹配）
+            var adapterQuery = "SELECT DeviceID, Description FROM Win32_NetworkAdapter WHERE NetEnabled = true";
+            var adapters = await Task.Run(() => session.QueryInstances(@"root\cimv2", "WQL", adapterQuery));
+            var deviceIdMap = adapters.ToDictionary(
+                a => a.CimInstanceProperties["Description"]?.Value?.ToString() ?? "",
+                a => a.CimInstanceProperties["DeviceID"]?.Value?.ToString() ?? "");
+
+            // 4. 为每个网卡匹配性能计数器名称
+            foreach (var nic in nics)
+            {
+                string matchedName = "";
+                string desc = nic.Description ?? "";
+                string name = nic.Name ?? "";
+
+                // 4a. 将描述中的圆括号替换为方括号，以匹配性能计数器名称格式
+                string normalizedDesc = desc.Replace('(', '[').Replace(')', ']');
+
+                // 通过标准化描述进行包含匹配
+                matchedName = perfNames.FirstOrDefault(p =>
+                    p.Contains(normalizedDesc, StringComparison.OrdinalIgnoreCase) ||
+                    normalizedDesc.Contains(p, StringComparison.OrdinalIgnoreCase)) ?? "";
+
+                // 4b. 若失败，通过 IPv4 接口索引匹配
+                if (string.IsNullOrEmpty(matchedName))
                 {
-                    var parts = line.Split(',');
-                    if (parts.Length >= 5)
+                    var ipProps = nic.GetIPProperties().GetIPv4Properties();
+                    if (ipProps != null)
                     {
-                        interfaces.Add(new NetworkInterfaceInfo
-                        {
-                            Id = parts[1].Trim(), // DeviceID
-                            Name = parts[3].Trim(), // Name
-                            Description = parts[2].Trim(), // Description
-                            IsOperational = true,
-                            Speed = long.TryParse(parts[4].Trim(), out var speed) ? speed : 0
-                        });
+                        int index = ipProps.Index;
+                        matchedName = perfNames.FirstOrDefault(p =>
+                            p.EndsWith($"#{index}") || p.EndsWith($"_{index}")) ?? "";
                     }
                 }
+
+                // 4c. 尝试 IPv6 索引匹配，但忽略异常（某些系统未启用 IPv6）
+                if (string.IsNullOrEmpty(matchedName))
+                {
+                    try
+                    {
+                        var ipv6Props = nic.GetIPProperties().GetIPv6Properties();
+                        if (ipv6Props != null)
+                        {
+                            int index = ipv6Props.Index;
+                            matchedName = perfNames.FirstOrDefault(p =>
+                                p.EndsWith($"#{index}") || p.EndsWith($"_{index}")) ?? "";
+                        }
+                    }
+                    catch
+                    {
+                        // IPv6 未配置，忽略
+                    }
+                }
+
+                // 4d. 若仍失败，通过 DeviceID 匹配（从 Win32_NetworkAdapter 获取）
+                if (string.IsNullOrEmpty(matchedName) && deviceIdMap.TryGetValue(desc, out string? deviceId))
+                {
+                    matchedName = perfNames.FirstOrDefault(p =>
+                        p.EndsWith($"#{deviceId}") || p.EndsWith($"_{deviceId}")) ?? "";
+                }
+
+                // 4e. 最后降级：通过网卡名称（如 "WLAN"）模糊匹配
+                if (string.IsNullOrEmpty(matchedName))
+                {
+                    matchedName = perfNames.FirstOrDefault(p =>
+                        p.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+                        name.Contains(p, StringComparison.OrdinalIgnoreCase)) ?? "";
+                }
+
+                // 调试输出
+                if (string.IsNullOrEmpty(matchedName))
+                    Debug.WriteLine($"未能为网卡 '{name}' (描述: {desc}) 匹配到性能计数器名称");
+                else
+                    Debug.WriteLine($"网卡 '{name}' 匹配到: {matchedName}");
+
+                interfaces.Add(new NetworkInterfaceInfo
+                {
+                    Id = matchedName, // 可能为空字符串
+                    Name = name,
+                    Description = desc,
+                    IsOperational = true,
+                    Speed = nic.Speed
+                });
             }
         }
         catch (Exception ex)
@@ -170,58 +242,56 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
 
     private async Task<NetworkTraffic> GetWindowsTrafficDataAsync(string interfaceId)
     {
+        if (string.IsNullOrEmpty(interfaceId))
+            return new NetworkTraffic { InterfaceId = interfaceId };
+
         try
         {
-            // 使用WMIC获取网络流量统计
-            var processStartInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments =
-                    $"/c wmic path Win32_PerfRawData_Tcpip_NetworkInterface where \"Name='{interfaceId.Replace('(', '[').Replace(')', ']')}'\" get BytesReceivedPersec,BytesSentPersec,BytesTotalPersec,PacketsReceivedPersec,PacketsSentPersec /format:csv",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                StandardOutputEncoding = Encoding.UTF8
-            };
+            using var session = CimSession.Create(Environment.MachineName);
+            string safeName = interfaceId.Replace("'", "''");
+            string query = $@"
+            SELECT BytesReceivedPersec, BytesSentPersec, 
+                   PacketsReceivedPersec, PacketsSentPersec 
+            FROM Win32_PerfRawData_Tcpip_NetworkInterface 
+            WHERE Name = '{safeName}'";
 
-            using var process = Process.Start(processStartInfo);
-            if (process != null)
-            {
-                var output = await process.StandardOutput.ReadToEndAsync();
-                await process.WaitForExitAsync();
+            var results = await Task.Run(() => session.QueryInstances(@"root\cimv2", "WQL", query));
+            var cimObj = results.FirstOrDefault();
 
-                var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                if (lines.Length >= 2)
+            if (cimObj != null)
+            {
+                long.TryParse(cimObj.CimInstanceProperties["BytesReceivedPersec"]?.Value?.ToString(),
+                    out var bytesRecv);
+                long.TryParse(cimObj.CimInstanceProperties["BytesSentPersec"]?.Value?.ToString(), out var bytesSent);
+                long.TryParse(cimObj.CimInstanceProperties["PacketsReceivedPersec"]?.Value?.ToString(),
+                    out var packetsRecv);
+                long.TryParse(cimObj.CimInstanceProperties["PacketsSentPersec"]?.Value?.ToString(),
+                    out var packetsSent);
+                Debug.WriteLine($"[WMI] Interface: {interfaceId}, BytesRecv: {bytesRecv}, BytesSent: {bytesSent}");
+                return new NetworkTraffic
                 {
-                    var data = lines[2].Split(',');
-                    if (data.Length >= 6)
-                    {
-                        long.TryParse(data[2].Trim(), out var bytesReceived);
-                        long.TryParse(data[3].Trim(), out var bytesSent);
-                        long.TryParse(data[4].Trim(), out var packetsReceived);
-                        long.TryParse(data[5].Trim(), out var packetsSent);
-
-                        return new NetworkTraffic
-                        {
-                            InterfaceId = interfaceId,
-                            TotalBytesReceived = bytesReceived,
-                            TotalBytesSent = bytesSent,
-                            TotalPacketsReceived = packetsReceived,
-                            TotalPacketsSent = packetsSent
-                        };
-                    }
-                }
+                    InterfaceId = interfaceId,
+                    TotalBytesReceived = bytesRecv,
+                    TotalBytesSent = bytesSent,
+                    TotalPacketsReceived = packetsRecv,
+                    TotalPacketsSent = packetsSent
+                };
+            }
+            else
+            {
+                Debug.WriteLine($"未找到名为 '{interfaceId}' 的网络接口实例。");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error getting Windows traffic data: {ex.Message}");
+            System.Console.WriteLine($"Error getting Windows traffic data: {ex.Message}");
         }
 
         return new NetworkTraffic { InterfaceId = interfaceId };
     }
 
     #endregion
+
 
     #region Linux Implementation
 

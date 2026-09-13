@@ -1,12 +1,9 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
 using Avalonia.Data.Converters;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
-using MEFrpLauncherX.Core.Languages;
 using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;

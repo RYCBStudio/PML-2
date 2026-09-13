@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <!-- <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" /> -->
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.298" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.333" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NativeMethods.txt" />

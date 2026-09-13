@@ -15,7 +15,7 @@
     <Grid RowDefinitions="Auto,*">
 
         <StackPanel Margin="5" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-            <TextBlock VerticalAlignment="Center" Theme="{StaticResource TitleTextBlockStyle}"
+            <TextBlock VerticalAlignment="Center" Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{x:Static languages:Languages.Text_ConfigEditor_Title}"
                        FontWeight="Bold" />
             <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Global_Type}" />

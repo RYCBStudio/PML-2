@@ -82,14 +82,4 @@
         <type fullname="System.ComponentModel.DataAnnotations.MaxLengthAttribute" preserve="all" />
     </assembly>
 
-    <!-- Porta.Pty（你已经有但再确认） -->
-    <assembly fullname="Porta.Pty">
-        <type fullname="*" preserve="all" />
-    </assembly>
-
-    <!-- BinaryFormatter（过时/可能在运行时不存在；添加仅为保底） -->
-    <assembly fullname="System.Runtime.Serialization.Formatters">
-        <type fullname="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" preserve="all" />
-    </assembly>
-
 </linker>

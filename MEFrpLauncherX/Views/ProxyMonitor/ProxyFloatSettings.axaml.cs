@@ -59,6 +59,7 @@ public partial class ProxyFloatSettings : Window
         {
             config.PMSettings.Position = tag;
         });
+        ProxyFloat.Instance?.ApplySettings();
     }
 
     private void ClickThroughChanged(object? sender, RoutedEventArgs e)

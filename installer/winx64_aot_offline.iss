@@ -38,7 +38,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=true
 PrivilegesRequiredOverridesAllowed=commandline
 OutputDir={#OutDir}
-OutputBaseFilename=pml2_setup {#MyAppVersion} offline
+OutputBaseFilename=pml2_setup {#MyAppVersion}
 SetupIconFile={#IconFile}
 
 Compression=lzma2/ultra64

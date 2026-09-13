@@ -3194,4 +3194,88 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
         <value>开启窗口穿透将导致您无法再手动关闭悬浮窗, 请谨慎使用。</value>
     </data>
+    <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
+        <value>暂无可用隧道模板。请先安装 create-proxy-template 类型插件，或到「插件」页检查其是否启用。</value>
+    </data>
+    <data name="Text.Proxy.Guide.SelectTemplate" xml:space="preserve">
+        <value>请先选择一个隧道模板</value>
+    </data>
+    <data name="Text.PluginList.TypeTemplate" xml:space="preserve">
+        <value>模板插件</value>
+    </data>
+    <data name="Text.PluginList.RequireCoreFormat" xml:space="preserve">
+        <value>需要核心 {0} 或更高</value>
+    </data>
+    <data name="Text.PluginEditor.TypeNotSupported" xml:space="preserve">
+        <value>该插件类型（{0}）不支持表单编辑，请直接编辑 YAML 文件（已为你打开插件目录）。</value>
+    </data>
+    <data name="Text.UserProxy.GenerateQRCode" xml:space="preserve">
+        <value>生成访问二维码</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedSuccessfully" xml:space="preserve">
+        <value>二维码生成成功</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedFailed" xml:space="preserve">
+        <value>二维码生成失败</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Caption" xml:space="preserve">
+        <value>二维码生成成功。是否立即查看？</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.View" xml:space="preserve">
+        <value>查看</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.CopyToClipBoard" xml:space="preserve">
+        <value>复制到剪贴板</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ExportPng" xml:space="preserve">
+        <value>导出 PNG 图片</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeCopiedToClipboard" xml:space="preserve">
+        <value>已复制到剪贴板</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.FailedToSave" xml:space="preserve">
+        <value>二维码保存失败</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SavedSuccessfully" xml:space="preserve">
+        <value>二维码保存成功</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Settings" xml:space="preserve">
+        <value>二维码设置</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Size" xml:space="preserve">
+        <value>大小</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Icon" xml:space="preserve">
+        <value>图标</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.IconSize" xml:space="preserve">
+        <value>图标大小</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectIconFile" xml:space="preserve">
+        <value>选择图标文件</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ForegroundColor" xml:space="preserve">
+        <value>前景色</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.BackgroundColor" xml:space="preserve">
+        <value>背景色</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.PreviousDomain" xml:space="preserve">
+        <value>上一个域名</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.NextDomain" xml:space="preserve">
+        <value>下一个域名</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SwitchHint" xml:space="preserve">
+        <value>使用左右按钮或 ← → 方向键切换域名</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectDomain" xml:space="preserve">
+        <value>请选择要复制二维码的域名</value>
+    </data>
+    <data name="Text.Global.FileType.Picture" xml:space="preserve">
+        <value>图片文件|*.png;*.jpg;*.jpeg;*.bmp;*.jfif;*.tiff</value>
+    </data>
+    <data name="Text.Global.FileType.All" xml:space="preserve">
+        <value>所有文件|*.*</value>
+    </data>
 </root>

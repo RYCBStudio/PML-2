@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;

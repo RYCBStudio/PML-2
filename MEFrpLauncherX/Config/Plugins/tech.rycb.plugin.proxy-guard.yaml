@@ -9,6 +9,7 @@ name: 断线卫士
 description: 隧道失败时通知并自动重启
 author: RYCB Studio
 version: "1.0"
+minCoreVersion: "26.3.1"
 
 triggers:
   - on: proxy.failed
@@ -20,6 +21,9 @@ triggers:
       - name: notify
         params:
           msg: "隧道 {{ctx.data.proxyName}} 异常：{{ctx.data.errorMessage}}"
+      - name: wait
+        params:
+          time: "5s"
       - name: proxy.restart
         params:
           proxyName: "{{ctx.data.proxyName}}"
