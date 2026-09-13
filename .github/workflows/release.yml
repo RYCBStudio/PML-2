@@ -105,10 +105,9 @@ jobs:
           path: |
             tools-cache/${{ matrix.rid }}/CrashDisplayer
             tools-cache/${{ matrix.rid }}/Splash
-          key: tools-\( {{ matrix.rid }}- \){{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
+          key: tools-\( {{ matrix.rid }}- \){{ hashFiles('MEFrpLauncherX.CrashDisplayer/**') }}-\( {{ hashFiles('RYCB.PML2.Splash/**') }}- \){{ hashFiles('.github/workflows/release.yml') }}
           restore-keys: |
             tools-${{ matrix.rid }}-
-
       - name: Publish CrashDisplayer (AOT + SingleFile)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         shell: bash
