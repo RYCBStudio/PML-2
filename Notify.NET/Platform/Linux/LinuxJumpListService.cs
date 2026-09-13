@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Notify.NET.Abstractions;
-using Notify.NET.Platform;
 
 namespace Notify.NET.Platform.Linux
 {

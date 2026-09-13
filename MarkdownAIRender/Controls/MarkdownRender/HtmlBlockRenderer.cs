@@ -7,9 +7,9 @@ using Avalonia.Controls.Documents;
 using Avalonia.Layout;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
-using MarkdownAIRender.i18n;
 using Markdig.Extensions.Alerts;
 using Markdig.Syntax;
+using MarkdownAIRender.i18n;
 using Inline = Avalonia.Controls.Documents.Inline;
 
 namespace MarkdownAIRender.Controls.MarkdownRender;

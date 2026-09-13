@@ -480,11 +480,44 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button
+                <SplitButton
                     x:Name="CopyInfoBtn"
                     Margin="5,2,5,2"
                     Command="{Binding CopyInfoCommand}"
+                    IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolConverter.Instance}}"
                     CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <SplitButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Text="&#xE16F;" />
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center" IsVisible="{Binding Detailed}"
+                                Text="{x:Static languages:Languages.Text_UserProxy_CopyAddress}" />
+                        </StackPanel>
+                    </SplitButton.Content>
+                    <SplitButton.Flyout>
+                        <controls1:FAMenuFlyout Placement="Bottom">
+                            <controls1:MenuFlyoutItem
+                                Text="{x:Static languages:Languages.Text_UserProxy_GenerateQRCode}"
+                                Command="{Binding GenerateQRCodeCommand}" CommandParameter="{Binding}">
+                                <controls1:MenuFlyoutItem.IconSource>
+                                    <controls1:FontIconSource Glyph="&#xED14;"
+                                                              FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                </controls1:MenuFlyoutItem.IconSource>
+                            </controls1:MenuFlyoutItem>
+                        </controls1:FAMenuFlyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+                <Button
+                    x:Name="CopyInfoBtnForNonWebsite"
+                    Margin="5,2,5,2"
+                    Command="{Binding CopyInfoCommand}"
+                    CommandParameter="{Binding}"
+                    IsVisible="{Binding proxyType, Converter={x:Static core:ProxyTypeToBoolReverseConverter.Instance}}"
                     FontFamily="{StaticResource GlobalFontFamily}">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">

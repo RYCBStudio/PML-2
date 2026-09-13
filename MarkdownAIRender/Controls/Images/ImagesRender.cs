@@ -164,7 +164,7 @@ public class ImagesRender : UserControl
                     {
                         Child = new Image
                         {
-                            Source = new SvgImage()
+                            Source = new SvgImage
                             {
                                 Source = svgSource
                             },
@@ -227,7 +227,7 @@ public class ImagesRender : UserControl
                     {
                         Child = new Image
                         {
-                            Source = new SvgImage()
+                            Source = new SvgImage
                             {
                                 Source = svgSource
                             },

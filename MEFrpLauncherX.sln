@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Porta.Pty", "Porta.Pty\Port
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notify.NET", "Notify.NET\Notify.NET.csproj", "{F27E8954-4C6B-4670-819A-3634B3A4CFB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PML2Test", "PML2Test\PML2Test.csproj", "{DA9E9CB1-4036-4600-819C-A045611D5022}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{F27E8954-4C6B-4670-819A-3634B3A4CFB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F27E8954-4C6B-4670-819A-3634B3A4CFB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F27E8954-4C6B-4670-819A-3634B3A4CFB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9E9CB1-4036-4600-819C-A045611D5022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9E9CB1-4036-4600-819C-A045611D5022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9E9CB1-4036-4600-819C-A045611D5022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9E9CB1-4036-4600-819C-A045611D5022}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

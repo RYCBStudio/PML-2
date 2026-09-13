@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using System.Text.RegularExpressions;
 using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 

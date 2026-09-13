@@ -22,6 +22,12 @@ namespace MEFrpLauncherX.Views;
 
 public partial class TerminalPage : UserControl
 {
+    public static int RelaunchAttempts
+    {
+        get;
+        set;
+    } = 0;
+    
     public TerminalPage()
     {
         MainPageFrameViewModel.Instance?.IsLoading = true;

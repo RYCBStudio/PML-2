@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
@@ -524,7 +524,7 @@ public partial class CreateProxyPage : UserControl
                 }
                 else
                 {
-                    var page = new CreateProxyGuide()
+                    var page = new CreateProxyGuide
                     {
                         DataContext = new CreateProxyGuideViewModel()
                     };

@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Notify.NET.Abstractions;
-using Notify.NET.Platform.Windows;
 using Notify.NET.Platform.Linux;
 using Notify.NET.Platform.MacOS;
+using Notify.NET.Platform.Windows;
 
 namespace Notify.NET.Extensions
 {

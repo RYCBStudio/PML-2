@@ -943,7 +943,7 @@ public partial class TerminalControl : UserControl, IDisposable
                                 ErrorIcon.Symbol = Symbol.ReportHacked;
                                 ErrorText.Text = onlineSolution?.data.Info;
                                 SolutionBox.Text = onlineSolution?.data.Solution[0];
-                                _tunnelErrorInfoShell = onlineSolution?.data ?? new TunnelErrorInfo()
+                                _tunnelErrorInfoShell = onlineSolution?.data ?? new TunnelErrorInfo
                                 {
                                     Flag = "MT-1",
                                     Info = Languages.Text_Terminal_CannotGetErrorInfo,

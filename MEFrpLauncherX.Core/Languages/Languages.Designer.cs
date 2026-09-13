@@ -2389,6 +2389,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 所有文件|*.*.
+        /// </summary>
+        public static string Text_Global_FileType_All {
+            get {
+                return ResourceManager.GetString("Text.Global.FileType.All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 图片文件|*.png;*.jpg;*.jpeg;*.bmp;*.jfif;*.tiff.
+        /// </summary>
+        public static string Text_Global_FileType_Picture {
+            get {
+                return ResourceManager.GetString("Text.Global.FileType.Picture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 帮助.
         /// </summary>
         public static string Text_Global_Help {
@@ -3136,11 +3154,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 检查更新.
+        /// </summary>
+        public static string Text_MainWindow_CheckUpdate {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.CheckUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 拒绝.
         /// </summary>
         public static string Text_MainWindow_Decline {
             get {
                 return ResourceManager.GetString("Text.MainWindow.Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 官方文档.
+        /// </summary>
+        public static string Text_MainWindow_Documentation {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.Documentation", resourceCulture);
             }
         }
         
@@ -3177,6 +3213,60 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_MainWindow_LoginFirst {
             get {
                 return ResourceManager.GetString("Text.MainWindow.LoginFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 文件.
+        /// </summary>
+        public static string Text_MainWindow_MenuFile {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 帮助.
+        /// </summary>
+        public static string Text_MainWindow_MenuHelp {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 节点.
+        /// </summary>
+        public static string Text_MainWindow_MenuNodes {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuNodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看.
+        /// </summary>
+        public static string Text_MainWindow_MenuView {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.MenuView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 节点监控.
+        /// </summary>
+        public static string Text_MainWindow_NodesMonitoring {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.NodesMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开日志目录.
+        /// </summary>
+        public static string Text_MainWindow_OpenLogDirectory {
+            get {
+                return ResourceManager.GetString("Text.MainWindow.OpenLogDirectory", resourceCulture);
             }
         }
         
@@ -3228,29 +3318,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 全部停止隧道.
+        ///   Looks up a localized string similar to 刷新节点.
         /// </summary>
-        public static string Text_MainWindow_StopAllTunnels {
+        public static string Text_MainWindow_RefreshNodes {
             get {
-                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 文件.
-        /// </summary>
-        public static string Text_MainWindow_MenuFile {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 打开日志目录.
-        /// </summary>
-        public static string Text_MainWindow_OpenLogDirectory {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.OpenLogDirectory", resourceCulture);
+                return ResourceManager.GetString("Text.MainWindow.RefreshNodes", resourceCulture);
             }
         }
         
@@ -3264,38 +3336,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 节点.
+        ///   Looks up a localized string similar to 全部停止隧道.
         /// </summary>
-        public static string Text_MainWindow_MenuNodes {
+        public static string Text_MainWindow_StopAllTunnels {
             get {
-                return ResourceManager.GetString("Text.MainWindow.MenuNodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 节点监控.
-        /// </summary>
-        public static string Text_MainWindow_NodesMonitoring {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.NodesMonitoring", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 刷新节点.
-        /// </summary>
-        public static string Text_MainWindow_RefreshNodes {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.RefreshNodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 查看.
-        /// </summary>
-        public static string Text_MainWindow_MenuView {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuView", resourceCulture);
+                return ResourceManager.GetString("Text.MainWindow.StopAllTunnels", resourceCulture);
             }
         }
         
@@ -3305,33 +3350,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_MainWindow_ToggleProxyFloat {
             get {
                 return ResourceManager.GetString("Text.MainWindow.ToggleProxyFloat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 帮助.
-        /// </summary>
-        public static string Text_MainWindow_MenuHelp {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.MenuHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 官方文档.
-        /// </summary>
-        public static string Text_MainWindow_Documentation {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.Documentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 检查更新.
-        /// </summary>
-        public static string Text_MainWindow_CheckUpdate {
-            get {
-                return ResourceManager.GetString("Text.MainWindow.CheckUpdate", resourceCulture);
             }
         }
         
@@ -4344,6 +4362,141 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 添加动作.
+        /// </summary>
+        public static string Text_PluginEditor_AddAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.AddAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 作者.
+        /// </summary>
+        public static string Text_PluginEditor_Author {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 条件（可选，支持算术 + - * / 与括号）.
+        /// </summary>
+        public static string Text_PluginEditor_Condition {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Condition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 描述.
+        /// </summary>
+        public static string Text_PluginEditor_Description {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 插件 ID.
+        /// </summary>
+        public static string Text_PluginEditor_Id {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 名称.
+        /// </summary>
+        public static string Text_PluginEditor_Name {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 预览 YAML.
+        /// </summary>
+        public static string Text_PluginEditor_PreviewYaml {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.PreviewYaml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 刷新预览.
+        /// </summary>
+        public static string Text_PluginEditor_RefreshPreview {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RefreshPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除.
+        /// </summary>
+        public static string Text_PluginEditor_RemoveAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RemoveAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除规则.
+        /// </summary>
+        public static string Text_PluginEditor_RemoveTrigger {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.RemoveTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择动作....
+        /// </summary>
+        public static string Text_PluginEditor_SelectAction {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.SelectAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择事件....
+        /// </summary>
+        public static string Text_PluginEditor_SelectEvent {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.SelectEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 插件编辑器.
+        /// </summary>
+        public static string Text_PluginEditor_Title {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 该插件类型（{0}）不支持表单编辑，请直接编辑 YAML 文件（已为你打开插件目录）。.
+        /// </summary>
+        public static string Text_PluginEditor_TypeNotSupported {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.TypeNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 版本.
+        /// </summary>
+        public static string Text_PluginEditor_Version {
+            get {
+                return ResourceManager.GetString("Text.PluginEditor.Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 作者: .
         /// </summary>
         public static string Text_PluginList_AuthorPrefix {
@@ -4353,11 +4506,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 无法用表单打开该插件，已打开插件目录，请手动编辑 YAML.
+        /// </summary>
+        public static string Text_PluginList_CannotOpenInForm {
+            get {
+                return ResourceManager.GetString("Text.PluginList.CannotOpenInForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 无法读取插件文件内容。.
         /// </summary>
         public static string Text_PluginList_CannotReadPluginContent {
             get {
                 return ResourceManager.GetString("Text.PluginList.CannotReadPluginContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 清空日志.
+        /// </summary>
+        public static string Text_PluginList_ClearLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ClearLogs", resourceCulture);
             }
         }
         
@@ -4407,11 +4578,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 打开编辑.
+        /// </summary>
+        public static string Text_PluginList_EditPlugin {
+            get {
+                return ResourceManager.GetString("Text.PluginList.EditPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 已启用.
         /// </summary>
         public static string Text_PluginList_Enabled {
             get {
                 return ResourceManager.GetString("Text.PluginList.Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 执行日志.
+        /// </summary>
+        public static string Text_PluginList_ExecutionLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.ExecutionLogs", resourceCulture);
             }
         }
         
@@ -4497,6 +4686,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 失败.
+        /// </summary>
+        public static string Text_PluginList_LogStatusFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 执行.
+        /// </summary>
+        public static string Text_PluginList_LogStatusInfo {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跳过.
+        /// </summary>
+        public static string Text_PluginList_LogStatusSkipped {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 成功.
+        /// </summary>
+        public static string Text_PluginList_LogStatusSuccess {
+            get {
+                return ResourceManager.GetString("Text.PluginList.LogStatusSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新建插件.
+        /// </summary>
+        public static string Text_PluginList_NewPlugin {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NewPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无执行日志.
+        /// </summary>
+        public static string Text_PluginList_NoLogs {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 插件事件触发与动作执行后将在此显示记录.
+        /// </summary>
+        public static string Text_PluginList_NoLogsHint {
+            get {
+                return ResourceManager.GetString("Text.PluginList.NoLogsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 暂无插件.
         /// </summary>
         public static string Text_PluginList_NoPlugins {
@@ -4560,236 +4812,20 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 执行日志.
-        /// </summary>
-        public static string Text_PluginList_ExecutionLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.ExecutionLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 清空日志.
-        /// </summary>
-        public static string Text_PluginList_ClearLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.ClearLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 暂无执行日志.
-        /// </summary>
-        public static string Text_PluginList_NoLogs {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NoLogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 插件事件触发与动作执行后将在此显示记录.
-        /// </summary>
-        public static string Text_PluginList_NoLogsHint {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NoLogsHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 执行.
-        /// </summary>
-        public static string Text_PluginList_LogStatusInfo {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 成功.
-        /// </summary>
-        public static string Text_PluginList_LogStatusSuccess {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 失败.
-        /// </summary>
-        public static string Text_PluginList_LogStatusFailed {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 跳过.
-        /// </summary>
-        public static string Text_PluginList_LogStatusSkipped {
-            get {
-                return ResourceManager.GetString("Text.PluginList.LogStatusSkipped", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 新建插件.
-        /// </summary>
-        public static string Text_PluginList_NewPlugin {
-            get {
-                return ResourceManager.GetString("Text.PluginList.NewPlugin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 打开编辑.
-        /// </summary>
-        public static string Text_PluginList_EditPlugin {
-            get {
-                return ResourceManager.GetString("Text.PluginList.EditPlugin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 无法用表单打开该插件，已打开插件目录，请手动编辑 YAML.
-        /// </summary>
-        public static string Text_PluginList_CannotOpenInForm {
-            get {
-                return ResourceManager.GetString("Text.PluginList.CannotOpenInForm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 插件编辑器.
-        /// </summary>
-        public static string Text_PluginEditor_Title {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 插件 ID.
-        /// </summary>
-        public static string Text_PluginEditor_Id {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Id", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 名称.
-        /// </summary>
-        public static string Text_PluginEditor_Name {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 描述.
-        /// </summary>
-        public static string Text_PluginEditor_Description {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 作者.
-        /// </summary>
-        public static string Text_PluginEditor_Author {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Author", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 版本.
-        /// </summary>
-        public static string Text_PluginEditor_Version {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 选择事件....
-        /// </summary>
-        public static string Text_PluginEditor_SelectEvent {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.SelectEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 删除规则.
-        /// </summary>
-        public static string Text_PluginEditor_RemoveTrigger {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RemoveTrigger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 条件（可选，支持算术 + - * / 与括号）.
-        /// </summary>
-        public static string Text_PluginEditor_Condition {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.Condition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 选择动作....
-        /// </summary>
-        public static string Text_PluginEditor_SelectAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.SelectAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 删除.
-        /// </summary>
-        public static string Text_PluginEditor_RemoveAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RemoveAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 添加动作.
-        /// </summary>
-        public static string Text_PluginEditor_AddAction {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.AddAction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 预览 YAML.
-        /// </summary>
-        public static string Text_PluginEditor_PreviewYaml {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.PreviewYaml", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 刷新预览.
-        /// </summary>
-        public static string Text_PluginEditor_RefreshPreview {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.RefreshPreview", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 刷新在线插件失败: {0}.
         /// </summary>
         public static string Text_PluginList_RefreshOnlineFailedFormat {
             get {
                 return ResourceManager.GetString("Text.PluginList.RefreshOnlineFailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 需要核心 {0} 或更高.
+        /// </summary>
+        public static string Text_PluginList_RequireCoreFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.RequireCoreFormat", resourceCulture);
             }
         }
         
@@ -4880,6 +4916,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_PluginList_Triggers {
             get {
                 return ResourceManager.GetString("Text.PluginList.Triggers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 模板插件.
+        /// </summary>
+        public static string Text_PluginList_TypeTemplate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.TypeTemplate", resourceCulture);
             }
         }
         
@@ -5318,6 +5363,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 暂无可用隧道模板。请先安装 create-proxy-template 类型插件，或到「插件」页检查其是否启用。.
+        /// </summary>
+        public static string Text_Proxy_Guide_NoTemplates {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.NoTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请先选择一个隧道模板.
+        /// </summary>
+        public static string Text_Proxy_Guide_SelectTemplate {
+            get {
+                return ResourceManager.GetString("Text.Proxy.Guide.SelectTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 创建隧道向导.
         /// </summary>
         public static string Text_Proxy_Guide_Title {
@@ -5683,78 +5746,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Settings_Animation_Standard {
             get {
                 return ResourceManager.GetString("Text.Settings.Animation.Standard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 启动画面.
-        /// </summary>
-        public static string Text_Settings_Splash {
-            get {
-                return ResourceManager.GetString("Text.Settings.Splash", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 选择启动画面样式, 支持自定义背景图, 更改后于下次启动生效.
-        /// </summary>
-        public static string Text_Settings_SplashDescription {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 启动画面样式.
-        /// </summary>
-        public static string Text_Settings_SplashStyle {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 默认.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Default {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Default", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 深色.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Dark {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Dark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 简约.
-        /// </summary>
-        public static string Text_Settings_SplashStyle_Minimal {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashStyle.Minimal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 自定义背景图.
-        /// </summary>
-        public static string Text_Settings_SplashCustomImage {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashCustomImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 更改将在下次启动时生效.
-        /// </summary>
-        public static string Text_Settings_SplashRestartHint {
-            get {
-                return ResourceManager.GetString("Text.Settings.SplashRestartHint", resourceCulture);
             }
         }
         
@@ -6412,6 +6403,78 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Settings_SetTunnelsToLaunch {
             get {
                 return ResourceManager.GetString("Text.Settings.SetTunnelsToLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动画面.
+        /// </summary>
+        public static string Text_Settings_Splash {
+            get {
+                return ResourceManager.GetString("Text.Settings.Splash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 自定义背景图.
+        /// </summary>
+        public static string Text_Settings_SplashCustomImage {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashCustomImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择启动画面样式, 支持自定义背景图, 更改后于下次启动生效.
+        /// </summary>
+        public static string Text_Settings_SplashDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 更改将在下次启动时生效.
+        /// </summary>
+        public static string Text_Settings_SplashRestartHint {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashRestartHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动画面样式.
+        /// </summary>
+        public static string Text_Settings_SplashStyle {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 深色.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Dark {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 默认.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Default {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 简约.
+        /// </summary>
+        public static string Text_Settings_SplashStyle_Minimal {
+            get {
+                return ResourceManager.GetString("Text.Settings.SplashStyle.Minimal", resourceCulture);
             }
         }
         
@@ -9301,6 +9364,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 生成访问二维码.
+        /// </summary>
+        public static string Text_UserProxy_GenerateQRCode {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.GenerateQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 由于内部错误, 取消启动隧道: {0}
         ///详细信息: {1}.
         /// </summary>
@@ -9365,6 +9437,186 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 已复制到剪贴板.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码生成失败.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeGeneratedFailed {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeGeneratedFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码生成成功.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeGeneratedSuccessfully {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeGeneratedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 背景色.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_BackgroundColor {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.BackgroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码生成成功。是否立即查看？.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Caption {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 复制到剪贴板.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_CopyToClipBoard {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.CopyToClipBoard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 导出 PNG 图片.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_ExportPng {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.ExportPng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码保存失败.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_FailedToSave {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.FailedToSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 前景色.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_ForegroundColor {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.ForegroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 图标.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Icon {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 图标大小.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_IconSize {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.IconSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下一个域名.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_NextDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.NextDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 上一个域名.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_PreviousDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.PreviousDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码保存成功.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SavedSuccessfully {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请选择要复制二维码的域名.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SelectDomain {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SelectDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择图标文件.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SelectIconFile {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SelectIconFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 二维码设置.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Settings {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 大小.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_Size {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 使用左右按钮或 ← → 方向键切换域名.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_SwitchHint {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.SwitchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看.
+        /// </summary>
+        public static string Text_UserProxy_QRCodeView_View {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.QRCodeView.View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SSL证书配置.
         /// </summary>
         public static string Text_UserProxy_SslCertConfig {
@@ -9424,51 +9676,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Validation_Required {
             get {
                 return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 暂无可用隧道模板。请先安装 create-proxy-template 类型插件，或到「插件」页检查其是否启用。.
-        /// </summary>
-        public static string Text_Proxy_Guide_NoTemplates {
-            get {
-                return ResourceManager.GetString("Text.Proxy.Guide.NoTemplates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 请先选择一个隧道模板.
-        /// </summary>
-        public static string Text_Proxy_Guide_SelectTemplate {
-            get {
-                return ResourceManager.GetString("Text.Proxy.Guide.SelectTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 模板插件.
-        /// </summary>
-        public static string Text_PluginList_TypeTemplate {
-            get {
-                return ResourceManager.GetString("Text.PluginList.TypeTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 需要核心 {0} 或更高.
-        /// </summary>
-        public static string Text_PluginList_RequireCoreFormat {
-            get {
-                return ResourceManager.GetString("Text.PluginList.RequireCoreFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 该插件类型（{0}）不支持表单编辑，请直接编辑 YAML 文件（已为你打开插件目录）。.
-        /// </summary>
-        public static string Text_PluginEditor_TypeNotSupported {
-            get {
-                return ResourceManager.GetString("Text.PluginEditor.TypeNotSupported", resourceCulture);
             }
         }
     }

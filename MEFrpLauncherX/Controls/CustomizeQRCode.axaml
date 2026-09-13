@@ -1,0 +1,150 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.CustomizeQRCode">
+    <UserControl.Styles>
+        <!-- 轮播圆点指示器：未选中为次要填充色，选中/悬停为强调色（跟随主题与主题色） -->
+        <Style Selector="Border.QRCodeDot">
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Height" Value="8" />
+            <Setter Property="Margin" Value="3,0" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
+        </Style>
+        <Style Selector="Border.QRCodeDot:pointerover">
+            <Setter Property="Background" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style Selector="Border.QRCodeDot.Active">
+            <Setter Property="Background" Value="{DynamicResource AccentFillColorDefaultBrush}" />
+        </Style>
+    </UserControl.Styles>
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" MinWidth="400" Margin="10">
+        <controls:CommandBar DefaultLabelPosition="Right">
+            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ExportPng}"
+                                       IconSource="Save" Click="SaveFile" />
+        </controls:CommandBar>
+
+        <!-- 域名轮播导航：仅在存在多个 domain 时显示（单域名场景与原有单二维码行为一致） -->
+        <Grid x:Name="NavigationBar"
+              Grid.Row="1"
+              Margin="0,8,0,4"
+              ColumnDefinitions="Auto,*,Auto"
+              IsVisible="False">
+            <Button x:Name="PreviousButton"
+                    Grid.Column="0"
+                    Padding="8,4"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="ShowPreviousDomain"
+                    ToolTip.Tip="{x:Static languages:Languages.Text_UserProxy_QRCodeView_PreviousDomain}">
+                <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                           FontSize="14"
+                           Text="&#xE76B;" />
+            </Button>
+            <StackPanel Grid.Column="1" Spacing="2">
+                <TextBlock x:Name="DomainText"
+                           HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="IndexText"
+                           HorizontalAlignment="Center"
+                           FontSize="12"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+            <Button x:Name="NextButton"
+                    Grid.Column="2"
+                    Padding="8,4"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="ShowNextDomain"
+                    ToolTip.Tip="{x:Static languages:Languages.Text_UserProxy_QRCodeView_NextDomain}">
+                <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                           FontSize="14"
+                           Text="&#xE76C;" />
+            </Button>
+        </Grid>
+
+        <!-- 二维码显示区：两层 Image 叠加实现横向滑动 + 淡入淡出；ClipToBounds 防止滑动过程中溢出 -->
+        <Border x:Name="Viewport"
+                Grid.Row="2"
+                ClipToBounds="True">
+            <Panel>
+                <Image x:Name="PreviousQRCode"
+                       Stretch="UniformToFill"
+                       Opacity="0"
+                       IsHitTestVisible="False" />
+                <Image x:Name="QRCode" Stretch="UniformToFill" />
+            </Panel>
+        </Border>
+
+        <!-- 页码/圆点指示器与操作提示：同样只在多域名时显示 -->
+        <StackPanel x:Name="IndicatorBar"
+                    Grid.Row="3"
+                    Margin="0,8,0,0"
+                    Spacing="4"
+                    IsVisible="False">
+            <StackPanel x:Name="DotPanel"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="12"
+                       Text="{x:Static languages:Languages.Text_UserProxy_QRCodeView_SwitchHint}"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <controls:SettingsExpander Grid.Row="4"
+                                   Header="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Settings}"
+                                   IsExpanded="True">
+            <controls:SettingsExpander.IconSource>
+                <controls:FontIconSource Glyph="&#xED14;"
+                                         FontFamily="{StaticResource SymbolThemeFontFamily}" />
+            </controls:SettingsExpander.IconSource>
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Size}">
+                <controls:SettingsExpanderItem.Footer>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Slider x:Name="SizeSlider" MinWidth="200" Minimum="64" Maximum="512" Value="256"
+                                ValueChanged="UpdateSize" IsSnapToTickEnabled="True" TickFrequency="1" />
+                        <TextBlock Text="{Binding #SizeSlider.Value, StringFormat='{}{0}px'}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Icon}">
+                <controls:SettingsExpanderItem.Footer>
+                    <Button x:Name="IconButton"
+                            Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_SelectIconFile}"
+                            Click="SelectIconFile" />
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_IconSize}">
+                <controls:SettingsExpanderItem.Footer>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Slider x:Name="IconSizeSlider" MinWidth="200" Minimum="1" Maximum="100" Value="10"
+                                ValueChanged="UpdateIconSize" TickFrequency="1" />
+                        <TextBlock Text="{Binding #IconSizeSlider.Value, StringFormat='{}{0}%'}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ForegroundColor}">
+                <controls:SettingsExpanderItem.Footer>
+                    <ColorPicker x:Name="ForeColorPicker" ColorChanged="UpdateForeground" />
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_BackgroundColor}">
+                <controls:SettingsExpanderItem.Footer>
+                    <ColorPicker x:Name="BackColorPicker" ColorChanged="UpdateBackground" />
+                </controls:SettingsExpanderItem.Footer>
+            </controls:SettingsExpanderItem>
+        </controls:SettingsExpander>
+    </Grid>
+</UserControl>

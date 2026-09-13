@@ -3204,4 +3204,73 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.PluginEditor.TypeNotSupported" xml:space="preserve">
         <value>此類別外掛（{0}）不支援表單編輯，請直接編輯 YAML 檔案（已為您開啟外掛資料夾）。</value>
     </data>
+    <data name="Text.UserProxy.GenerateQRCode" xml:space="preserve">
+        <value>產生 QR Code</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedSuccessfully" xml:space="preserve">
+        <value>二維碼產生成功</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedFailed" xml:space="preserve">
+        <value>二維碼產生失敗</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Caption" xml:space="preserve">
+        <value>二維碼產生成功。您想要查看它嗎？</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.View" xml:space="preserve">
+        <value>查看</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ExportPng" xml:space="preserve">
+        <value>匯出圖片</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.CopyToClipBoard" xml:space="preserve">
+        <value>複製到剪貼簿</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeCopiedToClipboard" xml:space="preserve">
+        <value>	已複製到剪貼簿</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SavedSuccessfully" xml:space="preserve">
+        <value>二維碼儲存成功</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.FailedToSave" xml:space="preserve">
+        <value>二維碼儲存失敗</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Settings" xml:space="preserve">
+        <value>二維碼設定</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Size" xml:space="preserve">
+        <value>大小</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Icon" xml:space="preserve">
+        <value>圖示</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.IconSize" xml:space="preserve">
+        <value>圖示大小</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectIconFile" xml:space="preserve">
+        <value>選擇圖示檔案</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ForegroundColor" xml:space="preserve">
+        <value>前景色</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.BackgroundColor" xml:space="preserve">
+        <value>背景色</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.PreviousDomain" xml:space="preserve">
+        <value>上一個網域</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.NextDomain" xml:space="preserve">
+        <value>下一個網域</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SwitchHint" xml:space="preserve">
+        <value>使用左右按鈕或 ← → 方向鍵切換網域</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectDomain" xml:space="preserve">
+        <value>請選擇要複製二維碼的網域</value>
+    </data>
+    <data name="Text.Global.FileType.Picture" xml:space="preserve">
+        <value>圖片檔案|*.png;*.jpg;*.jpeg;*.bmp;*.jfif;*.tiff</value>
+    </data>
+    <data name="Text.Global.FileType.All" xml:space="preserve">
+        <value>所有檔案|*.*</value>
+    </data>
 </root>

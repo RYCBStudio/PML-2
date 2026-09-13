@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
-using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
 using RestSharp;
@@ -227,7 +226,7 @@ public static class MEFrpApiConverter
     public static async Task<ApiInfo<object>> DeleteIcpDomainAsync(string domain)
     {
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo()
+        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo
         {
             domain = domain
         }, App.AppJsonSerializerContext.ToEditIcpDomainInfo);
@@ -243,7 +242,7 @@ public static class MEFrpApiConverter
     {
         var request = CreateRequest(Method.Post);
         request.Timeout = TimeSpan.FromSeconds(6); // 接口延迟较大, 需要延长超时时间
-        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo()
+        var body = JsonSerializer.Serialize(new ToEditIcpDomainInfo
         {
             domain = domain
         }, App.AppJsonSerializerContext.ToEditIcpDomainInfo);
@@ -650,7 +649,7 @@ public static class MEFrpApiConverter
         App.CurrentLogger.Log("正在发送启动配置申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new LaunchConfigRequest()
+        var body = JsonSerializer.Serialize(new LaunchConfigRequest
         {
             proxyId = proxyId,
             format = format
@@ -690,7 +689,7 @@ public static class MEFrpApiConverter
         App.CurrentLogger.Log("正在发送切换隧道状态隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new ToggleProxyInfo()
+        var body = JsonSerializer.Serialize(new ToggleProxyInfo
         {
             proxyId = proxyId,
             isDisabled = isDisabled
@@ -724,7 +723,7 @@ public static class MEFrpApiConverter
         App.CurrentLogger.Log("正在发送强制下线隧道申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
-        var body = JsonSerializer.Serialize(new KickProxyInfo()
+        var body = JsonSerializer.Serialize(new KickProxyInfo
         {
             proxyId = proxyId
         }, App.AppJsonSerializerContext.KickProxyInfo);

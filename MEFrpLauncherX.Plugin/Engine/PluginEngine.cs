@@ -51,7 +51,8 @@ public class PluginEngine : IAction
             // 26.3.1 S2：重启隧道（能力由主程序经 ProxyActionBridge 注册）
             ["proxy.restart"] = new ProxyRestartAction(),
             // 26.3.1 M5：打开 URL（系统默认浏览器）
-            ["open_url"] = new OpenUrlAction()
+            ["open_url"] = new OpenUrlAction(),
+            ["wait"] = new WaitAction()
         };
         // call_function 指令：通过 this (IAction) 作为子动作分发器
         _callFuncAction = new CallFunctionAction(_funcRegistry, this);
@@ -186,7 +187,7 @@ public class PluginEngine : IAction
                     Status = "info",
                     Message = $"事件命中, 执行 {trigger.Actions.Count} 个动作"
                 });
-                var ctx = new ExecutionContext()
+                var ctx = new ExecutionContext
                 {
                     PluginId = plugin.Name,
                     Variables = context.Variables,

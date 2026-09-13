@@ -61,6 +61,23 @@ public class HttpRequestAction : IAction
     }
 }
 
+public class WaitAction : IAction
+{
+    public Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
+    {
+        var time = args?.GetValueOrDefault("time")?.ToString() ?? "0";
+        return GetUnit(time) switch
+        {
+            "ms" => Task.Delay(TimeSpan.FromMilliseconds(double.Parse(time[..^1]))),
+            "s" => Task.Delay(TimeSpan.FromSeconds(double.Parse(time[..^1]))),
+            "m" => Task.Delay(TimeSpan.FromMinutes(double.Parse(time[..^1]))),
+            _ => Task.Delay(TimeSpan.FromSeconds(double.Parse(time)))
+        };
+
+        string GetUnit(string t) => t[^1..];
+    }
+}
+
 public class NotifyAction : IAction
 {
     public async Task ExecuteAsync(ExecutionContext ctx, Dictionary<string, object>? args)
@@ -117,7 +134,7 @@ public class LocalRunAction : IAction
 
         try
         {
-            await Process.Start(new ProcessStartInfo()
+            await Process.Start(new ProcessStartInfo
             {
                 FileName = exe,
                 Arguments = string.Join(' ', argsList),

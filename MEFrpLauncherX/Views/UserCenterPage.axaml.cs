@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Text.Json;
@@ -332,12 +331,12 @@ public partial class UserCenterViewModel : ViewModelBase
         }, this.WhenAnyValue(x => x.IsWorking, (working) => !working));
         AddDomainCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var domainBox = new TextBox()
+            var domainBox = new TextBox
             {
                 Watermark = Languages.Text_UserCenter_DomainWatermark,
                 Margin = new Thickness(10),
             };
-            var inputDialog = new ContentDialog()
+            var inputDialog = new ContentDialog
             {
                 Title = Languages.Text_UserCenter_AddDomainTitle,
                 Content = domainBox,

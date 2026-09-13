@@ -449,7 +449,7 @@ public partial class AboutPage : UserControl
     {
         vm.SubmitProgress = 0;
         vm.IsSubmittingFeedback = true;
-        var askForm = new ContentDialog()
+        var askForm = new ContentDialog
         {
             Content = Languages.Text_About_ReportIssue_Method,
             PrimaryButtonText = Languages.Text_About_Source1,
@@ -504,7 +504,7 @@ public partial class AboutPage : UserControl
 
     private async void CP_Click(object? sender, RoutedEventArgs e)
     {
-        var cd = new ContentDialog()
+        var cd = new ContentDialog
         {
             Title = Languages.Text_About_CompleteCopyrightStatement,
             Content = Languages.Text_About_CompleteCopyrightStatement_Content,

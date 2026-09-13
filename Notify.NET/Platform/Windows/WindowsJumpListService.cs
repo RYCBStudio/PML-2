@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Notify.NET.Abstractions;
-using Notify.NET.Platform;
 
 namespace Notify.NET.Platform.Windows
 {

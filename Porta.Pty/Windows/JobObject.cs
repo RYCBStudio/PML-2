@@ -4,9 +4,9 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.JobObjects;
+using Microsoft.Win32.SafeHandles;
 using static Windows.Win32.PInvoke;
 
 namespace Porta.Pty.Windows

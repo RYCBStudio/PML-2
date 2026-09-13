@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Avalonia;
-using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core.Services;
@@ -89,7 +87,7 @@ public class App : IDisposable
             Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
         }
 
-        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions()
+        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             WriteIndented = true,

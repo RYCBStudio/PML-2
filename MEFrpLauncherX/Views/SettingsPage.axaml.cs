@@ -13,7 +13,6 @@ using Avalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
-using MEFrpLauncherX.Core.ViewModels;
 using MEFrpLauncherX.Styling;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.Appearance;
@@ -124,12 +123,6 @@ public partial class SettingsPage : UserControl
             };
             // 26.3.1 M2：启动画面样式 / 开关
             SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
-            SplashStyleBox.SelectedIndex = ConfigManager.CurrentConfig.SplashStyle switch
-            {
-                "dark" => 1,
-                "minimal" => 2,
-                _ => 0
-            };
             var renderConfig = RenderConfigManager.Load();
             RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
             {
@@ -693,18 +686,6 @@ public partial class SettingsPage : UserControl
 
         ConfigManager.UpdateConfig(config =>
             config.SplashEnabled = (sender as ToggleSwitch)?.IsChecked == true);
-        MainPageFrameViewModel.Instance.NeedRestart = true;
-    }
-
-    private void SplashStyleChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (_isInit)
-        {
-            return;
-        }
-
-        var style = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "default";
-        ConfigManager.UpdateConfig(config => config.SplashStyle = style);
         MainPageFrameViewModel.Instance.NeedRestart = true;
     }
 

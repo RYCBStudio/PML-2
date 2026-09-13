@@ -3209,4 +3209,73 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.PluginEditor.TypeNotSupported" xml:space="preserve">
         <value>Plugins of type ({0}) cannot be edited in the form editor. Edit the YAML file directly (the plugins folder has been opened).</value>
     </data>
+    <data name="Text.UserProxy.GenerateQRCode" xml:space="preserve">
+        <value>Generate QR Code</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedSuccessfully" xml:space="preserve">
+        <value>QR code generated successfully.</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeGeneratedFailed" xml:space="preserve">
+        <value>Failed to generate QR code.	</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Caption" xml:space="preserve">
+        <value>QR code generated successfully. Would you like to view it?</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.View" xml:space="preserve">
+        <value>View</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ExportPng" xml:space="preserve">
+        <value>Export As PNG File</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.CopyToClipBoard" xml:space="preserve">
+        <value>Copy to Clipboard</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeCopiedToClipboard" xml:space="preserve">
+        <value>	Copied to clipboard</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SavedSuccessfully" xml:space="preserve">
+        <value>	QR code saved successfully.</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.FailedToSave" xml:space="preserve">
+        <value>Failed to save QR code.</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Settings" xml:space="preserve">
+        <value>QR Code Settings</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Size" xml:space="preserve">
+        <value>Size</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.Icon" xml:space="preserve">
+        <value>Icon</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.IconSize" xml:space="preserve">
+        <value>Icon Size</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectIconFile" xml:space="preserve">
+        <value>Select Icon File</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.ForegroundColor" xml:space="preserve">
+        <value>Foreground Color</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.BackgroundColor" xml:space="preserve">
+        <value>Background Color</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.PreviousDomain" xml:space="preserve">
+        <value>Previous Domain</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.NextDomain" xml:space="preserve">
+        <value>Next Domain</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SwitchHint" xml:space="preserve">
+        <value>Use the arrow buttons or the ← → keys to switch domains</value>
+    </data>
+    <data name="Text.UserProxy.QRCodeView.SelectDomain" xml:space="preserve">
+        <value>Select the domain whose QR code you want to copy</value>
+    </data>
+    <data name="Text.Global.FileType.Picture" xml:space="preserve">
+        <value>Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.jfif;*.tiff</value>
+    </data>
+    <data name="Text.Global.FileType.All" xml:space="preserve">
+        <value>All Files|*.*</value>
+    </data>
 </root>

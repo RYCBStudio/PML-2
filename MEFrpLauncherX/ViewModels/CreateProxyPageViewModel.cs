@@ -154,7 +154,7 @@ public class CreateProxyPageViewModel : ViewModelBase
                     }
                     else
                     {
-                        var page = new CreateProxyGuide()
+                        var page = new CreateProxyGuide
                         {
                             DataContext = new CreateProxyGuideViewModel()
                         };
@@ -248,7 +248,7 @@ public class CreateProxyPageViewModel : ViewModelBase
         {
             Dispatcher.UIThread.Post(() =>
             {
-                pages["Guide"] = new CreateProxyGuide()
+                pages["Guide"] = new CreateProxyGuide
                 {
                     DataContext = new CreateProxyGuideViewModel()
                 };

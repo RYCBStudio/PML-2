@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Notify.NET.Abstractions;
 
 namespace Notify.NET.Platform.MacOS

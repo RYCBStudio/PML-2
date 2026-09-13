@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Notify.NET.Abstractions;
-using Notify.NET.Platform;
 
 namespace Notify.NET.Platform.Linux
 {

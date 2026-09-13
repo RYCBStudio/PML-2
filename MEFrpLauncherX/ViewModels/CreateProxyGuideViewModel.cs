@@ -9,7 +9,6 @@ using IconPacks.Avalonia.Lucide;
 using IconPacks.Avalonia.Material;
 using IconPacks.Avalonia.SimpleIcons;
 using MEFrpLauncherX.Core;
-using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Services;
 using ReactiveUI;
@@ -211,7 +210,7 @@ public class PackIconToControlConverter : IValueConverter
             case "material":
                 if (Enum.TryParse<PackIconMaterialKind>(packIcon.Icon, out var materialKind))
                 {
-                    return new PackIconMaterial()
+                    return new PackIconMaterial
                     {
                         Kind = materialKind
                     };
@@ -221,7 +220,7 @@ public class PackIconToControlConverter : IValueConverter
             case "simpleicons":
                 if (Enum.TryParse<PackIconSimpleIconsKind>(packIcon.Icon, true, out var simpleIconsKind))
                 {
-                    return new PackIconSimpleIcons()
+                    return new PackIconSimpleIcons
                     {
                         Kind = simpleIconsKind
                     };
@@ -231,7 +230,7 @@ public class PackIconToControlConverter : IValueConverter
             case "fileicons":
                 if (Enum.TryParse<PackIconFileIconsKind>(packIcon.Icon, true, out var fileIconsKind))
                 {
-                    return new PackIconFileIcons()
+                    return new PackIconFileIcons
                     {
                         Kind = fileIconsKind
                     };
@@ -240,7 +239,7 @@ public class PackIconToControlConverter : IValueConverter
             case "lucide":
                 if (Enum.TryParse<PackIconLucideKind>(packIcon.Icon, true, out var lucideKind))
                 {
-                    return new PackIconLucide()
+                    return new PackIconLucide
                     {
                         Kind = lucideKind
                     };

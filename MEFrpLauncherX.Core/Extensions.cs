@@ -1,5 +1,10 @@
-﻿using Notify.NET.Abstractions;
+﻿using Avalonia.Media.Imaging;
+using FeatherQR;
+using FeatherQR.SkiaSharp;
+using MEFrpLauncherX.Core.Services;
+using Notify.NET.Abstractions;
 using Notify.NET.Builder;
+using SkiaSharp;
 
 namespace MEFrpLauncherX.Core;
 
@@ -22,8 +27,9 @@ public static class NotificationServiceExtensions
             {
                 request.WithImage(image);
             }
+
             request.WithUrgency(urgency);
-            
+
             return request.Build();
         }
     }
@@ -32,7 +38,7 @@ public static class NotificationServiceExtensions
 public static class StringExtensions
 {
     /// <param name="str">待检查的字符串</param>
-    extension(string str)
+    extension(string? str)
     {
         /// <summary>
         ///     判断字符串是否为空或null
@@ -74,5 +80,60 @@ public static class StringExtensions
             var possibleSuffix = suffixes.Split(',');
             return possibleSuffix.Any(str.ToLower().EndsWith);
         }
+    }
+}
+
+public static class QRCodeServiceExtensions
+{
+    extension(QRCodeService service)
+    {
+        public static Bitmap GetQRCodeBitmapWithIcon(string text, SKBitmap? icon, int iconSizePercent = 10,
+            int iconBorderWidth = 2, ECCLevel eccLevel = ECCLevel.L,
+            int size = 512,
+            SKColor? foreground = null, SKColor? background = null)
+        {
+            var qr = new QRCodeImageBuilder(text)
+                .WithErrorCorrection(eccLevel)
+                .WithSize(size, size)
+                .WithColors(foreground ?? SKColors.Black, background ?? SKColors.Transparent);
+            if (icon != null)
+            {
+                qr = qr
+                    .WithIcon(IconData.FromImage(icon, iconSizePercent, iconBorderWidth));
+            }
+
+            return new Bitmap(new MemoryStream(qr
+                .ToByteArray()));
+        }
+    }
+}
+
+public static class SKImageHelper
+{
+    /// <summary>
+    /// 慢速转换方法，使用内存流进行转换，适用于小图像或不频繁的转换场景。
+    /// </summary>
+    /// <param name="skBitmap"></param>
+    /// <returns></returns>
+    public static Bitmap ToBitmap(this SKBitmap skBitmap)
+    {
+        using var ms = new MemoryStream();
+        using var data = skBitmap.Encode(SKEncodedImageFormat.Png, 100);
+        data.SaveTo(ms);
+        ms.Position = 0;
+        return new Bitmap(ms);
+    }
+
+    /// <summary>
+    /// 慢速转换方法，使用内存流进行转换，适用于小图像或不频繁的转换场景。
+    /// </summary>
+    /// <param name="bitmap"></param>
+    /// <returns></returns>
+    public static SKBitmap ToSKBitmap(this Bitmap bitmap)
+    {
+        using var ms = new MemoryStream();
+        bitmap.Save(ms);
+        ms.Position = 0;
+        return SKBitmap.Decode(ms);
     }
 }

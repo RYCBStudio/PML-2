@@ -15,7 +15,7 @@ public class PluginPreprocessor
     {
         var raw = PreprocessAndDeserialize(pluginFilePath);
         if (raw.Id == "错误")
-            return new PluginDefinition()
+            return new PluginDefinition
             {
                 Id = "错误",
                 Name = Languages.Text_Plugin_FileNotFound
@@ -70,7 +70,7 @@ public class PluginPreprocessor
         catch (FileNotFoundException e)
         {
             App.CurrentLogger.Warning($"插件文件不存在: {path}, {e.Message}", module: EnumLogModule.Plugin);
-            return new RawPlugin()
+            return new RawPlugin
             {
                 Id = "错误",
                 Name = Languages.Text_Plugin_FileNotFound,
@@ -79,7 +79,7 @@ public class PluginPreprocessor
         catch (IOException e)
         {
             App.CurrentLogger.Warning($"插件文件读取失败: {path}, {e.Message}", module: EnumLogModule.Plugin);
-            return new RawPlugin()
+            return new RawPlugin
             {
                 Id = "错误",
                 Name = Languages.Text_Plugin_CannotReadFile,
@@ -88,7 +88,7 @@ public class PluginPreprocessor
         catch (Exception e)
         {
             App.CurrentLogger.Warning($"插件文件读取异常: {path}, {e.Message}", module: EnumLogModule.Plugin);
-            return new RawPlugin()
+            return new RawPlugin
             {
                 Id = "错误",
                 Name = Languages.Text_Plugin_ReadFileError,
@@ -128,7 +128,7 @@ public class PluginPreprocessor
         catch (Exception ex)
         {
             App.CurrentLogger.Warning($"插件 YAML 解析失败: {path}, {ex.Message}", module: EnumLogModule.Plugin);
-            return new RawPlugin()
+            return new RawPlugin
             {
                 Id = "错误",
                 Name = Languages.Text_Plugin_ReadFileError,
