@@ -39,7 +39,7 @@ namespace Notify.NET.Platform
             _pipeName = channelName;
             // initiallyOwned: true means we try to take ownership; createdNew tells us whether this
             // call created the kernel object, which we use as the primary-election signal.
-            _mutex = new Mutex(initiallyOwned: true, name: channelName + "-mtx", out bool createdNew);
+            _mutex = new Mutex(initiallyOwned: true, name: channelName + "-mtx", out var createdNew);
             _isPrimary = createdNew;
         }
 
@@ -70,7 +70,7 @@ namespace Notify.NET.Platform
 
                     await server.WaitForConnectionAsync(token).ConfigureAwait(false);
 
-                    string taskId = await ReadAllAsync(server, token).ConfigureAwait(false);
+                    var taskId = await ReadAllAsync(server, token).ConfigureAwait(false);
                     if (!string.IsNullOrWhiteSpace(taskId))
                     {
                         try { onActivated(taskId.Trim()); }
@@ -111,7 +111,7 @@ namespace Notify.NET.Platform
             {
                 using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
                 client.Connect(timeoutMs);
-                byte[] payload = Encoding.UTF8.GetBytes(taskId);
+                var payload = Encoding.UTF8.GetBytes(taskId);
                 client.Write(payload, 0, payload.Length);
                 client.Flush();
                 return true;

@@ -26,7 +26,7 @@ namespace Porta.Pty.Windows
         public static unsafe SafeFileHandle Create()
         {
             // Create an anonymous job object
-            SafeFileHandle jobHandle = CreateJobObject(null, null);
+            var jobHandle = CreateJobObject(null, null);
             if (jobHandle.IsInvalid)
             {
                 throw new InvalidOperationException(

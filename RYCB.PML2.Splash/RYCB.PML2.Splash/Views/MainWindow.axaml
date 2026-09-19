@@ -24,7 +24,7 @@
         <Grid>
             <!-- 背景图片 -->
             <Image x:Name="ImgBackground" Source="/Assets/splash_background.png" Stretch="UniformToFill" />
-
+            <Button x:Name="BtnClose" Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Click="BtnClose_Click" />
             <Border x:Name="ContentBorder" Background="#4C000000" Margin="8" CornerRadius="8" Padding="6">
                 <!-- 内容层：使用半透明背景提升可读性 -->
                 <Panel> <!-- 半透明白色背景 -->

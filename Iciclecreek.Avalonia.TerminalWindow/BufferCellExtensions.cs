@@ -80,18 +80,18 @@ namespace Iciclecreek.TerminalWindow
                 {
                     // Increase brightness for bold text
                     var c = realColor.Value;
-                    byte r = (byte)Math.Min(255, c.R + 85);
-                    byte g = (byte)Math.Min(255, c.G + 85);
-                    byte b = (byte)Math.Min(255, c.B + 85);
+                    var r = (byte)Math.Min(255, c.R + 85);
+                    var g = (byte)Math.Min(255, c.G + 85);
+                    var b = (byte)Math.Min(255, c.B + 85);
                     return Color.FromRgb(r, g, b);
                 }
                 else if (cell.Attributes.IsDim())
                 {
                     // Decrease brightness for dim text
                     var c = realColor.Value;
-                    byte r = (byte)(c.R * 0.6);
-                    byte g = (byte)(c.G * 0.6);
-                    byte b = (byte)(c.B * 0.6);
+                    var r = (byte)(c.R * 0.6);
+                    var g = (byte)(c.G * 0.6);
+                    var b = (byte)(c.B * 0.6);
                     return Color.FromRgb(r, g, b);
                 }
             }
@@ -115,9 +115,9 @@ namespace Iciclecreek.TerminalWindow
             Color? realColor;
             if (mode == 1)  // RGB mode
             {
-                int r = (color >> 16) & 0xFF;
-                int g = (color >> 8) & 0xFF;
-                int b = color & 0xFF;
+                var r = (color >> 16) & 0xFF;
+                var g = (color >> 8) & 0xFF;
+                var b = color & 0xFF;
                 realColor = Color.FromRgb((byte)r, (byte)g, (byte)b);
             }
             else
@@ -153,25 +153,25 @@ namespace Iciclecreek.TerminalWindow
             palette[15] = Color.FromRgb(255, 255, 255);  // Bright White
 
             // 16-231: 216 color cube (6x6x6)
-            int index = 16;
-            for (int r = 0; r < 6; r++)
+            var index = 16;
+            for (var r = 0; r < 6; r++)
             {
-                for (int g = 0; g < 6; g++)
+                for (var g = 0; g < 6; g++)
                 {
-                    for (int b = 0; b < 6; b++)
+                    for (var b = 0; b < 6; b++)
                     {
-                        byte rv = (byte)(r > 0 ? r * 40 + 55 : 0);
-                        byte gv = (byte)(g > 0 ? g * 40 + 55 : 0);
-                        byte bv = (byte)(b > 0 ? b * 40 + 55 : 0);
+                        var rv = (byte)(r > 0 ? r * 40 + 55 : 0);
+                        var gv = (byte)(g > 0 ? g * 40 + 55 : 0);
+                        var bv = (byte)(b > 0 ? b * 40 + 55 : 0);
                         palette[index++] = Color.FromRgb(rv, gv, bv);
                     }
                 }
             }
 
             // 232-255: Grayscale ramp
-            for (int i = 0; i < 24; i++)
+            for (var i = 0; i < 24; i++)
             {
-                byte gray = (byte)(8 + i * 10);
+                var gray = (byte)(8 + i * 10);
                 palette[232 + i] = Color.FromRgb(gray, gray, gray);
             }
 

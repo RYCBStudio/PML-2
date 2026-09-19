@@ -107,7 +107,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                 #region//获取进入渲染位置的第一个index
                 var viewportStart = GetVerticalViewportStart();
                 var _firstIndex = 0;
-                for (int i = 0; i < Items.Count; i++)
+                for (var i = 0; i < Items.Count; i++)
                 {
                     if (_elementDictionary.TryGetValue(i, out var _element))
                     {
@@ -122,7 +122,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
                 #endregion
                 #region//获取该进行渲染的第一个index
                 var _startIndex = 0;
-                for (int i = _firstIndex; i >= 0; i--)
+                for (var i = _firstIndex; i >= 0; i--)
                 {
                     if (_elementDictionary.TryGetValue(i, out var _element))
                     {
@@ -183,8 +183,8 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             var _endIndex = Items.Count - 1;
             var _index = startIndex;
             //Debug.WriteLine("_maxLineWidth" + _maxLineWidth);
-            double _maxLineWidth = Bounds.Width;
-            double _maxLineHeight = 0.0;
+            var _maxLineWidth = Bounds.Width;
+            var _maxLineHeight = 0.0;
             if (!double.IsPositiveInfinity(RowHeight))
             {
                 var rowIndex = startIndex / Columns;
@@ -207,7 +207,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             #region//先计算需渲染的每个控件所需的空间          
             if (double.IsPositiveInfinity(RowHeight))
             {
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -249,7 +249,7 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             }
             else
             {
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })

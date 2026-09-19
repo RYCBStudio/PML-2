@@ -62,7 +62,12 @@ public partial class ManageProxyPage : UserControl
         Instance = this;
     }
 
-    public async Task LoadProxies()
+    /// <summary>26.4：管理页数据加载入口。</summary>
+    /// <param name="forceRefresh">
+    ///     true 表示用户显式刷新或写操作后重新拉取（跳过 5 分钟缓存）；
+    ///     false 表示进入页面等常规加载，可复用有效期内的缓存数据。
+    /// </param>
+    public async Task LoadProxies(bool forceRefresh = false)
     {
         if (_isLoadingProxies)
         {
@@ -82,7 +87,7 @@ public partial class ManageProxyPage : UserControl
             await Task.Run(async () =>
             {
                 var userProxies =
-                    (await MEFrpApiConverter.GetProxiesAsync()).data ?? new InfoClasses.ProxyInfo();
+                    (await MEFrpApiConverter.GetProxiesAsync(forceRefresh)).data ?? new InfoClasses.ProxyInfo();
                 // var currentNodesListInfo = MEFrpApiConverter.CurrentNodesListInfo;
                 // InfoClasses.NodesList[] currentNodesList;
                 //
@@ -282,7 +287,7 @@ public partial class ManageProxyPage : UserControl
         }
     }
 
-    private async void RefreshProxies(object sender, RoutedEventArgs e) => await LoadProxies();
+    private async void RefreshProxies(object sender, RoutedEventArgs e) => await LoadProxies(true);
 
     private void Entry(object sender, RoutedEventArgs e)
     {

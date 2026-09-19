@@ -158,12 +158,12 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
             // 4. 为每个网卡匹配性能计数器名称
             foreach (var nic in nics)
             {
-                string matchedName = "";
-                string desc = nic.Description ?? "";
-                string name = nic.Name ?? "";
+                var matchedName = "";
+                var desc = nic.Description ?? "";
+                var name = nic.Name ?? "";
 
                 // 4a. 将描述中的圆括号替换为方括号，以匹配性能计数器名称格式
-                string normalizedDesc = desc.Replace('(', '[').Replace(')', ']');
+                var normalizedDesc = desc.Replace('(', '[').Replace(')', ']');
 
                 // 通过标准化描述进行包含匹配
                 matchedName = perfNames.FirstOrDefault(p =>
@@ -176,7 +176,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
                     var ipProps = nic.GetIPProperties().GetIPv4Properties();
                     if (ipProps != null)
                     {
-                        int index = ipProps.Index;
+                        var index = ipProps.Index;
                         matchedName = perfNames.FirstOrDefault(p =>
                             p.EndsWith($"#{index}") || p.EndsWith($"_{index}")) ?? "";
                     }
@@ -190,7 +190,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
                         var ipv6Props = nic.GetIPProperties().GetIPv6Properties();
                         if (ipv6Props != null)
                         {
-                            int index = ipv6Props.Index;
+                            var index = ipv6Props.Index;
                             matchedName = perfNames.FirstOrDefault(p =>
                                 p.EndsWith($"#{index}") || p.EndsWith($"_{index}")) ?? "";
                         }
@@ -202,7 +202,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
                 }
 
                 // 4d. 若仍失败，通过 DeviceID 匹配（从 Win32_NetworkAdapter 获取）
-                if (string.IsNullOrEmpty(matchedName) && deviceIdMap.TryGetValue(desc, out string? deviceId))
+                if (string.IsNullOrEmpty(matchedName) && deviceIdMap.TryGetValue(desc, out var deviceId))
                 {
                     matchedName = perfNames.FirstOrDefault(p =>
                         p.EndsWith($"#{deviceId}") || p.EndsWith($"_{deviceId}")) ?? "";
@@ -248,8 +248,8 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
         try
         {
             using var session = CimSession.Create(Environment.MachineName);
-            string safeName = interfaceId.Replace("'", "''");
-            string query = $@"
+            var safeName = interfaceId.Replace("'", "''");
+            var query = $@"
             SELECT BytesReceivedPersec, BytesSentPersec, 
                    PacketsReceivedPersec, PacketsSentPersec 
             FROM Win32_PerfRawData_Tcpip_NetworkInterface 

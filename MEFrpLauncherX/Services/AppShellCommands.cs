@@ -112,7 +112,8 @@ public sealed class AppShellCommands : IAppShellCommands
     {
         if (ManageProxyPage.Instance is { } page)
         {
-            await page.LoadProxies();
+            // 26.4：显式刷新 → 跳过 5 分钟缓存
+            await page.LoadProxies(true);
         }
     }
 

@@ -235,7 +235,7 @@ namespace Notify.NET.Builder
 
             // If an explicit INotificationHandler was provided, use it directly.
             // Otherwise, if any delegate callbacks were registered, wrap them.
-            INotificationHandler? handler = _handler;
+            var handler = _handler;
             if (handler == null && (_onActivated != null || _onButtonActivated != null || _onDismissed != null || _onFailed != null))
             {
                 handler = new DelegateNotificationHandler(_onActivated, _onButtonActivated, _onDismissed, _onFailed);

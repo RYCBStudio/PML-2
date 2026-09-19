@@ -2,6 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.ViewModels;
@@ -46,7 +48,7 @@ public partial class HomeSimplePanel : UserControl
 
     /// <summary>重新计算推荐（不改变忽略记录，仅刷新显示）。</summary>
     private void RefreshRecommendations(object? sender, RoutedEventArgs e) =>
-        (DataContext as HomePageViewModel)?.RefreshRecommendations();
+        (DataContext as HomePageViewModel)?.RefreshAllData();
 
     /// <summary>
     ///     执行推荐的主按钮动作。动作类型由 Core 定义（<see cref="HomeRecommendAction" />），
@@ -61,6 +63,18 @@ public partial class HomeSimplePanel : UserControl
 
         switch (kind)
         {
+            case HomeRecommendKind.RecentTunnel:
+                // 26.4：直接启动推荐中指定的隧道（不跳转页面）
+                if (sender is Button { DataContext: HomeRecommendation { ProxyId: > 0 } rec })
+                {
+                    var launched = (DataContext as HomePageViewModel)?.LaunchRecentTunnel(rec.ProxyId) ?? false;
+                    if (!launched)
+                    {
+                        Growl.Warning(Languages.Text_Home_Recommend_TunnelMissing);
+                    }
+                }
+
+                break;
             case HomeRecommendKind.FailedTunnel:
             case HomeRecommendKind.StartAnyTunnel:
                 MainPageFrameViewModel.Instance?.NavigateToPage("Manage");

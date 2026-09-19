@@ -210,18 +210,31 @@ public class UpdatePageViewModel : ViewModelBase
     /// <summary>
     ///     检查更新
     /// </summary>
+    /// <param name="forceRefresh">
+    ///     true 表示用户显式检查更新，跳过 5 分钟缓存强制请求；
+    ///     false 表示启动时的自动检查等场景，可复用有效期内的缓存结果。
+    /// </param>
     /// <returns>(是否最新, 最新版本)</returns>
-    public static async Task<(bool, string)> GetNewVersionAsync()
+    public static async Task<(bool, string)> GetNewVersionAsync(bool forceRefresh = false)
     {
-        var updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync();
-        var preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync();
+        var updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync(forceRefresh);
+        var preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync(forceRefresh);
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
         var latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.version;
 
         return (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version), latestVersion);
     }
 
-    public async void CheckUpdate()
+    /// <summary>
+    ///     用户显式「检查更新」（26.4：跳过 5 分钟缓存，始终拉取最新）。
+    /// </summary>
+    public async void CheckUpdate() => await CheckUpdateCoreAsync(true);
+
+    /// <summary>
+    ///     检查更新的实际实现。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存强制请求</param>
+    private async Task CheckUpdateCoreAsync(bool forceRefresh)
     {
         Icon = ICONS.UPDATE;
         IsLoading = true;
@@ -266,8 +279,8 @@ public class UpdatePageViewModel : ViewModelBase
             };
         try
         {
-            updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync();
-            preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync();
+            updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync(forceRefresh);
+            preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync(forceRefresh);
         }
         catch (Exception ex)
         {

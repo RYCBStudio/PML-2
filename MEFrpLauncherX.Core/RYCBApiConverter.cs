@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.ViewModels;
 using ReactiveUI;
 using RestSharp;
@@ -56,6 +57,55 @@ public class RYCBApiConverter
         }
 
         return request;
+    }
+
+    // ==================== 26.4 统一缓存 ====================
+
+    /// <summary>
+    ///     尝试从统一缓存取出仍然有效的内容（26.4）。未命中或无法反序列化时返回 null，
+    ///     调用方据此走网络请求。
+    /// </summary>
+    private static T? TryGetCached<T>(string cacheKey, string operationName, Func<string, T> deserialize)
+        where T : class
+    {
+        if (!ApiCacheService.TryGetContent(cacheKey, out var cached))
+        {
+            return null;
+        }
+
+        try
+        {
+            var cachedResult = deserialize(cached);
+            if (cachedResult is null)
+            {
+                ApiCacheService.Invalidate(cacheKey);
+                return null;
+            }
+
+            App.CurrentLogger.LogDebug($"[缓存命中] {cacheKey}（5 分钟内不重复请求）",
+                port: EnumLogPort.Client, module: EnumLogModule.Net);
+            MainWindowViewModel.Instance?.AppMessage =
+                string.Format(Languages.Languages.Text_Api_CacheHitFormat, operationName);
+            return cachedResult;
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, $"读取 API 缓存失败: {cacheKey}");
+            ApiCacheService.Invalidate(cacheKey);
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     写入统一缓存（26.4）。<paramref name="success" /> 为 false 时不写入，
+    ///     避免把失败结果固化 5 分钟。
+    /// </summary>
+    private static void CacheIfSuccess(string cacheKey, string? content, bool success)
+    {
+        if (success && !string.IsNullOrEmpty(content))
+        {
+             ApiCacheService.SetContent(cacheKey, content);
+        }
     }
 
     /// <summary>
@@ -161,8 +211,21 @@ public class RYCBApiConverter
         return res;
     }
 
-    public static async Task<SingleVersionInfo> GetLatestVersionInfoAsync()
+    /// <summary>
+    ///     获取最新正式版本信息（26.4：走统一 5 分钟缓存）。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过缓存、强制重新请求（用户点「检查更新」时使用）</param>
+    public static async Task<SingleVersionInfo> GetLatestVersionInfoAsync(bool forceRefresh = false)
     {
+        // 26.4：缓存优先。更新页 / 主页推荐 / 启动检查共用同一份结果，5 分钟内不重复请求
+        if (!forceRefresh &&
+            TryGetCached(ApiCacheKeys.LatestVersion, Languages.Languages.Text_Api_OpLatestVersion,
+                json => JsonSerializer.Deserialize<SingleVersionInfo>(json,
+                    App.AppJsonSerializerContext.SingleVersionInfo)!) is { } cachedVersion)
+        {
+            return cachedVersion;
+        }
+
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/latest"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
@@ -193,12 +256,28 @@ public class RYCBApiConverter
                 data = default
             };
 
+        // 26.4：仅成功结果进入缓存
+        CacheIfSuccess(ApiCacheKeys.LatestVersion, response.Content, result.success);
+
         MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, (int)response.StatusCode);
         return result;
     }
 
-    public static async Task<SingleVersionInfo> GetLatestPreviewVersionInfoAsync()
+    /// <summary>
+    ///     获取最新预览版本信息（26.4：走统一 5 分钟缓存）。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过缓存、强制重新请求</param>
+    public static async Task<SingleVersionInfo> GetLatestPreviewVersionInfoAsync(bool forceRefresh = false)
     {
+        // 26.4：缓存优先，与正式版本共用同一套 5 分钟窗口
+        if (!forceRefresh &&
+            TryGetCached(ApiCacheKeys.LatestPreviewVersion, Languages.Languages.Text_Api_OpLatestVersion,
+                json => JsonSerializer.Deserialize<SingleVersionInfo>(json,
+                    App.AppJsonSerializerContext.SingleVersionInfo)!) is { } cachedPreviewVersion)
+        {
+            return cachedPreviewVersion;
+        }
+
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "changelog/preview/latest"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取最新版本", port: EnumLogPort.Client, module: EnumLogModule.Net);
@@ -228,6 +307,9 @@ public class RYCBApiConverter
                 version = "0.0.0",
                 data = default
             };
+
+        // 26.4：仅成功结果进入缓存
+        CacheIfSuccess(ApiCacheKeys.LatestPreviewVersion, response.Content, result.success);
 
         MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, (int)response.StatusCode);
         return result;
@@ -282,11 +364,35 @@ public class RYCBApiConverter
 
         var result = JsonSerializer.Deserialize<SingleApiInfo<TunnelErrorInfo>>(res.Content,
             App.AppJsonSerializerContext.SingleApiInfoTunnelErrorInfo);
+
+        // 26.4：隧道错误信息按 flag 缓存 5 分钟（终端错误提示反复读取，避免重复请求）
+        var errorCacheKey = $"{ApiCacheKeys.TunnelErrorPrefix}{flag}";
+        if (result?.success == true)
+        {
+            ApiCacheService.SetContent(errorCacheKey, res.Content);
+        }
+        else
+        {
+            ApiCacheService.Invalidate(errorCacheKey);
+        }
+
         return result;
     }
 
-    public static async Task<SingleApiInfo<NoticeContent[]>> GetAllNoticeAsync()
+    /// <summary>
+    ///     获取软件公告列表（26.4：走统一 5 分钟缓存）。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过缓存、强制重新请求</param>
+    public static async Task<SingleApiInfo<NoticeContent[]>> GetAllNoticeAsync(bool forceRefresh = false)
     {
+        if (!forceRefresh &&
+            TryGetCached(ApiCacheKeys.SoftwareNotice, Languages.Languages.Text_Api_OpSoftwareNotice,
+                json => JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(json,
+                    App.AppJsonSerializerContext.SingleApiInfoNoticeContentArray)!) is { } cachedNotice)
+        {
+            return cachedNotice;
+        }
+
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + "notice"}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log("正在获取软件公告", port: EnumLogPort.Client, module: EnumLogModule.Net);
@@ -308,6 +414,9 @@ public class RYCBApiConverter
 
         var result = JsonSerializer.Deserialize<SingleApiInfo<NoticeContent[]>>(res.Content,
             App.AppJsonSerializerContext.SingleApiInfoNoticeContentArray);
+
+        // 26.4：仅成功结果进入缓存
+        CacheIfSuccess(ApiCacheKeys.SoftwareNotice, res.Content, result?.success == true);
         return result;
     }
 

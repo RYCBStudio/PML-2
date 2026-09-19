@@ -23,6 +23,9 @@ public enum HomeRecommendKind
     /// <summary>尚无隧道</summary>
     CreateTunnel,
 
+    /// <summary>启动用户最近启动过的隧道（26.4）</summary>
+    RecentTunnel,
+
     /// <summary>检测到可用更新</summary>
     UpdateAvailable,
 
@@ -49,6 +52,9 @@ public enum HomeRecommendAction
 
     /// <summary>前往更新页</summary>
     Update,
+
+    /// <summary>直接启动推荐中的最近使用隧道（26.4，不需要导航）</summary>
+    LaunchRecent,
 
     /// <summary>前往节点监控页</summary>
     Nodes,
@@ -91,7 +97,21 @@ public sealed record HomeRecommendContext
 
     /// <summary>剩余流量低于该值（字节）时提示流量偏低；0 表示不启用该项</summary>
     public ulong LowTrafficThresholdBytes { get; init; }
+
+    /// <summary>
+    ///     近期启动过的隧道（26.4），已按最后启动时间<b>倒序</b>排好。
+    ///     调用方负责过滤掉运行中/禁用/封禁的隧道，服务本身只做展示与截断。
+    /// </summary>
+    public IReadOnlyList<RecentTunnelEntry> RecentTunnels { get; init; } = [];
 }
+
+/// <summary>
+///     「最近启动的隧道」推荐输入项（26.4）。
+/// </summary>
+/// <param name="ProxyId">隧道 ID（点击推荐后据此启动）</param>
+/// <param name="Name">隧道名称（用于文案）</param>
+/// <param name="LastStartAt">最后一次启动时间（UTC；未知时为 null）</param>
+public sealed record RecentTunnelEntry(int ProxyId, string Name, DateTimeOffset? LastStartAt);
 
 /// <summary>
 ///     单条推荐：标题 + 可解释原因 + 主按钮文案与去向。
@@ -101,12 +121,17 @@ public sealed record HomeRecommendContext
 /// <param name="Reason">原因文案（一句话，可解释）</param>
 /// <param name="ActionText">主按钮文案</param>
 /// <param name="Action">按钮去向</param>
+/// <param name="ProxyId">
+///     关联的隧道 ID（仅 <see cref="HomeRecommendKind.RecentTunnel" /> 使用；其余为 -1）。
+///     由 UI 层据此直接启动对应隧道。
+/// </param>
 public sealed record HomeRecommendation(
     HomeRecommendKind Kind,
     string Title,
     string Reason,
     string ActionText,
-    HomeRecommendAction Action);
+    HomeRecommendAction Action,
+    int ProxyId = -1);
 
 /// <summary>
 ///     精简主页的推荐规则引擎（26.4）。
@@ -116,11 +141,15 @@ public sealed record HomeRecommendation(
 public static class HomeRecommendService
 {
     /// <summary>精简主页最多展示的推荐条数</summary>
-    public const int MaxItems = 4;
+    public const int MaxItems = 5;
+
+    /// <summary>「最近启动的隧道」最多展示的条数（26.4）</summary>
+    public const int MaxRecentTunnelItems = 3;
 
     /// <summary>
     ///     按优先级生成推荐列表。
-    ///     优先级：失败隧道 → 流量超限 → 流量偏低 → 有隧道但无运行 → 尚无隧道 → 有更新 → 兜底。
+    ///     优先级：失败隧道 → 流量超限 → <b>最近启动的隧道</b> → 流量偏低 → 有隧道但无运行
+    ///     → 尚无隧道 → 有更新 → 兜底。
     /// </summary>
     /// <param name="ctx">主页提供的上下文</param>
     /// <param name="dismissed">被用户「暂时忽略」的规则种类</param>
@@ -141,7 +170,29 @@ public static class HomeRecommendService
                 HomeRecommendAction.Manage));
         }
 
-        // 2/3. 流量：超限（账户状态=2）优先于「偏低」
+        // 2.5 最近启动过的隧道（26.4）：展示用户近期启动过的隧道，按最后启动时间倒序，
+        //     让用户能快速重新启动最近用过的隧道。
+        //     仅在账号正常且有候选时出现；流量超限时由上面的规则主导，不再堆叠。
+        if (ctx.AccountStatus is not (1 or 2) && ctx.RecentTunnels.Count > 0)
+        {
+            var now = DateTimeOffset.UtcNow;
+            // 在服务内自行排序，保证「按最后启动时间倒序」不依赖调用方传入顺序
+            foreach (var recent in ctx.RecentTunnels
+                         .OrderByDescending(t => t.LastStartAt ?? DateTimeOffset.MinValue)
+                         .Take(MaxRecentTunnelItems))
+            {
+                ordered.Add(new HomeRecommendation(
+                    HomeRecommendKind.RecentTunnel,
+                    string.Format(Languages.Languages.Text_Home_Recommend_RecentTunnel_Title, recent.Name),
+                    string.Format(Languages.Languages.Text_Home_Recommend_RecentTunnel_Reason,
+                        FormatRelativeTime(recent.LastStartAt, now)),
+                    Languages.Languages.Text_Home_Recommend_Action_Launch,
+                    HomeRecommendAction.LaunchRecent,
+                    recent.ProxyId));
+            }
+        }
+
+        // 3. 流量偏低（账户状态=1 为封禁，此时流量提醒无意义，故排除）
         if (ctx.AccountStatus == 2)
         {
             ordered.Add(new HomeRecommendation(
@@ -220,5 +271,40 @@ public static class HomeRecommendService
             : ordered;
 
         return filter.Take(MaxItems).ToList();
+    }
+
+    /// <summary>
+    ///     把「最后启动时间」格式化为可读的相对时间（26.4），如「刚刚」「3 小时前」「2 天前」。
+    ///     时间未知时返回 <c>Text.Home.Recommend.RecentTunnel.NeverStarted</c>。
+    /// </summary>
+    private static string FormatRelativeTime(DateTimeOffset? at, DateTimeOffset now)
+    {
+        if (at is null)
+        {
+            return Languages.Languages.Text_Home_Recommend_RecentTunnel_NeverStarted;
+        }
+
+        var span = now - at.Value;
+        if (span < TimeSpan.Zero)
+        {
+            span = TimeSpan.Zero;
+        }
+
+        if (span < TimeSpan.FromMinutes(1))
+        {
+            return Languages.Languages.Text_Global_JustNow;
+        }
+
+        if (span < TimeSpan.FromHours(1))
+        {
+            return string.Format(Languages.Languages.Text_Global_MinutesAgo, (int)span.TotalMinutes);
+        }
+
+        if (span < TimeSpan.FromDays(1))
+        {
+            return string.Format(Languages.Languages.Text_Global_HoursAgo, (int)span.TotalHours);
+        }
+
+        return string.Format(Languages.Languages.Text_Global_DaysAgo, (int)span.TotalDays);
     }
 }

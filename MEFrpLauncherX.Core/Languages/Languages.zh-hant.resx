@@ -190,6 +190,19 @@
     <data name="Text.Global.Off" xml:space="preserve">
         <value>關閉</value>
     </data>
+    <!-- 26.4 相對時間（用於「最近啟動的隧道」推薦原因） -->
+    <data name="Text.Global.JustNow" xml:space="preserve">
+        <value>剛剛</value>
+    </data>
+    <data name="Text.Global.MinutesAgo" xml:space="preserve">
+        <value>{0} 分鐘前</value>
+    </data>
+    <data name="Text.Global.HoursAgo" xml:space="preserve">
+        <value>{0} 小時前</value>
+    </data>
+    <data name="Text.Global.DaysAgo" xml:space="preserve">
+        <value>{0} 天前</value>
+    </data>
     <data name="Text.Feedback.Email" xml:space="preserve">
         <value>使用者電子郵件</value>
     </data>
@@ -2620,6 +2633,21 @@ ___
     <data name="Text.Api.FetchingFormat" xml:space="preserve">
         <value>正在獲取{0}</value>
     </data>
+    <data name="Text.Api.CacheHitFormat" xml:space="preserve">
+        <value>{0}（快取）</value>
+    </data>
+    <data name="Text.Api.OpTrafficStatus" xml:space="preserve">
+        <value>流量統計</value>
+    </data>
+    <data name="Text.Api.OpSoftwareNotice" xml:space="preserve">
+        <value>軟體公告</value>
+    </data>
+    <data name="Text.Api.OpLatestVersion" xml:space="preserve">
+        <value>最新版本</value>
+    </data>
+    <data name="Text.Api.OpTunnelErrorInfo" xml:space="preserve">
+        <value>隧道錯誤資訊</value>
+    </data>
     <data name="Text.Api.CannotGetApiInfo" xml:space="preserve">
         <value>無法取得 API 資訊</value>
     </data>
@@ -3295,8 +3323,8 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.AppearanceSettings.HomeLayout.SimpleHint" xml:space="preserve">
         <value>精簡佈局下，上方的「自訂主頁」顯示開關不會生效。</value>
     </data>
-    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
-        <value>你好，{0}</value>
+    <data name="Text.Home.Simple.Greeting.Morning" xml:space="preserve">
+        <value>早上好，{0}</value>
     </data>
     <data name="Text.Home.Simple.NotLoggedIn" xml:space="preserve">
         <value>尚未登入</value>
@@ -3375,6 +3403,21 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Home.Recommend.ReadDocs.Reason" xml:space="preserve">
         <value>遇到問題？官方文件包含隧道設定、外掛與排障說明。</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.Title" xml:space="preserve">
+        <value>啟動「{0}」</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.Reason" xml:space="preserve">
+        <value>你最近啟動過這條隧道（{0}），可一鍵重新啟動。</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.NeverStarted" xml:space="preserve">
+        <value>暫無啟動記錄</value>
+    </data>
+    <data name="Text.Home.Recommend.TunnelMissing" xml:space="preserve">
+        <value>該隧道已不存在，可能已被刪除。</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Launch" xml:space="preserve">
+        <value>啟動</value>
     </data>
     <data name="Text.Home.Recommend.Action.Manage" xml:space="preserve">
         <value>去處理</value>
@@ -3524,5 +3567,20 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
         <value>申請失敗</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Noon" xml:space="preserve">
+        <value>中午好，{0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Afternoon" xml:space="preserve">
+        <value>	下午好，{0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Evening" xml:space="preserve">
+        <value>晚上好，{0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Prenoon" xml:space="preserve">
+        <value>上午好，{0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
+        <value>你好，{0}</value>
     </data>
 </root>

@@ -260,6 +260,10 @@ public partial class UserCenterPage : UserControl
         }
 
         UserCache.Logout();
+        // 26.4：退出登录 → 清空统一缓存，避免切换账号后串到上一位用户的数据
+        Core.Services.ApiCacheService.InvalidateAll();
+        // 26.4：同时清空进程内节点缓存，防止新账号复用旧账号的节点视图
+        MEFrpApiConverter.ResetInMemoryCaches();
         await ConfigManager.UpdateConfigAsync(cfg => cfg.AutoLogin = false);
         try
         {
@@ -370,7 +374,8 @@ public partial class UserCenterViewModel : ViewModelBase
             {
                 IsWorking = true;
                 await MEFrpApiConverter.AddIcpDomainAsync(result.Trim());
-                var domains = await MEFrpApiConverter.GetIcpDomainListAsync();
+                // 26.4：新增后强制刷新，确保列表立即包含新域名
+                var domains = await MEFrpApiConverter.GetIcpDomainListAsync(true);
                 IcpDomains.Clear();
                 if (domains.data == null || domains.data?.Count == 0)
                 {

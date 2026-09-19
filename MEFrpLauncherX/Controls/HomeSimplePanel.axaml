@@ -9,8 +9,11 @@
              mc:Ignorable="d" d:DesignWidth="760" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.HomeSimplePanel"
              x:DataType="viewModels:HomePageViewModel">
+    <Design.DataContext>
+        <viewModels:HomePageViewModel />
+    </Design.DataContext>
     <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="14" Spacing="12" MaxWidth="760" HorizontalAlignment="Center">
+        <StackPanel Margin="14" Spacing="12" HorizontalAlignment="Stretch">
 
             <!-- ===== 区块 1：用户与额度 ===== -->
             <Border Classes="FluentCard" Padding="16">

@@ -56,7 +56,7 @@ namespace Notify.NET.Platform.Linux
             var item = new WorkItem(action, tcs);
 
             // Allocate a GCHandle to keep the WorkItem alive from unmanaged code.
-            GCHandle handle = GCHandle.Alloc(item, GCHandleType.Normal);
+            var handle = GCHandle.Alloc(item, GCHandleType.Normal);
 
             // g_main_context_invoke(null) posts to the default context, which is owned
             // by our GMainLoop thread.
@@ -103,7 +103,7 @@ namespace Notify.NET.Platform.Linux
         // Returns false so GLib removes the source after one invocation.
         private static bool DispatchSourceFuncStatic(IntPtr userData)
         {
-            GCHandle handle = GCHandle.FromIntPtr(userData);
+            var handle = GCHandle.FromIntPtr(userData);
             var item = (WorkItem)handle.Target!;
             handle.Free();
 

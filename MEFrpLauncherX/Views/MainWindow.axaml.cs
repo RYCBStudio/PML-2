@@ -16,6 +16,7 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
+using Iciclecreek.TerminalWindow;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -44,12 +45,14 @@ public partial class MainWindow : AppWindow, IDisposable
 
     private CancellationTokenSource _clearMessageCts;
     private TrayIcon _notifyIcon;
+    private bool _backgroundApplied;
+    private (string Path, Bitmap? Image)? _backgroundCache;
     private bool _updateChecked;
     private MainWindowViewModel _vm;
 
     public MainWindow()
     {
-        #region 透明度设置
+        #region 透明度设置与渲染优化
 
         WindowTransparencyLevel preferredTLH;
         if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")))
@@ -79,7 +82,7 @@ public partial class MainWindow : AppWindow, IDisposable
         }
         
         TransparencyLevelHint = [preferredTLH];
-
+        
         #endregion
 
         #region Splash设置
@@ -137,6 +140,48 @@ public partial class MainWindow : AppWindow, IDisposable
         Instance = this;
     }
 
+    /// <summary>
+    ///     最小化恢复优化：窗口从最小化恢复时强制一次整窗重绘。
+    ///     否则渲染器可能只在恢复后的首帧刷新一小块脏区，
+    ///     表现为窗口左上角先出现一个色块、数秒后才显示完整界面。
+    /// </summary>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property != WindowStateProperty)
+        {
+            return;
+        }
+
+        if (change.GetNewValue<WindowState>() == WindowState.Minimized)
+        {
+            // 最小化期间暂停终端渲染节流：终端不可见，持续触发的重绘既浪费 CPU/GPU，
+            // 又会在恢复首帧前制造大量排队帧，加剧恢复卡顿。
+            TerminalRenderThrottle.Pause();
+            return;
+        }
+
+        // 恢复时统一重绘一次所有挂起的终端（最新内容），再强制整窗重绘。
+        TerminalRenderThrottle.Resume();
+        RequestFullRedraw();
+    }
+
+    /// <summary>
+    ///     强制整窗重绘（布局 + 视觉），分两帧提交以覆盖恢复动画期间到达的迟到帧。
+    /// </summary>
+    private void RequestFullRedraw()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            InvalidateMeasure();
+            InvalidateArrange();
+            InvalidateVisual();
+        }, DispatcherPriority.Render);
+
+        Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Background);
+    }
+
     internal static MainWindow Instance
     {
         get;
@@ -152,6 +197,8 @@ public partial class MainWindow : AppWindow, IDisposable
     public void Dispose()
     {
         _notifyIcon.Dispose();
+        _backgroundCache?.Image?.Dispose();
+        _backgroundCache = null;
         _clearMessageCts?.Cancel();
         _clearMessageCts?.Dispose();
         _clearMessageCts = null;
@@ -165,7 +212,8 @@ public partial class MainWindow : AppWindow, IDisposable
     {
         App.SplashService?.UpdateProgress(40, Languages.Text_MainWindow_LoadingConfig);
         Core.App.StorageProvider = StorageProvider;
-        _vm = new MainWindowViewModel();
+        // 复用 App 初始化阶段已创建的 ViewModel，避免重建导致整棵绑定树重新求值
+        _vm = DataContext as MainWindowViewModel ?? new MainWindowViewModel();
         DataContext = _vm;
         if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
         {
@@ -200,7 +248,6 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             _vm.Progress = progress;
         });
-        var menu = CreateContextMenu();
         App.SplashService?.UpdateProgress(60, Languages.Text_MainWindow_InitTray);
         _notifyIcon = new TrayIcon
         {
@@ -340,6 +387,9 @@ public partial class MainWindow : AppWindow, IDisposable
             ["version"] = Core.App.Version,
             ["os"] = Environment.OSVersion.Platform.ToString()
         });
+        
+        // 初始化完成，停止进度动画
+        _vm.IsBusy = false;
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
         var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
@@ -399,6 +449,76 @@ public partial class MainWindow : AppWindow, IDisposable
         }
     }
 
+    /// <summary>
+    ///     应用用户自定义背景图（仅首次激活执行一次）。
+    ///     图片解码放到线程池，避免在窗口激活/恢复时阻塞 UI 线程。
+    /// </summary>
+    private async Task ApplyBackgroundAsync()
+    {
+        var path = ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage;
+        if (string.IsNullOrEmpty(path) || !File.Exists(path))
+        {
+            return;
+        }
+
+        var shouldFillTitleBar = ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar;
+        var stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
+        {
+            "None" => Stretch.None,
+            "Stretch" => Stretch.Fill,
+            "Uniform" => Stretch.Uniform,
+            "UniformToFill" => Stretch.UniformToFill,
+            _ => Stretch.None
+        };
+
+        var bitmap = await GetBackgroundBitmapAsync(path);
+        if (bitmap is null)
+        {
+            return;
+        }
+
+        if (shouldFillTitleBar)
+        {
+            Background = new ImageBrush(bitmap) { Stretch = stretch };
+            MainBackground.Hide();
+        }
+        else
+        {
+            Background = null;
+            MainBackground.Source = bitmap;
+            MainBackground.Stretch = stretch;
+            MainBackground.Show();
+        }
+    }
+
+    /// <summary>解码背景图（带缓存），解码过程不占用 UI 线程。</summary>
+    private async Task<Bitmap?> GetBackgroundBitmapAsync(string path)
+    {
+        if (_backgroundCache is { } cache && cache.Path == path)
+        {
+            return cache.Image;
+        }
+
+        try
+        {
+            var bitmap = await Task.Run(() => new Bitmap(path));
+            // 更换背景图前释放上一张已解码位图，避免大图像常驻内存。
+            var previous = _backgroundCache?.Image;
+            _backgroundCache = (path, bitmap);
+            if (!ReferenceEquals(previous, bitmap))
+            {
+                previous?.Dispose();
+            }
+
+            return bitmap;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "加载背景图失败");
+            return null;
+        }
+    }
+
     private static async Task CheckPolicy()
     {
         if (ConfigManager.CurrentConfig.PrivacyAgreed)
@@ -451,40 +571,14 @@ public partial class MainWindow : AppWindow, IDisposable
 
     private async void OnActivated(object? sender, EventArgs e)
     {
-        if (File.Exists(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
+        // 背景图只在首次激活时应用：
+        // 原实现每次激活都会同步解码整张背景大图，而最小化恢复同样会触发 Activated，
+        // 恢复瞬间 UI 线程被解码阻塞数秒，表现为「左上角先出现色块、随后才显示完整窗口」。
+        if (!_backgroundApplied)
         {
-            if (ConfigManager.CurrentConfig.BackgroundSettings.ShouldFillTitleBar)
-            {
-                Background =
-                    new ImageBrush(new Bitmap(ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage))
-                    {
-                        Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                        {
-                            "None" => Stretch.None,
-                            "Stretch" => Stretch.Fill,
-                            "Uniform" => Stretch.Uniform,
-                            "UniformToFill" => Stretch.UniformToFill,
-                            _ => Stretch.None
-                        }
-                    };
-                MainBackground.Hide();
-            }
-            else
-            {
-                Background = null;
-                MainBackground.Show();
-                ImageLoader.SetSource(MainBackground, ConfigManager.CurrentConfig.BackgroundSettings.BackgroundImage);
-                MainBackground.Stretch = ConfigManager.CurrentConfig.BackgroundSettings.Stretch switch
-                {
-                    "None" => Stretch.None,
-                    "Stretch" => Stretch.Fill,
-                    "Uniform" => Stretch.Uniform,
-                    "UniformToFill" => Stretch.UniformToFill,
-                    _ => Stretch.None
-                };
-            }
+            _backgroundApplied = true;
+            await ApplyBackgroundAsync();
         }
-
 
         if (!_updateChecked)
         {

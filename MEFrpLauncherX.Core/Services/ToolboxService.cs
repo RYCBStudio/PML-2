@@ -17,7 +17,7 @@ public static class ToolboxService
 
         try
         {
-            DirectoryInfo di = new DirectoryInfo(path);
+            var di = new DirectoryInfo(path);
             return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
         }
         catch
@@ -46,7 +46,7 @@ public static class ToolboxService
             ? DateTime.MaxValue
             : DateTime.Now - olderThan;
 
-        int deletedCount = 0;
+        var deletedCount = 0;
         long freedBytes = 0;
 
         foreach (var file in Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories))

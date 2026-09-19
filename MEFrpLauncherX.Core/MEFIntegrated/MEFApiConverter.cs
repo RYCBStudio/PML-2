@@ -2,8 +2,11 @@ using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
+using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Core.ViewModels;
 using RestSharp;
@@ -134,9 +137,55 @@ public static class MEFrpApiConverter
         }
     }
 
-    private static async Task<ApiInfo<T>> ExecuteRequestAsync<T>(RestRequest request, string endpoint,
-        string operationName)
+    // 26.4：统一缓存的作用域提供者（只读内存字段，避免每次构造缓存键都读磁盘）
+    static MEFrpApiConverter() => ApiCacheService.UserScopeProvider = () => UserCache.CurrentUser?.username;
+
+    /// <summary>
+    ///     尝试从统一缓存中取出仍然有效的响应并反序列化（26.4）。
+    ///     命中后不再发起网络请求，也不再重复弹提示，保证「缓存期内直接用缓存」。
+    /// </summary>
+    /// <returns>命中且可反序列化时返回结果，否则返回 null 以触发真实请求。</returns>
+    private static ApiInfo<T>? TryGetCached<T>(string? cacheKey, string operationName)
     {
+        if (string.IsNullOrEmpty(cacheKey) || !ApiCacheService.TryGetContent(cacheKey, out var cached))
+        {
+            return null;
+        }
+
+        try
+        {
+            var cachedResult = JsonSerializer.Deserialize<ApiInfo<T>>(cached, App.AppJsonSerializerContext.Options);
+            if (cachedResult is null)
+            {
+                // 缓存内容无法解析（如类型变更）→ 丢弃并回退到网络请求
+                ApiCacheService.Invalidate(cacheKey);
+                return null;
+            }
+
+            App.CurrentLogger.LogDebug($"[缓存命中] {cacheKey}（5 分钟内不重复请求）",
+                port: EnumLogPort.Client, module: EnumLogModule.Net);
+            MainWindowViewModel.Instance?.AppMessage =
+                string.Format(Languages.Languages.Text_Api_CacheHitFormat, operationName);
+            return cachedResult;
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, $"读取 API 缓存失败: {cacheKey}");
+            ApiCacheService.Invalidate(cacheKey);
+            return null;
+        }
+    }
+
+    private static async Task<ApiInfo<T>> ExecuteRequestAsync<T>(RestRequest request, string endpoint,
+        string operationName, string? cacheKey = null, bool forceRefresh = false, bool cacheEmptyData = false)
+    {
+        // 26.4：缓存优先。页面展示类数据在 5 分钟有效期内直接复用上次成功请求的结果；
+        //        forceRefresh（用户显式刷新 / 写操作后）与未配置键的接口始终走网络。
+        if (!forceRefresh && TryGetCached<T>(cacheKey, operationName) is { } cached)
+        {
+            return cached;
+        }
+
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
@@ -178,6 +227,20 @@ public static class MEFrpApiConverter
                 data = default
             };
 
+        // 26.4：仅缓存成功结果；失败/异常响应不写入，避免把错误状态固化 5 分钟。
+        //       cacheEmptyData 用于「空数据本身即为合法结果」的接口（如无弹窗公告）。
+        if (!string.IsNullOrEmpty(cacheKey))
+        {
+            if (result.code == 200 && (cacheEmptyData || result.data is not null))
+            {
+                ApiCacheService.SetContent(cacheKey, response.Content!);
+            }
+            else
+            {
+                ApiCacheService.Invalidate(cacheKey);
+            }
+        }
+
         HandleResponse(result);
         MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
         return result;
@@ -211,14 +274,15 @@ public static class MEFrpApiConverter
     /// <summary>
     ///    获取ICP备案域名列表
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns></returns>
-    public static async Task<ApiInfo<List<IcpDomain>>> GetIcpDomainListAsync()
+    public static async Task<ApiInfo<List<IcpDomain>>> GetIcpDomainListAsync(bool forceRefresh = false)
     {
         ApiInfo<List<IcpDomain>> result = null;
         await AppAnalytics.TrackCostAsync("api.icp.domain-list", async () =>
         {
             result = await ExecuteRequestAsync<List<IcpDomain>>(CreateRequest(), "auth/user/icpDomain/list",
-                Languages.Languages.Text_Api_OpIcpDomainList);
+                Languages.Languages.Text_Api_OpIcpDomainList, ApiCacheKeys.IcpDomainList, forceRefresh);
         });
         return result;
     }
@@ -235,7 +299,16 @@ public static class MEFrpApiConverter
 
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "", App.AppJsonSerializerContext.ApiInfoObject);
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "",
+            App.AppJsonSerializerContext.ApiInfoObject);
+
+        // 26.4：写操作成功后失效备案域名缓存，保证下次读到的列表是最新的
+        if (result?.code == 200)
+        {
+            ApiCacheService.Invalidate(ApiCacheKeys.IcpDomainList);
+        }
+
+        return result;
     }
     
     public static async Task<ApiInfo<object>> AddIcpDomainAsync(string domain)
@@ -251,19 +324,30 @@ public static class MEFrpApiConverter
 
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "", App.AppJsonSerializerContext.ApiInfoObject);
+        var result = JsonSerializer.Deserialize<ApiInfo<object>>(response.Content ?? "",
+            App.AppJsonSerializerContext.ApiInfoObject);
+
+        // 26.4：写操作成功后失效备案域名缓存
+        if (result?.code == 200)
+        {
+            ApiCacheService.Invalidate(ApiCacheKeys.IcpDomainList);
+        }
+
+        return result;
     }
 
     /// <summary>
     ///     获取系统状态
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求（用户显式刷新时使用）</param>
     /// <returns></returns>
-    public static async Task<ApiInfo<SystemStatus?>> GetSystemStatusAsync()
+    public static async Task<ApiInfo<SystemStatus?>> GetSystemStatusAsync(bool forceRefresh = false)
     {
         ApiInfo<SystemStatus?> result = null;
         await AppAnalytics.TrackCostAsync("api.system.status", async () =>
         {
-            result = await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status", Languages.Languages.Text_Api_OpSystemStatus)
+            result = await ExecuteRequestAsync<SystemStatus?>(CreateRequest(), "auth/system/status",
+                    Languages.Languages.Text_Api_OpSystemStatus, ApiCacheKeys.SystemStatus, forceRefresh)
                 .ConfigureAwait(false);
         });
         return result;
@@ -272,29 +356,38 @@ public static class MEFrpApiConverter
     /// <summary>
     ///     获取重要公告
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns></returns>
-    public static async Task<ApiInfo<string?>> GetPopupNoticeAsync()
+    public static async Task<ApiInfo<string?>> GetPopupNoticeAsync(bool forceRefresh = false)
     {
-        var result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice", Languages.Languages.Text_Api_OpPopupNotice);
+        // 26.4：「无弹窗公告」是合法结果（data 为 null），因此允许缓存空数据
+        var result = await ExecuteRequestAsync<string?>(CreateRequest(), "auth/popupNotice",
+            Languages.Languages.Text_Api_OpPopupNotice, ApiCacheKeys.PopupNotice, forceRefresh,
+            cacheEmptyData: true);
         return result;
     }
 
     /// <summary>
     ///     异步获取公告
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns>公告内容</returns>
-    public static async Task<ApiInfo<string>> GetNoticeAsync()
+    public static async Task<ApiInfo<string>> GetNoticeAsync(bool forceRefresh = false)
     {
-        return await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice", Languages.Languages.Text_Api_OpNotice);
+        return await ExecuteRequestAsync<string>(CreateRequest(), "auth/notice",
+            Languages.Languages.Text_Api_OpNotice, ApiCacheKeys.Notice, forceRefresh,
+            cacheEmptyData: true);
     }
 
     /// <summary>
     ///     获取公共信息
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns>公共信息</returns>
-    public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync()
+    public static async Task<ApiInfo<PublicData>> GetPublicInfoAsync(bool forceRefresh = false)
     {
-        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics", Languages.Languages.Text_Api_OpPublicInfo);
+        var result = await ExecuteRequestAsync<PublicData>(CreateRequest(), "public/statistics",
+            Languages.Languages.Text_Api_OpPublicInfo, ApiCacheKeys.PublicInfo, forceRefresh);
         CurrentPublicInfo = result;
         return result;
     }
@@ -302,13 +395,15 @@ public static class MEFrpApiConverter
     /// <summary>
     ///     异步获取用户信息
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求（签到后用户中心刷新使用）</param>
     /// <returns>用户信息</returns>
-    public static async Task<ApiInfo<ExtraUserInfo>> GetExtraUserInfoAsync()
+    public static async Task<ApiInfo<ExtraUserInfo>> GetExtraUserInfoAsync(bool forceRefresh = false)
     {
         ApiInfo<ExtraUserInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.user-info", async () =>
         {
-            result = await ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info", Languages.Languages.Text_Api_OpExtraUserInfo);
+            result = await ExecuteRequestAsync<ExtraUserInfo>(CreateRequest(), "auth/user/info",
+                Languages.Languages.Text_Api_OpExtraUserInfo, ApiCacheKeys.UserInfo, forceRefresh);
         });
         return result;
     }
@@ -347,6 +442,14 @@ public static class MEFrpApiConverter
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
         (bool, string?) result = (response.Content?.Contains("成功") ?? false, response.Content);
+
+        // 26.4：签到会改变账户流量/签到态等展示数据 → 失效用户信息与流量统计缓存
+        if (result.Item1)
+        {
+            ApiCacheService.Invalidate(ApiCacheKeys.UserInfo);
+            ApiCacheService.InvalidatePrefix(ApiCacheKeys.TrafficStatsPrefix);
+        }
+
         return result;
     }
 
@@ -382,13 +485,15 @@ public static class MEFrpApiConverter
     /// <summary>
     ///     获取节点状态
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求（用户点「刷新」时使用）</param>
     /// <returns>一个"单个节点状态"数组。</returns>
-    public static async Task<ApiInfo<NodeStatus[]>> GetNodesStatusAsync()
+    public static async Task<ApiInfo<NodeStatus[]>> GetNodesStatusAsync(bool forceRefresh = false)
     {
         ApiInfo<NodeStatus[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.status", async () =>
         {
-            result = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status", Languages.Languages.Text_Api_OpNodeStatus);
+            result = await ExecuteRequestAsync<NodeStatus[]>(CreateRequest(), "auth/node/status",
+                Languages.Languages.Text_Api_OpNodeStatus, ApiCacheKeys.NodesStatus, forceRefresh);
         });
 
         if (result is not { data: not null })
@@ -409,13 +514,15 @@ public static class MEFrpApiConverter
     /// <summary>
     ///     获取节点信息
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns>一个"单个节点信息"数组。</returns>
-    public static async Task<ApiInfo<NodeInfo[]>> GetNodesInfoAsync()
+    public static async Task<ApiInfo<NodeInfo[]>> GetNodesInfoAsync(bool forceRefresh = false)
     {
         ApiInfo<NodeInfo[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.info", async () =>
         {
-            result = await ExecuteRequestAsync<NodeInfo[]>(CreateRequest(), "auth/node/list", Languages.Languages.Text_Api_OpNodeInfo);
+            result = await ExecuteRequestAsync<NodeInfo[]>(CreateRequest(), "auth/node/list",
+                Languages.Languages.Text_Api_OpNodeInfo, ApiCacheKeys.NodesInfo, forceRefresh);
         });
         return result;
     }
@@ -423,37 +530,52 @@ public static class MEFrpApiConverter
     /// <summary>
     ///     获取已创建隧道的节点连接地址
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns></returns>
-    public static async Task<ApiInfo<NodeNameList[]>> GetNodesNameListAsync()
+    public static async Task<ApiInfo<NodeNameList[]>> GetNodesNameListAsync(bool forceRefresh = false)
     {
         ApiInfo<NodeNameList[]> result = null;
         await AppAnalytics.TrackCostAsync("api.nodes.name-list", async () =>
         {
-            result = await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList", Languages.Languages.Text_Api_OpConnectedNodeInfo);
+            result = await ExecuteRequestAsync<NodeNameList[]>(CreateRequest(), "auth/node/nameList",
+                Languages.Languages.Text_Api_OpConnectedNodeInfo, ApiCacheKeys.NodesNameList, forceRefresh);
         });
         return result;
     }
 
     /// <summary>
-    ///     确保节点列表缓存已初始化（线程安全，幂等）
+    ///     确保节点列表缓存已初始化（线程安全，幂等）。
+    ///     <para>
+    ///         26.4：进程内对象缓存与统一响应缓存共用同一 TTL——超过 5 分钟后重新请求，
+    ///         保证与「所有页面统一 5 分钟缓存」的策略一致（此前该内存缓存永不过期）。
+    ///     </para>
     /// </summary>
-    public static async Task<NodesListInfo?> EnsureNodesListInfoAsync(CancellationToken cancellationToken = default)
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <param name="forceRefresh">true 表示忽略内存缓存与 5 分钟响应缓存、强制重新请求</param>
+    public static async Task<NodesListInfo?> EnsureNodesListInfoAsync(CancellationToken cancellationToken = default,
+        bool forceRefresh = false)
     {
-        // Fast path
-        if (Volatile.Read(ref _nodesListInfo) != null)
+        // Fast path：仅当统一缓存中的节点列表仍在有效期内，才复用进程内对象
+        if (!forceRefresh && Volatile.Read(ref _nodesListInfo) != null &&
+            ApiCacheService.IsFresh(ApiCacheKeys.NodesInfo))
         {
             return _nodesListInfo;
+        }
+
+        if (forceRefresh)
+        {
+            Volatile.Write(ref _nodesListInfo, null);
         }
 
         await _nodesListSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            if (_nodesListInfo != null)
+            if (!forceRefresh && _nodesListInfo != null && ApiCacheService.IsFresh(ApiCacheKeys.NodesInfo))
             {
                 return _nodesListInfo;
             }
 
-            var apiResult = await GetNodesInfoAsync();
+            var apiResult = await GetNodesInfoAsync(forceRefresh);
             if (apiResult is not { data: not null })
             {
                 return _nodesListInfo;
@@ -470,24 +592,37 @@ public static class MEFrpApiConverter
     }
 
     /// <summary>
-    ///     确保节点状态缓存已初始化（线程安全，幂等）
+    ///     确保节点状态缓存已初始化（线程安全，幂等）。
+    ///     <para>
+    ///         26.4：进程内对象缓存与统一响应缓存共用同一 TTL——超过 5 分钟后重新请求，
+    ///         保证节点监控 / 创建隧道页展示的数据同样遵循统一缓存策略。
+    ///     </para>
     /// </summary>
-    public static async Task<NodesStatusInfo?> EnsureNodesStatusInfoAsync(CancellationToken cancellationToken = default)
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <param name="forceRefresh">true 表示忽略内存缓存与 5 分钟响应缓存、强制重新请求</param>
+    public static async Task<NodesStatusInfo?> EnsureNodesStatusInfoAsync(CancellationToken cancellationToken = default,
+        bool forceRefresh = false)
     {
-        if (Volatile.Read(ref _nodesStatusInfo) != null)
+        if (!forceRefresh && Volatile.Read(ref _nodesStatusInfo) != null &&
+            ApiCacheService.IsFresh(ApiCacheKeys.NodesStatus))
         {
             return _nodesStatusInfo;
+        }
+
+        if (forceRefresh)
+        {
+            Volatile.Write(ref _nodesStatusInfo, null);
         }
 
         await _nodesStatusSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            if (_nodesStatusInfo != null)
+            if (!forceRefresh && _nodesStatusInfo != null && ApiCacheService.IsFresh(ApiCacheKeys.NodesStatus))
             {
                 return _nodesStatusInfo;
             }
 
-            var apiResult = await GetNodesStatusAsync().ConfigureAwait(false);
+            var apiResult = await GetNodesStatusAsync(forceRefresh).ConfigureAwait(false);
             if (apiResult is { data: not null })
             {
                 var local = new NodesStatusInfo { NodesStatus = apiResult.data };
@@ -572,6 +707,9 @@ public static class MEFrpApiConverter
                          """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
+
+        // 26.4：新建隧道属于写操作 → 失效隧道列表缓存，避免管理页在 5 分钟内看不到新隧道
+        InvalidateProxyListOnSuccess(result);
         return result;
     }
 
@@ -607,19 +745,36 @@ public static class MEFrpApiConverter
                          """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
+
+        // 26.4：更新隧道属于写操作 → 失效隧道列表缓存
+        InvalidateProxyListOnSuccess(result);
         return result;
+    }
+
+    /// <summary>
+    ///     隧道列表相关写操作成功后统一失效缓存（26.4）。
+    ///     仅在 <c>code == 200</c> 时失效，失败的写操作不改动缓存。
+    /// </summary>
+    private static void InvalidateProxyListOnSuccess(ApiInfo<object>? result)
+    {
+        if (result?.code == 200)
+        {
+            ApiCacheService.Invalidate(ApiCacheKeys.ProxyList);
+        }
     }
 
     /// <summary>
     ///     获取用户的隧道列表
     /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求（管理页显式刷新时使用）</param>
     /// <returns>一个"用户隧道"数组。</returns>
-    public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync()
+    public static async Task<ApiInfo<ProxyInfo>> GetProxiesAsync(bool forceRefresh = false)
     {
         ApiInfo<ProxyInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.proxy.list", async () =>
         {
-            result = await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list", Languages.Languages.Text_Api_OpProxyList);
+            result = await ExecuteRequestAsync<ProxyInfo>(CreateRequest(), "auth/proxy/list",
+                Languages.Languages.Text_Api_OpProxyList, ApiCacheKeys.ProxyList, forceRefresh);
         });
         return result;
     }
@@ -710,6 +865,9 @@ public static class MEFrpApiConverter
                          """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
+
+        // 26.4：切换隧道状态属于写操作 → 失效隧道列表缓存
+        InvalidateProxyListOnSuccess(result);
         return result;
     }
 
@@ -770,6 +928,8 @@ public static class MEFrpApiConverter
                 if (secondResult != null)
                 {
                     HandleResponse(secondResult);
+                    // 26.4：强制下线属于写操作 → 失效隧道列表缓存
+                    InvalidateProxyListOnSuccess(secondResult);
                     return secondResult;
                 }
             }
@@ -785,6 +945,8 @@ public static class MEFrpApiConverter
                 JsonSerializer.Deserialize<ApiInfo<object>>(content, App.AppJsonSerializerContext.ApiInfoObject) ??
                 new ApiInfo<object>();
             HandleResponse(result);
+            // 26.4：强制下线属于写操作 → 失效隧道列表缓存
+            InvalidateProxyListOnSuccess(result);
             return result;
         }
         catch (JsonException ex)
@@ -824,7 +986,30 @@ public static class MEFrpApiConverter
                          """, App.AppJsonSerializerContext.ApiInfoObject) ??
                      new ApiInfo<object>();
         HandleResponse(result);
+
+        // 26.4：删除隧道属于写操作 → 失效隧道列表缓存
+        InvalidateProxyListOnSuccess(result);
         return result;
+    }
+
+    /// <summary>
+    ///     清空进程内的节点缓存（26.4）。登录 / 退出登录时调用，
+    ///     避免切换账号后复用上一位用户的节点列表与状态。
+    /// </summary>
+    public static void ResetInMemoryCaches()
+    {
+        Volatile.Write(ref _nodesListInfo, null);
+        Volatile.Write(ref _nodesStatusInfo, null);
+    }
+
+    /// <summary>
+    ///     刷新用户相关数据的统一缓存（26.4）。
+    ///     写操作（如签到、资料变更）后调用，使下一次读取拿到最新结果。
+    /// </summary>
+    public static void InvalidateUserRelatedCaches()
+    {
+        ApiCacheService.Invalidate(ApiCacheKeys.UserInfo);
+        ApiCacheService.InvalidatePrefix(ApiCacheKeys.TrafficStatsPrefix);
     }
 
     /// <summary>
@@ -864,9 +1049,18 @@ public static class MEFrpApiConverter
     ///     异步获取用户的流量统计信息
     /// </summary>
     /// <param name="period">获取的周期，官网上只有 7，15，30</param>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
     /// <returns>用户的流量信息</returns>
-    public static async Task<ApiInfo<TrafficStatus>> GetTrafficStatusAsync(int period)
+    public static async Task<ApiInfo<TrafficStatus>> GetTrafficStatusAsync(int period, bool forceRefresh = false)
     {
+        // 26.4：不同周期各自独立缓存（键带周期），在 5 分钟有效期内直接复用上次结果
+        var cacheKey = $"{ApiCacheKeys.TrafficStatsPrefix}{period}";
+        if (!forceRefresh && TryGetCached<TrafficStatus>(cacheKey, Languages.Languages.Text_Api_OpTrafficStatus)
+            is { } cachedTraffic)
+        {
+            return cachedTraffic;
+        }
+
         App.CurrentLogger.Log("正在获取流量统计", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
@@ -901,6 +1095,16 @@ public static class MEFrpApiConverter
             result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",
                          App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
                      new ApiInfo<TrafficStatus>();
+        }
+
+        // 26.4：仅成功结果写入缓存（失败不缓存，避免把错误状态固化 5 分钟）
+        if (result.code == 200 && result.data is not null)
+        {
+            ApiCacheService.SetContent(cacheKey, response.Content!);
+        }
+        else
+        {
+            ApiCacheService.Invalidate(cacheKey);
         }
 
         HandleResponse(result);

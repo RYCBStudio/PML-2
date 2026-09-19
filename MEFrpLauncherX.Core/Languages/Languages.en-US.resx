@@ -195,6 +195,19 @@
     <data name="Text.Global.Off" xml:space="preserve">
         <value>Off</value>
     </data>
+    <!-- 26.4 Relative time (used by the "recently started tunnel" recommendation) -->
+    <data name="Text.Global.JustNow" xml:space="preserve">
+        <value>just now</value>
+    </data>
+    <data name="Text.Global.MinutesAgo" xml:space="preserve">
+        <value>{0} min ago</value>
+    </data>
+    <data name="Text.Global.HoursAgo" xml:space="preserve">
+        <value>{0} h ago</value>
+    </data>
+    <data name="Text.Global.DaysAgo" xml:space="preserve">
+        <value>{0} d ago</value>
+    </data>
     <data name="Text.Feedback.Email" xml:space="preserve">
         <value>Email</value>
     </data>
@@ -2628,6 +2641,21 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
     <data name="Text.Api.FetchingFormat" xml:space="preserve">
         <value>Fetching {0}</value>
     </data>
+    <data name="Text.Api.CacheHitFormat" xml:space="preserve">
+        <value>{0} (cached)</value>
+    </data>
+    <data name="Text.Api.OpTrafficStatus" xml:space="preserve">
+        <value>traffic statistics</value>
+    </data>
+    <data name="Text.Api.OpSoftwareNotice" xml:space="preserve">
+        <value>software notices</value>
+    </data>
+    <data name="Text.Api.OpLatestVersion" xml:space="preserve">
+        <value>latest version</value>
+    </data>
+    <data name="Text.Api.OpTunnelErrorInfo" xml:space="preserve">
+        <value>tunnel error info</value>
+    </data>
     <data name="Text.Api.CannotGetApiInfo" xml:space="preserve">
         <value>Unable to retrieve API information</value>
     </data>
@@ -3300,8 +3328,8 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.AppearanceSettings.HomeLayout.SimpleHint" xml:space="preserve">
         <value>The "Customize home page" switches above do not apply to the Simple layout.</value>
     </data>
-    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
-        <value>Hello, {0}</value>
+    <data name="Text.Home.Simple.Greeting.Morning" xml:space="preserve">
+        <value>Good morning, {0}</value>
     </data>
     <data name="Text.Home.Simple.NotLoggedIn" xml:space="preserve">
         <value>Not signed in</value>
@@ -3380,6 +3408,21 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Home.Recommend.ReadDocs.Reason" xml:space="preserve">
         <value>Having trouble? The docs cover tunnel setup, plugins and troubleshooting.</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.Title" xml:space="preserve">
+        <value>Start "{0}"</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.Reason" xml:space="preserve">
+        <value>You started this tunnel recently ({0}). Relaunch it with one click.</value>
+    </data>
+    <data name="Text.Home.Recommend.RecentTunnel.NeverStarted" xml:space="preserve">
+        <value>no start record</value>
+    </data>
+    <data name="Text.Home.Recommend.TunnelMissing" xml:space="preserve">
+        <value>This tunnel no longer exists; it may have been deleted.</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Launch" xml:space="preserve">
+        <value>Start</value>
     </data>
     <data name="Text.Home.Recommend.Action.Manage" xml:space="preserve">
         <value>Go fix</value>
@@ -3529,5 +3572,20 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
         <value>Failed</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Noon" xml:space="preserve">
+        <value>Good afternoon, {0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Afternoon" xml:space="preserve">
+        <value>Good afternoon, {0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Evening" xml:space="preserve">
+        <value>Good evening, {0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting.Prenoon" xml:space="preserve">
+        <value>Good morning, {0}</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
+        <value>Hello, {0}</value>
     </data>
 </root>

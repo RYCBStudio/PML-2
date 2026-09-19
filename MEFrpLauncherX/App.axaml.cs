@@ -125,6 +125,25 @@ public class App : Application
 #endif
         // 按配置应用动画程度 (0=关闭 1=精简 2=标准)
         AnimationStyles.Apply(ConfigManager.CurrentConfig.AnimationLevel);
+#if !DEBUG
+        // UI 线程未处理异常拦截：单点 UI 故障（绑定错误、控件异常等）记录日志并保持进程存活，
+        // 避免一次局部操作失败直接拖垮整个应用（优雅降级）。进程级致命异常仍由 Program 的全局处理器接管。
+        Avalonia.Threading.Dispatcher.UIThread.UnhandledException += (_, args) =>
+        {
+            try
+            {
+                Core.App.CurrentLogger?.Error(args.Exception, "UI 线程未处理异常（已拦截，应用继续运行）",
+                    type: EnumLogType.Fatal);
+                Sentry.SentrySdk.CaptureException(args.Exception);
+            }
+            catch
+            {
+                // 日志/遥测故障不影响异常拦截
+            }
+
+            args.Handled = true;
+        };
+#endif
         if (!Design.IsDesignMode)
         {
             AppAnalytics.Setup(

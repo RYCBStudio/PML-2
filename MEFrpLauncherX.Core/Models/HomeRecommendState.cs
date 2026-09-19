@@ -22,6 +22,20 @@ public class HomeRecommendState
     /// <summary>最近一次使用的隧道 ID（用于「启动最近使用的一条」类推荐）</summary>
     public int LastProxyId { get; set; } = -1;
 
+    /// <summary>
+    ///     最近启动过的隧道记录（26.4）：隧道 ID → 最近一次启动时间（UTC）。
+    ///     用于主页「启动最近启动的隧道」推荐，本地记录保证「刚启动」立刻生效。
+    /// </summary>
+    public Dictionary<int, DateTimeOffset> RecentLaunches { get; set; } = [];
+
+    /// <summary>
+    ///     本地启动记录的有效期：超过该时长且服务端 lastStartTime 也为空/更旧时，不再作为推荐理由。
+    /// </summary>
+    public static readonly TimeSpan RecentLaunchFreshness = TimeSpan.FromDays(30);
+
+    /// <summary>本地最多保留的最近启动记录条数</summary>
+    public const int MaxRecentLaunches = 20;
+
     /// <summary>失败信息有效期：超过该时长不再作为推荐理由</summary>
     public static readonly TimeSpan FailFreshness = TimeSpan.FromHours(24);
 }
@@ -132,6 +146,84 @@ public static class HomeRecommendStateStore
 
         state.LastFailAt = null;
         state.LastFailedProxyName = null;
+        Save(state);
+    }
+
+    /// <summary>
+    ///     记录一次隧道启动（26.4）：写入本地最近启动时间，供主页「启动最近启动的隧道」推荐使用。
+    ///     本地记录的作用是让「刚刚启动」立即反映到推荐里，无需等待服务端 <c>lastStartTime</c> 更新。
+    /// </summary>
+    /// <param name="proxyId">隧道 ID</param>
+    public static void RecordLaunch(int proxyId)
+    {
+        if (proxyId <= 0)
+        {
+            return;
+        }
+
+        var state = Load();
+        state.LastProxyId = proxyId;
+        state.RecentLaunches[proxyId] = DateTimeOffset.UtcNow;
+
+        // 超出上限时丢弃最旧的记录，避免状态文件无限增长
+        if (state.RecentLaunches.Count > HomeRecommendState.MaxRecentLaunches)
+        {
+            foreach (var stale in state.RecentLaunches
+                         .OrderBy(pair => pair.Value)
+                         .Take(state.RecentLaunches.Count - HomeRecommendState.MaxRecentLaunches)
+                         .Select(pair => pair.Key)
+                         .ToList())
+            {
+                state.RecentLaunches.Remove(stale);
+            }
+        }
+
+        Save(state);
+    }
+
+    /// <summary>读取本地最近启动时间；无记录或已超过有效期时返回 null。</summary>
+    public static DateTimeOffset? GetLastLaunchAt(int proxyId)
+    {
+        if (proxyId <= 0)
+        {
+            return null;
+        }
+
+        var state = Load();
+        if (!state.RecentLaunches.TryGetValue(proxyId, out var at))
+        {
+            return null;
+        }
+
+        return DateTimeOffset.UtcNow - at <= HomeRecommendState.RecentLaunchFreshness ? at : null;
+    }
+
+    /// <summary>读取全部有效的本地最近启动记录（按时间倒序）。</summary>
+    public static IReadOnlyList<(int ProxyId, DateTimeOffset At)> GetRecentLaunches()
+    {
+        var state = Load();
+        var now = DateTimeOffset.UtcNow;
+        return state.RecentLaunches
+            .Where(pair => now - pair.Value <= HomeRecommendState.RecentLaunchFreshness)
+            .OrderByDescending(pair => pair.Value)
+            .Select(pair => (pair.Key, pair.Value))
+            .ToList();
+    }
+
+    /// <summary>移除已被删除的隧道的本地启动记录（管理页删除隧道后调用）。</summary>
+    public static void ForgetLaunch(int proxyId)
+    {
+        var state = Load();
+        if (!state.RecentLaunches.Remove(proxyId))
+        {
+            return;
+        }
+
+        if (state.LastProxyId == proxyId)
+        {
+            state.LastProxyId = -1;
+        }
+
         Save(state);
     }
 

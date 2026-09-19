@@ -43,7 +43,7 @@ namespace Porta.Pty.Windows
 
         private static string GetAppOnPath(string app, string cwd, IDictionary<string, string> env)
         {
-            bool isWow64 = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") != null;
+            var isWow64 = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") != null;
             var windir = Environment.GetEnvironmentVariable("WINDIR");
             var sysnativePath = Path.Combine(windir, "Sysnative");
             var sysnativePathWithSlash = sysnativePath + Path.DirectorySeparatorChar;
@@ -94,8 +94,8 @@ namespace Porta.Pty.Windows
                 throw new ArgumentException($"Terminal app path '{app}' is too long");
             }
 
-            string pathEnvironment = (env != null && env.TryGetValue("PATH", out string p) ? p : null)
-                ?? Environment.GetEnvironmentVariable("PATH");
+            var pathEnvironment = (env != null && env.TryGetValue("PATH", out var p) ? p : null)
+                                  ?? Environment.GetEnvironmentVariable("PATH");
 
             if (string.IsNullOrWhiteSpace(pathEnvironment))
             {
@@ -123,7 +123,7 @@ namespace Porta.Pty.Windows
 
             // We have a simple file name. We get the path variable from the env
             // and try to find the executable on the path.
-            foreach (string pathEntry in paths)
+            foreach (var pathEntry in paths)
             {
                 bool isPathEntryRooted;
                 try
@@ -137,7 +137,7 @@ namespace Porta.Pty.Windows
                 }
 
                 // The path entry is absolute.
-                string fullPath = isPathEntryRooted ? Path.Combine(pathEntry, app) : Path.Combine(cwd, pathEntry, app);
+                var fullPath = isPathEntryRooted ? Path.Combine(pathEntry, app) : Path.Combine(cwd, pathEntry, app);
                 if (File.Exists(fullPath))
                 {
                     return fullPath;
@@ -162,10 +162,10 @@ namespace Porta.Pty.Windows
 
         private static string GetEnvironmentString(IDictionary<string, string> environment)
         {
-            string[] keys = new string[environment.Count];
+            var keys = new string[environment.Count];
             environment.Keys.CopyTo(keys, 0);
 
-            string[] values = new string[environment.Count];
+            var values = new string[environment.Count];
             environment.Values.CopyTo(values, 0);
 
             // Sort both by the keys
@@ -174,7 +174,7 @@ namespace Porta.Pty.Windows
 
             // Create a list of null terminated "key=val" strings
             var result = new StringBuilder();
-            for (int i = 0; i < environment.Count; ++i)
+            for (var i = 0; i < environment.Count; ++i)
             {
                 result.Append(keys[i]);
                 result.Append('=');
@@ -195,7 +195,7 @@ namespace Porta.Pty.Windows
         {
             // Create a Job Object to ensure child processes are killed when the terminal exits.
             // This prevents zombie ConPTY sessions by using JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE.
-            SafeFileHandle jobObjectHandle = JobObject.Create();
+            var jobObjectHandle = JobObject.Create();
 
             try
             {
@@ -218,7 +218,7 @@ namespace Porta.Pty.Windows
                     inPipePseudoConsoleSide,
                     outPipePseudoConsoleSide,
                     0,
-                    out ClosePseudoConsoleSafeHandle pseudoConsoleHandle);
+                    out var pseudoConsoleHandle);
 
                 if (hr.Failed)
                 {
@@ -237,13 +237,13 @@ namespace Porta.Pty.Windows
 
                 try
                 {
-                    string app = GetAppOnPath(options.App, options.Cwd, options.Environment);
-                    string arguments = options.VerbatimCommandLine ?
+                    var app = GetAppOnPath(options.App, options.Cwd, options.Environment);
+                    var arguments = options.VerbatimCommandLine ?
                         WindowsArguments.FormatVerbatim(options.CommandLine) :
                         WindowsArguments.Format(options.CommandLine);
 
                     var commandLine = new StringBuilder(app.Length + arguments.Length + 4);
-                    bool quoteApp = app.Contains(" ") && !app.StartsWith("\"") && !app.EndsWith("\"");
+                    var quoteApp = app.Contains(" ") && !app.StartsWith("\"") && !app.EndsWith("\"");
                     if (quoteApp)
                     {
                         commandLine.Append('"').Append(app).Append('"');
@@ -263,11 +263,11 @@ namespace Porta.Pty.Windows
 
                     SafeFileHandle? processHandle = null;
                     SafeFileHandle? mainThreadHandle = null;
-                    int pid = 0;
-                    bool success = false;
+                    var pid = 0;
+                    var success = false;
 
                     // Build the environment block from the options
-                    string environmentBlock = GetEnvironmentString(options.Environment);
+                    var environmentBlock = GetEnvironmentString(options.Environment);
 
                     // Pin the environment string and get a pointer to it
                     var environmentHandle = GCHandle.Alloc(Encoding.Unicode.GetBytes(environmentBlock), GCHandleType.Pinned);
@@ -277,7 +277,7 @@ namespace Porta.Pty.Windows
                         // STARTUPINFOEXW's layout begins with STARTUPINFOW, so we can pass a
                         // pointer to the whole structure as a STARTUPINFOW*.
                         var processInfoRaw = new PROCESS_INFORMATION();
-                        string commandLineString = commandLine.ToString();
+                        var commandLineString = commandLine.ToString();
                         fixed (char* cmdLinePtr = commandLineString)
                         fixed (char* cwdPtr = options.Cwd)
                         {

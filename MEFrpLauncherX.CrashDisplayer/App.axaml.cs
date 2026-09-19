@@ -23,10 +23,25 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
+            // 命令行参数防御：主程序崩溃现场可能不完整，任何缺失/损坏的参数都必须能降级展示，
+            // 崩溃报告器自身绝不能再崩溃。
+            var args = desktop.Args ?? [];
+            var exArg = args.Length > 0 ? args[0] : "";
+            var logArg = args.Length > 1 ? args[1] : "";
+            MainViewModel viewModel;
+            try
+            {
+                viewModel = new MainViewModel(exArg, logArg);
+            }
+            catch
+            {
+                viewModel = new MainViewModel();
+            }
+
             desktop.MainWindow = new MainWindow
             {
                 Title = CrashStrings.CrashTitle,
-                DataContext = new MainViewModel(desktop.Args?[0] ?? "", desktop.Args?[1] ?? "")
+                DataContext = viewModel
             };
         }
 

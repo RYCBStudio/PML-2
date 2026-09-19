@@ -104,6 +104,8 @@ public static class ConfigManager
         }
         catch (Exception ex)
         {
+            // 配置损坏（JSON 解析失败/文件截断）时先留档再重建，便于事后追溯与人工恢复。
+            BackupCorruptedConfig();
             // 如果加载失败，使用默认配置
             lock (_lock)
             {
@@ -112,6 +114,30 @@ public static class ConfigManager
 
             App.CurrentLogger?.Log($"加载配置文件失败，使用默认配置: {ex.Message}",
                 module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
+    }
+
+    /// <summary>
+    ///     将损坏的配置文件复制为 Settings.json.corrupt-yyyyMMddHHmmss 备份，失败时静默忽略。
+    /// </summary>
+    private static void BackupCorruptedConfig()
+    {
+        try
+        {
+            if (!File.Exists(ConfigPath))
+            {
+                return;
+            }
+
+            var backupPath = Path.Combine(ConfigDirectory,
+                $"Settings.json.corrupt-{DateTime.Now:yyyyMMddHHmmss}");
+            File.Copy(ConfigPath, backupPath, true);
+            App.CurrentLogger?.Log($"已备份损坏的配置文件到: {backupPath}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
+        catch
+        {
+            // 备份失败不影响默认配置重建
         }
     }
 

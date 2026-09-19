@@ -38,6 +38,35 @@ public static class CrashStrings
 
     public static string ErrorTypeLabel => Lang switch { "cn" => "错误类型", "hant" => "錯誤類型", _ => "Error type" };
 
+    /// <summary>当前语言代码（cn / hant / en），供诊断引擎按语言生成文案。</summary>
+    public static string CurrentLanguage => Lang;
+
+    public static string DiagnosisTitle => Lang switch { "cn" => "错误原因", "hant" => "錯誤原因", _ => "What happened" };
+
+    public static string SolutionsTitle => Lang switch { "cn" => "解决方案", "hant" => "解決方案", _ => "How to fix" };
+
+    public static string RestartApplication => Lang switch { "cn" => "重启应用", "hant" => "重新啟動應用程式", _ => "Restart app" };
+
+    public static string OpenLogDirectory => Lang switch { "cn" => "打开日志目录", "hant" => "開啟記錄目錄", _ => "Open log folder" };
+
+    public static string OpenConfigDirectory => Lang switch { "cn" => "打开配置目录", "hant" => "開啟設定目錄", _ => "Open config folder" };
+
+    public static string ReportIssue => Lang switch { "cn" => "反馈问题", "hant" => "回報問題", _ => "Report issue" };
+
+    public static string GenericOpenLogHint => Lang switch
+    {
+        "cn" => "打开日志目录，将最近的崩溃日志发送给技术支持",
+        "hant" => "開啟記錄目錄，將最近的崩潰記錄傳送給技術支援",
+        _ => "Open the log folder and send the latest crash log to support"
+    };
+
+    public static string RestartSucceedsHint => Lang switch
+    {
+        "cn" => "重启应用后重试，大多数临时性故障可通过重启解决",
+        "hant" => "重新啟動應用程式後重試，大多數暫時性故障可透過重啟解決",
+        _ => "Restart the app and try again — most transient failures are fixed by a restart"
+    };
+
     public static string ErrorMessageLabel => Lang switch { "cn" => "错误信息", "hant" => "錯誤資訊", _ => "Error message" };
 
     public static string SuggestionLabel => Lang switch { "cn" => "建议", "hant" => "建議", _ => "Suggestion" };

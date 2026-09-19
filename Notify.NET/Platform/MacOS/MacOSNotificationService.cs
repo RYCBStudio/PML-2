@@ -73,7 +73,7 @@ namespace Notify.NET.Platform.MacOS
             ThrowIfDisposedOrUnsupported();
             cancellationToken.ThrowIfCancellationRequested();
 
-            long notifId = ShowNative(request);
+            var notifId = ShowNative(request);
             return Task.FromResult(notifId);
         }
 
@@ -84,7 +84,7 @@ namespace Notify.NET.Platform.MacOS
             ThrowIfDisposedOrUnsupported();
             cancellationToken.ThrowIfCancellationRequested();
 
-            bool ok = MacNotifyNative.MNW_HideNotification(notificationId);
+            var ok = MacNotifyNative.MNW_HideNotification(notificationId);
 
             // MNW_HideNotification fires onDismissed synchronously via the native
             // layer; release the managed bridge entry too.
@@ -130,11 +130,11 @@ namespace Notify.NET.Platform.MacOS
             using var imagePin   = new PinnedStringAnsi(ResolveImagePath(request.ImagePath));
 
             // Build array of pinned button label pointers.
-            int btnCount = request.Buttons.Count;
+            var btnCount = request.Buttons.Count;
             var btnPins  = new PinnedStringAnsi[btnCount];
             var btnPtrs  = new IntPtr[btnCount];
 
-            for (int i = 0; i < btnCount; i++)
+            for (var i = 0; i < btnCount; i++)
             {
                 btnPins[i] = new PinnedStringAnsi(request.Buttons[i].Label);
                 btnPtrs[i] = btnPins[i].Pointer;
@@ -144,7 +144,7 @@ namespace Notify.NET.Platform.MacOS
             {
                 // Pin the button pointer array so its address is stable during the call.
                 GCHandle btnArrayHandle = default;
-                IntPtr   btnArrayPtr    = IntPtr.Zero;
+                var   btnArrayPtr    = IntPtr.Zero;
 
                 if (btnCount > 0)
                 {
@@ -174,7 +174,7 @@ namespace Notify.NET.Platform.MacOS
                     onFailed          = MacNotifyCallbackBridge.PtrFailed
                 };
 
-                long notifId = MacNotifyNative.MNW_ShowNotification(ref descriptor, ref handler);
+                var notifId = MacNotifyNative.MNW_ShowNotification(ref descriptor, ref handler);
 
                 if (btnArrayHandle.IsAllocated)
                     btnArrayHandle.Free();
@@ -197,7 +197,7 @@ namespace Notify.NET.Platform.MacOS
 
         private static INotificationHandler? BuildCompositeHandler(NotificationRequest request)
         {
-            bool hasButtonCallbacks = false;
+            var hasButtonCallbacks = false;
             foreach (var btn in request.Buttons)
                 if (btn.Callback != null) { hasButtonCallbacks = true; break; }
 
@@ -235,7 +235,7 @@ namespace Notify.NET.Platform.MacOS
             if (string.IsNullOrEmpty(path)) return null;
             try
             {
-                string absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
+                var absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
                 return File.Exists(absolute) ? absolute : null;
             }
             catch (Exception) { return null; }

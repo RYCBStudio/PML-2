@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:MEFrpLauncherX.Views"
     xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
+    xmlns:behaviors="clr-namespace:MEFrpLauncherX.Behaviours"
+    xmlns:i="https://github.com/avaloniaui"
     xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
     xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     xmlns:viewModels="clr-namespace:MEFrpLauncherX.Core.ViewModels;assembly=MEFrpLauncherX.Core"
@@ -53,7 +55,18 @@
             <ProgressBar Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,10,0,0"
                          FontFamily="{DynamicResource GlobalFontFamily}"
                          Value="{Binding Progress}"
-                         IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}" />
+                         IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}">
+                <i:Interaction.Behaviors>
+                    <behaviors:AsymptoticProgressBehavior
+                        IsRunning="{Binding IsBusy, FallbackValue=True}"
+                        IsFakeMode="True"
+                        Target="95"
+                        Speed="0.15"
+                        UpdateInterval="0:0:0.030"
+                        JumpToMaximumOnStop="True"
+                        CompleteAnimationDuration="0:0:0.4" />
+                </i:Interaction.Behaviors>
+            </ProgressBar>
         </Grid>
         <msg:MessageHost
             FontFamily="{DynamicResource GlobalFontFamily}" ZIndex="10" HostId="PML2_Msg" />

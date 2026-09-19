@@ -26,10 +26,10 @@ namespace Notify.NET.Platform.Linux
             string executablePath,
             IReadOnlyList<JumpListTask> tasks)
         {
-            string path = ResolveUserDesktopPath(desktopFileId);
-            string? source = FindExistingDesktopPath(desktopFileId) ?? (File.Exists(path) ? path : null);
+            var path = ResolveUserDesktopPath(desktopFileId);
+            var source = FindExistingDesktopPath(desktopFileId) ?? (File.Exists(path) ? path : null);
 
-            List<Section> sections = source != null
+            var sections = source != null
                 ? ParseSections(File.ReadAllLines(source))
                 : CreateMinimal(appName, executablePath);
 
@@ -40,10 +40,10 @@ namespace Notify.NET.Platform.Linux
         /// <summary>Removes the <c>Actions</c> key and all action groups managed by this writer.</summary>
         internal static void RemoveActions(string desktopFileId)
         {
-            string path = ResolveUserDesktopPath(desktopFileId);
+            var path = ResolveUserDesktopPath(desktopFileId);
             if (!File.Exists(path)) return;
 
-            List<Section> sections = ParseSections(File.ReadAllLines(path));
+            var sections = ParseSections(File.ReadAllLines(path));
             ApplyActions(sections, executablePath: null, tasks: Array.Empty<JumpListTask>());
             WriteFile(path, sections);
         }
@@ -57,16 +57,16 @@ namespace Notify.NET.Platform.Linux
 
         private static string DataHome()
         {
-            string? xdg = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+            var xdg = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
             if (!string.IsNullOrEmpty(xdg)) return xdg!;
-            string home = Environment.GetEnvironmentVariable("HOME") ?? "~";
+            var home = Environment.GetEnvironmentVariable("HOME") ?? "~";
             return Path.Combine(home, ".local", "share");
         }
 
         /// <summary>The user-writable path we always write to.</summary>
         internal static string ResolveUserDesktopPath(string desktopFileId)
         {
-            string id = StripSuffix(desktopFileId);
+            var id = StripSuffix(desktopFileId);
             return Path.Combine(DataHome(), "applications", id + ".desktop");
         }
 
@@ -76,18 +76,18 @@ namespace Notify.NET.Platform.Linux
         /// </summary>
         private static string? FindExistingDesktopPath(string desktopFileId)
         {
-            string id = StripSuffix(desktopFileId);
-            string fileName = id + ".desktop";
+            var id = StripSuffix(desktopFileId);
+            var fileName = id + ".desktop";
 
-            string userPath = Path.Combine(DataHome(), "applications", fileName);
+            var userPath = Path.Combine(DataHome(), "applications", fileName);
             if (File.Exists(userPath)) return userPath;
 
-            string dataDirs = Environment.GetEnvironmentVariable("XDG_DATA_DIRS")
-                              ?? "/usr/local/share:/usr/share";
-            foreach (string dir in dataDirs.Split(':'))
+            var dataDirs = Environment.GetEnvironmentVariable("XDG_DATA_DIRS")
+                           ?? "/usr/local/share:/usr/share";
+            foreach (var dir in dataDirs.Split(':'))
             {
                 if (string.IsNullOrEmpty(dir)) continue;
-                string candidate = Path.Combine(dir, "applications", fileName);
+                var candidate = Path.Combine(dir, "applications", fileName);
                 if (File.Exists(candidate)) return candidate;
             }
             return null;
@@ -116,9 +116,9 @@ namespace Notify.NET.Platform.Linux
             // Preserve any leading comments/blank lines before the first group as a headerless section.
             var preamble = new Section { Header = "" };
 
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
-                string trimmed = line.TrimStart();
+                var trimmed = line.TrimStart();
                 if (trimmed.StartsWith("[", StringComparison.Ordinal) && trimmed.EndsWith("]", StringComparison.Ordinal))
                 {
                     current = new Section { Header = trimmed };
@@ -160,7 +160,7 @@ namespace Notify.NET.Platform.Linux
             sections.RemoveAll(s => s.IsDesktopActionGroup);
 
             // 2. Find (or create) the [Desktop Entry] group and reset its Actions key.
-            Section? entry = sections.Find(s => s.IsHeader("Desktop Entry"));
+            var entry = sections.Find(s => s.IsHeader("Desktop Entry"));
             if (entry == null)
             {
                 entry = new Section { Header = "[Desktop Entry]" };
@@ -171,11 +171,11 @@ namespace Notify.NET.Platform.Linux
             if (tasks.Count == 0) return; // RemoveActions path: leave no Actions key, no groups.
 
             var ids = new StringBuilder();
-            foreach (JumpListTask t in tasks) ids.Append(t.Id).Append(';');
+            foreach (var t in tasks) ids.Append(t.Id).Append(';');
             entry.Lines.Add("Actions=" + ids);
 
             // 3. Append a group per task.
-            foreach (JumpListTask t in tasks)
+            foreach (var t in tasks)
             {
                 var group = new Section { Header = "[Desktop Action " + t.Id + "]" };
                 group.Lines.Add("Name=" + t.Title);
@@ -201,19 +201,19 @@ namespace Notify.NET.Platform.Linux
 
         private static void WriteFile(string path, List<Section> sections)
         {
-            string? dir = Path.GetDirectoryName(path);
+            var dir = Path.GetDirectoryName(path);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir!);
 
             var sb = new StringBuilder();
-            bool first = true;
-            foreach (Section s in sections)
+            var first = true;
+            foreach (var s in sections)
             {
                 if (!string.IsNullOrEmpty(s.Header))
                 {
                     if (!first) sb.AppendLine();
                     sb.AppendLine(s.Header);
                 }
-                foreach (string line in s.Lines) sb.AppendLine(line);
+                foreach (var line in s.Lines) sb.AppendLine(line);
                 first = false;
             }
 

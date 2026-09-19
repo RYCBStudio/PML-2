@@ -39,7 +39,7 @@ namespace Notify.NET.Platform.Linux
                 {
                     if (!LibNotifyNative.notify_is_initted())
                     {
-                        bool ok = LibNotifyNative.notify_init(_appName);
+                        var ok = LibNotifyNative.notify_init(_appName);
                         IsSupported = ok;
                     }
                     else
@@ -85,12 +85,12 @@ namespace Notify.NET.Platform.Linux
             await _loopRunner.InvokeAsync(() =>
             {
                 var ptr = (IntPtr)notificationId;
-                IntPtr error = IntPtr.Zero;
-                bool ok = LibNotifyNative.notify_notification_close(ptr, ref error);
+                var error = IntPtr.Zero;
+                var ok = LibNotifyNative.notify_notification_close(ptr, ref error);
 
                 if (!ok)
                 {
-                    string msg = MarshalGError(ref error);
+                    var msg = MarshalGError(ref error);
                     throw new NotificationException($"notify_notification_close failed: {msg}");
                 }
 
@@ -136,7 +136,7 @@ namespace Notify.NET.Platform.Linux
         /// <summary>Called on the GMainLoop thread to create and show a notification.</summary>
         private long ShowOnLoopThread(NotificationRequest request)
         {
-            IntPtr notification = LibNotifyNative.notify_notification_new(
+            var notification = LibNotifyNative.notify_notification_new(
                 request.Title,
                 request.Body,
                 null /* icon — we set it from imagePath below if provided */);
@@ -145,19 +145,19 @@ namespace Notify.NET.Platform.Linux
                 throw new NotificationException("notify_notification_new returned null.");
 
             // --- Image ---
-            string? resolvedImage = ResolveImagePath(request.ImagePath);
+            var resolvedImage = ResolveImagePath(request.ImagePath);
             if (resolvedImage != null)
                 ApplyImage(notification, resolvedImage);
 
             // --- Urgency hint ---
-            byte urgency = MapUrgency(request.Urgency);
-            IntPtr urgencyVariant = LibNotifyNative.g_variant_new_byte(urgency);
+            var urgency = MapUrgency(request.Urgency);
+            var urgencyVariant = LibNotifyNative.g_variant_new_byte(urgency);
             LibNotifyNative.notify_notification_set_hint(notification, "urgency", urgencyVariant);
 
             // --- Expiration ---
             if (request.Expiration.HasValue)
             {
-                int ms = (int)request.Expiration.Value.TotalMilliseconds;
+                var ms = (int)request.Expiration.Value.TotalMilliseconds;
                 // notify_notification_set_timeout is available in newer libnotify versions;
                 // set as a hint for compatibility with older versions too.
                 LibNotifyNative.notify_notification_set_hint(
@@ -169,7 +169,7 @@ namespace Notify.NET.Platform.Linux
             LibNotifyCallbackBridge.Register(notification, request.Handler, request.Buttons);
 
             // --- Action buttons ---
-            for (int i = 0; i < request.Buttons.Count; i++)
+            for (var i = 0; i < request.Buttons.Count; i++)
             {
                 var btn = request.Buttons[i];
                 LibNotifyNative.notify_notification_add_action(
@@ -191,11 +191,11 @@ namespace Notify.NET.Platform.Linux
                 0);
 
             // --- Show ---
-            IntPtr error = IntPtr.Zero;
-            bool ok = LibNotifyNative.notify_notification_show(notification, ref error);
+            var error = IntPtr.Zero;
+            var ok = LibNotifyNative.notify_notification_show(notification, ref error);
             if (!ok)
             {
-                string msg = MarshalGError(ref error);
+                var msg = MarshalGError(ref error);
                 LibNotifyCallbackBridge.Release(notification);
                 throw new NotificationException($"notify_notification_show failed: {msg}");
             }
@@ -208,7 +208,7 @@ namespace Notify.NET.Platform.Linux
             if (string.IsNullOrEmpty(path)) return null;
             try
             {
-                string absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
+                var absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
                 return File.Exists(absolute) ? absolute : null;
             }
             catch (Exception) { return null; }
@@ -216,8 +216,8 @@ namespace Notify.NET.Platform.Linux
 
         private static void ApplyImage(IntPtr notification, string imagePath)
         {
-            IntPtr pixbufError = IntPtr.Zero;
-            IntPtr pixbuf = IntPtr.Zero;
+            var pixbufError = IntPtr.Zero;
+            var pixbuf = IntPtr.Zero;
 
             try
             {
@@ -252,8 +252,8 @@ namespace Notify.NET.Platform.Linux
 
             // GError layout: domain (uint32) | code (int32) | message (char*)
             // On 64-bit Linux: domain at 0, code at 4, message pointer at 8.
-            IntPtr messagePtr = Marshal.ReadIntPtr(error, 8);
-            string message = Marshal.PtrToStringAnsi(messagePtr) ?? "(null)";
+            var messagePtr = Marshal.ReadIntPtr(error, 8);
+            var message = Marshal.PtrToStringAnsi(messagePtr) ?? "(null)";
 
             LibNotifyNative.g_error_free(error);
             error = IntPtr.Zero;

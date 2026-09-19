@@ -72,6 +72,7 @@ namespace MEFrpLauncherX.Core;
 [JsonSerializable(typeof(List<ProxyTemplate>))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
+[JsonSerializable(typeof(Dictionary<int, DateTimeOffset>))]
 [JsonSerializable(typeof(Dictionary<string, object>))]
 [JsonSerializable(typeof(JsonElement))]
 [JsonSerializable(typeof(KickProxyInfo))]

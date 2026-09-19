@@ -394,8 +394,10 @@
                 </Grid>
             </HeaderedContentControl>
         </Grid>
-        <GridSplitter Grid.Column="1" />
-        <Grid Grid.Column="2" RowDefinitions="Auto, *">
+        <GridSplitter Grid.Column="1" 
+                      IsVisible="{Binding IsClassicLayout}" />
+        <Grid Grid.Column="2" RowDefinitions="Auto, *" 
+              IsVisible="{Binding IsClassicLayout}">
             <controls:InfoBar
                 IsVisible="{Binding ShowSystemStatus}"
                 Classes="animated-bar"

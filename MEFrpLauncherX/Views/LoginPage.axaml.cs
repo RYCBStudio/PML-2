@@ -82,6 +82,10 @@ public partial class LoginPage : UserControl
 
                 UserCache.CurrentUser = stored;
 
+                // 26.4：本地自动登录同样清空缓存，保证账号数据隔离
+                Core.Services.ApiCacheService.InvalidateAll();
+                MEFrpApiConverter.ResetInMemoryCaches();
+
                 if (stored.Email.IsNullOrEmpty() == false)
                 {
                     AppAnalytics.SetUserId(DeviceIdHelper.GetDeviceUniqueId(), stored.username, stored.Email);
@@ -216,6 +220,9 @@ public partial class LoginPage : UserControl
                         token = userInfo.data.token,
                         group = userInfo.data.group
                     };
+                    // 26.4：登录成功后清空统一缓存，确保看到的是本账号的最新数据
+                    Core.Services.ApiCacheService.InvalidateAll();
+                    MEFrpApiConverter.ResetInMemoryCaches();
                     _loginViewModel.RefreshStoredUsernames();
                     MainWindow.Instance.LoginBackground.IsVisible = false;
                     MainWindowViewModel.Instance.IsLoggedIn = true;

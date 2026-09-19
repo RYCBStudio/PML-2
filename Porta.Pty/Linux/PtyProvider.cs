@@ -21,7 +21,7 @@ namespace Porta.Pty.Linux
         {
             var winSize = new PtyWinSize((ushort)options.Rows, (ushort)options.Cols);
 
-            string?[] terminalArgs = GetExecvpArgs(options);
+            var terminalArgs = GetExecvpArgs(options);
 
             // Convert environment dictionary to "KEY=VALUE" string array for native code
             string?[]? envp = null;

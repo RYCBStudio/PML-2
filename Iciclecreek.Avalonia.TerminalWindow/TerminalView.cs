@@ -743,7 +743,7 @@ namespace Iciclecreek.TerminalWindow
             if (CursorBlink && IsFocused)
             {
                 _cursorBlinkOn = !_cursorBlinkOn;
-                for (int y = 0; y < _terminal.Rows; y++)
+                for (var y = 0; y < _terminal.Rows; y++)
                 {
                     var line = _terminal.Buffer.GetLine(y);
                     if (line != null && line.Any(cell => cell.Attributes.IsBlink()))
@@ -831,9 +831,9 @@ namespace Iciclecreek.TerminalWindow
                 // Windows ConPTY limitation: There is no VT sequence for plain ESCAPE key.
                 // When ENABLE_VIRTUAL_TERMINAL_INPUT is enabled (by cmd.exe), the only way
                 // to send ESCAPE is via Win32 INPUT_RECORD format. Always use Win32 for ESC on Windows.
-                bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-                bool isEscapeKey = e.Key == Key.Escape;
-                bool useWin32Format = _terminal.Win32InputMode || (isWindows && isEscapeKey);
+                var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                var isEscapeKey = e.Key == Key.Escape;
+                var useWin32Format = _terminal.Win32InputMode || (isWindows && isEscapeKey);
 
                 if (useWin32Format)
                 {
@@ -916,9 +916,9 @@ namespace Iciclecreek.TerminalWindow
             try
             {
                 // Windows ConPTY limitation: Always send ESCAPE key in Win32 format
-                bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-                bool isEscapeKey = e.Key == Key.Escape;
-                bool useWin32Format = _terminal.Win32InputMode || (isWindows && isEscapeKey);
+                var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                var isEscapeKey = e.Key == Key.Escape;
+                var useWin32Format = _terminal.Win32InputMode || (isWindows && isEscapeKey);
 
                 if (useWin32Format)
                 {
@@ -1034,7 +1034,7 @@ namespace Iciclecreek.TerminalWindow
                     };
 
                     // Start selection - use viewport-relative row
-                    int viewportRow = row;
+                    var viewportRow = row;
                     _terminal.Selection.StartSelection(col, viewportRow, mode);
                     _isSelecting = true;
                     this.RequestInvalidate();
@@ -1112,7 +1112,7 @@ namespace Iciclecreek.TerminalWindow
                 // If we're selecting, update the selection
                 if (_isSelecting)
                 {
-                    int viewportRow = row;
+                    var viewportRow = row;
                     _terminal.Selection.UpdateSelection(col, viewportRow);
                     this.RequestInvalidate();
                     e.Handled = true;
@@ -1175,10 +1175,10 @@ namespace Iciclecreek.TerminalWindow
             {
                 // Scroll up (negative delta to ViewportY) when wheel scrolls up (positive delta)
                 // Scroll down (positive delta to ViewportY) when wheel scrolls down (negative delta)
-                int linesToScroll = (int)(-delta * scrollLines);
+                var linesToScroll = (int)(-delta * scrollLines);
 
                 // Calculate new viewport position
-                int newViewportY = Math.Clamp(
+                var newViewportY = Math.Clamp(
                     ViewportY + linesToScroll,
                     0,
                     MaxScrollback);
@@ -1584,8 +1584,8 @@ namespace Iciclecreek.TerminalWindow
         /// </summary>
         private bool ShouldHandleSelection(KeyModifiers modifiers)
         {
-            bool appWantsMouse = _terminal.MouseTrackingMode != XT.Input.MouseTrackingMode.None;
-            bool shiftHeld = modifiers.HasFlag(KeyModifiers.Shift);
+            var appWantsMouse = _terminal.MouseTrackingMode != XT.Input.MouseTrackingMode.None;
+            var shiftHeld = modifiers.HasFlag(KeyModifiers.Shift);
 
             // Handle selection if app doesn't want mouse, OR if Shift override is active
             return !appWantsMouse || shiftHeld;
@@ -1608,7 +1608,7 @@ namespace Iciclecreek.TerminalWindow
         private bool TryMapKeyToChar(Key key, KeyModifiers modifiers, out char character)
         {
             character = default;
-            bool hasShift = modifiers.HasFlag(KeyModifiers.Shift);
+            var hasShift = modifiers.HasFlag(KeyModifiers.Shift);
 
             // Letters A-Z
             if (key >= Key.A && key <= Key.Z)
@@ -1912,8 +1912,8 @@ namespace Iciclecreek.TerminalWindow
             // Calculate how many columns fit in the allocated width
             if (_charWidth > 0)
             {
-                int newCols = Math.Max(1, (int)(finalSize.Width / _charWidth));
-                int newRows = Math.Max(1, (int)(finalSize.Height / _charHeight));
+                var newCols = Math.Max(1, (int)(finalSize.Width / _charWidth));
+                var newRows = Math.Max(1, (int)(finalSize.Height / _charHeight));
 
                 // Only resize if dimensions have changed
                 if (newCols != _terminal.Cols || newRows != _terminal.Rows)
@@ -1938,20 +1938,20 @@ namespace Iciclecreek.TerminalWindow
             //Debug.WriteLine(_terminal.Buffer.PrintViewport());
             
             // Use the terminal buffer's ViewportY to determine what to render
-            int viewportY = _terminal.Buffer.ViewportY;
-            int viewportLines = _terminal.Rows;
-            int startLine = viewportY;
-            int endLine = Math.Min(_terminal.Buffer.Length, startLine + viewportLines);
+            var viewportY = _terminal.Buffer.ViewportY;
+            var viewportLines = _terminal.Rows;
+            var startLine = viewportY;
+            var endLine = Math.Min(_terminal.Buffer.Length, startLine + viewportLines);
             try
             {
 
-                for (int y = startLine; y < endLine; y++)
+                for (var y = startLine; y < endLine; y++)
                 {
                     var line = _terminal.Buffer.GetLine(y);
                     if (line == null)
                         continue;
 
-                    int screenY = y - startLine;
+                    var screenY = y - startLine;
 
                     // Calculate Y positions for this screen row
                     var startYPos = Snap(screenY * _charHeight, scale);
@@ -2009,14 +2009,14 @@ namespace Iciclecreek.TerminalWindow
             // Build and cache text runs for this line
             textRuns = new List<CachedTextRun>();
 
-            for (int x = 0; x < _terminal.Cols;)
+            for (var x = 0; x < _terminal.Cols;)
             {
                 if (x >= line.Length)
                     break;
                 var cell = line[x];
-                string text = String.Empty;
-                int cellCount = 0;
-                int runStartX = 0;
+                var text = String.Empty;
+                var cellCount = 0;
+                var runStartX = 0;
 
                 // Skip placeholder cells (width 0) that follow wide characters
                 if (cell.Width == 0)
@@ -2099,8 +2099,8 @@ namespace Iciclecreek.TerminalWindow
             var clipRect = new Rect(0, startYPos, _terminal.Cols * _charWidth, rowHeight);
 
             // For double-height lines, we need to clip to show only top or bottom half
-            double scaleX = 2.0;
-            double scaleY = lineAttr.IsDoubleHeight() ? 2.0 : 1.0;
+            var scaleX = 2.0;
+            var scaleY = lineAttr.IsDoubleHeight() ? 2.0 : 1.0;
 
             // Calculate transform origin and translation
             // We scale from origin (0, startYPos) and then may need to shift for bottom half
@@ -2125,14 +2125,14 @@ namespace Iciclecreek.TerminalWindow
                 {
                     // Render the line content at normal size - the transform will scale it
                     // Only render the first half of the columns since they'll be doubled
-                    int effectiveCols = _terminal.Cols / 2;
+                    var effectiveCols = _terminal.Cols / 2;
 
-                    for (int x = 0; x < effectiveCols && x < line.Length;)
+                    for (var x = 0; x < effectiveCols && x < line.Length;)
                     {
                         var cell = line[x];
-                        string text = String.Empty;
-                        int cellCount = 0;
-                        int runStartX = 0;
+                        var text = String.Empty;
+                        var cellCount = 0;
+                        var runStartX = 0;
 
                         // Skip placeholder cells (width 0) that follow wide characters
                         if (cell.Width == 0)
@@ -2202,15 +2202,15 @@ namespace Iciclecreek.TerminalWindow
             if (!_terminal.Selection.HasSelection)
                 return;
 
-            int viewportLines = _terminal.Rows;
+            var viewportLines = _terminal.Rows;
 
-            for (int screenY = 0; screenY < viewportLines; screenY++)
+            for (var screenY = 0; screenY < viewportLines; screenY++)
             {
                 // Find cells that are selected in this row
                 int? selectionStartX = null;
                 int? selectionEndX = null;
 
-                for (int x = 0; x < _terminal.Cols; x++)
+                for (var x = 0; x < _terminal.Cols; x++)
                 {
                     if (_terminal.Selection.IsCellSelected(x, screenY))
                     {
@@ -2257,25 +2257,25 @@ namespace Iciclecreek.TerminalWindow
                 return;
 
             // Get cursor position relative to viewport
-            int cursorX = _terminal.Buffer.X;
-            int cursorY = _terminal.Buffer.Y;
+            var cursorX = _terminal.Buffer.X;
+            var cursorY = _terminal.Buffer.Y;
 
             // The cursor Y is relative to the active screen area, need to check if it's visible
             // when scrolled. Cursor is at absolute position: Buffer.YBase + Buffer.Y
-            int absoluteCursorY = _terminal.Buffer.YBase + cursorY;
+            var absoluteCursorY = _terminal.Buffer.YBase + cursorY;
 
             // Check if cursor is visible in current viewport
             if (absoluteCursorY < viewportY || absoluteCursorY >= viewportY + _terminal.Rows)
                 return;
 
             // Calculate screen position
-            int screenY = absoluteCursorY - viewportY;
-            double posX = Snap(cursorX * _charWidth, scale);
-            double posY = Snap(screenY * _charHeight, scale);
-            double nextX = Snap((cursorX + 1) * _charWidth, scale);
-            double nextY = Snap((screenY + 1) * _charHeight, scale);
-            double cellWidth = Math.Max(0, nextX - posX);
-            double cellHeight = Math.Max(0, nextY - posY);
+            var screenY = absoluteCursorY - viewportY;
+            var posX = Snap(cursorX * _charWidth, scale);
+            var posY = Snap(screenY * _charHeight, scale);
+            var nextX = Snap((cursorX + 1) * _charWidth, scale);
+            var nextY = Snap((screenY + 1) * _charHeight, scale);
+            var cellWidth = Math.Max(0, nextX - posX);
+            var cellHeight = Math.Max(0, nextY - posY);
 
             var cursorBrush = new SolidColorBrush(CursorColor);
 
@@ -2360,7 +2360,7 @@ namespace Iciclecreek.TerminalWindow
 
             // Get unicode character - first try KeySymbol, then fall back to key mapping
             // Note: Special keys (arrows, Enter, etc.) have unicodeChar=0 which is correct
-            int unicodeChar = 0;
+            var unicodeChar = 0;
             if (!string.IsNullOrEmpty(e.KeySymbol) && e.KeySymbol.Length >= 1)
             {
                 unicodeChar = char.ConvertToUtf32(e.KeySymbol, 0);

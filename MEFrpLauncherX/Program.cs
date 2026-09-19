@@ -40,6 +40,8 @@ internal partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // 记录启动时间，供崩溃报告计算真实运行时长
+        CrashHandler.StartupTime = DateTime.Now;
         //StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
         // 1. 定义一个全局唯一的Mutex名称（推荐使用反向域名格式）
 
@@ -238,7 +240,7 @@ internal partial class Program
             if (process.Id == currentProcess.Id) continue;
 
             // 获取主窗口句柄
-            IntPtr hWnd = process.MainWindowHandle;
+            var hWnd = process.MainWindowHandle;
             if (hWnd == IntPtr.Zero) continue;
 
             // Windows平台：直接调用Win32 API激活窗口
@@ -510,14 +512,28 @@ internal partial class Program
     private static void ProcessUnhandledExceptions(object sender, UnhandledExceptionEventArgs e)
     {
         var ex = e.ExceptionObject as Exception;
-        Core.App.CurrentLogger.Error(ex, type: EnumLogType.Fatal);
+        if (ex is not null)
+        {
+            Core.App.CurrentLogger?.Error(ex, type: EnumLogType.Fatal);
+        }
+        else
+        {
+            Core.App.CurrentLogger?.Log($"未处理的非 Exception 对象异常: {e.ExceptionObject}", EnumLogType.Fatal);
+        }
         if (!e.IsTerminating)
         {
             return;
         }
 
         HandleException(ex);
-        SentrySdk.CaptureException(ex);
+        try
+        {
+            SentrySdk.CaptureException(ex);
+        }
+        catch
+        {
+            // 遥测上报失败不能影响崩溃处理流程
+        }
     }
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
@@ -538,6 +554,9 @@ internal partial class Program
         e.SetObserved();
     }
 
+    /// <summary>崩溃处理重入保护：崩溃处理过程中再次崩溃时直接输出到控制台，避免无限递归。</summary>
+    private static int _crashHandling;
+
     private static void HandleException(Exception? ex)
     {
         if (ex == null)
@@ -545,41 +564,117 @@ internal partial class Program
             return;
         }
 
-        ex = ex.InnerException ?? ex;
-        if (Core.App.CurrentLogger != null)
+        if (Interlocked.Exchange(ref _crashHandling, 1) != 0)
         {
-            System.Console.WriteLine($"""
-                                      Unhandled Exception: 
-                                      [{ex.GetType()}] {ex.Message}
-                                      {ex.StackTrace}
-                                      """);
-            Core.App.CurrentLogger.Error(ex, type: EnumLogType.Fatal);
-        }
-        else
-        {
-            System.Console.WriteLine($"""
-                                      Unhandled Exception: 
-                                      [{ex.GetType()}] {ex.Message}
-                                      {ex.StackTrace}
-                                      """);
+            try
+            {
+                System.Console.WriteLine($"[FATAL] Recursive crash during crash handling: {ex.Message}");
+            }
+            catch
+            {
+            }
+
+            return;
         }
 
-        var crashHandler = new CrashHandler(ex, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        CrashHandler.CollectCrashInfo();
-        var crashLog = crashHandler.GetCrashLog();
-        var encodedExInfo = Base64Encode($"{ex.GetType()}||{ex.Message}||{ex.StackTrace}");
-        //保存到文件（可选）
-        var logPath = Path.Combine(Core.App.StartupPath, "Logs", "Crash");
-        Directory.CreateDirectory(logPath);
-        var logFile = Path.Combine(logPath, $"crash_{DateTime.Now:yyyyMMdd_HHmmss}.log");
-        File.WriteAllText(logFile, crashLog);
-        Process.Start(new ProcessStartInfo
+        ex = ex.InnerException ?? ex;
+        try
         {
-            FileName = GetPlatformExe("MEFrpLauncherX.CrashDisplayer"),
-            Arguments = $"{encodedExInfo} {Base64Encode(crashLog)}",
-            UseShellExecute = true
-        });
+            System.Console.WriteLine($"""
+                                      Unhandled Exception: 
+                                      [{ex.GetType()}] {ex.Message}
+                                      {ex.StackTrace}
+                                      """);
+            Core.App.CurrentLogger?.Error(ex, type: EnumLogType.Fatal);
+        }
+        catch
+        {
+            // 日志系统故障不应中断崩溃处理
+        }
+
+        // 1. 生成崩溃报告（CrashHandler 内部已全面防御）
+        string crashLog;
+        try
+        {
+            var crashHandler = new CrashHandler(ex, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            CrashHandler.CollectCrashInfo();
+            crashLog = crashHandler.GetCrashLog();
+            crashHandler.WriteDumpFile(); // 桌面留档（尽力而为）
+        }
+        catch (Exception crashHandlerEx)
+        {
+            crashLog = $"""
+                       PML 2 Crash Report (fallback)
+                       Time: {DateTime.Now}
+                       Error: [{ex.GetType()}] {ex.Message}
+                       {ex.StackTrace}
+                       (CrashHandler failed: {crashHandlerEx.Message})
+                       """;
+        }
+
+        // 2. 崩溃负载写入文件而不是全部塞进命令行：
+        //    完整崩溃日志经 Base64 后可能超过 Windows 命令行 32K 上限，
+        //    导致崩溃报告器根本无法启动（崩溃处理静默失败的极端情况）。
+        var payloadPath = WriteCrashPayload(crashLog);
+
+        // 3. 启动崩溃报告器；报告器缺失/启动失败时降级为控制台 + 文件留档
+        try
+        {
+            var displayerExe = GetPlatformExe("MEFrpLauncherX.CrashDisplayer");
+            if (!File.Exists(displayerExe))
+            {
+                System.Console.WriteLine(
+                    $"[FATAL] CrashDisplayer not found at '{displayerExe}'. Crash log saved to: {payloadPath ?? "(unavailable)"}");
+                return;
+            }
+
+            // 堆栈摘要截断到 4K（完整堆栈在负载文件中），保证命令行长度始终安全
+            var encodedExInfo =
+                Base64Encode($"{ex.GetType()}||{ex.Message}||{TruncateForCommandLine(ex.StackTrace)}");
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = displayerExe,
+                Arguments = payloadPath is not null
+                    ? $"{encodedExInfo} \"{payloadPath}\""
+                    : $"{encodedExInfo} {Base64Encode(crashLog)}", // 负载文件写入失败的极端回退
+                UseShellExecute = true
+            });
+        }
+        catch (Exception startEx)
+        {
+            System.Console.WriteLine($"[FATAL] Failed to launch CrashDisplayer: {startEx.Message}");
+        }
     }
+
+    /// <summary>将崩溃负载写入 Logs/Crash，失败时回退到系统临时目录，再失败返回 null。</summary>
+    private static string? WriteCrashPayload(string crashLog)
+    {
+        var fileName = $"crash_{DateTime.Now:yyyyMMdd_HHmmss}.log";
+        try
+        {
+            var logPath = Path.Combine(Core.App.StartupPath, "Logs", "Crash");
+            Directory.CreateDirectory(logPath);
+            var logFile = Path.Combine(logPath, fileName);
+            File.WriteAllText(logFile, crashLog);
+            return logFile;
+        }
+        catch
+        {
+            try
+            {
+                var tempFile = Path.Combine(Path.GetTempPath(), $"pml2_{fileName}");
+                File.WriteAllText(tempFile, crashLog);
+                return tempFile;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+
+    private static string? TruncateForCommandLine(string? text, int maxLength = 4096) =>
+        text is null || text.Length <= maxLength ? text : text[..maxLength];
 
     public static string GetPlatformExe(string filename, bool fullPath = false) => fullPath
         ? filename.EndsWith(".exe")

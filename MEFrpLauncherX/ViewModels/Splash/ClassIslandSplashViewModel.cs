@@ -27,7 +27,7 @@ public class ClassIslandSplashViewModel : ViewModelBase
             // 设计时模拟
             Task.Run(async () =>
             {
-                for (int i = 0; i <= 100; i++)
+                for (var i = 0; i <= 100; i++)
                 {
                     UpdateProgress(i, $"Loading... {i}%");
                     await Task.Delay(50);

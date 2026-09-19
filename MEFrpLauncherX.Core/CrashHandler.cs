@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace MEFrpLauncherX.Core;
 
@@ -6,6 +6,15 @@ public class CrashHandler
 {
     private static Exception? _ex;
     private static string? _path;
+
+    /// <summary>
+    ///     应用启动时间，由 Program.Main 设置，用于在崩溃报告中计算真实运行时长。
+    /// </summary>
+    public static DateTime StartupTime
+    {
+        get;
+        set;
+    } = DateTime.Now;
 
     private static readonly Dictionary<string, string> _resources = new()
     {
@@ -195,8 +204,10 @@ public class CrashHandler
     public CrashHandler(Exception ex, string path)
     {
         _ex = ex;
-        _path = path +
-                $"\\{_lang_res[CultureInfo.CurrentCulture.Name][2]}_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}_{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}+{DateTime.Now.Millisecond}.txt";
+        // 不受支持的区域性（如 de-DE/fr-FR）必须回退，否则崩溃处理器自身会先崩溃。
+        var reportTitle = GetLocalized(_lang_res, CultureInfo.CurrentCulture.Name, 2);
+        _path = Path.Combine(path,
+            $"{reportTitle}_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}_{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}+{DateTime.Now.Millisecond}.txt");
     }
 
     public static string[] Jokes
@@ -244,46 +255,114 @@ public class CrashHandler
         "Never Gonna Give the Minecraft Up"
     ];
 
+    /// <summary>
+    ///     按区域性取本地化资源，依次回退：完全匹配 → 英语 → 简体中文 → 首个可用值。
+    /// </summary>
+    private static T GetLocalized<T>(Dictionary<string, T> resources, string cultureName) where T : notnull
+    {
+        if (resources.TryGetValue(cultureName, out var exact))
+        {
+            return exact;
+        }
+
+        if (resources.TryGetValue("en-US", out var en))
+        {
+            return en;
+        }
+
+        if (resources.TryGetValue("zh-CN", out var zhCn))
+        {
+            return zhCn;
+        }
+
+        foreach (var value in resources.Values)
+        {
+            return value;
+        }
+
+        throw new InvalidOperationException("No crash report resources available.");
+    }
+
+    private static string GetLocalized(Dictionary<string, List<string>> resources, string cultureName, int index)
+    {
+        var list = GetLocalized(resources, cultureName);
+        return index < list.Count ? list[index] : list[0];
+    }
+
     public static void CollectCrashInfo()
     {
-        var InnerExceptionProcess = _ex?.InnerException != null
-            ? $"""
-               {_lang_res["zh-CN"][0]}: {_ex.InnerException.GetType()}
-               {_lang_res["zh-CN"][3]}: {_ex.InnerException.Message}
-               HResult: {_ex.InnerException.HResult}
-               {_lang_res["zh-CN"][1]}: 
-               {_ex.InnerException.StackTrace}
-               """
-            : "";
+        try
+        {
+            var langRes = GetLocalized(_lang_res, "zh-CN");
+            var innerExceptionProcess = _ex?.InnerException != null
+                ? $"""
+                   {langRes[0]}: {_ex.InnerException.GetType()}
+                   {(langRes.Count > 3 ? langRes[3] : "Info")}: {_ex.InnerException.Message}
+                   HResult: {_ex.InnerException.HResult}
+                   {langRes[1]}: 
+                   {_ex.InnerException.StackTrace}
+                   """
+                : "";
 
-        _resources["zh-CN"] = string.Format(_resources["zh-CN"],
-            Jokes[new Random().Next(0, Jokes.Length - 1)],
-            DateTime.Now.TimeOfDay,
-            _ex?.GetType(),
-            _ex?.Message,
-            _ex?.StackTrace,
-            Environment.OSVersion,
-            App.Version, // 替换为实际版本号
-            "0", // 启动参数数量
-            "", // 启动参数
-            "", // 正常运行时间
-            "", // 额外信息
-            AppDomain.CurrentDomain.BaseDirectory, // 文件路径
-            _port_res["zh-CN"][0], // 类型
-            CultureInfo.CurrentCulture.DisplayName,
-            $"{GC.GetTotalMemory(false) / 1024 / 1024} MB", // 内存占用
-            "",
-            _ex?.InnerException != null,
-            InnerExceptionProcess,
-            _ex.HResult
-        );
+            var commandLineArgs = Environment.GetCommandLineArgs();
+            var startupArgs = commandLineArgs.Length > 1
+                ? string.Join(' ', commandLineArgs.Skip(1))
+                : "(none)";
+            var uptime = (DateTime.Now - StartupTime).TotalSeconds;
+
+            _resources["zh-CN"] = string.Format(_resources["zh-CN"],
+                Jokes[Random.Shared.Next(Jokes.Length)],
+                DateTime.Now.TimeOfDay,
+                _ex?.GetType(),
+                _ex?.Message,
+                _ex?.StackTrace,
+                Environment.OSVersion,
+                App.Version, // 替换为实际版本号
+                commandLineArgs.Length - 1, // 启动参数数量
+                startupArgs, // 启动参数
+                $"{uptime:F1}", // 正常运行时间
+                "", // 额外信息
+                AppDomain.CurrentDomain.BaseDirectory, // 文件路径
+                GetLocalized(_port_res, "zh-CN", 0), // 类型
+                CultureInfo.CurrentCulture.DisplayName,
+                $"{Environment.ProcessorCount}C / {GC.GetTotalMemory(false) / 1024 / 1024} MB", // CPU/内存占用
+                "",
+                _ex?.InnerException != null,
+                innerExceptionProcess,
+                _ex?.HResult ?? 0
+            );
+        }
+        catch (Exception collectEx)
+        {
+            // 崩溃信息采集失败时也要产出最低限度的报告，绝不让崩溃处理器二次崩溃。
+            _resources["zh-CN"] = $"""
+                                   =======================
+                                   = PML 2 崩溃报告 =
+                                   =======================
+                                   (崩溃信息采集失败: {collectEx.Message})
+
+                                   时间: {DateTime.Now}
+                                   错误类型: {_ex?.GetType()}
+                                   描述: {_ex?.Message}
+
+                                   {_ex?.StackTrace}
+                                   """;
+        }
     }
 
     public bool WriteDumpFile()
     {
         try
         {
-            File.WriteAllText(_path ?? AppDomain.CurrentDomain.BaseDirectory, _resources["zh-CN"]);
+            var target = _path ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                $"crash_{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+            var directory = Path.GetDirectoryName(target);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.WriteAllText(target, _resources["zh-CN"]);
             return true;
         }
         catch

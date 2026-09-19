@@ -189,4 +189,9 @@ public partial class MainWindow : Window
     {
         _mouseDownForWindowMoving = false;
     }
+    
+    private void BtnClose_Click(object? sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }

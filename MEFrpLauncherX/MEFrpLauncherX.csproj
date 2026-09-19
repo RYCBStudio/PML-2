@@ -61,8 +61,6 @@
 
         <TrimmerRootDescriptor Include="TrimmerRoots.xml"/>
 
-        <None Remove="Assets\splash.png" />
-
         <AvaloniaResource Include="Assets\splash.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
@@ -70,10 +68,6 @@
         <AvaloniaResource Update="Assets\splash.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
-
-        <None Update="Resources\splash.png">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <!-- 26.3.1 M2：内置 Splash 样式预设图 -->
         <None Update="Resources\splash-dark.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -94,6 +88,8 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <TargetPath>Config\Plugins\create-proxy-template.yaml</TargetPath>
         </None>
+        <None Remove="Assets\splash.png" />
+        <AvaloniaResource Include="Assets\splash.png" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.7.0"/>

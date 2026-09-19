@@ -146,7 +146,7 @@ namespace Notify.NET.Platform.Windows
             _staReady!.Set();
             try
             {
-                foreach (Action work in _workQueue!.GetConsumingEnumerable())
+                foreach (var work in _workQueue!.GetConsumingEnumerable())
                 {
                     try { work(); }
                     catch { /* a single failed list build must not stop the worker */ }
@@ -172,15 +172,15 @@ namespace Notify.NET.Platform.Windows
                     new CustomDestinationListNative.CDestinationList();
                 list.SetAppID(_appUserModelId);
 
-                Guid riid = CustomDestinationListNative.IID_IObjectArray;
+                var riid = CustomDestinationListNative.IID_IObjectArray;
                 list.BeginList(out _, ref riid, out removed);
 
                 collection = (CustomDestinationListNative.IObjectCollection)
                     new CustomDestinationListNative.CEnumerableObjectCollection();
 
-                foreach (JumpListTask task in tasks)
+                foreach (var task in tasks)
                 {
-                    object? link = CreateTaskLink(task);
+                    var link = CreateTaskLink(task);
                     if (link != null) collection.AddObject(link);
                 }
 
@@ -211,7 +211,7 @@ namespace Notify.NET.Platform.Windows
                 link.SetPath(_executablePath);
                 link.SetArguments($"{JumpListActivation.ActivationFlag} {task.Id}");
 
-                string? workingDir = Path.GetDirectoryName(_executablePath);
+                var workingDir = Path.GetDirectoryName(_executablePath);
                 if (!string.IsNullOrEmpty(workingDir))
                     link.SetWorkingDirectory(workingDir);
 
