@@ -14,6 +14,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.ViewModels;
 using ReactiveUI;
 
 namespace MEFrpLauncherX.Views.Appearance;
@@ -32,7 +33,56 @@ public partial class AppearanceSettings : Window
         ShowSystemInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowSystemInfo;
         ShowUserInfo.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowUserInfo;
         ShowStatistics.IsChecked = ConfigManager.CurrentConfig.HomeSettings.ShowStatistics;
+        HomeLayoutBox.SelectedIndex = ConfigManager.CurrentConfig.HomeSettings.Layout
+            .Equals("simple", StringComparison.OrdinalIgnoreCase)
+            ? 0
+            : 1;
+        UpdateHomeLayoutDependentState();
         _init = true;
+    }
+
+    /// <summary>
+    ///     精简布局下，经典主页的各「显示开关」不再驱动主页结构，故置灰并给出说明。
+    /// </summary>
+    private void UpdateHomeLayoutDependentState()
+    {
+        var isSimple = ConfigManager.CurrentConfig.HomeSettings.Layout
+            .Equals("simple", StringComparison.OrdinalIgnoreCase);
+        ShowStatistics.IsEnabled = !isSimple;
+        ShowUserInfo.IsEnabled = !isSimple;
+        ShowSystemInfo.IsEnabled = !isSimple;
+        ShowSoftwareNotice.IsEnabled = !isSimple;
+        ShowSystemNotice.IsEnabled = !isSimple;
+        HomeLayoutSimpleHint.IsVisible = isSimple;
+    }
+
+    /// <summary>
+    ///     切换主页布局：写入配置并即时重建主页（无需重启）。
+    ///     主页每次导航都会新建实例并重读配置，因此重新导航即可生效。
+    /// </summary>
+    private void UpdateHomeLayout(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!_init || sender is null)
+        {
+            return;
+        }
+
+        var layout = HomeLayoutBox.SelectedIndex == 0 ? "simple" : "classic";
+        ConfigManager.UpdateConfig(cfg => cfg.HomeSettings.Layout = layout);
+        UpdateHomeLayoutDependentState();
+
+        // 当前正停留在主页时重建，让用户立刻看到效果
+        try
+        {
+            if (MainPageFrameViewModel.Instance?.CurrentPage is Views.HomePage)
+            {
+                MainPageFrameViewModel.Instance.NavigateToPage("Home");
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "切换主页布局后刷新主页失败");
+        }
     }
 
     private bool CanDeCheck => ConfigManager.CurrentConfig.HomeSettings.ShowStatistics ||

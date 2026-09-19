@@ -402,7 +402,7 @@ public partial class SettingsPage : UserControl
                              <string>{label}</string>
                              <key>ProgramArguments</key>
                              <array>
-                                 <string>{executablePath}</string>
+                                 <string>{executablePath}</string> 
                              </array>
                              <key>RunAtLoad</key>
                              <true/>
@@ -441,6 +441,13 @@ public partial class SettingsPage : UserControl
 
     private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e) =>
         new ALPSettings().ShowDialog(Core.App.MainWindow);
+
+    /// <summary>
+    ///     打开证书助手（26.4）：为 HTTPS 隧道申请 SSL 证书。
+    ///     与 ALP 设置窗口同为「设置页内的独立窗口」模式。
+    /// </summary>
+    private void OpenCertificateAssistant(object? sender, RoutedEventArgs e) =>
+        new CertificateAssistantWindow().ShowDialog(Core.App.MainWindow);
 
     private void ExpireDaysChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {

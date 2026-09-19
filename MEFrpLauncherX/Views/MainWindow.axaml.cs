@@ -330,6 +330,10 @@ public partial class MainWindow : AppWindow, IDisposable
 
         await CheckPolicy();
 
+        // 26.4：应用升级后首次启动展示「本次更新内容」（版本未变化时不弹出）。
+        // 放在隐私政策确认之后、隧道自动恢复之前，且异常内部吞掉，不影响启动流程。
+        await WhatsNewWindow.ShowIfNeededAsync(this);
+
         // 触发插件事件：应用启动
         await PluginService.Instance.TriggerAsync("app.startup", new Dictionary<string, object>
         {
@@ -485,6 +489,8 @@ public partial class MainWindow : AppWindow, IDisposable
         if (!_updateChecked)
         {
             var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
+            // 26.4：把结果回报给静态状态，供精简主页推荐复用（避免重复网络请求）
+            UpdatePageViewModel.ReportUpdateCheck(hasNew, latest);
             if (hasNew)
             {
                 Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),

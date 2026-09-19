@@ -42,6 +42,12 @@ public partial class ManageProxyPage : UserControl
         private set;
     }
 
+    /// <summary>
+    ///     管理页的 ViewModel 只读入口（26.4）：供精简主页汇总「隧道总数 / 运行中数量」。
+    ///     页面未创建过时为 null，调用方需判空。
+    /// </summary>
+    public ManageProxyViewModel ViewModel => _manageProxyViewModel;
+
     private async void ManageProxyPage_Loaded(object? sender, VisualTreeAttachmentEventArgs e)
     {
         try

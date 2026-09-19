@@ -20,6 +20,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
@@ -511,6 +512,25 @@ public class UserProxyViewModel : ViewModelBase
             if (value is TunnelStatus.Running or TunnelStatus.Reconnecting or TunnelStatus.Failed)
             {
                 ProxyFloatViewModel.ReportTunnelStatus(proxyName, value, LastErrorSummary);
+            }
+
+            // 26.4：精简主页推荐需要「最近失败 / 已恢复」信号。
+            // 集中在此处记录，避免在三个失败分支各写一遍（含 24h 有效期，过期自动不再提示）。
+            try
+            {
+                switch (value)
+                {
+                    case TunnelStatus.Failed:
+                        HomeRecommendStateStore.RecordFailure(proxyName);
+                        break;
+                    case TunnelStatus.Running:
+                        HomeRecommendStateStore.ClearFailure();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger?.Error(ex, "记录隧道失败状态失败");
             }
         }
     }

@@ -94,14 +94,42 @@
                 </controls:SettingsExpanderItem>
             </controls:SettingsExpander>
             <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePage}" Description="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePageDescription}">
-                <StackPanel Spacing="3">
-                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_Statistics}" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics" />
-                    <CheckBox Content="{x:Static languages:Languages.Text_UserCenter_UserInfo}" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo" />
-                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemInfo}" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo" />
-                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SoftwareNotice}" x:Name="ShowSoftwareNotice"
-                              IsCheckedChanged="UpdateVisibilityForSoftwareNotice" />
-                    <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemNotice}" x:Name="ShowSystemNotice"
-                              IsCheckedChanged="UpdateVisibilityForSystemNotice" />
+                <StackPanel Spacing="6">
+                    <!-- 26.4：主页布局（精简 / 经典）。精简布局忽略下方各显示开关。 -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Spacing="2" Margin="0,0,10,0">
+                            <TextBlock Text="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayout}"
+                                       FontFamily="{StaticResource GlobalFontFamily}" />
+                            <TextBlock Text="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayoutDescription}"
+                                       TextWrapping="Wrap"
+                                       FontSize="12"
+                                       Opacity="0.7"
+                                       FontFamily="{StaticResource GlobalFontFamily}" />
+                        </StackPanel>
+                        <ComboBox Grid.Column="1"
+                                  x:Name="HomeLayoutBox"
+                                  VerticalAlignment="Center"
+                                  SelectionChanged="UpdateHomeLayout">
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayout_Simple}" />
+                            <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayout_Classic}" />
+                        </ComboBox>
+                    </Grid>
+                    <StackPanel Spacing="3">
+                        <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_Statistics}" x:Name="ShowStatistics" IsCheckedChanged="UpdateVisibilityForStatistics" />
+                        <CheckBox Content="{x:Static languages:Languages.Text_UserCenter_UserInfo}" x:Name="ShowUserInfo" IsCheckedChanged="UpdateVisibilityForUserInfo" />
+                        <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemInfo}" x:Name="ShowSystemInfo" IsCheckedChanged="UpdateVisibilityForSystemInfo" />
+                        <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SoftwareNotice}" x:Name="ShowSoftwareNotice"
+                                  IsCheckedChanged="UpdateVisibilityForSoftwareNotice" />
+                        <CheckBox Content="{x:Static languages:Languages.Text_AppearanceSettings_SystemNotice}" x:Name="ShowSystemNotice"
+                                  IsCheckedChanged="UpdateVisibilityForSystemNotice" />
+                        <TextBlock x:Name="HomeLayoutSimpleHint" IsVisible="False"
+                                   Margin="0,2,0,0"
+                                   TextWrapping="Wrap"
+                                   FontSize="12"
+                                   Opacity="0.7"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayout_SimpleHint}" />
+                    </StackPanel>
                 </StackPanel>
             </controls:SettingsExpander>
         </StackPanel>

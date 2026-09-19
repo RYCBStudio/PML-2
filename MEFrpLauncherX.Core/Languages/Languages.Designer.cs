@@ -9678,5 +9678,734 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 主页布局.
+        /// </summary>
+        public static string Text_AppearanceSettings_HomeLayout {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.HomeLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择主页的信息密度：精简聚焦核心信息，经典保留完整信息面板。.
+        /// </summary>
+        public static string Text_AppearanceSettings_HomeLayoutDescription {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.HomeLayoutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 精简.
+        /// </summary>
+        public static string Text_AppearanceSettings_HomeLayout_Simple {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.HomeLayout.Simple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 经典.
+        /// </summary>
+        public static string Text_AppearanceSettings_HomeLayout_Classic {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.HomeLayout.Classic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 精简布局下，上方的「自定义主页」显示开关不生效。.
+        /// </summary>
+        public static string Text_AppearanceSettings_HomeLayout_SimpleHint {
+            get {
+                return ResourceManager.GetString("Text.AppearanceSettings.HomeLayout.SimpleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你好，{0}.
+        /// </summary>
+        public static string Text_Home_Simple_Greeting {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 尚未登录.
+        /// </summary>
+        public static string Text_Home_Simple_NotLoggedIn {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 去登录.
+        /// </summary>
+        public static string Text_Home_Simple_GoLogin {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.GoLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 剩余流量.
+        /// </summary>
+        public static string Text_Home_Simple_RemainingTraffic {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RemainingTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 系统状态.
+        /// </summary>
+        public static string Text_Home_Simple_Status {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 运行中隧道.
+        /// </summary>
+        public static string Text_Home_Simple_RunningProxies {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RunningProxies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 失败隧道.
+        /// </summary>
+        public static string Text_Home_Simple_FailedProxies {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.FailedProxies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 为你推荐.
+        /// </summary>
+        public static string Text_Home_Simple_Recommendations {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Recommendations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无推荐，一切正常。.
+        /// </summary>
+        public static string Text_Home_Simple_RecommendEmpty {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RecommendEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 刷新.
+        /// </summary>
+        public static string Text_Home_Simple_Refresh {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂时忽略.
+        /// </summary>
+        public static string Text_Home_Simple_Ignore {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Ignore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 处理失败的隧道.
+        /// </summary>
+        public static string Text_Home_Recommend_FailedTunnel_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.FailedTunnel.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道「{0}」启动失败，建议前往管理页查看失败原因。.
+        /// </summary>
+        public static string Text_Home_Recommend_FailedTunnel_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.FailedTunnel.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 流量提醒.
+        /// </summary>
+        public static string Text_Home_Recommend_TrafficLow_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TrafficLow.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 账户剩余流量偏低（{0}），可在用户中心查看明细。.
+        /// </summary>
+        public static string Text_Home_Recommend_TrafficLow_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TrafficLow.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 流量已超限.
+        /// </summary>
+        public static string Text_Home_Recommend_TrafficExceeded_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TrafficExceeded.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 账户流量已超限，隧道可能无法启动，请前往用户中心查看。.
+        /// </summary>
+        public static string Text_Home_Recommend_TrafficExceeded_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TrafficExceeded.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动隧道.
+        /// </summary>
+        public static string Text_Home_Recommend_StartAnyTunnel_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.StartAnyTunnel.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你有 {0} 条隧道但当前都没有运行，可前往管理页启动。.
+        /// </summary>
+        public static string Text_Home_Recommend_StartAnyTunnel_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.StartAnyTunnel.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 创建第一条隧道.
+        /// </summary>
+        public static string Text_Home_Recommend_CreateTunnel_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.CreateTunnel.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 还没有隧道，从创建隧道开始吧（引导版可一键套用常用模板）。.
+        /// </summary>
+        public static string Text_Home_Recommend_CreateTunnel_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.CreateTunnel.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 发现新版本.
+        /// </summary>
+        public static string Text_Home_Recommend_UpdateAvailable_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.UpdateAvailable.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新版本 {0} 已发布，可前往更新页下载。.
+        /// </summary>
+        public static string Text_Home_Recommend_UpdateAvailable_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.UpdateAvailable.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看节点状态.
+        /// </summary>
+        public static string Text_Home_Recommend_ExploreNodes_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.ExploreNodes.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 可前往节点监控查看各节点在线情况与负载，选择更优节点。.
+        /// </summary>
+        public static string Text_Home_Recommend_ExploreNodes_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.ExploreNodes.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 阅读使用文档.
+        /// </summary>
+        public static string Text_Home_Recommend_ReadDocs_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.ReadDocs.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 遇到问题？官方文档包含隧道配置、插件与排障说明。.
+        /// </summary>
+        public static string Text_Home_Recommend_ReadDocs_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.ReadDocs.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 去处理.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Manage {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看流量.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_UserCenter {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.UserCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 去启动.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Start {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 创建隧道.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Create {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 前往更新.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Update {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 节点监控.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Nodes {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Nodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开文档.
+        /// </summary>
+        public static string Text_Home_Recommend_Action_Docs {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Docs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 本次更新内容.
+        /// </summary>
+        public static string Text_WhatsNew_Title {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 我知道了.
+        /// </summary>
+        public static string Text_WhatsNew_Ok {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 前往更新页.
+        /// </summary>
+        public static string Text_WhatsNew_OpenChangelog {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.OpenChangelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在加载 {0} 的更新说明….
+        /// </summary>
+        public static string Text_WhatsNew_LoadingFormat {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.LoadingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂时无法获取更新说明，可稍后在更新页查看。.
+        /// </summary>
+        public static string Text_WhatsNew_Unavailable {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 版本 {0}  （{1}）  ·  {2}.
+        /// </summary>
+        public static string Text_WhatsNew_HeaderFormat {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.HeaderFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 证书助手.
+        /// </summary>
+        public static string Text_Certificate_Title {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 为 HTTPS 隧道申请正式 SSL 证书.
+        /// </summary>
+        public static string Text_Certificate_Description {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 证书助手说明.
+        /// </summary>
+        public static string Text_Certificate_Intro {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Staging（测试）.
+        /// </summary>
+        public static string Text_Certificate_Env_Staging {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Env.Staging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Production（生产）.
+        /// </summary>
+        public static string Text_Certificate_Env_Production {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Env.Production", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 生产环境存在签发频率限制，请确认域名与 DNS 已就绪后再继续。.
+        /// </summary>
+        public static string Text_Certificate_Env_ProductionWarning {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Env.ProductionWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 域名.
+        /// </summary>
+        public static string Text_Certificate_Domain {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Domain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.com.
+        /// </summary>
+        public static string Text_Certificate_DomainPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DomainPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACME 账户邮箱.
+        /// </summary>
+        public static string Text_Certificate_Email {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 you@example.com.
+        /// </summary>
+        public static string Text_Certificate_EmailPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.Certificate.EmailPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 附加域名（可选）.
+        /// </summary>
+        public static string Text_Certificate_AltNames {
+            get {
+                return ResourceManager.GetString("Text.Certificate.AltNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 多个域名用逗号分隔，如 www.example.com.
+        /// </summary>
+        public static string Text_Certificate_AltNamesPlaceholder {
+            get {
+                return ResourceManager.GetString("Text.Certificate.AltNamesPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开始申请.
+        /// </summary>
+        public static string Text_Certificate_Start {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请到您的 DNS 服务商添加以下 TXT 记录，生效后点击「我已添加」继续。.
+        /// </summary>
+        public static string Text_Certificate_ChallengeHint {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ChallengeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 记录主机.
+        /// </summary>
+        public static string Text_Certificate_ChallengeHost {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ChallengeHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 记录值.
+        /// </summary>
+        public static string Text_Certificate_ChallengeValue {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ChallengeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 我已添加.
+        /// </summary>
+        public static string Text_Certificate_ConfirmAdded {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ConfirmAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 取消.
+        /// </summary>
+        public static string Text_Certificate_Cancel {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开证书目录.
+        /// </summary>
+        public static string Text_Certificate_OpenDirectory {
+            get {
+                return ResourceManager.GetString("Text.Certificate.OpenDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除.
+        /// </summary>
+        public static string Text_Certificate_Delete {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已删除本地证书.
+        /// </summary>
+        public static string Text_Certificate_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无本地证书.
+        /// </summary>
+        public static string Text_Certificate_Empty {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 即将到期.
+        /// </summary>
+        public static string Text_Certificate_ExpiringSoon {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ExpiringSoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择证书.
+        /// </summary>
+        public static string Text_Certificate_SelectTitle {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SelectTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 从证书助手选择.
+        /// </summary>
+        public static string Text_Certificate_SelectForTunnel {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SelectForTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 证书已签发至：{0}.
+        /// </summary>
+        public static string Text_Certificate_SuccessFormat {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SuccessFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 申请失败：{0}.
+        /// </summary>
+        public static string Text_Certificate_FailedFormat {
+            get {
+                return ResourceManager.GetString("Text.Certificate.FailedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请填写域名.
+        /// </summary>
+        public static string Text_Certificate_Validation_DomainRequired {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Validation.DomainRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请填写 ACME 账户邮箱.
+        /// </summary>
+        public static string Text_Certificate_Validation_EmailRequired {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Validation.EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 邮箱格式不正确.
+        /// </summary>
+        public static string Text_Certificate_Validation_EmailInvalid {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Validation.EmailInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在准备 lego….
+        /// </summary>
+        public static string Text_Certificate_Stage_DownloadingLego {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.DownloadingLego", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在向 CA 下单….
+        /// </summary>
+        public static string Text_Certificate_Stage_Preparing {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.Preparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请添加 TXT 记录后继续.
+        /// </summary>
+        public static string Text_Certificate_Stage_WaitingUserConfirm {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.WaitingUserConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在等待 DNS 生效与 CA 校验….
+        /// </summary>
+        public static string Text_Certificate_Stage_WaitingValidation {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.WaitingValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 签发完成.
+        /// </summary>
+        public static string Text_Certificate_Stage_Succeeded {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.Succeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 申请失败.
+        /// </summary>
+        public static string Text_Certificate_Stage_Failed {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.Failed", resourceCulture);
+            }
+        }
     }
 }

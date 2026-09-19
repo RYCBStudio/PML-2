@@ -1,0 +1,80 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:markdownAiRender="https://github.com/AIDotNet/Markdown.AIRender"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        mc:Ignorable="d"
+        d:DesignWidth="560" d:DesignHeight="520"
+        Width="560" Height="520"
+        CanResize="True"
+        WindowStartupLocation="CenterOwner"
+        Title="{x:Static languages:Languages.Text_WhatsNew_Title}"
+        x:Class="MEFrpLauncherX.Views.WhatsNewWindow">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
+        <!-- 标题区：版本 + 代号 + 日期 -->
+        <StackPanel Grid.Row="0" Spacing="4">
+            <TextBlock x:Name="HeaderText"
+                       Theme="{StaticResource SubtitleTextBlockStyle}"
+                       FontFamily="{StaticResource GlobalFontFamily}"
+                       TextWrapping="Wrap" />
+            <TextBlock x:Name="SummaryText"
+                       Theme="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- 更新条目区：服务端 changes 为 HTML/Markdown，统一交给 MarkdownRender 渲染 -->
+        <Border Grid.Row="1"
+                CornerRadius="6"
+                Padding="12"
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+            <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Spacing="8">
+                    <controls:ProgressRing x:Name="LoadingRing"
+                                           IsIndeterminate="True"
+                                           Width="36" Height="36"
+                                           HorizontalAlignment="Center"
+                                           IsVisible="False" />
+                    <TextBlock x:Name="PlaceholderText"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               FontFamily="{StaticResource GlobalFontFamily}" />
+                    <ItemsControl x:Name="ChangeList" ItemsSource="{Binding Changelog}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0,0,0,6">
+                                    <Ellipse DockPanel.Dock="Left"
+                                             Stroke="{StaticResource SystemAltLowColor}"
+                                             Fill="{StaticResource SystemAccentColor}"
+                                             StrokeThickness="2"
+                                             Margin="0,4,8,0"
+                                             VerticalAlignment="Top"
+                                             Height="5" Width="5" />
+                                    <markdownAiRender:MarkdownRender Value="{Binding}"
+                                                                      TextWrapping="Wrap"
+                                                                      FontFamily="{StaticResource GlobalFontFamily}" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- 操作区 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button x:Name="OpenChangelogButton"
+                    Click="OpenChangelog"
+                    Content="{x:Static languages:Languages.Text_WhatsNew_OpenChangelog}" />
+            <Button x:Name="OkButton"
+                    Classes="accent"
+                    Click="CloseWindow"
+                    Content="{x:Static languages:Languages.Text_WhatsNew_Ok}" />
+        </StackPanel>
+    </Grid>
+</Window>

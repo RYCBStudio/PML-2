@@ -192,6 +192,22 @@ public class UpdatePageViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> DownloadUpdateCommand { get; }
 
     /// <summary>
+    ///     最近一次「检查更新」的结果（供精简主页推荐使用，避免重复网络请求）。
+    ///     null 表示尚未检查过。
+    /// </summary>
+    public static bool? HasKnownUpdate { get; private set; }
+
+    /// <summary>最近一次检查到的最新版本号（无更新或未检查时为空）</summary>
+    public static string? LatestKnownVersion { get; private set; }
+
+    /// <summary>记录一次检查更新结果（由 <see cref="CheckUpdate" /> 与自动检查复用）</summary>
+    internal static void ReportUpdateCheck(bool hasUpdate, string? latestVersion)
+    {
+        HasKnownUpdate = hasUpdate;
+        LatestKnownVersion = hasUpdate ? latestVersion : null;
+    }
+
+    /// <summary>
     ///     检查更新
     /// </summary>
     /// <returns>(是否最新, 最新版本)</returns>
@@ -299,6 +315,8 @@ public class UpdatePageViewModel : ViewModelBase
             Codename = updateInfo.data.codename;
             Changelog.Clear();
             Changelog.AddRange(updateInfo.data.changes);
+            // 供精简主页推荐使用：记录本次检查结果
+            ReportUpdateCheck(true, latestVersion);
         }
         else
         {
@@ -308,6 +326,7 @@ public class UpdatePageViewModel : ViewModelBase
             IsLoading = false;
             IsIdle = true;
             FailureTip = null;
+            ReportUpdateCheck(false, null);
         }
 
         if (updateInfo is { success: true, data.changes.Length: > 0 })

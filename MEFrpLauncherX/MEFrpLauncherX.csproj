@@ -9,10 +9,10 @@
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
-        <AssemblyVersion>26.3.1</AssemblyVersion>
+        <AssemblyVersion>26.4.0</AssemblyVersion>
         <NeutralLanguage>zh-Hans</NeutralLanguage>
-        <Version>26.3.1</Version>
-        <ApplicationVersion>26.3.1</ApplicationVersion>
+        <Version>26.4.0</Version>
+        <ApplicationVersion>26.4.0</ApplicationVersion>
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

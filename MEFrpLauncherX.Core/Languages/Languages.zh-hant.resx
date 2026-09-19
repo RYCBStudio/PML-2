@@ -2389,7 +2389,13 @@ ___
 - 履行法律義務
 - 與第三方服務商合作（如雲端服務）必要時
 ___
-### 4. 您的權利
+### 4. 憑證助手（選用功能）
+「憑證助手」用於為您**自有網域**申請 SSL 憑證（供 HTTPS 隧道使用），與 ME Frp 官方憑證服務**無關**：
+- 網域、ACME 電子郵件、憑證與私鑰、DNS Token **僅在本機處理**，我們不會收集或上傳；
+- 流程中僅與 Let's Encrypt（CA）及您所選 DNS 服務商通訊，預設使用測試環境；
+- 可隨時在憑證助手中刪除本機憑證。
+___
+### 5. 您的權利
 您有權存取、更正或刪除個人資訊，可透過設定停用遙測資料蒐集。
 **聯絡方式：** [郵件](mailto:im@rycb.tech) | [官網](https://www.rycb.tech/)
 ___
@@ -3272,5 +3278,251 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Global.FileType.All" xml:space="preserve">
         <value>所有檔案|*.*</value>
+    </data>
+    <!-- 26.4 主頁佈局與精簡主頁 -->
+    <data name="Text.AppearanceSettings.HomeLayout" xml:space="preserve">
+        <value>主頁佈局</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayoutDescription" xml:space="preserve">
+        <value>選擇主頁的資訊密度：精簡聚焦核心資訊，經典保留完整資訊面板。</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.Simple" xml:space="preserve">
+        <value>精簡</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.Classic" xml:space="preserve">
+        <value>經典</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.SimpleHint" xml:space="preserve">
+        <value>精簡佈局下，上方的「自訂主頁」顯示開關不會生效。</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
+        <value>你好，{0}</value>
+    </data>
+    <data name="Text.Home.Simple.NotLoggedIn" xml:space="preserve">
+        <value>尚未登入</value>
+    </data>
+    <data name="Text.Home.Simple.GoLogin" xml:space="preserve">
+        <value>去登入</value>
+    </data>
+    <data name="Text.Home.Simple.RemainingTraffic" xml:space="preserve">
+        <value>剩餘流量</value>
+    </data>
+    <data name="Text.Home.Simple.Status" xml:space="preserve">
+        <value>系統狀態</value>
+    </data>
+    <data name="Text.Home.Simple.RunningProxies" xml:space="preserve">
+        <value>執行中隧道</value>
+    </data>
+    <data name="Text.Home.Simple.FailedProxies" xml:space="preserve">
+        <value>失敗隧道</value>
+    </data>
+    <data name="Text.Home.Simple.Recommendations" xml:space="preserve">
+        <value>為你推薦</value>
+    </data>
+    <data name="Text.Home.Simple.RecommendEmpty" xml:space="preserve">
+        <value>暫無推薦，一切正常。</value>
+    </data>
+    <data name="Text.Home.Simple.Refresh" xml:space="preserve">
+        <value>重新整理</value>
+    </data>
+    <data name="Text.Home.Simple.Ignore" xml:space="preserve">
+        <value>暫時忽略</value>
+    </data>
+    <data name="Text.Home.Recommend.FailedTunnel.Title" xml:space="preserve">
+        <value>處理失敗的隧道</value>
+    </data>
+    <data name="Text.Home.Recommend.FailedTunnel.Reason" xml:space="preserve">
+        <value>隧道「{0}」啟動失敗，建議前往管理頁查看失敗原因。</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficLow.Title" xml:space="preserve">
+        <value>流量提醒</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficLow.Reason" xml:space="preserve">
+        <value>帳號剩餘流量偏低（{0}），可在使用者中心查看明細。</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficExceeded.Title" xml:space="preserve">
+        <value>流量已超限</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficExceeded.Reason" xml:space="preserve">
+        <value>帳號流量已超限，隧道可能無法啟動，請前往使用者中心查看。</value>
+    </data>
+    <data name="Text.Home.Recommend.StartAnyTunnel.Title" xml:space="preserve">
+        <value>啟動隧道</value>
+    </data>
+    <data name="Text.Home.Recommend.StartAnyTunnel.Reason" xml:space="preserve">
+        <value>你有 {0} 條隧道但目前都沒有執行，可前往管理頁啟動。</value>
+    </data>
+    <data name="Text.Home.Recommend.CreateTunnel.Title" xml:space="preserve">
+        <value>建立第一條隧道</value>
+    </data>
+    <data name="Text.Home.Recommend.CreateTunnel.Reason" xml:space="preserve">
+        <value>還沒有隧道，就從建立隧道開始吧（引導版可一鍵套用常用範本）。</value>
+    </data>
+    <data name="Text.Home.Recommend.UpdateAvailable.Title" xml:space="preserve">
+        <value>發現新版本</value>
+    </data>
+    <data name="Text.Home.Recommend.UpdateAvailable.Reason" xml:space="preserve">
+        <value>新版本 {0} 已發布，可前往更新頁下載。</value>
+    </data>
+    <data name="Text.Home.Recommend.ExploreNodes.Title" xml:space="preserve">
+        <value>查看節點狀態</value>
+    </data>
+    <data name="Text.Home.Recommend.ExploreNodes.Reason" xml:space="preserve">
+        <value>可前往節點監控查看各節點線上情況與負載，選擇更優節點。</value>
+    </data>
+    <data name="Text.Home.Recommend.ReadDocs.Title" xml:space="preserve">
+        <value>閱讀使用文件</value>
+    </data>
+    <data name="Text.Home.Recommend.ReadDocs.Reason" xml:space="preserve">
+        <value>遇到問題？官方文件包含隧道設定、外掛與排障說明。</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Manage" xml:space="preserve">
+        <value>去處理</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.UserCenter" xml:space="preserve">
+        <value>查看流量</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Start" xml:space="preserve">
+        <value>去啟動</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Create" xml:space="preserve">
+        <value>建立隧道</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Update" xml:space="preserve">
+        <value>前往更新</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Nodes" xml:space="preserve">
+        <value>節點監控</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Docs" xml:space="preserve">
+        <value>開啟文件</value>
+    </data>
+    <!-- 26.4 本次更新內容視窗 -->
+    <data name="Text.WhatsNew.Title" xml:space="preserve">
+        <value>本次更新內容</value>
+    </data>
+    <data name="Text.WhatsNew.Ok" xml:space="preserve">
+        <value>我知道了</value>
+    </data>
+    <data name="Text.WhatsNew.OpenChangelog" xml:space="preserve">
+        <value>前往更新頁</value>
+    </data>
+    <data name="Text.WhatsNew.LoadingFormat" xml:space="preserve">
+        <value>正在載入 {0} 的更新說明…</value>
+    </data>
+    <data name="Text.WhatsNew.Unavailable" xml:space="preserve">
+        <value>暫時無法取得更新說明，可稍後在更新頁查看。</value>
+    </data>
+    <data name="Text.WhatsNew.HeaderFormat" xml:space="preserve">
+        <value>版本 {0}  （{1}）  ·  {2}</value>
+    </data>
+    <!-- 26.4 憑證助手 -->
+    <data name="Text.Certificate.Title" xml:space="preserve">
+        <value>憑證助手</value>
+    </data>
+    <data name="Text.Certificate.Description" xml:space="preserve">
+        <value>為 HTTPS 隧道申請正式 SSL 憑證</value>
+    </data>
+    <data name="Text.Certificate.Intro" xml:space="preserve">
+        <value>憑證助手僅用於為您自有網域申請 SSL 憑證，產物寫入本機 Config/Certificates/，可直接用於建立 HTTPS 隧道。申請的憑證與 ME Frp 官方憑證服務無關；網域、ACME 電子郵件與私鑰僅在本機處理。預設使用 Let's Encrypt Staging（測試）環境，憑證不被瀏覽器信任，僅供驗證流程，確認無誤後再切換正式環境。</value>
+    </data>
+    <data name="Text.Certificate.Env.Staging" xml:space="preserve">
+        <value>Staging（測試）</value>
+    </data>
+    <data name="Text.Certificate.Env.Production" xml:space="preserve">
+        <value>Production（正式）</value>
+    </data>
+    <data name="Text.Certificate.Env.ProductionWarning" xml:space="preserve">
+        <value>正式環境有簽發頻率限制，請確認網域與 DNS 已就緒後再繼續。</value>
+    </data>
+    <data name="Text.Certificate.Domain" xml:space="preserve">
+        <value>網域</value>
+    </data>
+    <data name="Text.Certificate.DomainPlaceholder" xml:space="preserve">
+        <value>例如 example.com</value>
+    </data>
+    <data name="Text.Certificate.Email" xml:space="preserve">
+        <value>ACME 帳號電子郵件</value>
+    </data>
+    <data name="Text.Certificate.EmailPlaceholder" xml:space="preserve">
+        <value>例如 you@example.com</value>
+    </data>
+    <data name="Text.Certificate.AltNames" xml:space="preserve">
+        <value>附加網域（選填）</value>
+    </data>
+    <data name="Text.Certificate.AltNamesPlaceholder" xml:space="preserve">
+        <value>多個網域以逗號分隔，如 www.example.com</value>
+    </data>
+    <data name="Text.Certificate.Start" xml:space="preserve">
+        <value>開始申請</value>
+    </data>
+    <data name="Text.Certificate.ChallengeHint" xml:space="preserve">
+        <value>請到您的 DNS 服務商新增以下 TXT 記錄，生效後點選「我已新增」繼續。</value>
+    </data>
+    <data name="Text.Certificate.ChallengeHost" xml:space="preserve">
+        <value>記錄主機</value>
+    </data>
+    <data name="Text.Certificate.ChallengeValue" xml:space="preserve">
+        <value>記錄值</value>
+    </data>
+    <data name="Text.Certificate.ConfirmAdded" xml:space="preserve">
+        <value>我已新增</value>
+    </data>
+    <data name="Text.Certificate.Cancel" xml:space="preserve">
+        <value>取消</value>
+    </data>
+    <data name="Text.Certificate.OpenDirectory" xml:space="preserve">
+        <value>開啟憑證目錄</value>
+    </data>
+    <data name="Text.Certificate.Delete" xml:space="preserve">
+        <value>刪除</value>
+    </data>
+    <data name="Text.Certificate.Deleted" xml:space="preserve">
+        <value>已刪除本機憑證</value>
+    </data>
+    <data name="Text.Certificate.Empty" xml:space="preserve">
+        <value>尚無本機憑證</value>
+    </data>
+    <data name="Text.Certificate.ExpiringSoon" xml:space="preserve">
+        <value>即將到期</value>
+    </data>
+    <data name="Text.Certificate.SelectTitle" xml:space="preserve">
+        <value>選擇憑證</value>
+    </data>
+    <data name="Text.Certificate.SelectForTunnel" xml:space="preserve">
+        <value>從憑證助手選擇</value>
+    </data>
+    <data name="Text.Certificate.SuccessFormat" xml:space="preserve">
+        <value>憑證已簽發至：{0}</value>
+    </data>
+    <data name="Text.Certificate.FailedFormat" xml:space="preserve">
+        <value>申請失敗：{0}</value>
+    </data>
+    <data name="Text.Certificate.Validation.DomainRequired" xml:space="preserve">
+        <value>請填寫網域</value>
+    </data>
+    <data name="Text.Certificate.Validation.EmailRequired" xml:space="preserve">
+        <value>請填寫 ACME 帳號電子郵件</value>
+    </data>
+    <data name="Text.Certificate.Validation.EmailInvalid" xml:space="preserve">
+        <value>電子郵件格式不正確</value>
+    </data>
+    <data name="Text.Certificate.Stage.DownloadingLego" xml:space="preserve">
+        <value>正在準備 lego…</value>
+    </data>
+    <data name="Text.Certificate.Stage.Preparing" xml:space="preserve">
+        <value>正在向 CA 下單…</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingUserConfirm" xml:space="preserve">
+        <value>請新增 TXT 記錄後繼續</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingValidation" xml:space="preserve">
+        <value>正在等待 DNS 生效與 CA 驗證…</value>
+    </data>
+    <data name="Text.Certificate.Stage.Succeeded" xml:space="preserve">
+        <value>簽發完成</value>
+    </data>
+    <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
+        <value>申請失敗</value>
     </data>
 </root>

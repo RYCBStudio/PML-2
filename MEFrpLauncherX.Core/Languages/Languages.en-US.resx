@@ -2397,7 +2397,13 @@ ___
 - To fulfill legal obligations
 - When necessary for cooperation with third-party service providers (such as cloud services)
 ___
-### 4. Your Rights
+### 4. Certificate assistant (optional)
+The "certificate assistant" requests SSL certificates for domains **you own** (for HTTPS tunnels). It is unrelated to the official ME Frp certificate service:
+- domain, ACME email, certificate, private key and DNS token are processed **locally only** and are never collected or uploaded by us;
+- the flow only talks to Let's Encrypt (CA) and the DNS provider you choose; the test environment is used by default;
+- you can delete local certificates from the assistant at any time.
+___
+### 5. Your Rights
 You have the right to access, correct or delete your personal information, and you can disable telemetry data collection in the settings.
 **Contact:** [Email](mailto:im@rycb.tech) | [Website](https://www.rycb.tech/)
 ___
@@ -3277,5 +3283,251 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Global.FileType.All" xml:space="preserve">
         <value>All Files|*.*</value>
+    </data>
+    <!-- 26.4 Home layout & simple home -->
+    <data name="Text.AppearanceSettings.HomeLayout" xml:space="preserve">
+        <value>Home layout</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayoutDescription" xml:space="preserve">
+        <value>Choose the home page density: Simple focuses on essentials, Classic keeps the full panels.</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.Simple" xml:space="preserve">
+        <value>Simple</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.Classic" xml:space="preserve">
+        <value>Classic</value>
+    </data>
+    <data name="Text.AppearanceSettings.HomeLayout.SimpleHint" xml:space="preserve">
+        <value>The "Customize home page" switches above do not apply to the Simple layout.</value>
+    </data>
+    <data name="Text.Home.Simple.Greeting" xml:space="preserve">
+        <value>Hello, {0}</value>
+    </data>
+    <data name="Text.Home.Simple.NotLoggedIn" xml:space="preserve">
+        <value>Not signed in</value>
+    </data>
+    <data name="Text.Home.Simple.GoLogin" xml:space="preserve">
+        <value>Sign in</value>
+    </data>
+    <data name="Text.Home.Simple.RemainingTraffic" xml:space="preserve">
+        <value>Remaining traffic</value>
+    </data>
+    <data name="Text.Home.Simple.Status" xml:space="preserve">
+        <value>System status</value>
+    </data>
+    <data name="Text.Home.Simple.RunningProxies" xml:space="preserve">
+        <value>Running tunnels</value>
+    </data>
+    <data name="Text.Home.Simple.FailedProxies" xml:space="preserve">
+        <value>Failed tunnels</value>
+    </data>
+    <data name="Text.Home.Simple.Recommendations" xml:space="preserve">
+        <value>Recommended for you</value>
+    </data>
+    <data name="Text.Home.Simple.RecommendEmpty" xml:space="preserve">
+        <value>Nothing to suggest — all good.</value>
+    </data>
+    <data name="Text.Home.Simple.Refresh" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="Text.Home.Simple.Ignore" xml:space="preserve">
+        <value>Ignore for now</value>
+    </data>
+    <data name="Text.Home.Recommend.FailedTunnel.Title" xml:space="preserve">
+        <value>Fix a failed tunnel</value>
+    </data>
+    <data name="Text.Home.Recommend.FailedTunnel.Reason" xml:space="preserve">
+        <value>Tunnel "{0}" failed to start. Check the failure reason on the management page.</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficLow.Title" xml:space="preserve">
+        <value>Traffic reminder</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficLow.Reason" xml:space="preserve">
+        <value>Remaining traffic is low ({0}). See details in the user center.</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficExceeded.Title" xml:space="preserve">
+        <value>Traffic exceeded</value>
+    </data>
+    <data name="Text.Home.Recommend.TrafficExceeded.Reason" xml:space="preserve">
+        <value>Your account traffic limit has been exceeded, tunnels may not start. Check the user center.</value>
+    </data>
+    <data name="Text.Home.Recommend.StartAnyTunnel.Title" xml:space="preserve">
+        <value>Start a tunnel</value>
+    </data>
+    <data name="Text.Home.Recommend.StartAnyTunnel.Reason" xml:space="preserve">
+        <value>You have {0} tunnel(s) but none are running. Start one from the management page.</value>
+    </data>
+    <data name="Text.Home.Recommend.CreateTunnel.Title" xml:space="preserve">
+        <value>Create your first tunnel</value>
+    </data>
+    <data name="Text.Home.Recommend.CreateTunnel.Reason" xml:space="preserve">
+        <value>No tunnels yet. Start with the guided mode and apply a ready-made template.</value>
+    </data>
+    <data name="Text.Home.Recommend.UpdateAvailable.Title" xml:space="preserve">
+        <value>Update available</value>
+    </data>
+    <data name="Text.Home.Recommend.UpdateAvailable.Reason" xml:space="preserve">
+        <value>Version {0} is available. Download it from the update page.</value>
+    </data>
+    <data name="Text.Home.Recommend.ExploreNodes.Title" xml:space="preserve">
+        <value>Check node status</value>
+    </data>
+    <data name="Text.Home.Recommend.ExploreNodes.Reason" xml:space="preserve">
+        <value>See online status and load of each node, then pick a better one.</value>
+    </data>
+    <data name="Text.Home.Recommend.ReadDocs.Title" xml:space="preserve">
+        <value>Read the docs</value>
+    </data>
+    <data name="Text.Home.Recommend.ReadDocs.Reason" xml:space="preserve">
+        <value>Having trouble? The docs cover tunnel setup, plugins and troubleshooting.</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Manage" xml:space="preserve">
+        <value>Go fix</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.UserCenter" xml:space="preserve">
+        <value>View traffic</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Start" xml:space="preserve">
+        <value>Start</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Create" xml:space="preserve">
+        <value>Create tunnel</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Update" xml:space="preserve">
+        <value>Go update</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Nodes" xml:space="preserve">
+        <value>Node monitor</value>
+    </data>
+    <data name="Text.Home.Recommend.Action.Docs" xml:space="preserve">
+        <value>Open docs</value>
+    </data>
+    <!-- 26.4 What's new window -->
+    <data name="Text.WhatsNew.Title" xml:space="preserve">
+        <value>What's new in this update</value>
+    </data>
+    <data name="Text.WhatsNew.Ok" xml:space="preserve">
+        <value>Got it</value>
+    </data>
+    <data name="Text.WhatsNew.OpenChangelog" xml:space="preserve">
+        <value>View update page</value>
+    </data>
+    <data name="Text.WhatsNew.LoadingFormat" xml:space="preserve">
+        <value>Loading release notes for {0}…</value>
+    </data>
+    <data name="Text.WhatsNew.Unavailable" xml:space="preserve">
+        <value>Release notes are not available right now. You can check them later on the update page.</value>
+    </data>
+    <data name="Text.WhatsNew.HeaderFormat" xml:space="preserve">
+        <value>Version {0}  ({1})  ·  {2}</value>
+    </data>
+    <!-- 26.4 Certificate assistant -->
+    <data name="Text.Certificate.Title" xml:space="preserve">
+        <value>Certificate assistant</value>
+    </data>
+    <data name="Text.Certificate.Description" xml:space="preserve">
+        <value>Obtain a real SSL certificate for HTTPS tunnels</value>
+    </data>
+    <data name="Text.Certificate.Intro" xml:space="preserve">
+        <value>The certificate assistant requests SSL certificates only for domains you own. Artifacts are written to Config/Certificates/ on this machine and can be used directly when creating HTTPS tunnels. It is unrelated to the official ME Frp certificate service; the domain, ACME email and private key are processed locally. Let's Encrypt Staging is used by default — such certificates are not trusted by browsers and are meant to validate the flow first.</value>
+    </data>
+    <data name="Text.Certificate.Env.Staging" xml:space="preserve">
+        <value>Staging (test)</value>
+    </data>
+    <data name="Text.Certificate.Env.Production" xml:space="preserve">
+        <value>Production</value>
+    </data>
+    <data name="Text.Certificate.Env.ProductionWarning" xml:space="preserve">
+        <value>Production has issuance rate limits. Make sure your domain and DNS are ready before continuing.</value>
+    </data>
+    <data name="Text.Certificate.Domain" xml:space="preserve">
+        <value>Domain</value>
+    </data>
+    <data name="Text.Certificate.DomainPlaceholder" xml:space="preserve">
+        <value>e.g. example.com</value>
+    </data>
+    <data name="Text.Certificate.Email" xml:space="preserve">
+        <value>ACME account email</value>
+    </data>
+    <data name="Text.Certificate.EmailPlaceholder" xml:space="preserve">
+        <value>e.g. you@example.com</value>
+    </data>
+    <data name="Text.Certificate.AltNames" xml:space="preserve">
+        <value>Additional domains (optional)</value>
+    </data>
+    <data name="Text.Certificate.AltNamesPlaceholder" xml:space="preserve">
+        <value>Comma separated, e.g. www.example.com</value>
+    </data>
+    <data name="Text.Certificate.Start" xml:space="preserve">
+        <value>Start</value>
+    </data>
+    <data name="Text.Certificate.ChallengeHint" xml:space="preserve">
+        <value>Add the following TXT record at your DNS provider, then click "I have added it".</value>
+    </data>
+    <data name="Text.Certificate.ChallengeHost" xml:space="preserve">
+        <value>Record name</value>
+    </data>
+    <data name="Text.Certificate.ChallengeValue" xml:space="preserve">
+        <value>Record value</value>
+    </data>
+    <data name="Text.Certificate.ConfirmAdded" xml:space="preserve">
+        <value>I have added it</value>
+    </data>
+    <data name="Text.Certificate.Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Text.Certificate.OpenDirectory" xml:space="preserve">
+        <value>Open certificate folder</value>
+    </data>
+    <data name="Text.Certificate.Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Text.Certificate.Deleted" xml:space="preserve">
+        <value>Local certificate deleted</value>
+    </data>
+    <data name="Text.Certificate.Empty" xml:space="preserve">
+        <value>No local certificates</value>
+    </data>
+    <data name="Text.Certificate.ExpiringSoon" xml:space="preserve">
+        <value>Expiring soon</value>
+    </data>
+    <data name="Text.Certificate.SelectTitle" xml:space="preserve">
+        <value>Select a certificate</value>
+    </data>
+    <data name="Text.Certificate.SelectForTunnel" xml:space="preserve">
+        <value>Pick from assistant</value>
+    </data>
+    <data name="Text.Certificate.SuccessFormat" xml:space="preserve">
+        <value>Certificate issued to: {0}</value>
+    </data>
+    <data name="Text.Certificate.FailedFormat" xml:space="preserve">
+        <value>Request failed: {0}</value>
+    </data>
+    <data name="Text.Certificate.Validation.DomainRequired" xml:space="preserve">
+        <value>Please enter a domain</value>
+    </data>
+    <data name="Text.Certificate.Validation.EmailRequired" xml:space="preserve">
+        <value>Please enter the ACME account email</value>
+    </data>
+    <data name="Text.Certificate.Validation.EmailInvalid" xml:space="preserve">
+        <value>Invalid email format</value>
+    </data>
+    <data name="Text.Certificate.Stage.DownloadingLego" xml:space="preserve">
+        <value>Preparing lego…</value>
+    </data>
+    <data name="Text.Certificate.Stage.Preparing" xml:space="preserve">
+        <value>Contacting the CA…</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingUserConfirm" xml:space="preserve">
+        <value>Add the TXT record to continue</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingValidation" xml:space="preserve">
+        <value>Waiting for DNS propagation and CA validation…</value>
+    </data>
+    <data name="Text.Certificate.Stage.Succeeded" xml:space="preserve">
+        <value>Issued</value>
+    </data>
+    <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
+        <value>Failed</value>
     </data>
 </root>

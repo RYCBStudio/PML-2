@@ -18,6 +18,8 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Models;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
@@ -263,6 +265,149 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     public bool SystemNoticeSpan2 => ShowSystemNotice && !ShowSoftwareNotice;
     public bool SoftwareNoticeSpan2 => ShowSoftwareNotice && !ShowSystemNotice;
 
+    // ==================== 26.4 精简主页（Layout=simple） ====================
+
+    /// <summary>当前是否为精简布局（每次进入主页时按配置判定）</summary>
+    public bool IsSimpleLayout => ConfigManager.CurrentConfig.HomeSettings.Layout
+        .Equals("simple", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>当前是否为经典布局（默认值，保证旧配置行为不变）</summary>
+    public bool IsClassicLayout => !IsSimpleLayout;
+
+    /// <summary>是否已登录（供精简主页显示登录引导）</summary>
+    public bool IsLoggedIn => UserCache.IsLoggedIn();
+
+    /// <summary>精简主页问候语</summary>
+    public string SimpleGreeting => IsLoggedIn
+        ? string.Format(Languages.Text_Home_Simple_Greeting, UserName ?? string.Empty)
+        : Languages.Text_Home_Simple_NotLoggedIn;
+
+    /// <summary>运行中隧道数（可读文本）</summary>
+    public string SimpleRunningCountText => RunningProxyCount.ToString();
+
+    /// <summary>是否存在启动失败的隧道</summary>
+    public bool SimpleHasFailure => !string.IsNullOrWhiteSpace(SimpleFailedProxyName);
+
+    /// <summary>失败隧道名（无失败时为空）</summary>
+    public string? SimpleFailedProxyName
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>是否有可用更新（null 表示未检查）</summary>
+    public bool SimpleHasUpdate => UpdatePageViewModel.HasKnownUpdate == true;
+
+    /// <summary>可用更新版本号</summary>
+    public string SimpleLatestVersion => UpdatePageViewModel.LatestKnownVersion ?? string.Empty;
+
+    /// <summary>当前运行中的隧道数量（由管理页数据源汇总）</summary>
+    public int RunningProxyCount
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>当前账户下的隧道总数（由管理页数据源汇总）</summary>
+    public int TunnelCount
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>账户状态：0-正常 1-封禁 2-流量超限（未登录或未知时为 null）</summary>
+    public int? AccountStatusValue
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>剩余流量字节数（供推荐规则判断；未登录或未知时为 null）</summary>
+    public ulong? RemainingTrafficBytes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>精简主页的推荐条目（规则引擎生成，最多 4 条）</summary>
+    public AvaloniaList<HomeRecommendation> Recommendations
+    {
+        get;
+    } = [];
+
+    /// <summary>是否存在推荐条目（供空态显示）</summary>
+    public bool HasRecommendations => Recommendations.Count > 0;
+
+    /// <summary>
+    ///     重新计算推荐列表。可在以下时机调用：
+    ///     主页加载完成、用户点击「刷新」、忽略某条之后。
+    /// </summary>
+    public void RefreshRecommendations()
+    {
+        try
+        {
+            var ctx = new HomeRecommendContext
+            {
+                IsLoggedIn = IsLoggedIn,
+                TunnelCount = TunnelCount,
+                RunningCount = RunningProxyCount,
+                FailedTunnelName = SimpleFailedProxyName,
+                AccountStatus = AccountStatusValue,
+                RemainingTrafficBytes = RemainingTrafficBytes,
+                RemainingTrafficText = Traffic,
+                HasUpdate = UpdatePageViewModel.HasKnownUpdate,
+                LatestVersion = UpdatePageViewModel.LatestKnownVersion,
+                // 阈值：剩余流量低于 1 GB 时提醒（可在后续版本改为配置项）
+                LowTrafficThresholdBytes = 1024UL * 1024 * 1024
+            };
+
+            Recommendations.Clear();
+            foreach (var item in HomeRecommendService.Build(ctx, HomeRecommendStateStore.LoadDismissedKinds()))
+            {
+                Recommendations.Add(item);
+            }
+
+            this.RaisePropertyChanged(nameof(HasRecommendations));
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "生成主页推荐失败");
+        }
+    }
+
+    /// <summary>
+    ///     汇总隧道相关的推荐输入：
+    ///     隧道总数 / 运行中数量取自管理页数据源（若用户尚未打开过管理页则为 0），
+    ///     失败信息取自 <see cref="HomeRecommendStateStore" />（含 24 小时有效期）。
+    ///     最后统一重算推荐列表。
+    /// </summary>
+    private void RefreshTunnelStatistics()
+    {
+        try
+        {
+            var source = Views.ManageProxyPage.Instance?.ViewModel;
+            if (source is not null)
+            {
+                TunnelCount = source.AllProxies.Count;
+                RunningProxyCount = source.AllProxies.Count(p => p.TunnelStatus == TunnelStatus.Running);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "汇总隧道统计失败");
+        }
+
+        SimpleFailedProxyName = HomeRecommendStateStore.GetFreshFailedProxyName();
+        this.RaisePropertyChanged(nameof(SimpleHasFailure));
+        this.RaisePropertyChanged(nameof(IsLoggedIn));
+        this.RaisePropertyChanged(nameof(SimpleGreeting));
+        this.RaisePropertyChanged(nameof(SimpleRunningCountText));
+        this.RaisePropertyChanged(nameof(SimpleHasUpdate));
+        this.RaisePropertyChanged(nameof(SimpleLatestVersion));
+
+        RefreshRecommendations();
+    }
+
     public void Dispose() => GC.RemoveMemoryPressure(100 * 1024 * 1024);
 
     private async Task LoadUserDataAsync()
@@ -353,6 +498,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 IsBanned = data.status == 1;
 
+                // 26.4：精简主页推荐所需的原始值（账户状态与剩余流量字节数）
+                AccountStatusValue = data.status;
+                RemainingTrafficBytes = data.traffic;
+
                 // 签到按钮状态
                 CanSign = !data.todaySigned;
                 SignButtonText = !data.todaySigned
@@ -371,6 +520,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 IsLoading = false;
+
+                // 26.4：精简主页需要「隧道总数 / 运行中 / 最近失败」，统一从管理页数据源汇总刷新
+                RefreshTunnelStatistics();
 
                 var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
 
