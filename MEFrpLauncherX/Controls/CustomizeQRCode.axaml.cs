@@ -168,6 +168,8 @@ public partial class CustomizeQRCode : UserControl
         QRCode.Source = GetOrCreateBitmap(_index);
         _qrTranslate.X = 0;
         QRCode.Opacity = 1;
+        IconSizeSlider.Value = _iconSize;
+        SizeSlider.Value = _size;
         UpdateNavigationState();
     }
 

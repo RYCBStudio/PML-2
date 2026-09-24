@@ -1370,6 +1370,8 @@ public class UserProxyViewModel : ViewModelBase
                     }
 
                     var view = new CustomizeQRCode([target]);
+                    view.ForeColorPicker.Color = Colors.Black;
+                    view.BackColorPicker.Color = Colors.White;
                     var clipboard = Core.App.MainWindow.Clipboard;
                     await clipboard.SetBitmapAsync(view.CurrentBitmap);
                     Growl.Success(Languages.Text_UserProxy_QRCodeCopiedToClipboard);

@@ -127,7 +127,6 @@ jobs:
             -p:EnableCompressionInSingleFile=true \
             -p:DebugType=none \
             -p:DebugSymbols=false \
-            -p:IlcGenerateStackTraceData=false -p:IlcGenerateCompleteTypeMetadata=false -p:IlcScanReflection=false -p:IlcDisableReflection=true /p:InvariantGlobalization=true -p:UseSystemResourceKeys=true -p:BuiltInComInteropSupport=false -p:UseSizeOptimizedLinq=true -p:DebugSymbols=false -p:DebugType=none -p:TrimmerRemoveSymbols=true -p:StripSymbols=true -p:TrimmerSingleWarn=true \
             -o "$OUT" \
             --nologo -v minimal
 
@@ -163,7 +162,6 @@ jobs:
             -p:EnableCompressionInSingleFile=true \
             -p:DebugType=none \
             -p:DebugSymbols=false \
-            -p:IlcGenerateStackTraceData=false -p:IlcGenerateCompleteTypeMetadata=false -p:IlcScanReflection=false -p:IlcDisableReflection=true /p:InvariantGlobalization=true -p:UseSystemResourceKeys=true -p:BuiltInComInteropSupport=false -p:UseSizeOptimizedLinq=true -p:DebugSymbols=false -p:DebugType=none -p:TrimmerRemoveSymbols=true -p:StripSymbols=true -p:TrimmerSingleWarn=true \
             -o "$OUT" \
             --nologo -v minimal
 
@@ -658,6 +656,32 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Resolve version & prerelease
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          V="${V#v}"
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "tag=v${V}" >> "$GITHUB_OUTPUT"
+
+          # 版本号含 preview（不区分大小写）时发布为 Pre-Release
+          # 例: 26.3.0-preview1 / 26.3.0-Preview.2 / v26.3.0-PREVIEW
+          if printf '%s' "$V" | grep -qi 'preview'; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "title=PML 2 ${V} (Pre-release)" >> "$GITHUB_OUTPUT"
+            echo "Resolved: version=$V  prerelease=yes"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "title=PML 2 ${V}" >> "$GITHUB_OUTPUT"
+            echo "Resolved: version=$V  prerelease=no"
+          fi
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -673,10 +697,11 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
-          name: PML 2 ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: ${{ steps.meta.outputs.title }}
           files: upload/*
           generate_release_notes: true
           draft: false
+          prerelease: ${{ steps.meta.outputs.prerelease == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
