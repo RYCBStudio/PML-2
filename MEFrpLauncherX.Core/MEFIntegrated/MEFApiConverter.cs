@@ -258,7 +258,7 @@ public static class MEFrpApiConverter
             App.AppJsonSerializerContext.ChallengeInfo)!;
     }
 
-    public static async Task<(CaptchaResultX, string)> GetRedeemAsync(string redeemBody)
+    public static async Task<(CaptchaResultX?, string)> GetRedeemAsync(string redeemBody)
     {
         App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
@@ -266,9 +266,13 @@ public static class MEFrpApiConverter
         using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+        if (!response.IsSuccessful)
+        {
+            return (null, string.Empty);
+        }
         return (
-            JsonSerializer.Deserialize<CaptchaResultX>(response.Content ?? "",
-                App.AppJsonSerializerContext.CaptchaResultX)!, response.Content ?? "");
+            JsonSerializer.Deserialize<CaptchaResultX?>(response.Content ?? "",
+                App.AppJsonSerializerContext.CaptchaResultX), response.Content ?? "");
     }
 
     /// <summary>
@@ -1098,7 +1102,7 @@ public static class MEFrpApiConverter
         }
 
         // 26.4：仅成功结果写入缓存（失败不缓存，避免把错误状态固化 5 分钟）
-        if (result.code == 200 && result.data is not null)
+        if (result is { code: 200, data: not null })
         {
             ApiCacheService.SetContent(cacheKey, response.Content!);
         }

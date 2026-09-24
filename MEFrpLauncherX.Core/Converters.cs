@@ -85,7 +85,7 @@ public class BoolToStatusBackgroundConverter : IValueConverter
     
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isBanned && isBanned)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#D32F2F")); // 危险红
         return new SolidColorBrush(Color.Parse("#2E7D32"));    // 成功绿
     }
@@ -116,7 +116,7 @@ public class BoolToStatusIconConverter : IValueConverter
     } = new();
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isBanned && isBanned)
+        if (value is bool and true)
             return Symbol.ClosedCaption;
         return Symbol.Accept;
     }
@@ -133,7 +133,7 @@ public class BoolToGroupBackgroundConverter : IValueConverter
     } = new();
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isAdmin && isAdmin)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#6C4DFF")); // 紫色（管理组）
         return new SolidColorBrush(Color.Parse("#3C3C3C"));    // 普通组
     }
@@ -1054,7 +1054,7 @@ public class BoolToThemeConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isEnabled && isEnabled)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#2E7D32"));
         return new SolidColorBrush(Color.Parse("#757575"));
     }
@@ -1072,7 +1072,7 @@ public class StatusToBackgroundConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isEnabled && isEnabled)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#1B5E20"));
         return new SolidColorBrush(Color.Parse("#424242"));
     }

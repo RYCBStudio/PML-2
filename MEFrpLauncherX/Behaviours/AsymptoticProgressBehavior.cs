@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
@@ -162,8 +164,9 @@ public class AsymptoticProgressBehavior : Behavior<ProgressBar>
 
         if (IsFakeMode)
         {
-            // 从当前值开始渐近，避免突然跳回 0
-            _fakeBaseProgress = AssociatedObject.Value;
+            // 关键修复：每次开始假进度都强制从 0 开始
+            _fakeBaseProgress = 0;
+            AssociatedObject.Value = 0;          // 立刻清零显示
             _fakeStartTime = DateTime.Now;
         }
 
@@ -179,36 +182,45 @@ public class AsymptoticProgressBehavior : Behavior<ProgressBar>
         _timer.Start();
     }
 
-    private void Stop(bool force = false)
+    private async void Stop(bool force = false)
     {
         _timer?.Stop();
 
-        if (force)
+        if (force || AssociatedObject == null)
         {
             _timer = null;
             return;
         }
 
-        if (JumpToMaximumOnStop && AssociatedObject != null)
+        if (JumpToMaximumOnStop)
         {
-            // 平滑动画冲到 Maximum
+            // 1. 先停掉假进度
+            // 2. 快速冲到 100%
             var animation = new Animation
             {
                 Duration = CompleteAnimationDuration,
                 FillMode = FillMode.Forward,
+                Easing = new CubicEaseOut(),
                 Children =
                 {
                     new KeyFrame
                     {
                         Cue = new Cue(1d),
-                        Setters = { new Setter(RangeBase.ValueProperty, AssociatedObject.Maximum) }
+                        Setters = { new Setter(ProgressBar.ValueProperty, AssociatedObject.Maximum) }
                     }
                 }
             };
 
-            // 使用 RunAsync 保证动画结束后再触发完成事件（如果有）
-            _ = animation.RunAsync(AssociatedObject);
+            await animation.RunAsync(AssociatedObject);
+
+            // 3. 稍微停顿一下（模拟 Naive UI 的停留）
+            await Task.Delay(150);
+
+            // 4. 重置为 0，方便下次从头开始
+            AssociatedObject.Value = 0;
         }
+
+        _timer = null;
     }
 
     private void OnModeChanged()

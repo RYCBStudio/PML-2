@@ -106,6 +106,7 @@ public partial class LoginPage : UserControl
 
     public static async Task<string> GetCaptchaResultAsync()
     {
+        Core.App.CurrentLogger.Log("开始获取验证码...");
         if (ConfigManager.CurrentConfig.CaptchaMode == "explicit" ||
             ConfigManager.CurrentConfig.CaptchaMode.Equals("browser", StringComparison.CurrentCultureIgnoreCase))
         {
@@ -121,56 +122,81 @@ public partial class LoginPage : UserControl
             };
             var input = new TextBox();
             cd.Content = input;
+            
+            Core.App.CurrentLogger.Log("获取验证码成功");
             return await cd.ShowAsync() == ContentDialogResult.Primary
                 ? MEFrpApiConverter.GetCaptchaResult(input.Text).Split("||")[0]
-                : nil;
+                : null;
         }
 
-        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 1);
+        var vm = MainWindowViewModel.Instance;
+
+        // 开始：开启假进度
+        vm.IsFakeProgress = true;
+        vm.IsBusy = true;
+        vm.Progress = 0;
+        vm.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 1);
+
         var c = CaptchaHelper.GetChallengeContent();
-        MainWindowViewModel.Instance.Progress = 20.0;
 
-        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 2);
-        var ci = await MEFrpApiConverter.PostChallengeAsync(JsonSerializer.Serialize(c,
-            App.AppJsonSerializerContext.ChallengeInfo));
+        vm.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 2);
+        var ci = await MEFrpApiConverter.PostChallengeAsync(
+            JsonSerializer.Serialize(c, App.AppJsonSerializerContext.ChallengeInfo));
 
-        MainWindowViewModel.Instance.Progress = 40.0;
-        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 3);
+        vm.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 3);
         var (rb, err) = await CaptchaHelper.GetRedeemBody(ci);
 
-        MainWindowViewModel.Instance.Progress = 60.0;
-        if (err != nil && rb is null)
+        if (err != null && rb is null)
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
-                MessageBoxManager
-                    .GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, err, icon: Icon.Error)
+                MessageBoxManager.GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, err, icon: Icon.Error)
                     .ShowAsync());
+            vm.IsBusy = false;
             return string.Empty;
         }
 
-        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 4);
-        var (ri, _err) =
-            await MEFrpApiConverter.GetRedeemAsync(
-                JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
+        vm.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 4);
+        var (ri, _err) = await MEFrpApiConverter.GetRedeemAsync(
+            JsonSerializer.Serialize(rb, App.AppJsonSerializerContext.RedeemInfo));
 
-        MainWindowViewModel.Instance.Progress = 80.0;
-        if (!ri.success)
+        if (ri?.success == false)
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
-                MessageBoxManager
-                    .GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, _err, icon: Icon.Error)
+                MessageBoxManager.GetMessageBoxStandard(Languages.Text_Login_ValidationFailed, _err, icon: Icon.Error)
                     .ShowAsync());
+            vm.IsBusy = false;
             return string.Empty;
         }
 
-        // 1. 获取验证码
-        Core.App.CurrentLogger.Log("开始获取验证码...");
-        MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 5);
-        MainWindowViewModel.Instance.Progress = 90.0;
+        vm.AppMessage = string.Format(Languages.Text_Login_CaptchaStep, 5);
+
         var captchaResult = CaptchaHelper.GetCaptchaCode(ri);
-        MainWindowViewModel.Instance.Progress = 100.0;
+
+        // 结束：关掉假进度，Behavior 会自动平滑冲到 100%
+
         Core.App.CurrentLogger.Log("获取验证码成功");
+        await Task.Delay(1000);
+        vm.IsFakeProgress = false;
+        vm.Progress = 100;
+        vm.IsBusy = false;
         return captchaResult;
+    }
+
+    /// <summary>
+    /// 把进度强制抬高到指定值，然后立刻切回 Fake 模式继续渐近
+    /// （利用 Behavior 的 _fakeBaseProgress 机制实现无缝衔接）
+    /// </summary>
+    private static async Task SnapProgressAsync(MainWindowViewModel vm, double target)
+    {
+        // 切到 Real 模式瞬间写入目标值
+        vm.IsFakeProgress = false;
+        vm.Progress = target;
+
+        // 给 UI 一帧时间更新
+        await Task.Delay(1);
+
+        // 立刻切回 Fake，Behavior 会以当前 Progress 作为新的基线继续往 Target 渐近
+        vm.IsFakeProgress = true;
     }
 
     private async void LoginBtn_Click(object sender, RoutedEventArgs e)
@@ -255,7 +281,8 @@ public partial class LoginPage : UserControl
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Login_ValidationFailedWithMsg, ex.Message), icon: Icon.Error)
+                .GetMessageBoxStandard(Languages.Caption_Error,
+                    string.Format(Languages.Text_Login_ValidationFailedWithMsg, ex.Message), icon: Icon.Error)
                 .ShowAsync();
         }
         finally

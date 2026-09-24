@@ -224,7 +224,7 @@ public class PortScannerService
         {
             var index = 0;
             var packetLength = ReadVarInt(buffer, ref index);
-            return packetLength > 0 && packetLength < 1000;
+            return packetLength is > 0 and < 1000;
         }
         catch
         {

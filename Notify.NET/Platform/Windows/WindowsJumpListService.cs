@@ -102,7 +102,7 @@ namespace Notify.NET.Platform.Windows
             _disposed = true;
 
             _workQueue?.CompleteAdding();
-            if (_staThread != null && _staThread.IsAlive)
+            if (_staThread is { IsAlive: true })
                 _staThread.Join(TimeSpan.FromSeconds(5));
 
             _workQueue?.Dispose();

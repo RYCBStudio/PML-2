@@ -202,8 +202,7 @@ public static class HomeRecommendService
                 Languages.Languages.Text_Home_Recommend_Action_UserCenter,
                 HomeRecommendAction.UserCenter));
         }
-        else if (ctx.LowTrafficThresholdBytes > 0 &&
-                 ctx.RemainingTrafficBytes.HasValue &&
+        else if (ctx is { LowTrafficThresholdBytes: > 0, RemainingTrafficBytes: not null } &&
                  ctx.RemainingTrafficBytes.Value < ctx.LowTrafficThresholdBytes)
         {
             ordered.Add(new HomeRecommendation(
@@ -216,7 +215,7 @@ public static class HomeRecommendService
         }
 
         // 4. 有隧道但都没跑 → 提示启动
-        if (ctx.TunnelCount > 0 && ctx.RunningCount == 0)
+        if (ctx is { TunnelCount: > 0, RunningCount: 0 })
         {
             ordered.Add(new HomeRecommendation(
                 HomeRecommendKind.StartAnyTunnel,

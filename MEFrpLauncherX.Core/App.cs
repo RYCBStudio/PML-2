@@ -10,7 +10,7 @@ using Notify.NET.Extensions;
 
 namespace MEFrpLauncherX.Core;
 
-public class App : IDisposable
+public sealed class App : IDisposable
 {
     public const string Version = "26.4.0";
     public const string MEFrpVersion = "0.67.1_20260626_af59eefd";
@@ -24,7 +24,7 @@ public class App : IDisposable
 #endif
     public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
 
-    public static AppJsonSerializerContext? AppJsonSerializerContext;
+    public static AppJsonSerializerContext AppJsonSerializerContext;
 
     public static string? SelectedTheme
     {

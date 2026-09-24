@@ -3361,6 +3361,28 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Home.Simple.Ignore" xml:space="preserve">
         <value>Ignore for now</value>
     </data>
+    <!-- 26.4 Tunnel cockpit (my tunnels / quick create / inline actions) -->
+    <data name="Text.Home.Simple.MyTunnels" xml:space="preserve">
+        <value>My tunnels</value>
+    </data>
+    <data name="Text.Home.Simple.Manage" xml:space="preserve">
+        <value>Manage</value>
+    </data>
+    <data name="Text.Home.Simple.RunningCount" xml:space="preserve">
+        <value>{0} running</value>
+    </data>
+    <data name="Text.Home.Simple.FailedCount" xml:space="preserve">
+        <value>{0} failed</value>
+    </data>
+    <data name="Text.Home.Simple.TunnelListEmpty" xml:space="preserve">
+        <value>No tunnels yet — create one to get started.</value>
+    </data>
+    <data name="Text.Home.Simple.CopyUnavailable" xml:space="preserve">
+        <value>No address available to copy for this tunnel.</value>
+    </data>
+    <data name="Text.Home.Simple.QuickCreate" xml:space="preserve">
+        <value>Quick create</value>
+    </data>
     <data name="Text.Home.Recommend.FailedTunnel.Title" xml:space="preserve">
         <value>Fix a failed tunnel</value>
     </data>

@@ -782,7 +782,7 @@ namespace Iciclecreek.TerminalWindow
             try
             {
                 // Handle Ctrl+C - copy if there's a selection, otherwise send SIGINT
-                if (e.Key == Key.C && e.KeyModifiers == KeyModifiers.Control)
+                if (e is { Key: Key.C, KeyModifiers: KeyModifiers.Control })
                 {
                     if (_terminal.Selection.HasSelection)
                     {
@@ -796,7 +796,7 @@ namespace Iciclecreek.TerminalWindow
                 }
 
                 // Handle Ctrl+Shift+C for copy (always copies, doesn't send SIGINT)
-                if (e.Key == Key.C && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift))
+                if (e is { Key: Key.C, KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift) })
                 {
                     if (_terminal.Selection.HasSelection)
                     {
@@ -818,7 +818,7 @@ namespace Iciclecreek.TerminalWindow
                 // Handle Ctrl+Shift+V for paste (standard terminal shortcut)
                 // Ctrl+V is NOT intercepted - it gets passed to the application
                 // (some apps use Ctrl+V for literal character input mode)
-                if (e.Key == Key.V && e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift))
+                if (e is { Key: Key.V, KeyModifiers: (KeyModifiers.Control | KeyModifiers.Shift) })
                 {
                     e.Handled = true;
                     await PasteAsync();
@@ -1611,7 +1611,7 @@ namespace Iciclecreek.TerminalWindow
             var hasShift = modifiers.HasFlag(KeyModifiers.Shift);
 
             // Letters A-Z
-            if (key >= Key.A && key <= Key.Z)
+            if (key is >= Key.A and <= Key.Z)
             {
                 var offset = key - Key.A;
                 character = (char)((hasShift ? 'A' : 'a') + offset);
@@ -1619,7 +1619,7 @@ namespace Iciclecreek.TerminalWindow
             }
 
             // Numbers 0-9 (with shift symbols for US keyboard)
-            if (key >= Key.D0 && key <= Key.D9)
+            if (key is >= Key.D0 and <= Key.D9)
             {
                 if (hasShift)
                 {
@@ -1648,7 +1648,7 @@ namespace Iciclecreek.TerminalWindow
             }
 
             // Numpad numbers
-            if (key >= Key.NumPad0 && key <= Key.NumPad9)
+            if (key is >= Key.NumPad0 and <= Key.NumPad9)
             {
                 var offset = key - Key.NumPad0;
                 character = (char)('0' + offset);
@@ -1713,7 +1713,7 @@ namespace Iciclecreek.TerminalWindow
                 };
 
                 // Add arguments if provided
-                if (Args != null && Args.Count > 0)
+                if (Args is { Count: > 0 })
                 {
                     options.CommandLine = Args.ToArray();
                 }
@@ -2402,9 +2402,9 @@ namespace Iciclecreek.TerminalWindow
             if ((e.KeyModifiers & KeyModifiers.Control) != 0 && unicodeChar != 0)
             {
                 // Ctrl+A..Z => 0x01..0x1A
-                if (unicodeChar >= 'a' && unicodeChar <= 'z')
+                if (unicodeChar is >= 'a' and <= 'z')
                     unicodeChar = unicodeChar - 'a' + 1;
-                else if (unicodeChar >= 'A' && unicodeChar <= 'Z')
+                else if (unicodeChar is >= 'A' and <= 'Z')
                     unicodeChar = unicodeChar - 'A' + 1;
                 else
                 {

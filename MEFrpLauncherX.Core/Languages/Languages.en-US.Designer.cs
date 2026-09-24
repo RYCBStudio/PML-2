@@ -3320,6 +3320,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No address available to copy for this tunnel..
+        /// </summary>
+        public static string Text_Home_Simple_CopyUnavailable {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.CopyUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} failed.
+        /// </summary>
+        public static string Text_Home_Simple_FailedCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.FailedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed tunnels.
         /// </summary>
         public static string Text_Home_Simple_FailedProxies {
@@ -3401,11 +3419,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage.
+        /// </summary>
+        public static string Text_Home_Simple_Manage {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My tunnels.
+        /// </summary>
+        public static string Text_Home_Simple_MyTunnels {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.MyTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not signed in.
         /// </summary>
         public static string Text_Home_Simple_NotLoggedIn {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick create.
+        /// </summary>
+        public static string Text_Home_Simple_QuickCreate {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.QuickCreate", resourceCulture);
             }
         }
         
@@ -3446,6 +3491,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} running.
+        /// </summary>
+        public static string Text_Home_Simple_RunningCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RunningCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running tunnels.
         /// </summary>
         public static string Text_Home_Simple_RunningProxies {
@@ -3460,6 +3514,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Simple_Status {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No tunnels yet — create one to get started..
+        /// </summary>
+        public static string Text_Home_Simple_TunnelListEmpty {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.TunnelListEmpty", resourceCulture);
             }
         }
         

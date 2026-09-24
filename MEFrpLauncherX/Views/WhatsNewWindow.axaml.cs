@@ -83,13 +83,13 @@ public partial class WhatsNewWindow : Window
         try
         {
             var info = await RYCBApiConverter.GetLatestVersionInfoAsync();
-            var changes = info?.data?.changes;
+            var changes = info?.Data?.Changes;
 
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 LoadingRing.IsVisible = false;
 
-                if (info is not { success: true } || changes is null || changes.Length == 0)
+                if (info is not { Success: true } || changes is null || changes.Length == 0)
                 {
                     PlaceholderText.Text = Languages.Text_WhatsNew_Unavailable;
                     PlaceholderText.IsVisible = true;
@@ -106,9 +106,9 @@ public partial class WhatsNewWindow : Window
                     }
                 }
 
-                SummaryText.Text = string.IsNullOrWhiteSpace(info.data?.description)
+                SummaryText.Text = string.IsNullOrWhiteSpace(info.Data?.Description)
                     ? string.Empty
-                    : info.data!.description;
+                    : info.Data!.Description;
                 PlaceholderText.IsVisible = false;
                 ChangeList.IsVisible = true;
             });

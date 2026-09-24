@@ -63,6 +63,30 @@ public partial class CreateProxyPage : UserControl
         private set;
     }
 
+    /// <summary>
+    ///     待预填的协议（26.4）：精简主页「快速创建」按钮在<b>导航之前</b>设置该静态值，
+    ///     导航会构造新的 <see cref="CreateProxyPage" /> 实例，因此待填值必须跨实例保存；
+    ///     用户在创建表单生成时取用一次即清空，避免影响后续手动创建。
+    ///     仅保存协议名（tcp/udp/http/https），不保存任何用户数据。
+    /// </summary>
+    private static string? _pendingPreferredProtocol;
+
+    /// <summary>
+    ///     登记待预填协议（26.4，供精简主页「快速创建」调用）。不做导航，调用方负责随后
+    ///     <c>NavigateToPage("Create")</c>，保证与既有创建流程同一路径。
+    /// </summary>
+    /// <param name="protocol">协议名（tcp/udp/http/https，大小写不敏感；空值表示清除）</param>
+    public static void RequestPreferredProtocol(string? protocol) =>
+        _pendingPreferredProtocol = protocol?.Trim().ToLowerInvariant();
+
+    /// <summary>取用并清空待预填协议（只在创建表单生成时调用一次）。</summary>
+    private static string? ConsumePendingPreferredProtocol()
+    {
+        var protocol = _pendingPreferredProtocol;
+        _pendingPreferredProtocol = null;
+        return protocol;
+    }
+
     public event Func<Task<bool>>? OnCreateProxy;
     private bool _isMap;
 
@@ -93,7 +117,11 @@ public partial class CreateProxyPage : UserControl
                             break;
                         }
 
-                        var cp = new CreateProxy(_createProxyPageViewModel.selectedNode);
+                        var cp = new CreateProxy(_createProxyPageViewModel.selectedNode)
+                        {
+                            // 26.4：精简主页「快速创建」预填协议（无待预填值时回退为默认第一项）
+                            PreferredProtocol = ConsumePendingPreferredProtocol()
+                        };
                         _createProxyPageViewModel.CurrentPage = cp;
                     }
                     else
@@ -780,7 +808,7 @@ public partial class CreateProxyPage : UserControl
             source.OrderByDescending(n => n.AllowHighTraffic).ThenBy(n => n.LoadPercent);
 
         var primary = Ranked(allNodes.Where(n =>
-            n.IsOnline && n.IsNotOverloaded && SupportsAll(protocols, n) && MeetsBandwidth(n))).ToList();
+            n is { IsOnline: true, IsNotOverloaded: true } && SupportsAll(protocols, n) && MeetsBandwidth(n))).ToList();
         if (primary.Count > 0)
         {
             return primary;
@@ -794,6 +822,8 @@ public partial class CreateProxyPage : UserControl
     private CreateProxy BuildCreateProxyFromTemplate(TunnelNodeViewModel node, ProxyTemplateDefinition tpl)
     {
         var create = tpl.Create ?? new ProxyTemplateCreateDefinition();
+        // 模板创建路径以模板声明为准：清掉可能残留的「快速创建」待预填协议，避免影响后续专家模式创建
+        ConsumePendingPreferredProtocol();
         var cp = new CreateProxy(node)
         {
             PreferredProtocol = create.Protocol

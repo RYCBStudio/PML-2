@@ -70,7 +70,7 @@ public sealed record AcmeResult(bool Success, string? CertificateDirectory, stri
 ///         <item>传播等待超时调大（默认 60s 偏短，手动添加 TXT 常来不及）。</item>
 ///     </list>
 /// </summary>
-public static class AcmeCertificateService
+public static partial class AcmeCertificateService
 {
     /// <summary>Let's Encrypt 生产目录</summary>
     public const string LetsEncryptProduction = "https://acme-v02.api.letsencrypt.org/directory";
@@ -303,9 +303,7 @@ public static class AcmeCertificateService
         }
     }
 
-    private static readonly Regex TxtRecordRegex = new(
-        @"_acme-challenge\S*\.\s*\d*\s*IN\s+TXT\s+""(?<value>[^""]+)""",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex TxtRecordRegex = MyRegex();
 
     /// <summary>
     ///     从 lego 输出行中解析 TXT 记录主机名与值。
@@ -335,4 +333,7 @@ public static class AcmeCertificateService
             App.CurrentLogger?.Warning($"解析 lego 输出失败：{ex.Message}");
         }
     }
+
+    [GeneratedRegex(@"_acme-challenge\S*\.\s*\d*\s*IN\s+TXT\s+""(?<value>[^""]+)""", RegexOptions.IgnoreCase | RegexOptions.Compiled, "zh-CN")]
+    private static partial Regex MyRegex();
 }

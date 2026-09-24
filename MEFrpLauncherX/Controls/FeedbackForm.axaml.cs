@@ -1,8 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
+using AvaloniaEdit;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Tools;
 
 namespace MEFrpLauncherX.Controls;
 
@@ -13,8 +16,10 @@ public partial class FeedbackForm : UserControl, INotifyPropertyChanged
         InitializeComponent();
     }
 
+    [EmailAddress(ErrorMessageResourceName = "Text_Certificate_Validation_EmailInvalid",
+        ErrorMessageResourceType = typeof(Languages))]
     [Required(ErrorMessageResourceName = "Text_Validation_EmailRequired", ErrorMessageResourceType = typeof(Languages))]
-    public string Email
+    public string? Email
     {
         get;
         set
@@ -25,7 +30,7 @@ public partial class FeedbackForm : UserControl, INotifyPropertyChanged
     }
 
     [Required]
-    public string Feedback
+    public string? Feedback
     {
         get;
         set
@@ -39,4 +44,22 @@ public partial class FeedbackForm : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
+
+public sealed class EmailAddressAttribute : ValidationAttribute
+{
+    public override bool IsValid(object? value)
+    {
+        if (value == null)
+        {
+            ErrorMessage = Languages.Text_Validation_EmailRequired;
+            return true;
+        }
+        if (value is not string text || text.AsSpan().ContainsAny<char>('\r', '\n'))
+            return false;
+        int num = text.IndexOf('@');
+        if (num <= 0 || num == text.Length - 1 || num != text.LastIndexOf('@'))
+            return false;
+        return EmailValidator.IsValidCommonEmail(text);
+    }
 }

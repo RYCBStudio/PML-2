@@ -3361,6 +3361,28 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Home.Simple.Ignore" xml:space="preserve">
         <value>暂时忽略</value>
     </data>
+    <!-- 26.4 隧道驾驶舱（我的隧道列表 / 快速创建 / 行内操作） -->
+    <data name="Text.Home.Simple.MyTunnels" xml:space="preserve">
+        <value>我的隧道</value>
+    </data>
+    <data name="Text.Home.Simple.Manage" xml:space="preserve">
+        <value>管理</value>
+    </data>
+    <data name="Text.Home.Simple.RunningCount" xml:space="preserve">
+        <value>运行中 {0}</value>
+    </data>
+    <data name="Text.Home.Simple.FailedCount" xml:space="preserve">
+        <value>失败 {0}</value>
+    </data>
+    <data name="Text.Home.Simple.TunnelListEmpty" xml:space="preserve">
+        <value>还没有隧道，先创建一个吧。</value>
+    </data>
+    <data name="Text.Home.Simple.CopyUnavailable" xml:space="preserve">
+        <value>该隧道暂无可复制的地址。</value>
+    </data>
+    <data name="Text.Home.Simple.QuickCreate" xml:space="preserve">
+        <value>快速创建</value>
+    </data>
     <!-- 26.4 推荐规则文案（Title=标题，Reason=原因） -->
     <data name="Text.Home.Recommend.FailedTunnel.Title" xml:space="preserve">
         <value>处理失败的隧道</value>

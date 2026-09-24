@@ -17,14 +17,14 @@
     <ScrollViewer Margin="5">
         <Grid RowDefinitions="Auto, *" Classes="animated">
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="7*, 3*" ColumnSpacing="10" RowSpacing="4">
-                <TextBlock Grid.RowSpan="2" Classes="Update" Text="{Binding Icon}"
+                <TextBlock Grid.RowSpan="2" Classes.Update="{Binding IsCheckUpdate}" Text="{Binding Icon}"
                            FontFamily="{StaticResource IconFont}"
                            Theme="{StaticResource TitleLargeTextBlockStyle}">
                     <TextBlock.Styles>
                         <Style Selector="TextBlock.Update">
                             <Style.Animations>
-                                <Animation Duration="0:0:1" DelayBetweenIterations="0:0:1"
-                                           Easing="CubicEaseInOut" IterationCount="{Binding IterationCount}">
+                                <Animation Duration="0:0:1" DelayBetweenIterations="0:0:0.5"
+                                           Easing="ExponentialEaseOut" IterationCount="INFINITE">
                                     <KeyFrame Cue="0%">
                                         <Setter Property="RotateTransform.Angle" Value="0" />
                                     </KeyFrame>
@@ -42,18 +42,23 @@
                         <TextBlock Text="{Binding FailureTip}" />
                     </ToolTip.Tip>
                 </TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LatestCheckTime, StringFormat={x:Static languages:Languages.Text_Update_LastCheckTimeFormat}}"
+                <TextBlock Grid.Column="1" Grid.Row="1"
+                           Text="{Binding LatestCheckTime, StringFormat={x:Static languages:Languages.Text_Update_LastCheckTimeFormat}}"
                            FontFamily="{StaticResource GlobalFontFamily}"
                            Theme="{StaticResource BodyTextBlockStyle}" />
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <StackPanel Margin="10, 5, 10, 0" Orientation="Horizontal" Spacing="10">
-                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_DownloadAndInstall}"
+                    <Button IsEnabled="{Binding !IsLoading}" HorizontalAlignment="Left"
+                            Content="{x:Static languages:Languages.Text_Update_DownloadAndInstall}"
                             IsVisible="{Binding HasNewVersion}"
                             Classes.accent="{Binding HasNewVersion}" Command="{Binding DownloadUpdateCommand}" />
-                    <Button HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_CheckForUpdates}" Classes.accent="{Binding !HasNewVersion}"
+                    <Button HorizontalAlignment="Left"
+                            Content="{x:Static languages:Languages.Text_Update_CheckForUpdates}"
+                            Classes.accent="{Binding !HasNewVersion}"
                             Command="{Binding CheckUpdateCommand}" />
-                    <Button HorizontalAlignment="Left" Content="{x:Static languages:Languages.Text_Update_RetryDownload}"
+                    <Button HorizontalAlignment="Left"
+                            Content="{x:Static languages:Languages.Text_Update_RetryDownload}"
                             IsVisible="{Binding HasDownloadFailed}" Classes.accent="True"
                             Command="{Binding RetryDownloadCommand}" />
                 </StackPanel>
@@ -106,43 +111,55 @@
                         </TabItem>
                         <TabItem Header="{x:Static languages:Languages.Text_Update_UpdateSettings}">
                             <StackPanel Classes="animated">
-                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_UpdateMode}" Description="{x:Static languages:Languages.Text_Update_UpdateModeDescription}">
+                                <controls:SettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_UpdateMode}"
+                                    Description="{x:Static languages:Languages.Text_Update_UpdateModeDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateMethodBox" SelectedIndex="{Binding UpdateMethod}"
                                                   SelectionChanged="UpdateMethodChange">
-                                            <ComboBoxItem Tag="ds" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoInstall}" />
-                                            <ComboBoxItem Tag="dd" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoDownload}" />
-                                            <ComboBoxItem Tag="md" Content="{x:Static languages:Languages.Text_Update_UpdateMethod_ManualInstall}" />
+                                            <ComboBoxItem Tag="ds"
+                                                          Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoInstall}" />
+                                            <ComboBoxItem Tag="dd"
+                                                          Content="{x:Static languages:Languages.Text_Update_UpdateMethod_AutoDownload}" />
+                                            <ComboBoxItem Tag="md"
+                                                          Content="{x:Static languages:Languages.Text_Update_UpdateMethod_ManualInstall}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_KeepProfile}"
-                                                           Description="{x:Static languages:Languages.Text_Update_KeepProfileDescription}">
+                                <controls:SettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_KeepProfile}"
+                                    Description="{x:Static languages:Languages.Text_Update_KeepProfileDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged" />
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_UpdateChannel}"
-                                                           Description="{x:Static languages:Languages.Text_Update_UpdateChannelDescription}"
-                                                           IsExpanded="True">
+                                <controls:SettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_UpdateChannel}"
+                                    Description="{x:Static languages:Languages.Text_Update_UpdateChannelDescription}"
+                                    IsExpanded="True">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateChannelBox" SelectedIndex="{Binding UpdateChannel}"
                                                   SelectionChanged="UpdateChannelChange">
-                                            <ComboBoxItem Tag="Stable" Content="{x:Static languages:Languages.Text_Update_Channel_Stable}" />
-                                            <ComboBoxItem Tag="Preview" Content="{x:Static languages:Languages.Text_Update_Channel_Preview}" />
+                                            <ComboBoxItem Tag="Stable"
+                                                          Content="{x:Static languages:Languages.Text_Update_Channel_Stable}" />
+                                            <ComboBoxItem Tag="Preview"
+                                                          Content="{x:Static languages:Languages.Text_Update_Channel_Preview}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                     <controls:SettingsExpanderItem
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
                                 </controls:SettingsExpander>
-                                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Update_CompileType}"
-                                                           Description="{x:Static languages:Languages.Text_Update_CompileTypeDescription}">
+                                <controls:SettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_CompileType}"
+                                    Description="{x:Static languages:Languages.Text_Update_CompileTypeDescription}">
                                     <controls:SettingsExpander.Footer>
                                         <ComboBox x:Name="CompileTypeBox" SelectedIndex="{Binding TargetCompileType}"
                                                   SelectionChanged="CompileTypeChange">
-                                            <ComboBoxItem Tag="AOT" Content="{x:Static languages:Languages.Text_Update_CompileType_AOT}" />
-                                            <ComboBoxItem Tag="Common" Content="{x:Static languages:Languages.Text_Update_CompileType_Common}" />
+                                            <ComboBoxItem Tag="AOT"
+                                                          Content="{x:Static languages:Languages.Text_Update_CompileType_AOT}" />
+                                            <ComboBoxItem Tag="Common"
+                                                          Content="{x:Static languages:Languages.Text_Update_CompileType_Common}" />
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>

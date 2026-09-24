@@ -290,17 +290,162 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         }, UserName ?? string.Empty)
         : Languages.Text_Home_Simple_NotLoggedIn;
 
-    /// <summary>运行中隧道数（可读文本）</summary>
-    public string SimpleRunningCountText => RunningProxyCount.ToString();
+    /// <summary>运行中隧道数（可读文本，如「运行中 2」）</summary>
+    public string SimpleRunningCountText =>
+        string.Format(Languages.Text_Home_Simple_RunningCount, RunningProxyCount);
 
-    /// <summary>是否存在启动失败的隧道</summary>
-    public bool SimpleHasFailure => !string.IsNullOrWhiteSpace(SimpleFailedProxyName);
+    /// <summary>失败隧道数（可读文本，如「失败 1」）</summary>
+    public string SimpleFailedCountText =>
+        string.Format(Languages.Text_Home_Simple_FailedCount, SimpleFailedProxyCount);
+
+    /// <summary>
+    ///     失败摘要（供精简主页失败条展示）：
+    ///     优先给出本地记录的失败隧道名；仅有实时失败数（如失败发生于本次会话之外）时退化为计数文案；
+    ///     无失败时为 null。
+    /// </summary>
+    public string? SimpleFailureSummary => !string.IsNullOrWhiteSpace(SimpleFailedProxyName)
+        ? SimpleFailedProxyName
+        : SimpleFailedProxyCount > 0
+            ? SimpleFailedCountText
+            : null;
+
+    /// <summary>是否存在启动失败的隧道（有可用数据源时的实时失败数，或本地记录的近期失败）</summary>
+    public bool SimpleHasFailure =>
+        SimpleFailedProxyCount > 0 || !string.IsNullOrWhiteSpace(SimpleFailedProxyName);
+
+    /// <summary>失败隧道数（取自管理页数据源；源缺失时为 0）</summary>
+    public int SimpleFailedProxyCount
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 
     /// <summary>失败隧道名（无失败时为空）</summary>
     public string? SimpleFailedProxyName
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     精简主页「我的隧道」行列表（26.4）。
+    ///     由 <see cref="RefreshSimpleProxies" /> 从管理页数据源投影而来，失败优先、最多
+    ///     <see cref="MaxSimpleProxyRows" /> 条；行内启停/复制复用管理页既有命令。
+    /// </summary>
+    public AvaloniaList<SimpleProxyItem> SimpleProxies
+    {
+        get;
+    } = [];
+
+    /// <summary>是否有可展示的隧道行（供空态切换）</summary>
+    public bool HasSimpleProxies => SimpleProxies.Count > 0;
+
+    /// <summary>精简主页「我的隧道」最多展示的行数</summary>
+    public const int MaxSimpleProxyRows = 8;
+
+    /// <summary>
+    ///     刷新「我的隧道」列表：从管理页数据源投影 → 失败优先排序 → 截断 → 回 UI 线程重建。
+    ///     数据源缺失时不抛异常（列表置空），由 <see cref="EnsureTunnelDataSourceAsync" /> 负责预热。
+    /// </summary>
+    private void RefreshSimpleProxies()
+    {
+        try
+        {
+            var source = Views.ManageProxyPage.Instance?.ViewModel;
+            if (source is null)
+            {
+                ClearSimpleProxies();
+                return;
+            }
+
+            var rows = source.AllProxies
+                .OrderByDescending(p => p.TunnelStatus == TunnelStatus.Failed)
+                .ThenByDescending(p => p.TunnelStatus is TunnelStatus.Running or TunnelStatus.Starting or
+                    TunnelStatus.Reconnecting)
+                .ThenBy(p => p.proxyName, StringComparer.CurrentCultureIgnoreCase)
+                .Take(MaxSimpleProxyRows)
+                .ToList();
+
+            var failedCount = source.AllProxies.Count(p => p.TunnelStatus == TunnelStatus.Failed);
+
+            ApplySimpleProxies(rows, failedCount);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "汇总精简主页隧道列表失败");
+            ClearSimpleProxies();
+        }
+    }
+
+    /// <summary>
+    ///     把投影结果写回 UI 集合（保证在 UI 线程执行）。
+    ///     <see cref="AvaloniaList{T}" /> 绑定到 ItemsControl，非 UI 线程修改会触发绑定异常。
+    /// </summary>
+    private void ApplySimpleProxies(IReadOnlyList<UserProxyViewModel> rows, int failedCount)
+    {
+        void Apply()
+        {
+            // 投影会订阅源对象事件，重建前先释放旧行，避免订阅泄漏
+            foreach (var previous in SimpleProxies)
+            {
+                previous.Dispose();
+            }
+
+            SimpleProxies.Clear();
+            foreach (var proxy in rows)
+            {
+                SimpleProxies.Add(new SimpleProxyItem(proxy));
+            }
+
+            SimpleFailedProxyCount = failedCount;
+            this.RaisePropertyChanged(nameof(HasSimpleProxies));
+            this.RaisePropertyChanged(nameof(SimpleFailedCountText));
+            this.RaisePropertyChanged(nameof(SimpleHasFailure));
+            this.RaisePropertyChanged(nameof(SimpleFailureSummary));
+        }
+
+        if (Dispatcher.UIThread.CheckAccess())
+        {
+            Apply();
+        }
+        else
+        {
+            Dispatcher.UIThread.Post(Apply);
+        }
+    }
+
+    /// <summary>清空「我的隧道」列表（数据源不可用时调用，保证不残留过期行）。</summary>
+    private void ClearSimpleProxies()
+    {
+        ApplySimpleProxies([], 0);
+    }
+
+    /// <summary>
+    ///     确保管理页数据源已就绪（26.4）。
+    ///     精简主页需要隧道列表，但管理页 <c>Instance</c> 只在用户访问过管理页后才存在；
+    ///     这里通过管理页提供的 <see cref="Views.ManageProxyPage.EnsureInstanceAsync" /> 预热
+    ///     （创建实例 + 加载隧道，不切换当前页面），使用户「只进主页、不点管理」也能看到隧道列表。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存强制拉取</param>
+    /// <returns>数据源是否可用</returns>
+    public async Task<bool> EnsureTunnelDataSourceAsync(bool forceRefresh = false)
+    {
+        try
+        {
+            // 仅在已登录时预热，避免未登录场景发起必然失败的请求
+            if (!IsLoggedIn)
+            {
+                return false;
+            }
+
+            await Views.ManageProxyPage.EnsureInstanceAsync(forceRefresh);
+            return Views.ManageProxyPage.Instance?.ViewModel is not null;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "预热管理页隧道数据失败");
+            return false;
+        }
     }
 
     /// <summary>是否有可用更新（null 表示未检查）</summary>
@@ -471,9 +616,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
     /// <summary>
     ///     汇总隧道相关的推荐输入：
-    ///     隧道总数 / 运行中数量取自管理页数据源（若用户尚未打开过管理页则为 0），
+    ///     隧道总数 / 运行中数量取自管理页数据源（若数据源尚未预热则为 0，见 <see cref="EnsureTunnelDataSourceAsync" />），
     ///     失败信息取自 <see cref="HomeRecommendStateStore" />（含 24 小时有效期）。
-    ///     最后统一重算推荐列表。
+    ///     最后刷新「我的隧道」行列表并统一重算推荐列表。
     /// </summary>
     private void RefreshTunnelStatistics()
     {
@@ -485,6 +630,12 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 TunnelCount = source.AllProxies.Count;
                 RunningProxyCount = source.AllProxies.Count(p => p.TunnelStatus == TunnelStatus.Running);
             }
+            else
+            {
+                // 数据源尚未预热：显式归零，避免残留上一次的统计值（预热度后由调用方再刷新一次）
+                TunnelCount = 0;
+                RunningProxyCount = 0;
+            }
         }
         catch (Exception ex)
         {
@@ -493,11 +644,16 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
         SimpleFailedProxyName = HomeRecommendStateStore.GetFreshFailedProxyName();
         this.RaisePropertyChanged(nameof(SimpleHasFailure));
+        this.RaisePropertyChanged(nameof(SimpleFailureSummary));
         this.RaisePropertyChanged(nameof(IsLoggedIn));
         this.RaisePropertyChanged(nameof(SimpleGreeting));
         this.RaisePropertyChanged(nameof(SimpleRunningCountText));
         this.RaisePropertyChanged(nameof(SimpleHasUpdate));
         this.RaisePropertyChanged(nameof(SimpleLatestVersion));
+
+        // 26.4：「我的隧道」行列表（源缺失时内部置空，不抛异常）
+        RefreshSimpleProxies();
+        this.RaisePropertyChanged(nameof(SimpleHasFailure));
 
         // 26.4：先汇总「最近启动的隧道」，再据此生成推荐
         RefreshRecentTunnels();
@@ -512,6 +668,23 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     {
         MainPageFrameViewModel.Instance?.IsLoading = true;
         _ = LoadUserDataAsync(true);
+    }
+
+    /// <summary>
+    ///     「我的隧道」标题行刷新按钮（26.4）：只重拉隧道数据（跳过 5 分钟缓存）并刷新列表/推荐，
+    ///     不触发整页用户数据请求，避免用户仅想更新隧道状态时产生多余流量。
+    /// </summary>
+    public async Task RefreshTunnelsAsync()
+    {
+        try
+        {
+            await EnsureTunnelDataSourceAsync(true);
+            RefreshTunnelStatistics();
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "刷新我的隧道列表失败");
+        }
     }
 
     /// <summary>
@@ -544,7 +717,104 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public void Dispose() => GC.RemoveMemoryPressure(100 * 1024 * 1024);
+    /// <summary>
+    ///     精简主页「我的隧道」行内启停（26.4）。
+    ///     与 <see cref="LaunchRecentTunnel" /> 完全同一路径：启动走管理页 <c>LaunchProxyCommand</c>，
+    ///     停止走管理页 <c>StopProxyCommand</c>，不在主页内直接操作 frpc 进程。
+    /// </summary>
+    /// <param name="proxyId">隧道 ID</param>
+    /// <returns>操作是否已发出；隧道不存在（如已被删除）时返回 false。</returns>
+    public bool ToggleSimpleProxy(int proxyId)
+    {
+        try
+        {
+            var target = Views.ManageProxyPage.Instance?.ViewModel?.AllProxies
+                .FirstOrDefault(p => p.proxyId == proxyId);
+            if (target is null)
+            {
+                Growl.Warning(Languages.Text_Home_Recommend_TunnelMissing);
+                RefreshTunnelStatistics();
+                return false;
+            }
+
+            switch (target.TunnelStatus)
+            {
+                case TunnelStatus.Running:
+                case TunnelStatus.Starting:
+                case TunnelStatus.Reconnecting:
+                    target.StopProxyCommand.Execute(target);
+                    break;
+                default:
+                    // 与管理页「启动隧道」按钮同一判据：非占用状态即可启动，
+                    // 禁用/封禁等无效情况由服务端拒绝并走既有失败提示链路，此处不额外拦截。
+                    target.LaunchProxyCommand.Execute(target);
+                    break;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "精简主页切换隧道状态失败");
+            return false;
+        }
+    }
+
+    /// <summary>
+    ///     精简主页「我的隧道」行内复制地址（26.4）。
+    ///     地址规则与管理页「复制隧道信息」一致（HTTP/HTTPS 取域名，其余取节点主机:远程端口）；
+    ///     无可用地址时给出提示，不静默失败。
+    /// </summary>
+    /// <param name="proxyId">隧道 ID</param>
+    /// <returns>是否已复制到剪贴板。</returns>
+    public bool CopySimpleProxyAddress(int proxyId)
+    {
+        try
+        {
+            var target = Views.ManageProxyPage.Instance?.ViewModel?.AllProxies
+                .FirstOrDefault(p => p.proxyId == proxyId);
+            if (target is null)
+            {
+                Growl.Warning(Languages.Text_Home_Recommend_TunnelMissing);
+                return false;
+            }
+
+            var address = SimpleProxyItem.ResolvePublicAddress(target);
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                Growl.Warning(Languages.Text_Home_Simple_CopyUnavailable);
+                return false;
+            }
+
+            var clipboard = TopLevel.GetTopLevel(Core.App.MainWindow)?.Clipboard;
+            if (clipboard is null)
+            {
+                Growl.Warning(Languages.Text_Home_Simple_CopyUnavailable);
+                return false;
+            }
+
+            _ = clipboard.SetTextAsync(address);
+            Growl.Success(Languages.Text_UserProxy_TunnelInfoCopied);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "精简主页复制隧道地址失败");
+            return false;
+        }
+    }
+
+    public void Dispose()
+    {
+        // 26.4：释放「我的隧道」投影行的事件订阅，避免主页 VM 被隧道对象反向持有
+        foreach (var row in SimpleProxies)
+        {
+            row.Dispose();
+        }
+
+        SimpleProxies.Clear();
+        GC.RemoveMemoryPressure(100 * 1024 * 1024);
+    }
 
     /// <summary>
     ///     加载主页面数据（26.4）。
@@ -654,7 +924,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFrpApiConverter.GetNoticeAsync(forceRefresh))
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown(
+                        (await MEFrpApiConverter.GetNoticeAsync(forceRefresh))
                         .data));
 
                 if (NoticeContent.IsNullOrEmpty())
@@ -666,6 +937,13 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 // 26.4：精简主页需要「隧道总数 / 运行中 / 最近失败」，统一从管理页数据源汇总刷新
                 RefreshTunnelStatistics();
+
+                // 26.4：用户可能从未打开过管理页，此时数据源为空 → 按需预热后再汇总一次，
+                //       保证「只进主页、不点管理」也能看到隧道列表（仅精简布局需要）。
+                if (IsSimpleLayout && await EnsureTunnelDataSourceAsync(forceRefresh))
+                {
+                    RefreshTunnelStatistics();
+                }
 
                 var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
 
@@ -681,131 +959,13 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
             }
 
-            if (Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
-            {
-                var btn = new TaskDialogButton
-                {
-                    DialogResult = TaskDialogStandardResult.Cancel,
-                    Text = Languages.Text_Global_Cancel,
-                    Command = new RelayCommand(async _ =>
-                    {
-                    })
-                };
-                var cnt = "";
-                var td = new TaskDialog
-                {
-                    Title = Languages.Text_Main_Initialize_Title,
-                    ShowProgressBar = true,
-                    IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-                    SubHeader = Languages.Text_Main_Initialize_Resource,
-                    Content = cnt,
-                    Buttons =
-                    {
-                        btn
-                    }
-                };
-                td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
-                td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
-                td.ShowAsync();
-                if (!Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        td.Hide(TaskDialogStandardResult.Cancel);
-                    });
-                    return;
-                }
-
-                Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Tools"));
-                await Task.Run(() => PMLAHelper.UnpackPmla(
-                    Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"),
-                    Path.Combine(Core.App.StartupPath, "Tools"),
-                    (progress, status) =>
-                    {
-                        td.SetProgressBarState(progress, TaskDialogProgressState.Normal);
-                        cnt = status;
-                    }));
-                var cdFile = Path.Combine(Core.App.StartupPath, "Tools", "RYCB.MEFrpLauncherX.CrashDisplayer");
-                if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
-                {
-                    if (File.Exists(cdFile))
-                    {
-                        var psi = new ProcessStartInfo("/bin/chmod", $"+x \"{cdFile}\"")
-                        {
-                            UseShellExecute = false
-                        };
-                        await Process.Start(psi)?.WaitForExitAsync();
-                    }
-                }
-
-                Dispatcher.UIThread.Post(() =>
-                {
-                    td.Hide(TaskDialogStandardResult.OK);
-                });
-                File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
-            }
-
-            if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp"))
-                .Any())
-            {
-                var btn = new TaskDialogButton
-                {
-                    DialogResult = TaskDialogStandardResult.Cancel,
-                    Text = Languages.Text_Global_Cancel,
-                    Command = new RelayCommand(async _ =>
-                    {
-                    })
-                };
-                var cnt = "";
-                var td = new TaskDialog
-                {
-                    Title = Languages.Text_Main_PostUpdateProcess_Title,
-                    ShowProgressBar = true,
-                    IconSource = new SymbolIconSource { Symbol = Symbol.Download },
-                    SubHeader = Languages.Text_Main_PostUpdateProcess_Cleaning,
-                    Content = cnt,
-                    Buttons =
-                    {
-                        btn
-                    }
-                };
-                td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
-                td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
-                td.ShowAsync();
-
-                await Task.Run(() => Directory.Delete(Path.Combine(Core.App.StartupPath, "Cache"), true));
-                Dispatcher.UIThread.Post(() =>
-                {
-                    Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
-                    try
-                    {
-                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState
-                            .Normal);
-                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
-                    }
-                    catch
-                    {
-                        /*Ignore*/
-                    }
-
-                    td.Hide(TaskDialogStandardResult.OK);
-                    try
-                    {
-                        Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
-                    }
-                    catch
-                    {
-                        /*Ignore*/
-                    }
-                });
-            }
 
             IsLoadingNotice = true;
             var notice = await RYCBApiConverter.GetAllNoticeAsync(forceRefresh);
             SoftwareNotice.Clear();
-            if (notice.success)
+            if (notice.Success)
             {
-                SoftwareNotice.AddRange(notice.data);
+                SoftwareNotice.AddRange(notice.Data);
             }
         }
         catch (Exception ex)
@@ -821,6 +981,125 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             MainPageFrameViewModel.Instance?.IsLoading = false;
             IsLoading = false;
             IsLoadingNotice = false;
+        }
+
+        if (Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
+        {
+            var btn = new TaskDialogButton
+            {
+                DialogResult = TaskDialogStandardResult.Cancel,
+                Text = Languages.Text_Global_Cancel,
+                Command = new RelayCommand(async _ =>
+                {
+                })
+            };
+            var cnt = "";
+            var td = new TaskDialog
+            {
+                Title = Languages.Text_Main_Initialize_Title,
+                ShowProgressBar = true,
+                IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+                SubHeader = Languages.Text_Main_Initialize_Resource,
+                Content = cnt,
+                Buttons =
+                {
+                    btn
+                }
+            };
+            td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+            td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
+            td.ShowAsync();
+            if (!Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    td.Hide(TaskDialogStandardResult.Cancel);
+                });
+                return;
+            }
+
+            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Tools"));
+            await Task.Run(() => PMLAHelper.UnpackPmla(
+                Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"),
+                Path.Combine(Core.App.StartupPath, "Tools"),
+                (progress, status) =>
+                {
+                    td.SetProgressBarState(progress, TaskDialogProgressState.Normal);
+                    cnt = status;
+                }));
+            var cdFile = Path.Combine(Core.App.StartupPath, "Tools", "RYCB.MEFrpLauncherX.CrashDisplayer");
+            if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+            {
+                if (File.Exists(cdFile))
+                {
+                    var psi = new ProcessStartInfo("/bin/chmod", $"+x \"{cdFile}\"")
+                    {
+                        UseShellExecute = false
+                    };
+                    await Process.Start(psi)?.WaitForExitAsync();
+                }
+            }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                td.Hide(TaskDialogStandardResult.OK);
+            });
+            File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
+        }
+
+        if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp"))
+            .Any())
+        {
+            var btn = new TaskDialogButton
+            {
+                DialogResult = TaskDialogStandardResult.Cancel,
+                Text = Languages.Text_Global_Cancel,
+                Command = new RelayCommand(async _ =>
+                {
+                })
+            };
+            var cnt = "";
+            var td = new TaskDialog
+            {
+                Title = Languages.Text_Main_PostUpdateProcess_Title,
+                ShowProgressBar = true,
+                IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+                SubHeader = Languages.Text_Main_PostUpdateProcess_Cleaning,
+                Content = cnt,
+                Buttons =
+                {
+                    btn
+                }
+            };
+            td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+            td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
+            td.ShowAsync();
+
+            await Task.Run(() => Directory.Delete(Path.Combine(Core.App.StartupPath, "Cache"), true));
+            Dispatcher.UIThread.Post(() =>
+            {
+                Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+                try
+                {
+                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState
+                        .Normal);
+                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
+                }
+                catch
+                {
+                    /*Ignore*/
+                }
+
+                td.Hide(TaskDialogStandardResult.OK);
+                try
+                {
+                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                }
+                catch
+                {
+                    /*Ignore*/
+                }
+            });
         }
     }
 
@@ -897,7 +1176,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
     ~HomePageViewModel()
     {
-        GC.SuppressFinalize(this);
+        //GC.SuppressFinalize(this);
     }
 }
 
@@ -995,7 +1274,7 @@ public class NoticeManager
     }
 }
 
-public static class HtmlToMarkdownConverter
+public static partial class HtmlToMarkdownConverter
 {
     public static string ConvertHtmlImagesToMarkdown(string html)
     {
@@ -1007,7 +1286,7 @@ public static class HtmlToMarkdownConverter
         var markdown = regex.Replace(html, match =>
         {
             var src = match.Groups[1].Value;
-            var alt = Regex.Match(match.Value, @"alt\s*=\s*[""']([^""']*)[""']", RegexOptions.IgnoreCase) is
+            var alt = MyRegex().Match(match.Value) is
                 { Success: true } altMatch
                 ? altMatch.Groups[1].Value
                 : "";
@@ -1038,4 +1317,7 @@ public static class HtmlToMarkdownConverter
             return html;
         }
     }
+
+    [GeneratedRegex(@"alt\s*=\s*[""']([^""']*)[""']", RegexOptions.IgnoreCase, "zh-CN")]
+    private static partial Regex MyRegex();
 }

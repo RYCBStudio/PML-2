@@ -120,15 +120,15 @@ public partial class TypingControl : UserControl
                     var currentChar = Text[i];
                     string placeholder;
 
-                    if (currentChar >= '\u4e00' && currentChar <= '\u9fA5')
+                    if (currentChar is >= '\u4e00' and <= '\u9fA5')
                     {
                         // 汉字：随机显示一个汉字
                         var chineseIndex = _random.Next(_chineseRange.Start.Value, _chineseRange.End.Value + 1);
                         placeholder = ((char)chineseIndex).ToString();
                     }
-                    else if ((currentChar >= 'A' && currentChar <= 'Z') ||
-                             (currentChar >= 'a' && currentChar <= 'z') ||
-                             (currentChar >= '0' && currentChar <= '9'))
+                    else if (currentChar is >= 'A' and <= 'Z' ||
+                             currentChar is >= 'a' and <= 'z' ||
+                             currentChar is >= '0' and <= '9')
                     {
                         // 英文字母或数字：随机显示特殊字符
                         placeholder = _specialChars[_random.Next(_specialChars.Length)].ToString();

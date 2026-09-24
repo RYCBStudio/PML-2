@@ -32,7 +32,7 @@ public sealed record TunnelErrorInfo(TunnelErrorCategory Category, string Summar
 ///     将终端输出摘要 / API 错误 / 进程退出状态映射为可读的失败原因。
 ///     所有摘要文案走 i18n（<see cref="Languages" />），不含原始输出，便于用户直接阅读与上报。
 /// </summary>
-public static class TunnelErrorMapper
+public static partial class TunnelErrorMapper
 {
     /// <summary>
     ///     综合终端输出、API 错误与进程退出码，判定失败类别并生成可读摘要。
@@ -89,7 +89,7 @@ public static class TunnelErrorMapper
         }
 
         // 4) 进程崩溃：输出文本含 "Process exited with code: N"（N≠0），或显式退出码非 0
-        var exitMatch = Regex.Match(text, @"[Pp]rocess exited with code:\s*(-?\d+)");
+        var exitMatch = MyRegex().Match(text);
         if (exitMatch.Success &&
             int.TryParse(exitMatch.Groups[1].Value, out var parsedExitCode) &&
             parsedExitCode != 0)
@@ -123,4 +123,6 @@ public static class TunnelErrorMapper
     /// <summary>启动超时（一定时间内无输出、服务端未确认在线）→ 节点不可达</summary>
     public static TunnelErrorInfo MapTimeout() =>
         new(TunnelErrorCategory.NodeUnreachable, Languages.Languages.Text_TunnelError_NodeUnreachable);
+    [GeneratedRegex(@"[Pp]rocess exited with code:\s*(-?\d+)")]
+    private static partial Regex MyRegex();
 }

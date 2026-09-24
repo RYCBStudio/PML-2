@@ -3334,6 +3334,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 该隧道暂无可复制的地址。.
+        /// </summary>
+        public static string Text_Home_Simple_CopyUnavailable {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.CopyUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 失败 {0}.
+        /// </summary>
+        public static string Text_Home_Simple_FailedCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.FailedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 失败隧道.
         /// </summary>
         public static string Text_Home_Simple_FailedProxies {
@@ -3415,11 +3433,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 管理.
+        /// </summary>
+        public static string Text_Home_Simple_Manage {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 我的隧道.
+        /// </summary>
+        public static string Text_Home_Simple_MyTunnels {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.MyTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 尚未登录.
         /// </summary>
         public static string Text_Home_Simple_NotLoggedIn {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 快速创建.
+        /// </summary>
+        public static string Text_Home_Simple_QuickCreate {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.QuickCreate", resourceCulture);
             }
         }
         
@@ -3460,6 +3505,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 运行中 {0}.
+        /// </summary>
+        public static string Text_Home_Simple_RunningCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RunningCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 运行中隧道.
         /// </summary>
         public static string Text_Home_Simple_RunningProxies {
@@ -3474,6 +3528,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Simple_Status {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 还没有隧道，先创建一个吧。.
+        /// </summary>
+        public static string Text_Home_Simple_TunnelListEmpty {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.TunnelListEmpty", resourceCulture);
             }
         }
         

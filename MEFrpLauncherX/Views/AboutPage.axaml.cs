@@ -483,7 +483,7 @@ public partial class AboutPage : UserControl
                 vm.SubmitProgress = 1.5;
                 await RYCBApiConverter.SendEmailAsync("html", feedbackForm.Email,
                     Languages.Text_About_FeedbackEmailBody,
-                    Languages.Text_About_FeedbackEmailSubject);
+                    Languages.Text_About_FeedbackEmailSubject, "support");
                 vm.SubmitProgress = 2.6;
                 Growl.Success(Languages.Text_About_FeedbackSubmitted);
                 vm.SubmitProgress = 3;

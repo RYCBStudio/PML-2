@@ -25,7 +25,7 @@ namespace Porta.Pty.Mac
 
             // Convert environment dictionary to "KEY=VALUE" string array for native code
             string?[]? envp = null;
-            if (options.Environment != null && options.Environment.Count > 0)
+            if (options.Environment is { Count: > 0 })
             {
                 envp = options.Environment
                     .Select(kvp => $"{kvp.Key}={kvp.Value}")

@@ -21,7 +21,10 @@ public class MainPageFrameViewModel : ViewModelBase
         // 初始化命令
         NavigateToHomeCommand = CreateNavigationCommand("Home", () => new HomePage());
         NavigateToCreateProxyCommand = CreateNavigationCommand("CreateProxy", () => new CreateProxyPage());
-        NavigateToManageProxyCommand = CreateNavigationCommand("ManageProxy", () => new ManageProxyPage());
+        NavigateToManageProxyCommand = CreateNavigationCommand("ManageProxy",
+            // 26.4：精简主页可能已预热管理页实例（隧道数据源），这里复用同一实例，
+            // 既避免重复请求隧道列表，也保证主页「我的隧道」列表与管理页指向同一数据源。
+            () => ManageProxyPage.Instance ?? new ManageProxyPage());
         NavigateToNodesMonitoringCommand = CreateNavigationCommand("NodesMonitoring", () => new NodesMonitoringPage());
         NavigateToUserCenterCommand = CreateNavigationCommand("UserCenter", () => new UserCenterPage());
         NavigateToSettingsCommand = CreateNavigationCommand("Settings", () => new SettingsPage());

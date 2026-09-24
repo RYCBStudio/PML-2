@@ -218,8 +218,7 @@ public static class ConfigManager
         App.CurrentLogger?.Log(
             $"正在合并配置项 AutoLaunchProxies: {target.AutoLaunchProxies} -> {source.AutoLaunchProxies}",
             module: EnumLogModule.Custom, customModuleName: "配置管理");
-        if (target.AutoLaunchProxies != null && source.AutoLaunchProxies != null &&
-            source.AutoLaunchProxies.Count > 0 && target.AutoLaunchProxies.Count == 0)
+        if (target.AutoLaunchProxies != null && source.AutoLaunchProxies is { Count: > 0 } && target.AutoLaunchProxies.Count == 0)
         {
             target.AutoLaunchProxies = source.AutoLaunchProxies;
         }
