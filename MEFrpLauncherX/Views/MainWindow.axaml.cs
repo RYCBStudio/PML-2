@@ -2,21 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using AsyncImageLoader;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
-using Iciclecreek.TerminalWindow;
 using MarkdownAIRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -80,9 +81,9 @@ public partial class MainWindow : AppWindow, IDisposable
                 _ => WindowTransparencyLevel.None
             };
         }
-        
+
         TransparencyLevelHint = [preferredTLH];
-        
+
         #endregion
 
         #region Splash设置
@@ -92,7 +93,11 @@ public partial class MainWindow : AppWindow, IDisposable
         SplashScreen = new MainAppSplashScreen(this)
         {
             SplashScreenContent = sp,
-            InitApp = async () => await ApplyThemeAsync()
+            InitApp = async () =>
+            {
+                await ApplyThemeAsync();
+                await Dispatcher.UIThread.InvokeAsync(CleanupFluentSplash);
+            }
         };
 
         #endregion
@@ -140,6 +145,44 @@ public partial class MainWindow : AppWindow, IDisposable
         Instance = this;
     }
 
+    private void CleanupFluentSplash()
+    {
+        // 1. 清伪类（防止样式还在影响）
+        PseudoClasses.Set(":splashOpen", false);
+
+        // 2. 从模板里找到 SplashHost 并真正移除
+        if (this.GetTemplateChildren() is { } children)
+        {
+            // 更稳妥：用 NameScope 或 VisualTree 查找
+        }
+
+        var splashHost = this.FindDescendantOfType<AppSplashScreen>() // 或按 Name 找 "SplashHost"
+                         ?? this.GetVisualDescendants()
+                             .OfType<Control>()
+                             .FirstOrDefault(c => c.Name == "SplashHost");
+
+        if (splashHost != null)
+        {
+            // 从父容器移除（比只设 Opacity=0 更干净）
+            if (splashHost.Parent is Panel panel)
+                panel.Children.Remove(splashHost);
+            else if (splashHost.Parent is ContentControl cc)
+                cc.Content = null;
+
+            // 再保险
+            splashHost.IsVisible = false;
+            splashHost.Opacity = 0;
+        }
+
+        // 3. 清掉 SplashScreen 引用，避免后续逻辑再碰它
+        SplashScreen = null;
+
+        // 4. 强制整窗重绘一次
+        InvalidateMeasure();
+        InvalidateArrange();
+        InvalidateVisual();
+    }
+
     /// <summary>
     ///     最小化恢复优化：窗口从最小化恢复时强制一次整窗重绘。
     ///     否则渲染器可能只在恢复后的首帧刷新一小块脏区，
@@ -158,12 +201,12 @@ public partial class MainWindow : AppWindow, IDisposable
         {
             // 最小化期间暂停终端渲染节流：终端不可见，持续触发的重绘既浪费 CPU/GPU，
             // 又会在恢复首帧前制造大量排队帧，加剧恢复卡顿。
-            TerminalRenderThrottle.Pause();
+            // TerminalRenderThrottle.Pause();
             return;
         }
 
         // 恢复时统一重绘一次所有挂起的终端（最新内容），再强制整窗重绘。
-        TerminalRenderThrottle.Resume();
+        //TerminalRenderThrottle.Resume();
         RequestFullRedraw();
     }
 
@@ -172,14 +215,31 @@ public partial class MainWindow : AppWindow, IDisposable
     /// </summary>
     private void RequestFullRedraw()
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            InvalidateMeasure();
-            InvalidateArrange();
-            InvalidateVisual();
-        }, DispatcherPriority.Render);
-
-        Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Background);
+        // Dispatcher.UIThread.Post(() =>
+        // {
+        //     InvalidateMeasure();
+        //     InvalidateArrange();
+        //     InvalidateVisual();
+        // }, DispatcherPriority.Render);
+        //
+        // // 再在下一帧强制全表面刷新（覆盖 DWM 恢复动画期间的迟到脏区）
+        // Dispatcher.UIThread.Post(() =>
+        // {
+        //     // 通过轻微改动尺寸触发一次真正的 surface 重建/全量重绘
+        //     // （比单纯 InvalidateVisual 更可靠）
+        //     var w = Width;
+        //     Width = w + 0.1;
+        //     Width = w;
+        //
+        //     InvalidateVisual();
+        // }, DispatcherPriority.Background);
+        //
+        // // 再补一帧，覆盖极少数迟到的合成帧
+        // Dispatcher.UIThread.Post(async () =>
+        // {
+        //     await Task.Delay(50);   // 可调 30~120
+        //     InvalidateVisual();
+        // }, DispatcherPriority.Background);
     }
 
     internal static MainWindow Instance
@@ -365,6 +425,7 @@ public partial class MainWindow : AppWindow, IDisposable
             // 设置菜单栏
             NativeMenu.SetMenu(this, NativeMenuBar);
         }
+
         try
         {
             // 用户设置关闭启动画面时 SplashProcess 为 null，判空跳过
@@ -387,7 +448,7 @@ public partial class MainWindow : AppWindow, IDisposable
             ["version"] = Core.App.Version,
             ["os"] = Environment.OSVersion.Platform.ToString()
         });
-        
+
         // 初始化完成，停止进度动画
         _vm.IsBusy = false;
 

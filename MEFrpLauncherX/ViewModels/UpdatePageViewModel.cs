@@ -6,7 +6,6 @@ using System.Net;
 using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Avalonia.Animation;
 using Avalonia.Collections;
 using Downloader;
 using FluentAvalonia.UI.Windowing;

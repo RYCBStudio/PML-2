@@ -1,6 +1,5 @@
 ﻿using System.Formats.Tar;
 using System.IO.Compression;
-using System.Net.Http;
 using System.Security.Cryptography;
 
 namespace MEFrpLauncherX.Core.Services;

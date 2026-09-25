@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
-using AvaloniaEdit;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Tools;
 
@@ -57,7 +56,7 @@ public sealed class EmailAddressAttribute : ValidationAttribute
         }
         if (value is not string text || text.AsSpan().ContainsAny<char>('\r', '\n'))
             return false;
-        int num = text.IndexOf('@');
+        var num = text.IndexOf('@');
         if (num <= 0 || num == text.Length - 1 || num != text.LastIndexOf('@'))
             return false;
         return EmailValidator.IsValidCommonEmail(text);

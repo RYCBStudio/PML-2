@@ -1,6 +1,5 @@
 ﻿namespace MEFrpLauncherX.Tools;
 
-using System;
 using System.Text.RegularExpressions;
 
 public static partial class EmailValidator
