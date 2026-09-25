@@ -48,12 +48,9 @@ public class VersionInfo
     }
 }
 
-public static class VersionComparer
+public static partial class VersionComparer
 {
-    private static readonly Regex VersionRegex = new(
-        @"^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:\.(?<build>\d+))?(?:\-(?<flag>preview|rc)(?<flagnum>\d+))?$",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled
-    );
+    private static readonly Regex VersionRegex = MyRegex();
 
     /// <summary>
     ///     解析版本字符串
@@ -230,4 +227,6 @@ public static class VersionComparer
     ///     判断版本1是否等于版本2
     /// </summary>
     public static bool IsEqualTo(string version1, string version2) => CompareVersions(version1, version2) == 0;
+    [GeneratedRegex(@"^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:\.(?<build>\d+))?(?:\-(?<flag>preview|rc)(?<flagnum>\d+))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled, "zh-CN")]
+    private static partial Regex MyRegex();
 }

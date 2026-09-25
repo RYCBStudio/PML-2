@@ -34,7 +34,7 @@ public static class CertStore
         }
 
         var chars = domain.Trim().ToLowerInvariant()
-            .Select(c => char.IsLetterOrDigit(c) || c is '-' or '_' ? c : '_')
+            .Select(c => char.IsLetterOrDigit(c) || c is '-' or '_' or '.' ? c : '_')
             .ToArray();
         return new string(chars);
     }
@@ -130,7 +130,7 @@ public static class CertStore
             App.CurrentLogger?.Error(ex, "枚举本地证书失败");
         }
 
-        return result.OrderBy(x => x.Domain, StringComparer.OrdinalIgnoreCase).ToList();
+        return [.. result.OrderBy(x => x.Domain, StringComparer.OrdinalIgnoreCase)];
     }
 
     /// <summary>读取单个证书目录的列表项；缺文件或元数据损坏时返回 null。</summary>

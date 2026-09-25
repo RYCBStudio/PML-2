@@ -54,15 +54,15 @@
                        IsVisible="{Binding AppMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
             <ProgressBar Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,10,0,0"
                          FontFamily="{DynamicResource GlobalFontFamily}"
-                         Value="{Binding Progress}"
-                         IsVisible="{Binding Progress, Converter={x:Static core:ProgressToVisibilityConverter.Instance}}">
+                         IsVisible="{Binding IsBusy}">
                 <i:Interaction.Behaviors>
                     <behaviors:AsymptoticProgressBehavior
                         IsRunning="{Binding IsBusy, FallbackValue=True}"
-                        IsFakeMode="True"
+                        IsFakeMode="{Binding IsFakeProgress}"
                         Target="95"
                         Speed="0.15"
                         UpdateInterval="0:0:0.030"
+                        RealProgress="{Binding Progress}"
                         JumpToMaximumOnStop="True"
                         CompleteAnimationDuration="0:0:0.4" />
                 </i:Interaction.Behaviors>

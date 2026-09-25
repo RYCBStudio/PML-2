@@ -139,12 +139,12 @@ namespace Iciclecreek.TerminalWindow
             base.OnGotFocus(e);
 
             // Only focus the inner TerminalView if it doesn't already have focus
-            if (_terminalView != null && !_terminalView.IsFocused)
+            if (_terminalView is { IsFocused: false })
             {
                 // Defer until layout is ready
                 Dispatcher.UIThread.Post(() =>
                 {
-                    if (_terminalView != null && !_terminalView.IsFocused)
+                    if (_terminalView is { IsFocused: false })
                     {
                         _terminalView.Focus();
                     }

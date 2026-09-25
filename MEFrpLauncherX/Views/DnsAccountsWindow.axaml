@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        mc:Ignorable="d"
+        d:DesignWidth="640" d:DesignHeight="640"
+        Width="640" Height="640"
+        WindowStartupLocation="CenterOwner"
+        Title="{x:Static languages:Languages.Text_Dns_Title}"
+        x:Class="MEFrpLauncherX.Views.DnsAccountsWindow">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
+
+        <!-- 说明：明确本机处理、不上传 -->
+        <controls:InfoBar Grid.Row="0"
+                          Severity="Informational"
+                          IsClosable="False"
+                          IsOpen="True"
+                          Title="{x:Static languages:Languages.Text_Dns_Title}"
+                          Message="{x:Static languages:Languages.Text_Dns_Intro}" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="260,*" ColumnSpacing="12">
+
+            <!-- 左：账户列表 -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="8">
+                <TextBlock Text="{x:Static languages:Languages.Text_Dns_Title}"
+                           Theme="{StaticResource SubtitleTextBlockStyle}" />
+                <ListBox x:Name="AccountList" Grid.Row="1"
+                         SelectionChanged="AccountSelectionChanged"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding ProviderDisplayName}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                <TextBlock Text="{Binding UpdatedAtText}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock x:Name="EmptyHint" Grid.Row="1"
+                           IsVisible="False"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           Text="{x:Static languages:Languages.Text_Dns_Empty}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                    <Button x:Name="AddButton" Click="AddAccount"
+                            Content="{x:Static languages:Languages.Text_Dns_Add}" />
+                    <Button x:Name="DeleteButton" Click="DeleteAccount" IsEnabled="False"
+                            Content="{x:Static languages:Languages.Text_Certificate_Delete}" />
+                    <Button x:Name="SubmitButton" Click="SubmitProvider" IsEnabled="True"
+                            Content="{x:Static languages:Languages.Text_Dns_SubmitProvider}" />
+                </StackPanel>
+            </Grid>
+
+            <!-- 右：编辑表单（字段表驱动） -->
+            <ScrollViewer Grid.Column="1" AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Spacing="10">
+                    <controls:InfoBar Severity="Warning"
+                                      IsClosable="False"
+                                      IsOpen="True"
+                                      Message="{x:Static languages:Languages.Text_Dns_StoreHint}" />
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="{x:Static languages:Languages.Text_Dns_AccountName}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <TextBox x:Name="NameBox"
+                                 Watermark="{x:Static languages:Languages.Text_Dns_AccountNamePlaceholder}" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="{x:Static languages:Languages.Text_Dns_Provider}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <ComboBox x:Name="ProviderBox" HorizontalAlignment="Stretch"
+                                  SelectionChanged="ProviderChanged" />
+                    </StackPanel>
+
+                    <controls:InfoBar x:Name="PermissionHint"
+                                      Severity="Informational"
+                                      IsClosable="False"
+                                      IsOpen="False" />
+
+                    <!-- 动态字段容器：按服务商表驱动生成 -->
+                    <StackPanel x:Name="FieldsPanel" Spacing="10" />
+
+                    <Button x:Name="DocButton" Click="OpenDocumentation"
+                            Content="{x:Static languages:Languages.Text_Dns_Documentation}" />
+
+                    <TextBlock x:Name="ValidationText"
+                               TextWrapping="Wrap"
+                               IsVisible="False"
+                               Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button x:Name="SaveButton" Classes="accent" Click="SaveAccount"
+                    Content="{x:Static languages:Languages.Text_Dns_Save}" />
+            <Button x:Name="CloseButton" Click="CloseWindow"
+                    Content="{x:Static languages:Languages.Text_Global_Close}" />
+        </StackPanel>
+    </Grid>
+</Window>

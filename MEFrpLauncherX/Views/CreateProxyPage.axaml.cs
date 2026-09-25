@@ -63,6 +63,30 @@ public partial class CreateProxyPage : UserControl
         private set;
     }
 
+    /// <summary>
+    ///     待预填的协议（26.4）：精简主页「快速创建」按钮在<b>导航之前</b>设置该静态值，
+    ///     导航会构造新的 <see cref="CreateProxyPage" /> 实例，因此待填值必须跨实例保存；
+    ///     用户在创建表单生成时取用一次即清空，避免影响后续手动创建。
+    ///     仅保存协议名（tcp/udp/http/https），不保存任何用户数据。
+    /// </summary>
+    private static string? _pendingPreferredProtocol;
+
+    /// <summary>
+    ///     登记待预填协议（26.4，供精简主页「快速创建」调用）。不做导航，调用方负责随后
+    ///     <c>NavigateToPage("Create")</c>，保证与既有创建流程同一路径。
+    /// </summary>
+    /// <param name="protocol">协议名（tcp/udp/http/https，大小写不敏感；空值表示清除）</param>
+    public static void RequestPreferredProtocol(string? protocol) =>
+        _pendingPreferredProtocol = protocol?.Trim().ToLowerInvariant();
+
+    /// <summary>取用并清空待预填协议（只在创建表单生成时调用一次）。</summary>
+    private static string? ConsumePendingPreferredProtocol()
+    {
+        var protocol = _pendingPreferredProtocol;
+        _pendingPreferredProtocol = null;
+        return protocol;
+    }
+
     public event Func<Task<bool>>? OnCreateProxy;
     private bool _isMap;
 
@@ -93,7 +117,11 @@ public partial class CreateProxyPage : UserControl
                             break;
                         }
 
-                        var cp = new CreateProxy(_createProxyPageViewModel.selectedNode);
+                        var cp = new CreateProxy(_createProxyPageViewModel.selectedNode)
+                        {
+                            // 26.4：精简主页「快速创建」预填协议（无待预填值时回退为默认第一项）
+                            PreferredProtocol = ConsumePendingPreferredProtocol()
+                        };
                         _createProxyPageViewModel.CurrentPage = cp;
                     }
                     else
@@ -780,20 +808,25 @@ public partial class CreateProxyPage : UserControl
             source.OrderByDescending(n => n.AllowHighTraffic).ThenBy(n => n.LoadPercent);
 
         var primary = Ranked(allNodes.Where(n =>
-            n.IsOnline && n.IsNotOverloaded && SupportsAll(protocols, n) && MeetsBandwidth(n))).ToList();
+            n is { IsOnline: true, IsNotOverloaded: true } && SupportsAll(protocols, n) && MeetsBandwidth(n))).ToList();
         if (primary.Count > 0)
         {
             return primary;
         }
 
-        return Ranked(allNodes.Where(n =>
-            n.IsOnline && SupportsAll(fallback, n) && MeetsBandwidth(n))).ToList();
+        return
+        [
+            .. Ranked(allNodes.Where(n =>
+                n.IsOnline && SupportsAll(fallback, n) && MeetsBandwidth(n)))
+        ];
     }
 
     /// <summary>按模板 create 声明构建并预填创建表单（FillForm 步）</summary>
     private CreateProxy BuildCreateProxyFromTemplate(TunnelNodeViewModel node, ProxyTemplateDefinition tpl)
     {
         var create = tpl.Create ?? new ProxyTemplateCreateDefinition();
+        // 模板创建路径以模板声明为准：清掉可能残留的「快速创建」待预填协议，避免影响后续专家模式创建
+        ConsumePendingPreferredProtocol();
         var cp = new CreateProxy(node)
         {
             PreferredProtocol = create.Protocol
@@ -995,30 +1028,33 @@ public partial class CreateProxyPage : UserControl
         // 如果没有找到符合条件的节点，放宽条件允许已过载的节点
         if (!candidates.Any())
         {
-            candidates = allNodes.Where(n =>
-                {
-                    if (!isChinaMap && n.Region is "cn" or "cnos")
+            candidates =
+            [
+                .. allNodes.Where(n =>
                     {
-                        return areaName == "亚洲" || areaName == "Asia";
-                    }
+                        if (!isChinaMap && n.Region is "cn" or "cnos")
+                        {
+                            return areaName == "亚洲" || areaName == "Asia";
+                        }
 
-                    var cleanName = n.Name.Split('/')[0].Trim()
-                        .ReplaceAnyToOne("①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿".Select(c => c.ToString()))
-                        .Trim();
+                        var cleanName = n.Name.Split('/')[0].Trim()
+                            .ReplaceAnyToOne(
+                                "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿".Select(c => c.ToString()))
+                            .Trim();
 
-                    return n.Region is "cn" or "cnos"
-                        ? n.Name.Contains(areaName) ||
-                          (ChineseRegionService.CityToProvince.TryGetValue(cleanName, out var province) &&
-                           province.Contains(areaName))
-                        : WorldRegionService.CountriesToContinent.TryGetValue(cleanName, out var countries) &&
-                        countries.Contains(areaName) || WorldRegionService.WellKnownCitiesToContinent.TryGetValue(
-                            cleanName, out var city) &&
-                        city.Contains(areaName);
-                })
-                .Where(n => n.IsOnline) // 只要求在线
-                .OrderByDescending(n => n.AllowHighTraffic)
-                .ThenBy(n => n.LoadPercent)
-                .ToList();
+                        return n.Region is "cn" or "cnos"
+                            ? n.Name.Contains(areaName) ||
+                              (ChineseRegionService.CityToProvince.TryGetValue(cleanName, out var province) &&
+                               province.Contains(areaName))
+                            : WorldRegionService.CountriesToContinent.TryGetValue(cleanName, out var countries) &&
+                            countries.Contains(areaName) || WorldRegionService.WellKnownCitiesToContinent.TryGetValue(
+                                cleanName, out var city) &&
+                            city.Contains(areaName);
+                    })
+                    .Where(n => n.IsOnline) // 只要求在线
+                    .OrderByDescending(n => n.AllowHighTraffic)
+                    .ThenBy(n => n.LoadPercent)
+            ];
         }
 
         return candidates;

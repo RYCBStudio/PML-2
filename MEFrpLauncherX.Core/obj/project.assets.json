@@ -84,16 +84,21 @@
           "buildTransitive/Avalonia.targets": {}
         }
       },
-      "Avalonia.AvaloniaEdit/11.0.0": {
+      "Avalonia.AvaloniaEdit/11.4.1": {
         "type": "package",
         "dependencies": {
           "Avalonia": "11.0.0"
         },
         "compile": {
-          "lib/netstandard2.0/AvaloniaEdit.dll": {}
+          "lib/net6.0/AvaloniaEdit.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/AvaloniaEdit.dll": {}
+          "lib/net6.0/AvaloniaEdit.dll": {}
+        },
+        "resource": {
+          "lib/net6.0/zh-Hans/AvaloniaEdit.resources.dll": {
+            "locale": "zh-Hans"
+          }
         }
       },
       "Avalonia.BuildServices/11.3.2": {
@@ -181,18 +186,6 @@
         },
         "runtime": {
           "lib/net8.0/Avalonia.Svg.dll": {}
-        }
-      },
-      "ColorTextBlock.Avalonia/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.0"
-        },
-        "compile": {
-          "lib/net6.0/ColorTextBlock.Avalonia.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/ColorTextBlock.Avalonia.dll": {}
         }
       },
       "DialogHost.Avalonia/0.8.1": {
@@ -421,19 +414,6 @@
           }
         }
       },
-      "HtmlAgilityPack/1.11.42": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/HtmlAgilityPack.dll": {
-            "related": ".deps.json;.pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/HtmlAgilityPack.dll": {
-            "related": ".deps.json;.pdb;.xml"
-          }
-        }
-      },
       "LiveChartsCore/2.0.5": {
         "type": "package",
         "compile": {
@@ -483,7 +463,7 @@
           }
         }
       },
-      "Markdig/1.3.2": {
+      "Markdig/1.4.0": {
         "type": "package",
         "compile": {
           "lib/net10.0/Markdig.dll": {
@@ -494,77 +474,6 @@
           "lib/net10.0/Markdig.dll": {
             "related": ".xml"
           }
-        }
-      },
-      "Markdown.Avalonia/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Markdown.Avalonia.Html": "11.0.2",
-          "Markdown.Avalonia.Svg": "11.0.2",
-          "Markdown.Avalonia.SyntaxHigh": "11.0.2",
-          "Markdown.Avalonia.Tight": "11.0.2"
-        },
-        "compile": {
-          "lib/net6.0/Markdown.Avalonia.Full.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Markdown.Avalonia.Full.dll": {}
-        }
-      },
-      "Markdown.Avalonia.Html/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.0",
-          "ColorTextBlock.Avalonia": "11.0.2",
-          "HtmlAgilityPack": "1.11.42",
-          "Markdown.Avalonia.SyntaxHigh": "11.0.2",
-          "Markdown.Avalonia.Tight": "11.0.2"
-        },
-        "compile": {
-          "lib/net6.0/Markdown.Avalonia.Html.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Markdown.Avalonia.Html.dll": {}
-        }
-      },
-      "Markdown.Avalonia.Svg/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.0",
-          "Avalonia.Svg": "11.0.0",
-          "Markdown.Avalonia.Tight": "11.0.2"
-        },
-        "compile": {
-          "lib/net6.0/Markdown.Avalonia.Svg.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Markdown.Avalonia.Svg.dll": {}
-        }
-      },
-      "Markdown.Avalonia.SyntaxHigh/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.0",
-          "Avalonia.AvaloniaEdit": "11.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Markdown.Avalonia.SyntaxHigh.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Markdown.Avalonia.SyntaxHigh.dll": {}
-        }
-      },
-      "Markdown.Avalonia.Tight/11.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.0",
-          "ColorTextBlock.Avalonia": "11.0.2"
-        },
-        "compile": {
-          "lib/net6.0/Markdown.Avalonia.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/Markdown.Avalonia.dll": {}
         }
       },
       "Message.Avalonia/1.1.0": {
@@ -594,19 +503,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/MsBox.Avalonia.dll": {}
-        }
-      },
-      "MessageBox.Avalonia.Markdown/3.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Markdown.Avalonia": "11.0.2",
-          "MessageBox.Avalonia": "3.2.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/MsBox.Avalonia.Markdown.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MsBox.Avalonia.Markdown.dll": {}
         }
       },
       "MicroCom.Runtime/0.11.0": {
@@ -864,7 +760,7 @@
           }
         }
       },
-      "Sentry/6.10.0": {
+      "Sentry/6.11.1": {
         "type": "package",
         "compile": {
           "lib/net10.0/Sentry.dll": {
@@ -1356,7 +1252,7 @@
           "Avalonia.Svg": "11.3.0",
           "FluentAvaloniaUI": "2.5.1",
           "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.5",
-          "Markdig": "1.3.2",
+          "Markdig": "1.4.0",
           "SkiaSharp": "4.151.2",
           "SkiaSharp.NativeAssets.Linux": "3.119.4",
           "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.4",
@@ -1556,16 +1452,21 @@
         "tools/netstandard2.0/designer/Avalonia.Designer.HostApp.dll"
       ]
     },
-    "Avalonia.AvaloniaEdit/11.0.0": {
-      "sha512": "VhTgyJIHgy2R1fi+5+E2T4Mjd5qE2EzSYI6mQNfLh4rF4b7Ue7yn7eZKNx0dHeD+WuI32Uw/HEZuA7fxFvhgpQ==",
+    "Avalonia.AvaloniaEdit/11.4.1": {
+      "sha512": "Ykn/bxPiCNE4C30GCzSi+16kFNgy1fZ+4KFjmdLtUcjQNABDSA1an5Rmsz+bt24ajdyUM/IC7xpEphhfcWY7QA==",
       "type": "package",
-      "path": "avalonia.avaloniaedit/11.0.0",
+      "path": "avalonia.avaloniaedit/11.4.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "avalonia.avaloniaedit.11.0.0.nupkg.sha512",
+        "Icon.png",
+        "avalonia.avaloniaedit.11.4.1.nupkg.sha512",
         "avalonia.avaloniaedit.nuspec",
-        "lib/netstandard2.0/AvaloniaEdit.dll"
+        "lib/net6.0/AvaloniaEdit.dll",
+        "lib/net6.0/zh-Hans/AvaloniaEdit.resources.dll",
+        "lib/net6.0/zh-Hans/shrunk/AvaloniaEdit.resources.dll",
+        "lib/netstandard2.0/AvaloniaEdit.dll",
+        "lib/netstandard2.0/zh-Hans/AvaloniaEdit.resources.dll"
       ]
     },
     "Avalonia.BuildServices/11.3.2": {
@@ -1673,21 +1574,6 @@
         "lib/net6.0/Avalonia.Svg.dll",
         "lib/net8.0/Avalonia.Svg.dll",
         "lib/netstandard2.0/Avalonia.Svg.dll"
-      ]
-    },
-    "ColorTextBlock.Avalonia/11.0.2": {
-      "sha512": "MsWu5aAbDpstAmJ+TTSgC6Q7YdjKB7Na912GMr3oWl9ag8TH2HNpglzgo+kIAuB4C4wswKfrzhso4UcpvgMuHg==",
-      "type": "package",
-      "path": "colortextblock.avalonia/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "colortextblock.avalonia.11.0.2.nupkg.sha512",
-        "colortextblock.avalonia.nuspec",
-        "lib/net461/ColorTextBlock.Avalonia.dll",
-        "lib/net6.0/ColorTextBlock.Avalonia.dll",
-        "lib/netcoreapp2.0/ColorTextBlock.Avalonia.dll",
-        "lib/netstandard2.0/ColorTextBlock.Avalonia.dll"
       ]
     },
     "DialogHost.Avalonia/0.8.1": {
@@ -1987,54 +1873,6 @@
         "runtimes/win-x86/native/libHarfBuzzSharp.dll"
       ]
     },
-    "HtmlAgilityPack/1.11.42": {
-      "sha512": "LDc1bEfF14EY2DZzak4xvzWvbpNXK3vi1u0KQbBpLUN4+cx/VrvXhgCAMSJhSU5vz0oMfW9JZIR20vj/PkDHPA==",
-      "type": "package",
-      "path": "htmlagilitypack/1.11.42",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "htmlagilitypack.1.11.42.nupkg.sha512",
-        "htmlagilitypack.nuspec",
-        "lib/Net35/HtmlAgilityPack.dll",
-        "lib/Net35/HtmlAgilityPack.pdb",
-        "lib/Net35/HtmlAgilityPack.xml",
-        "lib/Net40-client/HtmlAgilityPack.dll",
-        "lib/Net40-client/HtmlAgilityPack.pdb",
-        "lib/Net40-client/HtmlAgilityPack.xml",
-        "lib/Net40/HtmlAgilityPack.XML",
-        "lib/Net40/HtmlAgilityPack.dll",
-        "lib/Net40/HtmlAgilityPack.pdb",
-        "lib/Net45/HtmlAgilityPack.XML",
-        "lib/Net45/HtmlAgilityPack.dll",
-        "lib/Net45/HtmlAgilityPack.pdb",
-        "lib/NetCore45/HtmlAgilityPack.XML",
-        "lib/NetCore45/HtmlAgilityPack.dll",
-        "lib/NetCore45/HtmlAgilityPack.pdb",
-        "lib/netstandard1.3/HtmlAgilityPack.deps.json",
-        "lib/netstandard1.3/HtmlAgilityPack.dll",
-        "lib/netstandard1.3/HtmlAgilityPack.pdb",
-        "lib/netstandard1.3/HtmlAgilityPack.xml",
-        "lib/netstandard1.6/HtmlAgilityPack.deps.json",
-        "lib/netstandard1.6/HtmlAgilityPack.dll",
-        "lib/netstandard1.6/HtmlAgilityPack.pdb",
-        "lib/netstandard1.6/HtmlAgilityPack.xml",
-        "lib/netstandard2.0/HtmlAgilityPack.deps.json",
-        "lib/netstandard2.0/HtmlAgilityPack.dll",
-        "lib/netstandard2.0/HtmlAgilityPack.pdb",
-        "lib/netstandard2.0/HtmlAgilityPack.xml",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
-        "lib/uap10.0/HtmlAgilityPack.XML",
-        "lib/uap10.0/HtmlAgilityPack.dll",
-        "lib/uap10.0/HtmlAgilityPack.pdb",
-        "lib/uap10.0/HtmlAgilityPack.pri"
-      ]
-    },
     "LiveChartsCore/2.0.5": {
       "sha512": "cbGiOyGxO+fsWLvrQ4R6Rd8QHfkRGyhxyD6nBSk8/ZwKKtU+vWSqlC4ESgwKSUbrzvK8ooU/yfFJpjHXzPd+vA==",
       "type": "package",
@@ -2096,10 +1934,10 @@
         "livechartscore.skiasharpview.avalonia.nuspec"
       ]
     },
-    "Markdig/1.3.2": {
-      "sha512": "fZgOC/3CswUrndjDTac70aQpYdtxbW5+5bRumR7vzvI2HJbkmgKisB1c9oT+GA6v0jB/JDR9BLa9FiPzQmaK6A==",
+    "Markdig/1.4.0": {
+      "sha512": "lLhaiI/mNDTNzgLqnmknhf4LjgTqOAyjx5+GNz0X3AxYMxUhmFppF2WVMdER+SDqwhE5wUF1pzs/cuLwFxs7xA==",
       "type": "package",
-      "path": "markdig/1.3.2",
+      "path": "markdig/1.4.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2113,90 +1951,10 @@
         "lib/netstandard2.0/Markdig.xml",
         "lib/netstandard2.1/Markdig.dll",
         "lib/netstandard2.1/Markdig.xml",
-        "markdig.1.3.2.nupkg.sha512",
+        "markdig.1.4.0.nupkg.sha512",
         "markdig.nuspec",
         "markdig.png",
         "readme.md"
-      ]
-    },
-    "Markdown.Avalonia/11.0.2": {
-      "sha512": "44NeKDwRuusHT3rNoBYZ80xioEZLue910h+rSI+kRgA5mZLAeATYcFQ4YN5fyY+kMMR+ZcS8woiOSAMYm08Qrw==",
-      "type": "package",
-      "path": "markdown.avalonia/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Markdown.Avalonia.md",
-        "lib/net461/Markdown.Avalonia.Full.dll",
-        "lib/net6.0/Markdown.Avalonia.Full.dll",
-        "lib/netcoreapp2.0/Markdown.Avalonia.Full.dll",
-        "lib/netstandard2.0/Markdown.Avalonia.Full.dll",
-        "markdown.avalonia.11.0.2.nupkg.sha512",
-        "markdown.avalonia.nuspec"
-      ]
-    },
-    "Markdown.Avalonia.Html/11.0.2": {
-      "sha512": "e/oDOdn3SlK0qDO9ud9CqpGup9Byre9VGflqNZbhStvgQygaYVDYLCjTnzzleD4bVvgrrJD5eNq4dZm0JpvfzQ==",
-      "type": "package",
-      "path": "markdown.avalonia.html/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Markdown.Avalonia.Html.md",
-        "lib/net461/Markdown.Avalonia.Html.dll",
-        "lib/net6.0/Markdown.Avalonia.Html.dll",
-        "lib/netcoreapp2.0/Markdown.Avalonia.Html.dll",
-        "lib/netstandard2.0/Markdown.Avalonia.Html.dll",
-        "markdown.avalonia.html.11.0.2.nupkg.sha512",
-        "markdown.avalonia.html.nuspec"
-      ]
-    },
-    "Markdown.Avalonia.Svg/11.0.2": {
-      "sha512": "TVQs0b1l1/9vKqX7B8+7OxUceVORDgTp9p+QzoPyynGEqDE9VdPUW0Z8e/Tl9cgLgtuIZYhcphb8Ypcr/egafw==",
-      "type": "package",
-      "path": "markdown.avalonia.svg/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Markdown.Avalonia.Svg.md",
-        "lib/net461/Markdown.Avalonia.Svg.dll",
-        "lib/net6.0/Markdown.Avalonia.Svg.dll",
-        "lib/netcoreapp2.0/Markdown.Avalonia.Svg.dll",
-        "lib/netstandard2.0/Markdown.Avalonia.Svg.dll",
-        "markdown.avalonia.svg.11.0.2.nupkg.sha512",
-        "markdown.avalonia.svg.nuspec"
-      ]
-    },
-    "Markdown.Avalonia.SyntaxHigh/11.0.2": {
-      "sha512": "wbOcs07u8JUf329Ct4h5XjL0LTbB0mOi3U3ViVnC8OmnGcb8c8LLd56tdmXdahYgk4RYs9OFAibQFhhB22hdBQ==",
-      "type": "package",
-      "path": "markdown.avalonia.syntaxhigh/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Markdown.Avalonia.SyntaxHigh.md",
-        "lib/net461/Markdown.Avalonia.SyntaxHigh.dll",
-        "lib/net6.0/Markdown.Avalonia.SyntaxHigh.dll",
-        "lib/netcoreapp2.0/Markdown.Avalonia.SyntaxHigh.dll",
-        "lib/netstandard2.0/Markdown.Avalonia.SyntaxHigh.dll",
-        "markdown.avalonia.syntaxhigh.11.0.2.nupkg.sha512",
-        "markdown.avalonia.syntaxhigh.nuspec"
-      ]
-    },
-    "Markdown.Avalonia.Tight/11.0.2": {
-      "sha512": "Ylg0EkSUId42dVUFQvU7UJGWcKiJ+g7TesRe/KCzUYzlypWf1lTiVveT2j60QSldCtuAw3o/aEOEjIahMdRGig==",
-      "type": "package",
-      "path": "markdown.avalonia.tight/11.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Markdown.Avalonia.Tight.md",
-        "lib/net461/Markdown.Avalonia.dll",
-        "lib/net6.0/Markdown.Avalonia.dll",
-        "lib/netcoreapp2.0/Markdown.Avalonia.dll",
-        "lib/netstandard2.0/Markdown.Avalonia.dll",
-        "markdown.avalonia.tight.11.0.2.nupkg.sha512",
-        "markdown.avalonia.tight.nuspec"
       ]
     },
     "Message.Avalonia/1.1.0": {
@@ -2226,19 +1984,6 @@
         "lib/netstandard2.0/MsBox.Avalonia.dll",
         "messagebox.avalonia.3.3.1.1.nupkg.sha512",
         "messagebox.avalonia.nuspec"
-      ]
-    },
-    "MessageBox.Avalonia.Markdown/3.2.0": {
-      "sha512": "8z+pkfV7D/M7aJy03kGxFSuvo95uBlpl9HGRKOYzyhVw2256faLsiEfVdRP5MWAaMxHEmJ4ZCe+2xnM1448rew==",
-      "type": "package",
-      "path": "messagebox.avalonia.markdown/3.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "icon.jpg",
-        "lib/netstandard2.0/MsBox.Avalonia.Markdown.dll",
-        "messagebox.avalonia.markdown.3.2.0.nupkg.sha512",
-        "messagebox.avalonia.markdown.nuspec"
       ]
     },
     "MicroCom.Runtime/0.11.0": {
@@ -2600,10 +2345,10 @@
         "restsharp.png"
       ]
     },
-    "Sentry/6.10.0": {
-      "sha512": "jDiLbMSNuwMNJmJc5l8XaO3bgHxTbBkttqqSLQTDP415ucNM4F/Ckktg3L/Ww6v2Skcwt7wFC7vSW+f8W12Vqg==",
+    "Sentry/6.11.1": {
+      "sha512": "wBC0H/5xpGo+RFK3k4j5Xa1IhVMgQr1qhoAMMkZGpI1SkyG9UhRv97rU/+O29+SJVzwU2CimBKo48/qZKyKy5w==",
       "type": "package",
-      "path": "sentry/6.10.0",
+      "path": "sentry/6.11.1",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -2652,7 +2397,7 @@
         "sentry-native/win-arm64/sentry-native.lib",
         "sentry-native/win-x64/sentry-native.lib",
         "sentry-nuget.png",
-        "sentry.6.10.0.nupkg.sha512",
+        "sentry.6.11.1.nupkg.sha512",
         "sentry.nuspec",
         "tools/sentry-cli-Darwin-arm64",
         "tools/sentry-cli-Darwin-x86_64",
@@ -3353,6 +3098,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "Avalonia >= 11.3.20",
+      "Avalonia.AvaloniaEdit >= 11.4.1",
       "Downloader >= 5.9.5",
       "FeatherQR.SkiaSharp >= 2.0.0-preview.2",
       "FluentAvaloniaUI >= 2.5.1",
@@ -3360,14 +3106,13 @@
       "MarkdownAIRender >= 1.0.0",
       "Message.Avalonia >= 1.1.0",
       "MessageBox.Avalonia >= 3.3.1.1",
-      "MessageBox.Avalonia.Markdown >= 3.2.0",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
       "Microsoft.Management.Infrastructure >= 3.0.0",
       "NPinyin.Core >= 3.0.0",
       "Notify.NET >= 1.0.0",
       "ReactiveUI >= 23.2.28",
       "RestSharp >= 114.0.0",
-      "Sentry >= 6.10.0",
+      "Sentry >= 6.11.1",
       "SkiaSharp >= 4.151.2",
       "SkiaSharp.NativeAssets.Linux >= 3.119.4",
       "SkiaSharp.NativeAssets.Linux.NoDependencies >= 3.119.4",
@@ -3442,6 +3187,10 @@
             "target": "Package",
             "version": "[11.3.20, )"
           },
+          "Avalonia.AvaloniaEdit": {
+            "target": "Package",
+            "version": "[11.4.1, )"
+          },
           "Downloader": {
             "target": "Package",
             "version": "[5.9.5, )"
@@ -3466,10 +3215,6 @@
             "target": "Package",
             "version": "[3.3.1.1, )"
           },
-          "MessageBox.Avalonia.Markdown": {
-            "target": "Package",
-            "version": "[3.2.0, )"
-          },
           "Microsoft.International.Converters.PinYinConverter": {
             "target": "Package",
             "version": "[1.0.0, )"
@@ -3492,7 +3237,7 @@
           },
           "Sentry": {
             "target": "Package",
-            "version": "[6.10.0, )"
+            "version": "[6.11.1, )"
           },
           "SkiaSharp": {
             "target": "Package",

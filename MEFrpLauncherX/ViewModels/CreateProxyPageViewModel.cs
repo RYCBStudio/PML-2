@@ -231,8 +231,7 @@ public class CreateProxyPageViewModel : ViewModelBase
     public void RefreshGuideIfPresent()
     {
         if (pages.TryGetValue("Guide", out var control) &&
-            control is CreateProxyGuide guide &&
-            guide.DataContext is CreateProxyGuideViewModel vm)
+            control is CreateProxyGuide { DataContext: CreateProxyGuideViewModel vm })
         {
             vm.Refresh();
         }

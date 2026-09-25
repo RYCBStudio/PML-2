@@ -202,8 +202,10 @@ public partial class MainWindow
         if (background is { Type: "SolidColor", Color: not null })
         {
             var color = Color.Parse(background.Color); // 支持 #AARRGGBB 或 #RRGGBB
-            var brush = new SolidColorBrush(color);
-            brush.Opacity = background.LayerOpacity; // 应用透明度
+            var brush = new SolidColorBrush(color)
+            {
+                Opacity = background.LayerOpacity // 应用透明度
+            };
             var baseColor = Color.Parse(background.Color);
             return background.FillMode switch
             {

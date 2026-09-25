@@ -28,6 +28,7 @@ using MEFrpLauncherX.Views.ProxyMonitor;
 using Notify.NET.Abstractions;
 using Notify.NET.Builder;
 using ReactiveUI;
+using SkiaSharp;
 using ProxyFloat = MEFrpLauncherX.Views.ProxyMonitor.ProxyFloat;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -1369,9 +1370,10 @@ public class UserProxyViewModel : ViewModelBase
                         break;
                     }
 
-                    var view = new CustomizeQRCode([target]);
+                    var qrcode = QRCodeService.GetQRCodeBitmap(target.Content, foreground: SKColors.Black,
+                        background: SKColors.White);
                     var clipboard = Core.App.MainWindow.Clipboard;
-                    await clipboard.SetBitmapAsync(view.CurrentBitmap);
+                    await clipboard.SetBitmapAsync(qrcode);
                     Growl.Success(Languages.Text_UserProxy_QRCodeCopiedToClipboard);
                     break;
                 }

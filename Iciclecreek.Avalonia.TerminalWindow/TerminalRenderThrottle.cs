@@ -16,7 +16,7 @@ namespace Iciclecreek.TerminalWindow
         private static readonly TimeSpan FrameInterval = TimeSpan.FromMilliseconds(33);
 
         // Controls waiting to be invalidated
-        private static readonly HashSet<Control> Pending = new();
+        private static readonly HashSet<Control> Pending = [];
 
         // State
         private static bool _frameScheduled;

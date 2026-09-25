@@ -9,12 +9,9 @@ using AvaloniaEdit.Rendering;
 
 namespace MEFrpLauncherX.Console;
 
-public class AnsiColorizingTransformer : DocumentColorizingTransformer
+public partial class AnsiColorizingTransformer : DocumentColorizingTransformer
 {
-    private static readonly Regex AnsiRegex = new(
-        @"\x1B\[([0-9;]*)m",
-        RegexOptions.Compiled
-    );
+    private static readonly Regex AnsiRegex = MyRegex();
 
     protected override void ColorizeLine(DocumentLine line)
     {
@@ -144,15 +141,19 @@ public class AnsiColorizingTransformer : DocumentColorizingTransformer
 
         return (foreground, isBold ? FontWeight.Bold : FontWeight.Normal);
     }
+
+    [GeneratedRegex(@"\x1B\[([0-9;]*)m", RegexOptions.Compiled
+    )]
+    private static partial Regex MyRegex();
 }
 
-public class PreprocessedAnsiColorizer : DocumentColorizingTransformer
+public partial class PreprocessedAnsiColorizer : DocumentColorizingTransformer
 {
     private readonly Dictionary<int, IBrush> _colorMap = new();
 
     public void PreprocessText(string text, int insertionOffset)
     {
-        var regex = new Regex(@"\x1B\[([0-9;]*)m");
+        var regex = MyRegex();
         var matches = regex.Matches(text);
 
         IBrush currentColor = Brushes.White;
@@ -246,14 +247,17 @@ public class PreprocessedAnsiColorizer : DocumentColorizingTransformer
 
         return foreground;
     }
+
+    [GeneratedRegex(@"\x1B\[([0-9;]*)m")]
+    private static partial Regex MyRegex();
 }
 
-public class AnsiTextProcessor
+public partial class AnsiTextProcessor
 {
     public static List<ColoredTextSegment> ParseAnsiText(string text)
     {
         var segments = new List<ColoredTextSegment>();
-        var regex = new Regex(@"(?<ansi>\x1B\[[0-9;]*m)|(?<text>[^\x1B]+)");
+        var regex = MyRegex();
         var matches = regex.Matches(text);
 
         IBrush currentColor = Brushes.White;
@@ -360,4 +364,7 @@ public class AnsiTextProcessor
             set;
         }
     }
+
+    [GeneratedRegex(@"(?<ansi>\x1B\[[0-9;]*m)|(?<text>[^\x1B]+)")]
+    private static partial Regex MyRegex();
 }

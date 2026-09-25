@@ -897,15 +897,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Node information.
-        /// </summary>
-        public static string Text_Api_OpNodeInfo {
-            get {
-                return ResourceManager.GetString("Text.Api.OpNodeInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to latest version.
         /// </summary>
         public static string Text_Api_OpLatestVersion {
@@ -915,29 +906,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to software notices.
+        ///   Looks up a localized string similar to Node information.
         /// </summary>
-        public static string Text_Api_OpSoftwareNotice {
+        public static string Text_Api_OpNodeInfo {
             get {
-                return ResourceManager.GetString("Text.Api.OpSoftwareNotice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to traffic statistics.
-        /// </summary>
-        public static string Text_Api_OpTrafficStatus {
-            get {
-                return ResourceManager.GetString("Text.Api.OpTrafficStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to tunnel error info.
-        /// </summary>
-        public static string Text_Api_OpTunnelErrorInfo {
-            get {
-                return ResourceManager.GetString("Text.Api.OpTunnelErrorInfo", resourceCulture);
+                return ResourceManager.GetString("Text.Api.OpNodeInfo", resourceCulture);
             }
         }
         
@@ -987,11 +960,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to software notices.
+        /// </summary>
+        public static string Text_Api_OpSoftwareNotice {
+            get {
+                return ResourceManager.GetString("Text.Api.OpSoftwareNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System status.
         /// </summary>
         public static string Text_Api_OpSystemStatus {
             get {
                 return ResourceManager.GetString("Text.Api.OpSystemStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to traffic statistics.
+        /// </summary>
+        public static string Text_Api_OpTrafficStatus {
+            get {
+                return ResourceManager.GetString("Text.Api.OpTrafficStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tunnel error info.
+        /// </summary>
+        public static string Text_Api_OpTunnelErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpTunnelErrorInfo", resourceCulture);
             }
         }
         
@@ -1275,6 +1275,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string Text_Certificate_Advanced {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Additional domains (optional).
         /// </summary>
         public static string Text_Certificate_AltNames {
@@ -1361,6 +1370,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Certificate_Description {
             get {
                 return ResourceManager.GetString("Text.Certificate.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS account.
+        /// </summary>
+        public static string Text_Certificate_DnsAccount {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DnsAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No account available — add one under &quot;DNS accounts&quot; first.
+        /// </summary>
+        public static string Text_Certificate_DnsAccountNone {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DnsAccountNone", resourceCulture);
             }
         }
         
@@ -1455,11 +1482,74 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch to manual DNS.
+        /// </summary>
+        public static string Text_Certificate_FallbackToManual {
+            get {
+                return ResourceManager.GetString("Text.Certificate.FallbackToManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The certificate assistant requests SSL certificates only for domains you own. Artifacts are written to Config/Certificates/ on this machine and can be used directly when creating HTTPS tunnels. It is unrelated to the official ME Frp certificate service; the domain, ACME email and private key are processed locally. Let&apos;s Encrypt Staging is used by default — such certificates are not trusted by browsers and are meant to validate the flow first..
         /// </summary>
         public static string Text_Certificate_Intro {
             get {
                 return ResourceManager.GetString("Text.Certificate.Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run log.
+        /// </summary>
+        public static string Text_Certificate_Log {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tokens and keys are redacted automatically in this log.
+        /// </summary>
+        public static string Text_Certificate_LogHint {
+            get {
+                return ResourceManager.GetString("Text.Certificate.LogHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage DNS accounts.
+        /// </summary>
+        public static string Text_Certificate_ManageDnsAccounts {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ManageDnsAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation method.
+        /// </summary>
+        public static string Text_Certificate_Mode {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS account (automatic).
+        /// </summary>
+        public static string Text_Certificate_Mode_DnsAccount {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode.DnsAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual DNS (add TXT yourself).
+        /// </summary>
+        public static string Text_Certificate_Mode_Manual {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode.Manual", resourceCulture);
             }
         }
         
@@ -1491,6 +1581,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skip DNS propagation check (not recommended).
+        /// </summary>
+        public static string Text_Certificate_SkipPropagation {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SkipPropagation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping the propagation check can make CA validation fail and consume issuance quota. Use only in unusual network setups..
+        /// </summary>
+        public static string Text_Certificate_SkipPropagationWarning {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SkipPropagationWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleaning up the challenge record….
+        /// </summary>
+        public static string Text_Certificate_Stage_CleaningUp {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.CleaningUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preparing lego….
         /// </summary>
         public static string Text_Certificate_Stage_DownloadingLego {
@@ -1509,6 +1626,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Issuing and filing the certificate….
+        /// </summary>
+        public static string Text_Certificate_Stage_ObtainingCert {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.ObtainingCert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contacting the CA….
         /// </summary>
         public static string Text_Certificate_Stage_Preparing {
@@ -1518,11 +1644,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Publishing the challenge record via the DNS API….
+        /// </summary>
+        public static string Text_Certificate_Stage_RunningPresent {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.RunningPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Issued.
         /// </summary>
         public static string Text_Certificate_Stage_Succeeded {
             get {
                 return ResourceManager.GetString("Text.Certificate.Stage.Succeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for DNS propagation and CA validation….
+        /// </summary>
+        public static string Text_Certificate_Stage_WaitingPropagation {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.WaitingPropagation", resourceCulture);
             }
         }
         
@@ -1568,6 +1712,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Certificate_Title {
             get {
                 return ResourceManager.GetString("Text.Certificate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use for a tunnel.
+        /// </summary>
+        public static string Text_Certificate_UseForTunnel {
+            get {
+                return ResourceManager.GetString("Text.Certificate.UseForTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In the HTTPS settings of the create/edit tunnel page, click &quot;Choose from certificate assistant&quot; to use this certificate..
+        /// </summary>
+        public static string Text_Certificate_UseForTunnelHint {
+            get {
+                return ResourceManager.GetString("Text.Certificate.UseForTunnelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a DNS account, or switch to manual DNS.
+        /// </summary>
+        public static string Text_Certificate_Validation_DnsAccountRequired {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Validation.DnsAccountRequired", resourceCulture);
             }
         }
         
@@ -2544,6 +2715,474 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account name.
+        /// </summary>
+        public static string Text_Dns_AccountName {
+            get {
+                return ResourceManager.GetString("Text.Dns.AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A label, e.g. &quot;CF-primary&quot;.
+        /// </summary>
+        public static string Text_Dns_AccountNamePlaceholder {
+            get {
+                return ResourceManager.GetString("Text.Dns.AccountNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New account.
+        /// </summary>
+        public static string Text_Dns_Add {
+            get {
+                return ResourceManager.GetString("Text.Dns.Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificates you already issued keep working, but you can no longer request or renew with this account. Delete it?.
+        /// </summary>
+        public static string Text_Dns_DeleteConfirm {
+            get {
+                return ResourceManager.GetString("Text.Dns.DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete DNS account.
+        /// </summary>
+        public static string Text_Dns_DeleteConfirmTitle {
+            get {
+                return ResourceManager.GetString("Text.Dns.DeleteConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS account deleted.
+        /// </summary>
+        public static string Text_Dns_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Dns.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store DNS provider credentials for one-click certificate issuance.
+        /// </summary>
+        public static string Text_Dns_Description {
+            get {
+                return ResourceManager.GetString("Text.Dns.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to create a token.
+        /// </summary>
+        public static string Text_Dns_Documentation {
+            get {
+                return ResourceManager.GetString("Text.Dns.Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Text_Dns_Edit {
+            get {
+                return ResourceManager.GetString("Text.Dns.Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No DNS accounts yet. Choose &quot;New account&quot; to add one..
+        /// </summary>
+        public static string Text_Dns_Empty {
+            get {
+                return ResourceManager.GetString("Text.Dns.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected DNS account is unusable: it was deleted or its credentials are incomplete. Pick another account or edit it..
+        /// </summary>
+        public static string Text_Dns_Error_AccountUnusable {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.AccountUnusable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate request cancelled..
+        /// </summary>
+        public static string Text_Dns_Error_Cancelled {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The certificate was issued but could not be filed. Check the log and the target directory permissions..
+        /// </summary>
+        public static string Text_Dns_Error_CertSaveFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.CertSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The CA could not validate the domain: the challenge record was not resolved correctly. Make sure the domain&apos;s nameservers match the selected account..
+        /// </summary>
+        public static string Text_Dns_Error_ChallengeFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.ChallengeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS provider authentication failed: the token or key is invalid or expired. Generate a new one and update the account..
+        /// </summary>
+        public static string Text_Dns_Error_DnsAuthFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsAuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The DNS provider denied access: the token lacks permission. Grant the minimal DNS edit permission described above..
+        /// </summary>
+        public static string Text_Dns_Error_DnsPermissionDenied {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The domain&apos;s zone was not found at the selected provider. Confirm the domain is hosted on that account, or pick the right DNS account..
+        /// </summary>
+        public static string Text_Dns_Error_DnsZoneNotFound {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsZoneNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The domain name is not valid. Please check it and retry..
+        /// </summary>
+        public static string Text_Dns_Error_InvalidDomain {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.InvalidDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not prepare the lego certificate component (download or checksum failed). Check your network and retry, or switch to manual DNS..
+        /// </summary>
+        public static string Text_Dns_Error_LegoUnavailable {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.LegoUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network error: could not reach the CA or the DNS provider API. Check your network, proxy or firewall..
+        /// </summary>
+        public static string Text_Dns_Error_NetworkError {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.NetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timed out waiting for DNS propagation — the record is not visible yet. Retry later, or increase the wait time under advanced options..
+        /// </summary>
+        public static string Text_Dns_Error_PropagationTimeout {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.PropagationTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The CA rate-limited your requests. Wait a while, or validate the flow on the staging environment first..
+        /// </summary>
+        public static string Text_Dns_Error_RateLimited {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.RateLimited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Certificate request failed. Expand the log to inspect the lego output..
+        /// </summary>
+        public static string Text_Dns_Error_Unknown {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AccessKey ID.
+        /// </summary>
+        public static string Text_Dns_Field_AccessKeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessKeyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AccessKey secret.
+        /// </summary>
+        public static string Text_Dns_Field_AccessKeySecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessKeySecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API token.
+        /// </summary>
+        public static string Text_Dns_Field_ApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecretId.
+        /// </summary>
+        public static string Text_Dns_Field_SecretId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecretKey.
+        /// </summary>
+        public static string Text_Dns_Field_SecretKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STS token (optional).
+        /// </summary>
+        public static string Text_Dns_Field_SecurityToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecurityToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session token (optional).
+        /// </summary>
+        public static string Text_Dns_Field_SessionToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SessionToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A DNS account automates domain validation (DNS-01): when requesting a certificate, this machine calls your DNS provider&apos;s API to create and remove the TXT record automatically, so you never touch DNS by hand. Credentials are encrypted and stored locally only, and are never uploaded to ME Frp or any server. Create a dedicated token with the least privilege instead of using global account credentials..
+        /// </summary>
+        public static string Text_Dns_Intro {
+            get {
+                return ResourceManager.GetString("Text.Dns.Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use a RAM sub-account limited to cloud DNS permissions (AliyunDNSFullAccess or a custom policy). Do not use the primary account AccessKey..
+        /// </summary>
+        public static string Text_Dns_Permission_AliDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AliDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a dedicated API token: Zone → DNS → Edit (plus Zone → Zone → Read), scoped to your domains..
+        /// </summary>
+        public static string Text_Dns_Permission_Cloudflare {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Cloudflare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use an API key from a Tencent Cloud sub-account limited to DNSPod permissions. Do not use primary account keys..
+        /// </summary>
+        public static string Text_Dns_Permission_DnsPod {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. LTAI5t....
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessKeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessKeyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste the AccessKey secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessKeySecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessKeySecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste a token with DNS edit permission only.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional — leave empty.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Optional {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Optional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. AKID....
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste the SecretKey.
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider.
+        /// </summary>
+        public static string Text_Dns_Provider {
+            get {
+                return ResourceManager.GetString("Text.Dns.Provider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Text_Dns_Save {
+            get {
+                return ResourceManager.GetString("Text.Dns.Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS account saved.
+        /// </summary>
+        public static string Text_Dns_Saved {
+            get {
+                return ResourceManager.GetString("Text.Dns.Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save. Check the log for details..
+        /// </summary>
+        public static string Text_Dns_SaveFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.SaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credentials are encrypted with a key that never leaves this machine, and never appear in logs or crash reports..
+        /// </summary>
+        public static string Text_Dns_StoreHint {
+            get {
+                return ResourceManager.GetString("Text.Dns.StoreHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 	If your DNS provider is not in our list, you can submit it here so we can add support for it..
+        /// </summary>
+        public static string Text_Dns_SubmitDnsProvider_Tip {
+            get {
+                return ResourceManager.GetString("Text.Dns.SubmitDnsProvider.Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit DNS Provider.
+        /// </summary>
+        public static string Text_Dns_SubmitProvider {
+            get {
+                return ResourceManager.GetString("Text.Dns.SubmitProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS accounts.
+        /// </summary>
+        public static string Text_Dns_Title {
+            get {
+                return ResourceManager.GetString("Text.Dns.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated {0}.
+        /// </summary>
+        public static string Text_Dns_UpdatedAtFormat {
+            get {
+                return ResourceManager.GetString("Text.Dns.UpdatedAtFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fill in &quot;{0}&quot;.
+        /// </summary>
+        public static string Text_Dns_Validation_FieldRequiredFormat {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.FieldRequiredFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter an account name.
+        /// </summary>
+        public static string Text_Dns_Validation_NameRequired {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please choose a provider.
+        /// </summary>
+        public static string Text_Dns_Validation_ProviderRequired {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.ProviderRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///Current source: {1}
         ///Download speed: {0}
@@ -2726,6 +3365,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} d ago.
+        /// </summary>
+        public static string Text_Global_DaysAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.DaysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Text_Global_Delete {
@@ -2816,6 +3464,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} h ago.
+        /// </summary>
+        public static string Text_Global_HoursAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter value.
         /// </summary>
         public static string Text_Global_InputValue {
@@ -2825,11 +3482,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to just now.
+        /// </summary>
+        public static string Text_Global_JustNow {
+            get {
+                return ResourceManager.GetString("Text.Global.JustNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string Text_Global_Loading {
             get {
                 return ResourceManager.GetString("Text.Global.Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} min ago.
+        /// </summary>
+        public static string Text_Global_MinutesAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.MinutesAgo", resourceCulture);
             }
         }
         
@@ -2875,42 +3550,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_Off {
             get {
                 return ResourceManager.GetString("Text.Global.Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to just now.
-        /// </summary>
-        public static string Text_Global_JustNow {
-            get {
-                return ResourceManager.GetString("Text.Global.JustNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} min ago.
-        /// </summary>
-        public static string Text_Global_MinutesAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.MinutesAgo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} h ago.
-        /// </summary>
-        public static string Text_Global_HoursAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.HoursAgo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} d ago.
-        /// </summary>
-        public static string Text_Global_DaysAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.DaysAgo", resourceCulture);
             }
         }
         
@@ -3086,15 +3725,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go fix.
-        /// </summary>
-        public static string Text_Home_Recommend_Action_Manage {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.Action.Manage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Text_Home_Recommend_Action_Launch {
@@ -3104,38 +3734,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start "{0}".
+        ///   Looks up a localized string similar to Go fix.
         /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_Title {
+        public static string Text_Home_Recommend_Action_Manage {
             get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You started this tunnel recently ({0})..
-        /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_Reason {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Reason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to no start record.
-        /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_NeverStarted {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.NeverStarted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This tunnel no longer exists; it may have been deleted..
-        /// </summary>
-        public static string Text_Home_Recommend_TunnelMissing {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.TunnelMissing", resourceCulture);
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Manage", resourceCulture);
             }
         }
         
@@ -3248,6 +3851,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to no start record.
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_NeverStarted {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.NeverStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You started this tunnel recently ({0}). Relaunch it with one click..
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start &quot;{0}&quot;.
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have {0} tunnel(s) but none are running. Start one from the management page..
         /// </summary>
         public static string Text_Home_Recommend_StartAnyTunnel_Reason {
@@ -3302,6 +3932,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This tunnel no longer exists; it may have been deleted..
+        /// </summary>
+        public static string Text_Home_Recommend_TunnelMissing {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TunnelMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version {0} is available. Download it from the update page..
         /// </summary>
         public static string Text_Home_Recommend_UpdateAvailable_Reason {
@@ -3316,6 +3955,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Recommend_UpdateAvailable_Title {
             get {
                 return ResourceManager.GetString("Text.Home.Recommend.UpdateAvailable.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No address available to copy for this tunnel..
+        /// </summary>
+        public static string Text_Home_Simple_CopyUnavailable {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.CopyUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} failed.
+        /// </summary>
+        public static string Text_Home_Simple_FailedCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.FailedCount", resourceCulture);
             }
         }
         
@@ -3401,11 +4058,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage.
+        /// </summary>
+        public static string Text_Home_Simple_Manage {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Manage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My tunnels.
+        /// </summary>
+        public static string Text_Home_Simple_MyTunnels {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.MyTunnels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not signed in.
         /// </summary>
         public static string Text_Home_Simple_NotLoggedIn {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick create.
+        /// </summary>
+        public static string Text_Home_Simple_QuickCreate {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.QuickCreate", resourceCulture);
             }
         }
         
@@ -3446,6 +4130,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} running.
+        /// </summary>
+        public static string Text_Home_Simple_RunningCount {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.RunningCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running tunnels.
         /// </summary>
         public static string Text_Home_Simple_RunningProxies {
@@ -3460,6 +4153,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Simple_Status {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No tunnels yet — create one to get started..
+        /// </summary>
+        public static string Text_Home_Simple_TunnelListEmpty {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.TunnelListEmpty", resourceCulture);
             }
         }
         

@@ -447,11 +447,9 @@ public partial class TerminalControl : UserControl, IDisposable
                         {
                             _ = RYCBApiConverter.GetTunnelErrorInfoAsync(solution.Flag).ContinueWith(t =>
                             {
-                                if (t is { IsCompletedSuccessfully: true, Result: not null }
-                                    && t.Result.data is not null
-                                    && t.Result.data.Solution is { Length: > 0 })
+                                if (t is { IsCompletedSuccessfully: true, Result.Data.Solution.Length: > 0 })
                                 {
-                                    var data = t.Result.data;
+                                    var data = t.Result.Data;
                                     Dispatcher.UIThread.Post(() =>
                                     {
                                         if (_disposed || ErrorIcon is null || ErrorText is null || SolutionBox is null)
@@ -941,9 +939,9 @@ public partial class TerminalControl : UserControl, IDisposable
                             {
                                 var onlineSolution = await RYCBApiConverter.GetTunnelErrorInfoAsync(solution.Flag);
                                 ErrorIcon.Symbol = Symbol.ReportHacked;
-                                ErrorText.Text = onlineSolution?.data.Info;
-                                SolutionBox.Text = onlineSolution?.data.Solution[0];
-                                _tunnelErrorInfoShell = onlineSolution?.data ?? new TunnelErrorInfo
+                                ErrorText.Text = onlineSolution?.Data?.Info;
+                                SolutionBox.Text = onlineSolution?.Data?.Solution[0] ?? "";
+                                _tunnelErrorInfoShell = onlineSolution?.Data ?? new TunnelErrorInfo
                                 {
                                     Flag = "MT-1",
                                     Info = Languages.Text_Terminal_CannotGetErrorInfo,
@@ -1243,7 +1241,7 @@ public partial class TerminalControl : UserControl, IDisposable
         });
     }
 
-    private static string RemoveAnsiCodes(string text) => Regex.Replace(text, @"\x1B\[([0-9;]*)m", string.Empty);
+    private static string RemoveAnsiCodes(string text) => MyRegex().Replace(text, string.Empty);
 
     // 清除输出
     private void ClearOutput()
@@ -1280,4 +1278,7 @@ public partial class TerminalControl : UserControl, IDisposable
             Core.App.CurrentLogger?.Error(ex);
         }
     }
+
+    [GeneratedRegex(@"\x1B\[([0-9;]*)m")]
+    private static partial Regex MyRegex();
 }

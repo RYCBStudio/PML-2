@@ -26,7 +26,7 @@ namespace Porta.Pty.Unix
             // execvp(2) args array must end with null. The first arg is the app itself.
             if (options.CommandLine.Length == 0)
             {
-                return new[] { options.App, null };
+                return [options.App, null];
             }
 
             var result = new string?[options.CommandLine.Length + 2];

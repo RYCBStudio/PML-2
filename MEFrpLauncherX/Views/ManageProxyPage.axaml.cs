@@ -43,10 +43,39 @@ public partial class ManageProxyPage : UserControl
     }
 
     /// <summary>
-    ///     管理页的 ViewModel 只读入口（26.4）：供精简主页汇总「隧道总数 / 运行中数量」。
+    ///     管理页的 ViewModel 只读入口（26.4）：供精简主页汇总「隧道总数 / 运行中数量」与「我的隧道」列表。
     ///     页面未创建过时为 null，调用方需判空。
     /// </summary>
     public ManageProxyViewModel ViewModel => _manageProxyViewModel;
+
+    /// <summary>
+    ///     确保管理页实例存在并完成隧道数据加载（26.4）。
+    ///     精简主页在「用户只进主页、从未点开管理页」的场景下需要隧道数据，
+    ///     此时 <see cref="Instance" /> 为 null；本方法按需创建实例（<b>不切换当前页面</b>，
+    ///     也不挂载到可视树）并复用既有 <see cref="LoadProxies" /> 流程加载数据，
+    ///     避免主页列表永远为 0。
+    ///     重复调用是安全的：<see cref="LoadProxies" /> 自带「请求进行中」去重，
+    ///     且 <paramref name="forceRefresh" /> 为 false 时会复用 5 分钟缓存。
+    /// </summary>
+    /// <param name="forceRefresh">true 表示跳过 5 分钟缓存强制拉取</param>
+    public static async Task<ManageProxyPage> EnsureInstanceAsync(bool forceRefresh = false)
+    {
+        var page = Instance;
+        if (page is null)
+        {
+            // 创建实例并直接登记为 Instance（原有流程在 AttachedToVisualTree 后才赋值，
+            // 预热场景不会挂载可视树，故需在此显式赋值）
+            page = await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var created = new ManageProxyPage();
+                Instance = created;
+                return created;
+            });
+        }
+
+        await page.LoadProxies(forceRefresh);
+        return page;
+    }
 
     private async void ManageProxyPage_Loaded(object? sender, VisualTreeAttachmentEventArgs e)
     {
@@ -148,8 +177,8 @@ public partial class ManageProxyPage : UserControl
                 };
                 userProxies ??= new InfoClasses.ProxyInfo
                 {
-                    nodes = db_nodes.ToArray(),
-                    proxies = db_proxy.ToArray()
+                    nodes = [.. db_nodes],
+                    proxies = [.. db_proxy]
                 };
 #endif
 

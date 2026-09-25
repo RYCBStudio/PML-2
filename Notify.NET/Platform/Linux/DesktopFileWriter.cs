@@ -44,7 +44,7 @@ namespace Notify.NET.Platform.Linux
             if (!File.Exists(path)) return;
 
             var sections = ParseSections(File.ReadAllLines(path));
-            ApplyActions(sections, executablePath: null, tasks: Array.Empty<JumpListTask>());
+            ApplyActions(sections, executablePath: null, tasks: []);
             WriteFile(path, sections);
         }
 
@@ -100,7 +100,7 @@ namespace Notify.NET.Platform.Linux
         private sealed class Section
         {
             public string Header = "";              // e.g. "[Desktop Entry]"
-            public readonly List<string> Lines = new List<string>(); // body lines (excluding header)
+            public readonly List<string> Lines = []; // body lines (excluding header)
 
             public bool IsHeader(string name) =>
                 Header.Equals("[" + name + "]", StringComparison.Ordinal);
@@ -146,7 +146,7 @@ namespace Notify.NET.Platform.Linux
             entry.Lines.Add("Name=" + appName);
             entry.Lines.Add("Exec=" + QuoteExec(executablePath));
             entry.Lines.Add("Terminal=false");
-            return new List<Section> { entry };
+            return [entry];
         }
 
         // ------------------------------------------------------------------

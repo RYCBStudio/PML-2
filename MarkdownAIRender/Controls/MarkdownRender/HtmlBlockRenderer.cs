@@ -25,9 +25,7 @@ public static partial class HtmlBlockRenderer
     private static readonly Regex AlertRegex = MyRegex();
 
     // 块级标签
-    private static readonly Regex BlockTagRegex = new(
-        @"<(h[1-6]|p|div|hr|br|section|article|blockquote|pre|ul|ol)(\s[^<>]*?)?/?>|</(h[1-6]|p|div|section|article|blockquote|pre|ul|ol)\s*>",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex BlockTagRegex = MyRegex1();
 
     // 列表项
     private static readonly Regex ListItemRegex = new(@"<li(?:\s[^<>]*?)?>(.*?)</li>",
@@ -837,4 +835,6 @@ public static partial class HtmlBlockRenderer
     [GeneratedRegex(@"^\[!(tip|caution|warning|note)\]\s*$", RegexOptions.IgnoreCase | RegexOptions.Compiled,
         "zh-CN")]
     private static partial Regex MyRegex();
+    [GeneratedRegex(@"<(h[1-6]|p|div|hr|br|section|article|blockquote|pre|ul|ol)(\s[^<>]*?)?/?>|</(h[1-6]|p|div|section|article|blockquote|pre|ul|ol)\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled, "zh-CN")]
+    private static partial Regex MyRegex1();
 }

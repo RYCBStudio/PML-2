@@ -453,6 +453,12 @@ public partial class SettingsPage : UserControl
     private void OpenCertificateAssistant(object? sender, RoutedEventArgs e) =>
         new CertificateAssistantWindow().ShowDialog(Core.App.MainWindow);
 
+    /// <summary>
+    ///     打开 DNS 账户管理窗口（26.4 阶段 B）：保存 DNS 服务商凭据以支持一键自动申请证书。
+    /// </summary>
+    private void OpenDnsAccounts(object? sender, RoutedEventArgs e) =>
+        new DnsAccountsWindow().ShowDialog(Core.App.MainWindow);
+
     private void ExpireDaysChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (_isInit)

@@ -376,7 +376,10 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
 
         protected override IEnumerable<Control>? GetRealizedContainers()
         {
-            return _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>().ToList();
+            return
+            [
+                .. _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>()
+            ];
         }
 
         protected override IInputElement? GetControl(NavigationDirection direction, IInputElement? from, bool wrap)
@@ -439,7 +442,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
         {
             if (_elementDictionary.Count == 0)
             {
-                return Array.Empty<double>();
+                return [];
             }
 
             return orientation == Orientation.Vertical

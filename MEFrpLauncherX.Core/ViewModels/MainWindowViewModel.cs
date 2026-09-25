@@ -29,9 +29,15 @@ public class MainWindowViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
-    
+
     /// <summary>是否正在初始化（用于进度动画）</summary>
     public bool IsBusy
+    {
+        get;
+        set =>this.RaiseAndSetIfChanged(ref field, value);
+    } = true;
+
+    public bool IsFakeProgress
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);

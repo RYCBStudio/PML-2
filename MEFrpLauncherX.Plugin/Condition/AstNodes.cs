@@ -130,7 +130,7 @@ public static class ExpressionFunctions
     private static object? Coalesce(object?[] args)
     {
         if (args.Length == 0) throw new InvalidOperationException("coalesce 至少需要 1 个参数");
-        return args.FirstOrDefault(a => a != null && !(a is string s && s.Length == 0));
+        return args.FirstOrDefault(a => a != null && !(a is string { Length: 0 }));
     }
 
     private static double MinMax(object?[] args, bool min)

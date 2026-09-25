@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -12,31 +12,50 @@
     <Design.DataContext>
         <viewModels:HomePageViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.TunnelLine">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Styles>
     <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="14" Spacing="12" HorizontalAlignment="Stretch">
 
-            <!-- ===== 区块 1：用户与额度 ===== -->
-            <Border Classes="FluentCard" Padding="16">
-                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="6">
-                    <StackPanel Grid.Row="0" Grid.Column="0" Spacing="2">
-                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
-                                   Theme="{StaticResource SubtitleTextBlockStyle}"
-                                   TextWrapping="Wrap"
-                                   Text="{Binding SimpleGreeting}" />
-                        <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_RemainingTraffic}"
+            <!-- ===== 区块 1：账户（压缩为一行） ===== -->
+            <Border Classes="FluentCard" Padding="14,10">
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="14">
+                    <!-- 左：问候语 -->
+                    <TextBlock Grid.Column="0"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Theme="{StaticResource SubtitleTextBlockStyle}"
+                               TextTrimming="CharacterEllipsis"
+                               Text="{Binding SimpleGreeting}" />
+
+                    <!-- 中：剩余流量 + 运行中-->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16"
+                                VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                            <controls:SymbolIcon Symbol="Cloud" FontSize="13" VerticalAlignment="Center" />
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="12"
+                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Text="{x:Static languages:Languages.Text_Home_Simple_RemainingTraffic}" />
+                            <SelectableTextBlock VerticalAlignment="Center"
+                                                 ToolTip.Tip="{Binding LongTraffic}"
+                                                 FontWeight="SemiBold"
+                                                 Text="{Binding Traffic}" />
+                        </StackPanel>
+                        <TextBlock VerticalAlignment="Center"
                                    FontSize="12"
                                    FontFamily="{StaticResource GlobalFontFamily}"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding SimpleRunningCountText}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="8">
-                        <controls:SymbolIcon Symbol="Cloud" FontSize="14" VerticalAlignment="Center" />
-                        <SelectableTextBlock Text="{Binding Traffic}"
-                                             ToolTip.Tip="{Binding LongTraffic}"
-                                             FontWeight="SemiBold"
-                                             FontSize="18" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
-                                Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+
+                    <!-- 右：登录 / 用户中心（互斥） -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8"
+                                VerticalAlignment="Center">
                         <Button IsVisible="{Binding !IsLoggedIn}"
                                 Click="GoToLogin"
                                 Content="{x:Static languages:Languages.Text_Home_Simple_GoLogin}" />
@@ -47,46 +66,198 @@
                 </Grid>
             </Border>
 
-            <!-- ===== 区块 2：系统状态 ===== -->
-            <Border Classes="FluentCard" Padding="16">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_Status}"
-                               FontFamily="{StaticResource GlobalFontFamily}"
-                               Theme="{StaticResource BodyStrongTextBlockStyle}" />
-                    <WrapPanel ItemSpacing="28" LineSpacing="8">
-                        <StackPanel Spacing="2">
-                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_RunningProxies}"
-                                       FontSize="12"
+            <!-- ===== 区块 2：我的隧道（核心列表） ===== -->
+            <Border Classes="FluentCard" Padding="14,12">
+                <StackPanel Spacing="8">
+                    <!-- 标题行：标题 + 运行数 + 失败数 + 刷新 + 管理导航 -->
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto" ColumnSpacing="10">
+                        <TextBlock Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Static languages:Languages.Text_Home_Simple_MyTunnels}"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding SimpleRunningCountText}" />
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10"
+                                    VerticalAlignment="Center">
+                            <TextBlock FontSize="12"
                                        FontFamily="{StaticResource GlobalFontFamily}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                            <TextBlock Text="{Binding SimpleRunningCountText}"
-                                       FontSize="18" FontWeight="SemiBold" />
-                        </StackPanel>
-                        <StackPanel Spacing="2" IsVisible="{Binding SimpleHasFailure}">
-                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_FailedProxies}"
-                                       FontSize="12"
-                                       FontFamily="{StaticResource GlobalFontFamily}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                            <TextBlock Text="{Binding SimpleFailedProxyName}"
-                                       FontSize="15" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
-                        </StackPanel>
-                        <StackPanel Spacing="2" IsVisible="{Binding SimpleHasUpdate}">
-                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Recommend_UpdateAvailable_Title}"
-                                       FontSize="12"
-                                       FontFamily="{StaticResource GlobalFontFamily}"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                            <Button Click="GoToUpdate" Padding="0" Theme="{StaticResource SubtleButtonStyle}">
-                                <TextBlock Text="{Binding SimpleLatestVersion}" FontWeight="SemiBold" />
+                                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                                       IsVisible="{Binding SimpleHasFailure}"
+                                       Text="{Binding SimpleFailedCountText}" />
+                            <!-- 更新：有可用更新时给出小入口，无则完全不占位 -->
+                            <Button Padding="2,0"
+                                    IsVisible="{Binding SimpleHasUpdate}"
+                                    Click="GoToUpdate"
+                                    Theme="{StaticResource SubtleButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <controls:SymbolIcon Symbol="Download" FontSize="12"
+                                                         VerticalAlignment="Center" />
+                                    <TextBlock FontSize="12" VerticalAlignment="Center"
+                                               Text="{Binding SimpleLatestVersion}" />
+                                </StackPanel>
                             </Button>
                         </StackPanel>
-                    </WrapPanel>
+                        <Button Grid.Column="3"
+                                IsVisible="{Binding IsLoggedIn}"
+                                Click="RefreshTunnels"
+                                Theme="{StaticResource SubtleButtonStyle}"
+                                Content="{x:Static languages:Languages.Text_Home_Simple_Refresh}" />
+                        <Button Grid.Column="4"
+                                Click="GoToManage"
+                                Theme="{StaticResource SubtleButtonStyle}"
+                                Content="{x:Static languages:Languages.Text_Home_Simple_Manage}" />
+                    </Grid>
+
+                    <!-- 失败摘要（一条，避免与列表重复堆叠信息） -->
+                    <Border IsVisible="{Binding SimpleHasFailure}"
+                            Padding="10,6"
+                            CornerRadius="6"
+                            Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}">
+                        <TextBlock FontSize="12"
+                                   TextWrapping="Wrap"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                                   Text="{Binding SimpleFailureSummary}" />
+                    </Border>
+
+                    <!-- 行列表 -->
+                    <ItemsControl ItemsSource="{Binding SimpleProxies}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="viewModels:SimpleProxyItem">
+                                <Border Margin="0,0,0,6"
+                                        Padding="10,8"
+                                        CornerRadius="6"
+                                        Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <!-- 状态点 -->
+                                        <Ellipse Grid.Column="0"
+                                                 Width="8" Height="8"
+                                                 Margin="0,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Fill="{Binding StatusBrush}"
+                                                 ToolTip.Tip="{Binding StatusText}" />
+
+                                        <!-- 名称 / 类型 / 节点 / 地址 -->
+                                        <StackPanel Grid.Column="1" Spacing="2">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock FontWeight="SemiBold"
+                                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Text="{Binding Name}" />
+                                                <TextBlock Classes="TunnelLine"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Text="{Binding Type}" />
+                                                <TextBlock Classes="TunnelLine"
+                                                           Foreground="{Binding StatusBrush}"
+                                                           Text="{Binding StatusText}" />
+                                                <!-- 封禁/禁用：状态点无法表达，单独标注，避免用户误判为「空闲」 -->
+                                                <TextBlock Classes="TunnelLine"
+                                                           Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                                                           IsVisible="{Binding IsBanned}"
+                                                           Text="{x:Static languages:Languages.Text_UserProxy_Banned}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                                <!-- 节点（多节点场景的关键信息） -->
+                                                <TextBlock Classes="TunnelLine"
+                                                           MaxWidth="220"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           ToolTip.Tip="{Binding NodeId, StringFormat='# {0}'}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding>
+                                                            <Binding Path="NodeId" />
+                                                            <Binding Path="NodeName" />
+                                                            <MultiBinding.StringFormat>
+                                                                #{0} {1}
+                                                            </MultiBinding.StringFormat>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                                <!-- 地址 -->
+                                                <SelectableTextBlock Classes="TunnelLine"
+                                                                     MaxWidth="260"
+                                                                     TextTrimming="CharacterEllipsis"
+                                                                     Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                     Text="{Binding PublicAddress}" />
+                                            </StackPanel>
+                                            <!-- 失败原因（仅失败行展示） -->
+                                            <TextBlock FontSize="11"
+                                                       TextWrapping="Wrap"
+                                                       IsVisible="{Binding HasFailureSummary}"
+                                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                                                       Text="{Binding FailureSummary}" />
+                                        </StackPanel>
+
+                                        <!-- 行内操作：启停 / 复制 -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6"
+                                                    VerticalAlignment="Center">
+                                            <Button Padding="6,2"
+                                                    IsVisible="{Binding CanStart}"
+                                                    Click="ToggleProxy"
+                                                    Tag="{Binding ProxyId}"
+                                                    Theme="{StaticResource SubtleButtonStyle}"
+                                                    Content="{x:Static languages:Languages.Text_UserProxy_LaunchTunnel}"
+                                                    ToolTip.Tip="{x:Static languages:Languages.Text_UserProxy_LaunchTunnel}" />
+                                            <Button Padding="6,2"
+                                                    IsVisible="{Binding CanStop}"
+                                                    Click="ToggleProxy"
+                                                    Tag="{Binding ProxyId}"
+                                                    Theme="{StaticResource SubtleButtonStyle}"
+                                                    Content="{x:Static languages:Languages.Text_UserProxy_StopTunnel}"
+                                                    ToolTip.Tip="{x:Static languages:Languages.Text_UserProxy_StopTunnel}" />
+                                            <Button Padding="6,2"
+                                                    Click="CopyProxyAddress"
+                                                    Tag="{Binding ProxyId}"
+                                                    Theme="{StaticResource SubtleButtonStyle}"
+                                                    ToolTip.Tip="{x:Static languages:Languages.Text_UserProxy_CopyAddress}">
+                                                <controls:SymbolIcon Symbol="Copy" FontSize="13" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- 空态：无隧道 → 直接引导创建 -->
+                    <StackPanel Spacing="8"
+                                HorizontalAlignment="Center"
+                                IsVisible="{Binding !HasSimpleProxies}"
+                                Margin="0,6">
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{x:Static languages:Languages.Text_Home_Simple_TunnelListEmpty}" />
+                        <Button HorizontalAlignment="Center"
+                                Click="GoToCreate"
+                                Content="{x:Static languages:Languages.Text_ManageProxy_CreateTunnel}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
-            <!-- ===== 区块 3：为你推荐（规则引擎，非 AI） ===== -->
-            <Border Classes="FluentCard" Padding="16">
+            <!-- ===== 区块 3：快速创建 + 为你推荐（规则引擎，非 AI） ===== -->
+            <Border Classes="FluentCard" Padding="14,12">
                 <StackPanel Spacing="10">
+                    <!-- 快速创建：按协议预填创建页（复用现有创建流程） -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_QuickCreate}"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                        <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="6">
+                            <Button Tag="http" Click="QuickCreate" Content="HTTP" />
+                            <Button Tag="https" Click="QuickCreate" Content="HTTPS" />
+                            <Button Tag="tcp" Click="QuickCreate" Content="TCP" />
+                            <Button Tag="udp" Click="QuickCreate" Content="UDP" />
+                        </WrapPanel>
+                    </StackPanel>
+
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_Recommendations}"
                                    FontFamily="{StaticResource GlobalFontFamily}"

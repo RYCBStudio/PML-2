@@ -160,6 +160,12 @@
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="OpenCertificateAssistant" />
+                <!-- 26.4 阶段 B：DNS 账户保险箱（一键自动申请证书的凭据） -->
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Dns_Title}"
+                                               Description="{x:Static languages:Languages.Text_Dns_Description}"
+                                               ActionIconSource="ChevronRight"
+                                               IsClickEnabled="True"
+                                               Click="OpenDnsAccounts" />
                 <controls:SettingsExpanderItem
                     Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
                     Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">

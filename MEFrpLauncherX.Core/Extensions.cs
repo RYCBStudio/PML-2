@@ -88,7 +88,7 @@ public static class QRCodeServiceExtensions
     extension(QRCodeService service)
     {
         public static Bitmap GetQRCodeBitmapWithIcon(string text, SKBitmap? icon, int iconSizePercent = 10,
-            int iconBorderWidth = 2, ECCLevel eccLevel = ECCLevel.L,
+            int iconBorderWidth = 2, ECCLevel eccLevel = ECCLevel.M,
             int size = 512,
             SKColor? foreground = null, SKColor? background = null)
         {

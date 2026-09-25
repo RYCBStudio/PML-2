@@ -16,6 +16,7 @@ using MEFrpLauncherX.Core.Languages;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable EmptyGeneralCatchClause
 
@@ -62,7 +63,7 @@ public class UpdatePageViewModel : ViewModelBase
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = ICONS.UPDATE;
+    } = Icons.UPDATE;
 
     public string Status
     {
@@ -76,11 +77,11 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = DateTime.Now;
 
-    public IterationCount IterationCount
+    public bool IsCheckUpdate
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    } = new(0, IterationType.Many);
+    } = false;
 
     public string LatestVersion
     {
@@ -220,7 +221,7 @@ public class UpdatePageViewModel : ViewModelBase
         var updateInfo = await RYCBApiConverter.GetLatestVersionInfoAsync(forceRefresh);
         var preiewUpdateInfo = await RYCBApiConverter.GetLatestPreviewVersionInfoAsync(forceRefresh);
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
-        var latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.version;
+        var latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.Version;
 
         return (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version), latestVersion);
     }
@@ -236,7 +237,7 @@ public class UpdatePageViewModel : ViewModelBase
     /// <param name="forceRefresh">true 表示跳过 5 分钟缓存强制请求</param>
     private async Task CheckUpdateCoreAsync(bool forceRefresh)
     {
-        Icon = ICONS.UPDATE;
+        Icon = Icons.UPDATE;
         IsLoading = true;
         IsIdle = true;
         LatestCheckTime = DateTime.Now;
@@ -249,33 +250,33 @@ public class UpdatePageViewModel : ViewModelBase
             // Platform not support
         }
 
-        IterationCount = new IterationCount(100000, IterationType.Many);
+        IsCheckUpdate = true;
         Core.App.CurrentLogger?.Log("正在检查更新", module: EnumLogModule.Update);
         Status = Languages.Text_Update_Checking;
         var isPreview = ConfigManager.CurrentConfig.UpdateSettings.Channel != "Stable";
         SingleVersionInfo updateInfo = new()
             {
-                data = new SingleVersionInfo.VersionInfo
+                Data = new SingleVersionInfo.VersionInfo
                 {
-                    changes = [Languages.Text_Update_FetchFailed],
-                    codename = App.Codename,
-                    date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    description = Languages.Text_Update_FetchFailed
+                    Changes = [Languages.Text_Update_FetchFailed],
+                    Codename = App.Codename,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                    Description = Languages.Text_Update_FetchFailed
                 },
-                success = false,
-                version = Core.App.Version
+                Success = false,
+                Version = Core.App.Version
             },
             preiewUpdateInfo = new()
             {
-                data = new SingleVersionInfo.VersionInfo
+                Data = new SingleVersionInfo.VersionInfo
                 {
-                    changes = [Languages.Text_Update_FetchFailed],
-                    codename = App.Codename,
-                    date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    description = Languages.Text_Update_FetchFailed
+                    Changes = [Languages.Text_Update_FetchFailed],
+                    Codename = App.Codename,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                    Description = Languages.Text_Update_FetchFailed
                 },
-                success = false,
-                version = Core.App.Version
+                Success = false,
+                Version = Core.App.Version
             };
         try
         {
@@ -288,46 +289,46 @@ public class UpdatePageViewModel : ViewModelBase
             Core.App.CurrentLogger?.Error(ex);
             Status = Languages.Text_Update_FetchFailed;
             FailureTip = Languages.Text_Update_FetchFailedTip;
-            Icon = ICONS.ERROR;
+            Icon = Icons.ERROR;
             IsIdle = false;
             return;
         }
 
         string latestVersion;
-        latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.version;
+        latestVersion = isPreview ? GetLatestVersion(updateInfo, preiewUpdateInfo) : updateInfo.Version;
 
 // #if !DEBUG
 //         Core.App.CurrentLogger.LogDebug("[DEBUG] 模拟更新", module: EnumLogModule.Update);
-//         updateInfo.version = "999.999.999.99";
+//         updateInfo.Version = "999.999.999.99";
 // #endif
-        // var versionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
-        // var version = versionRegex.Match(App.Version);
-        if (VersionComparer.IsLessThan(updateInfo.version, preiewUpdateInfo.version) ||
-            VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.version) ||
-            latestVersion == preiewUpdateInfo.version)
+        // var VersionRegex = new Regex(@"^\d+(?:\.\d+){2,4}");
+        // var Version = VersionRegex.Match(App.Version);
+        if (VersionComparer.IsLessThan(updateInfo.Version, preiewUpdateInfo.Version) ||
+            VersionComparer.IsLessThan(latestVersion, preiewUpdateInfo.Version) ||
+            latestVersion == preiewUpdateInfo.Version)
         {
             updateInfo = preiewUpdateInfo;
         }
 
         if (VersionComparer.IsGreaterThan(latestVersion, Core.App.Version))
         {
-            Core.App.CurrentLogger?.Log("检测到新版本: " + updateInfo.version, module: EnumLogModule.Update);
-            IterationCount = new IterationCount(0);
-            Icon = ICONS.DOWNLOAD;
-            if (latestVersion == preiewUpdateInfo.version)
+            Core.App.CurrentLogger?.Log("检测到新版本: " + updateInfo.Version, module: EnumLogModule.Update);
+            IsCheckUpdate = false;
+            Icon = Icons.DOWNLOAD;
+            if (latestVersion == preiewUpdateInfo.Version)
             {
                 updateInfo = preiewUpdateInfo;
             }
 
             Status = Languages.Text_Update_NewVersionDetected + latestVersion;
-            LatestVersion = updateInfo.version;
+            LatestVersion = updateInfo.Version;
             IsLoading = false;
             IsIdle = false;
             HasNewVersion = true;
             FailureTip = null;
-            Codename = updateInfo.data.codename;
+            Codename = updateInfo.Data.Codename;
             Changelog.Clear();
-            Changelog.AddRange(updateInfo.data.changes);
+            Changelog.AddRange(updateInfo.Data.Changes);
             // 供精简主页推荐使用：记录本次检查结果
             ReportUpdateCheck(true, latestVersion);
         }
@@ -335,25 +336,25 @@ public class UpdatePageViewModel : ViewModelBase
         {
             Core.App.CurrentLogger?.Log("当前版本已经是最新版本", module: EnumLogModule.Update);
             Status = Languages.Text_Update_AlreadyLatest;
-            Icon = ICONS.LATEST;
+            Icon = Icons.LATEST;
             IsLoading = false;
             IsIdle = true;
             FailureTip = null;
             ReportUpdateCheck(false, null);
         }
 
-        if (updateInfo is { success: true, data.changes.Length: > 0 })
+        if (updateInfo is { Success: true, Data.Changes.Length: > 0 })
         {
             LatestVersion = latestVersion;
             Changelog.Clear();
-            Changelog.AddRange(updateInfo.data.changes);
+            Changelog.AddRange(updateInfo.Data.Changes);
         }
         else
         {
             Core.App.CurrentLogger?.Log("获取更新信息失败", EnumLogType.Error, module: EnumLogModule.Update);
             Status = Languages.Text_Update_FetchFailed;
             FailureTip = Languages.Text_Update_FetchFailedTip;
-            Icon = ICONS.ERROR;
+            Icon = Icons.ERROR;
             IsIdle = false;
             return;
         }
@@ -367,17 +368,17 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         Core.App.CurrentLogger?.Log("检查更新完成", module: EnumLogModule.Update);
-        IterationCount = new IterationCount(0);
+        IsCheckUpdate = false;
     }
 
     private static string GetLatestVersion(SingleVersionInfo updateInfo, SingleVersionInfo preiewUpdateInfo)
     {
-        var res = VersionComparer.CompareVersions(updateInfo.version, preiewUpdateInfo.version);
+        var res = VersionComparer.CompareVersions(updateInfo.Version, preiewUpdateInfo.Version);
         var cd = res switch
         {
-            -1 => preiewUpdateInfo.version,
-            1 => updateInfo.version,
-            _ => preiewUpdateInfo.version
+            -1 => preiewUpdateInfo.Version,
+            1 => updateInfo.Version,
+            _ => preiewUpdateInfo.Version
         };
         var res1 = VersionComparer.CompareVersions(Core.App.Version, cd);
         return res1 switch
@@ -392,7 +393,7 @@ public class UpdatePageViewModel : ViewModelBase
     {
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = Languages.Text_Update_Downloading;
-        Icon = ICONS.DOWNLOAD;
+        Icon = Icons.DOWNLOAD;
         IsLoading = true;
         IsIdle = false;
         HasDownloadFailed = false;
@@ -484,7 +485,7 @@ public class UpdatePageViewModel : ViewModelBase
         Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
-        Icon = ICONS.LATEST;
+        Icon = Icons.LATEST;
         Status = Languages.Text_Update_DownloadCompleted;
 
         try
@@ -515,7 +516,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch
         {
-            Icon = ICONS.ERROR;
+            Icon = Icons.ERROR;
             Status = Languages.Text_Update_BackupConfigFailed;
         }
 
@@ -573,7 +574,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         Status = status;
-        Icon = ICONS.ERROR;
+        Icon = Icons.ERROR;
         IsLoading = false;
         IsIdle = true;
         HasDownloadFailed = true;
@@ -613,7 +614,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = Languages.Text_Update_Downloading;
-        Icon = ICONS.DOWNLOAD;
+        Icon = Icons.DOWNLOAD;
         IsLoading = true;
         IsIdle = false;
         ProgressValue = 0;
@@ -650,7 +651,7 @@ public class UpdatePageViewModel : ViewModelBase
         Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
-        Icon = ICONS.LATEST;
+        Icon = Icons.LATEST;
         Status = Languages.Text_Update_DownloadCompleted;
         if (UpdateMethod != 0)
         {
@@ -817,7 +818,7 @@ public class UpdatePageViewModel : ViewModelBase
         }
     }
 
-    private class ICONS
+    private static class Icons
     {
         public const string UPDATE = "\xe68a";
         public const string DOWNLOAD = "\xe72b";

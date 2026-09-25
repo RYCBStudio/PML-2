@@ -126,8 +126,10 @@ namespace Iciclecreek.TerminalWindow
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            _terminalControl = new TerminalControl();
-            _terminalControl.Options = Options ?? new XTerm.Options.TerminalOptions();
+            _terminalControl = new TerminalControl
+            {
+                Options = Options ?? new XTerm.Options.TerminalOptions()
+            };
             _terminalControl.Options.WindowOptions.GetWinPosition = true;
             _terminalControl.Options.WindowOptions.GetWinSizePixels = true;
             _terminalControl.Options.WindowOptions.GetWinSizeChars = true;

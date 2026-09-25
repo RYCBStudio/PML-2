@@ -331,7 +331,7 @@ public class PortSelectedMessage
 public class BoolToColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is bool b && b ? "#4CAF50" : "#F44336";
+        value is bool and true ? "#4CAF50" : "#F44336";
 
     public object ConvertBack(object value, Type targetType, object parameter,
         CultureInfo culture) =>
@@ -341,7 +341,7 @@ public class BoolToColorConverter : IValueConverter
 public class BoolToStatusConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is bool b && b ? Languages.Text_PortScan_Open : Languages.Text_PortScan_Closed;
+        value is bool and true ? Languages.Text_PortScan_Open : Languages.Text_PortScan_Closed;
 
     public object ConvertBack(object value, Type targetType, object parameter,
         CultureInfo culture) =>

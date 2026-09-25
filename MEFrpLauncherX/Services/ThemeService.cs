@@ -34,7 +34,7 @@ public class ThemeService
                 JsonSerializer.Deserialize<List<OnlineTheme>>(response,
                     App.AppJsonSerializerContext.ListOnlineTheme);
             Core.App.CurrentLogger.Info($"获取在线主题列表成功，共 {themes?.Count} 个主题");
-            return new AvaloniaList<OnlineTheme>(themes ?? []);
+            return [.. themes ?? []];
         }
         catch
         {

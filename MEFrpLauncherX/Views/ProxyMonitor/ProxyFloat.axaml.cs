@@ -163,8 +163,9 @@ public class ProxyFloatViewModel : ViewModelBase
         Opacity = pm.Opacity;
 
         // 26.3 M6b-Extended：实时流量折线图（下载绿 / 上传蓝）
-        ChartSeries = new AvaloniaList<ISeries>
-        {
+        ChartSeries =
+        [
+
             new LineSeries<double>
             {
                 Values = DownloadHistory,
@@ -173,6 +174,7 @@ public class ProxyFloatViewModel : ViewModelBase
                 LineSmoothness = 0.65,
                 Stroke = new SolidColorPaint(new SKColor(0, 184, 148), 2)
             },
+
             new LineSeries<double>
             {
                 Values = UploadHistory,
@@ -181,7 +183,7 @@ public class ProxyFloatViewModel : ViewModelBase
                 LineSmoothness = 0.65,
                 Stroke = new SolidColorPaint(new SKColor(9, 132, 227), 2)
             }
-        };
+        ];
         ChartXAxes = [new Axis { IsVisible = false }];
         ChartYAxes = [new Axis { Labeler = ProcessFileSize, MinLimit = 0, LabelsRotation = 30, LabelsDensity = 1.25f, IsVisible = false}];
     }

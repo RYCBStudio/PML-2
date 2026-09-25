@@ -20,7 +20,7 @@ using Inline = Avalonia.Controls.Documents.Inline;
 
 namespace MarkdownAIRender.Controls.MarkdownRender;
 
-public class MarkdownRender : ContentControl, INotifyPropertyChanged
+public partial class MarkdownRender : ContentControl, INotifyPropertyChanged
 {
     #region Constructor
 
@@ -768,7 +768,7 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
     /// </summary>
     private sealed record HtmlTagMarker(string Tag);
 
-    private static readonly Regex HtmlTagNameRegex = new(@"^</?\s*([a-zA-Z][a-zA-Z0-9]*)", RegexOptions.Compiled);
+    private static readonly Regex HtmlTagNameRegex = MyRegex();
 
     private static readonly HashSet<string> HtmlVoidTags =
         new(StringComparer.OrdinalIgnoreCase) { "br", "hr", "img", "input", "wbr" };
@@ -885,6 +885,9 @@ public class MarkdownRender : ContentControl, INotifyPropertyChanged
             LinkContent = content
         };
     }
+
+    [GeneratedRegex(@"^</?\s*([a-zA-Z][a-zA-Z0-9]*)", RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
 
     #endregion
 }

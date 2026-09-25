@@ -2,7 +2,7 @@
 
 namespace MEFrpLauncherX.Core;
 
-public class FileFormatDetector
+public partial class FileFormatDetector
 {
     public static string DetectFormatFromFile(string filePath)
     {
@@ -78,18 +78,26 @@ public class FileFormatDetector
     private static bool IsIni(string content)
     {
         // INI 文件包含 [section] 和 key=value 格式
-        return Regex.IsMatch(content, @"^\[.*\]$|^[^=]+=.+$", RegexOptions.Multiline);
+        return IniRegex().IsMatch(content);
     }
 
     private static bool IsToml(string content)
     {
         // TOML 支持 key = value 和表结构 [[table]]
-        return Regex.IsMatch(content, @"^[^=]+=\s*.*$|^\[\[.*\]\]$", RegexOptions.Multiline);
+        return TomlRegex().IsMatch(content);
     }
 
     private static bool IsYaml(string content)
     {
         // YAML 使用缩进和 : 表示键值对，或 - 表示列表项
-        return Regex.IsMatch(content, @"^(\s*-|\w+:)", RegexOptions.Multiline);
+        return YamlRegex().IsMatch(content);
     }
+
+    [GeneratedRegex(@"^[^=]+=\s*.*$|^\[\[.*\]\]$", RegexOptions.Multiline)]
+    private static partial Regex TomlRegex();
+
+    [GeneratedRegex(@"^\[.*\]$|^[^=]+=.+$", RegexOptions.Multiline)]
+    private static partial Regex IniRegex();
+    [GeneratedRegex(@"^(\s*-|\w+:)", RegexOptions.Multiline)]
+    private static partial Regex YamlRegex();
 }

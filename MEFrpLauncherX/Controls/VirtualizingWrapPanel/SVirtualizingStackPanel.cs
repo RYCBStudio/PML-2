@@ -210,9 +210,11 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                         if (!_elementDictionary.TryGetValue(i, out var _value))
                         {
                             _element = CreateVirtualizingElement(_item, i);
-                            var _newValue = new ElementRenderModel();
-                            _newValue.Top = _currentLineHeight;
-                            _newValue.Left = 0;
+                            var _newValue = new ElementRenderModel
+                            {
+                                Top = _currentLineHeight,
+                                Left = 0
+                            };
                             _currentLineHeight += _element.DesiredSize.Height;
                             _newValue.Width = _boundsWidth;
                             _newValue.Height = _element.DesiredSize.Height;
@@ -275,11 +277,13 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                         if (!_elementDictionary.TryGetValue(i, out var _value))
                         {
                             _element = CreateVirtualizingElement(_item, i);
-                            var _newValue = new ElementRenderModel();
-                            _newValue.Top = 0;
-                            _newValue.Left = _currentLineWidth;
-                            _newValue.Width = _element.DesiredSize.Width;
-                            _newValue.Height = _boundsHeight;
+                            var _newValue = new ElementRenderModel
+                            {
+                                Top = 0,
+                                Left = _currentLineWidth,
+                                Width = _element.DesiredSize.Width,
+                                Height = _boundsHeight
+                            };
                             _currentLineWidth += _element.DesiredSize.Width;
 
                             _newValue.Control = _element;
@@ -445,7 +449,10 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
 
         protected override IEnumerable<Control>? GetRealizedContainers()
         {
-            return _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>().ToList();
+            return
+            [
+                .. _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>()
+            ];
         }
 
         protected override IInputElement? GetControl(NavigationDirection direction, IInputElement? from, bool wrap)
@@ -508,7 +515,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
         {
             if (orientation != Orientation || _elementDictionary.Count == 0)
             {
-                return Array.Empty<double>();
+                return [];
             }
 
             return orientation == Orientation.Vertical

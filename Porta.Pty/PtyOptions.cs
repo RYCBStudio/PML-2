@@ -39,7 +39,7 @@ namespace Porta.Pty
         /// <summary>
         /// Gets or sets the command line arguments to the process.
         /// </summary>
-        public string[] CommandLine { get; set; } = Array.Empty<string>();
+        public string[] CommandLine { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a value indicating whether command line arguments must be quoted.

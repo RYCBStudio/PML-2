@@ -8,7 +8,7 @@ using ExecutionContext = MEFrpLauncherX.Plugin.Core.ExecutionContext;
 
 namespace MEFrpLauncherX.Plugin.Engine;
 
-public class PluginEngine : IAction
+public partial class PluginEngine : IAction
 {
     private const int MaxLogEntries = 200;
     private readonly Dictionary<string, List<PluginDefinition>> _triggerMap = new();
@@ -21,7 +21,7 @@ public class PluginEngine : IAction
     public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
 
     /// <summary>执行日志只读快照（26.3.1 S4）</summary>
-    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => _executionLogs.ToArray();
+    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => [.. _executionLogs];
 
     /// <summary>清空执行日志</summary>
     public void ClearExecutionLogs()
@@ -104,7 +104,7 @@ public class PluginEngine : IAction
                 foreach (var trigger in plugin.Triggers)
                 {
                     if (!_triggerMap.ContainsKey(trigger.On))
-                        _triggerMap[trigger.On] = new List<PluginDefinition>();
+                        _triggerMap[trigger.On] = [];
                     _triggerMap[trigger.On].Add(plugin);
                 }
             }
@@ -262,7 +262,7 @@ public class PluginEngine : IAction
         LoadAll(pluginsFolder);
     }
 
-    private static readonly Regex TemplateRegex = new(@"\{\{(.+?)\}\}", RegexOptions.Compiled);
+    private static readonly Regex TemplateRegex = MyRegex();
 
     private Dictionary<string, object> ResolveTemplates(Dictionary<string, object> args, ExecutionContext ctx)
     {
@@ -314,4 +314,7 @@ public class PluginEngine : IAction
             return null; // 求值失败保留原始模板文本
         }
     }
+
+    [GeneratedRegex(@"\{\{(.+?)\}\}", RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
 }

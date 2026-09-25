@@ -25,12 +25,16 @@ namespace Porta.Pty.Linux
 
             // Convert environment dictionary to "KEY=VALUE" string array for native code
             string?[]? envp = null;
-            if (options.Environment != null && options.Environment.Count > 0)
+            if (options.Environment is { Count: > 0 })
             {
-                envp = options.Environment
-                    .Select(kvp => $"{kvp.Key}={kvp.Value}")
-                    .Concat(new string?[] { null }) // NULL-terminated
-                    .ToArray();
+                envp =
+                [
+                    .. options.Environment
+                        .Select(kvp => $"{kvp.Key}={kvp.Value}"),
+
+                    null // NULL-terminated
+
+                ];
             }
 
             var controlCharacters = new Dictionary<TermSpecialControlCharacter, sbyte>

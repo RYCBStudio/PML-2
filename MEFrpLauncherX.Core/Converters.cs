@@ -4,9 +4,11 @@ using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
+using MEFrpLauncherX.Core.Models;
 using static MEFrpLauncherX.Core.MEFIntegrated.InfoClasses;
 using Color = Avalonia.Media.Color;
 using Colors = Avalonia.Media.Colors;
+
 #pragma warning disable CS8603 // 可能返回 null 引用。
 #pragma warning disable CS8767 // 参数类型中引用类型的为 Null 性与隐式实现的成员不匹配(可能是由于为 Null 性特性)。
 #pragma warning disable CS8605 // 取消装箱可能为 null 的值。
@@ -25,17 +27,19 @@ public class ConverterBase : IValueConverter
 
     public virtual object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value;
 }
+
 public class BoolToVerifiedBackgroundConverter : IValueConverter
 {
     public static BoolToVerifiedBackgroundConverter Instance
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#00A67E")); // 成功绿
-        return new SolidColorBrush(Color.Parse("#424242"));    // 中性灰
+        return new SolidColorBrush(Color.Parse("#424242")); // 中性灰
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -48,6 +52,7 @@ public class BoolToVerifiedForegroundConverter : IValueConverter
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is true)
@@ -58,13 +63,14 @@ public class BoolToVerifiedForegroundConverter : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
+
 public class BoolToVerifiedIconConverter : IValueConverter
 {
     public static BoolToVerifiedIconConverter Instance
     {
         get;
     } = new();
-    
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is true)
@@ -82,23 +88,25 @@ public class BoolToStatusBackgroundConverter : IValueConverter
     {
         get;
     } = new();
-    
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isBanned && isBanned)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#D32F2F")); // 危险红
-        return new SolidColorBrush(Color.Parse("#2E7D32"));    // 成功绿
+        return new SolidColorBrush(Color.Parse("#2E7D32")); // 成功绿
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
+
 public class BoolToStatusForegroundConverter : IValueConverter
 {
     public static BoolToStatusForegroundConverter Instance
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new SolidColorBrush(Colors.White);
@@ -114,9 +122,10 @@ public class BoolToStatusIconConverter : IValueConverter
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isBanned && isBanned)
+        if (value is bool and true)
             return Symbol.ClosedCaption;
         return Symbol.Accept;
     }
@@ -131,11 +140,12 @@ public class BoolToGroupBackgroundConverter : IValueConverter
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isAdmin && isAdmin)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#6C4DFF")); // 紫色（管理组）
-        return new SolidColorBrush(Color.Parse("#3C3C3C"));    // 普通组
+        return new SolidColorBrush(Color.Parse("#3C3C3C")); // 普通组
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -148,6 +158,7 @@ public class BoolToGroupForegroundConverter : IValueConverter
     {
         get;
     } = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new SolidColorBrush(Colors.White);
@@ -214,6 +225,19 @@ public class IsVisibleToRowConverter : IValueConverter
         value is true ? 0 : 1;
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+public class DnsProviderConverter : IValueConverter
+{
+    public static DnsProviderConverter Instance
+    {
+        get;
+    } = new();
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is string provider ? DnsProviders.GetDisplayName(provider) : value;
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
 
@@ -450,7 +474,6 @@ public class Int32ToProgressBarDangerConvertor : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotImplementedException();
 }
-
 
 public class NodeNotFoundToBoolConverter : IValueConverter
 {
@@ -1029,7 +1052,10 @@ public class StatusToStringConverter : IValueConverter
 
 public class NotNullOrEmptyToBoolConverter : IValueConverter
 {
-    public static NotNullOrEmptyToBoolConverter Instance { get; } = new();
+    public static NotNullOrEmptyToBoolConverter Instance
+    {
+        get;
+    } = new();
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -1050,11 +1076,14 @@ public class NotNullOrEmptyToBoolConverter : IValueConverter
 /// </summary>
 public class BoolToThemeConverter : IValueConverter
 {
-    public static BoolToThemeConverter Instance { get; } = new();
+    public static BoolToThemeConverter Instance
+    {
+        get;
+    } = new();
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isEnabled && isEnabled)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#2E7D32"));
         return new SolidColorBrush(Color.Parse("#757575"));
     }
@@ -1068,11 +1097,14 @@ public class BoolToThemeConverter : IValueConverter
 /// </summary>
 public class StatusToBackgroundConverter : IValueConverter
 {
-    public static StatusToBackgroundConverter Instance { get; } = new();
+    public static StatusToBackgroundConverter Instance
+    {
+        get;
+    } = new();
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool isEnabled && isEnabled)
+        if (value is bool and true)
             return new SolidColorBrush(Color.Parse("#1B5E20"));
         return new SolidColorBrush(Color.Parse("#424242"));
     }
@@ -1086,12 +1118,17 @@ public class StatusToBackgroundConverter : IValueConverter
 /// </summary>
 public class StatusToTextConverter : IValueConverter
 {
-    public static StatusToTextConverter Instance { get; } = new();
+    public static StatusToTextConverter Instance
+    {
+        get;
+    } = new();
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isEnabled)
-            return isEnabled ? Languages.Languages.Text_Converters_Enabled : Languages.Languages.Text_Converters_Disabled;
+            return isEnabled
+                ? Languages.Languages.Text_Converters_Enabled
+                : Languages.Languages.Text_Converters_Disabled;
         return Languages.Languages.Text_Converters_Unknown;
     }
 
@@ -1104,7 +1141,10 @@ public class StatusToTextConverter : IValueConverter
 /// </summary>
 public class NotNullToVisConverter : IValueConverter
 {
-    public static NotNullToVisConverter Instance { get; } = new();
+    public static NotNullToVisConverter Instance
+    {
+        get;
+    } = new();
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

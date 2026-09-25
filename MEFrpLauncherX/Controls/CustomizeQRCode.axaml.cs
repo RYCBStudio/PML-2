@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -168,6 +169,8 @@ public partial class CustomizeQRCode : UserControl
         QRCode.Source = GetOrCreateBitmap(_index);
         _qrTranslate.X = 0;
         QRCode.Opacity = 1;
+        IconSizeSlider.Value = _iconSize;
+        SizeSlider.Value = _size;
         UpdateNavigationState();
     }
 
@@ -458,4 +461,11 @@ public partial class CustomizeQRCode : UserControl
     }
 
     #endregion
+
+    private async void CopyToClipboard(object? sender, RoutedEventArgs e)
+    {
+        var clipboard = Core.App.MainWindow?.Clipboard;
+        await clipboard?.SetBitmapAsync(QRCode.Source as Bitmap);
+        Growl.Success(Languages.Text_UserProxy_QRCodeCopiedToClipboard);
+    }
 }

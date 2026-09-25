@@ -186,7 +186,7 @@ public partial class CreateProxy : UserControl
         // 如果外部指定了首选协议，则尝试选择该协议
         if (!string.IsNullOrEmpty(PreferredProtocol))
         {
-            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? new List<object?>();
+            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? [];
             var idx = items.FindIndex(item =>
                 string.Equals(item?.ToString(), PreferredProtocol, StringComparison.OrdinalIgnoreCase));
             ProtocolCbBox.SelectedIndex = idx >= 0 ? idx : 0;
@@ -224,7 +224,7 @@ public partial class CreateProxy : UserControl
 
         if (!tpl.Protocol.IsNullOrEmpty())
         {
-            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? new List<object?>();
+            var items = ProtocolCbBox.Items?.Cast<object?>().ToList() ?? [];
             var idx = items.FindIndex(item =>
                 string.Equals(item?.ToString(), tpl.Protocol, StringComparison.OrdinalIgnoreCase));
             if (idx >= 0)
