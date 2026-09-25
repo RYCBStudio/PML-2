@@ -3825,4 +3825,10 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
         <value>如果您的 DNS 服务商不在我们提供的列表中，您可以通过此表单提交，以便我们进行适配。</value>
     </data>
+    <data name="Text.WhatsNew.Blog" xml:space="preserve">
+        <value>博客更新</value>
+    </data>
+    <data name="Text.WhatsNew.Changelog" xml:space="preserve">
+        <value>更新日志（API）</value>
+    </data>
 </root>

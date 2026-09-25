@@ -17,34 +17,74 @@ public enum LegoChallengeMode
 public sealed record LegoRunRequest
 {
     /// <summary>验证方式</summary>
-    public required LegoChallengeMode Mode { get; init; }
+    public required LegoChallengeMode Mode
+    {
+        get;
+        init;
+    }
 
     /// <summary>主域名</summary>
-    public required string Domain { get; init; }
+    public required string Domain
+    {
+        get;
+        init;
+    }
 
     /// <summary>附加域名 / SAN（可含通配符 <c>*.example.com</c>）</summary>
-    public IReadOnlyList<string> AltNames { get; init; } = [];
+    public IReadOnlyList<string> AltNames
+    {
+        get;
+        init;
+    } = [];
 
     /// <summary>ACME 账户邮箱</summary>
-    public required string Email { get; init; }
+    public required string Email
+    {
+        get;
+        init;
+    }
 
     /// <summary>是否使用 Staging 环境</summary>
-    public bool Staging { get; init; } = true;
+    public bool Staging
+    {
+        get;
+        init;
+    } = true;
 
     /// <summary>lego 的 <c>--dns</c> provider 代码（手动模式为 <c>manual</c>）</summary>
-    public string LegoProvider { get; init; } = "manual";
+    public string LegoProvider
+    {
+        get;
+        init;
+    } = "manual";
 
     /// <summary>服务商凭据对应的环境变量（<b>只在子进程内生效，永不落日志</b>）</summary>
-    public IReadOnlyDictionary<string, string>? ProviderEnvironment { get; init; }
+    public IReadOnlyDictionary<string, string>? ProviderEnvironment
+    {
+        get;
+        init;
+    }
 
     /// <summary>服务商环境变量前缀，用于附加传播等待参数</summary>
-    public string ProviderEnvPrefix { get; init; } = string.Empty;
+    public string ProviderEnvPrefix
+    {
+        get;
+        init;
+    } = string.Empty;
 
     /// <summary>lego 工作目录（账户密钥与证书都落在这里）</summary>
-    public required string WorkPath { get; init; }
+    public required string WorkPath
+    {
+        get;
+        init;
+    }
 
     /// <summary>DNS 传播等待上限（秒）；DNS API 模式下通过 <c>{PREFIX}_PROPAGATION_TIMEOUT</c> 生效</summary>
-    public int PropagationTimeoutSeconds { get; init; } = 300;
+    public int PropagationTimeoutSeconds
+    {
+        get;
+        init;
+    } = 300;
 
     /// <summary>
     ///     高级选项：跳过 lego 的传播检查（默认关闭）。
@@ -52,7 +92,11 @@ public sealed record LegoRunRequest
     ///     <b>关闭全部传播检查</b>并改为固定等待，因此只在用户明确选择时传入；
     ///     固定等待时长见 <see cref="LegoRunner.SkipPropagationWaitSeconds" />。
     /// </summary>
-    public bool SkipPropagationCheck { get; init; }
+    public bool SkipPropagationCheck
+    {
+        get;
+        init;
+    }
 }
 
 /// <summary>lego 调用的最终结果。</summary>
@@ -122,12 +166,14 @@ public static class LegoRunner
                 ? AcmeCertificateService.LetsEncryptStaging
                 : AcmeCertificateService.LetsEncryptProduction,
             "--path", request.WorkPath,
-            "--dns.resolvers", "119.29.29.29"
+            "--dns.resolvers", "119.29.29.29,223.5.5.5",
+            "--dns.propagation-timeout", "300s",
         };
 
         // 仅在用户明确选择「跳过传播检查」时才传入；正常模式不传，保留 lego 的真实传播检查。
         if (request.SkipPropagationCheck)
         {
+            args.Add("--dns.propagation-disable-ans");
             args.Add("--dns.propagation.wait");
             args.Add(FormatDuration(SkipPropagationWaitSeconds));
         }

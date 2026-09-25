@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
 
@@ -20,11 +24,18 @@ public partial class WhatsNewWindow : Window
     /// <summary>窗口展示的数据上下文（供 ItemsControl 绑定变更条目）。</summary>
     private readonly WhatsNewViewModel _vm = new();
 
+    private static readonly HttpClient _http = new HttpClient();
+
     public WhatsNewWindow()
     {
         InitializeComponent();
         DataContext = _vm;
         Opened += OnOpened;
+    }
+
+    ~WhatsNewWindow()
+    {
+        _http.Dispose();
     }
 
     /// <summary>
@@ -134,11 +145,56 @@ public partial class WhatsNewWindow : Window
         Close();
         ViewModels.MainPageFrameViewModel.Instance?.NavigateToPage("Update");
     }
+
+    private async void SwitchSource(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is TabStrip tab)
+        {
+            // tab.SelectedIndex = tab.SelectedIndex == 0 ? 1 : 0;
+            _http.DefaultRequestHeaders.UserAgent.ParseAdd(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+                "(KHTML, like Gecko) Chrome/120.0 Safari/537.36");
+            var url = $"https://blog.pml2.rycb.tech/changelog/{Core.App.Version}.md";
+#if DEBUG
+            url = "https://blog.pml2.rycb.tech/changelog/26.3.0.md";
+#endif
+            string post;
+            try
+            {
+                post = await _http.GetStringAsync(url);
+            }
+            catch (Exception exception)
+            {
+                Core.App.CurrentLogger?.Error(exception, "Error fetching post");
+                Growl.Error(Languages.Text_Update_FetchFailedTip);
+                return;
+            }
+            post = FrontMatter().Replace(post, "");
+            if (tab.SelectedIndex == 0)
+            {
+                BlogPresenter.Value = post;
+                ApiGrid.Hide();
+                BlogPresenter.Show();
+            }
+            else
+            {
+                BlogPresenter.Hide();
+                ApiGrid.Show();
+            }
+        }
+    }
+
+    [GeneratedRegex(@"\A---\s*\r?\n.*?\r?\n---\s*\r?\n", RegexOptions.Singleline
+    )]
+    private static partial Regex FrontMatter();
 }
 
 /// <summary>「本次更新内容」窗口的视图模型：仅承载变更条目列表。</summary>
 public class WhatsNewViewModel
 {
     /// <summary>变更条目（服务端 changes 原文，支持 HTML/Markdown）</summary>
-    public Avalonia.Collections.AvaloniaList<string> Changelog { get; } = [];
+    public Avalonia.Collections.AvaloniaList<string> Changelog
+    {
+        get;
+    } = [];
 }
