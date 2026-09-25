@@ -1,6 +1,4 @@
-﻿using MEFrpLauncherX.Core.Languages;
-
-namespace MEFrpLauncherX.Core.Services;
+﻿namespace MEFrpLauncherX.Core.Services;
 
 /// <summary>
 ///     精简主页推荐条目的种类。

@@ -17,6 +17,7 @@ using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using ReactiveUI.Avalonia;
+using SecretLib;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
 
@@ -38,7 +39,7 @@ internal partial class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
-    public static void Main(string[] args)
+    public static int Main(string[] args)
     {
         // 记录启动时间，供崩溃报告计算真实运行时长
         CrashHandler.StartupTime = DateTime.Now;
@@ -53,7 +54,7 @@ internal partial class Program
             // 已有实例在运行，尝试激活它
             ActivateExistingInstance();
             Environment.Exit(0); // 退出当前进程
-            return; // 退出当前进程
+            return 0; // 退出当前进程
         }
 
         // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"请求
@@ -113,7 +114,100 @@ internal partial class Program
 #endif
         if (args.Length > 0)
         {
-            ProcessStartupArguments(args[0]);
+            if (!ProcessStartupArguments(args[0]))
+            {
+                SplashProcess?.Kill();
+                var isUnpack = !args.FirstOrDefault(x => x.Equals("unpack")).IsNullOrEmpty();
+                var isPack = !args.FirstOrDefault(x => x.Equals("pack")).IsNullOrEmpty();
+                if (isUnpack)
+                {
+                    var pmlaFile = "";
+                    var outPath = "";
+                    try
+                    {
+                        pmlaFile = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                            ?.Split('=')[1];
+                        outPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("output="))
+                            ?.Split('=')[1];
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        System.Console.Error.WriteLine("Invalid pmlaFile argument.");
+                        Environment.Exit(2);
+                        return 2;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine("Unknown Error: {0}", ex);
+                    }
+
+                    if (pmlaFile.IsNullOrEmpty() || outPath.IsNullOrEmpty())
+                        return 2;
+                    var banner = new string('=', 30);
+                    System.Console.WriteLine(banner);
+                    System.Console.WriteLine("PMLA Unpack Mode");
+                    System.Console.WriteLine($"Unpacking {pmlaFile}(New Format: {PMLAXHelper.IsPmlaxFile(pmlaFile)}) to {outPath}");
+                    System.Console.WriteLine(banner);
+                    PMLAHelper.UnpackPmla(pmlaFile, outPath, (progress, status) =>
+                    {
+                        System.Console.WriteLine($"[{progress}] {status}");
+                    });
+                    System.Console.WriteLine("Unpack completed.");
+                    return 0;
+                }
+                if (isPack)
+                {
+                    var inPath = "";
+                    var outPmla = "";
+                    var isNewFormat = true;
+                    try
+                    {
+                        inPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("input="))
+                            ?.Split('=')[1];
+                        outPmla = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                            ?.Split('=')[1];
+                        isNewFormat = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("newFormat="))
+                            ?.Split('=')[1] is null or "true";
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        System.Console.Error.WriteLine("Invalid pmlaFile argument.");
+                        Environment.Exit(2);
+                        return 2;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine("Unknown Error: {0}", ex);
+                    }
+
+                    if (inPath.IsNullOrEmpty() || outPmla.IsNullOrEmpty())
+                    {
+                        Environment.Exit(2);
+                        return 2;
+                    }
+                    var banner = new string('=', 30);
+                    System.Console.WriteLine(banner);
+                    System.Console.WriteLine("PMLA Pack Mode");
+                    System.Console.WriteLine($"Packing {inPath}(New Format: {isNewFormat}) to {outPmla}");
+                    System.Console.WriteLine(banner);
+                    if (isNewFormat)
+                        PMLAXHelper.PackDirectory(inPath, outPmla, (progress, status) =>
+                        {
+                            System.Console.WriteLine($"[{progress}] {status}");
+                        });
+                    else
+                        PMLAHelper.PackDirectory(inPath, outPmla, (progress, status) =>
+                        {
+                            System.Console.WriteLine($"[{progress}] {status}");
+                        });
+                    System.Console.WriteLine("Pack completed.");
+                    Environment.Exit(0);
+                    return 0;
+                }
+                System.Console.Error.WriteLine("[E] Invalid Arguments.");
+                Environment.Exit(1);
+                return 1;
+            }
         }
 
         BuildAvaloniaApp()
@@ -129,6 +223,7 @@ internal partial class Program
             {
                 HandleException(ex);
             }
+            return 1;
         }
         finally
         {
@@ -138,6 +233,7 @@ internal partial class Program
             _mutex?.Close();
         }
 #endif
+        return 0;
     }
 
 
@@ -360,7 +456,7 @@ internal partial class Program
         return ext is ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp" or ".bmp";
     }
 
-    public static void ProcessStartupArguments(string arg)
+    public static bool ProcessStartupArguments(string arg)
     {
         var data = new StartupData
         {
@@ -369,9 +465,9 @@ internal partial class Program
         };
         if (!arg.StartsWith("mefrp://"))
         {
-            if (Path.Exists(arg))
+            if (arg == "pmla")
             {
-                // TODO: PMLA Unpack
+                return false;
             }
         }
         else
@@ -394,6 +490,8 @@ internal partial class Program
             File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
                 JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         }
+
+        return true;
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -428,11 +526,11 @@ internal partial class Program
             {
                 MaxGpuResourceSizeBytes = (long)NormalizeGpuMemory(renderSettings.GpuMemoryLimitMb) * 1024 * 1024
             })
-            .With(new CompositionOptions
-            {
-                UseRegionDirtyRectClipping = true,
-                UseSaveLayerRootClip = true
-            })
+            // .With(new CompositionOptions
+            // {
+            //     UseRegionDirtyRectClipping = true,
+            //     UseSaveLayerRootClip = true
+            // })
             .With(new MacOSPlatformOptions
             {
                 DisableDefaultApplicationMenuItems = true
@@ -481,7 +579,7 @@ internal partial class Program
     {
         var win32Options = new Win32PlatformOptions
         {
-            WinUICompositionBackdropCornerRadius = 0.0f,
+            //WinUICompositionBackdropCornerRadius = 0.0f,
             RenderingMode = renderSettings.RenderingMode.ToUpperInvariant() switch
             {
                 "VULKAN" => [Win32RenderingMode.Vulkan],
@@ -497,7 +595,10 @@ internal partial class Program
         if (renderSettings.LowLatencyRendering)
         {
             win32Options.CompositionMode =
-                [Win32CompositionMode.LowLatencyDxgiSwapChain, Win32CompositionMode.WinUIComposition];
+            [
+                Win32CompositionMode.LowLatencyDxgiSwapChain, Win32CompositionMode.WinUIComposition,
+                Win32CompositionMode.DirectComposition
+            ];
         }
 
         return win32Options;
@@ -520,6 +621,7 @@ internal partial class Program
         {
             Core.App.CurrentLogger?.Log($"未处理的非 Exception 对象异常: {e.ExceptionObject}", EnumLogType.Fatal);
         }
+
         if (!e.IsTerminating)
         {
             return;
@@ -604,12 +706,12 @@ internal partial class Program
         catch (Exception crashHandlerEx)
         {
             crashLog = $"""
-                       PML 2 Crash Report (fallback)
-                       Time: {DateTime.Now}
-                       Error: [{ex.GetType()}] {ex.Message}
-                       {ex.StackTrace}
-                       (CrashHandler failed: {crashHandlerEx.Message})
-                       """;
+                        PML 2 Crash Report (fallback)
+                        Time: {DateTime.Now}
+                        Error: [{ex.GetType()}] {ex.Message}
+                        {ex.StackTrace}
+                        (CrashHandler failed: {crashHandlerEx.Message})
+                        """;
         }
 
         // 2. 崩溃负载写入文件而不是全部塞进命令行：
