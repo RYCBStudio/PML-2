@@ -11199,6 +11199,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 	Blog Updates.
+        /// </summary>
+        public static string Text_WhatsNew_Blog {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Blog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog (API).
+        /// </summary>
+        public static string Text_WhatsNew_Changelog {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version {0}  ({1})  ·  {2}.
         /// </summary>
         public static string Text_WhatsNew_HeaderFormat {

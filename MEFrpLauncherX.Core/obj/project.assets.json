@@ -188,6 +188,21 @@
           "lib/net8.0/Avalonia.Svg.dll": {}
         }
       },
+      "AvaloniaEdit.TextMate/11.4.1": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.0.0",
+          "Avalonia.AvaloniaEdit": "11.4.1",
+          "TextMateSharp": "2.0.2",
+          "TextMateSharp.Grammars": "2.0.2"
+        },
+        "compile": {
+          "lib/net6.0/AvaloniaEdit.TextMate.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/AvaloniaEdit.TextMate.dll": {}
+        }
+      },
       "DialogHost.Avalonia/0.8.1": {
         "type": "package",
         "dependencies": {
@@ -1248,8 +1263,10 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "Avalonia": "11.3.20",
+          "Avalonia.AvaloniaEdit": "11.4.1",
           "Avalonia.Skia": "11.3.20",
           "Avalonia.Svg": "11.3.0",
+          "AvaloniaEdit.TextMate": "11.4.1",
           "FluentAvaloniaUI": "2.5.1",
           "LiveChartsCore.SkiaSharpView.Avalonia": "2.0.5",
           "Markdig": "1.4.0",
@@ -1574,6 +1591,20 @@
         "lib/net6.0/Avalonia.Svg.dll",
         "lib/net8.0/Avalonia.Svg.dll",
         "lib/netstandard2.0/Avalonia.Svg.dll"
+      ]
+    },
+    "AvaloniaEdit.TextMate/11.4.1": {
+      "sha512": "q9/HE1gOHz/+EiUxzPVk+45hDhrzwCHMPkjeobemd15Ery5U9Y0wQXyq4e4Qr3IQ75bLGmsrpTuLLgJrvSye6Q==",
+      "type": "package",
+      "path": "avaloniaedit.textmate/11.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avaloniaedit.textmate.11.4.1.nupkg.sha512",
+        "avaloniaedit.textmate.nuspec",
+        "lib/net6.0/AvaloniaEdit.TextMate.dll",
+        "lib/netstandard2.0/AvaloniaEdit.TextMate.dll"
       ]
     },
     "DialogHost.Avalonia/0.8.1": {

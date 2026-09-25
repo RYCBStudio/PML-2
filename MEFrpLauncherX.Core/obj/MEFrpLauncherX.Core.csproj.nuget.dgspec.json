@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[11.3.20, )"
             },
+            "Avalonia.AvaloniaEdit": {
+              "target": "Package",
+              "version": "[11.4.1, )"
+            },
             "Avalonia.Skia": {
               "target": "Package",
               "version": "[11.3.20, )"
@@ -65,6 +69,10 @@
             "Avalonia.Svg": {
               "target": "Package",
               "version": "[11.3.0, )"
+            },
+            "AvaloniaEdit.TextMate": {
+              "target": "Package",
+              "version": "[11.4.1, )"
             },
             "FluentAvaloniaUI": {
               "target": "Package",

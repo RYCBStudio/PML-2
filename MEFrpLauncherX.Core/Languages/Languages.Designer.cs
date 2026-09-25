@@ -11227,6 +11227,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 博客更新.
+        /// </summary>
+        public static string Text_WhatsNew_Blog {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Blog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 更新日志（API）.
+        /// </summary>
+        public static string Text_WhatsNew_Changelog {
+            get {
+                return ResourceManager.GetString("Text.WhatsNew.Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 版本 {0}  （{1}）  ·  {2}.
         /// </summary>
         public static string Text_WhatsNew_HeaderFormat {

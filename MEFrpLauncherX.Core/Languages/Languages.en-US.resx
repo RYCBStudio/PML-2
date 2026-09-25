@@ -3824,4 +3824,10 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
         <value>	If your DNS provider is not in our list, you can submit it here so we can add support for it.</value>
     </data>
+    <data name="Text.WhatsNew.Blog" xml:space="preserve">
+        <value>	Blog Updates</value>
+    </data>
+    <data name="Text.WhatsNew.Changelog" xml:space="preserve">
+        <value>Changelog (API)</value>
+    </data>
 </root>

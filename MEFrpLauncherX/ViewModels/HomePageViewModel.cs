@@ -1047,8 +1047,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
         }
 
-        if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache")).Select(x => x.StartsWith("update_tmp"))
-            .Any())
+        if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache"))
+            .Any(x => x.StartsWith("update_tmp")))
         {
             var btn = new TaskDialogButton
             {
@@ -1075,10 +1075,12 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
             td.ShowAsync();
 
-            await Task.Run(() => Directory.Delete(Path.Combine(Core.App.StartupPath, "Cache"), true));
+            await Task.Run(() =>
+                Directory.EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Cache"))
+                    .Where(x => x.StartsWith("update_tmp")).ToList().ForEach(File.Delete));
+            //Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
             Dispatcher.UIThread.Post(() =>
             {
-                Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
                 try
                 {
                     Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState
