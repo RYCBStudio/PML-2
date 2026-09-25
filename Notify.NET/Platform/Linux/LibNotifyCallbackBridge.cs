@@ -84,7 +84,7 @@ namespace Notify.NET.Platform.Linux
         /// </summary>
         internal static void Release(IntPtr notificationPtr)
         {
-            long key = (long)notificationPtr;
+            var key = (long)notificationPtr;
             if (_live.TryRemove(key, out var bridge))
             {
                 if (bridge._gcHandle.IsAllocated)
@@ -103,10 +103,10 @@ namespace Notify.NET.Platform.Linux
         {
             try
             {
-                long key = (long)notification;
+                var key = (long)notification;
                 if (!_live.TryGetValue(key, out var bridge)) return;
 
-                for (int i = 0; i < bridge._buttons.Count; i++)
+                for (var i = 0; i < bridge._buttons.Count; i++)
                 {
                     if (string.Equals(bridge._buttons[i].ActionId, action, StringComparison.Ordinal))
                     {
@@ -125,10 +125,10 @@ namespace Notify.NET.Platform.Linux
         {
             try
             {
-                long key = (long)notification;
+                var key = (long)notification;
                 if (_live.TryGetValue(key, out var bridge))
                 {
-                    int reason = LibNotifyNative.notify_notification_get_closed_reason(notification);
+                    var reason = LibNotifyNative.notify_notification_get_closed_reason(notification);
                     bridge._handler?.OnDismissed(key, MapCloseReason(reason));
                 }
             }

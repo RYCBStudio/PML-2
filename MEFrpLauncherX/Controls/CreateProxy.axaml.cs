@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Models;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.ViewModels.Controls;
 using MEFrpLauncherX.Views;
 using ReactiveUI;
@@ -419,6 +422,105 @@ public partial class CreateProxy : UserControl
         {
             _createProxyViewModel.RemoteAddress?.Clear();
             _createProxyViewModel.RemoteAddress?.AddRange(de.Domains);
+        }
+    }
+
+    /// <summary>
+    ///     从证书助手已签发的证书中选择一个，回填 HTTPS 隧道的「证书路径」与「密钥路径」（26.4）。
+    ///     无本地证书时给出提示并引导前往证书助手。
+    /// </summary>
+    private async void PickCertificateFromAssistant(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var items = CertStore.List();
+            if (items.Count == 0)
+            {
+                var goCreate = new ContentDialog
+                {
+                    Title = Languages.Text_Certificate_Title,
+                    Content = Languages.Text_Certificate_Empty,
+                    PrimaryButtonText = Languages.Text_Certificate_OpenDirectory,
+                    CloseButtonText = Languages.Text_Global_Cancel,
+                    DefaultButton = ContentDialogButton.Close
+                };
+                if (await goCreate.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    OpenCertificateRoot();
+                }
+
+                return;
+            }
+
+            var list = new ListBox
+            {
+                ItemsSource = items.Select(i => i.DisplayName).ToList(),
+                SelectedIndex = 0,
+                MinWidth = 320
+            };
+            var cd = new ContentDialog
+            {
+                Title = Languages.Text_Certificate_SelectTitle,
+                Content = list,
+                PrimaryButtonText = Languages.Text_Global_Confirm,
+                CloseButtonText = Languages.Text_Global_Cancel,
+                DefaultButton = ContentDialogButton.Primary
+            };
+            if (await cd.ShowAsync() != ContentDialogResult.Primary)
+            {
+                return;
+            }
+
+            var idx = list.SelectedIndex;
+            if (idx < 0 || idx >= items.Count)
+            {
+                return;
+            }
+
+            var picked = items[idx];
+            SslPathBox.Text = picked.FullChainPath;
+            SslKeyBox.Text = picked.PrivateKeyPath;
+
+            // 临期提醒：Staging 与临近到期都给出明确提示，避免误用
+            if (picked.Staging)
+            {
+                Growl.Warning(Languages.Text_Certificate_Env_Staging);
+            }
+            else if (picked.IsExpiringSoon)
+            {
+                Growl.Warning(
+                    $"{Languages.Text_Certificate_ExpiringSoon}（{picked.DaysToExpiry} d）");
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "选择证书失败");
+        }
+    }
+
+    /// <summary>用系统文件管理器打开证书根目录。</summary>
+    private static void OpenCertificateRoot()
+    {
+        try
+        {
+            var dir = CertStore.RootPath;
+            Directory.CreateDirectory(dir);
+            if (OperatingSystem.IsWindows())
+            {
+                Process.Start(new ProcessStartInfo("explorer.exe", dir) { UseShellExecute = true });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Process.Start("open", dir);
+            }
+            else
+            {
+                Process.Start("xdg-open", dir);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "打开证书目录失败");
         }
     }
 

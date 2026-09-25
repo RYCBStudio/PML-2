@@ -1,0 +1,140 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:services="clr-namespace:MEFrpLauncherX.Core.Services;assembly=MEFrpLauncherX.Core"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="760" d:DesignHeight="450"
+             x:Class="MEFrpLauncherX.Controls.HomeSimplePanel"
+             x:DataType="viewModels:HomePageViewModel">
+    <Design.DataContext>
+        <viewModels:HomePageViewModel />
+    </Design.DataContext>
+    <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="14" Spacing="12" HorizontalAlignment="Stretch">
+
+            <!-- ===== 区块 1：用户与额度 ===== -->
+            <Border Classes="FluentCard" Padding="16">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="6">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Spacing="2">
+                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                   Theme="{StaticResource SubtitleTextBlockStyle}"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding SimpleGreeting}" />
+                        <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_RemainingTraffic}"
+                                   FontSize="12"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                        <controls:SymbolIcon Symbol="Cloud" FontSize="14" VerticalAlignment="Center" />
+                        <SelectableTextBlock Text="{Binding Traffic}"
+                                             ToolTip.Tip="{Binding LongTraffic}"
+                                             FontWeight="SemiBold"
+                                             FontSize="18" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <Button IsVisible="{Binding !IsLoggedIn}"
+                                Click="GoToLogin"
+                                Content="{x:Static languages:Languages.Text_Home_Simple_GoLogin}" />
+                        <Button IsVisible="{Binding IsLoggedIn}"
+                                Click="GoToUserCenter"
+                                Content="{x:Static languages:Languages.Text_Nav_UserCenter}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ===== 区块 2：系统状态 ===== -->
+            <Border Classes="FluentCard" Padding="16">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_Status}"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                    <WrapPanel ItemSpacing="28" LineSpacing="8">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_RunningProxies}"
+                                       FontSize="12"
+                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="{Binding SimpleRunningCountText}"
+                                       FontSize="18" FontWeight="SemiBold" />
+                        </StackPanel>
+                        <StackPanel Spacing="2" IsVisible="{Binding SimpleHasFailure}">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_FailedProxies}"
+                                       FontSize="12"
+                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="{Binding SimpleFailedProxyName}"
+                                       FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
+                        </StackPanel>
+                        <StackPanel Spacing="2" IsVisible="{Binding SimpleHasUpdate}">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Home_Recommend_UpdateAvailable_Title}"
+                                       FontSize="12"
+                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            <Button Click="GoToUpdate" Padding="0" Theme="{StaticResource SubtleButtonStyle}">
+                                <TextBlock Text="{Binding SimpleLatestVersion}" FontWeight="SemiBold" />
+                            </Button>
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ===== 区块 3：为你推荐（规则引擎，非 AI） ===== -->
+            <Border Classes="FluentCard" Padding="16">
+                <StackPanel Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_Recommendations}"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Theme="{StaticResource BodyStrongTextBlockStyle}" />
+                        <Button Grid.Column="1"
+                                Click="RefreshRecommendations"
+                                Theme="{StaticResource SubtleButtonStyle}"
+                                Content="{x:Static languages:Languages.Text_Home_Simple_Refresh}" />
+                    </Grid>
+                    <TextBlock Text="{x:Static languages:Languages.Text_Home_Simple_RecommendEmpty}"
+                               IsVisible="{Binding !HasRecommendations}"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    <ItemsControl ItemsSource="{Binding Recommendations}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="services:HomeRecommendation">
+                                <Border Margin="0,0,0,8"
+                                        Padding="12"
+                                        CornerRadius="6"
+                                        Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="3">
+                                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                                   Text="{Binding Title}"
+                                                   FontWeight="SemiBold"
+                                                   FontFamily="{StaticResource GlobalFontFamily}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                                   Text="{Binding Reason}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                                    Orientation="Horizontal" Spacing="6"
+                                                    VerticalAlignment="Center">
+                                            <Button Content="{Binding ActionText}"
+                                                    Tag="{Binding Kind}"
+                                                    Click="RunRecommendation" />
+                                            <Button Content="{x:Static languages:Languages.Text_Home_Simple_Ignore}"
+                                                    Tag="{Binding Kind}"
+                                                    Theme="{StaticResource SubtleButtonStyle}"
+                                                    Click="IgnoreRecommendation" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

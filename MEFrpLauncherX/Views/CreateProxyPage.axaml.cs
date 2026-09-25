@@ -871,8 +871,9 @@ public partial class CreateProxyPage : UserControl
             return;
         }
 
-        await MEFrpApiConverter.EnsureNodesListInfoAsync();
-        await MEFrpApiConverter.EnsureNodesStatusInfoAsync();
+        // 26.4：用户显式刷新 → 跳过节点数据的 5 分钟缓存
+        await MEFrpApiConverter.EnsureNodesListInfoAsync(forceRefresh: true);
+        await MEFrpApiConverter.EnsureNodesStatusInfoAsync(forceRefresh: true);
         switch (_index)
         {
             case 0: 
@@ -935,8 +936,8 @@ public partial class CreateProxyPage : UserControl
         if (!match.Success)
             throw new FormatException($"无效的带宽格式: {bandwidth}。支持的格式: 5Mbps, 10Gbps, 100Kbps, 1000bps");
 
-        double value = double.Parse(match.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
-        string unit = match.Groups[2].Value.ToLowerInvariant();
+        var value = double.Parse(match.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+        var unit = match.Groups[2].Value.ToLowerInvariant();
 
         // 根据单位转换为 Mbps
         return unit switch

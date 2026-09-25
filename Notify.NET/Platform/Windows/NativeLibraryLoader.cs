@@ -29,13 +29,13 @@ namespace Notify.NET.Platform.Windows
             {
                 if (_loaded) return;
 
-                string rid = GetRuntimeIdentifier();
-                string dllPath = ResolveNativePath(rid);
+                var rid = GetRuntimeIdentifier();
+                var dllPath = ResolveNativePath(rid);
 
-                IntPtr handle = LoadLibraryW(dllPath);
+                var handle = LoadLibraryW(dllPath);
                 if (handle == IntPtr.Zero)
                 {
-                    int err = Marshal.GetLastWin32Error();
+                    var err = Marshal.GetLastWin32Error();
                     throw new DllNotFoundException(
                         $"Failed to load WinToastWrapper.dll from '{dllPath}' (Win32 error {err}). " +
                         "Ensure the native DLL for your platform architecture is present in the " +
@@ -58,7 +58,7 @@ namespace Notify.NET.Platform.Windows
         private static string ResolveNativePath(string rid)
         {
             const string dllName = "WinToastWrapper.dll";
-            string runtimeRelative = Path.Combine("runtimes", rid, "native", dllName);
+            var runtimeRelative = Path.Combine("runtimes", rid, "native", dllName);
 
             // Search order:
             // 1. App base directory — the one reliable root in every layout, including
@@ -71,32 +71,32 @@ namespace Notify.NET.Platform.Windows
             // NotSupportedException for assemblies loaded from a single-file bundle.
 
             // Typical publish output: <appdir>/WinToastWrapper.dll (copied by MSBuild)
-            string flat = Path.Combine(AppContext.BaseDirectory, dllName);
+            var flat = Path.Combine(AppContext.BaseDirectory, dllName);
             if (File.Exists(flat)) return flat;
 
             // NuGet runtimes layout: <appdir>/runtimes/<rid>/native/WinToastWrapper.dll
-            string runtimePath = Path.Combine(AppContext.BaseDirectory, runtimeRelative);
+            var runtimePath = Path.Combine(AppContext.BaseDirectory, runtimeRelative);
             if (File.Exists(runtimePath)) return runtimePath;
 
             // Assembly location (empty string in a single-file bundle, so this is skipped there)
-            string? assemblyDir = Path.GetDirectoryName(typeof(NativeLibraryLoader).Assembly.Location);
+            var assemblyDir = Path.GetDirectoryName(typeof(NativeLibraryLoader).Assembly.Location);
             if (!string.IsNullOrEmpty(assemblyDir))
             {
-                string assemblyFlat = Path.Combine(assemblyDir, dllName);
+                var assemblyFlat = Path.Combine(assemblyDir, dllName);
                 if (File.Exists(assemblyFlat)) return assemblyFlat;
 
-                string assemblyRuntime = Path.Combine(assemblyDir, runtimeRelative);
+                var assemblyRuntime = Path.Combine(assemblyDir, runtimeRelative);
                 if (File.Exists(assemblyRuntime)) return assemblyRuntime;
             }
 
             // Fallback: relative to the entry assembly location
-            string? entryDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            var entryDir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             if (!string.IsNullOrEmpty(entryDir))
             {
-                string entryRuntime = Path.Combine(entryDir, runtimeRelative);
+                var entryRuntime = Path.Combine(entryDir, runtimeRelative);
                 if (File.Exists(entryRuntime)) return entryRuntime;
 
-                string entryFlat = Path.Combine(entryDir, dllName);
+                var entryFlat = Path.Combine(entryDir, dllName);
                 if (File.Exists(entryFlat)) return entryFlat;
             }
 

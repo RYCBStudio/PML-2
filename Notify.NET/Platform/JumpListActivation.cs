@@ -25,11 +25,11 @@ namespace Notify.NET.Platform
         internal static string? TryParseTaskId(string[]? args)
         {
             if (args == null) return null;
-            for (int i = 0; i < args.Length - 1; i++)
+            for (var i = 0; i < args.Length - 1; i++)
             {
                 if (string.Equals(args[i], ActivationFlag, StringComparison.Ordinal))
                 {
-                    string id = args[i + 1];
+                    var id = args[i + 1];
                     return string.IsNullOrWhiteSpace(id) ? null : id;
                 }
             }
@@ -46,9 +46,9 @@ namespace Notify.NET.Platform
         {
             // Hash the key so the channel name is fixed-length and free of path-hostile characters.
             using var sha = SHA256.Create();
-            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(key ?? string.Empty));
+            var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(key ?? string.Empty));
             var sb = new StringBuilder("notifynet-jl-", 29);
-            for (int i = 0; i < 8; i++) sb.Append(hash[i].ToString("x2"));
+            for (var i = 0; i < 8; i++) sb.Append(hash[i].ToString("x2"));
             return sb.ToString();
         }
 
@@ -59,7 +59,7 @@ namespace Notify.NET.Platform
         {
             try
             {
-                string? path = Process.GetCurrentProcess().MainModule?.FileName;
+                var path = Process.GetCurrentProcess().MainModule?.FileName;
                 if (!string.IsNullOrEmpty(path)) return path!;
             }
             catch

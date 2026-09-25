@@ -73,7 +73,7 @@ namespace Notify.NET.Abstractions
 
         private static bool HasWhitespace(string s)
         {
-            foreach (char c in s)
+            foreach (var c in s)
                 if (char.IsWhiteSpace(c)) return true;
             return false;
         }

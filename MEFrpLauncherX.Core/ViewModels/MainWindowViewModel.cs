@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using ReactiveUI;
@@ -7,18 +7,6 @@ namespace MEFrpLauncherX.Core.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    // public InfoBarSeverity Type
-// {
-//     get;
-//     set => this.RaiseAndSetIfChanged(ref field, value);
-// }
-//
-// public string MsgTitle
-// {
-//     get;
-//     set => this.RaiseAndSetIfChanged(ref field, value);
-// }
-
     public MainWindowViewModel()
     {
         Instance = this;
@@ -41,6 +29,13 @@ public class MainWindowViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
+    
+    /// <summary>是否正在初始化（用于进度动画）</summary>
+    public bool IsBusy
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = true;
 
     public bool IsDark
     {

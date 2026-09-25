@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,8 @@ using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Models;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
@@ -33,7 +36,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     {
         // 初始化命令
         SignCommand = ReactiveCommand.CreateFromTask(SignAsync);
-        LoadDataCommand = ReactiveCommand.CreateFromTask(LoadUserDataAsync);
+        LoadDataCommand = ReactiveCommand.CreateFromTask(() => LoadUserDataAsync(true));
         CopyUserIdCommand = ReactiveCommand.Create(() =>
         {
             if (UserId != null)
@@ -263,9 +266,294 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     public bool SystemNoticeSpan2 => ShowSystemNotice && !ShowSoftwareNotice;
     public bool SoftwareNoticeSpan2 => ShowSoftwareNotice && !ShowSystemNotice;
 
+    // ==================== 26.4 精简主页（Layout=simple） ====================
+
+    /// <summary>当前是否为精简布局（每次进入主页时按配置判定）</summary>
+    public bool IsSimpleLayout => ConfigManager.CurrentConfig.HomeSettings.Layout
+        .Equals("simple", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>当前是否为经典布局（默认值，保证旧配置行为不变）</summary>
+    public bool IsClassicLayout => !IsSimpleLayout;
+
+    /// <summary>是否已登录（供精简主页显示登录引导）</summary>
+    public bool IsLoggedIn => UserCache.IsLoggedIn(MEFrpApiConverter.CurrentUserInfo.data?.username);
+
+    /// <summary>精简主页问候语</summary>
+    public string SimpleGreeting => IsLoggedIn
+        ? string.Format(DateTime.Now.Hour switch
+        {
+            < 7 or >= 18 => Languages.Text_Home_Simple_Greeting_Evening,
+            < 9 => Languages.Text_Home_Simple_Greeting_Morning,
+            < 12 => Languages.Text_Home_Simple_Greeting_Prenoon,
+            < 14 => Languages.Text_Home_Simple_Greeting_Noon,
+            < 18 => Languages.Text_Home_Simple_Greeting_Afternoon
+        }, UserName ?? string.Empty)
+        : Languages.Text_Home_Simple_NotLoggedIn;
+
+    /// <summary>运行中隧道数（可读文本）</summary>
+    public string SimpleRunningCountText => RunningProxyCount.ToString();
+
+    /// <summary>是否存在启动失败的隧道</summary>
+    public bool SimpleHasFailure => !string.IsNullOrWhiteSpace(SimpleFailedProxyName);
+
+    /// <summary>失败隧道名（无失败时为空）</summary>
+    public string? SimpleFailedProxyName
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>是否有可用更新（null 表示未检查）</summary>
+    public bool SimpleHasUpdate => UpdatePageViewModel.HasKnownUpdate == true;
+
+    /// <summary>可用更新版本号</summary>
+    public string SimpleLatestVersion => UpdatePageViewModel.LatestKnownVersion ?? string.Empty;
+
+    /// <summary>当前运行中的隧道数量（由管理页数据源汇总）</summary>
+    public int RunningProxyCount
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>当前账户下的隧道总数（由管理页数据源汇总）</summary>
+    public int TunnelCount
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>账户状态：0-正常 1-封禁 2-流量超限（未登录或未知时为 null）</summary>
+    public int? AccountStatusValue
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>剩余流量字节数（供推荐规则判断；未登录或未知时为 null）</summary>
+    public ulong? RemainingTrafficBytes
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>精简主页的推荐条目（规则引擎生成，最多 4 条）</summary>
+    public AvaloniaList<HomeRecommendation> Recommendations
+    {
+        get;
+    } = [];
+
+    /// <summary>是否存在推荐条目（供空态显示）</summary>
+    public bool HasRecommendations => Recommendations.Count > 0;
+
+    /// <summary>
+    ///     近期启动过的隧道（26.4，按最后启动时间倒序）。
+    ///     数据来源：服务端 <c>lastStartTime</c> 与本地启动记录（<see cref="HomeRecommendStateStore" />）取较新者，
+    ///     使「刚刚启动」立刻反映到推荐中，同时兼容换设备后仅服务端有记录的情况。
+    /// </summary>
+    public AvaloniaList<RecentTunnelEntry> RecentTunnels
+    {
+        get;
+    } = [];
+
+    /// <summary>
+    ///     重新计算推荐列表。可在以下时机调用：
+    ///     主页加载完成、用户点击「刷新」、忽略某条之后。
+    /// </summary>
+    public void RefreshRecommendations()
+    {
+        try
+        {
+            var ctx = new HomeRecommendContext
+            {
+                IsLoggedIn = IsLoggedIn,
+                TunnelCount = TunnelCount,
+                RunningCount = RunningProxyCount,
+                FailedTunnelName = SimpleFailedProxyName,
+                AccountStatus = AccountStatusValue,
+                RemainingTrafficBytes = RemainingTrafficBytes,
+                RemainingTrafficText = Traffic,
+                HasUpdate = UpdatePageViewModel.HasKnownUpdate,
+                LatestVersion = UpdatePageViewModel.LatestKnownVersion,
+                RecentTunnels = RecentTunnels,
+                // 阈值：剩余流量低于 1 GB 时提醒（可在后续版本改为配置项）
+                LowTrafficThresholdBytes = 1024UL * 1024 * 1024
+            };
+
+            Recommendations.Clear();
+            foreach (var item in HomeRecommendService.Build(ctx, HomeRecommendStateStore.LoadDismissedKinds()))
+            {
+                Recommendations.Add(item);
+            }
+
+            this.RaisePropertyChanged(nameof(HasRecommendations));
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "生成主页推荐失败");
+        }
+    }
+
+    /// <summary>
+    ///     汇总「最近启动的隧道」候选（26.4）：仅保留可直接启动的隧道，
+    ///     即排除运行中（无需再启动）、禁用、封禁与不可用的隧道，最后按最后启动时间倒序。
+    /// </summary>
+    private void RefreshRecentTunnels()
+    {
+        try
+        {
+            var source = Views.ManageProxyPage.Instance?.ViewModel;
+            if (source is null)
+            {
+                RecentTunnels.Clear();
+                return;
+            }
+
+            var now = DateTimeOffset.UtcNow;
+            var candidates = new List<RecentTunnelEntry>();
+
+            foreach (var proxy in source.AllProxies)
+            {
+                // 运行中 / 禁用 / 封禁的隧道不作为「重新启动」候选
+                if (proxy.TunnelStatus is TunnelStatus.Running or TunnelStatus.Starting or
+                    TunnelStatus.Reconnecting)
+                {
+                    continue;
+                }
+
+                if (proxy.isDisabled || proxy.isBanned)
+                {
+                    continue;
+                }
+
+                // 服务端记录（Unix 秒，0 表示从未启动）与本地记录取较新者
+                DateTimeOffset? serverAt = proxy.lastStartTime > 0
+                    ? DateTimeOffset.FromUnixTimeSeconds(proxy.lastStartTime)
+                    : null;
+                var localAt = HomeRecommendStateStore.GetLastLaunchAt(proxy.proxyId);
+
+                var lastAt = (serverAt, localAt) switch
+                {
+                    ({ } s, { } l) => s > l ? s : l,
+                    ({ } s, null) => s,
+                    (null, { } l) => l,
+                    _ => (DateTimeOffset?)null
+                };
+
+                // 从未启动过的隧道不进入「最近启动」推荐
+                if (lastAt is null)
+                {
+                    continue;
+                }
+
+                // 与服务端时间可能存在时区/时钟偏差，未来时间按「刚刚」处理
+                if (lastAt.Value > now)
+                {
+                    lastAt = now;
+                }
+
+                candidates.Add(new RecentTunnelEntry(proxy.proxyId, proxy.proxyName, lastAt));
+            }
+
+            RecentTunnels.Clear();
+            foreach (var entry in candidates
+                         .OrderByDescending(e => e.LastStartAt)
+                         .Take(HomeRecommendService.MaxRecentTunnelItems * 2))
+            {
+                RecentTunnels.Add(entry);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "汇总最近启动的隧道失败");
+        }
+    }
+
+    /// <summary>
+    ///     汇总隧道相关的推荐输入：
+    ///     隧道总数 / 运行中数量取自管理页数据源（若用户尚未打开过管理页则为 0），
+    ///     失败信息取自 <see cref="HomeRecommendStateStore" />（含 24 小时有效期）。
+    ///     最后统一重算推荐列表。
+    /// </summary>
+    private void RefreshTunnelStatistics()
+    {
+        try
+        {
+            var source = Views.ManageProxyPage.Instance?.ViewModel;
+            if (source is not null)
+            {
+                TunnelCount = source.AllProxies.Count;
+                RunningProxyCount = source.AllProxies.Count(p => p.TunnelStatus == TunnelStatus.Running);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "汇总隧道统计失败");
+        }
+
+        SimpleFailedProxyName = HomeRecommendStateStore.GetFreshFailedProxyName();
+        this.RaisePropertyChanged(nameof(SimpleHasFailure));
+        this.RaisePropertyChanged(nameof(IsLoggedIn));
+        this.RaisePropertyChanged(nameof(SimpleGreeting));
+        this.RaisePropertyChanged(nameof(SimpleRunningCountText));
+        this.RaisePropertyChanged(nameof(SimpleHasUpdate));
+        this.RaisePropertyChanged(nameof(SimpleLatestVersion));
+
+        // 26.4：先汇总「最近启动的隧道」，再据此生成推荐
+        RefreshRecentTunnels();
+        RefreshRecommendations();
+    }
+
+    /// <summary>
+    ///     精简主页「刷新」（26.4）：跳过 5 分钟缓存重新拉取本页数据，
+    ///     并顺带刷新隧道统计与推荐，保证展示与最新请求结果一致。
+    /// </summary>
+    public void RefreshAllData()
+    {
+        MainPageFrameViewModel.Instance?.IsLoading = true;
+        _ = LoadUserDataAsync(true);
+    }
+
+    /// <summary>
+    ///     启动推荐中「最近启动的隧道」（26.4）。
+    ///     复用管理页既有的启动命令，保证与手动启动完全同一路径（终端、悬浮窗、错误处理一致）。
+    /// </summary>
+    /// <param name="proxyId">隧道 ID</param>
+    /// <returns>启动请求是否已发出；隧道不存在（如已被删除）时返回 false。</returns>
+    public bool LaunchRecentTunnel(int proxyId)
+    {
+        try
+        {
+            var target = Views.ManageProxyPage.Instance?.ViewModel?.AllProxies
+                .FirstOrDefault(p => p.proxyId == proxyId);
+            if (target is null)
+            {
+                // 隧道已被删除：清理本地记录并刷新推荐，避免继续展示失效条目
+                HomeRecommendStateStore.ForgetLaunch(proxyId);
+                RefreshTunnelStatistics();
+                return false;
+            }
+
+            target.LaunchProxyCommand.Execute(target);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "启动最近使用的隧道失败");
+            return false;
+        }
+    }
+
     public void Dispose() => GC.RemoveMemoryPressure(100 * 1024 * 1024);
 
-    private async Task LoadUserDataAsync()
+    /// <summary>
+    ///     加载主页面数据（26.4）。
+    /// </summary>
+    /// <param name="forceRefresh">
+    ///     true 表示用户显式刷新，跳过 5 分钟缓存强制请求；
+    ///     false 表示进入页面等常规加载，可复用有效期内的缓存数据。
+    /// </param>
+    private async Task LoadUserDataAsync(bool forceRefresh = false)
     {
         if (Design.IsDesignMode)
         {
@@ -275,7 +563,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         Core.App.CurrentLogger.LogDebug("开始加载用户数据");
 
         IsLoading = true;
-        var ss = await MEFrpApiConverter.GetSystemStatusAsync();
+        var ss = await MEFrpApiConverter.GetSystemStatusAsync(forceRefresh);
         SystemStatus = ss.data?.status ?? -1;
         SystemStatusRemark = ss.data?.remark ?? string.Format(Languages.Text_Home_NetworkUnavailableFormat, ss.code);
         var networkOk = ss.code == 200;
@@ -285,7 +573,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             IsLoadingNotice = false;
         }
 
-        var platform = await MEFrpApiConverter.GetPublicInfoAsync();
+        var platform = await MEFrpApiConverter.GetPublicInfoAsync(forceRefresh);
         if (platform.code == 200)
         {
             PlatformNodes = platform.data.nodes;
@@ -299,7 +587,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             if (networkOk)
             {
-                var res = await MEFrpApiConverter.GetExtraUserInfoAsync();
+                var res = await MEFrpApiConverter.GetExtraUserInfoAsync(forceRefresh);
                 var data = res.data;
                 Core.App.CurrentLogger.LogDebug("结束加载用户数据, 状态码：" + res.code);
 
@@ -353,6 +641,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 IsBanned = data.status == 1;
 
+                // 26.4：精简主页推荐所需的原始值（账户状态与剩余流量字节数）
+                AccountStatusValue = data.status;
+                RemainingTrafficBytes = data.traffic;
+
                 // 签到按钮状态
                 CanSign = !data.todaySigned;
                 SignButtonText = !data.todaySigned
@@ -362,7 +654,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFrpApiConverter.GetNoticeAsync())
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown((await MEFrpApiConverter.GetNoticeAsync(forceRefresh))
                         .data));
 
                 if (NoticeContent.IsNullOrEmpty())
@@ -371,6 +663,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 IsLoading = false;
+
+                // 26.4：精简主页需要「隧道总数 / 运行中 / 最近失败」，统一从管理页数据源汇总刷新
+                RefreshTunnelStatistics();
 
                 var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
 
@@ -442,6 +737,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                         await Process.Start(psi)?.WaitForExitAsync();
                     }
                 }
+
                 Dispatcher.UIThread.Post(() =>
                 {
                     td.Hide(TaskDialogStandardResult.OK);
@@ -505,7 +801,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             }
 
             IsLoadingNotice = true;
-            var notice = await RYCBApiConverter.GetAllNoticeAsync();
+            var notice = await RYCBApiConverter.GetAllNoticeAsync(forceRefresh);
             SoftwareNotice.Clear();
             if (notice.success)
             {
@@ -516,7 +812,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             Core.App.CurrentLogger.Error(ex);
             await MessageBoxManager
-                .GetMessageBoxStandard(Languages.Caption_Error, string.Format(Languages.Text_Home_LoadUserDataFailed, ex.Message))
+                .GetMessageBoxStandard(Languages.Caption_Error,
+                    string.Format(Languages.Text_Home_LoadUserDataFailed, ex.Message))
                 .ShowAsync();
         }
         finally
@@ -563,7 +860,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         }
         finally
         {
-            await LoadUserDataAsync();
+            // 26.4：签到改变了账户数据，强制刷新以保证展示与最新结果一致
+            await LoadUserDataAsync(true);
         }
     }
 

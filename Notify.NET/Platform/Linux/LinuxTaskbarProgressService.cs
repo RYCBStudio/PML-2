@@ -42,14 +42,14 @@ namespace Notify.NET.Platform.Linux
         {
             if (desktopFileId == null) throw new ArgumentNullException(nameof(desktopFileId));
 
-            string id = desktopFileId.EndsWith(".desktop", StringComparison.Ordinal)
+            var id = desktopFileId.EndsWith(".desktop", StringComparison.Ordinal)
                 ? desktopFileId
                 : desktopFileId + ".desktop";
             _appUri = "application://" + id;
 
             try
             {
-                IntPtr error = IntPtr.Zero;
+                var error = IntPtr.Zero;
                 _connection = GioDBusNative.g_bus_get_sync(GioDBusNative.G_BUS_TYPE_SESSION, IntPtr.Zero, ref error);
 
                 if (_connection == IntPtr.Zero || error != IntPtr.Zero)
@@ -99,7 +99,7 @@ namespace Notify.NET.Platform.Linux
         public void SetProgress(double fraction)
         {
             if (_disposed || !IsSupported) return;
-            double clamped = fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction);
+            var clamped = fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction);
             lock (_lock)
             {
                 _progress = clamped;
@@ -141,9 +141,9 @@ namespace Notify.NET.Platform.Linux
         /// <summary>Builds and broadcasts the LauncherEntry "Update" signal for the current state.</summary>
         private void Emit()
         {
-            bool   visible  = _state != TaskbarProgressState.None;
-            bool   urgent   = _state == TaskbarProgressState.Error;
-            double progress = _state == TaskbarProgressState.Indeterminate ? 0.0 : _progress;
+            var   visible  = _state != TaskbarProgressState.None;
+            var   urgent   = _state == TaskbarProgressState.Error;
+            var progress = _state == TaskbarProgressState.Indeterminate ? 0.0 : _progress;
 
             // Build the a{sv} property dictionary.
             IntPtr[] entries =
@@ -153,13 +153,13 @@ namespace Notify.NET.Platform.Linux
                 DictEntry("urgent",           GioDBusNative.g_variant_new_boolean(urgent ? 1 : 0))
             };
 
-            IntPtr dict = GioDBusNative.g_variant_new_array(IntPtr.Zero, entries, (UIntPtr)entries.Length);
+            var dict = GioDBusNative.g_variant_new_array(IntPtr.Zero, entries, (UIntPtr)entries.Length);
 
             // Build the (s a{sv}) tuple.
             IntPtr[] tupleChildren = { GioDBusNative.g_variant_new_string(_appUri), dict };
-            IntPtr parameters = GioDBusNative.g_variant_new_tuple(tupleChildren, (UIntPtr)tupleChildren.Length);
+            var parameters = GioDBusNative.g_variant_new_tuple(tupleChildren, (UIntPtr)tupleChildren.Length);
 
-            IntPtr error = IntPtr.Zero;
+            var error = IntPtr.Zero;
             GioDBusNative.g_dbus_connection_emit_signal(
                 _connection, null, ObjectPath, InterfaceName, SignalName, parameters, ref error);
 
@@ -169,7 +169,7 @@ namespace Notify.NET.Platform.Linux
                 return;
             }
 
-            IntPtr flushError = IntPtr.Zero;
+            var flushError = IntPtr.Zero;
             GioDBusNative.g_dbus_connection_flush_sync(_connection, IntPtr.Zero, ref flushError);
             if (flushError != IntPtr.Zero) GioDBusNative.g_error_free(flushError);
         }
@@ -177,8 +177,8 @@ namespace Notify.NET.Platform.Linux
         /// <summary>Creates a "{sv}" dict entry, boxing <paramref name="value"/> in a variant.</summary>
         private static IntPtr DictEntry(string key, IntPtr value)
         {
-            IntPtr keyVariant   = GioDBusNative.g_variant_new_string(key);
-            IntPtr boxedValue   = GioDBusNative.g_variant_new_variant(value);
+            var keyVariant   = GioDBusNative.g_variant_new_string(key);
+            var boxedValue   = GioDBusNative.g_variant_new_variant(value);
             return GioDBusNative.g_variant_new_dict_entry(keyVariant, boxedValue);
         }
     }

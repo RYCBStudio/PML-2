@@ -47,7 +47,7 @@ namespace Porta.Pty
                 throw new ArgumentNullException(nameof(options.Environment));
             }
 
-            IDictionary<string, string> environment = MergeEnvironment(PlatformServices.PtyEnvironment, null);
+            var environment = MergeEnvironment(PlatformServices.PtyEnvironment, null);
             environment = MergeEnvironment(options.Environment, environment);
 
             options.Environment = environment;

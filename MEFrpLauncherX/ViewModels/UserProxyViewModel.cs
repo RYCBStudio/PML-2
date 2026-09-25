@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -20,6 +20,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
+using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Views;
@@ -512,6 +513,25 @@ public class UserProxyViewModel : ViewModelBase
             {
                 ProxyFloatViewModel.ReportTunnelStatus(proxyName, value, LastErrorSummary);
             }
+
+            // 26.4：精简主页推荐需要「最近失败 / 已恢复」信号。
+            // 集中在此处记录，避免在三个失败分支各写一遍（含 24h 有效期，过期自动不再提示）。
+            try
+            {
+                switch (value)
+                {
+                    case TunnelStatus.Failed:
+                        HomeRecommendStateStore.RecordFailure(proxyName);
+                        break;
+                    case TunnelStatus.Running:
+                        HomeRecommendStateStore.ClearFailure();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger?.Error(ex, "记录隧道失败状态失败");
+            }
         }
     }
 
@@ -756,6 +776,8 @@ public class UserProxyViewModel : ViewModelBase
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（TerminalPage 内也会报告，此处保持既有语义）
         ProxyFloatViewModel.ReportTunnelStarted(proxy.proxyName);
+        // 26.4：记录本次启动，使主页「最近启动的隧道」推荐立即反映（不依赖服务端 lastStartTime 回传）
+        HomeRecommendStateStore.RecordLaunch(proxy.proxyId);
         IsLoading = false;
         MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
         MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
@@ -884,6 +906,8 @@ public class UserProxyViewModel : ViewModelBase
                 OnTerminalOutputAsync);
             // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（TerminalPage 内也会报告，此处保持既有语义）
             ProxyFloatViewModel.ReportTunnelStarted(proxy.proxyName);
+            // 26.4：记录本次启动，供主页「最近启动的隧道」推荐使用
+            HomeRecommendStateStore.RecordLaunch(proxy.proxyId);
             IsLoading = false;
             MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
             MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
@@ -945,8 +969,10 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在删除隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         IsLoading = true;
         await Task.Run(() => MEFrpApiConverter.DeleteProxy(proxy.proxyId));
+        // 26.4：删除后清理本地启动记录，避免主页「最近启动的隧道」推荐指向已删除的隧道
+        HomeRecommendStateStore.ForgetLaunch(proxy.proxyId);
         Growl.Success(string.Format(Languages.Text_UserProxy_DeleteSucceededFormat, proxy.proxyName));
-        ManageProxyPage.Instance.LoadProxies();
+        ManageProxyPage.Instance.LoadProxies(true);
         IsLoading = false;
     }
 
@@ -955,7 +981,7 @@ public class UserProxyViewModel : ViewModelBase
         Core.App.CurrentLogger.Log($"正在编辑隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
         // 编辑隧道逻辑
         await new EditProxyWindow(proxy).ShowDialog(Core.App.MainWindow);
-        await ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies(true);
     }
 
     private async void ForceOfflineProxy(UserProxyViewModel proxy)
@@ -985,7 +1011,7 @@ public class UserProxyViewModel : ViewModelBase
                 MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false);
             }
 
-            await ManageProxyPage.Instance.LoadProxies();
+            await ManageProxyPage.Instance.LoadProxies(true);
         });
         IsLoading = false;
     }
@@ -997,7 +1023,7 @@ public class UserProxyViewModel : ViewModelBase
         // 禁用隧道逻辑
         await Task.Run(() =>
             MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, true));
-        await ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies(true);
         IsLoading = false;
     }
 
@@ -1008,7 +1034,7 @@ public class UserProxyViewModel : ViewModelBase
         // 启用隧道逻辑
         await Task.Run(() =>
             MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false));
-        await ManageProxyPage.Instance.LoadProxies();
+        await ManageProxyPage.Instance.LoadProxies(true);
         IsLoading = false;
     }
 

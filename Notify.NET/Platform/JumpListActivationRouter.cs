@@ -37,7 +37,7 @@ namespace Notify.NET.Platform
         {
             if (_disposed) return false;
 
-            string? taskId = JumpListActivation.TryParseTaskId(args);
+            var taskId = JumpListActivation.TryParseTaskId(args);
             if (taskId == null) return false;
 
             if (SingleInstanceChannel.TryForward(_channelName, taskId))
@@ -80,9 +80,9 @@ namespace Notify.NET.Platform
             if (_handler == null || _pending == null) return;
             if (_channel == null || !_channel.IsPrimary) return;
 
-            string id = _pending;
+            var id = _pending;
             _pending = null;
-            IJumpListHandler handler = _handler;
+            var handler = _handler;
             ThreadPool.QueueUserWorkItem(_ => SafeInvoke(handler, id));
         }
 

@@ -223,7 +223,8 @@ public class TrafficStatusControlViewModel : ViewModelBase
 #endif
         if (shouldLoadNew)
         {
-            var r = await MEFrpApiConverter.GetTrafficStatusAsync(period);
+            // 26.4：显式重新加载 → 跳过 5 分钟缓存
+            var r = await MEFrpApiConverter.GetTrafficStatusAsync(period, true);
             if (r.code == 200)
             {
                 data = r.data;

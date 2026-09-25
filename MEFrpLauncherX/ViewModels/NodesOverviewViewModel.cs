@@ -18,8 +18,9 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
     public NodesOverviewViewModel()
     {
         SelectedSortOption = SortOptions[0];
-        RefreshCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
-        LoadDataAsync().ConfigureAwait(false);
+        // 26.4：顶栏「刷新」为显式操作 → 跳过 5 分钟缓存，强制重新请求
+        RefreshCommand = ReactiveCommand.CreateFromTask(() => LoadDataAsync(true));
+        _ = LoadDataAsync(false);
     }
 
     public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
@@ -127,13 +128,19 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private async Task LoadDataAsync()
+    /// <summary>
+    ///     加载节点状态（26.4）。
+    /// </summary>
+    /// <param name="forceRefresh">
+    ///     true 表示用户显式刷新，跳过 5 分钟缓存强制请求；false 表示首次进入页面，可复用有效期内的缓存。
+    /// </param>
+    private async Task LoadDataAsync(bool forceRefresh)
     {
         IsLoading = true;
         ErrorMessage = null;
         try
         {
-            var res = await Task.Run(MEFrpApiConverter.GetNodesStatusAsync);
+            var res = await Task.Run(() => MEFrpApiConverter.GetNodesStatusAsync(forceRefresh));
             if (res.code != 200)
             {
                 ErrorMessage = string.Format(Languages.Text_Nodes_GetStatusFailedCodeFormat, res.code);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -188,5 +189,10 @@ public partial class MainWindow : Window
     private void InputElement_OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         _mouseDownForWindowMoving = false;
+    }
+    
+    private void BtnClose_Click(object? sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

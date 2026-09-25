@@ -84,7 +84,7 @@ namespace Porta.Pty.Unix
         {
             if (!Kill(controller))
             {
-                int errno = Marshal.GetLastWin32Error();
+                var errno = Marshal.GetLastWin32Error();
                 // ESRCH means the process doesn't exist (already exited) - that's OK
                 if (errno != ESRCH)
                 {
@@ -153,10 +153,10 @@ namespace Porta.Pty.Unix
             const int SignalMask = 127;
             const int ExitCodeMask = 255;
 
-            int status = 0;
+            var status = 0;
             if (!WaitPid(pid, ref status))
             {
-                int errno = Marshal.GetLastWin32Error();
+                var errno = Marshal.GetLastWin32Error();
                 Debug.WriteLine($"Wait failed with {errno}");
                 if (errno == EINTR)
                 {

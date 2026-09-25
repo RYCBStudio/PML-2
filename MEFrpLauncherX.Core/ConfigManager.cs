@@ -104,6 +104,8 @@ public static class ConfigManager
         }
         catch (Exception ex)
         {
+            // 配置损坏（JSON 解析失败/文件截断）时先留档再重建，便于事后追溯与人工恢复。
+            BackupCorruptedConfig();
             // 如果加载失败，使用默认配置
             lock (_lock)
             {
@@ -112,6 +114,30 @@ public static class ConfigManager
 
             App.CurrentLogger?.Log($"加载配置文件失败，使用默认配置: {ex.Message}",
                 module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
+    }
+
+    /// <summary>
+    ///     将损坏的配置文件复制为 Settings.json.corrupt-yyyyMMddHHmmss 备份，失败时静默忽略。
+    /// </summary>
+    private static void BackupCorruptedConfig()
+    {
+        try
+        {
+            if (!File.Exists(ConfigPath))
+            {
+                return;
+            }
+
+            var backupPath = Path.Combine(ConfigDirectory,
+                $"Settings.json.corrupt-{DateTime.Now:yyyyMMddHHmmss}");
+            File.Copy(ConfigPath, backupPath, true);
+            App.CurrentLogger?.Log($"已备份损坏的配置文件到: {backupPath}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
+        catch
+        {
+            // 备份失败不影响默认配置重建
         }
     }
 
@@ -381,6 +407,16 @@ public static class ConfigManager
 
     private static void MergeHomeSettings(HomeConfig source, HomeConfig target)
     {
+        App.CurrentLogger?.Log(
+            $"正在合并配置项 Home>Layout: {source.Layout} -> {target.Layout}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        // 旧配置没有 Layout（空/未知值）时采用用户已保存的布局；
+        // 双方都为空时保持 HomeConfig 默认值 classic。
+        if (string.IsNullOrEmpty(source.Layout) && !string.IsNullOrEmpty(target.Layout))
+        {
+            source.Layout = target.Layout;
+        }
+
         App.CurrentLogger?.Log($"正在合并配置项 Home>ShowStatistics: {source.ShowStatistics} -> {target.ShowStatistics}",
             module: EnumLogModule.Custom, customModuleName: "配置管理");
         if (!source.ShowStatistics && target.ShowStatistics)
@@ -539,6 +575,7 @@ public static class ConfigManager
             },
             HomeSettings = new HomeConfig
             {
+                Layout = "classic",
                 ShowStatistics = true,
                 ShowUserInfo = true,
                 ShowSystemInfo = true,
@@ -783,6 +820,17 @@ public class AppConfig
 
 public class HomeConfig
 {
+    /// <summary>
+    ///     主页布局：<c>classic</c> 为传统完整主页（由各 <c>Show*</c> 开关控制），
+    ///     <c>simple</c> 为精简主页（用户与额度 / 系统状态 / 为你推荐）。
+    ///     旧配置无此字段时按经典布局处理，保证升级后界面不变。
+    /// </summary>
+    public string Layout
+    {
+        get;
+        set;
+    } = "classic";
+
     public bool ShowStatistics
     {
         get;

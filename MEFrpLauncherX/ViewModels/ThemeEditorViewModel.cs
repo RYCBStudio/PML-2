@@ -655,7 +655,7 @@ public class ThemeEditorViewModel : ViewModelBase
             }
 
             // 处理背景图片路径：如果图片在主题目录外，复制进去
-            string? backgroundImageRelativePath = BackgroundImagePath;
+            var backgroundImageRelativePath = BackgroundImagePath;
             if (BackgroundType == "Image" && !string.IsNullOrEmpty(BackgroundImagePath) &&
                 File.Exists(BackgroundImagePath))
             {

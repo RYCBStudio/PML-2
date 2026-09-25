@@ -26,7 +26,7 @@ namespace Porta.Pty.Mac
         {
             // First try SIGHUP (standard terminal hangup signal)
             // This is the proper signal for terminal processes
-            bool result = pty_kill(Pid, SIGHUP) != -1;
+            var result = pty_kill(Pid, SIGHUP) != -1;
             
             // Give a brief moment for graceful shutdown
             Thread.Sleep(100);

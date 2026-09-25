@@ -88,7 +88,7 @@ namespace Notify.NET.Platform.MacOS
 
             var ids = new string[list.Count];
             var titles = new string[list.Count];
-            for (int i = 0; i < list.Count; i++)
+            for (var i = 0; i < list.Count; i++)
             {
                 ids[i] = list[i].Id;
                 titles[i] = list[i].Title;

@@ -154,6 +154,12 @@
             <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}"
                                        Description="{x:Static languages:Languages.Text_Settings_TunnelSettingsDescription}"
                                        IconSource="AllApps">
+                <!-- 26.4：证书助手入口（为 HTTPS 隧道申请 SSL 证书） -->
+                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Title}"
+                                               Description="{x:Static languages:Languages.Text_Certificate_Description}"
+                                               ActionIconSource="ChevronRight"
+                                               IsClickEnabled="True"
+                                               Click="OpenCertificateAssistant" />
                 <controls:SettingsExpanderItem
                     Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
                     Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">

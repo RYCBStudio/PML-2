@@ -2,7 +2,10 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
@@ -28,6 +31,7 @@ namespace MEFrpLauncherX.Views;
 public partial class SettingsPage : UserControl
 {
     private bool _isInit;
+    private bool _isThemeTransitioning;
 
     public SettingsPage()
     {
@@ -402,7 +406,7 @@ public partial class SettingsPage : UserControl
                              <string>{label}</string>
                              <key>ProgramArguments</key>
                              <array>
-                                 <string>{executablePath}</string>
+                                 <string>{executablePath}</string> 
                              </array>
                              <key>RunAtLoad</key>
                              <true/>
@@ -442,6 +446,13 @@ public partial class SettingsPage : UserControl
     private void OpenALPSettingsWindow(object? sender, RoutedEventArgs e) =>
         new ALPSettings().ShowDialog(Core.App.MainWindow);
 
+    /// <summary>
+    ///     打开证书助手（26.4）：为 HTTPS 隧道申请 SSL 证书。
+    ///     与 ALP 设置窗口同为「设置页内的独立窗口」模式。
+    /// </summary>
+    private void OpenCertificateAssistant(object? sender, RoutedEventArgs e) =>
+        new CertificateAssistantWindow().ShowDialog(Core.App.MainWindow);
+
     private void ExpireDaysChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (_isInit)
@@ -454,7 +465,7 @@ public partial class SettingsPage : UserControl
         MainPageFrameViewModel.Instance.NeedRestart = true;
     }
 
-    private void ThemeChanged(object? sender, SelectionChangedEventArgs e)
+    private async void ThemeChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (_isInit)
         {
@@ -466,23 +477,122 @@ public partial class SettingsPage : UserControl
         {
             config.Theme = theme;
         });
-        Application.Current?.RequestedThemeVariant = theme.ToLower() switch
+        
+        // 应用主题切换动画
+        await ApplyThemeTransitionAsync(theme);
+    }
+    
+    /// <summary>
+    /// 平滑主题过渡动画（2~3 秒淡入淡出）
+    /// </summary>
+    private async Task ApplyThemeTransitionAsync(string theme)
+    {
+        var oldVariant = Application.Current?.ActualThemeVariant;
+        var newVariant = theme.ToLower() switch
         {
             "dark" => ThemeVariant.Dark,
             "light" => ThemeVariant.Light,
             _ => ThemeVariant.Default
         };
-        if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
+        
+        if (oldVariant == newVariant) return;
+
+        // 上一次过渡尚未结束：直接切换，避免动画叠加
+        if (_isThemeTransitioning)
         {
-            Core.App.MainWindow.Background =
-                Application.Current?.ActualThemeVariant.Equals(ThemeVariant.Dark) == true
-                    ? Color.TryParse("#FF2D2D30", out var C) ? new SolidColorBrush(C) : Brushes.Black
-                    : Color.TryParse("#FFF9F9F9", out var C1)
-                        ? new SolidColorBrush(C1)
-                        : Brushes.White;
+            Application.Current?.RequestedThemeVariant = newVariant;
+            Core.App.MainWindow.InvalidateVisual();
+            return;
         }
 
-        Core.App.MainWindow.InvalidateVisual();
+        // 遮罩挂到窗口内容面板（MainWindow 根节点为 Panel）；内容不是 Panel 时退化为直接切换
+        if (Core.App.MainWindow.Content is not Panel root)
+        {
+            Application.Current?.RequestedThemeVariant = newVariant;
+            Core.App.MainWindow.InvalidateVisual();
+            return;
+        }
+
+        _isThemeTransitioning = true;
+        
+        // 1. 添加半透明遮罩层
+        var overlay = new Border
+        {
+            Background = new SolidColorBrush(newVariant == ThemeVariant.Dark
+                ? Color.Parse("#FF202020")
+                : Color.Parse("#FFF3F3F3")),
+            Opacity = 0,
+            IsHitTestVisible = false,
+            ZIndex = 9999
+        };
+        
+        root.Children.Add(overlay);
+        
+        try
+        {
+            // 2. 遮罩层淡入动画 (300ms)
+            var fadeinAnim = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(300),
+                Easing = new CubicEaseInOut(),
+                FillMode = FillMode.Forward
+            };
+            fadeinAnim.Children.Add(new KeyFrame
+            {
+                Cue = new Cue(0.0),
+                Setters = { new Setter(Border.OpacityProperty, 0.0) }
+            });
+            fadeinAnim.Children.Add(new KeyFrame
+            {
+                Cue = new Cue(1.0),
+                Setters = { new Setter(Border.OpacityProperty, 1.0) }
+            });
+            
+            await fadeinAnim.RunAsync(overlay);
+            
+            // 3. 遮罩完全覆盖后再切换主题，避免看到生硬的瞬时切换
+            await Task.Delay(60);
+            
+            Application.Current?.RequestedThemeVariant = newVariant;
+            
+            if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
+            {
+                Core.App.MainWindow.Background =
+                    newVariant.Equals(ThemeVariant.Dark) == true
+                        ? Color.TryParse("#FF2D2D30", out var C) ? new SolidColorBrush(C) : Brushes.Black
+                        : Color.TryParse("#FFF9F9F9", out var C1)
+                            ? new SolidColorBrush(C1)
+                            : Brushes.White;
+            }
+            
+            Core.App.MainWindow.InvalidateVisual();
+            
+            // 4. 遮罩层淡出动画 (300ms)
+            var fadeoutAnim = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(300),
+                Easing = new CubicEaseInOut(),
+                FillMode = FillMode.Forward
+            };
+            fadeoutAnim.Children.Add(new KeyFrame
+            {
+                Cue = new Cue(0.0),
+                Setters = { new Setter(Border.OpacityProperty, 1.0) }
+            });
+            fadeoutAnim.Children.Add(new KeyFrame
+            {
+                Cue = new Cue(1.0),
+                Setters = { new Setter(Border.OpacityProperty, 0.0) }
+            });
+            
+            await fadeoutAnim.RunAsync(overlay);
+        }
+        finally
+        {
+            // 5. 移除遮罩层
+            root.Children.Remove(overlay);
+            _isThemeTransitioning = false;
+        }
     }
 
     private void SetProxyMonitorBar(object? sender, RoutedEventArgs e) =>

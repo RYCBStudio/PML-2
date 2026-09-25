@@ -36,14 +36,14 @@ namespace Notify.NET.Platform.MacOS
 
         private static void LoadDylib()
         {
-            string rid = GetRuntimeIdentifier();
-            string relativeSubPath = Path.Combine("runtimes", rid, "native", DylibName);
+            var rid = GetRuntimeIdentifier();
+            var relativeSubPath = Path.Combine("runtimes", rid, "native", DylibName);
 
-            string? assemblyDir = Path.GetDirectoryName(
+            var assemblyDir = Path.GetDirectoryName(
                 typeof(MacOSNativeLibraryLoader).Assembly.Location);
 
             // Search locations in priority order.
-            string[] candidates = assemblyDir != null
+            var candidates = assemblyDir != null
                 ? new[]
                 {
                     Path.Combine(assemblyDir, DylibName),
@@ -57,10 +57,10 @@ namespace Notify.NET.Platform.MacOS
                     Path.Combine(AppContext.BaseDirectory, relativeSubPath),
                 };
 
-            foreach (string candidate in candidates)
+            foreach (var candidate in candidates)
             {
                 if (!File.Exists(candidate)) continue;
-                IntPtr handle = dlopen(candidate, RTLD_NOW | RTLD_GLOBAL);
+                var handle = dlopen(candidate, RTLD_NOW | RTLD_GLOBAL);
                 if (handle != IntPtr.Zero) return;
             }
 

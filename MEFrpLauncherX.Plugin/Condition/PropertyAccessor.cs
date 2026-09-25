@@ -9,7 +9,7 @@ public static class PropertyAccessor
     {
         if (root == null || string.IsNullOrEmpty(path)) return null;
         var parts = path.Split('.');
-        object? current = root;
+        var current = root;
 
         for (var i = 0; i < parts.Length; i++)
         {

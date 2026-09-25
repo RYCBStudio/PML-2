@@ -100,9 +100,9 @@ namespace Porta.Pty
                 return IntPtr.Zero;
             }
 
-            foreach (string candidate in EnumerateLibraryCandidates())
+            foreach (var candidate in EnumerateLibraryCandidates())
             {
-                if (File.Exists(candidate) && NativeLibrary.TryLoad(candidate, out IntPtr handle))
+                if (File.Exists(candidate) && NativeLibrary.TryLoad(candidate, out var handle))
                 {
                     return handle;
                 }
@@ -113,12 +113,12 @@ namespace Porta.Pty
 
         private static IEnumerable<string> EnumerateLibraryCandidates()
         {
-            string fileName = IsMac
+            var fileName = IsMac
                     ? "libporta_pty.dylib"
                     : "libporta_pty.so";
 
-            string baseDir = AppContext.BaseDirectory;
-            foreach (string rid in EnumerateRuntimeIdentifiers())
+            var baseDir = AppContext.BaseDirectory;
+            foreach (var rid in EnumerateRuntimeIdentifiers())
             {
                 yield return Path.Combine(baseDir, "runtimes", rid, "native", fileName);
             }
@@ -132,10 +132,10 @@ namespace Porta.Pty
         /// </summary>
         private static IEnumerable<string> EnumerateRuntimeIdentifiers()
         {
-            string rid = RuntimeInformation.RuntimeIdentifier;
+            var rid = RuntimeInformation.RuntimeIdentifier;
             yield return rid;
 
-            string arch = RuntimeInformation.OSArchitecture switch
+            var arch = RuntimeInformation.OSArchitecture switch
             {
                 Architecture.X64 => "x64",
                 Architecture.Arm64 => "arm64",
@@ -144,10 +144,10 @@ namespace Porta.Pty
                 _ => string.Empty,
             };
 
-            string osPrefix = IsWindows ? "win" : IsMac ? "osx" : "linux";
+            var osPrefix = IsWindows ? "win" : IsMac ? "osx" : "linux";
             if (arch.Length > 0)
             {
-                string portableRid = $"{osPrefix}-{arch}";
+                var portableRid = $"{osPrefix}-{arch}";
                 if (!string.Equals(portableRid, rid, StringComparison.OrdinalIgnoreCase))
                 {
                     yield return portableRid;

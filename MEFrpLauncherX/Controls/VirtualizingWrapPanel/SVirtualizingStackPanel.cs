@@ -82,7 +82,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                     #region//获取进入渲染位置的第一个index
                     var viewportStart = GetVerticalViewportStart();
                     var _firstIndex = 0;
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         if (_elementDictionary.TryGetValue(i, out var _element))
                         {
@@ -117,7 +117,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                     #region//获取进入渲染位置的第一个index
                     var viewportStart = GetHorizontalViewportStart();
                     var _firstIndex = 0;
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         if (_elementDictionary.TryGetValue(i, out var _element))
                         {
@@ -163,7 +163,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
         {
             #region//获取该进行渲染的第一个index
             var _startIndex = 0;
-            for (int i = firstIndex; i >= 0; i--)
+            for (var i = firstIndex; i >= 0; i--)
             {
                 if (_elementDictionary.TryGetValue(i, out var _element))
                 {
@@ -201,7 +201,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                 }
                 _currentLineWidth = 0;
                 var _boundsWidth = Bounds.Width;
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })
@@ -266,7 +266,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                 }
                 _currentLineHeight = 0;
                 var _boundsHeight = Bounds.Height;
-                for (int i = startIndex; i < Items.Count; i++)
+                for (var i = startIndex; i < Items.Count; i++)
                 {
                     var _item = Items[i];
                     if (_item is { })

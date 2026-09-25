@@ -24,7 +24,15 @@
         <Border Grid.ColumnSpan="3" Background="#2f000000">
             <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}" />
         </Border>
+
+        <!-- 26.4 精简主页（Layout=simple） -->
+        <controls1:HomeSimplePanel Grid.ColumnSpan="3"
+                                   IsVisible="{Binding IsSimpleLayout}"
+                                   DataContext="{Binding}" />
+
+        <!-- 经典主页（Layout=classic，26.3 行为保持不变） -->
         <Grid RowDefinitions="Auto, *"
+              IsVisible="{Binding IsClassicLayout}"
               MaxHeight="650" RowSpacing="10"
               Margin="10">
             <HeaderedContentControl Header="{x:Static languages:Languages.Text_Main_PlatformStatistics_Title}" IsVisible="{Binding ShowStatistics}" Background="Transparent"
@@ -386,8 +394,10 @@
                 </Grid>
             </HeaderedContentControl>
         </Grid>
-        <GridSplitter Grid.Column="1" />
-        <Grid Grid.Column="2" RowDefinitions="Auto, *">
+        <GridSplitter Grid.Column="1" 
+                      IsVisible="{Binding IsClassicLayout}" />
+        <Grid Grid.Column="2" RowDefinitions="Auto, *" 
+              IsVisible="{Binding IsClassicLayout}">
             <controls:InfoBar
                 IsVisible="{Binding ShowSystemStatus}"
                 Classes="animated-bar"

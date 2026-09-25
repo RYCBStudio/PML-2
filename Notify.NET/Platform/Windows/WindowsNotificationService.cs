@@ -83,7 +83,7 @@ namespace Notify.NET.Platform.Windows
             {
                 try
                 {
-                    long id = ShowOnSta(request);
+                    var id = ShowOnSta(request);
                     tcs.TrySetResult(id);
                 }
                 catch (Exception ex)
@@ -107,7 +107,7 @@ namespace Notify.NET.Platform.Windows
             {
                 try
                 {
-                    bool ok = WinToastNative.WNT_HideToast(notificationId);
+                    var ok = WinToastNative.WNT_HideToast(notificationId);
                     if (!ok)
                         tcs.TrySetException(new NotificationException($"WNT_HideToast failed for id {notificationId}."));
                     else
@@ -178,7 +178,7 @@ namespace Notify.NET.Platform.Windows
                     return;
                 }
 
-                bool ok = WinToastNative.WNT_Initialize(_appName, _appUserModelId, _appIconPath);
+                var ok = WinToastNative.WNT_Initialize(_appName, _appUserModelId, _appIconPath);
                 if (!ok)
                 {
                     _initException = new NotificationException("WNT_Initialize returned false.");
@@ -191,7 +191,7 @@ namespace Notify.NET.Platform.Windows
                 _initialised.Set();
 
                 // Process work items until Dispose() calls CompleteAdding().
-                foreach (Action work in _workQueue.GetConsumingEnumerable())
+                foreach (var work in _workQueue.GetConsumingEnumerable())
                 {
                     // Pump pending Windows messages between work items so WinRT callbacks
                     // can be delivered to the STA message queue.
@@ -232,7 +232,7 @@ namespace Notify.NET.Platform.Windows
             // Build array of pinned button label pointers.
             var buttonPins   = new PinnedString[request.Buttons.Count];
             var buttonPtrs   = new IntPtr[request.Buttons.Count];
-            for (int i = 0; i < request.Buttons.Count; i++)
+            for (var i = 0; i < request.Buttons.Count; i++)
             {
                 buttonPins[i] = new PinnedString(request.Buttons[i].Label);
                 buttonPtrs[i] = buttonPins[i].Pointer;
@@ -242,7 +242,7 @@ namespace Notify.NET.Platform.Windows
             {
                 // Pin the button pointer array itself.
                 GCHandle buttonArrayHandle = default;
-                IntPtr buttonArrayPtr = IntPtr.Zero;
+                var buttonArrayPtr = IntPtr.Zero;
 
                 if (buttonPtrs.Length > 0)
                 {
@@ -280,7 +280,7 @@ namespace Notify.NET.Platform.Windows
                     onFailed          = WinToastHandlerBridge.PtrFailed
                 };
 
-                long toastId = WinToastNative.WNT_ShowToast(ref descriptor, ref handler);
+                var toastId = WinToastNative.WNT_ShowToast(ref descriptor, ref handler);
 
                 if (buttonArrayHandle.IsAllocated)
                     buttonArrayHandle.Free();
@@ -306,7 +306,7 @@ namespace Notify.NET.Platform.Windows
         /// </summary>
         private static INotificationHandler? BuildCompositeHandler(NotificationRequest request)
         {
-            bool hasButtonCallbacks = false;
+            var hasButtonCallbacks = false;
             foreach (var btn in request.Buttons)
                 if (btn.Callback != null) { hasButtonCallbacks = true; break; }
 
@@ -379,7 +379,7 @@ namespace Notify.NET.Platform.Windows
             if (string.IsNullOrEmpty(path)) return null;
             try
             {
-                string absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
+                var absolute = Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
                 return File.Exists(absolute) ? absolute : null;
             }
             catch (Exception) { return null; }

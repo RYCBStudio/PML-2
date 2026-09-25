@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
@@ -31,6 +32,53 @@ public partial class AnimatedProgressRing : UserControl
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
         _timer.Tick += (s, e) => Tick();
         _timer.Start();
+    }
+
+    /// <summary>
+    ///     控件不可见（或已脱离可视化树）时停止计时器。
+    ///     否则该 60fps 定时器会永久占用 UI 线程，即使加载动画早已隐藏。
+    /// </summary>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        SetRunning(IsVisible);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        SetRunning(false);
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if (change.Property == IsVisibleProperty)
+        {
+            SetRunning(change.GetNewValue<bool>());
+        }
+    }
+
+    /// <summary>按可见性启停动画计时器（Stopwatch 支持断点续计，不会重置相位）。</summary>
+    private void SetRunning(bool running)
+    {
+        if (running)
+        {
+            if (!_sw.IsRunning)
+            {
+                _sw.Start();
+            }
+
+            if (!_timer.IsEnabled)
+            {
+                _timer.Start();
+            }
+        }
+        else
+        {
+            _sw.Stop();
+            _timer.Stop();
+        }
     }
 
     private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

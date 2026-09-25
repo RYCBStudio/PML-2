@@ -132,7 +132,7 @@ namespace Notify.NET.Platform.Windows
         /// <inheritdoc/>
         public void SetProgress(double fraction)
         {
-            double clamped = fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction);
+            var clamped = fraction < 0 ? 0 : (fraction > 1 ? 1 : fraction);
             SetProgress((ulong)Math.Round(clamped * 1000.0), 1000UL);
         }
 
@@ -196,7 +196,7 @@ namespace Notify.NET.Platform.Windows
                 default:                                 code = 1; break; // Normal
             }
 
-            int clamped = percent < 0 ? 0 : (percent > 100 ? 100 : percent);
+            var clamped = percent < 0 ? 0 : (percent > 100 ? 100 : percent);
 
             try
             {
@@ -229,7 +229,7 @@ namespace Notify.NET.Platform.Windows
 
             try
             {
-                foreach (Action work in _workQueue.GetConsumingEnumerable())
+                foreach (var work in _workQueue.GetConsumingEnumerable())
                     work();
             }
             catch (InvalidOperationException) { /* queue completed */ }

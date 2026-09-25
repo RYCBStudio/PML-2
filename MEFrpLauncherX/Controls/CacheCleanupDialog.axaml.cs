@@ -100,6 +100,8 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
                 return (cache.DeletedCount + logs.DeletedCount, cache.FreedBytes + logs.FreedBytes);
             });
             await RefreshSizesAsync();
+            // 26.4：清理缓存后同步失效统一 API 缓存，使页面下次访问重新请求最新数据
+            Core.Services.ApiCacheService.InvalidateAll();
             ResultText.Text = deleted > 0
                 ? string.Format(Languages.Text_About_ToolBox_ClearCache_Dialog_Done, deleted,
                     ToolboxService.FormatFileSize(freed))
