@@ -24,7 +24,8 @@
         <Grid>
             <!-- 背景图片 -->
             <Image x:Name="ImgBackground" Source="/Assets/splash_background.png" Stretch="UniformToFill" />
-            <Button x:Name="BtnClose" Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Click="BtnClose_Click" />
+            <Button x:Name="BtnClose" Background="Transparent" Content="✕" HorizontalAlignment="Right" ZIndex="1000"
+                    VerticalAlignment="Top" Margin="5" Click="BtnClose_Click" />
             <Border x:Name="ContentBorder" Background="#4C000000" Margin="8" CornerRadius="8" Padding="6">
                 <!-- 内容层：使用半透明背景提升可读性 -->
                 <Panel> <!-- 半透明白色背景 -->
@@ -56,7 +57,8 @@
                                 IsVisible="{Binding ShowProgress}">
                         <TextBlock x:Name="TbStatus" Text="{Binding StatusText}" FontSize="12" Foreground="White"
                                    TextTrimming="CharacterEllipsis" MaxWidth="420" />
-                        <ProgressBar x:Name="PbProgress" Minimum="0" Maximum="100" Value="{Binding Progress}" Height="4"
+                        <ProgressBar x:Name="PbProgress" Minimum="0" Maximum="100" Value="{Binding Progress}"
+                                     Height="4"
                                      Foreground="White" />
                     </StackPanel>
                 </Panel>
