@@ -20,7 +20,7 @@ public class NetworkSpeedTester
     /// <returns>最优网址的索引（从0开始），如果全部失败返回-1</returns>
     public async Task<int> FindFastestUrlIndexAsync(IEnumerable<string> urls,
         CancellationToken cancellationToken = default) =>
-        await FindFastestUrlIndexAsync(cancellationToken, urls.ToArray());
+        await FindFastestUrlIndexAsync(cancellationToken, [.. urls]);
 
     /// <summary>
     ///     快速测试多个网址并返回最优网址的索引

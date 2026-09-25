@@ -184,7 +184,7 @@ public class LoginViewModel : ViewModelBase
         // Insert a placeholder at index 0 for "use new account"
         var list = new List<string> { Languages.Text_Login_UseNewAccount };
         list.AddRange(filteredUsernames);
-        StoredUsernames = new AvaloniaList<string>(list);
+        StoredUsernames = [.. list];
         this.RaisePropertyChanged(nameof(HasStoredUsernames));
         // Ensure default selection is the "new account" placeholder
         SelectedStoredIndex = 0;

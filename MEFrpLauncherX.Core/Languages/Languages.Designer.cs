@@ -897,15 +897,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 节点信息.
-        /// </summary>
-        public static string Text_Api_OpNodeInfo {
-            get {
-                return ResourceManager.GetString("Text.Api.OpNodeInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 最新版本.
         /// </summary>
         public static string Text_Api_OpLatestVersion {
@@ -915,29 +906,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 软件公告.
+        ///   Looks up a localized string similar to 节点信息.
         /// </summary>
-        public static string Text_Api_OpSoftwareNotice {
+        public static string Text_Api_OpNodeInfo {
             get {
-                return ResourceManager.GetString("Text.Api.OpSoftwareNotice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 流量统计.
-        /// </summary>
-        public static string Text_Api_OpTrafficStatus {
-            get {
-                return ResourceManager.GetString("Text.Api.OpTrafficStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 隧道错误信息.
-        /// </summary>
-        public static string Text_Api_OpTunnelErrorInfo {
-            get {
-                return ResourceManager.GetString("Text.Api.OpTunnelErrorInfo", resourceCulture);
+                return ResourceManager.GetString("Text.Api.OpNodeInfo", resourceCulture);
             }
         }
         
@@ -987,11 +960,38 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 软件公告.
+        /// </summary>
+        public static string Text_Api_OpSoftwareNotice {
+            get {
+                return ResourceManager.GetString("Text.Api.OpSoftwareNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 系统状态.
         /// </summary>
         public static string Text_Api_OpSystemStatus {
             get {
                 return ResourceManager.GetString("Text.Api.OpSystemStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 流量统计.
+        /// </summary>
+        public static string Text_Api_OpTrafficStatus {
+            get {
+                return ResourceManager.GetString("Text.Api.OpTrafficStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道错误信息.
+        /// </summary>
+        public static string Text_Api_OpTunnelErrorInfo {
+            get {
+                return ResourceManager.GetString("Text.Api.OpTunnelErrorInfo", resourceCulture);
             }
         }
         
@@ -1275,6 +1275,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 高级选项.
+        /// </summary>
+        public static string Text_Certificate_Advanced {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 附加域名（可选）.
         /// </summary>
         public static string Text_Certificate_AltNames {
@@ -1361,6 +1370,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Certificate_Description {
             get {
                 return ResourceManager.GetString("Text.Certificate.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户.
+        /// </summary>
+        public static string Text_Certificate_DnsAccount {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DnsAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无可用账户，请先到「DNS 账户」添加.
+        /// </summary>
+        public static string Text_Certificate_DnsAccountNone {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DnsAccountNone", resourceCulture);
             }
         }
         
@@ -1455,11 +1482,74 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 改用手动模式.
+        /// </summary>
+        public static string Text_Certificate_FallbackToManual {
+            get {
+                return ResourceManager.GetString("Text.Certificate.FallbackToManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 证书助手仅用于为您自有域名申请 SSL 证书，产物写入本机 Config/Certificates/，可直接用于创建 HTTPS 隧道。申请的证书与 ME Frp 官方证书服务无关；域名、ACME 邮箱与私钥仅在本机处理。默认使用 Let&apos;s Encrypt Staging（测试）环境，证书不被浏览器信任，仅用于验证流程，确认无误后再切换生产环境。.
         /// </summary>
         public static string Text_Certificate_Intro {
             get {
                 return ResourceManager.GetString("Text.Certificate.Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 运行日志.
+        /// </summary>
+        public static string Text_Certificate_Log {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 日志中的 Token 与密钥已自动脱敏.
+        /// </summary>
+        public static string Text_Certificate_LogHint {
+            get {
+                return ResourceManager.GetString("Text.Certificate.LogHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 管理 DNS 账户.
+        /// </summary>
+        public static string Text_Certificate_ManageDnsAccounts {
+            get {
+                return ResourceManager.GetString("Text.Certificate.ManageDnsAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 验证方式.
+        /// </summary>
+        public static string Text_Certificate_Mode {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户（一键自动）.
+        /// </summary>
+        public static string Text_Certificate_Mode_DnsAccount {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode.DnsAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 手动 DNS（自行添加 TXT）.
+        /// </summary>
+        public static string Text_Certificate_Mode_Manual {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Mode.Manual", resourceCulture);
             }
         }
         
@@ -1491,6 +1581,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 跳过 DNS 传播检查（不推荐）.
+        /// </summary>
+        public static string Text_Certificate_SkipPropagation {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SkipPropagation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跳过传播检查可能导致 CA 校验失败并消耗签发配额，仅在网络环境特殊时使用。.
+        /// </summary>
+        public static string Text_Certificate_SkipPropagationWarning {
+            get {
+                return ResourceManager.GetString("Text.Certificate.SkipPropagationWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在清理验证记录….
+        /// </summary>
+        public static string Text_Certificate_Stage_CleaningUp {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.CleaningUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 正在准备 lego….
         /// </summary>
         public static string Text_Certificate_Stage_DownloadingLego {
@@ -1509,6 +1626,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 正在签发并整理证书文件….
+        /// </summary>
+        public static string Text_Certificate_Stage_ObtainingCert {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.ObtainingCert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 正在向 CA 下单….
         /// </summary>
         public static string Text_Certificate_Stage_Preparing {
@@ -1518,11 +1644,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 正在通过 DNS API 下发验证记录….
+        /// </summary>
+        public static string Text_Certificate_Stage_RunningPresent {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.RunningPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 签发完成.
         /// </summary>
         public static string Text_Certificate_Stage_Succeeded {
             get {
                 return ResourceManager.GetString("Text.Certificate.Stage.Succeeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在等待 DNS 传播与 CA 校验….
+        /// </summary>
+        public static string Text_Certificate_Stage_WaitingPropagation {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Stage.WaitingPropagation", resourceCulture);
             }
         }
         
@@ -1568,6 +1712,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Certificate_Title {
             get {
                 return ResourceManager.GetString("Text.Certificate.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用于隧道.
+        /// </summary>
+        public static string Text_Certificate_UseForTunnel {
+            get {
+                return ResourceManager.GetString("Text.Certificate.UseForTunnel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 在「创建/编辑隧道」的 HTTPS 证书设置中点击「从证书助手选择」即可使用该证书。.
+        /// </summary>
+        public static string Text_Certificate_UseForTunnelHint {
+            get {
+                return ResourceManager.GetString("Text.Certificate.UseForTunnelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请选择 DNS 账户，或改用「手动 DNS」模式.
+        /// </summary>
+        public static string Text_Certificate_Validation_DnsAccountRequired {
+            get {
+                return ResourceManager.GetString("Text.Certificate.Validation.DnsAccountRequired", resourceCulture);
             }
         }
         
@@ -2544,6 +2715,474 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 账户名称.
+        /// </summary>
+        public static string Text_Dns_AccountName {
+            get {
+                return ResourceManager.GetString("Text.Dns.AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 备注名，例如「CF-主域名」.
+        /// </summary>
+        public static string Text_Dns_AccountNamePlaceholder {
+            get {
+                return ResourceManager.GetString("Text.Dns.AccountNamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新建账户.
+        /// </summary>
+        public static string Text_Dns_Add {
+            get {
+                return ResourceManager.GetString("Text.Dns.Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除后已签发的证书仍可继续使用，但无法再用该账户申请或续签。确定删除吗？.
+        /// </summary>
+        public static string Text_Dns_DeleteConfirm {
+            get {
+                return ResourceManager.GetString("Text.Dns.DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除 DNS 账户.
+        /// </summary>
+        public static string Text_Dns_DeleteConfirmTitle {
+            get {
+                return ResourceManager.GetString("Text.Dns.DeleteConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户已删除.
+        /// </summary>
+        public static string Text_Dns_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Dns.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保存 DNS 服务商凭据，用于一键自动申请证书.
+        /// </summary>
+        public static string Text_Dns_Description {
+            get {
+                return ResourceManager.GetString("Text.Dns.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看如何创建 Token.
+        /// </summary>
+        public static string Text_Dns_Documentation {
+            get {
+                return ResourceManager.GetString("Text.Dns.Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 编辑.
+        /// </summary>
+        public static string Text_Dns_Edit {
+            get {
+                return ResourceManager.GetString("Text.Dns.Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂无 DNS 账户，点击「新建账户」添加。.
+        /// </summary>
+        public static string Text_Dns_Empty {
+            get {
+                return ResourceManager.GetString("Text.Dns.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 所选 DNS 账户不可用：账户已被删除或凭据不完整，请重新选择或编辑该账户。.
+        /// </summary>
+        public static string Text_Dns_Error_AccountUnusable {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.AccountUnusable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已取消证书申请。.
+        /// </summary>
+        public static string Text_Dns_Error_Cancelled {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 证书已签发但文件整理失败，请查看日志确认目录权限。.
+        /// </summary>
+        public static string Text_Dns_Error_CertSaveFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.CertSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CA 域名校验失败：挑战记录未被正确解析。请确认域名解析服务商与所选账户一致。.
+        /// </summary>
+        public static string Text_Dns_Error_ChallengeFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.ChallengeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 服务商认证失败：Token / 密钥无效或已过期，请重新生成并更新账户。.
+        /// </summary>
+        public static string Text_Dns_Error_DnsAuthFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsAuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 服务商拒绝访问：Token 权限不足，请按提示授予最小 DNS 编辑权限。.
+        /// </summary>
+        public static string Text_Dns_Error_DnsPermissionDenied {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 未在所选服务商找到该域名的解析区域：请确认域名已托管在该账户下，或换用正确的 DNS 账户。.
+        /// </summary>
+        public static string Text_Dns_Error_DnsZoneNotFound {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.DnsZoneNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 域名格式不正确，请检查后重试。.
+        /// </summary>
+        public static string Text_Dns_Error_InvalidDomain {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.InvalidDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 无法准备证书组件 lego（下载或校验失败），请检查网络后重试，或改用手动 DNS 模式。.
+        /// </summary>
+        public static string Text_Dns_Error_LegoUnavailable {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.LegoUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 网络异常：无法连接 CA 或 DNS 服务商 API。请检查网络、代理或防火墙设置。.
+        /// </summary>
+        public static string Text_Dns_Error_NetworkError {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.NetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 等待 DNS 传播超时：解析尚未生效。可稍后重试，或在高级选项中延长等待时间。.
+        /// </summary>
+        public static string Text_Dns_Error_PropagationTimeout {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.PropagationTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CA 限流：短时间内的申请次数过多。请稍后再试，或先用 Staging 环境验证流程。.
+        /// </summary>
+        public static string Text_Dns_Error_RateLimited {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.RateLimited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 证书申请失败，请展开日志查看 lego 输出以排查原因。.
+        /// </summary>
+        public static string Text_Dns_Error_Unknown {
+            get {
+                return ResourceManager.GetString("Text.Dns.Error.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AccessKey ID.
+        /// </summary>
+        public static string Text_Dns_Field_AccessKeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessKeyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AccessKey Secret.
+        /// </summary>
+        public static string Text_Dns_Field_AccessKeySecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessKeySecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Token.
+        /// </summary>
+        public static string Text_Dns_Field_ApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecretId.
+        /// </summary>
+        public static string Text_Dns_Field_SecretId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecretKey.
+        /// </summary>
+        public static string Text_Dns_Field_SecretKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STS 临时令牌（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_SecurityToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecurityToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 临时令牌（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_SessionToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SessionToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户用于自动完成域名验证（DNS-01）：申请证书时由本机调用 DNS 服务商 API 自动添加并清理 TXT 记录，无需手动改解析。凭据仅加密保存在本机，不会上传给 ME Frp 或任何服务器；建议按最小权限创建专用 Token，不要使用全局账号密码。.
+        /// </summary>
+        public static string Text_Dns_Intro {
+            get {
+                return ResourceManager.GetString("Text.Dns.Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议使用 RAM 子账号并按最小权限仅授予云解析（AliyunDNSFullAccess 或自定义策略），不要使用主账号 AccessKey。.
+        /// </summary>
+        public static string Text_Dns_Permission_AliDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AliDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Token：权限仅需 Zone → DNS → Edit（并包含 Zone → Zone → Read），并限定到目标域名。.
+        /// </summary>
+        public static string Text_Dns_Permission_Cloudflare {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Cloudflare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议使用腾讯云子账号的 API 密钥，仅授予 DNSPod 相关权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsPod {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 LTAI5t....
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessKeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessKeyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 AccessKey Secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessKeySecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessKeySecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴仅含 DNS 编辑权限的 Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 可选，留空即可.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Optional {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Optional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 AKID....
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 SecretKey.
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 服务商.
+        /// </summary>
+        public static string Text_Dns_Provider {
+            get {
+                return ResourceManager.GetString("Text.Dns.Provider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保存.
+        /// </summary>
+        public static string Text_Dns_Save {
+            get {
+                return ResourceManager.GetString("Text.Dns.Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户已保存.
+        /// </summary>
+        public static string Text_Dns_Saved {
+            get {
+                return ResourceManager.GetString("Text.Dns.Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保存失败，请查看日志.
+        /// </summary>
+        public static string Text_Dns_SaveFailed {
+            get {
+                return ResourceManager.GetString("Text.Dns.SaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 凭据使用本机密钥加密后保存，不会出现在日志或崩溃报告中。.
+        /// </summary>
+        public static string Text_Dns_StoreHint {
+            get {
+                return ResourceManager.GetString("Text.Dns.StoreHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 如果您的 DNS 服务商不在我们提供的列表中，您可以通过此表单提交，以便我们进行适配。.
+        /// </summary>
+        public static string Text_Dns_SubmitDnsProvider_Tip {
+            get {
+                return ResourceManager.GetString("Text.Dns.SubmitDnsProvider.Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 提交 DNS 服务商.
+        /// </summary>
+        public static string Text_Dns_SubmitProvider {
+            get {
+                return ResourceManager.GetString("Text.Dns.SubmitProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 账户.
+        /// </summary>
+        public static string Text_Dns_Title {
+            get {
+                return ResourceManager.GetString("Text.Dns.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 更新于 {0}.
+        /// </summary>
+        public static string Text_Dns_UpdatedAtFormat {
+            get {
+                return ResourceManager.GetString("Text.Dns.UpdatedAtFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请填写「{0}」.
+        /// </summary>
+        public static string Text_Dns_Validation_FieldRequiredFormat {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.FieldRequiredFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请填写账户名称.
+        /// </summary>
+        public static string Text_Dns_Validation_NameRequired {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请选择服务商.
+        /// </summary>
+        public static string Text_Dns_Validation_ProviderRequired {
+            get {
+                return ResourceManager.GetString("Text.Dns.Validation.ProviderRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///当前线路: {1}
         ///下载速度: {0}
@@ -2740,6 +3379,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} 天前.
+        /// </summary>
+        public static string Text_Global_DaysAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.DaysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 删除.
         /// </summary>
         public static string Text_Global_Delete {
@@ -2830,6 +3478,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} 小时前.
+        /// </summary>
+        public static string Text_Global_HoursAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 输入值.
         /// </summary>
         public static string Text_Global_InputValue {
@@ -2839,11 +3496,29 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 刚刚.
+        /// </summary>
+        public static string Text_Global_JustNow {
+            get {
+                return ResourceManager.GetString("Text.Global.JustNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 加载中....
         /// </summary>
         public static string Text_Global_Loading {
             get {
                 return ResourceManager.GetString("Text.Global.Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 分钟前.
+        /// </summary>
+        public static string Text_Global_MinutesAgo {
+            get {
+                return ResourceManager.GetString("Text.Global.MinutesAgo", resourceCulture);
             }
         }
         
@@ -2889,42 +3564,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_Off {
             get {
                 return ResourceManager.GetString("Text.Global.Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 刚刚.
-        /// </summary>
-        public static string Text_Global_JustNow {
-            get {
-                return ResourceManager.GetString("Text.Global.JustNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 分钟前.
-        /// </summary>
-        public static string Text_Global_MinutesAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.MinutesAgo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 小时前.
-        /// </summary>
-        public static string Text_Global_HoursAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.HoursAgo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 天前.
-        /// </summary>
-        public static string Text_Global_DaysAgo {
-            get {
-                return ResourceManager.GetString("Text.Global.DaysAgo", resourceCulture);
             }
         }
         
@@ -3100,15 +3739,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 去处理.
-        /// </summary>
-        public static string Text_Home_Recommend_Action_Manage {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.Action.Manage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 启动.
         /// </summary>
         public static string Text_Home_Recommend_Action_Launch {
@@ -3118,38 +3748,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 启动「{0}」.
+        ///   Looks up a localized string similar to 去处理.
         /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_Title {
+        public static string Text_Home_Recommend_Action_Manage {
             get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 你最近启动过这条隧道（{0}），可一键重新启动。.
-        /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_Reason {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Reason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 暂无启动记录.
-        /// </summary>
-        public static string Text_Home_Recommend_RecentTunnel_NeverStarted {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.NeverStarted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 该隧道已不存在，可能已被删除。.
-        /// </summary>
-        public static string Text_Home_Recommend_TunnelMissing {
-            get {
-                return ResourceManager.GetString("Text.Home.Recommend.TunnelMissing", resourceCulture);
+                return ResourceManager.GetString("Text.Home.Recommend.Action.Manage", resourceCulture);
             }
         }
         
@@ -3262,6 +3865,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 暂无启动记录.
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_NeverStarted {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.NeverStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你最近启动过这条隧道（{0}），可一键重新启动。.
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_Reason {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动「{0}」.
+        /// </summary>
+        public static string Text_Home_Recommend_RecentTunnel_Title {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.RecentTunnel.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 你有 {0} 条隧道但当前都没有运行，可前往管理页启动。.
         /// </summary>
         public static string Text_Home_Recommend_StartAnyTunnel_Reason {
@@ -3312,6 +3942,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Recommend_TrafficLow_Title {
             get {
                 return ResourceManager.GetString("Text.Home.Recommend.TrafficLow.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 该隧道已不存在，可能已被删除。.
+        /// </summary>
+        public static string Text_Home_Recommend_TunnelMissing {
+            get {
+                return ResourceManager.GetString("Text.Home.Recommend.TunnelMissing", resourceCulture);
             }
         }
         

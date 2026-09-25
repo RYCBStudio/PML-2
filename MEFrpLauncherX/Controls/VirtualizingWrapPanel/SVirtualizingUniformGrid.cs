@@ -474,7 +474,10 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
 
         protected override IEnumerable<Control>? GetRealizedContainers()
         {
-            return _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>().ToList();
+            return
+            [
+                .. _elementDictionary.Where(_ => _.Value.Control is { }).Select(_ => _.Value.Control).OfType<Control>()
+            ];
         }
 
         protected override IInputElement? GetControl(NavigationDirection direction, IInputElement? from, bool wrap)
@@ -539,23 +542,26 @@ AvaloniaProperty.Register<SVirtualizingUniformGrid, double>(nameof(ColumnSpacing
             {
                 if (!double.IsPositiveInfinity(RowHeight))
                 {
-                    return Array.Empty<double>();
+                    return [];
                 }
 
-                return _elementDictionary
-                    .Values
-                    .GroupBy(element => element.Top)
-                    .OrderBy(group => group.Key)
-                    .Select(group => GetSnapPointValue(group.Key, group.Max(element => element.Height), snapPointsAlignment))
-                    .ToList();
+                return
+                [
+                    .. _elementDictionary
+                        .Values
+                        .GroupBy(element => element.Top)
+                        .OrderBy(group => group.Key)
+                        .Select(group =>
+                            GetSnapPointValue(group.Key, group.Max(element => element.Height), snapPointsAlignment))
+                ];
             }
 
             if (Columns <= 0 || Bounds.Width <= 0)
             {
-                return Array.Empty<double>();
+                return [];
             }
 
-            return Array.Empty<double>();
+            return [];
         }
 
         public override double GetRegularSnapPoints(Orientation orientation, SnapPointsAlignment snapPointsAlignment, out double offset)

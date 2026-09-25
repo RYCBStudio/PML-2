@@ -43,7 +43,7 @@ public partial class DomainsEdit : UserControl, INotifyPropertyChanged
     public DomainsEdit(IEnumerable<string> headers)
     {
         InitializeComponent();
-        Domains = new AvaloniaList<string>(headers);
+        Domains = [.. headers];
         DataContext = this;
     }
 

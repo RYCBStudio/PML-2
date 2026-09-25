@@ -32,7 +32,7 @@ namespace Notify.NET.Builder
         private NotificationImageCropHint _imageCropHint = NotificationImageCropHint.Square;
         private NotificationAudioFile? _audioFile;
         private string? _customAudioPath;
-        private readonly List<NotificationButton> _buttons = new List<NotificationButton>();
+        private readonly List<NotificationButton> _buttons = [];
         private INotificationHandler? _handler;
         private TimeSpan? _expiration;
         private NotificationAudio _audio = NotificationAudio.Default;

@@ -21,7 +21,7 @@ public partial class PluginEngine : IAction
     public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
 
     /// <summary>执行日志只读快照（26.3.1 S4）</summary>
-    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => _executionLogs.ToArray();
+    public IReadOnlyList<PluginExecutionLogEntry> ExecutionLogs => [.. _executionLogs];
 
     /// <summary>清空执行日志</summary>
     public void ClearExecutionLogs()
@@ -104,7 +104,7 @@ public partial class PluginEngine : IAction
                 foreach (var trigger in plugin.Triggers)
                 {
                     if (!_triggerMap.ContainsKey(trigger.On))
-                        _triggerMap[trigger.On] = new List<PluginDefinition>();
+                        _triggerMap[trigger.On] = [];
                     _triggerMap[trigger.On].Add(plugin);
                 }
             }

@@ -203,11 +203,13 @@ public static class HomeRecommendStateStore
     {
         var state = Load();
         var now = DateTimeOffset.UtcNow;
-        return state.RecentLaunches
-            .Where(pair => now - pair.Value <= HomeRecommendState.RecentLaunchFreshness)
-            .OrderByDescending(pair => pair.Value)
-            .Select(pair => (pair.Key, pair.Value))
-            .ToList();
+        return
+        [
+            .. state.RecentLaunches
+                .Where(pair => now - pair.Value <= HomeRecommendState.RecentLaunchFreshness)
+                .OrderByDescending(pair => pair.Value)
+                .Select(pair => (pair.Key, pair.Value))
+        ];
     }
 
     /// <summary>移除已被删除的隧道的本地启动记录（管理页删除隧道后调用）。</summary>

@@ -147,16 +147,16 @@ namespace Notify.NET.Platform.Linux
 
             // Build the a{sv} property dictionary.
             IntPtr[] entries =
-            {
+            [
                 DictEntry("progress",         GioDBusNative.g_variant_new_double(progress)),
                 DictEntry("progress-visible", GioDBusNative.g_variant_new_boolean(visible ? 1 : 0)),
                 DictEntry("urgent",           GioDBusNative.g_variant_new_boolean(urgent ? 1 : 0))
-            };
+            ];
 
             var dict = GioDBusNative.g_variant_new_array(IntPtr.Zero, entries, (UIntPtr)entries.Length);
 
             // Build the (s a{sv}) tuple.
-            IntPtr[] tupleChildren = { GioDBusNative.g_variant_new_string(_appUri), dict };
+            IntPtr[] tupleChildren = [GioDBusNative.g_variant_new_string(_appUri), dict];
             var parameters = GioDBusNative.g_variant_new_tuple(tupleChildren, (UIntPtr)tupleChildren.Length);
 
             var error = IntPtr.Zero;

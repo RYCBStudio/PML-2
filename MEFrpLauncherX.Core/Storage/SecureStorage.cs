@@ -172,7 +172,7 @@ internal static class SecureStorage
 
         var files = Directory.GetFiles(StorageDirectory, "*.dat");
 
-        return files.Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
+        return [.. files.Select(file => Path.GetFileNameWithoutExtension(file))];
     }
 
     private static byte[] GetOrCreateSecureKey(string username)

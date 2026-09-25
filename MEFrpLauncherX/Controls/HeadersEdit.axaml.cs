@@ -43,7 +43,7 @@ public partial class HeadersEdit : UserControl
     public HeadersEdit(IEnumerable<RequestHeader> headers)
     {
         InitializeComponent();
-        Headers = new AvaloniaList<RequestHeader>(headers);
+        Headers = [.. headers];
         DataContext = this;
     }
 

@@ -183,7 +183,7 @@
           <HintPath>RYCB.PML2.MEFrpCaptchaLib.dll</HintPath>
         </Reference>
         <Reference Include="SecretLib">
-            <HintPath>SecretLib.dll</HintPath>
+          <HintPath>G:\VSProj\SecretLib\bin\Release\net10.0\Obfuscar\SecretLib.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>

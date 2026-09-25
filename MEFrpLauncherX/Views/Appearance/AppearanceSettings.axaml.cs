@@ -269,7 +269,7 @@ public class RecentImagesSettingsItem : SettingsItemBase
         if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", ".photos")))
         {
             var cnt = File.ReadAllLines(Path.Combine(Core.App.StartupPath, "Cache", ".photos"));
-            ImagePaths = cnt.ToList();
+            ImagePaths = [.. cnt];
 
             if (ImagePaths.Count <= 1)
             {

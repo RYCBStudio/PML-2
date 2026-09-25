@@ -24,12 +24,13 @@ public partial class ALPSettings : Window
         ConfigManager.UpdateConfig(cfg =>
             cfg.AutoLaunchProxies.Clear());
         ConfigManager.UpdateConfig(cfg =>
-            cfg.AutoLaunchProxies.AddRange(AutoLaunchList.Items.Cast<UserProxyViewModel>().Select(proxy =>
+            cfg.AutoLaunchProxies.AddRange([
+                .. AutoLaunchList.Items.Cast<UserProxyViewModel>().Select(proxy =>
                     new ALPConfig
                     {
                         Name = proxy.proxyName, Id = proxy.proxyId, UseConfig = proxy.UseConfig, Config = proxy.Config
                     })
-                .ToList()));
+            ]));
         Close();
         Growl.Success(Languages.Text_ALPSettings_SaveSuccess);
     }

@@ -3595,6 +3595,214 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
         <value>Failed</value>
     </data>
+    <!-- 26.4 Phase B: DNS accounts and one-click issuance -->
+    <data name="Text.Dns.Title" xml:space="preserve">
+        <value>DNS accounts</value>
+    </data>
+    <data name="Text.Dns.Description" xml:space="preserve">
+        <value>Store DNS provider credentials for one-click certificate issuance</value>
+    </data>
+    <data name="Text.Dns.Intro" xml:space="preserve">
+        <value>A DNS account automates domain validation (DNS-01): when requesting a certificate, this machine calls your DNS provider's API to create and remove the TXT record automatically, so you never touch DNS by hand. Credentials are encrypted and stored locally only, and are never uploaded to ME Frp or any server. Create a dedicated token with the least privilege instead of using global account credentials.</value>
+    </data>
+    <data name="Text.Dns.StoreHint" xml:space="preserve">
+        <value>Credentials are encrypted with a key that never leaves this machine, and never appear in logs or crash reports.</value>
+    </data>
+    <data name="Text.Dns.Provider" xml:space="preserve">
+        <value>Provider</value>
+    </data>
+    <data name="Text.Dns.AccountName" xml:space="preserve">
+        <value>Account name</value>
+    </data>
+    <data name="Text.Dns.AccountNamePlaceholder" xml:space="preserve">
+        <value>A label, e.g. "CF-primary"</value>
+    </data>
+    <data name="Text.Dns.Add" xml:space="preserve">
+        <value>New account</value>
+    </data>
+    <data name="Text.Dns.Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Text.Dns.Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Text.Dns.Saved" xml:space="preserve">
+        <value>DNS account saved</value>
+    </data>
+    <data name="Text.Dns.Deleted" xml:space="preserve">
+        <value>DNS account deleted</value>
+    </data>
+    <data name="Text.Dns.DeleteConfirmTitle" xml:space="preserve">
+        <value>Delete DNS account</value>
+    </data>
+    <data name="Text.Dns.DeleteConfirm" xml:space="preserve">
+        <value>Certificates you already issued keep working, but you can no longer request or renew with this account. Delete it?</value>
+    </data>
+    <data name="Text.Dns.Empty" xml:space="preserve">
+        <value>No DNS accounts yet. Choose "New account" to add one.</value>
+    </data>
+    <data name="Text.Dns.UpdatedAtFormat" xml:space="preserve">
+        <value>Updated {0}</value>
+    </data>
+    <data name="Text.Dns.Validation.NameRequired" xml:space="preserve">
+        <value>Please enter an account name</value>
+    </data>
+    <data name="Text.Dns.Validation.ProviderRequired" xml:space="preserve">
+        <value>Please choose a provider</value>
+    </data>
+    <data name="Text.Dns.Validation.FieldRequiredFormat" xml:space="preserve">
+        <value>Please fill in "{0}"</value>
+    </data>
+    <data name="Text.Dns.SaveFailed" xml:space="preserve">
+        <value>Could not save. Check the log for details.</value>
+    </data>
+    <data name="Text.Dns.Documentation" xml:space="preserve">
+        <value>How to create a token</value>
+    </data>
+    <data name="Text.Dns.Field.ApiToken" xml:space="preserve">
+        <value>API token</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKeyId" xml:space="preserve">
+        <value>AccessKey ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKeySecret" xml:space="preserve">
+        <value>AccessKey secret</value>
+    </data>
+    <data name="Text.Dns.Field.SecurityToken" xml:space="preserve">
+        <value>STS token (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.SecretId" xml:space="preserve">
+        <value>SecretId</value>
+    </data>
+    <data name="Text.Dns.Field.SecretKey" xml:space="preserve">
+        <value>SecretKey</value>
+    </data>
+    <data name="Text.Dns.Field.SessionToken" xml:space="preserve">
+        <value>Session token (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiToken" xml:space="preserve">
+        <value>Paste a token with DNS edit permission only</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKeyId" xml:space="preserve">
+        <value>e.g. LTAI5t...</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKeySecret" xml:space="preserve">
+        <value>Paste the AccessKey secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretId" xml:space="preserve">
+        <value>e.g. AKID...</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretKey" xml:space="preserve">
+        <value>Paste the SecretKey</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Optional" xml:space="preserve">
+        <value>Optional — leave empty</value>
+    </data>
+    <data name="Text.Dns.Permission.Cloudflare" xml:space="preserve">
+        <value>Create a dedicated API token: Zone → DNS → Edit (plus Zone → Zone → Read), scoped to your domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.AliDns" xml:space="preserve">
+        <value>Use a RAM sub-account limited to cloud DNS permissions (AliyunDNSFullAccess or a custom policy). Do not use the primary account AccessKey.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsPod" xml:space="preserve">
+        <value>Use an API key from a Tencent Cloud sub-account limited to DNSPod permissions. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Error.LegoUnavailable" xml:space="preserve">
+        <value>Could not prepare the lego certificate component (download or checksum failed). Check your network and retry, or switch to manual DNS.</value>
+    </data>
+    <data name="Text.Dns.Error.AccountUnusable" xml:space="preserve">
+        <value>The selected DNS account is unusable: it was deleted or its credentials are incomplete. Pick another account or edit it.</value>
+    </data>
+    <data name="Text.Dns.Error.DnsAuthFailed" xml:space="preserve">
+        <value>DNS provider authentication failed: the token or key is invalid or expired. Generate a new one and update the account.</value>
+    </data>
+    <data name="Text.Dns.Error.DnsPermissionDenied" xml:space="preserve">
+        <value>The DNS provider denied access: the token lacks permission. Grant the minimal DNS edit permission described above.</value>
+    </data>
+    <data name="Text.Dns.Error.DnsZoneNotFound" xml:space="preserve">
+        <value>The domain's zone was not found at the selected provider. Confirm the domain is hosted on that account, or pick the right DNS account.</value>
+    </data>
+    <data name="Text.Dns.Error.PropagationTimeout" xml:space="preserve">
+        <value>Timed out waiting for DNS propagation — the record is not visible yet. Retry later, or increase the wait time under advanced options.</value>
+    </data>
+    <data name="Text.Dns.Error.RateLimited" xml:space="preserve">
+        <value>The CA rate-limited your requests. Wait a while, or validate the flow on the staging environment first.</value>
+    </data>
+    <data name="Text.Dns.Error.ChallengeFailed" xml:space="preserve">
+        <value>The CA could not validate the domain: the challenge record was not resolved correctly. Make sure the domain's nameservers match the selected account.</value>
+    </data>
+    <data name="Text.Dns.Error.InvalidDomain" xml:space="preserve">
+        <value>The domain name is not valid. Please check it and retry.</value>
+    </data>
+    <data name="Text.Dns.Error.NetworkError" xml:space="preserve">
+        <value>Network error: could not reach the CA or the DNS provider API. Check your network, proxy or firewall.</value>
+    </data>
+    <data name="Text.Dns.Error.CertSaveFailed" xml:space="preserve">
+        <value>The certificate was issued but could not be filed. Check the log and the target directory permissions.</value>
+    </data>
+    <data name="Text.Dns.Error.Cancelled" xml:space="preserve">
+        <value>Certificate request cancelled.</value>
+    </data>
+    <data name="Text.Dns.Error.Unknown" xml:space="preserve">
+        <value>Certificate request failed. Expand the log to inspect the lego output.</value>
+    </data>
+    <data name="Text.Certificate.Mode" xml:space="preserve">
+        <value>Validation method</value>
+    </data>
+    <data name="Text.Certificate.Mode.DnsAccount" xml:space="preserve">
+        <value>DNS account (automatic)</value>
+    </data>
+    <data name="Text.Certificate.Mode.Manual" xml:space="preserve">
+        <value>Manual DNS (add TXT yourself)</value>
+    </data>
+    <data name="Text.Certificate.DnsAccount" xml:space="preserve">
+        <value>DNS account</value>
+    </data>
+    <data name="Text.Certificate.DnsAccountNone" xml:space="preserve">
+        <value>No account available — add one under "DNS accounts" first</value>
+    </data>
+    <data name="Text.Certificate.ManageDnsAccounts" xml:space="preserve">
+        <value>Manage DNS accounts</value>
+    </data>
+    <data name="Text.Certificate.Validation.DnsAccountRequired" xml:space="preserve">
+        <value>Choose a DNS account, or switch to manual DNS</value>
+    </data>
+    <data name="Text.Certificate.Advanced" xml:space="preserve">
+        <value>Advanced</value>
+    </data>
+    <data name="Text.Certificate.SkipPropagation" xml:space="preserve">
+        <value>Skip DNS propagation check (not recommended)</value>
+    </data>
+    <data name="Text.Certificate.SkipPropagationWarning" xml:space="preserve">
+        <value>Skipping the propagation check can make CA validation fail and consume issuance quota. Use only in unusual network setups.</value>
+    </data>
+    <data name="Text.Certificate.Log" xml:space="preserve">
+        <value>Run log</value>
+    </data>
+    <data name="Text.Certificate.LogHint" xml:space="preserve">
+        <value>Tokens and keys are redacted automatically in this log</value>
+    </data>
+    <data name="Text.Certificate.Stage.RunningPresent" xml:space="preserve">
+        <value>Publishing the challenge record via the DNS API…</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingPropagation" xml:space="preserve">
+        <value>Waiting for DNS propagation and CA validation…</value>
+    </data>
+    <data name="Text.Certificate.Stage.ObtainingCert" xml:space="preserve">
+        <value>Issuing and filing the certificate…</value>
+    </data>
+    <data name="Text.Certificate.Stage.CleaningUp" xml:space="preserve">
+        <value>Cleaning up the challenge record…</value>
+    </data>
+    <data name="Text.Certificate.FallbackToManual" xml:space="preserve">
+        <value>Switch to manual DNS</value>
+    </data>
+    <data name="Text.Certificate.UseForTunnel" xml:space="preserve">
+        <value>Use for a tunnel</value>
+    </data>
+    <data name="Text.Certificate.UseForTunnelHint" xml:space="preserve">
+        <value>In the HTTPS settings of the create/edit tunnel page, click "Choose from certificate assistant" to use this certificate.</value>
+    </data>
     <data name="Text.Home.Simple.Greeting.Noon" xml:space="preserve">
         <value>Good afternoon, {0}</value>
     </data>
@@ -3609,5 +3817,11 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Home.Simple.Greeting" xml:space="preserve">
         <value>Hello, {0}</value>
+    </data>
+    <data name="Text.Dns.SubmitProvider" xml:space="preserve">
+        <value>Submit DNS Provider</value>
+    </data>
+    <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
+        <value>	If your DNS provider is not in our list, you can submit it here so we can add support for it.</value>
     </data>
 </root>

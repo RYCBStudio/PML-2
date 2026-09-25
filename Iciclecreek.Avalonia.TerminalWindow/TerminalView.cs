@@ -1715,7 +1715,7 @@ namespace Iciclecreek.TerminalWindow
                 // Add arguments if provided
                 if (Args is { Count: > 0 })
                 {
-                    options.CommandLine = Args.ToArray();
+                    options.CommandLine = [.. Args];
                 }
 
                 _ptyConnection = await PtyProvider.SpawnAsync(options, _processCts.Token);
@@ -2007,7 +2007,7 @@ namespace Iciclecreek.TerminalWindow
             }
             
             // Build and cache text runs for this line
-            textRuns = new List<CachedTextRun>();
+            textRuns = [];
 
             for (var x = 0; x < _terminal.Cols;)
             {

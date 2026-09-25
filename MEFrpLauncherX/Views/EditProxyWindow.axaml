@@ -107,7 +107,12 @@
                     <fa:SettingsExpanderItem x:Name="CertificateSettingsForPath" IsVisible="False" Content="{x:Static languages:Languages.Text_CreateProxy_SslCertPath}"
                                              Description="{x:Static languages:Languages.Text_CreateProxy_SslPathDescription}">
                         <fa:SettingsExpanderItem.Footer>
-                            <TextBox x:Name="SslPathBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslCertPathPlaceholder}" />
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBox x:Name="SslPathBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslCertPathPlaceholder}" />
+                                <!-- 26.4：从证书助手选择已签发的证书（与创建页一致） -->
+                                <Button Click="PickCertificateFromAssistant"
+                                        Content="{x:Static languages:Languages.Text_Certificate_SelectForTunnel}" />
+                            </StackPanel>
                         </fa:SettingsExpanderItem.Footer>
                     </fa:SettingsExpanderItem>
                     <fa:SettingsExpanderItem x:Name="CertificateSettingsForPrivateKey" IsVisible="False"

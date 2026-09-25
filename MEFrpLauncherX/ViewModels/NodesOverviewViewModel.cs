@@ -153,7 +153,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
                 NodesStatus = res.data
             };
 
-            AllNodes = new AvaloniaList<InfoClasses.NodeStatus>(result.NodesStatus);
+            AllNodes = [with(result.NodesStatus)];
         }
         catch (Exception ex)
         {

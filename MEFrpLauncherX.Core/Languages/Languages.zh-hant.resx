@@ -3590,6 +3590,214 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Certificate.Stage.Failed" xml:space="preserve">
         <value>申請失敗</value>
     </data>
+    <!-- 26.4 階段 B：DNS 帳戶與一鍵申請 -->
+    <data name="Text.Dns.Title" xml:space="preserve">
+        <value>DNS 帳戶</value>
+    </data>
+    <data name="Text.Dns.Description" xml:space="preserve">
+        <value>儲存 DNS 服務商憑證，用於一鍵自動申請憑證</value>
+    </data>
+    <data name="Text.Dns.Intro" xml:space="preserve">
+        <value>DNS 帳戶用於自動完成網域驗證（DNS-01）：申請憑證時由本機呼叫 DNS 服務商 API 自動新增並清理 TXT 記錄，無需手動修改解析。憑證僅加密儲存在本機，不會上傳給 ME Frp 或任何伺服器；建議依最小權限建立專用 Token，請勿使用全域帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.StoreHint" xml:space="preserve">
+        <value>憑證使用本機金鑰加密後儲存，不會出現在日誌或當機報告中。</value>
+    </data>
+    <data name="Text.Dns.Provider" xml:space="preserve">
+        <value>服務商</value>
+    </data>
+    <data name="Text.Dns.AccountName" xml:space="preserve">
+        <value>帳戶名稱</value>
+    </data>
+    <data name="Text.Dns.AccountNamePlaceholder" xml:space="preserve">
+        <value>備註名稱，例如「CF-主網域」</value>
+    </data>
+    <data name="Text.Dns.Add" xml:space="preserve">
+        <value>新增帳戶</value>
+    </data>
+    <data name="Text.Dns.Edit" xml:space="preserve">
+        <value>編輯</value>
+    </data>
+    <data name="Text.Dns.Save" xml:space="preserve">
+        <value>儲存</value>
+    </data>
+    <data name="Text.Dns.Saved" xml:space="preserve">
+        <value>DNS 帳戶已儲存</value>
+    </data>
+    <data name="Text.Dns.Deleted" xml:space="preserve">
+        <value>DNS 帳戶已刪除</value>
+    </data>
+    <data name="Text.Dns.DeleteConfirmTitle" xml:space="preserve">
+        <value>刪除 DNS 帳戶</value>
+    </data>
+    <data name="Text.Dns.DeleteConfirm" xml:space="preserve">
+        <value>刪除後已簽發的憑證仍可繼續使用，但無法再用該帳戶申請或續簽。確定刪除嗎？</value>
+    </data>
+    <data name="Text.Dns.Empty" xml:space="preserve">
+        <value>尚無 DNS 帳戶，點選「新增帳戶」新增。</value>
+    </data>
+    <data name="Text.Dns.UpdatedAtFormat" xml:space="preserve">
+        <value>更新於 {0}</value>
+    </data>
+    <data name="Text.Dns.Validation.NameRequired" xml:space="preserve">
+        <value>請填寫帳戶名稱</value>
+    </data>
+    <data name="Text.Dns.Validation.ProviderRequired" xml:space="preserve">
+        <value>請選擇服務商</value>
+    </data>
+    <data name="Text.Dns.Validation.FieldRequiredFormat" xml:space="preserve">
+        <value>請填寫「{0}」</value>
+    </data>
+    <data name="Text.Dns.SaveFailed" xml:space="preserve">
+        <value>儲存失敗，請查看日誌</value>
+    </data>
+    <data name="Text.Dns.Documentation" xml:space="preserve">
+        <value>查看如何建立 Token</value>
+    </data>
+    <data name="Text.Dns.Field.ApiToken" xml:space="preserve">
+        <value>API Token</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKeyId" xml:space="preserve">
+        <value>AccessKey ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKeySecret" xml:space="preserve">
+        <value>AccessKey Secret</value>
+    </data>
+    <data name="Text.Dns.Field.SecurityToken" xml:space="preserve">
+        <value>STS 臨時權杖（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.SecretId" xml:space="preserve">
+        <value>SecretId</value>
+    </data>
+    <data name="Text.Dns.Field.SecretKey" xml:space="preserve">
+        <value>SecretKey</value>
+    </data>
+    <data name="Text.Dns.Field.SessionToken" xml:space="preserve">
+        <value>臨時權杖（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiToken" xml:space="preserve">
+        <value>貼上僅含 DNS 編輯權限的 Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKeyId" xml:space="preserve">
+        <value>例如 LTAI5t...</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKeySecret" xml:space="preserve">
+        <value>貼上 AccessKey Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretId" xml:space="preserve">
+        <value>例如 AKID...</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretKey" xml:space="preserve">
+        <value>貼上 SecretKey</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Optional" xml:space="preserve">
+        <value>選填，留空即可</value>
+    </data>
+    <data name="Text.Dns.Permission.Cloudflare" xml:space="preserve">
+        <value>建議建立專用 API Token：權限僅需 Zone → DNS → Edit（並包含 Zone → Zone → Read），並限定到目標網域。</value>
+    </data>
+    <data name="Text.Dns.Permission.AliDns" xml:space="preserve">
+        <value>建議使用 RAM 子帳號並依最小權限僅授予雲解析（AliyunDNSFullAccess 或自訂策略），請勿使用主帳號 AccessKey。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsPod" xml:space="preserve">
+        <value>建議使用騰訊雲子帳號的 API 金鑰，僅授予 DNSPod 相關權限；請勿使用主帳號金鑰。</value>
+    </data>
+    <data name="Text.Dns.Error.LegoUnavailable" xml:space="preserve">
+        <value>無法準備憑證元件 lego（下載或校驗失敗），請檢查網路後重試，或改用手動 DNS 模式。</value>
+    </data>
+    <data name="Text.Dns.Error.AccountUnusable" xml:space="preserve">
+        <value>所選 DNS 帳戶無法使用：帳戶已被刪除或憑證不完整，請重新選擇或編輯該帳戶。</value>
+    </data>
+    <data name="Text.Dns.Error.DnsAuthFailed" xml:space="preserve">
+        <value>DNS 服務商驗證失敗：Token / 金鑰無效或已過期，請重新產生並更新帳戶。</value>
+    </data>
+    <data name="Text.Dns.Error.DnsPermissionDenied" xml:space="preserve">
+        <value>DNS 服務商拒絕存取：Token 權限不足，請依提示授予最小 DNS 編輯權限。</value>
+    </data>
+    <data name="Text.Dns.Error.DnsZoneNotFound" xml:space="preserve">
+        <value>未在所選服務商找到該網域的解析區域：請確認網域已託管在該帳戶下，或改用正確的 DNS 帳戶。</value>
+    </data>
+    <data name="Text.Dns.Error.PropagationTimeout" xml:space="preserve">
+        <value>等待 DNS 傳播逾時：解析尚未生效。可稍後重試，或在進階選項中延長等待時間。</value>
+    </data>
+    <data name="Text.Dns.Error.RateLimited" xml:space="preserve">
+        <value>CA 限流：短時間內申請次數過多。請稍後再試，或先用 Staging 環境驗證流程。</value>
+    </data>
+    <data name="Text.Dns.Error.ChallengeFailed" xml:space="preserve">
+        <value>CA 網域驗證失敗：挑戰記錄未被正確解析。請確認網域解析服務商與所選帳戶一致。</value>
+    </data>
+    <data name="Text.Dns.Error.InvalidDomain" xml:space="preserve">
+        <value>網域格式不正確，請檢查後重試。</value>
+    </data>
+    <data name="Text.Dns.Error.NetworkError" xml:space="preserve">
+        <value>網路異常：無法連線 CA 或 DNS 服務商 API。請檢查網路、代理或防火牆設定。</value>
+    </data>
+    <data name="Text.Dns.Error.CertSaveFailed" xml:space="preserve">
+        <value>憑證已簽發但檔案整理失敗，請查看日誌確認目錄權限。</value>
+    </data>
+    <data name="Text.Dns.Error.Cancelled" xml:space="preserve">
+        <value>已取消憑證申請。</value>
+    </data>
+    <data name="Text.Dns.Error.Unknown" xml:space="preserve">
+        <value>憑證申請失敗，請展開日誌查看 lego 輸出以排查原因。</value>
+    </data>
+    <data name="Text.Certificate.Mode" xml:space="preserve">
+        <value>驗證方式</value>
+    </data>
+    <data name="Text.Certificate.Mode.DnsAccount" xml:space="preserve">
+        <value>DNS 帳戶（一鍵自動）</value>
+    </data>
+    <data name="Text.Certificate.Mode.Manual" xml:space="preserve">
+        <value>手動 DNS（自行新增 TXT）</value>
+    </data>
+    <data name="Text.Certificate.DnsAccount" xml:space="preserve">
+        <value>DNS 帳戶</value>
+    </data>
+    <data name="Text.Certificate.DnsAccountNone" xml:space="preserve">
+        <value>尚無可用帳戶，請先到「DNS 帳戶」新增</value>
+    </data>
+    <data name="Text.Certificate.ManageDnsAccounts" xml:space="preserve">
+        <value>管理 DNS 帳戶</value>
+    </data>
+    <data name="Text.Certificate.Validation.DnsAccountRequired" xml:space="preserve">
+        <value>請選擇 DNS 帳戶，或改用「手動 DNS」模式</value>
+    </data>
+    <data name="Text.Certificate.Advanced" xml:space="preserve">
+        <value>進階選項</value>
+    </data>
+    <data name="Text.Certificate.SkipPropagation" xml:space="preserve">
+        <value>跳過 DNS 傳播檢查（不建議）</value>
+    </data>
+    <data name="Text.Certificate.SkipPropagationWarning" xml:space="preserve">
+        <value>跳過傳播檢查可能導致 CA 驗證失敗並消耗簽發配額，僅在網路環境特殊時使用。</value>
+    </data>
+    <data name="Text.Certificate.Log" xml:space="preserve">
+        <value>執行日誌</value>
+    </data>
+    <data name="Text.Certificate.LogHint" xml:space="preserve">
+        <value>日誌中的 Token 與金鑰已自動遮蔽</value>
+    </data>
+    <data name="Text.Certificate.Stage.RunningPresent" xml:space="preserve">
+        <value>正在透過 DNS API 下發驗證記錄…</value>
+    </data>
+    <data name="Text.Certificate.Stage.WaitingPropagation" xml:space="preserve">
+        <value>正在等待 DNS 傳播與 CA 驗證…</value>
+    </data>
+    <data name="Text.Certificate.Stage.ObtainingCert" xml:space="preserve">
+        <value>正在簽發並整理憑證檔案…</value>
+    </data>
+    <data name="Text.Certificate.Stage.CleaningUp" xml:space="preserve">
+        <value>正在清理驗證記錄…</value>
+    </data>
+    <data name="Text.Certificate.FallbackToManual" xml:space="preserve">
+        <value>改用手動模式</value>
+    </data>
+    <data name="Text.Certificate.UseForTunnel" xml:space="preserve">
+        <value>用於隧道</value>
+    </data>
+    <data name="Text.Certificate.UseForTunnelHint" xml:space="preserve">
+        <value>在「建立/編輯隧道」的 HTTPS 憑證設定中點選「從憑證助手選擇」即可使用該憑證。</value>
+    </data>
     <data name="Text.Home.Simple.Greeting.Noon" xml:space="preserve">
         <value>中午好，{0}</value>
     </data>
@@ -3604,5 +3812,11 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Home.Simple.Greeting" xml:space="preserve">
         <value>你好，{0}</value>
+    </data>
+    <data name="Text.Dns.SubmitProvider" xml:space="preserve">
+        <value>	提交 DNS 服務商</value>
+    </data>
+    <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
+        <value>	若您的 DNS 服務商不在我們提供的清單中，您可以透過此表單提交，以便我們進行適配。</value>
     </data>
 </root>

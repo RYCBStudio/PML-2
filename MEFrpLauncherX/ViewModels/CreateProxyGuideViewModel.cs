@@ -25,7 +25,7 @@ public class CreateProxyGuideViewModel : ViewModelBase
     {
         get;
         set;
-    } = new();
+    } = [];
 
     public ProxyType? SelectedType
     {

@@ -177,8 +177,8 @@ public partial class ManageProxyPage : UserControl
                 };
                 userProxies ??= new InfoClasses.ProxyInfo
                 {
-                    nodes = db_nodes.ToArray(),
-                    proxies = db_proxy.ToArray()
+                    nodes = [.. db_nodes],
+                    proxies = [.. db_proxy]
                 };
 #endif
 

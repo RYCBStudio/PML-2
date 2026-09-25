@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Avalonia.Controls;
@@ -5,6 +8,7 @@ using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.ViewModels;
@@ -62,14 +66,14 @@ public partial class EditProxyWindow : Window
             ProxyName = pr.proxyName,
             LocalAddress = pr.localIp,
             LocalPort = pr.localPort,
-            RemoteAddress = pr.Domains.Distinct().ToList(),
+            RemoteAddress = [.. pr.Domains.Distinct()],
             RemotePort = pr.remotePort,
             XFromWhere = pr.headerXFromWhere,
-            HostHeaderRewrite = pr.hostHeaderRewrite
+            HostHeaderRewrite = pr.hostHeaderRewrite,
+            RequestHeaders = pr.RequestHeaders,
+            ResponseHeaders = pr.ResponseHeaders,
+            Locations = pr.Locations
         };
-        _createProxyViewModel.RequestHeaders = pr.RequestHeaders;
-        _createProxyViewModel.ResponseHeaders = pr.ResponseHeaders;
-        _createProxyViewModel.Locations = pr.Locations;
         _createProxyViewModel.RemoteAddress.AddRange(_proxy.Domains ?? []);
         DataContext = _createProxyViewModel;
         SecurityOptionsSelect.SelectedIndex = GetSecurityOptions();
@@ -84,7 +88,8 @@ public partial class EditProxyWindow : Window
         var he = new HeadersEdit();
         if (_createProxyViewModel.ResponseHeaders is not null && _createProxyViewModel.ResponseHeaders.Count != 0)
         {
-            he.Headers.AddRange(_createProxyViewModel.ResponseHeaders.Select(kv =>
+            he.Headers.AddRange([
+                .. _createProxyViewModel.ResponseHeaders.Select(kv =>
                 {
                     var key = kv.Key;
                     var val = kv.Value;
@@ -103,7 +108,7 @@ public partial class EditProxyWindow : Window
                         Value = val
                     };
                 })
-                .ToList());
+            ]);
         }
 
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
@@ -190,7 +195,8 @@ public partial class EditProxyWindow : Window
         var he = new HeadersEdit();
         if (_createProxyViewModel.RequestHeaders is not null && _createProxyViewModel.RequestHeaders.Count != 0)
         {
-            he.Headers.AddRange(_createProxyViewModel.RequestHeaders.Select(kv =>
+            he.Headers.AddRange([
+                .. _createProxyViewModel.RequestHeaders.Select(kv =>
                 {
                     var key = kv.Key;
                     var val = kv.Value;
@@ -209,7 +215,7 @@ public partial class EditProxyWindow : Window
                         Value = val
                     };
                 })
-                .ToList());
+            ]);
         }
 
         // foreach (var header in he.Headers.Where(header => header.Name == "NOTFOUND"))
@@ -273,7 +279,7 @@ public partial class EditProxyWindow : Window
         if (res == ContentDialogResult.Primary)
         {
             _createProxyViewModel.RemoteAddress.Clear();
-            _createProxyViewModel.RemoteAddress.AddRange(de.Domains.ToList());
+            _createProxyViewModel.RemoteAddress.AddRange([.. de.Domains]);
         }
     }
 
@@ -367,6 +373,104 @@ public partial class EditProxyWindow : Window
     }
 
     private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close(false);
+
+    /// <summary>
+    ///     从证书助手已签发的证书中选择一个，回填 HTTPS 隧道的证书/密钥路径（26.4 阶段 B）。
+    ///     与创建页保持同一交互；无本地证书时给出提示。
+    /// </summary>
+    private async void PickCertificateFromAssistant(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var items = Core.Services.CertStore.List();
+            if (items.Count == 0)
+            {
+                var goCreate = new ContentDialog
+                {
+                    Title = Languages.Text_Certificate_Title,
+                    Content = Languages.Text_Certificate_Empty,
+                    PrimaryButtonText = Languages.Text_Certificate_OpenDirectory,
+                    CloseButtonText = Languages.Text_Global_Cancel,
+                    DefaultButton = ContentDialogButton.Close
+                };
+                if (await goCreate.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    OpenCertificateRoot();
+                }
+
+                return;
+            }
+
+            var list = new ListBox
+            {
+                ItemsSource = items.Select(i => i.DisplayName).ToList(),
+                SelectedIndex = 0,
+                MinWidth = 320
+            };
+            var cd = new ContentDialog
+            {
+                Title = Languages.Text_Certificate_SelectTitle,
+                Content = list,
+                PrimaryButtonText = Languages.Text_Global_Confirm,
+                CloseButtonText = Languages.Text_Global_Cancel,
+                DefaultButton = ContentDialogButton.Primary
+            };
+            if (await cd.ShowAsync() != ContentDialogResult.Primary)
+            {
+                return;
+            }
+
+            var idx = list.SelectedIndex;
+            if (idx < 0 || idx >= items.Count)
+            {
+                return;
+            }
+
+            var picked = items[idx];
+            SslPathBox.Text = picked.FullChainPath;
+            SslKeyBox.Text = picked.PrivateKeyPath;
+
+            // 临期 / Staging 提醒，避免误用
+            if (picked.Staging)
+            {
+                Growl.Warning(Languages.Text_Certificate_Env_Staging);
+            }
+            else if (picked.IsExpiringSoon)
+            {
+                Growl.Warning($"{Languages.Text_Certificate_ExpiringSoon}（{picked.DaysToExpiry} d）");
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "选择证书失败");
+        }
+    }
+
+    /// <summary>用系统文件管理器打开证书根目录。</summary>
+    private static void OpenCertificateRoot()
+    {
+        try
+        {
+            var dir = Core.Services.CertStore.RootPath;
+            Directory.CreateDirectory(dir);
+            if (OperatingSystem.IsWindows())
+            {
+                Process.Start(new ProcessStartInfo("explorer.exe", dir) { UseShellExecute = true });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Process.Start("open", dir);
+            }
+            else
+            {
+                Process.Start("xdg-open", dir);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "打开证书目录失败");
+        }
+    }
 
     private async void GetRemotePort_Click(object sender, RoutedEventArgs e) => RemotePortNudBox.Value =
         (await MEFrpApiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;

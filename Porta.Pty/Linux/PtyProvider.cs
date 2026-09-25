@@ -27,10 +27,14 @@ namespace Porta.Pty.Linux
             string?[]? envp = null;
             if (options.Environment is { Count: > 0 })
             {
-                envp = options.Environment
-                    .Select(kvp => $"{kvp.Key}={kvp.Value}")
-                    .Concat(new string?[] { null }) // NULL-terminated
-                    .ToArray();
+                envp =
+                [
+                    .. options.Environment
+                        .Select(kvp => $"{kvp.Key}={kvp.Value}"),
+
+                    null // NULL-terminated
+
+                ];
             }
 
             var controlCharacters = new Dictionary<TermSpecialControlCharacter, sbyte>

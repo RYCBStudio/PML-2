@@ -427,27 +427,30 @@ public class FrpConfigService
                 Method = config.Auth.Method,
                 Token = config.Auth.Token
             },
-            Proxies = config.Proxies.Select(p => new JsonProxyConfig
-            {
-                Name = p.Name,
-                Type = p.Type,
-                LocalIP = p.LocalIP,
-                LocalPort = p.LocalPort,
-                RemotePort = p.RemotePort,
-                CustomDomains = p.CustomDomains,
-                Plugin = new JsonPluginConfig
+            Proxies =
+            [
+                .. config.Proxies.Select(p => new JsonProxyConfig
                 {
-                    Type = p.Plugin.Type,
-                    LocalAddr = p.Plugin.LocalAddr,
-                    CrtPath = p.Plugin.CrtPath,
-                    KeyPath = p.Plugin.KeyPath
-                },
-                Transport = new JsonTransportConfig
-                {
-                    UseEncryption = p.Transport.UseEncryption,
-                    UseCompression = p.Transport.UseCompression
-                }
-            }).ToList()
+                    Name = p.Name,
+                    Type = p.Type,
+                    LocalIP = p.LocalIP,
+                    LocalPort = p.LocalPort,
+                    RemotePort = p.RemotePort,
+                    CustomDomains = p.CustomDomains,
+                    Plugin = new JsonPluginConfig
+                    {
+                        Type = p.Plugin.Type,
+                        LocalAddr = p.Plugin.LocalAddr,
+                        CrtPath = p.Plugin.CrtPath,
+                        KeyPath = p.Plugin.KeyPath
+                    },
+                    Transport = new JsonTransportConfig
+                    {
+                        UseEncryption = p.Transport.UseEncryption,
+                        UseCompression = p.Transport.UseCompression
+                    }
+                })
+            ]
         };
     }
 
@@ -468,27 +471,30 @@ public class FrpConfigService
                 Method = jsonModel.Auth.Method,
                 Token = jsonModel.Auth.Token
             },
-            Proxies = jsonModel.Proxies.Select(p => new ProxyConfig
-            {
-                Name = p.Name,
-                Type = p.Type,
-                LocalIP = p.LocalIP,
-                LocalPort = p.LocalPort,
-                RemotePort = p.RemotePort,
-                CustomDomains = p.CustomDomains,
-                Plugin = new PluginConfig
+            Proxies =
+            [
+                .. jsonModel.Proxies.Select(p => new ProxyConfig
                 {
-                    Type = p.Plugin.Type,
-                    LocalAddr = p.Plugin.LocalAddr,
-                    CrtPath = p.Plugin.CrtPath,
-                    KeyPath = p.Plugin.KeyPath
-                },
-                Transport = new TransportConfig
-                {
-                    UseEncryption = p.Transport.UseEncryption,
-                    UseCompression = p.Transport.UseCompression
-                }
-            }).ToList()
+                    Name = p.Name,
+                    Type = p.Type,
+                    LocalIP = p.LocalIP,
+                    LocalPort = p.LocalPort,
+                    RemotePort = p.RemotePort,
+                    CustomDomains = p.CustomDomains,
+                    Plugin = new PluginConfig
+                    {
+                        Type = p.Plugin.Type,
+                        LocalAddr = p.Plugin.LocalAddr,
+                        CrtPath = p.Plugin.CrtPath,
+                        KeyPath = p.Plugin.KeyPath
+                    },
+                    Transport = new TransportConfig
+                    {
+                        UseEncryption = p.Transport.UseEncryption,
+                        UseCompression = p.Transport.UseCompression
+                    }
+                })
+            ]
         };
     }
 
@@ -671,27 +677,30 @@ public class FrpConfigService
                 Method = config.Auth.Method,
                 Token = config.Auth.Token
             },
-            Proxies = config.Proxies.Select(p => new YamlProxyConfig
-            {
-                Name = p.Name,
-                Type = p.Type,
-                LocalIP = p.LocalIP,
-                LocalPort = p.LocalPort,
-                RemotePort = p.RemotePort,
-                CustomDomains = p.CustomDomains,
-                Plugin = new YamlPluginConfig
+            Proxies =
+            [
+                .. config.Proxies.Select(p => new YamlProxyConfig
                 {
-                    Type = p.Plugin.Type,
-                    LocalAddr = p.Plugin.LocalAddr,
-                    CrtPath = p.Plugin.CrtPath,
-                    KeyPath = p.Plugin.KeyPath
-                },
-                Transport = new YamlTransportConfig
-                {
-                    UseEncryption = p.Transport.UseEncryption,
-                    UseCompression = p.Transport.UseCompression
-                }
-            }).ToList()
+                    Name = p.Name,
+                    Type = p.Type,
+                    LocalIP = p.LocalIP,
+                    LocalPort = p.LocalPort,
+                    RemotePort = p.RemotePort,
+                    CustomDomains = p.CustomDomains,
+                    Plugin = new YamlPluginConfig
+                    {
+                        Type = p.Plugin.Type,
+                        LocalAddr = p.Plugin.LocalAddr,
+                        CrtPath = p.Plugin.CrtPath,
+                        KeyPath = p.Plugin.KeyPath
+                    },
+                    Transport = new YamlTransportConfig
+                    {
+                        UseEncryption = p.Transport.UseEncryption,
+                        UseCompression = p.Transport.UseCompression
+                    }
+                })
+            ]
         };
     }
 
@@ -712,27 +721,30 @@ public class FrpConfigService
                 Method = yamlModel.Auth.Method,
                 Token = yamlModel.Auth.Token
             },
-            Proxies = yamlModel.Proxies.Select(p => new ProxyConfig
-            {
-                Name = p.Name,
-                Type = p.Type,
-                LocalIP = p.LocalIP,
-                LocalPort = p.LocalPort,
-                RemotePort = p.RemotePort,
-                CustomDomains = p.CustomDomains,
-                Plugin = new PluginConfig
+            Proxies =
+            [
+                .. yamlModel.Proxies.Select(p => new ProxyConfig
                 {
-                    Type = p.Plugin.Type,
-                    LocalAddr = p.Plugin.LocalAddr,
-                    CrtPath = p.Plugin.CrtPath,
-                    KeyPath = p.Plugin.KeyPath
-                },
-                Transport = new TransportConfig
-                {
-                    UseEncryption = p.Transport.UseEncryption,
-                    UseCompression = p.Transport.UseCompression
-                }
-            }).ToList()
+                    Name = p.Name,
+                    Type = p.Type,
+                    LocalIP = p.LocalIP,
+                    LocalPort = p.LocalPort,
+                    RemotePort = p.RemotePort,
+                    CustomDomains = p.CustomDomains,
+                    Plugin = new PluginConfig
+                    {
+                        Type = p.Plugin.Type,
+                        LocalAddr = p.Plugin.LocalAddr,
+                        CrtPath = p.Plugin.CrtPath,
+                        KeyPath = p.Plugin.KeyPath
+                    },
+                    Transport = new TransportConfig
+                    {
+                        UseEncryption = p.Transport.UseEncryption,
+                        UseCompression = p.Transport.UseCompression
+                    }
+                })
+            ]
         };
     }
 
@@ -874,7 +886,7 @@ public class FrpConfigService
                 // 解析自定义域名
                 if (section.Value.TryGetValue("custom_domains", out var domains))
                 {
-                    proxy.CustomDomains = domains.Split(',').Select(d => d.Trim()).ToList();
+                    proxy.CustomDomains = [.. domains.Split(',').Select(d => d.Trim())];
                 }
 
                 config.Proxies.Add(proxy);

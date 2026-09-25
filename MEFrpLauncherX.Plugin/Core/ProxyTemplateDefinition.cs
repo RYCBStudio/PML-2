@@ -76,10 +76,10 @@ public class ProxyTemplateCreateDefinition
 public class ProxyTemplateNodeFilterDefinition
 {
     /// <summary>首轮候选必须同时支持的协议（大小写不敏感）；空=不限</summary>
-    public List<string> Protocols { get; set; } = new();
+    public List<string> Protocols { get; set; } = [];
 
     /// <summary>放宽轮（首轮无候选时）仅要求支持的协议；空=回退到仅在线</summary>
-    public List<string> FallbackProtocols { get; set; } = new();
+    public List<string> FallbackProtocols { get; set; } = [];
 
     /// <summary>节点带宽下限（Mbps，>0 时生效；用带宽字符串解析后比较）</summary>
     public int MinBandwidthMbps { get; set; }

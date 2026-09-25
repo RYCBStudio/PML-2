@@ -83,7 +83,7 @@ public static class CrashStrings
     };
 
     private static readonly string[] JokesZhCn =
-    {
+    [
         "我们都有不顺利的时候。",
         "滚回功率，坐和放宽。",
         "好东西就要来了",
@@ -137,10 +137,10 @@ public static class CrashStrings
         "程序决定提前下班",
         "错误信息: 程序员忘了写错误处理",
         "这不是崩溃，这是功能探索模式"
-    };
+    ];
 
     private static readonly string[] JokesEnUs =
-    {
+    [
         "We all have rough days.",
         "Rolling back power. Sit and relax.",
         "Something good is coming.",
@@ -194,10 +194,10 @@ public static class CrashStrings
         "The program decided to clock out early.",
         "Error message: the programmer forgot to write error handling.",
         "It's not a crash, it's feature exploration mode."
-    };
+    ];
 
     private static readonly string[] JokesZhHant =
-    {
+    [
         "我們都有不順利的時候。",
         "滾回功率，坐和放寬。",
         "好東西就要來了",
@@ -251,5 +251,5 @@ public static class CrashStrings
         "程式決定提前下班",
         "錯誤資訊: 程式設計師忘了寫錯誤處理",
         "這不是崩潰，這是功能探索模式"
-    };
+    ];
 }

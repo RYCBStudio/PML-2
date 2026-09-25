@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -460,4 +461,11 @@ public partial class CustomizeQRCode : UserControl
     }
 
     #endregion
+
+    private async void CopyToClipboard(object? sender, RoutedEventArgs e)
+    {
+        var clipboard = Core.App.MainWindow?.Clipboard;
+        await clipboard?.SetBitmapAsync(QRCode.Source as Bitmap);
+        Growl.Success(Languages.Text_UserProxy_QRCodeCopiedToClipboard);
+    }
 }

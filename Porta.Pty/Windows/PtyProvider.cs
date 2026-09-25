@@ -103,7 +103,7 @@ namespace Porta.Pty.Windows
                 return Path.Combine(cwd, app);
             }
 
-            var paths = new List<string>(pathEnvironment.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
+            var paths = new List<string>(pathEnvironment.Split([';'], StringSplitOptions.RemoveEmptyEntries));
             if (isWow64)
             {
                 // On Wow64, if %PATH% contains %WINDIR%\System32 but does not have %WINDIR%\Sysnative, add it before System32.

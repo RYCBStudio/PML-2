@@ -814,8 +814,11 @@ public partial class CreateProxyPage : UserControl
             return primary;
         }
 
-        return Ranked(allNodes.Where(n =>
-            n.IsOnline && SupportsAll(fallback, n) && MeetsBandwidth(n))).ToList();
+        return
+        [
+            .. Ranked(allNodes.Where(n =>
+                n.IsOnline && SupportsAll(fallback, n) && MeetsBandwidth(n)))
+        ];
     }
 
     /// <summary>按模板 create 声明构建并预填创建表单（FillForm 步）</summary>
@@ -1025,30 +1028,33 @@ public partial class CreateProxyPage : UserControl
         // 如果没有找到符合条件的节点，放宽条件允许已过载的节点
         if (!candidates.Any())
         {
-            candidates = allNodes.Where(n =>
-                {
-                    if (!isChinaMap && n.Region is "cn" or "cnos")
+            candidates =
+            [
+                .. allNodes.Where(n =>
                     {
-                        return areaName == "亚洲" || areaName == "Asia";
-                    }
+                        if (!isChinaMap && n.Region is "cn" or "cnos")
+                        {
+                            return areaName == "亚洲" || areaName == "Asia";
+                        }
 
-                    var cleanName = n.Name.Split('/')[0].Trim()
-                        .ReplaceAnyToOne("①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿".Select(c => c.ToString()))
-                        .Trim();
+                        var cleanName = n.Name.Split('/')[0].Trim()
+                            .ReplaceAnyToOne(
+                                "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿".Select(c => c.ToString()))
+                            .Trim();
 
-                    return n.Region is "cn" or "cnos"
-                        ? n.Name.Contains(areaName) ||
-                          (ChineseRegionService.CityToProvince.TryGetValue(cleanName, out var province) &&
-                           province.Contains(areaName))
-                        : WorldRegionService.CountriesToContinent.TryGetValue(cleanName, out var countries) &&
-                        countries.Contains(areaName) || WorldRegionService.WellKnownCitiesToContinent.TryGetValue(
-                            cleanName, out var city) &&
-                        city.Contains(areaName);
-                })
-                .Where(n => n.IsOnline) // 只要求在线
-                .OrderByDescending(n => n.AllowHighTraffic)
-                .ThenBy(n => n.LoadPercent)
-                .ToList();
+                        return n.Region is "cn" or "cnos"
+                            ? n.Name.Contains(areaName) ||
+                              (ChineseRegionService.CityToProvince.TryGetValue(cleanName, out var province) &&
+                               province.Contains(areaName))
+                            : WorldRegionService.CountriesToContinent.TryGetValue(cleanName, out var countries) &&
+                            countries.Contains(areaName) || WorldRegionService.WellKnownCitiesToContinent.TryGetValue(
+                                cleanName, out var city) &&
+                            city.Contains(areaName);
+                    })
+                    .Where(n => n.IsOnline) // 只要求在线
+                    .OrderByDescending(n => n.AllowHighTraffic)
+                    .ThenBy(n => n.LoadPercent)
+            ];
         }
 
         return candidates;

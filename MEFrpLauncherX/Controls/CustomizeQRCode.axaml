@@ -25,8 +25,11 @@
     </UserControl.Styles>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" MinWidth="400" Margin="10">
         <controls:CommandBar DefaultLabelPosition="Right">
+            <controls:CommandBar.PrimaryCommands>
             <controls:CommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ExportPng}"
                                        IconSource="Save" Click="SaveFile" />
+            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_CopyToClipBoard}"
+                                       IconSource="Copy" Click="CopyToClipboard" /></controls:CommandBar.PrimaryCommands>
         </controls:CommandBar>
 
         <!-- 域名轮播导航：仅在存在多个 domain 时显示（单域名场景与原有单二维码行为一致） -->

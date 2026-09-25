@@ -269,7 +269,7 @@ public static class HomeRecommendService
             ? ordered.Where(r => !dismissed.Contains(r.Kind))
             : ordered;
 
-        return filter.Take(MaxItems).ToList();
+        return [.. filter.Take(MaxItems)];
     }
 
     /// <summary>

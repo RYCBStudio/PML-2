@@ -14,14 +14,14 @@ public class PluginDefinition
     /// <summary>核心版本是否满足 minCoreVersion（版本兼容才注册/提供能力）</summary>
     public bool IsCompatible { get; set; } = true;
 
-    public List<TriggerDefinition> Triggers { get; set; } = new();
+    public List<TriggerDefinition> Triggers { get; set; } = [];
 }
 
 public class TriggerDefinition
 {
     public string On { get; set; } = "";
     public string? Condition { get; set; }
-    public List<ActionDefinition> Actions { get; set; } = new();
+    public List<ActionDefinition> Actions { get; set; } = [];
 }
 
 public class ActionDefinition
@@ -45,9 +45,9 @@ public class RawPlugin
     /// <summary>要求的最低核心版本（camelCase 键 <c>minCoreVersion</c>），为空表示不限制</summary>
     public string? MinCoreVersion { get; set; }
 
-    public List<TriggerDefinition> Triggers { get; set; } = new();
+    public List<TriggerDefinition> Triggers { get; set; } = [];
     public Dictionary<string, List<ActionDefinition>> Functions { get; set; } = new();
 
     /// <summary>隧道模板声明（仅 type=create-proxy-template 时解析）</summary>
-    public List<ProxyTemplateDefinition> Templates { get; set; } = new();
+    public List<ProxyTemplateDefinition> Templates { get; set; } = [];
 }

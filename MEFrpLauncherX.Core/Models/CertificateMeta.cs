@@ -27,6 +27,17 @@ public class CertificateMeta
     /// <summary>签发时使用的 lego 版本</summary>
     public string LegoVersion { get; set; } = string.Empty;
 
+    /// <summary>
+    ///     签发时使用的 DNS 账户标识（26.4 阶段 B）。
+    ///     为空表示当时使用手动 DNS 模式；账户被删除后此值仍保留以便追溯。
+    /// </summary>
+    public Guid? DnsAccountId { get; set; }
+
+    /// <summary>
+    ///     验证方式（26.4 阶段 B）：<c>DnsApi</c> 表示 DNS 账号自动，<c>Manual</c> 表示手动 DNS。
+    /// </summary>
+    public string ChallengeMode { get; set; } = "Manual";
+
     /// <summary>证书链文件相对路径（固定为 fullchain.pem）</summary>
     public string FullChainFile { get; set; } = "fullchain.pem";
 

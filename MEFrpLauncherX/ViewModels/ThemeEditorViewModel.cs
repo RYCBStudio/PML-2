@@ -695,11 +695,14 @@ public class ThemeEditorViewModel : ViewModelBase
                     FillMode = BackgroundFillMode,
                     LayerOpacity = LayerOpacity
                 },
-                AccentColor = AccentColors.Select(c => new AccentMeta
-                {
-                    Color = c.Color,
-                    Duration = c.Duration
-                }).ToList(),
+                AccentColor =
+                [
+                    .. AccentColors.Select(c => new AccentMeta
+                    {
+                        Color = c.Color,
+                        Duration = c.Duration
+                    })
+                ],
                 FontFamily = fontFamilyValue,
                 PreviewImage = previewRelativePath
             };
@@ -735,11 +738,14 @@ public class ThemeEditorViewModel : ViewModelBase
                     FillMode = BackgroundFillMode,
                     LayerOpacity = LayerOpacity
                 },
-                AccentColor = AccentColors.Select(c => new AccentMeta
-                {
-                    Color = c.Color,
-                    Duration = c.Duration
-                }).ToList(),
+                AccentColor =
+                [
+                    .. AccentColors.Select(c => new AccentMeta
+                    {
+                        Color = c.Color,
+                        Duration = c.Duration
+                    })
+                ],
                 FontFamily = null,
                 PreviewImage = null
             };

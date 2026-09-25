@@ -20,7 +20,7 @@ public class PluginService
     private readonly PluginEngine _engine = new();
     private HotReloadService? _hotReload;
     private readonly HashSet<string> _disabledPlugins = new(StringComparer.OrdinalIgnoreCase);
-    private readonly List<PluginInfo> _plugins = new();
+    private readonly List<PluginInfo> _plugins = [];
     private string _pluginsFolder = "";
 
     public IReadOnlyList<PluginInfo> Plugins => _plugins;
