@@ -39,113 +39,19 @@ public partial class SettingsPage : UserControl
         InitializeComponent();
         AttachedToVisualTree += (s, e) =>
         {
-            MainPageFrameViewModel.Instance?.IsLoading = true;
-            Skin.SelectedIndex = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+            // AOT/裁剪 下缺少这层保护曾导致整页空白：
+            // 配置项为空（如 BackgroundSettings.Stretch == null）时 ToUpper 抛 NRE，
+            // 异常在「挂载到可视树」过程中抛出会中断挂载，页面就永久空白（且旧代码无任何日志）。
+            try
             {
-                "Acyclic" or "AcrylicBlur" => 1,
-                "Mica" => 0,
-                "Blur" => 2,
-                "Transparent" => 3,
-                _ => 1
-            };
-            Theme.SelectedIndex = ConfigManager.CurrentConfig.Theme.ToLower().ToUpper(0) switch
-            {
-                "Light" => 1,
-                _ => 0
-            };
-            HideInsteadOfClose.IsChecked = ConfigManager.CurrentConfig.HideInsteadOfClose;
-            KickWithoutDisable.IsChecked = ConfigManager.CurrentConfig.KickWithoutDisable;
-            ParallelDownload.IsChecked = ConfigManager.CurrentConfig.ParallelDownload;
-            ParallelDownloadThreads.Value = ConfigManager.CurrentConfig.ParallelCount;
-            AutoStart.IsChecked = ConfigManager.CurrentConfig.AutoStartup;
-            AutoLaunch.IsChecked = ConfigManager.CurrentConfig.AutoLaunch;
-            pmS.IsChecked = ConfigManager.CurrentConfig.PMSettings.Enabled;
-            StretchBox.SelectedIndex =
-                ConfigManager.CurrentConfig.BackgroundSettings.Stretch.ToUpper(0) switch
-                {
-                    "None" => 0,
-                    "Stretch" => 1,
-                    "Uniform" => 2,
-                    "UniformToFill" => 3,
-                    _ => 0
-                };
-            CaptchaModeCBox.SelectedIndex = ConfigManager.CurrentConfig.CaptchaMode.ToUpper(0) switch
-            {
-                "Implicit" or "NoSense" => 0,
-                "Explicit" or "Browser" => 1,
-                _ => 0
-            };
-            DownloadSource.SelectedIndex = ConfigManager.CurrentConfig.DownloadSource.ToUpper() switch
-            {
-                "TPCA" => 0,
-                "OFFICIAL" => 1,
-                _ => 0
-            };
-            DoNotShowResponseSettings.IsChecked = ConfigManager.CurrentConfig.DoNotShowSuccessMsg;
-            _isInit = true;
-            if (ParallelDownloadThreads.Value >= 32)
-            {
-                TooMoreThreadWarning.IsOpen = true;
-                TooMoreThreadWarningExpanderItem.IsVisible = true;
+                InitializeFromConfig();
             }
-            else
+            catch (Exception ex)
             {
-                TooMoreThreadWarning.IsOpen = false;
-                TooMoreThreadWarningExpanderItem.IsVisible = false;
+                Core.App.CurrentLogger?.Error(ex, "初始化设置页控件状态失败（设置页可能显示不完整）");
+                _isInit = false;
+                MainPageFrameViewModel.Instance?.IsLoading = false;
             }
-
-            TerminalEngineTypeBox.SelectedIndex =
-                ConfigManager.CurrentConfig.TerminalEngineType.ToUpper() switch
-                {
-                    "XTERM" => 1,
-                    _ => 0
-                };
-            TerminalCliComboBox.SelectedIndex =
-                ConfigManager.CurrentConfig.TerminalCli.ToLower() switch
-                {
-                    "pwsh" => 1,
-                    "cmd" => 2,
-                    "bash" => 3,
-                    "zsh" => 4,
-                    _ => 0
-                };
-            AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
-            AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
-            LanguageSelectComboBox.SelectedIndex = ConfigManager.CurrentConfig.Language switch
-            {
-                "zh-CN" => 0,
-                "en-US" => 1,
-                "zh-Hant" => 2,
-                _ => 0
-            };
-
-            AnimationLevelBox.SelectedIndex = ConfigManager.CurrentConfig.AnimationLevel switch
-            {
-                0 => 0,
-                1 => 1,
-                _ => 2
-            };
-            // 26.3.1 M2：启动画面样式 / 开关
-            SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
-            var renderConfig = RenderConfigManager.Load();
-            RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
-            {
-                "VULKAN" => OperatingSystem.IsMacOS()? 2: 1,
-                "OPENGL" => 3,
-                "SOFTWARE" => 4,
-                _ => 0
-            };
-            GpuMemoryBox.SelectedIndex = renderConfig.GpuMemoryLimitMb switch
-            {
-                128 => 0,
-                512 => 2,
-                1024 => 3,
-                _ => 1
-            };
-            LowLatencySwitch.IsChecked = renderConfig.LowLatencyRendering;
-
-            MainPageFrameViewModel.Instance?.IsLoading = false;
-            _isInit = false;
         };
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
@@ -157,6 +63,121 @@ public partial class SettingsPage : UserControl
             NoSenseValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_ImplicitRecommended;
             BrowserValidation.Content = Core.Languages.Languages.Text_Settings_Captcha_Explicit;
         }
+    }
+
+    /// <summary>
+    ///     依据当前配置把各控件同步到正确状态（原 <c>AttachedToVisualTree</c> 内联逻辑）。
+    ///     独立成方法以便统一加异常保护与日志。
+    /// </summary>
+    private void InitializeFromConfig()
+    {
+        MainPageFrameViewModel.Instance?.IsLoading = true;
+        Skin.SelectedIndex = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
+        {
+            "Acyclic" or "AcrylicBlur" => 1,
+            "Mica" => 0,
+            "Blur" => 2,
+            "Transparent" => 3,
+            _ => 1
+        };
+        Theme.SelectedIndex = ConfigManager.CurrentConfig.Theme.ToLower().ToUpper(0) switch
+        {
+            "Light" => 1,
+            _ => 0
+        };
+        HideInsteadOfClose.IsChecked = ConfigManager.CurrentConfig.HideInsteadOfClose;
+        KickWithoutDisable.IsChecked = ConfigManager.CurrentConfig.KickWithoutDisable;
+        ParallelDownload.IsChecked = ConfigManager.CurrentConfig.ParallelDownload;
+        ParallelDownloadThreads.Value = ConfigManager.CurrentConfig.ParallelCount;
+        AutoStart.IsChecked = ConfigManager.CurrentConfig.AutoStartup;
+        AutoLaunch.IsChecked = ConfigManager.CurrentConfig.AutoLaunch;
+        pmS.IsChecked = ConfigManager.CurrentConfig.PMSettings.Enabled;
+        StretchBox.SelectedIndex =
+            (ConfigManager.CurrentConfig.BackgroundSettings.Stretch ?? string.Empty).ToUpper(0) switch
+            {
+                "None" => 0,
+                "Stretch" => 1,
+                "Uniform" => 2,
+                "UniformToFill" => 3,
+                _ => 0
+            };
+        CaptchaModeCBox.SelectedIndex = ConfigManager.CurrentConfig.CaptchaMode.ToUpper(0) switch
+        {
+            "Implicit" or "NoSense" => 0,
+            "Explicit" or "Browser" => 1,
+            _ => 0
+        };
+        DownloadSource.SelectedIndex = ConfigManager.CurrentConfig.DownloadSource.ToUpper() switch
+        {
+            "TPCA" => 0,
+            "OFFICIAL" => 1,
+            _ => 0
+        };
+        DoNotShowResponseSettings.IsChecked = ConfigManager.CurrentConfig.DoNotShowSuccessMsg;
+        _isInit = true;
+        if (ParallelDownloadThreads.Value >= 32)
+        {
+            TooMoreThreadWarning.IsOpen = true;
+            TooMoreThreadWarningExpanderItem.IsVisible = true;
+        }
+        else
+        {
+            TooMoreThreadWarning.IsOpen = false;
+            TooMoreThreadWarningExpanderItem.IsVisible = false;
+        }
+
+        TerminalEngineTypeBox.SelectedIndex =
+            ConfigManager.CurrentConfig.TerminalEngineType.ToUpper() switch
+            {
+                "XTERM" => 1,
+                _ => 0
+            };
+        TerminalCliComboBox.SelectedIndex =
+            ConfigManager.CurrentConfig.TerminalCli.ToLower() switch
+            {
+                "pwsh" => 1,
+                "cmd" => 2,
+                "bash" => 3,
+                "zsh" => 4,
+                _ => 0
+            };
+        AutoLogin.IsChecked = ConfigManager.CurrentConfig.AutoLogin;
+        AutoSign.IsChecked = ConfigManager.CurrentConfig.AutoSign;
+        LanguageSelectComboBox.SelectedIndex = ConfigManager.CurrentConfig.Language switch
+        {
+            "zh-CN" => 0,
+            "en-US" => 1,
+            "zh-Hant" => 2,
+            _ => 0
+        };
+
+        AnimationLevelBox.SelectedIndex = ConfigManager.CurrentConfig.AnimationLevel switch
+        {
+            0 => 0,
+            1 => 1,
+            _ => 2
+        };
+        // 26.3.1 M2：启动画面样式 / 开关
+        SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
+        var renderConfig = RenderConfigManager.Load();
+        RenderingModeBox.SelectedIndex = (renderConfig.RenderingMode ?? "Auto").ToUpper() switch
+        {
+            "VULKAN" => OperatingSystem.IsMacOS() ? 2 : 1,
+            "OPENGL" => 3,
+            "SOFTWARE" => 4,
+            _ => 0
+        };
+        GpuMemoryBox.SelectedIndex = renderConfig.GpuMemoryLimitMb switch
+        {
+            128 => 0,
+            512 => 2,
+            1024 => 3,
+            _ => 1
+        };
+        LowLatencySwitch.IsChecked = renderConfig.LowLatencyRendering;
+
+        MainPageFrameViewModel.Instance?.IsLoading = false;
+        _isInit = false;
     }
 
     private void SkinChanged(object sender, SelectionChangedEventArgs e)
@@ -483,11 +504,11 @@ public partial class SettingsPage : UserControl
         {
             config.Theme = theme;
         });
-        
+
         // 应用主题切换动画
         await ApplyThemeTransitionAsync(theme);
     }
-    
+
     /// <summary>
     /// 平滑主题过渡动画（2~3 秒淡入淡出）
     /// </summary>
@@ -500,7 +521,7 @@ public partial class SettingsPage : UserControl
             "light" => ThemeVariant.Light,
             _ => ThemeVariant.Default
         };
-        
+
         if (oldVariant == newVariant) return;
 
         // 上一次过渡尚未结束：直接切换，避免动画叠加
@@ -520,7 +541,7 @@ public partial class SettingsPage : UserControl
         }
 
         _isThemeTransitioning = true;
-        
+
         // 1. 添加半透明遮罩层
         var overlay = new Border
         {
@@ -531,9 +552,9 @@ public partial class SettingsPage : UserControl
             IsHitTestVisible = false,
             ZIndex = 9999
         };
-        
+
         root.Children.Add(overlay);
-        
+
         try
         {
             // 2. 遮罩层淡入动画 (300ms)
@@ -553,14 +574,14 @@ public partial class SettingsPage : UserControl
                 Cue = new Cue(1.0),
                 Setters = { new Setter(Border.OpacityProperty, 1.0) }
             });
-            
+
             await fadeinAnim.RunAsync(overlay);
-            
+
             // 3. 遮罩完全覆盖后再切换主题，避免看到生硬的瞬时切换
             await Task.Delay(60);
-            
+
             Application.Current?.RequestedThemeVariant = newVariant;
-            
+
             if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
             {
                 Core.App.MainWindow.Background =
@@ -570,9 +591,9 @@ public partial class SettingsPage : UserControl
                             ? new SolidColorBrush(C1)
                             : Brushes.White;
             }
-            
+
             Core.App.MainWindow.InvalidateVisual();
-            
+
             // 4. 遮罩层淡出动画 (300ms)
             var fadeoutAnim = new Animation
             {
@@ -590,7 +611,7 @@ public partial class SettingsPage : UserControl
                 Cue = new Cue(1.0),
                 Setters = { new Setter(Border.OpacityProperty, 0.0) }
             });
-            
+
             await fadeoutAnim.RunAsync(overlay);
         }
         finally
@@ -785,7 +806,7 @@ public partial class SettingsPage : UserControl
         {
             return;
         }
-        
+
         ConfigManager.UpdateConfig(config =>
         {
             config.Language = (string)((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag ?? "";

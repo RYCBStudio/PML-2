@@ -9,6 +9,12 @@ namespace MEFrpLauncherX.Core;
 
 public static class ConfigManager
 {
+    /// <summary>
+    ///     当前客户端支持的配置 schema 版本。
+    ///     <para>改动配置结构（新增项 / 改变字段含义 / 废弃字段）时递增，启动时会自动迁移旧配置。</para>
+    /// </summary>
+    public const int CurrentSchemaVersion = 1;
+
     private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
 
     private static AppConfig _currentConfig;
@@ -51,12 +57,16 @@ public static class ConfigManager
         if (!File.Exists(ConfigPath))
         {
             _currentConfig = CreateDefaultConfig();
+            _currentConfig.SchemaVersion = CurrentSchemaVersion;
             SaveConfig();
         }
         else
         {
             LoadConfig();
         }
+
+        // 无论走哪条分支，都做一次 schema 校验，确保 _currentConfig 结构完整、取值合法。
+        EnsureConfigSchemaLocked();
     }
 
     /// <summary>
@@ -141,6 +151,255 @@ public static class ConfigManager
         }
     }
 
+    #region 配置 Schema 校验与迁移
+
+    private static readonly string[] SkinValues = ["Mica", "AcrylicBlur", "Acrylic", "Blur", "Transparent", "None"];
+    private static readonly string[] ThemeValues = ["Dark", "Light", "System"];
+    private static readonly string[] CaptchaModeValues = ["implicit", "explicit", "nosense", "browser"];
+    private static readonly string[] DownloadSourceValues = ["TPCA", "Official"];
+    private static readonly string[] TerminalEngineValues = ["Original", "XTerm"];
+    private static readonly string[] LanguageValues = ["zh-CN", "en-US", "zh-Hant"];
+    private static readonly string[] UpdateChannelValues = ["Preview", "Stable"];
+    private static readonly string[] UpdateMethodValues = ["ds", "dd", "md"];
+    private static readonly string[] CompileTypeValues = ["AOT", "Common"];
+    private static readonly string[] SplashStyleValues = ["default", "dark", "minimal"];
+    private static readonly string[] HomeLayoutValues = ["classic", "simple"];
+    private static readonly string[] FloatPositionValues = ["lt", "rt", "lb", "rb", "ct", "cb"];
+    private static readonly string[] StretchValues = ["None", "Stretch", "Uniform", "UniformToFill", "disabled"];
+    private static readonly string[] TileModeValues = ["disabled", "None", "Tile", "FlipX", "FlipY", "FlipXY"];
+
+    /// <summary>
+    ///     本次运行是否已做过 schema 校验。
+    ///     <para>
+    ///         防止 <see cref="EnsureConfigSchema" /> 被重复调用时反复写盘；
+    ///         但一旦校验触发了保存（<see cref="SaveConfig" /> 会复位该标记），就允许再校验一轮，
+    ///         以覆盖「迁移之后又被写回非法值」的极端情况，同时保证不会无限循环。
+    ///     </para>
+    /// </summary>
+    private static bool _schemaChecked;
+
+    /// <summary>
+    ///     校验当前配置是否符合最新 schema；不符合则自动迁移。
+    ///     <para>
+    ///         迁移原则：只补齐、不覆盖。缺失的字段补默认值，非法的取值回落到默认值，
+    ///         用户设置过的合法值一律原样保留（不会因为升级而丢失配置）。
+    ///     </para>
+    /// </summary>
+    public static void EnsureConfigSchema()
+    {
+        lock (_lock)
+        {
+            EnsureConfigSchemaLocked();
+        }
+    }
+
+    private static void EnsureConfigSchemaLocked()
+    {
+        if (_currentConfig is null)
+        {
+            _currentConfig = CreateDefaultConfig();
+            _currentConfig.SchemaVersion = CurrentSchemaVersion;
+            return;
+        }
+
+        if (_schemaChecked)
+        {
+            return;
+        }
+
+        _schemaChecked = true;
+
+        var actionCount = NormalizeToLatestSchema(_currentConfig);
+
+        if (_currentConfig.SchemaVersion != CurrentSchemaVersion)
+        {
+            App.CurrentLogger?.Log(
+                $"配置 schema 版本过旧（v{_currentConfig.SchemaVersion} -> v{CurrentSchemaVersion}），已自动迁移 {actionCount} 处。",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+            _currentConfig.SchemaVersion = CurrentSchemaVersion;
+            actionCount++;
+        }
+
+        if (actionCount > 0)
+        {
+            SaveConfig();
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    ///     把配置归一化到最新 schema：补齐缺失的嵌套对象/集合、剔除废弃字段、修正非法取值。
+    /// </summary>
+    /// <returns>实际修正的项数（0 表示配置已完全符合最新 schema）。</returns>
+    internal static int NormalizeToLatestSchema(AppConfig cfg)
+    {
+        var changed = 0;
+
+        // 以「默认配置」作为最新 schema 的权威默认值，避免默认值在两处维护而漂移。
+        var d = CreateDefaultConfig();
+
+        // ---------- 1. 补齐缺失的嵌套对象（旧配置可能整段缺失，或 JSON 中显式为 null） ----------
+        if (cfg.UpdateSettings is null)
+        {
+            cfg.UpdateSettings = d.UpdateSettings;
+            changed++;
+        }
+
+        if (cfg.BackgroundSettings is null)
+        {
+            cfg.BackgroundSettings = d.BackgroundSettings;
+            changed++;
+        }
+
+        if (cfg.HomeSettings is null)
+        {
+            cfg.HomeSettings = d.HomeSettings;
+            changed++;
+        }
+
+        if (cfg.PMSettings is null)
+        {
+            cfg.PMSettings = d.PMSettings;
+            changed++;
+        }
+
+        if (cfg.CreateProxyDefaults is null)
+        {
+            cfg.CreateProxyDefaults = d.CreateProxyDefaults;
+            changed++;
+        }
+
+        // 集合类型：null 会破坏调用方（如 AutoLaunchProxies.Count），统一补空集合。
+        if (cfg.AutoLaunchProxies is null)
+        {
+            cfg.AutoLaunchProxies = [];
+            changed++;
+        }
+
+        if (cfg.ProxyTemplates is null)
+        {
+            cfg.ProxyTemplates = [];
+            changed++;
+        }
+
+        // ---------- 2. 枚举型字符串：非法值回落到默认值，并把大小写规范化为标准写法 ----------
+        changed += NormalizeChoice(() => cfg.Skin, v => cfg.Skin = v, SkinValues, d.Skin);
+        changed += NormalizeChoice(() => cfg.Theme, v => cfg.Theme = v, ThemeValues, d.Theme);
+        changed += NormalizeChoice(() => cfg.CaptchaMode, v => cfg.CaptchaMode = v, CaptchaModeValues, d.CaptchaMode);
+        changed += NormalizeChoice(() => cfg.DownloadSource, v => cfg.DownloadSource = v, DownloadSourceValues,
+            d.DownloadSource);
+        changed += NormalizeChoice(() => cfg.TerminalEngineType, v => cfg.TerminalEngineType = v,
+            TerminalEngineValues, d.TerminalEngineType);
+        changed += NormalizeChoice(() => cfg.Language, v => cfg.Language = v, LanguageValues, d.Language);
+        changed += NormalizeChoice(() => cfg.UpdateSettings.Channel, v => cfg.UpdateSettings.Channel = v,
+            UpdateChannelValues, d.UpdateSettings.Channel);
+        changed += NormalizeChoice(() => cfg.UpdateSettings.Method, v => cfg.UpdateSettings.Method = v,
+            UpdateMethodValues, d.UpdateSettings.Method);
+        changed += NormalizeChoice(() => cfg.UpdateSettings.CompileType, v => cfg.UpdateSettings.CompileType = v,
+            CompileTypeValues, d.UpdateSettings.CompileType);
+        changed += NormalizeChoice(() => cfg.SplashStyle, v => cfg.SplashStyle = v, SplashStyleValues, d.SplashStyle);
+        changed += NormalizeChoice(() => cfg.HomeSettings.Layout, v => cfg.HomeSettings.Layout = v, HomeLayoutValues,
+            d.HomeSettings.Layout);
+        changed += NormalizeChoice(() => cfg.PMSettings.Position, v => cfg.PMSettings.Position = v,
+            FloatPositionValues, d.PMSettings.Position);
+        changed += NormalizeChoice(() => cfg.BackgroundSettings.Stretch, v => cfg.BackgroundSettings.Stretch = v,
+            StretchValues, d.BackgroundSettings.Stretch);
+        changed += NormalizeChoice(() => cfg.BackgroundSettings.TileMode, v => cfg.BackgroundSettings.TileMode = v,
+            TileModeValues, d.BackgroundSettings.TileMode);
+
+        // ---------- 3. 自由字符串：仅补 null / 空白，不改变用户输入 ----------
+        if (cfg.TerminalCli.IsNullOrEmpty())
+        {
+            cfg.TerminalCli = CliUtils.GetOSSpeceficDefaultCli();
+            changed++;
+        }
+
+        if (cfg.AccentColor is null)
+        {
+            cfg.AccentColor = string.Empty;
+            changed++;
+        }
+
+        if (cfg.SplashCustomImagePath is null)
+        {
+            cfg.SplashCustomImagePath = string.Empty;
+            changed++;
+        }
+
+        if (cfg.BackgroundSettings.BackgroundImage is null)
+        {
+            cfg.BackgroundSettings.BackgroundImage = d.BackgroundSettings.BackgroundImage;
+            changed++;
+        }
+
+        // ---------- 4. 数值范围：越界值回落到默认值（与设置页 Slider / NumberBox 范围一致） ----------
+        changed += NormalizeRange(() => cfg.ParallelCount, v => cfg.ParallelCount = v, 1, 512, d.ParallelCount);
+        changed += NormalizeRange(() => cfg.ExpireDays, v => cfg.ExpireDays = v, 1, 366, d.ExpireDays);
+        changed += NormalizeRange(() => cfg.AnimationLevel, v => cfg.AnimationLevel = v, 0, 2, d.AnimationLevel);
+        changed += NormalizeRange(() => cfg.BackgroundSettings.LayerOpacity,
+            v => cfg.BackgroundSettings.LayerOpacity = v, 0d, 1d, d.BackgroundSettings.LayerOpacity);
+        changed += NormalizeRange(() => cfg.PMSettings.Opacity, v => cfg.PMSettings.Opacity = v, 0.5d, 1d,
+            d.PMSettings.Opacity);
+
+        return changed;
+    }
+
+    /// <summary>
+    ///     校验枚举型字符串：非法值写入默认值，合法但大小写不标准时改写为标准写法。
+    /// </summary>
+    private static int NormalizeChoice(Func<string?> get, Action<string> set, string[] allowed, string fallback)
+    {
+        var current = get();
+        if (!string.IsNullOrWhiteSpace(current))
+        {
+            foreach (var candidate in allowed)
+            {
+                if (!string.Equals(candidate, current, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                // 大小写已是标准写法则视为未改动
+                return string.Equals(candidate, current, StringComparison.Ordinal)
+                    ? 0
+                    : AssignAndCount(set, candidate);
+            }
+        }
+
+        return AssignAndCount(set, fallback);
+    }
+
+    /// <summary>校验整数范围，越界时回落到默认值。</summary>
+    private static int NormalizeRange(Func<int> get, Action<int> set, int min, int max, int fallback)
+    {
+        var current = get();
+        return current >= min && current <= max ? 0 : AssignAndCount(set, fallback);
+    }
+
+    /// <summary>校验浮点范围，越界时回落到默认值（同时排除 NaN / Infinity）。</summary>
+    private static int NormalizeRange(Func<double> get, Action<double> set, double min, double max, double fallback)
+    {
+        var current = get();
+        return double.IsFinite(current) && current >= min && current <= max ? 0 : AssignAndCount(set, fallback);
+    }
+
+    private static int AssignAndCount<T>(Action<T> set, T value)
+    {
+        set(value);
+        return 1;
+    }
+
+    /// <summary>
+    ///     写入磁盘前清理 JSON（当前为直通）。
+    ///     <para>
+    ///         约定：Settings.json <b>必须是纯 JSON</b>。System.Text.Json 默认不接受 JSON 注释，
+    ///         一旦写入 `//` 注释，<see cref="LoadConfig" /> 会把文件判为「配置损坏」并重建默认配置
+    ///         （等于静默清空用户设置）。因此 schema 版本只通过
+    ///         <see cref="AppConfig.SchemaVersion" /> 字段持久化，不额外写任何标记。
+    ///     </para>
+    /// </summary>
+    private static string SanitizeConfigJson(string json) => json;
 
     private static void MergeConfig(AppConfig source, ref AppConfig target)
     {
@@ -463,8 +722,13 @@ public static class ConfigManager
         {
             lock (_lock)
             {
+                // 每次落盘都写回当前 schema 版本，保证文件自身即描述当前结构。
+                _currentConfig.SchemaVersion = CurrentSchemaVersion;
                 var json = JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig);
-                File.WriteAllText(ConfigPath, json);
+                File.WriteAllText(ConfigPath, SanitizeConfigJson(json));
+
+                // 允许下一次启动（或下一次 EnsureConfigSchema）重新校验一轮。
+                _schemaChecked = false;
             }
         }
         catch (Exception ex)
@@ -484,7 +748,11 @@ public static class ConfigManager
             string json;
             lock (_lock)
             {
-                json = JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig);
+                // 与 SaveConfig 保持一致：写回 schema 版本并允许下次重新校验。
+                _currentConfig.SchemaVersion = CurrentSchemaVersion;
+                json = SanitizeConfigJson(
+                    JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig));
+                _schemaChecked = false;
             }
 
             await File.WriteAllTextAsync(ConfigPath, json);
@@ -585,8 +853,10 @@ public static class ConfigManager
             {
                 LayerOpacity = 0.6,
                 BackgroundImage = string.Empty,
-                TileMode = null,
-                Stretch = null,
+                // 注意：Stretch/TileMode 为 null 会让依赖 ToUpper(0) 的代码（如设置页）抛 NRE。
+                // 默认使用与「未设置」行为一致的非空值（Stretch.None / disabled）。
+                TileMode = "disabled",
+                Stretch = "None",
                 ShouldFillTitleBar = false
             },
             PMSettings = new PFSConfig
@@ -616,6 +886,26 @@ public static class ConfigManager
 
 public class AppConfig
 {
+    /// <summary>
+    ///     配置文件 schema 版本。
+    ///     <para>
+    ///         用途：启动时校验配置是否为「最新 schema」。与 <see cref="ConfigManager.CurrentSchemaVersion" />
+    ///         不一致时会自动补齐缺失字段、剔除已废弃字段、并把非法取值重置为默认值（不会丢失有效设置）。
+    ///     </para>
+    ///     <para>
+    ///         语义与版本号无关：凡是「新增配置项 / 改变字段含义 / 客户端已不再使用某字段」的改动，
+    ///         都应把 <see cref="ConfigManager.CurrentSchemaVersion" /> 递增 1。
+    ///     </para>
+    ///     <para>
+    ///         旧配置没有该字段时反序列化得到 0，同样会触发一次归一化，可安全用来自愈历史遗留的脏数据。
+    ///     </para>
+    /// </summary>
+    public int SchemaVersion
+    {
+        get;
+        set;
+    }
+
     public bool PrivacyAgreed
     {
         get;

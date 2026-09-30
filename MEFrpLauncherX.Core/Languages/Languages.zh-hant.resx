@@ -3828,4 +3828,16 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Home.Simple.Inbox" xml:space="preserve">
         <value>收件箱</value>
     </data>
+    <data name="Text.Inbox.Empty" xml:space="preserve">
+        <value>暫無通知</value>
+    </data>
+    <data name="Text.Inbox.New" xml:space="preserve">
+        <value>新</value>
+    </data>
+    <data name="Text.Inbox.NoTextPreview" xml:space="preserve">
+        <value>該通知沒有可預覽的文字內容，請點擊查看詳情。</value>
+    </data>
+    <data name="Text.Inbox.ViewDetails" xml:space="preserve">
+        <value>檢視詳情</value>
+    </data>
 </root>

@@ -14,6 +14,7 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
 using FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
+using MEFrpLauncherX.Controls.InboxViewer;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
@@ -59,11 +60,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             Core.App.CurrentLogger?.Error(ex);
         });
-        OpenInboxCommand = ReactiveCommand.Create(() =>
-        {
-            
-        });
-        
+        OpenInboxCommand = ReactiveCommand.CreateFromTask(OpenInboxAsync);
+
         // 初始加载数据
         MainPageFrameViewModel.Instance?.IsLoading = false;
         _ = LoadUserDataAsync();
@@ -183,6 +181,38 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
+
+    /// <summary>
+    ///     系统通知（服务端 <c>auth/popupNotice</c> 返回的 markdown 原文，26.4）。
+    ///     与 <see cref="NoticeContent" />（<c>auth/notice</c>）不同：这是「弹窗公告」，
+    ///     以往只用于弹窗提示，现在同时作为收件箱「系统通知」的内容源。
+    /// </summary>
+    public string? SystemNoticeContent
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     收件箱视图模型（26.4）：聚合系统通知与软件公告，并用本地缓存快照计算「新内容」。
+    ///     数据由本页加载流程统一注入，收件箱自身不发起网络请求。
+    /// </summary>
+    public InboxViewModel Inbox
+    {
+        get;
+    } = new();
+
+    /// <summary>
+    ///     本次加载中系统通知（<c>auth/popupNotice</c>）是否请求成功。
+    ///     失败时不写回收件箱快照，避免把历史快照误清空导致旧公告被重新判为「新」。
+    /// </summary>
+    private bool _popupNoticeFetched;
+
+    /// <summary>收件箱是否有新内容（精简主页收件箱按钮红点显示依据）</summary>
+    public bool HasNewInboxNotice => Inbox.HasNewNotice;
+
+    /// <summary>收件箱新内容总数（红点数字 = 新系统通知 + 新软件公告）</summary>
+    public int InboxBadgeValue => Inbox.NewSystemNoticeCount + Inbox.NewSoftwareNoticeCount;
 
     // 命令
     public ReactiveCommand<Unit, Unit> SignCommand
@@ -511,9 +541,48 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         get;
     }
 
+    /// <summary>
+    ///     打开收件箱（26.4）：以 <see cref="ContentDialog" /> 展示 <c>InboxViewer</c>，
+    ///     内容取本页已加载的系统通知与软件公告（不额外发起请求）。
+    ///     打开即视为「已读」：关闭后由 <see cref="InboxViewModel.MarkAsRead" /> 写回本地快照，
+    ///     使红点在下次加载前保持清零。
+    /// </summary>
     public async Task OpenInboxAsync()
     {
-        
+        try
+        {
+            // 内容已由 LoadUserDataAsync 注入（含 fetched 标记），此处不再重新 Load，
+            // 避免用「当前为空」的数据覆盖收件箱状态。
+            var dialog = new ContentDialog
+            {
+                Title = Languages.Text_Home_Simple_Inbox,
+                Content = new InboxViewer
+                {
+                    DataContext = Inbox
+                },
+                CloseButtonText = Languages.Text_Global_Close,
+                DefaultButton = ContentDialogButton.Close
+            };
+
+            await dialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "打开收件箱失败");
+        }
+        finally
+        {
+            // 展示完成即视为已读：快照写回后同样的内容不再计入新通知
+            Inbox.MarkAsRead();
+            RefreshInboxBadge();
+        }
+    }
+
+    /// <summary>刷新收件箱红点相关属性（内容变更或已读后调用）。</summary>
+    public void RefreshInboxBadge()
+    {
+        this.RaisePropertyChanged(nameof(HasNewInboxNotice));
+        this.RaisePropertyChanged(nameof(InboxBadgeValue));
     }
 
     /// <summary>
@@ -961,6 +1030,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
+                // 26.4：弹窗公告同时作为收件箱「系统通知」的内容源（本地缓存快照用于判断新内容）
+                SystemNoticeContent = popUp?.data;
+                _popupNoticeFetched = popUp?.code == 200;
 
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
                 MainPageFrameViewModel.Instance?.IsLoading = false;
@@ -982,6 +1054,13 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             {
                 SoftwareNotice.AddRange(notice.Data);
             }
+
+            // 26.4：把两类通知注入收件箱 VM，由它按本地缓存快照计算「新内容」并驱动红点
+            // 请求失败的来源传 fetched=false，避免误把它当作「已无公告」而清空历史快照
+            Inbox.Load(SystemNoticeContent, SoftwareNotice,
+                systemNoticeFetched: _popupNoticeFetched,
+                softwareNoticesFetched: notice.Success);
+            RefreshInboxBadge();
         }
         catch (Exception ex)
         {

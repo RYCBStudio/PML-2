@@ -11278,5 +11278,42 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.Empty
+        /// </summary>
+        public static string Text_Inbox_Empty {
+            get {
+                return ResourceManager.GetString("Text.Inbox.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.New
+        /// </summary>
+        public static string Text_Inbox_New {
+            get {
+                return ResourceManager.GetString("Text.Inbox.New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.NoTextPreview
+        /// </summary>
+        public static string Text_Inbox_NoTextPreview {
+            get {
+                return ResourceManager.GetString("Text.Inbox.NoTextPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.ViewDetails
+        /// </summary>
+        public static string Text_Inbox_ViewDetails {
+            get {
+                return ResourceManager.GetString("Text.Inbox.ViewDetails", resourceCulture);
+            }
+        }
+        
     }
 }

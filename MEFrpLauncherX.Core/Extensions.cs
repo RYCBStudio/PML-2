@@ -47,27 +47,42 @@ public static class StringExtensions
         public bool IsNullOrEmpty() => string.IsNullOrEmpty(str);
 
         /// <summary>
-        ///     将字符串的指定部分大写
+        ///     将字符串的指定部分大写。
+        ///     对 null / 空串 / 越界索引做安全处理（返回原值或空串），
+        ///     避免仅因配置项为空（如 Stretch 为 null）就抛出 NullReferenceException。
         /// </summary>
         /// <param name="startIndex">开始大写的索引</param>
         /// <param name="length">修改的长度</param>
         /// <returns>修改后的字符串</returns>
         public string ToUpper(int startIndex, int length = 1)
         {
-            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, length).ToUpper(),
-                str.AsSpan(startIndex + length));
+            if (string.IsNullOrEmpty(str) || startIndex < 0 || startIndex >= str.Length)
+            {
+                return str ?? string.Empty;
+            }
+
+            var safeLength = Math.Min(length, str.Length - startIndex);
+            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, safeLength).ToUpper(),
+                str.AsSpan(startIndex + safeLength));
         }
 
         /// <summary>
-        ///     将字符串的指定部分小写
+        ///     将字符串的指定部分小写。
+        ///     对 null / 空串 / 越界索引做安全处理（返回原值或空串）。
         /// </summary>
         /// <param name="startIndex">开始小写的索引</param>
         /// <param name="length">修改的长度</param>
         /// <returns>修改后的字符串</returns>
         public string ToLower(int startIndex, int length = 1)
         {
-            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, length).ToLower(),
-                str.AsSpan(startIndex + length));
+            if (string.IsNullOrEmpty(str) || startIndex < 0 || startIndex >= str.Length)
+            {
+                return str ?? string.Empty;
+            }
+
+            var safeLength = Math.Min(length, str.Length - startIndex);
+            return string.Concat(str.AsSpan(0, startIndex), str.Substring(startIndex, safeLength).ToLower(),
+                str.AsSpan(startIndex + safeLength));
         }
 
         /// <summary>
@@ -79,6 +94,19 @@ public static class StringExtensions
         {
             var possibleSuffix = suffixes.Split(',');
             return possibleSuffix.Any(str.ToLower().EndsWith);
+        }
+
+        public bool StartsWithAny(params string[] prefixes)
+        {
+            try
+            {
+
+                return prefixes.Any(str.StartsWith);
+            }
+            catch
+            {
+                throw new Exception("Invalid prefix");
+            }
         }
     }
 }

@@ -221,12 +221,6 @@ public partial class DownloadHelper
         }
     }
 
-    private string ProcessUri(string BASE, bool isWindows) =>
-        isWindows ? BASE + "mefrpc-windows.exe" : BASE + "mefrpc-linux.tar";
-
-    private string ProcessSecurityUri(string BASE, bool isWindows) =>
-        isWindows ? BASE + "mefrpc-windows.json" : BASE + "mefrpc-linux.json";
-
     private void DownloaderOnDownloadStarted(object? sender, DownloadStartedEventArgs e)
     {
         App.CurrentLogger.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
@@ -364,11 +358,11 @@ public partial class DownloadHelper
                     // All done, auto close the dialog here
                     td.Content = Languages.Languages.Text_Download_InstallingClient;
                     new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp")).MoveTo(
+                        "mefrpc.exe.tmp")).MoveTo(
                         Path.Combine(AppContext.BaseDirectory, "bin",
-                            OperatingSystem.IsWindows() ? "mefrpc.exe" : "mefrpc.tar"), true);
+                            "mefrpc.exe.tmp"), true);
                     File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp"));
+                        "mefrpc.exe.tmp"));
                     App.CurrentLogger.Log("已安装新版MEFrpClient");
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -432,11 +426,11 @@ public partial class DownloadHelper
                     {
                     */
                     new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp")).MoveTo(
+                        "mefrpc.tar.tmp")).MoveTo(
                         Path.Combine(AppContext.BaseDirectory, "bin",
-                            OperatingSystem.IsWindows() ? "mefrpc.exe" : "mefrpc.tar"), true);
+                            "mefrpc.tar"), true);
                     File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp"));
+                        "mefrpc.tar.tmp"));
                     Dispatcher.UIThread.Post(() =>
                     {
                         td.Hide(TaskDialogStandardResult.OK);
@@ -508,11 +502,11 @@ public partial class DownloadHelper
                     {
                     */
                     new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp")).MoveTo(
+                        "mefrpc.tar.tmp")).MoveTo(
                         Path.Combine(AppContext.BaseDirectory, "bin",
-                            OperatingSystem.IsWindows() ? "mefrpc.exe" : "mefrpc.tar"), true);
+                            "mefrpc.tar"), true);
                     File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        OperatingSystem.IsWindows() ? "mefrpc.exe.tmp" : "mefrpc.tar.tmp"));
+                        "mefrpc.tar.tmp"));
                     Dispatcher.UIThread.Post(() =>
                     {
                         td.Hide(TaskDialogStandardResult.OK);

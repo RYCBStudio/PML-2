@@ -3833,4 +3833,16 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Home.Simple.Inbox" xml:space="preserve">
         <value>Inbox</value>
     </data>
+    <data name="Text.Inbox.Empty" xml:space="preserve">
+        <value>No notices</value>
+    </data>
+    <data name="Text.Inbox.New" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="Text.Inbox.NoTextPreview" xml:space="preserve">
+        <value>This notice has no text preview. Click to view details.</value>
+    </data>
+    <data name="Text.Inbox.ViewDetails" xml:space="preserve">
+        <value>View details</value>
+    </data>
 </root>

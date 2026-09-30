@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reactive;
-using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Threading;
-using Avalonia.VisualTree;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Tools;
@@ -251,39 +248,6 @@ public class MainPageFrameViewModel : ViewModelBase
             finally
             {
                 IsLoading = false;
-
-                // 诊断：页面构造完成/失败后导出可视树，用于定位「AOT 下渲染为空白」的问题。
-                if (CurrentPage is null)
-                {
-                    Core.App.CurrentLogger?.Log($"导航到页面 '{pageName}' 后 CurrentPage 为 null（页面构造未成功）");
-                }
-                else
-                {
-                    Dispatcher.UIThread.Post(async () =>
-                    {
-                        try
-                        {
-                            await Task.Delay(3000); // 等待过渡动画/布局完成
-                            var page = CurrentPage;
-                            if (page is null)
-                            {
-                                return;
-                            }
-
-                            var parent = page.GetVisualParent();
-                            Core.App.CurrentLogger?.Log(
-                                $"页面 '{pageName}' 可视树（延迟3s）:\n{Tools.VisualTreeDiagnostics.Dump(page, 8, 400)}");
-                            Core.App.CurrentLogger?.Log(
-                                $"页面 '{pageName}' 父级={parent?.GetType().Name ?? "(null)"} " +
-                                $"父级Bounds={(parent as Control)?.Bounds} 页面Bounds={page.Bounds} " +
-                                $"Content={(page as ContentControl)?.Content?.GetType().Name ?? "(null)"}");
-                        }
-                        catch (Exception dumpEx)
-                        {
-                            Core.App.CurrentLogger?.Error(dumpEx, "导出可视树失败");
-                        }
-                    }, DispatcherPriority.Background);
-                }
             }
         });
 

@@ -125,9 +125,13 @@ internal partial class Program
                     var outPath = "";
                     try
                     {
-                        pmlaFile = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                        pmlaFile = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
                             ?.Split('=')[1];
-                        outPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("output="))
+                        outPath = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("output="))
                             ?.Split('=')[1];
                     }
                     catch (IndexOutOfRangeException)
@@ -146,7 +150,8 @@ internal partial class Program
                     var banner = new string('=', 30);
                     System.Console.WriteLine(banner);
                     System.Console.WriteLine("PMLA Unpack Mode");
-                    System.Console.WriteLine($"Unpacking {pmlaFile}(New Format: {PMLAXHelper.IsPmlaxFile(pmlaFile)}) to {outPath}");
+                    System.Console.WriteLine(
+                        $"Unpacking {pmlaFile}(New Format: {PMLAXHelper.IsPmlaxFile(pmlaFile)}) to {outPath}");
                     System.Console.WriteLine(banner);
                     PMLAHelper.UnpackPmla(pmlaFile, outPath, (progress, status) =>
                     {
@@ -155,6 +160,7 @@ internal partial class Program
                     System.Console.WriteLine("Unpack completed.");
                     return 0;
                 }
+
                 if (isPack)
                 {
                     var inPath = "";
@@ -162,11 +168,17 @@ internal partial class Program
                     var isNewFormat = true;
                     try
                     {
-                        inPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("input="))
+                        inPath = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPath=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("input="))
                             ?.Split('=')[1];
-                        outPmla = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                        outPmla = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
                             ?.Split('=')[1];
-                        isNewFormat = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("newFormat="))
+                        isNewFormat = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("newFormat="))
                             ?.Split('=')[1] is null or "true";
                     }
                     catch (IndexOutOfRangeException)
@@ -185,6 +197,7 @@ internal partial class Program
                         Environment.Exit(2);
                         return 2;
                     }
+
                     var banner = new string('=', 30);
                     System.Console.WriteLine(banner);
                     System.Console.WriteLine("PMLA Pack Mode");
@@ -204,6 +217,7 @@ internal partial class Program
                     Environment.Exit(0);
                     return 0;
                 }
+
                 System.Console.Error.WriteLine("[E] Invalid Arguments.");
                 Environment.Exit(1);
                 return 1;
@@ -463,7 +477,7 @@ internal partial class Program
             StartProxyId = -1,
             StartProxyName = string.Empty
         };
-        if (!arg.StartsWith("mefrp://"))
+        if (!arg.StartsWithAny("mefrp://", "pml2://"))
         {
             if (arg == "pmla")
             {
@@ -472,21 +486,27 @@ internal partial class Program
         }
         else
         {
-            var url = arg.Replace("mefrp://", "");
+            var url = arg.ReplaceAnyToOne(["mefrp://", "pml2://"]);
             var args = url.Split('/');
-            if (args is ["StartProxy", var idAndOther, ..])
+            switch (args)
             {
-                var res = idAndOther.Split('?');
-                var id = res[0];
-                if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+                case ["StartProxy", var idAndOther, ..]:
                 {
-                    data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
-                }
+                    var res = idAndOther.Split('?');
+                    var id = res[0];
+                    if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+                    {
+                        data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
+                    }
 
-                data.StartProxyId = int.Parse(id);
+                    data.StartProxyId = int.Parse(id);
+                    break;
+                }
+                case [""]:
+                    Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+                    break;
             }
 
-            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
             File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
                 JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         }

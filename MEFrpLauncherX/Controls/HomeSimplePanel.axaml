@@ -70,7 +70,11 @@
                             <Button Command="{Binding OpenInboxCommand}">
                                 <controls1:IconContent Label="{x:Static languages:Languages.Text_Home_Simple_Inbox}" Symbol="Mail" />
                             </Button>
-                            <controls:InfoBadge Padding="3" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                            <!-- 26.4：收件箱红点（新系统通知 + 新软件公告，本地缓存快照比对得出） -->
+                            <controls:InfoBadge Padding="3" Margin="4"
+                                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                IsVisible="{Binding HasNewInboxNotice}"
+                                                Value="{Binding InboxBadgeValue}" />
                         </Panel>
                     </StackPanel>
                 </Grid>
