@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Text;
 
 namespace MEFrpLauncherX.Core.Services;
@@ -139,6 +139,20 @@ public static class LegoRunner
     /// </summary>
     public const int SkipPropagationWaitSeconds = 30;
 
+    /// <summary>传播等待上限的最小值（秒）：过小会让 CA 校验必然超时</summary>
+    public const int MinPropagationTimeoutSeconds = 60;
+
+    /// <summary>传播等待上限的最大值（秒）：过大则长时间占用申请窗口</summary>
+    public const int MaxPropagationTimeoutSeconds = 900;
+
+    /// <summary>
+    ///     把请求中的传播等待上限收敛到合法区间（非法值回退到默认 300 秒）。
+    ///     命令行 flag 与环境变量共同使用该结果，避免两处取值不一致。
+    /// </summary>
+    private static int ClampPropagationTimeout(int seconds) =>
+        Math.Clamp(seconds <= 0 ? AcmeCertificateService.DefaultPropagationTimeoutSeconds : seconds,
+            MinPropagationTimeoutSeconds, MaxPropagationTimeoutSeconds);
+
     /// <summary>
     ///     组装 lego 的 argv。
     ///     易踩的两个坑（均已在真实 lego v5 上验证）：
@@ -167,7 +181,10 @@ public static class LegoRunner
                 : AcmeCertificateService.LetsEncryptProduction,
             "--path", request.WorkPath,
             "--dns.resolvers", "119.29.29.29,223.5.5.5",
-            "--dns.propagation-timeout", "300s",
+            // 26.4 修复：此处此前硬编码 300s，导致 AcmeRequest.PropagationTimeoutSeconds
+            // （证书助手「高级选项 → 等待上限（秒）」）对命令行 flag 不生效；
+            // 现统一以请求值为准，与环境变量同源。
+            "--dns.propagation-timeout", FormatDuration(ClampPropagationTimeout(request.PropagationTimeoutSeconds)),
         };
 
         // 仅在用户明确选择「跳过传播检查」时才传入；正常模式不传，保留 lego 的真实传播检查。
@@ -220,10 +237,11 @@ public static class LegoRunner
     internal static Dictionary<string, string> BuildEnvironment(LegoRunRequest request)
     {
         var env = new Dictionary<string, string>(StringComparer.Ordinal);
+        var propagationSeconds = ClampPropagationTimeout(request.PropagationTimeoutSeconds);
 
         if (request.Mode == LegoChallengeMode.Manual)
         {
-            env[ManualPropagationTimeoutEnv] = request.PropagationTimeoutSeconds.ToString();
+            env[ManualPropagationTimeoutEnv] = propagationSeconds.ToString();
             env[ManualPollingIntervalEnv] = "5";
             return env;
         }
@@ -242,8 +260,7 @@ public static class LegoRunner
         // 按厂商前缀覆盖传播等待（各 provider 的默认值普遍偏短）
         if (!string.IsNullOrWhiteSpace(request.ProviderEnvPrefix))
         {
-            env[$"{request.ProviderEnvPrefix}_PROPAGATION_TIMEOUT"] =
-                request.PropagationTimeoutSeconds.ToString();
+            env[$"{request.ProviderEnvPrefix}_PROPAGATION_TIMEOUT"] = propagationSeconds.ToString();
             env[$"{request.ProviderEnvPrefix}_POLLING_INTERVAL"] = "5";
         }
 

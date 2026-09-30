@@ -454,3 +454,20 @@ $RECYCLE.BIN/
 /obj/
 /.vs/
 /bin/
+
+
+### User
+.agentbridge
+.codex
+.refact
+.sentry-native
+.VSCodeCounter
+PML2_splash backup
+PML2CertCheck
+PML2Test
+X
+.mcp.json
+a.txt
+IconPacks.Browser.exe
+SourceCode.txt
+.qoder

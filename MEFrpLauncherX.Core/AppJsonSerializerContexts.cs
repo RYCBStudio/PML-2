@@ -94,6 +94,9 @@ namespace MEFrpLauncherX.Core;
 [JsonSerializable(typeof(ToEditIcpDomainInfo))]
 [JsonSerializable(typeof(List<IcpDomain>))]
 [JsonSerializable(typeof(ApiInfo<List<IcpDomain>>))]
+[JsonSerializable(typeof(GitHubRelease))]
+[JsonSerializable(typeof(GitHubAsset))]
+[JsonSerializable(typeof(List<GitHubAsset>))]
 [JsonSourceGenerationOptions(IncludeFields = true, PropertyNameCaseInsensitive = true)]
 public partial class AppJsonSerializerContext : JsonSerializerContext
 {

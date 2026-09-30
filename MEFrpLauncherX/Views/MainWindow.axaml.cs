@@ -453,28 +453,40 @@ public partial class MainWindow : AppWindow, IDisposable
         _vm.IsBusy = false;
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
-        var _startUpProfile = new FileInfo(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"));
-        //判断URL协议临时文件的时效性
-        if (
-            !File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"))
-            ||
-            !IsBetweenTimeSpan(_startUpProfile.LastWriteTime, DateTime.Now.AddMinutes(-2),
-                DateTime.Now.AddMinutes(-1))
-        )
+        var startupFile = Path.Combine(Core.App.StartupPath, "Cache", "startup.json");
+        // 26.4 修复：只认「刚刚写入」的临时文件。
+        // 原判据要求文件时间落在「1 分钟前 ~ 2 分钟前」，刚写入的文件永远不满足，
+        // 导致 pml2:// 链接启动隧道从未生效。
+        if (!File.Exists(startupFile) ||
+            !IsBetweenTimeSpan(File.GetLastWriteTime(startupFile), DateTime.Now.AddMinutes(-2), DateTime.Now))
         {
             goto AUTO_START;
         }
 
-        var data = JsonSerializer.Deserialize<StartupData>(
-            await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "startup.json")),
-            App.AppJsonSerializerContext.StartupData);
-        if (!(data?.StartProxyId == -1 || data?.StartProxyName == string.Empty))
+        StartupData? data = null;
+        try
         {
-            var _frpt = await MEFrpApiConverter.GetFrpTokenAsync();
-            var cmd = $"{{mefrpc}} -t {_frpt.data?.token} -p {data?.StartProxyId}";
-            MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd,
-                data?.StartProxyName);
+            data = JsonSerializer.Deserialize<StartupData>(await File.ReadAllTextAsync(startupFile),
+                App.AppJsonSerializerContext.StartupData);
         }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "读取链接启动参数失败");
+        }
+        finally
+        {
+            // 读取后立即删除，避免同一次启动参数在下次启动时被重复使用
+            try
+            {
+                File.Delete(startupFile);
+            }
+            catch
+            {
+                // 删除失败不影响启动流程
+            }
+        }
+
+        await LaunchTunnelFromStartupDataAsync(data);
 
 
         AUTO_START:
@@ -613,6 +625,45 @@ public partial class MainWindow : AppWindow, IDisposable
                 break;
         }
     }
+
+    /// <summary>
+    ///     按启动参数拉起隧道（26.4）。
+    ///     冷启动来自 <c>Cache/startup.json</c>，已运行实例来自命名管道转发的
+    ///     <c>pml2://</c> 链接；两条路径都汇聚到这里，保证与手动启动走同一链路
+    ///     （终端、悬浮窗、错误处理均一致）。
+    /// </summary>
+    /// <param name="data">解析后的启动参数；为空或隧道 ID 无效时不启动。</param>
+    public static async Task LaunchTunnelFromStartupDataAsync(StartupData? data)
+    {
+        if (data is null || data.StartProxyId <= 0)
+        {
+            return;
+        }
+
+        try
+        {
+            MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
+            var token = await MEFrpApiConverter.GetFrpTokenAsync();
+            var cmd = $"{{mefrpc}} -t {token.data?.token} -p {data.StartProxyId}";
+            // 链接未带 Name 时用 ID 兜底，保证终端标签始终可读
+            var title = string.IsNullOrWhiteSpace(data.StartProxyName)
+                ? $"#{data.StartProxyId}"
+                : data.StartProxyName;
+            MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, title);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "链接启动隧道失败");
+        }
+    }
+
+    /// <summary>
+    ///     处理外部转发的 <c>pml2://</c> / <c>mefrp://</c> 链接
+    ///     （应用已在运行时由命名管道转发过来）。
+    /// </summary>
+    /// <param name="url">原始链接</param>
+    public static void HandleUrlProtocol(string url) =>
+        _ = LaunchTunnelFromStartupDataAsync(Program.TryParseStartupUrl(url));
 
     /// <summary>
     ///     判断指定的时间是否在指定的范围

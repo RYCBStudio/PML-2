@@ -5,6 +5,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.ViewModels;
 
 namespace MEFrpLauncherX.Views;
@@ -38,6 +39,14 @@ public partial class UpdatePage : UserControl
             "Common" => 1,
             _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
         };
+        DownloadSourceBox.SelectedIndex =
+            GitHubUpdateSources.Normalize(ConfigManager.CurrentConfig.UpdateSettings.DownloadSource) switch
+            {
+                GitHubUpdateSources.GitHub => 1,
+                GitHubUpdateSources.GitHubGhProxy => 2,
+                GitHubUpdateSources.GitHubMoeyy => 3,
+                _ => 0
+            };
 
         _init = true;
         MainPageFrameViewModel.UpdatePage = this;
@@ -95,6 +104,21 @@ public partial class UpdatePage : UserControl
                                              ?? Core.App.ReleaseFlag;
         });
     }
+
+    private void DownloadSourceChange(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!_init)
+        {
+            return;
+        }
+
+        ConfigManager.UpdateConfig(cfg =>
+        {
+            // 归一化后再落盘，避免存储非法取值（UI 下拉项恒为合法值）
+            cfg.UpdateSettings.DownloadSource = GitHubUpdateSources.Normalize(
+                ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag?.ToString());
+        });
+    }
 }
 
 public class UpdateChannelBoxItemToDescConverter : IValueConverter
@@ -114,6 +138,34 @@ public class UpdateChannelBoxItemToDescConverter : IValueConverter
                 _ => Languages.Text_Update_UnknownChannel
             }
             : Languages.Text_Update_UnknownChannel;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+}
+
+/// <summary>
+///     把更新页「下载源」下拉框的选中序号转换为对应说明文案（26.4）。
+/// </summary>
+public class UpdateDownloadSourceBoxItemToDescConverter : IValueConverter
+{
+    public static UpdateDownloadSourceBoxItemToDescConverter Instance
+    {
+        get;
+    } = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is int index
+            ? index switch
+            {
+                0 => Languages.Text_Update_DownloadSourceDesc_TPCA,
+                1 => Languages.Text_Update_DownloadSourceDesc_GitHub,
+                2 => Languages.Text_Update_DownloadSourceDesc_GitHubGhProxy,
+                3 => Languages.Text_Update_DownloadSourceDesc_GitHubMoeyy,
+                _ => Languages.Text_Update_DownloadSourceDesc_Unknown
+            }
+            : Languages.Text_Update_DownloadSourceDesc_Unknown;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

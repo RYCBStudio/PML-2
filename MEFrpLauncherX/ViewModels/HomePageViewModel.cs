@@ -206,7 +206,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     ///     本次加载中系统通知（<c>auth/popupNotice</c>）是否请求成功。
     ///     失败时不写回收件箱快照，避免把历史快照误清空导致旧公告被重新判为「新」。
     /// </summary>
-    private bool _popupNoticeFetched;
+    private bool _noticeFetched;
 
     /// <summary>收件箱是否有新内容（精简主页收件箱按钮红点显示依据）</summary>
     public bool HasNewInboxNotice => Inbox.HasNewNotice;
@@ -1007,15 +1007,17 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
                 ProxiesCount = $"{data.usedProxies}/{data.maxProxies}";
                 // 加载公告
+                var _notice = await MEFrpApiConverter.GetNoticeAsync(forceRefresh);
                 NoticeContent = HtmlToMarkdownConverter.ConvertRawLinkToMarkdown(
-                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown(
-                        (await MEFrpApiConverter.GetNoticeAsync(forceRefresh))
-                        .data));
+                    HtmlToMarkdownConverter.ConvertHtmlImagesToMarkdown(_notice.data));
 
                 if (NoticeContent.IsNullOrEmpty())
                 {
                     IsNoData = true;
                 }
+                // 26.4：弹窗公告同时作为收件箱「系统通知」的内容源（本地缓存快照用于判断新内容）
+                SystemNoticeContent = NoticeContent;
+                _noticeFetched = _notice.code == 200;
 
                 IsLoading = false;
 
@@ -1030,9 +1032,6 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
 
                 var popUp = await MEFrpApiConverter.GetPopupNoticeAsync();
-                // 26.4：弹窗公告同时作为收件箱「系统通知」的内容源（本地缓存快照用于判断新内容）
-                SystemNoticeContent = popUp?.data;
-                _popupNoticeFetched = popUp?.code == 200;
 
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
                 MainPageFrameViewModel.Instance?.IsLoading = false;
@@ -1058,7 +1057,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             // 26.4：把两类通知注入收件箱 VM，由它按本地缓存快照计算「新内容」并驱动红点
             // 请求失败的来源传 fetched=false，避免误把它当作「已无公告」而清空历史快照
             Inbox.Load(SystemNoticeContent, SoftwareNotice,
-                systemNoticeFetched: _popupNoticeFetched,
+                systemNoticeFetched: _noticeFetched,
                 softwareNoticesFetched: notice.Success);
             RefreshInboxBadge();
         }

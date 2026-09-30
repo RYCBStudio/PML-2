@@ -1361,6 +1361,48 @@
     <data name="Text.Update.CompileType.Common" xml:space="preserve">
         <value>一般</value>
     </data>
+    <data name="Text.Update.DownloadSource" xml:space="preserve">
+        <value>下載來源</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDescription" xml:space="preserve">
+        <value>設定更新檔案的下載線路。TPCA 使用自建 CDN；GitHub 線路會從 GitHub Release 取得安裝檔，可選擇鏡像加速站點以提高下載成功率。</value>
+    </data>
+    <data name="Text.Update.DownloadSource.TPCA" xml:space="preserve">
+        <value>TPCA Openlist (預設)</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHub" xml:space="preserve">
+        <value>Github</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHubGhProxy" xml:space="preserve">
+        <value>Github (gh-proxy 鏡像)</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHubMoeyy" xml:space="preserve">
+        <value>Github (moeyy 鏡像)</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.TPCA" xml:space="preserve">
+        <value>使用自建 Alist CDN 下載更新檔案，在中國大陸的存取速度最快，推薦使用。</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHub" xml:space="preserve">
+        <value>直接從 GitHub 官方站點取得 Release 安裝檔，適合可直連 GitHub 的網路環境。</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHubGhProxy" xml:space="preserve">
+        <value>經 gh-proxy 鏡像加速存取 GitHub，GitHub 直連緩慢或失敗時推薦使用。</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHubMoeyy" xml:space="preserve">
+        <value>經 moeyy 鏡像加速存取 GitHub，可作為 gh-proxy 鏡像的備用線路。</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.Unknown" xml:space="preserve">
+        <value>未知下載來源</value>
+    </data>
+    <data name="Text.Update.DownloadSourceResolvedFormat" xml:space="preserve">
+        <value>正在從 {0} 下載: {1}</value>
+    </data>
+    <data name="Text.Update.InstallTipLinuxRpm" xml:space="preserve">
+        <value>點擊確認開啟安裝檔所在目錄，使用 rpm -ivh 或 dnf install 命令安裝 rpm 套件</value>
+    </data>
+    <data name="Text.Update.InstallTipLinuxTar" xml:space="preserve">
+        <value>點擊確認開啟安裝檔所在目錄，解壓縮後依 README 說明覆蓋安裝</value>
+    </data>
     <data name="Text.About.PoweredBy" xml:space="preserve">
         <value>由開源軟體和 ME Frp 提供支援。</value>
     </data>
@@ -3675,6 +3717,129 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Dns.Field.SessionToken" xml:space="preserve">
         <value>臨時權杖（選填）</value>
     </data>
+    <data name="Text.Dns.Field.SecretAccessKey" xml:space="preserve">
+        <value>SecretAccessKey</value>
+    </data>
+    <data name="Text.Dns.Field.Region" xml:space="preserve">
+        <value>區域</value>
+    </data>
+    <data name="Text.Dns.Field.HostedZoneId" xml:space="preserve">
+        <value>託管區域 ID（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.ClientId" xml:space="preserve">
+        <value>Client ID</value>
+    </data>
+    <data name="Text.Dns.Field.ClientSecret" xml:space="preserve">
+        <value>Client Secret</value>
+    </data>
+    <data name="Text.Dns.Field.TenantId" xml:space="preserve">
+        <value>租用戶 ID</value>
+    </data>
+    <data name="Text.Dns.Field.SubscriptionId" xml:space="preserve">
+        <value>訂用帳戶 ID</value>
+    </data>
+    <data name="Text.Dns.Field.AuthToken" xml:space="preserve">
+        <value>Auth Token</value>
+    </data>
+    <data name="Text.Dns.Field.ApiKey" xml:space="preserve">
+        <value>API Key</value>
+    </data>
+    <data name="Text.Dns.Field.ApiSecret" xml:space="preserve">
+        <value>API Secret</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUser" xml:space="preserve">
+        <value>API 使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Field.Project" xml:space="preserve">
+        <value>專案 ID</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceAccountFile" xml:space="preserve">
+        <value>服務帳戶 JSON 檔案</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUrl" xml:space="preserve">
+        <value>API 網址</value>
+    </data>
+    <data name="Text.Dns.Field.Token" xml:space="preserve">
+        <value>Token</value>
+    </data>
+    <data name="Text.Dns.Field.Key" xml:space="preserve">
+        <value>Key</value>
+    </data>
+    <data name="Text.Dns.Field.ClientToken" xml:space="preserve">
+        <value>Client Token</value>
+    </data>
+    <data name="Text.Dns.Field.AccessToken" xml:space="preserve">
+        <value>Access Token</value>
+    </data>
+    <data name="Text.Dns.Field.Host" xml:space="preserve">
+        <value>主機位址</value>
+    </data>
+    <data name="Text.Dns.Field.Endpoint" xml:space="preserve">
+        <value>API 端點</value>
+    </data>
+    <data name="Text.Dns.Field.PermanentApiToken" xml:space="preserve">
+        <value>永久 API Token</value>
+    </data>
+    <data name="Text.Dns.Field.PersonalAccessToken" xml:space="preserve">
+        <value>個人存取權杖</value>
+    </data>
+    <data name="Text.Dns.Field.Username" xml:space="preserve">
+        <value>使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Field.Password" xml:space="preserve">
+        <value>密碼</value>
+    </data>
+    <data name="Text.Dns.Field.DnsZone" xml:space="preserve">
+        <value>DNS 區域</value>
+    </data>
+    <data name="Text.Dns.Field.ApiPassword" xml:space="preserve">
+        <value>API 密碼</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUsername" xml:space="preserve">
+        <value>API 使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Field.ConfigFile" xml:space="preserve">
+        <value>設定檔路徑（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.CompartmentId" xml:space="preserve">
+        <value>區間 ID</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationKey" xml:space="preserve">
+        <value>Application Key</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationSecret" xml:space="preserve">
+        <value>Application Secret</value>
+    </data>
+    <data name="Text.Dns.Field.ConsumerKey" xml:space="preserve">
+        <value>Consumer Key</value>
+    </data>
+    <data name="Text.Dns.Field.SecretApiKey" xml:space="preserve">
+        <value>Secret API Key</value>
+    </data>
+    <data name="Text.Dns.Field.User" xml:space="preserve">
+        <value>使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Field.AccountName" xml:space="preserve">
+        <value>帳號名稱</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKeyPath" xml:space="preserve">
+        <value>私密金鑰路徑</value>
+    </data>
+    <data name="Text.Dns.Field.PddToken" xml:space="preserve">
+        <value>PDD Token</value>
+    </data>
+    <data name="Text.Dns.Field.Nameserver" xml:space="preserve">
+        <value>DNS 伺服器</value>
+    </data>
+    <data name="Text.Dns.Field.TsigKey" xml:space="preserve">
+        <value>TSIG 金鑰名稱（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.TsigSecret" xml:space="preserve">
+        <value>TSIG 金鑰（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.TsigAlgorithm" xml:space="preserve">
+        <value>TSIG 演算法（選填）</value>
+    </data>
     <data name="Text.Dns.Placeholder.ApiToken" xml:space="preserve">
         <value>貼上僅含 DNS 編輯權限的 Token</value>
     </data>
@@ -3693,6 +3858,117 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Dns.Placeholder.Optional" xml:space="preserve">
         <value>選填，留空即可</value>
     </data>
+    <data name="Text.Dns.Placeholder.SecretAccessKey" xml:space="preserve">
+        <value>貼上 SecretAccessKey</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Region" xml:space="preserve">
+        <value>例如 ap-northeast-1</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientId" xml:space="preserve">
+        <value>貼上 Client ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientSecret" xml:space="preserve">
+        <value>貼上 Client Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TenantId" xml:space="preserve">
+        <value>貼上租用戶 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SubscriptionId" xml:space="preserve">
+        <value>貼上訂用帳戶 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthToken" xml:space="preserve">
+        <value>貼上 Auth Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiKey" xml:space="preserve">
+        <value>貼上 API Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUser" xml:space="preserve">
+        <value>貼上 API 使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiSecret" xml:space="preserve">
+        <value>貼上 API Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Project" xml:space="preserve">
+        <value>例如 my-project-123456</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceAccountFile" xml:space="preserve">
+        <value>例如 /path/to/service-account.json</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUrl" xml:space="preserve">
+        <value>例如 https://pdns.example.com</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Token" xml:space="preserve">
+        <value>貼上 Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Key" xml:space="preserve">
+        <value>貼上 Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientToken" xml:space="preserve">
+        <value>貼上 Client Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessToken" xml:space="preserve">
+        <value>貼上 Access Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Host" xml:space="preserve">
+        <value>例如 akab-xxxx.luna.akamaiapis.net</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PermanentApiToken" xml:space="preserve">
+        <value>貼上永久 API Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PersonalAccessToken" xml:space="preserve">
+        <value>貼上個人存取權杖</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Username" xml:space="preserve">
+        <value>貼上使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Password" xml:space="preserve">
+        <value>貼上密碼</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsZone" xml:space="preserve">
+        <value>例如 example.com</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiPassword" xml:space="preserve">
+        <value>貼上 API 密碼</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUsername" xml:space="preserve">
+        <value>貼上 API 使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConfigFile" xml:space="preserve">
+        <value>例如 ~/.oci/config（選填，留空使用預設值）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CompartmentId" xml:space="preserve">
+        <value>例如 ocid1.compartment.oc1..xxxx</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Endpoint" xml:space="preserve">
+        <value>例如 ovh-eu</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationKey" xml:space="preserve">
+        <value>貼上 Application Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationSecret" xml:space="preserve">
+        <value>貼上 Application Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConsumerKey" xml:space="preserve">
+        <value>貼上 Consumer Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretApiKey" xml:space="preserve">
+        <value>貼上 Secret API Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.User" xml:space="preserve">
+        <value>貼上使用者名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountName" xml:space="preserve">
+        <value>例如 myaccount</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKeyPath" xml:space="preserve">
+        <value>例如 /path/to/private.key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PddToken" xml:space="preserve">
+        <value>貼上 PDD Token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Nameserver" xml:space="preserve">
+        <value>例如 ns1.example.com</value>
+    </data>
     <data name="Text.Dns.Permission.Cloudflare" xml:space="preserve">
         <value>建議建立專用 API Token：權限僅需 Zone → DNS → Edit（並包含 Zone → Zone → Read），並限定到目標網域。</value>
     </data>
@@ -3701,6 +3977,108 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Dns.Permission.DnsPod" xml:space="preserve">
         <value>建議使用騰訊雲子帳號的 API 金鑰，僅授予 DNSPod 相關權限；請勿使用主帳號金鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Route53" xml:space="preserve">
+        <value>建議建立專用 IAM 使用者或角色，僅授予目標託管區域的 Route 53 記錄修改權限；請勿使用根帳號金鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AzureDns" xml:space="preserve">
+        <value>建議建立專用應用程式（服務主體），僅在目標 DNS 區域上授予「DNS Zone Contributor」角色；請勿使用全域管理員認證。</value>
+    </data>
+    <data name="Text.Dns.Permission.DigitalOcean" xml:space="preserve">
+        <value>建議建立僅具 DNS 讀寫權限的 Personal Access Token；請勿使用 Full Access Token。</value>
+    </data>
+    <data name="Text.Dns.Permission.Gandi" xml:space="preserve">
+        <value>建議建立專用 API Key，僅用於 DNS 記錄管理；請勿使用帳戶密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.Namecheap" xml:space="preserve">
+        <value>建議在帳戶中開啟 API 存取並以白名單限制來源 IP，僅授予目標網域的 DNS 管理權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.GoDaddy" xml:space="preserve">
+        <value>建議建立僅供正式環境使用的 API Key 與 Secret，並限定到目標網域。</value>
+    </data>
+    <data name="Text.Dns.Permission.GCloud" xml:space="preserve">
+        <value>建議建立專用服務帳戶，僅授予目標專案的 DNS Administrator（roles/dns.admin）角色，並下載 JSON 金鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Hetzner" xml:space="preserve">
+        <value>建議建立僅具 DNS 讀寫權限的 API Token，並限定到目標網域。</value>
+    </data>
+    <data name="Text.Dns.Permission.Vultr" xml:space="preserve">
+        <value>建議建立僅啟用 DNS 權限的 API Key；請勿使用帳戶全域 API Key。</value>
+    </data>
+    <data name="Text.Dns.Permission.Linode" xml:space="preserve">
+        <value>建議建立 Personal Access Token，僅授予 Domains 的讀寫權限；請勿使用帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.PowerDNS" xml:space="preserve">
+        <value>建議建立僅可管理目標區域的 API Key，並限制 API 存取的來源 IP。</value>
+    </data>
+    <data name="Text.Dns.Permission.Dynu" xml:space="preserve">
+        <value>建議建立專用 API Key，僅用於 DNS 記錄管理；請勿使用帳戶密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.EasyDns" xml:space="preserve">
+        <value>建議建立專用 API Token 與其對應的 Key，僅授予目標網域的記錄管理權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeDns" xml:space="preserve">
+        <value>建議建立專用 API 用戶端（Client Token / Client Secret / Access Token），僅授予目標區域的 Edge DNS 編輯權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Exoscale" xml:space="preserve">
+        <value>建議建立僅具 DNS 權限的受限 IAM API Key；請勿使用帳戶全域金鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.GCore" xml:space="preserve">
+        <value>建議建立永久 API Token，並僅授予 DNS 相關權限；請勿使用帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.GandiV5" xml:space="preserve">
+        <value>建議建立專用 Personal Access Token，僅勾選「Manage domain name zone files（管理網域區域檔案）」權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Glesys" xml:space="preserve">
+        <value>建議建立僅可管理 DNS 的 API 使用者與金鑰；請勿使用主帳號認證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Hostinger" xml:space="preserve">
+        <value>建議在 hPanel 中建立專用 API Token，僅授予 DNS 相關權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Infomaniak" xml:space="preserve">
+        <value>建議建立專用 API 存取權杖，僅授予 DNS 相關權限；請勿使用帳戶密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.Joker" xml:space="preserve">
+        <value>建議使用專用子帳號並僅授予 DNS 管理權限；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Lightsail" xml:space="preserve">
+        <value>建議建立專用 IAM 使用者，僅授予目標區域的 Lightsail DNS 相關權限；請勿使用根帳號金鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.LiquidWeb" xml:space="preserve">
+        <value>建議建立僅具 DNS 管理權限的專用 API 使用者；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Loopia" xml:space="preserve">
+        <value>建議建立僅用於 DNS 管理的 API 使用者，並限制 API 存取的來源 IP。</value>
+    </data>
+    <data name="Text.Dns.Permission.LuaDns" xml:space="preserve">
+        <value>建議建立專用 API 使用者，僅授予目標區域的讀寫權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Netcup" xml:space="preserve">
+        <value>建議建立專用 API Key 與 API 密碼，僅用於 DNS 管理；請勿使用客戶帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.NS1" xml:space="preserve">
+        <value>建議建立僅含 DNS 區域讀寫權限的 API Key；請勿使用帳戶管理員 Key。</value>
+    </data>
+    <data name="Text.Dns.Permission.OracleCloud" xml:space="preserve">
+        <value>建議使用專用 IAM 使用者與 API 金鑰，僅在目標區間授予 DNS 管理權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Ovh" xml:space="preserve">
+        <value>建議建立專用 OVH API 應用程式（Application Key / Secret / Consumer Key），僅授予目標網域的 DNS 區域編輯權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.Porkbun" xml:space="preserve">
+        <value>建議建立專用 API Key 與 Secret API Key，並開啟 IP 白名單限制。</value>
+    </data>
+    <data name="Text.Dns.Permission.Rackspace" xml:space="preserve">
+        <value>建議建立僅具 DNS 管理權限的專用使用者與 API Key；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.TransIp" xml:space="preserve">
+        <value>建議建立專用 API 金鑰組，僅用於 DNS 管理；請勿使用帳戶密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.Yandex" xml:space="preserve">
+        <value>建議建立專用 PDD Token，僅用於目標網域的 DNS 管理。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsUpdate" xml:space="preserve">
+        <value>建議使用專用 TSIG 金鑰，並僅授權目標區域的動態更新（限制 allow-update）；請勿使用全域管理金鑰。</value>
     </data>
     <data name="Text.Dns.Error.LegoUnavailable" xml:space="preserve">
         <value>無法準備憑證元件 lego（下載或校驗失敗），請檢查網路後重試，或改用手動 DNS 模式。</value>
@@ -3839,5 +4217,981 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Inbox.ViewDetails" xml:space="preserve">
         <value>檢視詳情</value>
+    </data>
+    <data name="Text.Dns.Delete" xml:space="preserve">
+        <value>刪除</value>
+    </data>
+    <data name="Text.Certificate.LocalList" xml:space="preserve">
+        <value>本機憑證</value>
+    </data>
+    <data name="Text.Certificate.DeleteConfirmFormat" xml:space="preserve">
+        <value>刪除本機憑證「{0}」後，正在使用該憑證的隧道不受影響，但之後無法再從憑證助手選擇它。確定刪除嗎？</value>
+    </data>
+    <data name="Text.Certificate.PropagationTimeout" xml:space="preserve">
+        <value>等待上限（秒）</value>
+    </data>
+    <data name="Text.Certificate.PropagationTimeoutDescription" xml:space="preserve">
+        <value>等待 DNS 傳播與 CA 驗證的最長時間，預設 300 秒；網路較慢或解析生效慢時可適當調大。</value>
+    </data>
+
+    <data name="Text.Dns.Field.Secret" xml:space="preserve">
+        <value>Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Secret" xml:space="preserve">
+        <value>貼上 Secret</value>
+    </data>
+    <data name="Text.Dns.Field.RamRole" xml:space="preserve">
+        <value>RAM 角色</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RamRole" xml:space="preserve">
+        <value>例如 acs:ram::1234567890:role/dns（選填，留空用 AccessKey）</value>
+    </data>
+    <data name="Text.Dns.Field.Login" xml:space="preserve">
+        <value>登入名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Login" xml:space="preserve">
+        <value>貼上登入名稱</value>
+    </data>
+    <data name="Text.Dns.Field.Nickname" xml:space="preserve">
+        <value>帳號暱稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Nickname" xml:space="preserve">
+        <value>貼上帳號暱稱</value>
+    </data>
+    <data name="Text.Dns.Field.PersonalToken" xml:space="preserve">
+        <value>個人存取權杖</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PersonalToken" xml:space="preserve">
+        <value>貼上個人存取權杖</value>
+    </data>
+    <data name="Text.Dns.Field.ManagerAddress" xml:space="preserve">
+        <value>管理端位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ManagerAddress" xml:space="preserve">
+        <value>例如 https://bindman.example.com:8080</value>
+    </data>
+    <data name="Text.Dns.Field.ServerUrl" xml:space="preserve">
+        <value>伺服器位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServerUrl" xml:space="preserve">
+        <value>例如 https://bam.example.com</value>
+    </data>
+    <data name="Text.Dns.Field.ConfigName" xml:space="preserve">
+        <value>設定名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConfigName" xml:space="preserve">
+        <value>貼上設定名稱</value>
+    </data>
+    <data name="Text.Dns.Field.DnsView" xml:space="preserve">
+        <value>外部 DNS 檢視</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsView" xml:space="preserve">
+        <value>貼上外部 DNS 檢視名稱</value>
+    </data>
+    <data name="Text.Dns.Field.ViewName" xml:space="preserve">
+        <value>DNS 檢視</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ViewName" xml:space="preserve">
+        <value>貼上 DNS 檢視名稱</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceInstanceId" xml:space="preserve">
+        <value>服務執行個體 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceInstanceId" xml:space="preserve">
+        <value>貼上 Service Instance ID（parentId）</value>
+    </data>
+    <data name="Text.Dns.Field.KeyId" xml:space="preserve">
+        <value>Key ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.KeyId" xml:space="preserve">
+        <value>貼上 Key ID（登入名稱）</value>
+    </data>
+    <data name="Text.Dns.Field.Email" xml:space="preserve">
+        <value>電子郵件</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Email" xml:space="preserve">
+        <value>例如 you@example.com</value>
+    </data>
+    <data name="Text.Dns.Field.AuthId" xml:space="preserve">
+        <value>API 使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthId" xml:space="preserve">
+        <value>貼上 API 使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Field.AuthPassword" xml:space="preserve">
+        <value>API 密碼</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthPassword" xml:space="preserve">
+        <value>貼上 API 使用者對應的密碼</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUserId" xml:space="preserve">
+        <value>API 使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUserId" xml:space="preserve">
+        <value>貼上 API 使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Field.BaseUrl" xml:space="preserve">
+        <value>服務位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.BaseUrl" xml:space="preserve">
+        <value>例如 https://panel.example.com:2087</value>
+    </data>
+    <data name="Text.Dns.Field.AuthUrl" xml:space="preserve">
+        <value>認證位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthUrl" xml:space="preserve">
+        <value>例如 https://keystone.example.com:5000/v3</value>
+    </data>
+    <data name="Text.Dns.Field.UserId" xml:space="preserve">
+        <value>使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.UserId" xml:space="preserve">
+        <value>貼上使用者 ID</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialId" xml:space="preserve">
+        <value>應用程式認證 ID（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialId" xml:space="preserve">
+        <value>貼上應用程式認證 ID（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialName" xml:space="preserve">
+        <value>應用程式認證名稱（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialName" xml:space="preserve">
+        <value>貼上應用程式認證名稱（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialSecret" xml:space="preserve">
+        <value>應用程式認證密鑰（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialSecret" xml:space="preserve">
+        <value>貼上應用程式認證密鑰（選填）</value>
+    </data>
+    <data name="Text.Dns.Field.ProjectName" xml:space="preserve">
+        <value>專案名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ProjectName" xml:space="preserve">
+        <value>例如 my-project</value>
+    </data>
+    <data name="Text.Dns.Field.RegionName" xml:space="preserve">
+        <value>區域名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RegionName" xml:space="preserve">
+        <value>例如 RegionOne</value>
+    </data>
+    <data name="Text.Dns.Field.ApiId" xml:space="preserve">
+        <value>API ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiId" xml:space="preserve">
+        <value>貼上 API ID</value>
+    </data>
+    <data name="Text.Dns.Field.Credentials" xml:space="preserve">
+        <value>憑證對</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Credentials" xml:space="preserve">
+        <value>例如 example.com:password,foo.example.com:password2</value>
+    </data>
+    <data name="Text.Dns.Field.OauthToken" xml:space="preserve">
+        <value>OAuth 權杖</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OauthToken" xml:space="preserve">
+        <value>貼上 OAuth 權杖</value>
+    </data>
+    <data name="Text.Dns.Field.CustomerName" xml:space="preserve">
+        <value>客戶名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CustomerName" xml:space="preserve">
+        <value>貼上客戶名稱</value>
+    </data>
+    <data name="Text.Dns.Field.Hostname" xml:space="preserve">
+        <value>主機名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Hostname" xml:space="preserve">
+        <value>例如 foo.example.com</value>
+    </data>
+    <data name="Text.Dns.Field.DnsName" xml:space="preserve">
+        <value>DNS 名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsName" xml:space="preserve">
+        <value>例如 dns.smart</value>
+    </data>
+    <data name="Text.Dns.Field.Signature" xml:space="preserve">
+        <value>API 簽章</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Signature" xml:space="preserve">
+        <value>貼上 API 簽章</value>
+    </data>
+    <data name="Text.Dns.Field.AppId" xml:space="preserve">
+        <value>Application ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AppId" xml:space="preserve">
+        <value>貼上 Application ID</value>
+    </data>
+    <data name="Text.Dns.Field.OrderId" xml:space="preserve">
+        <value>訂單 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OrderId" xml:space="preserve">
+        <value>貼上 API 合約的訂單 ID</value>
+    </data>
+    <data name="Text.Dns.Field.ExecPath" xml:space="preserve">
+        <value>外部程式路徑</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ExecPath" xml:space="preserve">
+        <value>例如 /path/to/myscript.sh</value>
+    </data>
+    <data name="Text.Dns.Field.ExecMode" xml:space="preserve">
+        <value>模式（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ExecMode" xml:space="preserve">
+        <value>RAW 或留空</value>
+    </data>
+    <data name="Text.Dns.Field.TenantName" xml:space="preserve">
+        <value>租用戶簡稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TenantName" xml:space="preserve">
+        <value>貼上 XC 租用戶簡稱</value>
+    </data>
+    <data name="Text.Dns.Field.GroupName" xml:space="preserve">
+        <value>群組名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.GroupName" xml:space="preserve">
+        <value>貼上群組名稱</value>
+    </data>
+    <data name="Text.Dns.Field.TokenId" xml:space="preserve">
+        <value>權杖 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TokenId" xml:space="preserve">
+        <value>貼上權杖 ID</value>
+    </data>
+    <data name="Text.Dns.Field.TokenSecret" xml:space="preserve">
+        <value>權杖密鑰</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TokenSecret" xml:space="preserve">
+        <value>貼上權杖密鑰</value>
+    </data>
+    <data name="Text.Dns.Field.AppKey" xml:space="preserve">
+        <value>App Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AppKey" xml:space="preserve">
+        <value>貼上 App Key</value>
+    </data>
+    <data name="Text.Dns.Field.Mode" xml:space="preserve">
+        <value>模式（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Mode" xml:space="preserve">
+        <value>RAW 或留空</value>
+    </data>
+    <data name="Text.Dns.Field.Tokens" xml:space="preserve">
+        <value>記錄名:權杖 清單</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Tokens" xml:space="preserve">
+        <value>例如 example.org:token1,demo.example.org:token2</value>
+    </data>
+    <data name="Text.Dns.Field.PassportLocation" xml:space="preserve">
+        <value>護照檔案路徑（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PassportLocation" xml:space="preserve">
+        <value>例如 ~/.h1/passport.json（選填，留空用預設值）</value>
+    </data>
+    <data name="Text.Dns.Field.LocationId" xml:space="preserve">
+        <value>區域 ID（選填）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.LocationId" xml:space="preserve">
+        <value>例如 pl-waw-1（選填，留空用預設值）</value>
+    </data>
+    <data name="Text.Dns.Field.DpmServiceCode" xml:space="preserve">
+        <value>服務代碼</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DpmServiceCode" xml:space="preserve">
+        <value>貼上 IIJ 託管 DNS 服務代碼</value>
+    </data>
+    <data name="Text.Dns.Field.ApiBase" xml:space="preserve">
+        <value>ACME-DNS API 位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiBase" xml:space="preserve">
+        <value>例如 http://10.0.0.8:4443</value>
+    </data>
+    <data name="Text.Dns.Field.StoragePath" xml:space="preserve">
+        <value>帳號資料檔（與下方二選一）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.StoragePath" xml:space="preserve">
+        <value>例如 /root/.lego-acme-dns-accounts.json</value>
+    </data>
+    <data name="Text.Dns.Field.StorageBaseUrl" xml:space="preserve">
+        <value>帳號資料服務位址（與上方二選一）</value>
+    </data>
+    <data name="Text.Dns.Placeholder.StorageBaseUrl" xml:space="preserve">
+        <value>例如 http://10.10.10.10:80</value>
+    </data>
+    <data name="Text.Dns.Field.AccountReference" xml:space="preserve">
+        <value>帳號參考號</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountReference" xml:space="preserve">
+        <value>貼上四位帳號參考號</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKeysMapping" xml:space="preserve">
+        <value>子網域:私密金鑰 對應</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKeysMapping" xml:space="preserve">
+        <value>例如 foo:base64key,bar:base64key2</value>
+    </data>
+    <data name="Text.Dns.Field.MasterId" xml:space="preserve">
+        <value>主控 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.MasterId" xml:space="preserve">
+        <value>貼上 MyDNS 主控 ID</value>
+    </data>
+    <data name="Text.Dns.Field.CustomerId" xml:space="preserve">
+        <value>客戶 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CustomerId" xml:space="preserve">
+        <value>貼上客戶 ID</value>
+    </data>
+    <data name="Text.Dns.Field.DomainName" xml:space="preserve">
+        <value>網域名稱</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DomainName" xml:space="preserve">
+        <value>例如 example.com</value>
+    </data>
+    <data name="Text.Dns.Field.ServerBaseUrl" xml:space="preserve">
+        <value>服務位址</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServerBaseUrl" xml:space="preserve">
+        <value>例如 https://plesk.example.com:8443</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceId" xml:space="preserve">
+        <value>應用程式 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceId" xml:space="preserve">
+        <value>貼上 DNS 託管應用程式 ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccessTokenSecret" xml:space="preserve">
+        <value>存取權杖密鑰</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessTokenSecret" xml:space="preserve">
+        <value>貼上存取權杖密鑰</value>
+    </data>
+    <data name="Text.Dns.Field.ProjectId" xml:space="preserve">
+        <value>專案 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ProjectId" xml:space="preserve">
+        <value>貼上專案 ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccountId" xml:space="preserve">
+        <value>帳號 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountId" xml:space="preserve">
+        <value>貼上帳號 ID</value>
+    </data>
+    <data name="Text.Dns.Field.RecordsMapping" xml:space="preserve">
+        <value>網域:記錄 ID 對應</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RecordsMapping" xml:space="preserve">
+        <value>例如 example.com:123:456,foo.example.com:147</value>
+    </data>
+    <data name="Text.Dns.Field.AuthUserId" xml:space="preserve">
+        <value>帳號 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthUserId" xml:space="preserve">
+        <value>貼上帳號 ID</value>
+    </data>
+    <data name="Text.Dns.Field.PublicKey" xml:space="preserve">
+        <value>公開金鑰</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PublicKey" xml:space="preserve">
+        <value>貼上公開金鑰</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKey" xml:space="preserve">
+        <value>私密金鑰</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKey" xml:space="preserve">
+        <value>貼上私密金鑰</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKey" xml:space="preserve">
+        <value>Access Key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKey" xml:space="preserve">
+        <value>貼上 Access Key</value>
+    </data>
+    <data name="Text.Dns.Field.WapiPassword" xml:space="preserve">
+        <value>WAPI 密碼</value>
+    </data>
+    <data name="Text.Dns.Placeholder.WapiPassword" xml:space="preserve">
+        <value>貼上 WAPI 密碼（需在管理介面產生並放行 IP）</value>
+    </data>
+    <data name="Text.Dns.Field.AgentId" xml:space="preserve">
+        <value>代理 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AgentId" xml:space="preserve">
+        <value>貼上代理 ID</value>
+    </data>
+    <data name="Text.Dns.Field.OrgId" xml:space="preserve">
+        <value>組織 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OrgId" xml:space="preserve">
+        <value>貼上組織 ID</value>
+    </data>
+    <data name="Text.Dns.Field.IamToken" xml:space="preserve">
+        <value>IAM 權杖</value>
+    </data>
+    <data name="Text.Dns.Placeholder.IamToken" xml:space="preserve">
+        <value>貼上 base64 編碼的 IAM 權杖 JSON</value>
+    </data>
+    <data name="Text.Dns.Field.FolderId" xml:space="preserve">
+        <value>目錄 ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.FolderId" xml:space="preserve">
+        <value>貼上 Yandex Cloud 目錄 ID</value>
+    </data>
+    <data name="Text.Dns.Permission.OneCloudRu" xml:space="preserve">
+        <value>建議在「1cloud.ru」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Com35" xml:space="preserve">
+        <value>建議建立僅用於「35.com/三五互联」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Dns51" xml:space="preserve">
+        <value>建議建立僅具「51DNS」DNS 讀寫權限的專用 API Key / Secret；請勿使用帳號主密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.Abion" xml:space="preserve">
+        <value>建議在「Abion」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Active24" xml:space="preserve">
+        <value>建議在「Active24」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AliEsa" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「AlibabaCloud ESA」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AllInkl" xml:space="preserve">
+        <value>建議建立僅用於「all-inkl」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.AlwaysData" xml:space="preserve">
+        <value>建議在「Alwaysdata」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Anexia" xml:space="preserve">
+        <value>建議在「Anexia CloudDNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.SafeDns" xml:space="preserve">
+        <value>建議為「ANS SafeDNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.ArtFiles" xml:space="preserve">
+        <value>建議建立僅用於「ArtFiles」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.ArvanCloud" xml:space="preserve">
+        <value>建議在「ArvanCloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AuroraDns" xml:space="preserve">
+        <value>建議在「Aurora DNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AutoDns" xml:space="preserve">
+        <value>建議建立僅用於「Autodns」DNS 管理的專用 API 使用者，並限制 API 存取的來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.AxelName" xml:space="preserve">
+        <value>建議在「Axelname」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Azion" xml:space="preserve">
+        <value>建議為「Azion」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.BaiduCloud" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「Baidu Cloud」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Beget" xml:space="preserve">
+        <value>建議建立僅用於「Beget.com」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.BinaryLane" xml:space="preserve">
+        <value>建議在「Binary Lane」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Bindman" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Bindman」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Bluecat" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Bluecat」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.BluecatV2" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Bluecat v2」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.BookMyName" xml:space="preserve">
+        <value>建議建立僅用於「BookMyName」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Bunny" xml:space="preserve">
+        <value>建議在「Bunny」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Checkdomain" xml:space="preserve">
+        <value>建議在「Checkdomain」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Civo" xml:space="preserve">
+        <value>建議在「Civo」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.CloudRu" xml:space="preserve">
+        <value>建議為「Cloud.ru」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.CloudDns" xml:space="preserve">
+        <value>建議建立僅用於「CloudDNS」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.ClouDns" xml:space="preserve">
+        <value>ClouDNS 的 API 使用者 ID 與密碼即該 API 使用者的全部權限：建議建立僅授權目標區域的專用 API 子使用者；如使用子使用者，請填寫在「API 子使用者 ID」。</value>
+    </data>
+    <data name="Text.Dns.Permission.Connbyte" xml:space="preserve">
+        <value>建議在「Connbyte」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.ConoHa" xml:space="preserve">
+        <value>建議建立僅用於「ConoHa v2」DNS 管理的專用 API 使用者，並限制 API 存取的來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.ConoHaV3" xml:space="preserve">
+        <value>建議為「ConoHa v3」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Constellix" xml:space="preserve">
+        <value>建議在「Constellix」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.CoreNetworks" xml:space="preserve">
+        <value>建議建立僅用於「Core-Networks」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.CPanel" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「CPanel/WHM」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Curanet" xml:space="preserve">
+        <value>建議在「Curanet」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Czechia" xml:space="preserve">
+        <value>建議在「Czechia」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DanDomain" xml:space="preserve">
+        <value>建議在「DanDomain」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DDnss" xml:space="preserve">
+        <value>建議為「DDnss (DynDNS Service)」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Derak" xml:space="preserve">
+        <value>建議在「Derak Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DeSec" xml:space="preserve">
+        <value>建議在「deSEC.io」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Designate" xml:space="preserve">
+        <value>OpenStack Designate：建議使用專用應用程式認證（Application Credential），僅授予目標專案的 DNS 區域讀寫權限；請勿使用管理員帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Dinahosting" xml:space="preserve">
+        <value>建議建立僅用於「Dinahosting」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.DirectAdmin" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「DirectAdmin」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsMadeEasy" xml:space="preserve">
+        <value>建議建立僅具「DNS Made Easy」DNS 讀寫權限的專用 API Key / Secret；請勿使用帳號主密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsLa" xml:space="preserve">
+        <value>建議為「dns.la」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsServices" xml:space="preserve">
+        <value>建議建立僅用於「DNS.services」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsCale" xml:space="preserve">
+        <value>建議在「DNScale」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsExit" xml:space="preserve">
+        <value>建議在「DNSExit」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsHomeDe" xml:space="preserve">
+        <value>建議為每個網域單獨產生密碼 / 權杖並依最小權限限制更新範圍（如「dnsHome.de」的憑證對），請勿多處重複使用同一密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsSimple" xml:space="preserve">
+        <value>建議建立僅含「DNSimple」DNS 管理權限的 OAuth 權杖；請勿使用帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsMint" xml:space="preserve">
+        <value>建議在「DNSMint」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DomainOffensive" xml:space="preserve">
+        <value>建議在「Domain Offensive (do.de)」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Domeneshop" xml:space="preserve">
+        <value>建議在「Domeneshop」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DreamHost" xml:space="preserve">
+        <value>建議在「DreamHost」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.DuckDns" xml:space="preserve">
+        <value>建議在「Duck DNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Dyn" xml:space="preserve">
+        <value>建議為「Dyn」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Dynadot" xml:space="preserve">
+        <value>建議建立僅具「Dynadot」DNS 讀寫權限的專用 API Key / Secret；請勿使用帳號主密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.DynDnsFree" xml:space="preserve">
+        <value>建議建立僅用於「DynDnsFree.de」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeCenter" xml:space="preserve">
+        <value>建議為「EdgeCenter」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.EfficientIp" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Efficient IP」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Epik" xml:space="preserve">
+        <value>建議為「Epik」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.EuroDns" xml:space="preserve">
+        <value>建議在「EuroDNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.EuServ" xml:space="preserve">
+        <value>建議建立僅用於「EUserv」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Excedo" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Excedo」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.ExternalProgram" xml:space="preserve">
+        <value>呼叫本機外部程式完成 DNS 驗證：請填寫指令碼路徑，lego 會以「present / cleanup + FQDN + 記錄值」呼叫它；請確保指令碼僅具備目標區域的解析修改權限。</value>
+    </data>
+    <data name="Text.Dns.Permission.F5Xc" xml:space="preserve">
+        <value>建議在「F5 XC」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Feno" xml:space="preserve">
+        <value>建議在「FENO」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Fornex" xml:space="preserve">
+        <value>建議在「Fornex」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.FreeMyIp" xml:space="preserve">
+        <value>建議在「freemyip.com」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.NameSurfer" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「FusionLayer NameSurfer」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Gehirn" xml:space="preserve">
+        <value>建議為「Gehirn」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.GigahostNo" xml:space="preserve">
+        <value>建議建立僅用於「Gigahost.no」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Gname" xml:space="preserve">
+        <value>建議為「Gname」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Gravity" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Gravity」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.HostingDe" xml:space="preserve">
+        <value>建議在「Hosting.de」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.HostingNl" xml:space="preserve">
+        <value>建議在「Hosting.nl」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Hosttech" xml:space="preserve">
+        <value>建議在「Hosttech」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.HostUp" xml:space="preserve">
+        <value>建議在「HostUp」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.HttpReq" xml:space="preserve">
+        <value>自架 HTTP 服務完成 DNS 驗證：請填寫服務位址（需回應 /present 與 /cleanup），如啟用基本認證請同時填寫使用者名稱與密碼，並限制服務來源。</value>
+    </data>
+    <data name="Text.Dns.Permission.HttpNet" xml:space="preserve">
+        <value>建議在「http.net」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.HuaweiCloud" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「Huawei Cloud」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Hurricane" xml:space="preserve">
+        <value>Hurricane Electric 需先在 DNS 面板為每個 _acme-challenge 記錄開啟動態更新並產生權杖，再依「記錄名:權杖」填入；請勿使用帳號登入密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.HyperOne" xml:space="preserve">
+        <value>HyperOne 透過本機護照檔案認證，本表預設留空即可；如需自訂，請填寫護照檔案路徑或區域，並確保該檔案僅本機可讀。</value>
+    </data>
+    <data name="Text.Dns.Permission.IbmCloud" xml:space="preserve">
+        <value>建議在「IBM Cloud (SoftLayer)」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.IijDpf" xml:space="preserve">
+        <value>建議在「IIJ DNS Platform Service」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Infoblox" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Infoblox」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.InternetBs" xml:space="preserve">
+        <value>建議在「Internet.bs」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Inwx" xml:space="preserve">
+        <value>建議建立僅用於「INWX」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Ionos" xml:space="preserve">
+        <value>建議在「Ionos」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.IonosCloud" xml:space="preserve">
+        <value>建議在「Ionos Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Ipv64" xml:space="preserve">
+        <value>建議在「IPv64」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.IspConfig" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「ISPConfig 3」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.IspConfigDdns" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「ISPConfig 3 - Dynamic DNS (DDNS) Module」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.JdCloud" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「JD Cloud」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.AcmeDns" xml:space="preserve">
+        <value>ACME-DNS 是自建 DNS 服務：只需保存「API 位址 + 帳號資料檔或資料服務位址」；帳號資料檔包含更新憑證，請確保其僅本機可讀，且兩種儲存方式只能二選一。</value>
+    </data>
+    <data name="Text.Dns.Permission.Katapult" xml:space="preserve">
+        <value>建議在「Katapult」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.KeyHelp" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「KeyHelp」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Leaseweb" xml:space="preserve">
+        <value>建議在「Leaseweb」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Liara" xml:space="preserve">
+        <value>建議在「Liara」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.LimaCity" xml:space="preserve">
+        <value>建議在「Lima-City」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.MailInABox" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Mail-in-a-Box」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.ManageEngine" xml:space="preserve">
+        <value>建議建立專用 API 用戶端（Client ID / Secret），僅授予「ManageEngine CloudDNS」DNS 相關權限；請勿使用全域憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Metaname" xml:space="preserve">
+        <value>建議在「Metaname」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Metaregistrar" xml:space="preserve">
+        <value>建議在「Metaregistrar」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.MijnHost" xml:space="preserve">
+        <value>建議在「mijn.host」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Mittwald" xml:space="preserve">
+        <value>建議在「Mittwald」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.MyAddr" xml:space="preserve">
+        <value>myaddr 使用每網域私密金鑰簽署請求：請依「子網域:私密金鑰」填寫對應；私密金鑰僅在本機保存，請勿與他人共用。</value>
+    </data>
+    <data name="Text.Dns.Permission.MyDnsJp" xml:space="preserve">
+        <value>建議為「MyDNS.jp」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Myra" xml:space="preserve">
+        <value>建議建立僅具「Myra」DNS 讀寫權限的專用 API Key / Secret；請勿使用帳號主密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.MythicBeasts" xml:space="preserve">
+        <value>建議建立僅用於「MythicBeasts」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.NameDotCom" xml:space="preserve">
+        <value>建議在「Name.com」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.NameSilo" xml:space="preserve">
+        <value>建議在「Namesilo」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.NearlyFreeSpeech" xml:space="preserve">
+        <value>建議在「NearlyFreeSpeech.NET」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.NederHost" xml:space="preserve">
+        <value>建議在「NederHost」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Neodigit" xml:space="preserve">
+        <value>建議在「Neodigit」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Netlify" xml:space="preserve">
+        <value>建議在「Netlify」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Netnod" xml:space="preserve">
+        <value>建議在「Netnod」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.NexDns" xml:space="preserve">
+        <value>建議在「NexDNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Ngenix" xml:space="preserve">
+        <value>建議在「Ngenix」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Nicmanager" xml:space="preserve">
+        <value>建議建立僅用於「Nicmanager」DNS 管理的專用 API 使用者，並限制 API 存取的來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.NifCloud" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「NIFCloud」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Njalla" xml:space="preserve">
+        <value>建議在「Njalla」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Nodion" xml:space="preserve">
+        <value>建議在「Nodion」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Octenium" xml:space="preserve">
+        <value>建議在「Octenium」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.OmgLol" xml:space="preserve">
+        <value>建議在「omg.lol」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.OnlineNet" xml:space="preserve">
+        <value>建議在「Online.net」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.OpenTelekomCloud" xml:space="preserve">
+        <value>建議為「Open Telekom Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Openprovider" xml:space="preserve">
+        <value>建議建立僅用於「Openprovider」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.OpusDns" xml:space="preserve">
+        <value>建議在「OpusDNS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Plesk" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「plesk.com」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.PointDns" xml:space="preserve">
+        <value>建議建立僅用於「PointDNS/PointHQ」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.PowerAdmin" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Poweradmin」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Rage4" xml:space="preserve">
+        <value>建議建立僅用於「Rage4」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.RainYun" xml:space="preserve">
+        <value>建議在「Rain Yun/雨云」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.RcodeZero" xml:space="preserve">
+        <value>建議在「RcodeZero」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.RegRu" xml:space="preserve">
+        <value>建議建立僅用於「reg.ru」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Regfish" xml:space="preserve">
+        <value>建議在「Regfish」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.RimuHosting" xml:space="preserve">
+        <value>建議在「RimuHosting」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.RuCenter" xml:space="preserve">
+        <value>建議為「RU CENTER」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.SakuraCloud" xml:space="preserve">
+        <value>建議為「Sakura Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Scaleway" xml:space="preserve">
+        <value>建議為「Scaleway」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.ScanNet" xml:space="preserve">
+        <value>建議在「ScanNet」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Selectel" xml:space="preserve">
+        <value>建議在「Selectel」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.SelectelV2" xml:space="preserve">
+        <value>建議建立僅用於「Selectel v2」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.SelfHostDe" xml:space="preserve">
+        <value>建議建立僅用於「SelfHost.(de|eu)」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Servercow" xml:space="preserve">
+        <value>建議建立僅用於「Servercow」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Shellrent" xml:space="preserve">
+        <value>建議在「Shellrent」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Simply" xml:space="preserve">
+        <value>建議在「Simply.com」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Sonic" xml:space="preserve">
+        <value>建議在「Sonic」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Spaceship" xml:space="preserve">
+        <value>建議建立僅具「Spaceship」DNS 讀寫權限的專用 API Key / Secret；請勿使用帳號主密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.Syse" xml:space="preserve">
+        <value>建議為每個網域單獨產生密碼 / 權杖並依最小權限限制更新範圍（如「Syse」的憑證對），請勿多處重複使用同一密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Technitium" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「Technitium」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Tele3" xml:space="preserve">
+        <value>建議為「Tele3」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeOne" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「Tencent EdgeOne」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.TimewebCloud" xml:space="preserve">
+        <value>建議為「Timeweb Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.TodayNic" xml:space="preserve">
+        <value>建議在「TodayNIC/时代互联」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.UCloud" xml:space="preserve">
+        <value>建議為「UCloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.UltraDns" xml:space="preserve">
+        <value>建議建立僅用於「Ultradns」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.UnitedDomains" xml:space="preserve">
+        <value>建議在「United-Domains」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Variomedia" xml:space="preserve">
+        <value>建議在「Variomedia」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Veesp" xml:space="preserve">
+        <value>建議建立僅用於「Veesp」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.VegaDns" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「VegaDNS」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Vercel" xml:space="preserve">
+        <value>建議在「Vercel」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Versio" xml:space="preserve">
+        <value>建議建立僅用於「Versio.[nl|eu|uk]」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.VinylDns" xml:space="preserve">
+        <value>自架 / 私有服務：建議為「VinylDNS」建立專用 API 帳號，並限制 API 存取的來源 IP；請勿使用伺服器 root 或管理員憑證。</value>
+    </data>
+    <data name="Text.Dns.Permission.Virtualname" xml:space="preserve">
+        <value>建議在「Virtualname」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.VkCloud" xml:space="preserve">
+        <value>建議建立僅用於「VK Cloud」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.VolcEngine" xml:space="preserve">
+        <value>建議建立專用子帳號的 AccessKey，僅授予「Volcano Engine/火山引擎」DNS 記錄管理權限；請勿使用主帳號密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Vscale" xml:space="preserve">
+        <value>建議在「Vscale」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Wannafind" xml:space="preserve">
+        <value>建議在「Wannafind」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Webglobe" xml:space="preserve">
+        <value>建議在「Webglobe」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.WebNamesCa" xml:space="preserve">
+        <value>建議在「webnames.ca」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.WebNamesRu" xml:space="preserve">
+        <value>建議在「webnames.ru」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Websupport" xml:space="preserve">
+        <value>建議在「Websupport」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Wedos" xml:space="preserve">
+        <value>建議為「WEDOS」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.WestCn" xml:space="preserve">
+        <value>建議建立僅用於「West.cn/西部数码」DNS 管理的專用帳號，或在帳號中開啟 API 存取並限制來源 IP；請勿使用主帳號。</value>
+    </data>
+    <data name="Text.Dns.Permission.Xinnet" xml:space="preserve">
+        <value>建議為「Xinnet」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Yandex360" xml:space="preserve">
+        <value>建議建立僅含「Yandex 360」DNS 管理權限的 OAuth 權杖；請勿使用帳號密碼。</value>
+    </data>
+    <data name="Text.Dns.Permission.YandexCloud" xml:space="preserve">
+        <value>建議為「Yandex Cloud」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Zilore" xml:space="preserve">
+        <value>建議為「Zilore」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.ZoneEe" xml:space="preserve">
+        <value>建議在「Zone.ee」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.ZoneEdit" xml:space="preserve">
+        <value>建議為「ZoneEdit」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.Dns.Permission.Zonomi" xml:space="preserve">
+        <value>建議在「Zonomi」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
     </data>
 </root>

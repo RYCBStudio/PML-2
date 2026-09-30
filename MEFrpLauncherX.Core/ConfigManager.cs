@@ -12,8 +12,9 @@ public static class ConfigManager
     /// <summary>
     ///     当前客户端支持的配置 schema 版本。
     ///     <para>改动配置结构（新增项 / 改变字段含义 / 废弃字段）时递增，启动时会自动迁移旧配置。</para>
+    ///     <para>v2：<c>UpdateSettings.DownloadSource</c>（更新页下载源）新增。</para>
     /// </summary>
-    public const int CurrentSchemaVersion = 1;
+    public const int CurrentSchemaVersion = 2;
 
     private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
 
@@ -162,6 +163,15 @@ public static class ConfigManager
     private static readonly string[] UpdateChannelValues = ["Preview", "Stable"];
     private static readonly string[] UpdateMethodValues = ["ds", "dd", "md"];
     private static readonly string[] CompileTypeValues = ["AOT", "Common"];
+
+    /// <summary>
+    ///     更新页下载源取值（26.4）。
+    ///     须与 <see cref="Services.GitHubUpdateSources.All" /> 保持一致：TPCA 走 Alist CDN，
+    ///     其余三项走 GitHub Release（GitHub 直连 / gh-proxy 镜像 / moeyy 镜像）。
+    /// </summary>
+    private static readonly string[] UpdateDownloadSourceValues =
+        ["TPCA", "GitHub", "GitHubGhProxy", "GitHubMoeyy"];
+
     private static readonly string[] SplashStyleValues = ["default", "dark", "minimal"];
     private static readonly string[] HomeLayoutValues = ["classic", "simple"];
     private static readonly string[] FloatPositionValues = ["lt", "rt", "lb", "rb", "ct", "cb"];
@@ -298,6 +308,9 @@ public static class ConfigManager
             UpdateMethodValues, d.UpdateSettings.Method);
         changed += NormalizeChoice(() => cfg.UpdateSettings.CompileType, v => cfg.UpdateSettings.CompileType = v,
             CompileTypeValues, d.UpdateSettings.CompileType);
+        changed += NormalizeChoice(() => cfg.UpdateSettings.DownloadSource,
+            v => cfg.UpdateSettings.DownloadSource = v,
+            UpdateDownloadSourceValues, d.UpdateSettings.DownloadSource);
         changed += NormalizeChoice(() => cfg.SplashStyle, v => cfg.SplashStyle = v, SplashStyleValues, d.SplashStyle);
         changed += NormalizeChoice(() => cfg.HomeSettings.Layout, v => cfg.HomeSettings.Layout = v, HomeLayoutValues,
             d.HomeSettings.Layout);
@@ -621,6 +634,15 @@ public static class ConfigManager
         {
             source.CompileType = target.CompileType;
         }
+
+        // 下载源：旧配置没有该字段（空值）时采用用户已保存的取值
+        App.CurrentLogger?.Log(
+            $"正在合并配置项 Update>DownloadSource: {source.DownloadSource} -> {target.DownloadSource}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        if (string.IsNullOrEmpty(source.DownloadSource) && !string.IsNullOrEmpty(target.DownloadSource))
+        {
+            source.DownloadSource = target.DownloadSource;
+        }
     }
 
     private static void MergeBackgroundSettings(BackgroundSettings source, BackgroundSettings target)
@@ -838,7 +860,8 @@ public static class ConfigManager
                 Channel = "Preview",
                 Method = "ds",
                 KeepProfile = true,
-                CompileType = App.ReleaseFlag
+                CompileType = App.ReleaseFlag,
+                DownloadSource = Services.GitHubUpdateSources.Tpca
             },
             HomeSettings = new HomeConfig
             {
@@ -1190,6 +1213,20 @@ public class UpdateSettings
         get;
         set;
     } = App.ReleaseFlag;
+
+    /// <summary>
+    ///     更新页下载源（26.4）。
+    ///     <para>
+    ///         <c>TPCA</c>：自建 Alist CDN（默认）；
+    ///         其余为 GitHub 线路（<c>GitHub</c> / <c>GitHubGhProxy</c> / <c>GitHubMoeyy</c>），
+    ///         通过 GitHub REST API 获取 Release 资产列表后下载。
+    ///     </para>
+    /// </summary>
+    public string DownloadSource
+    {
+        get;
+        set;
+    } = Services.GitHubUpdateSources.Tpca;
 }
 
 public class BackgroundSettings

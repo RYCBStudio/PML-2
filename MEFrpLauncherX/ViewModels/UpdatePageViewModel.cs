@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +13,8 @@ using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Core.Models;
+using MEFrpLauncherX.Core.Services;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
@@ -24,6 +27,12 @@ namespace MEFrpLauncherX.ViewModels;
 public class UpdatePageViewModel : ViewModelBase
 {
     internal DownloadService downloader;
+
+    /// <summary>
+    ///     本次检查更新期间下载失败的 GitHub 资产名（26.4）。
+    ///     用于「重试下载」时优先挑选同一 Release 中的其他安装包。
+    /// </summary>
+    private readonly HashSet<string> _failedAssetNames = new(StringComparer.OrdinalIgnoreCase);
 
     public UpdatePageViewModel()
     {
@@ -46,6 +55,14 @@ public class UpdatePageViewModel : ViewModelBase
             "Common" => 1,
             _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
         };
+        DownloadSource =
+            GitHubUpdateSources.Normalize(ConfigManager.CurrentConfig.UpdateSettings.DownloadSource) switch
+            {
+                GitHubUpdateSources.GitHub => 1,
+                GitHubUpdateSources.GitHubGhProxy => 2,
+                GitHubUpdateSources.GitHubMoeyy => 3,
+                _ => 0
+            };
 
         CheckUpdateCommand = ReactiveCommand.Create(CheckUpdate);
         RetryDownloadCommand = ReactiveCommand.Create(RetryDownload);
@@ -156,6 +173,19 @@ public class UpdatePageViewModel : ViewModelBase
     ///     1 - Common（常规）
     /// </summary>
     public int TargetCompileType
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    ///     更新下载源（26.4）：
+    ///     <para>0 - TPCA（自建 Alist CDN）</para>
+    ///     <para>1 - GitHub（官方直连）</para>
+    ///     <para>2 - GitHub（gh-proxy 镜像）</para>
+    ///     <para>3 - GitHub（moeyy 镜像）</para>
+    /// </summary>
+    public int DownloadSource
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -399,26 +429,22 @@ public class UpdatePageViewModel : ViewModelBase
         FailureTip = null;
         ProgressValue = 0;
 
-        // ===== 1. 按系统拼接下载链接和临时文件名 =====
-        string downloadUrl;
+        // ===== 1. 解析下载源与临时文件名 =====
         string tempFileName;
         string systemTip; // 下载完成后的安装提示
 
         if (OperatingSystem.IsWindows())
         {
-            downloadUrl = BuildUpdateDownloadUrl(PlatformID.Win32NT, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.exe";
             systemTip = Languages.Text_Update_InstallTipWindows;
         }
         else if (OperatingSystem.IsMacOS())
         {
-            downloadUrl = BuildUpdateDownloadUrl(PlatformID.MacOSX, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.dmg";
             systemTip = Languages.Text_Update_InstallTipMacOS;
         }
         else if (OperatingSystem.IsLinux())
         {
-            downloadUrl = BuildUpdateDownloadUrl(PlatformID.Unix, LatestVersion);
             tempFileName = $"update_tmp_{LatestVersion}.deb";
             systemTip = Languages.Text_Update_InstallTipLinux;
         }
@@ -429,6 +455,38 @@ public class UpdatePageViewModel : ViewModelBase
             IsLoading = false;
             IsIdle = true;
             return;
+        }
+
+        var resolved = await ResolveDownloadAsync();
+
+        // 解析失败（GitHub 线路下无匹配资产 / 网络不可用）时进入失败态，保留重试入口
+        if (resolved is null)
+        {
+            EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, null);
+            return;
+        }
+
+        var downloadUrl = resolved.Url;
+        // 按实际资产扩展名修正临时文件名与安装提示（GitHub 线路下包格式可能不是 deb）
+        if (!string.IsNullOrEmpty(resolved.AssetName))
+        {
+            var ext = GitHubReleaseService.PickInstallExtension(resolved.AssetName);
+            if (OperatingSystem.IsWindows() && ext != "exe")
+            {
+                EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, null);
+                return;
+            }
+
+            tempFileName = $"update_tmp_{LatestVersion}.{ext}";
+            if (OperatingSystem.IsLinux())
+            {
+                systemTip = ext switch
+                {
+                    "rpm" => Languages.Text_Update_InstallTipLinuxRpm,
+                    "tar.gz" or "tar.zst" => Languages.Text_Update_InstallTipLinuxTar,
+                    _ => Languages.Text_Update_InstallTipLinux
+                };
+            }
         }
 
         // ===== 2. 下载配置（复用原有逻辑） =====
@@ -469,6 +527,12 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+            // 记录失败的资产，供「重试下载」换用同一 Release 中的其他安装包
+            if (resolved.AssetName is not null)
+            {
+                _failedAssetNames.Add(resolved.AssetName);
+            }
+
             EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, ex);
             return;
         }
@@ -543,11 +607,9 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    ///     按平台拼接应用更新包下载地址。
-    ///     <br />
-    ///     当前仅有 alist 主源（无备源），失败时 UI 会提示前往「设置」切换下载源后重试。
+    ///     按平台拼接 TPCA（自建 Alist CDN）线路的更新包下载地址。
     /// </summary>
-    private static string BuildUpdateDownloadUrl(PlatformID platform, string latestVersion)
+    private static string BuildAlistDownloadUrl(PlatformID platform, string latestVersion)
     {
         return platform switch
         {
@@ -559,6 +621,76 @@ public class UpdatePageViewModel : ViewModelBase
                 $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/linux-distributions/pml2-{latestVersion}-linux-x64.deb",
             _ => throw new NotSupportedException($"Unsupported platform: {platform}")
         };
+    }
+
+    /// <summary>
+    ///     解析出的下载目标：URL 与 GitHub 资产名（TPCA 线路下资产名为 null）。
+    /// </summary>
+    private sealed record ResolvedDownload(string Url, string? AssetName);
+
+    /// <summary>
+    ///     按当前「下载源」解析更新包下载地址。
+    ///     <para>
+    ///         TPCA 线路直接拼接 Alist CDN 地址；GitHub 线路通过 GitHub REST API
+    ///         获取 Release 资产列表，挑选与本机平台 / 架构 / 编译类型匹配的安装包，
+    ///         并按「镜像前缀 + 原始下载地址」拼接（与 install.sh 的规则一致）。
+    ///     </para>
+    /// </summary>
+    /// <returns>解析结果；失败返回 null（原因已记日志）</returns>
+    private async Task<ResolvedDownload?> ResolveDownloadAsync()
+    {
+        var source = ConfigManager.CurrentConfig.UpdateSettings.DownloadSource;
+
+        if (!GitHubUpdateSources.IsGitHub(source))
+        {
+            var platform = OperatingSystem.IsWindows()
+                ? PlatformID.Win32NT
+                : OperatingSystem.IsMacOS()
+                    ? PlatformID.MacOSX
+                    : PlatformID.Unix;
+            return new ResolvedDownload(BuildAlistDownloadUrl(platform, LatestVersion), null);
+        }
+
+        var asset = await SelectGitHubAssetAsync(_failedAssetNames);
+        if (asset is null)
+        {
+            return null;
+        }
+
+        Status = string.Format(Languages.Text_Update_DownloadSourceResolvedFormat,
+            GitHubUpdateSources.GetDisplayName(source), asset.Name);
+        return new ResolvedDownload(
+            GitHubUpdateSources.BuildDownloadUrl(source, asset.BrowserDownloadUrl!), asset.Name);
+    }
+
+    /// <summary>
+    ///     从 GitHub Release 中挑选匹配当前环境的安装包。
+    /// </summary>
+    private async Task<GitHubAsset?> SelectGitHubAssetAsync(
+        IReadOnlyCollection<string> excludedNames)
+    {
+        var cfg = ConfigManager.CurrentConfig.UpdateSettings;
+        // 优先使用缓存；仅在缓存缺失时才真正发起 API 请求
+        var release = await GitHubReleaseService.GetReleaseAsync(LatestVersion, cfg.DownloadSource);
+        if (release is null)
+        {
+            // 缓存 / 请求均失败时强制刷新一次，避免复用了不完整的结果
+            release = await GitHubReleaseService.GetReleaseAsync(LatestVersion, cfg.DownloadSource, true);
+        }
+
+        if (release is null)
+        {
+            return null;
+        }
+
+        var asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType, excludedNames);
+        if (asset is null && excludedNames.Count > 0)
+        {
+            // 排除列表把候选资产筛空时放宽限制再选一次（保证「重试」仍有机会成功）
+            asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType);
+        }
+
+        return asset;
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
@@ -204,7 +204,7 @@ public partial class DnsAccountsWindow : Window
         {
             Title = Languages.Text_Dns_DeleteConfirmTitle,
             Content = $"{summary.DisplayName}（{summary.ProviderDisplayName}）\n\n{Languages.Text_Dns_DeleteConfirm}",
-            PrimaryButtonText = Languages.Text_Certificate_Delete,
+            PrimaryButtonText = Languages.Text_Dns_Delete,
             CloseButtonText = Languages.Text_Global_Cancel,
             DefaultButton = FluentAvalonia.UI.Controls.ContentDialogButton.Close
         };

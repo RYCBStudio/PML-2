@@ -1,26 +1,27 @@
-# 安装指南（26.3）
+# 安装指南（26.4）
 
-> 本文档覆盖 PML 2 的安装、更新与首次使用 mefrpc 客户端的失败路径。使用问题见 [用户指南](user_guide.md)，排障见 [故障排查指南](troubleshooting.md)。
+> 本文档覆盖 PML 2 的安装、更新，以及首次使用 mefrpc 客户端 / 证书助手 lego 组件的失败路径。使用问题见 [用户指南](user_guide.md)，排障见 [故障排查指南](troubleshooting.md)。
 
 ## 安装
 
 ### Windows
 
-1. 从官网/发布页下载 `pml2_setup <版本>.exe` 安装程序。
-2. 双击运行，按向导完成安装；安装器支持静默参数：`/silent /sp- /nocancel`（AOT 与 Common 版本参数一致）。
+1. 从官网/发布页下载安装程序：x64 为 `pml2_setup <版本> AOT.exe`，ARM64 为 `pml2_setup_arm64_<版本>.exe`。
+2. 双击运行，按向导完成安装（默认安装到 `%LOCALAPPDATA%\PML 2`）；安装器支持静默参数：`/silent /sp- /nocancel`。
 3. 安装完成后从桌面/开始菜单启动 PML 2。
 
 ### macOS
 
-1. 下载 `pml2-<版本>-macos-x64.dmg`，双击挂载后把应用拖入「应用程序」。
+1. 下载 `pml2-<版本>-macos-x64-aot.dmg`（Apple Silicon 为 `...-macos-arm64-aot.dmg`），双击挂载后把应用拖入「应用程序」。
 2. 首次启动如提示「无法验证开发者」，在「系统设置 → 隐私与安全性」中允许打开。
+3. 应用包已声明 `pml2://` URL 类型（TPCA 通用链接启动隧道），可直接从浏览器/其他应用拉起；Windows / Linux 由应用在**首次启动时自动注册**（当前用户级，无需管理员），详见 [故障排查指南「链接启动隧道」](troubleshooting.md)。
 
 ### Linux（deb）
 
-1. 下载 `pml2-<版本>-linux-x64.deb`，执行：
+1. 下载 `pml2-<版本>-linux-x64-aot.deb`（ARM64 为 `...-linux-arm64-aot.deb`；同时提供 `.rpm`），执行：
 
    ```bash
-   sudo dpkg -i pml2-<版本>-linux-x64.deb
+   sudo dpkg -i pml2-<版本>-linux-x64-aot.deb
    ```
 
 2. 安装路径固定为 `/opt/pml-2`；可从应用菜单启动。
@@ -38,6 +39,16 @@
 | 下载中断 | 下载对话框显示进度停止/取消 | 重新启动隧道即可断点重试（下载器内置 5 次重试） |
 
 > 下载源配置 `DownloadSource`（默认 `TPCA`）同时作用于 mefrpc 客户端与应用更新包，详见 [用户指南「下载源」](user_guide.md)。
+
+## 首次使用：证书助手 lego 组件
+
+安装包**不内置** lego（ACME 客户端）。首次在「设置 → 隧道设置 → 证书助手」中申请证书时，会按当前平台下载对应版本（约 20 MB，校验官方 `checksums.txt` 的 SHA-256）并解压到 `Tools/lego/<rid>/`。
+
+| 场景 | 表现 | 处理 |
+|---|---|---|
+| 下载失败 | 停留在「正在准备 lego…」或提示无法准备 lego | 检查网络/代理后重试（应用会依次尝试 GitHub 主源与备用镜像） |
+| 校验失败 | 同上（应用会拒绝使用未通过校验的二进制） | 重试即可；持续失败需检查网络是否被中间人代理改写 |
+| 需离线或内网使用 | 无法完成下载 | 目前需能访问 GitHub 或其镜像；详见 [故障排查指南「证书申请失败」](troubleshooting.md) |
 
 ## 应用内更新
 

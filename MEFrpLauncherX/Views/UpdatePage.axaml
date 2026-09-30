@@ -163,6 +163,27 @@
                                         </ComboBox>
                                     </controls:SettingsExpander.Footer>
                                 </controls:SettingsExpander>
+                                <controls:SettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_DownloadSource}"
+                                    Description="{x:Static languages:Languages.Text_Update_DownloadSourceDescription}"
+                                    IsExpanded="True">
+                                    <controls:SettingsExpander.Footer>
+                                        <ComboBox x:Name="DownloadSourceBox" SelectedIndex="{Binding DownloadSource}"
+                                                  SelectionChanged="DownloadSourceChange">
+                                            <ComboBoxItem Tag="TPCA"
+                                                          Content="{x:Static languages:Languages.Text_Update_DownloadSource_TPCA}" />
+                                            <ComboBoxItem Tag="GitHub"
+                                                          Content="{x:Static languages:Languages.Text_Update_DownloadSource_GitHub}" />
+                                            <ComboBoxItem Tag="GitHubGhProxy"
+                                                          Content="{x:Static languages:Languages.Text_Update_DownloadSource_GitHubGhProxy}" />
+                                            <ComboBoxItem Tag="GitHubMoeyy"
+                                                          Content="{x:Static languages:Languages.Text_Update_DownloadSource_GitHubMoeyy}" />
+                                        </ComboBox>
+                                    </controls:SettingsExpander.Footer>
+                                    <controls:SettingsExpanderItem
+                                        Content="{Binding #DownloadSourceBox.SelectedIndex, 
+                                        Converter={x:Static views:UpdateDownloadSourceBoxItemToDescConverter.Instance}}" />
+                                </controls:SettingsExpander>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

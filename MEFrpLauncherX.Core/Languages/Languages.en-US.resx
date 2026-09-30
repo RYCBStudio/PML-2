@@ -1363,6 +1363,48 @@
     <data name="Text.Update.CompileType.Common" xml:space="preserve">
         <value>Common</value>
     </data>
+    <data name="Text.Update.DownloadSource" xml:space="preserve">
+        <value>Download source</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDescription" xml:space="preserve">
+        <value>Choose the route used to download updates. TPCA uses our self-hosted CDN; GitHub sources fetch the installer from GitHub Releases and can be accelerated through a mirror.</value>
+    </data>
+    <data name="Text.Update.DownloadSource.TPCA" xml:space="preserve">
+        <value>TPCA Openlist (default)</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHub" xml:space="preserve">
+        <value>Github</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHubGhProxy" xml:space="preserve">
+        <value>Github (gh-proxy mirror)</value>
+    </data>
+    <data name="Text.Update.DownloadSource.GitHubMoeyy" xml:space="preserve">
+        <value>Github (moeyy mirror)</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.TPCA" xml:space="preserve">
+        <value>Downloads updates from our self-hosted Alist CDN, which is the fastest option in mainland China.</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHub" xml:space="preserve">
+        <value>Fetches the Release installer directly from GitHub, suitable when GitHub is reachable.</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHubGhProxy" xml:space="preserve">
+        <value>Accesses GitHub through the gh-proxy mirror; recommended when a direct GitHub connection is slow or unavailable.</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.GitHubMoeyy" xml:space="preserve">
+        <value>Accesses GitHub through the moeyy mirror, usable as a fallback for the gh-proxy mirror.</value>
+    </data>
+    <data name="Text.Update.DownloadSourceDesc.Unknown" xml:space="preserve">
+        <value>Unknown download source</value>
+    </data>
+    <data name="Text.Update.DownloadSourceResolvedFormat" xml:space="preserve">
+        <value>Downloading from {0}: {1}</value>
+    </data>
+    <data name="Text.Update.InstallTipLinuxRpm" xml:space="preserve">
+        <value>Click Yes to open the folder containing the installer, then install the rpm package with rpm -ivh or dnf install</value>
+    </data>
+    <data name="Text.Update.InstallTipLinuxTar" xml:space="preserve">
+        <value>Click Yes to open the folder containing the installer, then extract the archive and overwrite the installation as described in the README</value>
+    </data>
     <data name="Text.About.PoweredBy" xml:space="preserve">
         <value>Powered by open-source software and ME Frp.</value>
     </data>
@@ -3680,6 +3722,129 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Dns.Field.SessionToken" xml:space="preserve">
         <value>Session token (optional)</value>
     </data>
+    <data name="Text.Dns.Field.SecretAccessKey" xml:space="preserve">
+        <value>SecretAccessKey</value>
+    </data>
+    <data name="Text.Dns.Field.Region" xml:space="preserve">
+        <value>Region</value>
+    </data>
+    <data name="Text.Dns.Field.HostedZoneId" xml:space="preserve">
+        <value>Hosted zone ID (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.ClientId" xml:space="preserve">
+        <value>Client ID</value>
+    </data>
+    <data name="Text.Dns.Field.ClientSecret" xml:space="preserve">
+        <value>Client secret</value>
+    </data>
+    <data name="Text.Dns.Field.TenantId" xml:space="preserve">
+        <value>Tenant ID</value>
+    </data>
+    <data name="Text.Dns.Field.SubscriptionId" xml:space="preserve">
+        <value>Subscription ID</value>
+    </data>
+    <data name="Text.Dns.Field.AuthToken" xml:space="preserve">
+        <value>Auth token</value>
+    </data>
+    <data name="Text.Dns.Field.ApiKey" xml:space="preserve">
+        <value>API key</value>
+    </data>
+    <data name="Text.Dns.Field.ApiSecret" xml:space="preserve">
+        <value>API secret</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUser" xml:space="preserve">
+        <value>API user</value>
+    </data>
+    <data name="Text.Dns.Field.Project" xml:space="preserve">
+        <value>Project ID</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceAccountFile" xml:space="preserve">
+        <value>Service account JSON file</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUrl" xml:space="preserve">
+        <value>API URL</value>
+    </data>
+    <data name="Text.Dns.Field.Token" xml:space="preserve">
+        <value>Token</value>
+    </data>
+    <data name="Text.Dns.Field.Key" xml:space="preserve">
+        <value>Key</value>
+    </data>
+    <data name="Text.Dns.Field.ClientToken" xml:space="preserve">
+        <value>Client token</value>
+    </data>
+    <data name="Text.Dns.Field.AccessToken" xml:space="preserve">
+        <value>Access token</value>
+    </data>
+    <data name="Text.Dns.Field.Host" xml:space="preserve">
+        <value>Host</value>
+    </data>
+    <data name="Text.Dns.Field.Endpoint" xml:space="preserve">
+        <value>API endpoint</value>
+    </data>
+    <data name="Text.Dns.Field.PermanentApiToken" xml:space="preserve">
+        <value>Permanent API token</value>
+    </data>
+    <data name="Text.Dns.Field.PersonalAccessToken" xml:space="preserve">
+        <value>Personal access token</value>
+    </data>
+    <data name="Text.Dns.Field.Username" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Text.Dns.Field.Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Text.Dns.Field.DnsZone" xml:space="preserve">
+        <value>DNS zone</value>
+    </data>
+    <data name="Text.Dns.Field.ApiPassword" xml:space="preserve">
+        <value>API password</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUsername" xml:space="preserve">
+        <value>API username</value>
+    </data>
+    <data name="Text.Dns.Field.ConfigFile" xml:space="preserve">
+        <value>Config file path (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.CompartmentId" xml:space="preserve">
+        <value>Compartment ID</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationKey" xml:space="preserve">
+        <value>Application key</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationSecret" xml:space="preserve">
+        <value>Application secret</value>
+    </data>
+    <data name="Text.Dns.Field.ConsumerKey" xml:space="preserve">
+        <value>Consumer key</value>
+    </data>
+    <data name="Text.Dns.Field.SecretApiKey" xml:space="preserve">
+        <value>Secret API key</value>
+    </data>
+    <data name="Text.Dns.Field.User" xml:space="preserve">
+        <value>User</value>
+    </data>
+    <data name="Text.Dns.Field.AccountName" xml:space="preserve">
+        <value>Account name</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKeyPath" xml:space="preserve">
+        <value>Private key path</value>
+    </data>
+    <data name="Text.Dns.Field.PddToken" xml:space="preserve">
+        <value>PDD token</value>
+    </data>
+    <data name="Text.Dns.Field.Nameserver" xml:space="preserve">
+        <value>Nameserver</value>
+    </data>
+    <data name="Text.Dns.Field.TsigKey" xml:space="preserve">
+        <value>TSIG key name (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.TsigSecret" xml:space="preserve">
+        <value>TSIG secret (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.TsigAlgorithm" xml:space="preserve">
+        <value>TSIG algorithm (optional)</value>
+    </data>
     <data name="Text.Dns.Placeholder.ApiToken" xml:space="preserve">
         <value>Paste a token with DNS edit permission only</value>
     </data>
@@ -3698,6 +3863,117 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.Dns.Placeholder.Optional" xml:space="preserve">
         <value>Optional — leave empty</value>
     </data>
+    <data name="Text.Dns.Placeholder.SecretAccessKey" xml:space="preserve">
+        <value>Paste the SecretAccessKey</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Region" xml:space="preserve">
+        <value>e.g. ap-northeast-1</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientId" xml:space="preserve">
+        <value>Paste the Client ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientSecret" xml:space="preserve">
+        <value>Paste the client secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TenantId" xml:space="preserve">
+        <value>Paste the tenant ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SubscriptionId" xml:space="preserve">
+        <value>Paste the subscription ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthToken" xml:space="preserve">
+        <value>Paste the auth token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiKey" xml:space="preserve">
+        <value>Paste the API key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUser" xml:space="preserve">
+        <value>Paste the API user</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiSecret" xml:space="preserve">
+        <value>Paste the API secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Project" xml:space="preserve">
+        <value>e.g. my-project-123456</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceAccountFile" xml:space="preserve">
+        <value>e.g. /path/to/service-account.json</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUrl" xml:space="preserve">
+        <value>e.g. https://pdns.example.com</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Token" xml:space="preserve">
+        <value>Paste the token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Key" xml:space="preserve">
+        <value>Paste the key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ClientToken" xml:space="preserve">
+        <value>Paste the client token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessToken" xml:space="preserve">
+        <value>Paste the access token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Host" xml:space="preserve">
+        <value>e.g. akab-xxxx.luna.akamaiapis.net</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PermanentApiToken" xml:space="preserve">
+        <value>Paste the permanent API token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PersonalAccessToken" xml:space="preserve">
+        <value>Paste the personal access token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Username" xml:space="preserve">
+        <value>Paste the username</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Password" xml:space="preserve">
+        <value>Paste the password</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsZone" xml:space="preserve">
+        <value>e.g. example.com</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiPassword" xml:space="preserve">
+        <value>Paste the API password</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUsername" xml:space="preserve">
+        <value>Paste the API username</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConfigFile" xml:space="preserve">
+        <value>e.g. ~/.oci/config (optional, the default is used when empty)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CompartmentId" xml:space="preserve">
+        <value>e.g. ocid1.compartment.oc1..xxxx</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Endpoint" xml:space="preserve">
+        <value>e.g. ovh-eu</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationKey" xml:space="preserve">
+        <value>Paste the application key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationSecret" xml:space="preserve">
+        <value>Paste the application secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConsumerKey" xml:space="preserve">
+        <value>Paste the consumer key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.SecretApiKey" xml:space="preserve">
+        <value>Paste the secret API key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.User" xml:space="preserve">
+        <value>Paste the username</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountName" xml:space="preserve">
+        <value>e.g. myaccount</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKeyPath" xml:space="preserve">
+        <value>e.g. /path/to/private.key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PddToken" xml:space="preserve">
+        <value>Paste the PDD token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Nameserver" xml:space="preserve">
+        <value>e.g. ns1.example.com</value>
+    </data>
     <data name="Text.Dns.Permission.Cloudflare" xml:space="preserve">
         <value>Create a dedicated API token: Zone → DNS → Edit (plus Zone → Zone → Read), scoped to your domains.</value>
     </data>
@@ -3706,6 +3982,108 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Dns.Permission.DnsPod" xml:space="preserve">
         <value>Use an API key from a Tencent Cloud sub-account limited to DNSPod permissions. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.Route53" xml:space="preserve">
+        <value>Create a dedicated IAM user or role limited to record changes in the target hosted zone. Do not use root account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.AzureDns" xml:space="preserve">
+        <value>Create a dedicated app registration (service principal) with the DNS Zone Contributor role on the target DNS zones only. Do not use global administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.DigitalOcean" xml:space="preserve">
+        <value>Create a Personal Access Token with DNS read/write permission only. Do not use a Full Access token.</value>
+    </data>
+    <data name="Text.Dns.Permission.Gandi" xml:space="preserve">
+        <value>Create a dedicated API key used only for DNS record management. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.Namecheap" xml:space="preserve">
+        <value>Enable API access in your account and restrict it by source IP allowlist, limited to DNS management of the target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.GoDaddy" xml:space="preserve">
+        <value>Create an API key and secret used for production only, scoped to your target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.GCloud" xml:space="preserve">
+        <value>Create a dedicated service account and grant it the DNS Administrator role (roles/dns.admin) on the target project, then download its JSON key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Hetzner" xml:space="preserve">
+        <value>Create an API token with DNS read/write permission only, scoped to your target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.Vultr" xml:space="preserve">
+        <value>Create an API key with only the DNS permission enabled. Do not use the account-wide API key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Linode" xml:space="preserve">
+        <value>Create a Personal Access Token with read/write access to Domains only. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.PowerDNS" xml:space="preserve">
+        <value>Create an API key that can manage the target zones only, and restrict API access by source IP.</value>
+    </data>
+    <data name="Text.Dns.Permission.Dynu" xml:space="preserve">
+        <value>Create a dedicated API key used only for DNS record management. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.EasyDns" xml:space="preserve">
+        <value>Create a dedicated API token and its matching key, limited to record management for the target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeDns" xml:space="preserve">
+        <value>Create a dedicated API client (client token / client secret / access token) limited to Edge DNS editing for the target zones.</value>
+    </data>
+    <data name="Text.Dns.Permission.Exoscale" xml:space="preserve">
+        <value>Create a restricted IAM API key with DNS permission only. Do not use account-wide keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.GCore" xml:space="preserve">
+        <value>Create a permanent API token and grant it DNS permissions only. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.GandiV5" xml:space="preserve">
+        <value>Create a dedicated Personal Access Token and enable only Manage domain name zone files.</value>
+    </data>
+    <data name="Text.Dns.Permission.Glesys" xml:space="preserve">
+        <value>Create an API user and key that can manage DNS only. Do not use primary account credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Hostinger" xml:space="preserve">
+        <value>Create a dedicated API token in hPanel with DNS permissions only.</value>
+    </data>
+    <data name="Text.Dns.Permission.Infomaniak" xml:space="preserve">
+        <value>Create a dedicated API access token with DNS permissions only. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.Joker" xml:space="preserve">
+        <value>Use a dedicated sub-account limited to DNS management. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Lightsail" xml:space="preserve">
+        <value>Create a dedicated IAM user limited to Lightsail DNS permissions for the target region. Do not use root account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.LiquidWeb" xml:space="preserve">
+        <value>Create a dedicated API user with DNS management permission only. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Loopia" xml:space="preserve">
+        <value>Create an API user used only for DNS management, and restrict API access by source IP.</value>
+    </data>
+    <data name="Text.Dns.Permission.LuaDns" xml:space="preserve">
+        <value>Create a dedicated API user with read/write access to the target zones only.</value>
+    </data>
+    <data name="Text.Dns.Permission.Netcup" xml:space="preserve">
+        <value>Create a dedicated API key and API password used only for DNS management. Do not use your customer account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.NS1" xml:space="preserve">
+        <value>Create an API key with read/write access to DNS zones only. Do not use an account administrator key.</value>
+    </data>
+    <data name="Text.Dns.Permission.OracleCloud" xml:space="preserve">
+        <value>Use a dedicated IAM user and API key with DNS management permission in the target compartment only.</value>
+    </data>
+    <data name="Text.Dns.Permission.Ovh" xml:space="preserve">
+        <value>Create a dedicated OVH API application (application key / secret / consumer key) limited to editing the DNS zones of the target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.Porkbun" xml:space="preserve">
+        <value>Create a dedicated API key and secret API key, and enable IP allowlisting.</value>
+    </data>
+    <data name="Text.Dns.Permission.Rackspace" xml:space="preserve">
+        <value>Create a dedicated user and API key with DNS management permission only. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.TransIp" xml:space="preserve">
+        <value>Create a dedicated API key pair used only for DNS management. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.Yandex" xml:space="preserve">
+        <value>Create a dedicated PDD token used only for DNS management of the target domains.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsUpdate" xml:space="preserve">
+        <value>Use a dedicated TSIG key and allow dynamic updates for the target zones only (restrict allow-update). Do not use global management keys.</value>
     </data>
     <data name="Text.Dns.Error.LegoUnavailable" xml:space="preserve">
         <value>Could not prepare the lego certificate component (download or checksum failed). Check your network and retry, or switch to manual DNS.</value>
@@ -3844,5 +4222,981 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <data name="Text.Inbox.ViewDetails" xml:space="preserve">
         <value>View details</value>
+    </data>
+    <data name="Text.Dns.Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Text.Certificate.LocalList" xml:space="preserve">
+        <value>Local certificates</value>
+    </data>
+    <data name="Text.Certificate.DeleteConfirmFormat" xml:space="preserve">
+        <value>Deleting the local certificate "{0}" will not affect tunnels already using it, but it can no longer be picked from the certificate assistant. Delete it?</value>
+    </data>
+    <data name="Text.Certificate.PropagationTimeout" xml:space="preserve">
+        <value>Wait limit (seconds)</value>
+    </data>
+    <data name="Text.Certificate.PropagationTimeoutDescription" xml:space="preserve">
+        <value>Maximum time to wait for DNS propagation and CA validation. Default is 300 seconds; increase it for slow networks or slow DNS.</value>
+    </data>
+
+    <data name="Text.Dns.Field.Secret" xml:space="preserve">
+        <value>Secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Secret" xml:space="preserve">
+        <value>Paste the secret</value>
+    </data>
+    <data name="Text.Dns.Field.RamRole" xml:space="preserve">
+        <value>RAM role</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RamRole" xml:space="preserve">
+        <value>e.g. acs:ram::1234567890:role/dns (optional; leave empty to use the AccessKey)</value>
+    </data>
+    <data name="Text.Dns.Field.Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Login" xml:space="preserve">
+        <value>Paste the login</value>
+    </data>
+    <data name="Text.Dns.Field.Nickname" xml:space="preserve">
+        <value>Account nickname</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Nickname" xml:space="preserve">
+        <value>Paste the account nickname</value>
+    </data>
+    <data name="Text.Dns.Field.PersonalToken" xml:space="preserve">
+        <value>Personal token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PersonalToken" xml:space="preserve">
+        <value>Paste the personal token</value>
+    </data>
+    <data name="Text.Dns.Field.ManagerAddress" xml:space="preserve">
+        <value>Manager address</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ManagerAddress" xml:space="preserve">
+        <value>e.g. https://bindman.example.com:8080</value>
+    </data>
+    <data name="Text.Dns.Field.ServerUrl" xml:space="preserve">
+        <value>Server URL</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServerUrl" xml:space="preserve">
+        <value>e.g. https://bam.example.com</value>
+    </data>
+    <data name="Text.Dns.Field.ConfigName" xml:space="preserve">
+        <value>Configuration name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ConfigName" xml:space="preserve">
+        <value>Paste the configuration name</value>
+    </data>
+    <data name="Text.Dns.Field.DnsView" xml:space="preserve">
+        <value>External DNS view</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsView" xml:space="preserve">
+        <value>Paste the external DNS view name</value>
+    </data>
+    <data name="Text.Dns.Field.ViewName" xml:space="preserve">
+        <value>DNS view</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ViewName" xml:space="preserve">
+        <value>Paste the DNS view name</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceInstanceId" xml:space="preserve">
+        <value>Service instance ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceInstanceId" xml:space="preserve">
+        <value>Paste the service instance ID (parentId)</value>
+    </data>
+    <data name="Text.Dns.Field.KeyId" xml:space="preserve">
+        <value>Key ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.KeyId" xml:space="preserve">
+        <value>Paste the key ID (login)</value>
+    </data>
+    <data name="Text.Dns.Field.Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Email" xml:space="preserve">
+        <value>e.g. you@example.com</value>
+    </data>
+    <data name="Text.Dns.Field.AuthId" xml:space="preserve">
+        <value>API user ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthId" xml:space="preserve">
+        <value>Paste the API user ID</value>
+    </data>
+    <data name="Text.Dns.Field.AuthPassword" xml:space="preserve">
+        <value>API password</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthPassword" xml:space="preserve">
+        <value>Paste the password of the API user</value>
+    </data>
+    <data name="Text.Dns.Field.ApiUserId" xml:space="preserve">
+        <value>API user ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiUserId" xml:space="preserve">
+        <value>Paste the API user ID</value>
+    </data>
+    <data name="Text.Dns.Field.BaseUrl" xml:space="preserve">
+        <value>Base URL</value>
+    </data>
+    <data name="Text.Dns.Placeholder.BaseUrl" xml:space="preserve">
+        <value>e.g. https://panel.example.com:2087</value>
+    </data>
+    <data name="Text.Dns.Field.AuthUrl" xml:space="preserve">
+        <value>Auth URL</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthUrl" xml:space="preserve">
+        <value>e.g. https://keystone.example.com:5000/v3</value>
+    </data>
+    <data name="Text.Dns.Field.UserId" xml:space="preserve">
+        <value>User ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.UserId" xml:space="preserve">
+        <value>Paste the user ID</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialId" xml:space="preserve">
+        <value>Application credential ID (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialId" xml:space="preserve">
+        <value>Paste the application credential ID (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialName" xml:space="preserve">
+        <value>Application credential name (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialName" xml:space="preserve">
+        <value>Paste the application credential name (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.ApplicationCredentialSecret" xml:space="preserve">
+        <value>Application credential secret (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApplicationCredentialSecret" xml:space="preserve">
+        <value>Paste the application credential secret (optional)</value>
+    </data>
+    <data name="Text.Dns.Field.ProjectName" xml:space="preserve">
+        <value>Project name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ProjectName" xml:space="preserve">
+        <value>e.g. my-project</value>
+    </data>
+    <data name="Text.Dns.Field.RegionName" xml:space="preserve">
+        <value>Region name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RegionName" xml:space="preserve">
+        <value>e.g. RegionOne</value>
+    </data>
+    <data name="Text.Dns.Field.ApiId" xml:space="preserve">
+        <value>API ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiId" xml:space="preserve">
+        <value>Paste the API ID</value>
+    </data>
+    <data name="Text.Dns.Field.Credentials" xml:space="preserve">
+        <value>Credential pairs</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Credentials" xml:space="preserve">
+        <value>e.g. example.com:password,foo.example.com:password2</value>
+    </data>
+    <data name="Text.Dns.Field.OauthToken" xml:space="preserve">
+        <value>OAuth token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OauthToken" xml:space="preserve">
+        <value>Paste the OAuth token</value>
+    </data>
+    <data name="Text.Dns.Field.CustomerName" xml:space="preserve">
+        <value>Customer name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CustomerName" xml:space="preserve">
+        <value>Paste the customer name</value>
+    </data>
+    <data name="Text.Dns.Field.Hostname" xml:space="preserve">
+        <value>Hostname</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Hostname" xml:space="preserve">
+        <value>e.g. foo.example.com</value>
+    </data>
+    <data name="Text.Dns.Field.DnsName" xml:space="preserve">
+        <value>DNS name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DnsName" xml:space="preserve">
+        <value>e.g. dns.smart</value>
+    </data>
+    <data name="Text.Dns.Field.Signature" xml:space="preserve">
+        <value>API signature</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Signature" xml:space="preserve">
+        <value>Paste the API signature</value>
+    </data>
+    <data name="Text.Dns.Field.AppId" xml:space="preserve">
+        <value>Application ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AppId" xml:space="preserve">
+        <value>Paste the application ID</value>
+    </data>
+    <data name="Text.Dns.Field.OrderId" xml:space="preserve">
+        <value>Order ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OrderId" xml:space="preserve">
+        <value>Paste the order ID of the API contract</value>
+    </data>
+    <data name="Text.Dns.Field.ExecPath" xml:space="preserve">
+        <value>External program path</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ExecPath" xml:space="preserve">
+        <value>e.g. /path/to/myscript.sh</value>
+    </data>
+    <data name="Text.Dns.Field.ExecMode" xml:space="preserve">
+        <value>Mode (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ExecMode" xml:space="preserve">
+        <value>RAW, or leave empty</value>
+    </data>
+    <data name="Text.Dns.Field.TenantName" xml:space="preserve">
+        <value>Tenant short name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TenantName" xml:space="preserve">
+        <value>Paste the XC tenant short name</value>
+    </data>
+    <data name="Text.Dns.Field.GroupName" xml:space="preserve">
+        <value>Group name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.GroupName" xml:space="preserve">
+        <value>Paste the group name</value>
+    </data>
+    <data name="Text.Dns.Field.TokenId" xml:space="preserve">
+        <value>Token ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TokenId" xml:space="preserve">
+        <value>Paste the token ID</value>
+    </data>
+    <data name="Text.Dns.Field.TokenSecret" xml:space="preserve">
+        <value>Token secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.TokenSecret" xml:space="preserve">
+        <value>Paste the token secret</value>
+    </data>
+    <data name="Text.Dns.Field.AppKey" xml:space="preserve">
+        <value>App key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AppKey" xml:space="preserve">
+        <value>Paste the app key</value>
+    </data>
+    <data name="Text.Dns.Field.Mode" xml:space="preserve">
+        <value>Mode (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Mode" xml:space="preserve">
+        <value>RAW, or leave empty</value>
+    </data>
+    <data name="Text.Dns.Field.Tokens" xml:space="preserve">
+        <value>Name:token pairs</value>
+    </data>
+    <data name="Text.Dns.Placeholder.Tokens" xml:space="preserve">
+        <value>e.g. example.org:token1,demo.example.org:token2</value>
+    </data>
+    <data name="Text.Dns.Field.PassportLocation" xml:space="preserve">
+        <value>Passport file path (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PassportLocation" xml:space="preserve">
+        <value>e.g. ~/.h1/passport.json (optional, the default is used when empty)</value>
+    </data>
+    <data name="Text.Dns.Field.LocationId" xml:space="preserve">
+        <value>Location ID (optional)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.LocationId" xml:space="preserve">
+        <value>e.g. pl-waw-1 (optional, the default is used when empty)</value>
+    </data>
+    <data name="Text.Dns.Field.DpmServiceCode" xml:space="preserve">
+        <value>Service code</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DpmServiceCode" xml:space="preserve">
+        <value>Paste the IIJ managed DNS service code</value>
+    </data>
+    <data name="Text.Dns.Field.ApiBase" xml:space="preserve">
+        <value>ACME-DNS API address</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ApiBase" xml:space="preserve">
+        <value>e.g. http://10.0.0.8:4443</value>
+    </data>
+    <data name="Text.Dns.Field.StoragePath" xml:space="preserve">
+        <value>Account data file (use one of the two)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.StoragePath" xml:space="preserve">
+        <value>e.g. /root/.lego-acme-dns-accounts.json</value>
+    </data>
+    <data name="Text.Dns.Field.StorageBaseUrl" xml:space="preserve">
+        <value>Account data server URL (use one of the two)</value>
+    </data>
+    <data name="Text.Dns.Placeholder.StorageBaseUrl" xml:space="preserve">
+        <value>e.g. http://10.10.10.10:80</value>
+    </data>
+    <data name="Text.Dns.Field.AccountReference" xml:space="preserve">
+        <value>Account reference</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountReference" xml:space="preserve">
+        <value>Paste the four-digit account reference</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKeysMapping" xml:space="preserve">
+        <value>Subdomain:private key mapping</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKeysMapping" xml:space="preserve">
+        <value>e.g. foo:base64key,bar:base64key2</value>
+    </data>
+    <data name="Text.Dns.Field.MasterId" xml:space="preserve">
+        <value>Master ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.MasterId" xml:space="preserve">
+        <value>Paste the MyDNS master ID</value>
+    </data>
+    <data name="Text.Dns.Field.CustomerId" xml:space="preserve">
+        <value>Customer ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.CustomerId" xml:space="preserve">
+        <value>Paste the customer ID</value>
+    </data>
+    <data name="Text.Dns.Field.DomainName" xml:space="preserve">
+        <value>Domain name</value>
+    </data>
+    <data name="Text.Dns.Placeholder.DomainName" xml:space="preserve">
+        <value>e.g. example.com</value>
+    </data>
+    <data name="Text.Dns.Field.ServerBaseUrl" xml:space="preserve">
+        <value>Server base URL</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServerBaseUrl" xml:space="preserve">
+        <value>e.g. https://plesk.example.com:8443</value>
+    </data>
+    <data name="Text.Dns.Field.ServiceId" xml:space="preserve">
+        <value>Application ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ServiceId" xml:space="preserve">
+        <value>Paste the DNS hosting application ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccessTokenSecret" xml:space="preserve">
+        <value>Access token secret</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessTokenSecret" xml:space="preserve">
+        <value>Paste the access token secret</value>
+    </data>
+    <data name="Text.Dns.Field.ProjectId" xml:space="preserve">
+        <value>Project ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.ProjectId" xml:space="preserve">
+        <value>Paste the project ID</value>
+    </data>
+    <data name="Text.Dns.Field.AccountId" xml:space="preserve">
+        <value>Account ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccountId" xml:space="preserve">
+        <value>Paste the account ID</value>
+    </data>
+    <data name="Text.Dns.Field.RecordsMapping" xml:space="preserve">
+        <value>Domain:record ID mapping</value>
+    </data>
+    <data name="Text.Dns.Placeholder.RecordsMapping" xml:space="preserve">
+        <value>e.g. example.com:123:456,foo.example.com:147</value>
+    </data>
+    <data name="Text.Dns.Field.AuthUserId" xml:space="preserve">
+        <value>Account ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AuthUserId" xml:space="preserve">
+        <value>Paste the account ID</value>
+    </data>
+    <data name="Text.Dns.Field.PublicKey" xml:space="preserve">
+        <value>Public key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PublicKey" xml:space="preserve">
+        <value>Paste the public key</value>
+    </data>
+    <data name="Text.Dns.Field.PrivateKey" xml:space="preserve">
+        <value>Private key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.PrivateKey" xml:space="preserve">
+        <value>Paste the private key</value>
+    </data>
+    <data name="Text.Dns.Field.AccessKey" xml:space="preserve">
+        <value>Access key</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AccessKey" xml:space="preserve">
+        <value>Paste the access key</value>
+    </data>
+    <data name="Text.Dns.Field.WapiPassword" xml:space="preserve">
+        <value>WAPI password</value>
+    </data>
+    <data name="Text.Dns.Placeholder.WapiPassword" xml:space="preserve">
+        <value>Paste the WAPI password (generate it in the admin UI and allow this IP)</value>
+    </data>
+    <data name="Text.Dns.Field.AgentId" xml:space="preserve">
+        <value>Agent ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.AgentId" xml:space="preserve">
+        <value>Paste the agent ID</value>
+    </data>
+    <data name="Text.Dns.Field.OrgId" xml:space="preserve">
+        <value>Organization ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.OrgId" xml:space="preserve">
+        <value>Paste the organization ID</value>
+    </data>
+    <data name="Text.Dns.Field.IamToken" xml:space="preserve">
+        <value>IAM token</value>
+    </data>
+    <data name="Text.Dns.Placeholder.IamToken" xml:space="preserve">
+        <value>Paste the base64 encoded IAM token JSON</value>
+    </data>
+    <data name="Text.Dns.Field.FolderId" xml:space="preserve">
+        <value>Folder ID</value>
+    </data>
+    <data name="Text.Dns.Placeholder.FolderId" xml:space="preserve">
+        <value>Paste the Yandex Cloud folder ID</value>
+    </data>
+    <data name="Text.Dns.Permission.OneCloudRu" xml:space="preserve">
+        <value>Create a dedicated credential in 1cloud.ru limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Com35" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in 35.com/三五互联, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Dns51" xml:space="preserve">
+        <value>Create a dedicated API key and secret with DNS read/write access for 51DNS only. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.Abion" xml:space="preserve">
+        <value>Create a dedicated credential in Abion limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Active24" xml:space="preserve">
+        <value>Create a dedicated credential in Active24 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.AliEsa" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in AlibabaCloud ESA. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.AllInkl" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in all-inkl, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.AlwaysData" xml:space="preserve">
+        <value>Create a dedicated credential in Alwaysdata limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Anexia" xml:space="preserve">
+        <value>Create a dedicated credential in Anexia CloudDNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.SafeDns" xml:space="preserve">
+        <value>Create a dedicated credential for ANS SafeDNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.ArtFiles" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in ArtFiles, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.ArvanCloud" xml:space="preserve">
+        <value>Create a dedicated credential in ArvanCloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.AuroraDns" xml:space="preserve">
+        <value>Create a dedicated credential in Aurora DNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.AutoDns" xml:space="preserve">
+        <value>Create a dedicated API user for DNS management in Autodns and restrict API access by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.AxelName" xml:space="preserve">
+        <value>Create a dedicated credential in Axelname limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Azion" xml:space="preserve">
+        <value>Create a dedicated credential for Azion limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.BaiduCloud" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in Baidu Cloud. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.Beget" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Beget.com, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.BinaryLane" xml:space="preserve">
+        <value>Create a dedicated credential in Binary Lane limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Bindman" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Bindman and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Bluecat" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Bluecat and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.BluecatV2" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Bluecat v2 and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.BookMyName" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in BookMyName, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Bunny" xml:space="preserve">
+        <value>Create a dedicated credential in Bunny limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Checkdomain" xml:space="preserve">
+        <value>Create a dedicated credential in Checkdomain limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Civo" xml:space="preserve">
+        <value>Create a dedicated credential in Civo limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.CloudRu" xml:space="preserve">
+        <value>Create a dedicated credential for Cloud.ru limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.CloudDns" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in CloudDNS, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.ClouDns" xml:space="preserve">
+        <value>The ClouDNS API user ID and password grant every permission of that API user: create a dedicated API sub-user limited to the target zones and, when using one, fill in the "API sub user ID".</value>
+    </data>
+    <data name="Text.Dns.Permission.Connbyte" xml:space="preserve">
+        <value>Create a dedicated credential in Connbyte limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.ConoHa" xml:space="preserve">
+        <value>Create a dedicated API user for DNS management in ConoHa v2 and restrict API access by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.ConoHaV3" xml:space="preserve">
+        <value>Create a dedicated credential for ConoHa v3 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Constellix" xml:space="preserve">
+        <value>Create a dedicated credential in Constellix limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.CoreNetworks" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Core-Networks, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.CPanel" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for CPanel/WHM and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Curanet" xml:space="preserve">
+        <value>Create a dedicated credential in Curanet limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Czechia" xml:space="preserve">
+        <value>Create a dedicated credential in Czechia limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DanDomain" xml:space="preserve">
+        <value>Create a dedicated credential in DanDomain limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DDnss" xml:space="preserve">
+        <value>Create a dedicated credential for DDnss (DynDNS Service) limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Derak" xml:space="preserve">
+        <value>Create a dedicated credential in Derak Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DeSec" xml:space="preserve">
+        <value>Create a dedicated credential in deSEC.io limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Designate" xml:space="preserve">
+        <value>OpenStack Designate: prefer a dedicated Application Credential limited to DNS zone read/write in the target project. Do not use an administrator account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Dinahosting" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Dinahosting, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.DirectAdmin" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for DirectAdmin and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsMadeEasy" xml:space="preserve">
+        <value>Create a dedicated API key and secret with DNS read/write access for DNS Made Easy only. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsLa" xml:space="preserve">
+        <value>Create a dedicated credential for dns.la limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsServices" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in DNS.services, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsCale" xml:space="preserve">
+        <value>Create a dedicated credential in DNScale limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsExit" xml:space="preserve">
+        <value>Create a dedicated credential in DNSExit limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsHomeDe" xml:space="preserve">
+        <value>Generate a separate password or token per domain and restrict it to the minimum required records for dnsHome.de. Do not reuse one secret everywhere.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsSimple" xml:space="preserve">
+        <value>Create an OAuth token with DNS management permission for DNSimple only. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.DnsMint" xml:space="preserve">
+        <value>Create a dedicated credential in DNSMint limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DomainOffensive" xml:space="preserve">
+        <value>Create a dedicated credential in Domain Offensive (do.de) limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Domeneshop" xml:space="preserve">
+        <value>Create a dedicated credential in Domeneshop limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DreamHost" xml:space="preserve">
+        <value>Create a dedicated credential in DreamHost limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.DuckDns" xml:space="preserve">
+        <value>Create a dedicated credential in Duck DNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Dyn" xml:space="preserve">
+        <value>Create a dedicated credential for Dyn limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Dynadot" xml:space="preserve">
+        <value>Create a dedicated API key and secret with DNS read/write access for Dynadot only. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.DynDnsFree" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in DynDnsFree.de, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeCenter" xml:space="preserve">
+        <value>Create a dedicated credential for EdgeCenter limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.EfficientIp" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Efficient IP and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Epik" xml:space="preserve">
+        <value>Create a dedicated credential for Epik limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.EuroDns" xml:space="preserve">
+        <value>Create a dedicated credential in EuroDNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.EuServ" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in EUserv, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Excedo" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Excedo and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.ExternalProgram" xml:space="preserve">
+        <value>Runs a local external program to solve DNS-01: set the script path — lego calls it with present/cleanup plus the FQDN and record value. Make sure the script can only modify the target zones.</value>
+    </data>
+    <data name="Text.Dns.Permission.F5Xc" xml:space="preserve">
+        <value>Create a dedicated credential in F5 XC limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Feno" xml:space="preserve">
+        <value>Create a dedicated credential in FENO limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Fornex" xml:space="preserve">
+        <value>Create a dedicated credential in Fornex limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.FreeMyIp" xml:space="preserve">
+        <value>Create a dedicated credential in freemyip.com limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.NameSurfer" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for FusionLayer NameSurfer and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Gehirn" xml:space="preserve">
+        <value>Create a dedicated credential for Gehirn limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.GigahostNo" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Gigahost.no, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Gname" xml:space="preserve">
+        <value>Create a dedicated credential for Gname limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Gravity" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Gravity and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.HostingDe" xml:space="preserve">
+        <value>Create a dedicated credential in Hosting.de limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.HostingNl" xml:space="preserve">
+        <value>Create a dedicated credential in Hosting.nl limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Hosttech" xml:space="preserve">
+        <value>Create a dedicated credential in Hosttech limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.HostUp" xml:space="preserve">
+        <value>Create a dedicated credential in HostUp limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.HttpReq" xml:space="preserve">
+        <value>Uses a self-hosted HTTP service to solve DNS-01: provide the endpoint — it must answer /present and /cleanup — and, if basic auth is enabled, both the username and password.</value>
+    </data>
+    <data name="Text.Dns.Permission.HttpNet" xml:space="preserve">
+        <value>Create a dedicated credential in http.net limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.HuaweiCloud" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in Huawei Cloud. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.Hurricane" xml:space="preserve">
+        <value>In Hurricane Electric, enable dynamic updates for each _acme-challenge record and generate a token first, then enter name:token pairs. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.HyperOne" xml:space="preserve">
+        <value>HyperOne authenticates with a local passport file, so this form can stay empty by default. To customise it, set the passport path or location and keep the file readable by this machine only.</value>
+    </data>
+    <data name="Text.Dns.Permission.IbmCloud" xml:space="preserve">
+        <value>Create a dedicated credential in IBM Cloud (SoftLayer) limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.IijDpf" xml:space="preserve">
+        <value>Create a dedicated credential in IIJ DNS Platform Service limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Infoblox" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Infoblox and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.InternetBs" xml:space="preserve">
+        <value>Create a dedicated credential in Internet.bs limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Inwx" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in INWX, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Ionos" xml:space="preserve">
+        <value>Create a dedicated credential in Ionos limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.IonosCloud" xml:space="preserve">
+        <value>Create a dedicated credential in Ionos Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Ipv64" xml:space="preserve">
+        <value>Create a dedicated credential in IPv64 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.IspConfig" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for ISPConfig 3 and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.IspConfigDdns" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for ISPConfig 3 - Dynamic DNS (DDNS) Module and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.JdCloud" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in JD Cloud. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.AcmeDns" xml:space="preserve">
+        <value>ACME-DNS is a self-hosted DNS service: keep only the API address plus either the local account data file or the data server URL. The account data file holds update credentials, so make sure only this machine can read it; the two storage options are mutually exclusive.</value>
+    </data>
+    <data name="Text.Dns.Permission.Katapult" xml:space="preserve">
+        <value>Create a dedicated credential in Katapult limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.KeyHelp" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for KeyHelp and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Leaseweb" xml:space="preserve">
+        <value>Create a dedicated credential in Leaseweb limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Liara" xml:space="preserve">
+        <value>Create a dedicated credential in Liara limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.LimaCity" xml:space="preserve">
+        <value>Create a dedicated credential in Lima-City limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.MailInABox" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Mail-in-a-Box and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.ManageEngine" xml:space="preserve">
+        <value>Create a dedicated API client (client ID and secret) limited to DNS permissions in ManageEngine CloudDNS. Do not use global credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Metaname" xml:space="preserve">
+        <value>Create a dedicated credential in Metaname limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Metaregistrar" xml:space="preserve">
+        <value>Create a dedicated credential in Metaregistrar limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.MijnHost" xml:space="preserve">
+        <value>Create a dedicated credential in mijn.host limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Mittwald" xml:space="preserve">
+        <value>Create a dedicated credential in Mittwald limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.MyAddr" xml:space="preserve">
+        <value>myaddr signs requests with a per-domain private key: enter subdomain:private_key pairs. Keep the private keys on this machine only.</value>
+    </data>
+    <data name="Text.Dns.Permission.MyDnsJp" xml:space="preserve">
+        <value>Create a dedicated credential for MyDNS.jp limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Myra" xml:space="preserve">
+        <value>Create a dedicated API key and secret with DNS read/write access for Myra only. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.MythicBeasts" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in MythicBeasts, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.NameDotCom" xml:space="preserve">
+        <value>Create a dedicated credential in Name.com limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.NameSilo" xml:space="preserve">
+        <value>Create a dedicated credential in Namesilo limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.NearlyFreeSpeech" xml:space="preserve">
+        <value>Create a dedicated credential in NearlyFreeSpeech.NET limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.NederHost" xml:space="preserve">
+        <value>Create a dedicated credential in NederHost limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Neodigit" xml:space="preserve">
+        <value>Create a dedicated credential in Neodigit limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Netlify" xml:space="preserve">
+        <value>Create a dedicated credential in Netlify limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Netnod" xml:space="preserve">
+        <value>Create a dedicated credential in Netnod limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.NexDns" xml:space="preserve">
+        <value>Create a dedicated credential in NexDNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Ngenix" xml:space="preserve">
+        <value>Create a dedicated credential in Ngenix limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Nicmanager" xml:space="preserve">
+        <value>Create a dedicated API user for DNS management in Nicmanager and restrict API access by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.NifCloud" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in NIFCloud. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.Njalla" xml:space="preserve">
+        <value>Create a dedicated credential in Njalla limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Nodion" xml:space="preserve">
+        <value>Create a dedicated credential in Nodion limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Octenium" xml:space="preserve">
+        <value>Create a dedicated credential in Octenium limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.OmgLol" xml:space="preserve">
+        <value>Create a dedicated credential in omg.lol limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.OnlineNet" xml:space="preserve">
+        <value>Create a dedicated credential in Online.net limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.OpenTelekomCloud" xml:space="preserve">
+        <value>Create a dedicated credential for Open Telekom Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Openprovider" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Openprovider, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.OpusDns" xml:space="preserve">
+        <value>Create a dedicated credential in OpusDNS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Plesk" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for plesk.com and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.PointDns" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in PointDNS/PointHQ, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.PowerAdmin" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Poweradmin and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Rage4" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Rage4, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.RainYun" xml:space="preserve">
+        <value>Create a dedicated credential in Rain Yun/雨云 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.RcodeZero" xml:space="preserve">
+        <value>Create a dedicated credential in RcodeZero limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.RegRu" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in reg.ru, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Regfish" xml:space="preserve">
+        <value>Create a dedicated credential in Regfish limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.RimuHosting" xml:space="preserve">
+        <value>Create a dedicated credential in RimuHosting limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.RuCenter" xml:space="preserve">
+        <value>Create a dedicated credential for RU CENTER limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.SakuraCloud" xml:space="preserve">
+        <value>Create a dedicated credential for Sakura Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Scaleway" xml:space="preserve">
+        <value>Create a dedicated credential for Scaleway limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.ScanNet" xml:space="preserve">
+        <value>Create a dedicated credential in ScanNet limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Selectel" xml:space="preserve">
+        <value>Create a dedicated credential in Selectel limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.SelectelV2" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Selectel v2, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.SelfHostDe" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in SelfHost.(de|eu), or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Servercow" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Servercow, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Shellrent" xml:space="preserve">
+        <value>Create a dedicated credential in Shellrent limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Simply" xml:space="preserve">
+        <value>Create a dedicated credential in Simply.com limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Sonic" xml:space="preserve">
+        <value>Create a dedicated credential in Sonic limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Spaceship" xml:space="preserve">
+        <value>Create a dedicated API key and secret with DNS read/write access for Spaceship only. Do not use the account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.Syse" xml:space="preserve">
+        <value>Generate a separate password or token per domain and restrict it to the minimum required records for Syse. Do not reuse one secret everywhere.</value>
+    </data>
+    <data name="Text.Dns.Permission.Technitium" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for Technitium and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Tele3" xml:space="preserve">
+        <value>Create a dedicated credential for Tele3 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.EdgeOne" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in Tencent EdgeOne. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.TimewebCloud" xml:space="preserve">
+        <value>Create a dedicated credential for Timeweb Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.TodayNic" xml:space="preserve">
+        <value>Create a dedicated credential in TodayNIC/时代互联 limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.UCloud" xml:space="preserve">
+        <value>Create a dedicated credential for UCloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.UltraDns" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Ultradns, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.UnitedDomains" xml:space="preserve">
+        <value>Create a dedicated credential in United-Domains limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Variomedia" xml:space="preserve">
+        <value>Create a dedicated credential in Variomedia limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Veesp" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Veesp, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.VegaDns" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for VegaDNS and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Vercel" xml:space="preserve">
+        <value>Create a dedicated credential in Vercel limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Versio" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in Versio.[nl|eu|uk], or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.VinylDns" xml:space="preserve">
+        <value>Self-hosted or private service: create a dedicated API account for VinylDNS and restrict API access by source IP. Do not use server root or administrator credentials.</value>
+    </data>
+    <data name="Text.Dns.Permission.Virtualname" xml:space="preserve">
+        <value>Create a dedicated credential in Virtualname limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.VkCloud" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in VK Cloud, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.VolcEngine" xml:space="preserve">
+        <value>Create an AccessKey for a dedicated sub-account limited to DNS record management in Volcano Engine/火山引擎. Do not use primary account keys.</value>
+    </data>
+    <data name="Text.Dns.Permission.Vscale" xml:space="preserve">
+        <value>Create a dedicated credential in Vscale limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Wannafind" xml:space="preserve">
+        <value>Create a dedicated credential in Wannafind limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Webglobe" xml:space="preserve">
+        <value>Create a dedicated credential in Webglobe limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.WebNamesCa" xml:space="preserve">
+        <value>Create a dedicated credential in webnames.ca limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.WebNamesRu" xml:space="preserve">
+        <value>Create a dedicated credential in webnames.ru limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Websupport" xml:space="preserve">
+        <value>Create a dedicated credential in Websupport limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Wedos" xml:space="preserve">
+        <value>Create a dedicated credential for WEDOS limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.WestCn" xml:space="preserve">
+        <value>Create a dedicated account used only for DNS management in West.cn/西部数码, or enable API access and restrict it by source IP. Do not use the primary account.</value>
+    </data>
+    <data name="Text.Dns.Permission.Xinnet" xml:space="preserve">
+        <value>Create a dedicated credential for Xinnet limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Yandex360" xml:space="preserve">
+        <value>Create an OAuth token with DNS management permission for Yandex 360 only. Do not use your account password.</value>
+    </data>
+    <data name="Text.Dns.Permission.YandexCloud" xml:space="preserve">
+        <value>Create a dedicated credential for Yandex Cloud limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Zilore" xml:space="preserve">
+        <value>Create a dedicated credential for Zilore limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.ZoneEe" xml:space="preserve">
+        <value>Create a dedicated credential in Zone.ee limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.ZoneEdit" xml:space="preserve">
+        <value>Create a dedicated credential for ZoneEdit limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.Dns.Permission.Zonomi" xml:space="preserve">
+        <value>Create a dedicated credential in Zonomi limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
     </data>
 </root>
