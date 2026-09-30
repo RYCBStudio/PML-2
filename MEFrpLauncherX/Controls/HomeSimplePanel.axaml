@@ -6,6 +6,7 @@
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
              xmlns:services="clr-namespace:MEFrpLauncherX.Core.Services;assembly=MEFrpLauncherX.Core"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls"
              mc:Ignorable="d" d:DesignWidth="760" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.HomeSimplePanel"
              x:DataType="viewModels:HomePageViewModel">
@@ -23,7 +24,7 @@
 
             <!-- ===== 区块 1：账户（压缩为一行） ===== -->
             <Border Classes="FluentCard" Padding="14,10">
-                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="14">
+                <Grid ColumnDefinitions="*,Auto,Auto, Auto" ColumnSpacing="14">
                     <!-- 左：问候语 -->
                     <TextBlock Grid.Column="0"
                                FontFamily="{StaticResource GlobalFontFamily}"
@@ -62,6 +63,15 @@
                         <Button IsVisible="{Binding IsLoggedIn}"
                                 Click="GoToUserCenter"
                                 Content="{x:Static languages:Languages.Text_Nav_UserCenter}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="3" Spacing="5">
+                        <Panel>
+                            <Button Command="{Binding OpenInboxCommand}">
+                                <controls1:IconContent Label="{x:Static languages:Languages.Text_Home_Simple_Inbox}" Symbol="Mail" />
+                            </Button>
+                            <controls:InfoBadge Padding="3" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Panel>
                     </StackPanel>
                 </Grid>
             </Border>

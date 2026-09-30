@@ -13,7 +13,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
-using MarkdownAIRender.Controls.MarkdownRender;
+using FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;
 using MEFrpLauncherX.Core.Controls;
@@ -59,6 +59,11 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             Core.App.CurrentLogger?.Error(ex);
         });
+        OpenInboxCommand = ReactiveCommand.Create(() =>
+        {
+            
+        });
+        
         // 初始加载数据
         MainPageFrameViewModel.Instance?.IsLoading = false;
         _ = LoadUserDataAsync();
@@ -500,6 +505,16 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     {
         get;
     } = [];
+
+    public ReactiveCommand<Unit, Unit> OpenInboxCommand
+    {
+        get;
+    }
+
+    public async Task OpenInboxAsync()
+    {
+        
+    }
 
     /// <summary>
     ///     重新计算推荐列表。可在以下时机调用：

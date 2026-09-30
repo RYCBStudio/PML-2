@@ -4058,6 +4058,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inbox.
+        /// </summary>
+        public static string Text_Home_Simple_Inbox {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Inbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage.
         /// </summary>
         public static string Text_Home_Simple_Manage {

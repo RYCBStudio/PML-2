@@ -6,7 +6,7 @@ using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
 
-namespace MarkdownAIRender.CodeRender;
+namespace FluentAvalonia.MarkdownRender.CodeRender;
 
 /// <summary>
 ///     基于 AvaloniaEdit + TextMate 的代码块渲染器。

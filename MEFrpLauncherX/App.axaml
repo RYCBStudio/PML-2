@@ -36,7 +36,7 @@
             <Setter Property="FontFamily" Value="{StaticResource GlobalFontFamily}" />
         </Style>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <StyleInclude Source="avares://MarkdownAIRender/Index.axaml" />
+        <StyleInclude Source="avares://FluentAvalonia.MarkdownRender/Index.axaml" />
         <StyleInclude Source="avares://IconPacks.Avalonia.Lucide/Lucide.axaml" />
         <StyleInclude Source="avares://IconPacks.Avalonia.FileIcons/FileIcons.axaml" />
         <StyleInclude Source="avares://IconPacks.Avalonia.Material/Material.axaml" />

@@ -4,14 +4,14 @@
     "F:\\VSProj\\repos\\MEFrpLauncherX\\MEFrpLauncherX.Core\\MEFrpLauncherX.Core.csproj": {}
   },
   "projects": {
-    "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
+    "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj",
-        "projectName": "MarkdownAIRender",
-        "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj",
+        "projectUniqueName": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj",
+        "projectName": "FluentAvalonia.MarkdownRender",
+        "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj",
         "packagesPath": "G:\\.Nuget\\packages",
-        "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\obj\\",
+        "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
@@ -86,6 +86,18 @@
               "target": "Package",
               "version": "[1.4.0, )"
             },
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
+            },
             "SkiaSharp": {
               "target": "Package",
               "version": "[4.151.2, )"
@@ -118,6 +130,28 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.NativeAOT.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "runtime.win-x64.Microsoft.DotNet.ILCompiler",
+              "version": "[10.0.9, 10.0.9]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -399,6 +433,11 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "F:\\VSProj\\repos\\MEFrpLauncherX\\MEFrpLauncherX.Core\\MEFrpLauncherX.Core.csproj": {
@@ -432,8 +471,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
-                "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+              "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
+                "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj"
               },
               "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
                 "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj"
@@ -490,6 +529,12 @@
               "target": "Package",
               "version": "[3.3.1.1, )"
             },
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
+            },
             "Microsoft.International.Converters.PinYinConverter": {
               "target": "Package",
               "version": "[1.0.0, )"
@@ -497,6 +542,12 @@
             "Microsoft.Management.Infrastructure": {
               "target": "Package",
               "version": "[3.0.0, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
             },
             "NPinyin.Core": {
               "target": "Package",
@@ -554,6 +605,28 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.NativeAOT.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "runtime.win-x64.Microsoft.DotNet.ILCompiler",
+              "version": "[10.0.9, 10.0.9]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -835,6 +908,11 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
@@ -886,6 +964,12 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
+            },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
               "version": "[2.1.0, )"
@@ -893,6 +977,12 @@
             "Microsoft.Extensions.Options": {
               "target": "Package",
               "version": "[2.1.0, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.9, )",
+              "autoReferenced": true
             }
           },
           "imports": [
@@ -906,6 +996,28 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.NativeAOT.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.9, 10.0.9]"
+            },
+            {
+              "name": "runtime.win-x64.Microsoft.DotNet.ILCompiler",
+              "version": "[10.0.9, 10.0.9]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -1186,6 +1298,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

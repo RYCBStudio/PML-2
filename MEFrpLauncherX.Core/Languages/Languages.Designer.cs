@@ -4072,6 +4072,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 收件箱.
+        /// </summary>
+        public static string Text_Home_Simple_Inbox {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Inbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 管理.
         /// </summary>
         public static string Text_Home_Simple_Manage {

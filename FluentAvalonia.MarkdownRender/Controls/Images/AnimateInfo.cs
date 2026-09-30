@@ -1,4 +1,4 @@
-﻿namespace MarkdownAIRender.Controls.Images;
+﻿namespace FluentAvalonia.MarkdownRender.Controls.Images;
 
 public record AnimateInfo
 {

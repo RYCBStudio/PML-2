@@ -156,7 +156,7 @@ public partial class WhatsNewWindow : Window
                 "(KHTML, like Gecko) Chrome/120.0 Safari/537.36");
             var url = $"https://blog.pml2.rycb.tech/changelog/{Core.App.Version}.md";
 #if DEBUG
-            url = "https://blog.pml2.rycb.tech/changelog/26.3.0.md";
+            url = "https://blog.pml2.rycb.tech/changelog/26.4.0.md";
 #endif
             string post;
             try

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace MarkdownAIRender.Controls.MarkdownRender;
+namespace FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 
 public static class MarkdownClass
 {
@@ -81,4 +81,10 @@ public record MarkdownTheme(string Name, string Key);
 public class MarkdownClassConst
 {
     public const string MdQuoteBorder = nameof(MdQuoteBorder);
+
+    public const string MdTable = nameof(MdTable);
+
+    public const string MdTableHeaderCell = nameof(MdTableHeaderCell);
+
+    public const string MdTableCell = nameof(MdTableCell);
 }

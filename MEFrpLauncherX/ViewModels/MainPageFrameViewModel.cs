@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reactive;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Tools;
@@ -224,7 +227,7 @@ public class MainPageFrameViewModel : ViewModelBase
 
     private ReactiveCommand<Unit, Unit> CreateNavigationCommand(string pageName, Func<UserControl> pageFactory)
     {
-        return ReactiveCommand.Create(() =>
+        var command = ReactiveCommand.Create(() =>
         {
             CurrentPage = null;
             try
@@ -239,10 +242,56 @@ public class MainPageFrameViewModel : ViewModelBase
                     ["page"] = pageName
                 });
             }
+            catch (Exception ex)
+            {
+                // 页面构造失败时以前会静默吞掉异常，表现为「整页空白/消失」且无任何日志。
+                // 这里显式记录，保证任何平台（含 AOT 裁剪）都能定位到根因。
+                Core.App.CurrentLogger?.Error(ex, $"导航到页面 '{pageName}' 失败，页面将保持空白");
+            }
             finally
             {
                 IsLoading = false;
+
+                // 诊断：页面构造完成/失败后导出可视树，用于定位「AOT 下渲染为空白」的问题。
+                if (CurrentPage is null)
+                {
+                    Core.App.CurrentLogger?.Log($"导航到页面 '{pageName}' 后 CurrentPage 为 null（页面构造未成功）");
+                }
+                else
+                {
+                    Dispatcher.UIThread.Post(async () =>
+                    {
+                        try
+                        {
+                            await Task.Delay(3000); // 等待过渡动画/布局完成
+                            var page = CurrentPage;
+                            if (page is null)
+                            {
+                                return;
+                            }
+
+                            var parent = page.GetVisualParent();
+                            Core.App.CurrentLogger?.Log(
+                                $"页面 '{pageName}' 可视树（延迟3s）:\n{Tools.VisualTreeDiagnostics.Dump(page, 8, 400)}");
+                            Core.App.CurrentLogger?.Log(
+                                $"页面 '{pageName}' 父级={parent?.GetType().Name ?? "(null)"} " +
+                                $"父级Bounds={(parent as Control)?.Bounds} 页面Bounds={page.Bounds} " +
+                                $"Content={(page as ContentControl)?.Content?.GetType().Name ?? "(null)"}");
+                        }
+                        catch (Exception dumpEx)
+                        {
+                            Core.App.CurrentLogger?.Error(dumpEx, "导出可视树失败");
+                        }
+                    }, DispatcherPriority.Background);
+                }
             }
         });
+
+        // ReactiveCommand 会把命令体抛出的异常转到 ThrownExceptions（默认无人订阅 => 静默），
+        // 订阅后同样落盘，避免以后再次出现「页面无声消失」。
+        command.ThrownExceptions.Subscribe(ex =>
+            Core.App.CurrentLogger?.Error(ex, $"导航命令 '{pageName}' 执行失败"));
+
+        return command;
     }
 }

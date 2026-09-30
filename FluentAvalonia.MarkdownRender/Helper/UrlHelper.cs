@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace MarkdownAIRender.Helper;
+namespace FluentAvalonia.MarkdownRender.Helper;
 
-public class UrlHelper
+public static class UrlHelper
 {
     /// <summary>
     ///     使用默认浏览器打开指定链接

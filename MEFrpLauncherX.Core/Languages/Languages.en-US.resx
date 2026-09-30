@@ -3830,4 +3830,7 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.WhatsNew.Changelog" xml:space="preserve">
         <value>Changelog (API)</value>
     </data>
+    <data name="Text.Home.Simple.Inbox" xml:space="preserve">
+        <value>Inbox</value>
+    </data>
 </root>

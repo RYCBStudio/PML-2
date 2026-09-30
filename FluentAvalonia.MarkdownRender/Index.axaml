@@ -2,12 +2,12 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://MarkdownAIRender/Themes/Controls/_index.axaml" />
-                <ResourceInclude Source="avares://MarkdownAIRender/Themes/Shared/_index.axaml" />
+                <ResourceInclude Source="avares://FluentAvalonia.MarkdownRender/Themes/Controls/_index.axaml" />
+                <ResourceInclude Source="avares://FluentAvalonia.MarkdownRender/Themes/Shared/_index.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
     <!--  代码块使用 AvaloniaEdit 渲染，这里把它的默认样式一并带上，保证组件单独可用  -->
     <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-    <StyleInclude Source="avares://MarkdownAIRender/Themes/Styles/_index.axaml" />
+    <StyleInclude Source="avares://FluentAvalonia.MarkdownRender/Themes/Styles/_index.axaml" />
 </Styles>

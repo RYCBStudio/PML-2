@@ -3831,4 +3831,7 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.WhatsNew.Changelog" xml:space="preserve">
         <value>更新日志（API）</value>
     </data>
+    <data name="Text.Home.Simple.Inbox" xml:space="preserve">
+        <value>收件箱</value>
+    </data>
 </root>

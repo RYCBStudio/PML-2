@@ -5,9 +5,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using MarkdownAIRender.Helper;
+using FluentAvalonia.MarkdownRender.Helper;
 
-namespace MarkdownAIRender.Controls.MarkdownRender;
+namespace FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 
 /// <summary>
 ///     Markdown 链接控件。

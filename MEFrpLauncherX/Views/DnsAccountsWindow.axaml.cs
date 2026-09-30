@@ -11,7 +11,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
-using MarkdownAIRender.Helper;
+using FluentAvalonia.MarkdownRender.Helper;
 
 namespace MEFrpLauncherX.Views;
 

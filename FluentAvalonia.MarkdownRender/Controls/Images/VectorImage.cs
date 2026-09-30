@@ -4,7 +4,7 @@ using Avalonia.Media;
 using Avalonia.Svg;
 using ShimSkiaSharp;
 
-namespace MarkdownAIRender.Controls.Images;
+namespace FluentAvalonia.MarkdownRender.Controls.Images;
 
 /// <summary>
 ///     An <see cref="IImage" /> that uses a <see cref="SvgSource" /> for content.

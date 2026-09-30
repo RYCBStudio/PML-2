@@ -126,7 +126,7 @@
         <ProjectReference Include="..\MEFrpLauncherX.Plugin\MEFrpLauncherX.Plugin.csproj" />
         <ProjectReference Include="..\RYCB.PML2.Extensions.MinecraftExtension\RYCB.PML2.Extensions.MinecraftExtension.csproj" />
         <ProjectReference Include="..\RYCB.PML2.Mixin.TerminalHelper\RYCB.PML2.Mixin.TerminalHelper.csproj" />
-        <ProjectReference Include="..\MarkdownAIRender\MarkdownAIRender.csproj" />
+        <ProjectReference Include="..\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Views\ConfigEditor.axaml.cs">
