@@ -208,7 +208,7 @@ public static class CertStore
             }
 
             // CreateFromPemFile 读取首个证书（即叶证书）
-            using var cert = X509Certificate2.CreateFromPemFile(pemPath);
+            using var cert = X509Certificate2.CreateFromPemFile(pemPath, pemPath.Replace("fullchain", "privkey"));
             return new DateTimeOffset(cert.NotAfter.ToUniversalTime());
         }
         catch (Exception ex)

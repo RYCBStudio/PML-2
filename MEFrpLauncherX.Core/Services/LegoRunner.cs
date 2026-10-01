@@ -181,16 +181,20 @@ public static class LegoRunner
                 : AcmeCertificateService.LetsEncryptProduction,
             "--path", request.WorkPath,
             "--dns.resolvers", "119.29.29.29,223.5.5.5",
-            // 26.4 修复：此处此前硬编码 300s，导致 AcmeRequest.PropagationTimeoutSeconds
-            // （证书助手「高级选项 → 等待上限（秒）」）对命令行 flag 不生效；
-            // 现统一以请求值为准，与环境变量同源。
-            "--dns.propagation-timeout", FormatDuration(ClampPropagationTimeout(request.PropagationTimeoutSeconds)),
         };
 
-        // 仅在用户明确选择「跳过传播检查」时才传入；正常模式不传，保留 lego 的真实传播检查。
+        // 传播超时通过环境变量设置（v5 中无对应命令行 flag）
+        var providerEnvPrefix = request.LegoProvider.ToUpper().Replace("-", "_");
+        Environment.SetEnvironmentVariable(
+            $"{providerEnvPrefix}_PROPAGATION_TIMEOUT",
+            ClampPropagationTimeout(request.PropagationTimeoutSeconds).ToString()
+        );
+
+        // 仅在用户明确选择「跳过传播检查」时传入
         if (request.SkipPropagationCheck)
         {
-            args.Add("--dns.propagation-disable-ans");
+            // v5 正确写法：用点号，不用连字符
+            args.Add("--dns.propagation.disable-ans");
             args.Add("--dns.propagation.wait");
             args.Add(FormatDuration(SkipPropagationWaitSeconds));
         }
