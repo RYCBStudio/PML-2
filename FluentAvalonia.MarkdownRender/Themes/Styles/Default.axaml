@@ -1,8 +1,8 @@
 <Styles
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i18n="clr-namespace:MarkdownAIRender.i18n"
-    xmlns:md="clr-namespace:MarkdownAIRender.Controls.MarkdownRender">
+    xmlns:i18n="clr-namespace:FluentAvalonia.MarkdownRender.i18n"
+    xmlns:md="clr-namespace:FluentAvalonia.MarkdownRender.Controls.MarkdownRender">
     <!--  默认主题  -->
 
     <Styles.Resources>
@@ -214,5 +214,41 @@
     <Style Selector="Button.MdCopyButton">
         <Setter Property="Background" Value="{DynamicResource Grey8}" />
         <Setter Property="Foreground" Value="{DynamicResource Grey0}" />
+    </Style>
+
+    <!--  表格：外框 + 列间距  -->
+    <Style Selector="Border.MdTable">
+        <Setter Property="BorderBrush" Value="{DynamicResource Grey3}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0 6" />
+    </Style>
+
+    <!--  表格：数据单元格  -->
+    <Style Selector="Border.MdTableCell">
+        <Setter Property="BorderBrush" Value="{DynamicResource Grey3}" />
+        <Setter Property="BorderThickness" Value="0 0 1 1" />
+        <Setter Property="Padding" Value="10 6" />
+        <Setter Property="MinWidth" Value="60" />
+    </Style>
+
+    <!--  表格：表头单元格（背景加粗强调）  -->
+    <Style Selector="Border.MdTableHeaderCell">
+        <Setter Property="BorderBrush" Value="{DynamicResource Grey3}" />
+        <Setter Property="BorderThickness" Value="0 0 1 1" />
+        <Setter Property="Padding" Value="10 6" />
+        <Setter Property="MinWidth" Value="60" />
+        <Setter Property="Background" Value="{DynamicResource Grey1}" />
+    </Style>
+
+    <!--  表格：单元格内的段落沿用正文排版  -->
+    <Style Selector="Border.MdTableCell SelectableTextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="LineHeight" Value="22" />
+    </Style>
+
+    <Style Selector="Border.MdTableHeaderCell SelectableTextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="LineHeight" Value="22" />
+        <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 </Styles>

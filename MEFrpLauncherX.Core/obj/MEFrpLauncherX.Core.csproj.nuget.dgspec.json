@@ -4,14 +4,14 @@
     "F:\\VSProj\\repos\\MEFrpLauncherX\\MEFrpLauncherX.Core\\MEFrpLauncherX.Core.csproj": {}
   },
   "projects": {
-    "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
+    "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj",
-        "projectName": "MarkdownAIRender",
-        "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj",
+        "projectUniqueName": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj",
+        "projectName": "FluentAvalonia.MarkdownRender",
+        "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj",
         "packagesPath": "G:\\.Nuget\\packages",
-        "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\obj\\",
+        "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
@@ -432,8 +432,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
-                "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+              "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
+                "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj"
               },
               "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
                 "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj"

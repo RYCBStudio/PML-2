@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,9 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
-using MarkdownAIRender.Helper;
+using FluentAvalonia.MarkdownRender.Helper;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
@@ -50,13 +51,16 @@ public partial class CertificateAssistantWindow : Window
     {
         InitializeComponent();
         EmailBox.Text = UserCache.CurrentUser?.Email;
+        // 26.4：显式给出传播等待上限初值（与 AcmeCertificateService 默认值同源）
+        PropagationTimeoutBox.Value = AcmeCertificateService.DefaultPropagationTimeoutSeconds;
         ReloadDnsAccounts();
         UpdateModeUi();
+        ReloadLocalCertificates();
     }
 
-    private bool IsProduction => EnvBox.SelectedIndex == 1;
+    private bool IsProduction => EnvBox?.SelectedIndex == 1;
 
-    private bool IsDnsAccountMode => ModeBox.SelectedIndex == 0;
+    private bool IsDnsAccountMode => ModeBox?.SelectedIndex == 0;
 
     /// <summary>重新载入 DNS 账户下拉（仅展示摘要，不含凭据）。</summary>
     private void ReloadDnsAccounts()
@@ -71,21 +75,21 @@ public partial class CertificateAssistantWindow : Window
     private void UpdateModeUi()
     {
         var dnsMode = IsDnsAccountMode;
-        DnsAccountItem.IsVisible = dnsMode;
+        DnsAccountItem?.IsVisible = dnsMode;
 
         if (!dnsMode)
         {
-            NoDnsAccountHint.IsOpen = false;
+            NoDnsAccountHint?.IsOpen = false;
             return;
         }
 
-        NoDnsAccountHint.IsOpen = DnsAccountBox.ItemCount == 0;
+        NoDnsAccountHint?.IsOpen = DnsAccountBox.ItemCount == 0;
     }
 
     private void EnvChanged(object? sender, SelectionChangedEventArgs e)
     {
         // 生产环境需显式提醒（限速风险），并在切换时提示成本
-        ProductionWarning.IsOpen = IsProduction;
+        ProductionWarning?.IsOpen = IsProduction;
     }
 
     private void ModeChanged(object? sender, SelectionChangedEventArgs e) => UpdateModeUi();
@@ -156,14 +160,14 @@ public partial class CertificateAssistantWindow : Window
 
         _isIssuing = true;
         _issued = null;
-        StartButton.IsEnabled = false;
+        StartButton?.IsEnabled = false;
         ProgressExpander.IsVisible = true;
-        ChallengePanel.IsVisible = false;
-        ResultText.IsVisible = false;
-        LogPanel.IsVisible = true;
-        CopyPathButton.IsVisible = false;
-        UseForTunnelButton.IsVisible = false;
-        ConfirmButton.IsVisible = false;
+        ChallengePanel?.IsVisible = false;
+        ResultText?.IsVisible = false;
+        LogPanel?.IsVisible = true;
+        CopyPathButton?.IsVisible = false;
+        UseForTunnelButton?.IsVisible = false;
+        ConfirmButton?.IsVisible = false;
         _logBuffer.Clear();
         LogBox.Text = string.Empty;
         _cts = new CancellationTokenSource();
@@ -182,6 +186,7 @@ public partial class CertificateAssistantWindow : Window
             Mode = dnsMode ? AcmeChallengeMode.DnsAccount : AcmeChallengeMode.Manual,
             DnsAccountId = account?.Id,
             DnsAccountDisplayName = account?.DisplayName,
+            PropagationTimeoutSeconds = ReadPropagationTimeout(),
             SkipPropagationCheck = SkipPropagationCheck.IsChecked == true
         };
 
@@ -193,7 +198,7 @@ public partial class CertificateAssistantWindow : Window
                 OnProgress,
                 _cts.Token);
 
-            ResultText.IsVisible = true;
+            ResultText?.IsVisible = true;
             if (result.Success)
             {
                 ResultText.Text = string.Format(Languages.Text_Certificate_SuccessFormat,
@@ -206,8 +211,11 @@ public partial class CertificateAssistantWindow : Window
                         Path.Combine(result.CertificateDirectory!, "fullchain.pem"),
                         StringComparison.OrdinalIgnoreCase));
 
-                CopyPathButton.IsVisible = _issued is not null;
-                UseForTunnelButton.IsVisible = _issued is not null;
+                CopyPathButton?.IsVisible = _issued is not null;
+                UseForTunnelButton?.IsVisible = _issued is not null;
+
+                // 26.4：新证书已落盘，同步刷新「本地证书」列表
+                ReloadLocalCertificates();
             }
             else
             {
@@ -223,15 +231,15 @@ public partial class CertificateAssistantWindow : Window
         catch (Exception ex)
         {
             Core.App.CurrentLogger?.Error(ex, "证书申请异常");
-            ResultText.IsVisible = true;
+            ResultText?.IsVisible = true;
             ResultText.Text = string.Format(Languages.Text_Certificate_FailedFormat, ex.Message);
         }
         finally
         {
             _isIssuing = false;
-            StartButton.IsEnabled = true;
-            ConfirmButton.IsVisible = false;
-            ChallengePanel.IsVisible = false;
+            StartButton?.IsEnabled = true;
+            ConfirmButton?.IsVisible = false;
+            ChallengePanel?.IsVisible = false;
             _confirmTcs = null;
             _cts?.Dispose();
             _cts = null;
@@ -261,11 +269,11 @@ public partial class CertificateAssistantWindow : Window
             {
                 ChallengeHostText.Text = p.ChallengeHost ?? string.Empty;
                 ChallengeValueText.Text = p.ChallengeValue ?? string.Empty;
-                ChallengePanel.IsVisible = true;
+                ChallengePanel?.IsVisible = true;
             }
 
             // 仅在等待用户确认时显示确认按钮（手动模式）
-            ConfirmButton.IsVisible = p.Stage == AcmeStage.WaitingUserConfirm;
+            ConfirmButton?.IsVisible = p.Stage == AcmeStage.WaitingUserConfirm;
 
             if (!string.IsNullOrWhiteSpace(p.Log))
             {
@@ -319,7 +327,7 @@ public partial class CertificateAssistantWindow : Window
 
     private void ConfirmChallenge(object? sender, RoutedEventArgs e)
     {
-        ConfirmButton.IsVisible = false;
+        ConfirmButton?.IsVisible = false;
         _confirmTcs?.TrySetResult(true);
     }
 
@@ -419,6 +427,119 @@ public partial class CertificateAssistantWindow : Window
         }
 
         base.OnClosing(e);
+    }
+
+    /// <summary>读取界面上的传播等待上限（无有效输入时回退到默认 300 秒，由 Core 再次收敛）。</summary>
+    private int ReadPropagationTimeout()
+    {
+        var value = PropagationTimeoutBox.Value;
+        return double.IsNaN(value)
+            ? AcmeCertificateService.DefaultPropagationTimeoutSeconds
+            : (int)value;
+    }
+
+    /// <summary>重新枚举本地证书并重建列表（无证书时显示空态）。</summary>
+    private void ReloadLocalCertificates()
+    {
+        try
+        {
+            LocalCertList.Children.Clear();
+            var items = CertStore.List();
+            LocalCertEmptyText.IsVisible = items.Count == 0;
+
+            foreach (var item in items)
+            {
+                LocalCertList.Children.Add(BuildLocalCertificateRow(item));
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "加载本地证书列表失败");
+        }
+    }
+
+    /// <summary>
+    ///     构建一行本地证书：域名 / 附加域名 / 证书路径 + 「删除」按钮。
+    ///     行内容在代码中构建（不走 XAML 绑定），以避免 AOT 下的反射绑定风险。
+    /// </summary>
+    private Control BuildLocalCertificateRow(CertificateListItem item)
+    {
+        var tertiary = (IBrush?)this.FindResource("TextFillColorTertiaryBrush") ?? Brushes.Gray;
+
+        var info = new StackPanel { Spacing = 2 };
+        info.Children.Add(new TextBlock { Text = item.DisplayName, FontWeight = FontWeight.SemiBold });
+        if (!string.IsNullOrWhiteSpace(item.AltNamesText))
+        {
+            info.Children.Add(new TextBlock { Text = item.AltNamesText, FontSize = 12, Foreground = tertiary });
+        }
+
+        if (item.IsExpiringSoon)
+        {
+            info.Children.Add(new TextBlock
+            {
+                Text = Languages.Text_Certificate_ExpiringSoon,
+                FontSize = 12,
+                Foreground = tertiary
+            });
+        }
+
+        info.Children.Add(new TextBlock
+        {
+            Text = item.FullChainPath,
+            FontSize = 11,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            Foreground = tertiary
+        });
+
+        var delete = new Button
+        {
+            Content = Languages.Text_Certificate_Delete,
+            Tag = item,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        delete.Click += DeleteLocalCertificate;
+
+        var row = new Grid { ColumnDefinitions = new ColumnDefinitions("*,Auto") };
+        Grid.SetColumn(info, 0);
+        Grid.SetColumn(delete, 1);
+        row.Children.Add(info);
+        row.Children.Add(delete);
+        return row;
+    }
+
+    /// <summary>
+    ///     删除本地证书（二次确认后删除整个证书目录）。
+    ///     删除不影响已在使用该证书的隧道；仅影响后续「从证书助手选择」。
+    /// </summary>
+    private async void DeleteLocalCertificate(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: CertificateListItem item })
+        {
+            return;
+        }
+
+        var confirm = new FluentAvalonia.UI.Controls.ContentDialog
+        {
+            Title = Languages.Text_Certificate_Delete,
+            Content = string.Format(Languages.Text_Certificate_DeleteConfirmFormat, item.DisplayName),
+            PrimaryButtonText = Languages.Text_Global_Confirm,
+            CloseButtonText = Languages.Text_Global_Cancel,
+            DefaultButton = FluentAvalonia.UI.Controls.ContentDialogButton.Close
+        };
+        if (await confirm.ShowAsync() != FluentAvalonia.UI.Controls.ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        if (CertStore.Delete(item.Slug))
+        {
+            Growl.Success(Languages.Text_Certificate_Deleted);
+            ReloadLocalCertificates();
+        }
+        else
+        {
+            Growl.Error(Languages.Text_Global_Failed);
+        }
     }
 
     private void ViewDocuments(object? sender, RoutedEventArgs e)

@@ -9,10 +9,10 @@ using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
 using Markdig.Extensions.Alerts;
 using Markdig.Syntax;
-using MarkdownAIRender.i18n;
+using FluentAvalonia.MarkdownRender.i18n;
 using Inline = Avalonia.Controls.Documents.Inline;
 
-namespace MarkdownAIRender.Controls.MarkdownRender;
+namespace FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 
 /// <summary>
 ///     HTML 块渲染器，将 HTML 标签转换为 Avalonia 控件。

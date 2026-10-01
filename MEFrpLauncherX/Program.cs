@@ -44,21 +44,30 @@ internal partial class Program
         // 记录启动时间，供崩溃报告计算真实运行时长
         CrashHandler.StartupTime = DateTime.Now;
         //StartupTransaction = SentrySdk.StartTransaction("app.startup", "app.lifecycle");
-        // 1. 定义一个全局唯一的Mutex名称（推荐使用反向域名格式）
+        // 1. 先解析启动参数：pml2:// / mefrp:// 链接必须在单实例判定之前拿到，
+        //    否则第二个实例会直接退出、链接被丢弃（26.4 修复：链接启动隧道从未生效）。
+        var startupArgument = args.Length > 0 && !string.IsNullOrWhiteSpace(args[0]) ? args[0] : null;
+        var startupUrl = IsUrlProtocolArgument(startupArgument) ? startupArgument : null;
 
-        // 2. 尝试创建或打开已存在的命名Mutex
+        // 2. 定义一个全局唯一的Mutex名称（推荐使用反向域名格式）
+
+        // 3. 尝试创建或打开已存在的命名Mutex
         // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
         _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
         if (!createdNew)
         {
-            // 已有实例在运行，尝试激活它
-            ActivateExistingInstance();
+            // 已有实例在运行：把链接透传给它（无链接时只激活窗口），再退出当前进程
+            ActivateExistingInstance(startupUrl);
             Environment.Exit(0); // 退出当前进程
             return 0; // 退出当前进程
         }
 
-        // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"请求
+        // 启动 Named Pipe 服务器，监听来自第二个实例的"显示窗口"/"打开链接"请求
         StartPipeServer();
+
+        // 26.4：让系统把 pml2:// 交回本程序（Windows 写 HKCU，Linux 写 xdg desktop；
+        // macOS 由应用包的 CFBundleURLTypes 声明，此处为空操作）
+        EnsureUrlProtocolRegistered();
         // 26.3.1 M1：Splash 进度管道名（与单实例激活管道 tech.rycb.pml2 严格分离）
         var splashPipeName = $"tech.rycb.pml2.splash.{Environment.ProcessId}";
         var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
@@ -125,9 +134,13 @@ internal partial class Program
                     var outPath = "";
                     try
                     {
-                        pmlaFile = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                        pmlaFile = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
                             ?.Split('=')[1];
-                        outPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("output="))
+                        outPath = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("output="))
                             ?.Split('=')[1];
                     }
                     catch (IndexOutOfRangeException)
@@ -146,7 +159,8 @@ internal partial class Program
                     var banner = new string('=', 30);
                     System.Console.WriteLine(banner);
                     System.Console.WriteLine("PMLA Unpack Mode");
-                    System.Console.WriteLine($"Unpacking {pmlaFile}(New Format: {PMLAXHelper.IsPmlaxFile(pmlaFile)}) to {outPath}");
+                    System.Console.WriteLine(
+                        $"Unpacking {pmlaFile}(New Format: {PMLAXHelper.IsPmlaxFile(pmlaFile)}) to {outPath}");
                     System.Console.WriteLine(banner);
                     PMLAHelper.UnpackPmla(pmlaFile, outPath, (progress, status) =>
                     {
@@ -155,6 +169,7 @@ internal partial class Program
                     System.Console.WriteLine("Unpack completed.");
                     return 0;
                 }
+
                 if (isPack)
                 {
                     var inPath = "";
@@ -162,11 +177,17 @@ internal partial class Program
                     var isNewFormat = true;
                     try
                     {
-                        inPath = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPath=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("input="))
+                        inPath = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPath=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("input="))
                             ?.Split('=')[1];
-                        outPmla = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                        outPmla = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
                             ?.Split('=')[1];
-                        isNewFormat = args.FirstOrDefault(x => x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") || x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("newFormat="))
+                        isNewFormat = args.FirstOrDefault(x =>
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("newFormat="))
                             ?.Split('=')[1] is null or "true";
                     }
                     catch (IndexOutOfRangeException)
@@ -185,6 +206,7 @@ internal partial class Program
                         Environment.Exit(2);
                         return 2;
                     }
+
                     var banner = new string('=', 30);
                     System.Console.WriteLine(banner);
                     System.Console.WriteLine("PMLA Pack Mode");
@@ -204,6 +226,7 @@ internal partial class Program
                     Environment.Exit(0);
                     return 0;
                 }
+
                 System.Console.Error.WriteLine("[E] Invalid Arguments.");
                 Environment.Exit(1);
                 return 1;
@@ -261,23 +284,32 @@ internal partial class Program
                     // 等待客户端连接（第二个实例）
                     await server.WaitForConnectionAsync(token);
 
-                    // 读取激活信号
+                    // 读取信号：SHOW = 仅激活窗口；URL {链接} = 激活窗口并启动对应隧道
                     using var reader = new StreamReader(server, Encoding.UTF8);
                     var signal = await reader.ReadLineAsync(token);
-
-                    if (signal == "SHOW")
+                    if (string.IsNullOrWhiteSpace(signal))
                     {
-                        // 在 UI 线程上显示主窗口
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            if (Core.App.MainWindow is not null)
-                            {
-                                Core.App.MainWindow.Show();
-                                Core.App.MainWindow.Activate();
-                                Core.App.MainWindow.WindowState = Avalonia.Controls.WindowState.Normal;
-                            }
-                        });
+                        continue;
                     }
+
+                    var url = signal.StartsWith(UrlSignalPrefix, StringComparison.Ordinal)
+                        ? signal[UrlSignalPrefix.Length..].Trim()
+                        : null;
+                    if (url is null && signal != ShowSignal)
+                    {
+                        continue;
+                    }
+
+                    // 在 UI 线程上显示主窗口，需要时再处理链接
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        ShowMainWindow();
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            // 静态入口：链接内部再经 LaunchTunnelFromStartupDataAsync 启动隧道
+                            Views.MainWindow.HandleUrlProtocol(url);
+                        }
+                    });
                 }
                 catch (OperationCanceledException)
                 {
@@ -297,17 +329,20 @@ internal partial class Program
         }, token);
     }
 
-    internal static void ActivateExistingInstance()
+    /// <summary>
+    ///     通知已运行的实例：仅显示窗口（<paramref name="url" /> 为空），或显示窗口并处理链接。
+    /// </summary>
+    internal static void ActivateExistingInstance(string? url = null)
     {
         try
         {
-            // 首选：通过 Named Pipe 通知第一个实例显示窗口
+            // 首选：通过 Named Pipe 通知第一个实例显示窗口 / 打开链接
             using var client = new NamedPipeClientStream(".", AppPipeName, PipeDirection.Out);
             // 给第一个实例一点时间响应，最多等 2 秒
             client.Connect(2000);
 
             using var writer = new StreamWriter(client, Encoding.UTF8) { AutoFlush = true };
-            writer.WriteLine("SHOW");
+            writer.WriteLine(string.IsNullOrWhiteSpace(url) ? ShowSignal : $"{UrlSignalPrefix}{url}");
             return; // 成功发送信号，直接返回
         }
         catch (TimeoutException)
@@ -456,42 +491,109 @@ internal partial class Program
         return ext is ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp" or ".bmp";
     }
 
-    public static bool ProcessStartupArguments(string arg)
+    /// <summary>命名管道信号：仅显示窗口</summary>
+    private const string ShowSignal = "SHOW";
+
+    /// <summary>命名管道信号前缀：显示窗口并处理链接</summary>
+    private const string UrlSignalPrefix = "URL ";
+
+    /// <summary>是否为 pml2:// / mefrp:// 启动链接。</summary>
+    public static bool IsUrlProtocolArgument(string? arg) =>
+        !string.IsNullOrWhiteSpace(arg) && arg.StartsWithAny("mefrp://", "pml2://");
+
+    /// <summary>
+    ///     把 pml2:// / mefrp:// 链接解析为 <see cref="StartupData" />（纯解析，不落盘）。
+    ///     冷启动（写 startup.json）与已运行实例（命名管道转发）共用同一套解析，避免行为分叉。
+    ///     链接格式：<c>pml2://StartProxy/&lt;隧道ID&gt;?Name=&lt;隧道名&gt;</c>，Name 可省略。
+    /// </summary>
+    /// <returns>非链接或无法解析时返回 null。</returns>
+    public static StartupData? TryParseStartupUrl(string? arg)
     {
+        if (!IsUrlProtocolArgument(arg))
+        {
+            return null;
+        }
+
         var data = new StartupData
         {
             StartProxyId = -1,
             StartProxyName = string.Empty
         };
-        if (!arg.StartsWith("mefrp://"))
+
+        var url = arg!.ReplaceAnyToOne(["mefrp://", "pml2://"]);
+        var args = url.Split('/');
+        switch (args)
         {
-            if (arg == "pmla")
-            {
-                return false;
-            }
-        }
-        else
-        {
-            var url = arg.Replace("mefrp://", "");
-            var args = url.Split('/');
-            if (args is ["StartProxy", var idAndOther, ..])
+            case ["StartProxy", var idAndOther, ..]:
             {
                 var res = idAndOther.Split('?');
-                var id = res[0];
-                if (res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
+                if (!int.TryParse(res[0], out var id))
+                {
+                    Core.App.CurrentLogger?.Warning($"链接中的隧道 ID 无效：{res[0]}");
+                    return null;
+                }
+
+                // Name 为可选参数（仅用于终端标签标题），缺失时不应导致整个链接失效
+                if (res.Length > 1 && res[1].StartsWith("Name=", StringComparison.OrdinalIgnoreCase))
                 {
                     data.StartProxyName = HttpUtility.UrlDecode(res[1].Replace("Name=", ""));
                 }
 
-                data.StartProxyId = int.Parse(id);
+                data.StartProxyId = id;
+                break;
             }
-
-            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
-            File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
-                JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
+            case [""]:
+                Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+                break;
         }
 
+        return data;
+    }
+
+    public static bool ProcessStartupArguments(string arg)
+    {
+        if (!IsUrlProtocolArgument(arg))
+        {
+            // 非链接参数：仅 “pmla” 表示走 PMLA 打包/解包分支
+            return arg != "pmla";
+        }
+
+        var data = TryParseStartupUrl(arg);
+        if (data is null)
+        {
+            return true;
+        }
+
+        File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
+            JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         return true;
+    }
+
+    /// <summary>在 UI 线程显示并激活主窗口（命名管道信号与二实例回退共用）。</summary>
+    private static void ShowMainWindow()
+    {
+        if (Core.App.MainWindow is null)
+        {
+            return;
+        }
+
+        Core.App.MainWindow.Show();
+        Core.App.MainWindow.Activate();
+        Core.App.MainWindow.WindowState = Avalonia.Controls.WindowState.Normal;
+    }
+
+    /// <summary>确保系统把 pml2:// 交回本程序（失败不影响启动）。</summary>
+    private static void EnsureUrlProtocolRegistered()
+    {
+        try
+        {
+            // AOT / 单文件下 Environment.ProcessPath 指向真实可执行文件
+            Tools.UrlProtocolHelper.EnsureRegistered(Environment.ProcessPath);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Warning($"注册 pml2:// 协议失败：{ex.Message}");
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

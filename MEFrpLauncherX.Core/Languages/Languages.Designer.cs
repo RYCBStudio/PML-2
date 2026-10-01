@@ -60,6 +60,51 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 删除.
+        /// </summary>
+        public static string Text_Dns_Delete {
+            get {
+                return ResourceManager.GetString("Text.Dns.Delete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 本地证书.
+        /// </summary>
+        public static string Text_Certificate_LocalList {
+            get {
+                return ResourceManager.GetString("Text.Certificate.LocalList", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 删除本地证书「{0}」后，正在使用该证书的隧道不受影响，但之后无法再从证书助手选择它。确定删除吗？.
+        /// </summary>
+        public static string Text_Certificate_DeleteConfirmFormat {
+            get {
+                return ResourceManager.GetString("Text.Certificate.DeleteConfirmFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 等待上限（秒）.
+        /// </summary>
+        public static string Text_Certificate_PropagationTimeout {
+            get {
+                return ResourceManager.GetString("Text.Certificate.PropagationTimeout", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 等待 DNS 传播与 CA 校验的最长时长，默认 300 秒；网络较慢或解析生效慢时可适当调大。.
+        /// </summary>
+        public static string Text_Certificate_PropagationTimeoutDescription {
+            get {
+                return ResourceManager.GetString("Text.Certificate.PropagationTimeoutDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to 错误.
         /// </summary>
         public static string Caption_Error {
@@ -2940,11 +2985,299 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access Token.
+        /// </summary>
+        public static string Text_Dns_Field_AccessToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 账号名称.
+        /// </summary>
+        public static string Text_Dns_Field_AccountName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Key.
+        /// </summary>
+        public static string Text_Dns_Field_ApiKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API 密码.
+        /// </summary>
+        public static string Text_Dns_Field_ApiPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Secret.
+        /// </summary>
+        public static string Text_Dns_Field_ApiSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API Token.
         /// </summary>
         public static string Text_Dns_Field_ApiToken {
             get {
                 return ResourceManager.GetString("Text.Dns.Field.ApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API 地址.
+        /// </summary>
+        public static string Text_Dns_Field_ApiUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API 用户名.
+        /// </summary>
+        public static string Text_Dns_Field_ApiUser {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API 用户名.
+        /// </summary>
+        public static string Text_Dns_Field_ApiUsername {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Key.
+        /// </summary>
+        public static string Text_Dns_Field_ApplicationKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApplicationKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Secret.
+        /// </summary>
+        public static string Text_Dns_Field_ApplicationSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApplicationSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auth Token.
+        /// </summary>
+        public static string Text_Dns_Field_AuthToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AuthToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client ID.
+        /// </summary>
+        public static string Text_Dns_Field_ClientId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ClientId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Secret.
+        /// </summary>
+        public static string Text_Dns_Field_ClientSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ClientSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Token.
+        /// </summary>
+        public static string Text_Dns_Field_ClientToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ClientToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 区间 ID.
+        /// </summary>
+        public static string Text_Dns_Field_CompartmentId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.CompartmentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 配置文件路径（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_ConfigFile {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Consumer Key.
+        /// </summary>
+        public static string Text_Dns_Field_ConsumerKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ConsumerKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 区域.
+        /// </summary>
+        public static string Text_Dns_Field_DnsZone {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.DnsZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API 端点.
+        /// </summary>
+        public static string Text_Dns_Field_Endpoint {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Endpoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 主机地址.
+        /// </summary>
+        public static string Text_Dns_Field_Host {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 托管区域 ID（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_HostedZoneId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.HostedZoneId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key.
+        /// </summary>
+        public static string Text_Dns_Field_Key {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 服务器.
+        /// </summary>
+        public static string Text_Dns_Field_Nameserver {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Nameserver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 密码.
+        /// </summary>
+        public static string Text_Dns_Field_Password {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PDD Token.
+        /// </summary>
+        public static string Text_Dns_Field_PddToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PddToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 永久 API Token.
+        /// </summary>
+        public static string Text_Dns_Field_PermanentApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PermanentApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 个人访问令牌.
+        /// </summary>
+        public static string Text_Dns_Field_PersonalAccessToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PersonalAccessToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 私钥文件路径.
+        /// </summary>
+        public static string Text_Dns_Field_PrivateKeyPath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PrivateKeyPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 项目 ID.
+        /// </summary>
+        public static string Text_Dns_Field_Project {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 区域.
+        /// </summary>
+        public static string Text_Dns_Field_Region {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecretAccessKey.
+        /// </summary>
+        public static string Text_Dns_Field_SecretAccessKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretAccessKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secret API Key.
+        /// </summary>
+        public static string Text_Dns_Field_SecretApiKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SecretApiKey", resourceCulture);
             }
         }
         
@@ -2976,11 +3309,92 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 服务账号 JSON 文件.
+        /// </summary>
+        public static string Text_Dns_Field_ServiceAccountFile {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ServiceAccountFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 临时令牌（可选）.
         /// </summary>
         public static string Text_Dns_Field_SessionToken {
             get {
                 return ResourceManager.GetString("Text.Dns.Field.SessionToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 订阅 ID.
+        /// </summary>
+        public static string Text_Dns_Field_SubscriptionId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.SubscriptionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 租户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_TenantId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TenantId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token.
+        /// </summary>
+        public static string Text_Dns_Field_Token {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TSIG 算法（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_TsigAlgorithm {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TsigAlgorithm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TSIG 密钥名（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_TsigKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TsigKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TSIG 密钥（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_TsigSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TsigSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用户名.
+        /// </summary>
+        public static string Text_Dns_Field_User {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 用户名.
+        /// </summary>
+        public static string Text_Dns_Field_Username {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Username", resourceCulture);
             }
         }
         
@@ -3003,6 +3417,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用应用（服务主体），仅在目标 DNS 区域上授予「DNS Zone Contributor」角色；不要使用全局管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_AzureDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AzureDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 建议创建专用 API Token：权限仅需 Zone → DNS → Edit（并包含 Zone → Zone → Read），并限定到目标域名。.
         /// </summary>
         public static string Text_Dns_Permission_Cloudflare {
@@ -3012,11 +3435,308 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具 DNS 读写权限的 Personal Access Token；不要使用 Full Access Token。.
+        /// </summary>
+        public static string Text_Dns_Permission_DigitalOcean {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DigitalOcean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 建议使用腾讯云子账号的 API 密钥，仅授予 DNSPod 相关权限；不要使用主账号密钥。.
         /// </summary>
         public static string Text_Dns_Permission_DnsPod {
             get {
                 return ResourceManager.GetString("Text.Dns.Permission.DnsPod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议使用专用 TSIG 密钥，并仅授权目标区域的动态更新（限制 allow-update）；不要使用全局管理密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsUpdate {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Key，仅用于 DNS 记录管理；不要使用账户密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Dynu {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Dynu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Token 与其对应的 Key，仅授予目标域名的记录管理权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_EasyDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EasyDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API 客户端（Client Token / Client Secret / Access Token），仅授予目标区域的 Edge DNS 编辑权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_EdgeDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EdgeDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具 DNS 权限的受限 IAM API Key；不要使用账户全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Exoscale {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Exoscale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Key，仅用于 DNS 记录管理；不要使用账户密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Gandi {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Gandi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 Personal Access Token，仅勾选「Manage domain name zone files（管理域名区域文件）」权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_GandiV5 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.GandiV5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用服务账号，仅授予目标项目的 DNS Administrator（roles/dns.admin）角色，并下载 JSON 密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_GCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.GCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建永久 API Token，并仅授予 DNS 相关权限；不要使用账号密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_GCore {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.GCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅可管理 DNS 的 API 用户与密钥；不要使用主账号凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Glesys {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Glesys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于生产的 API Key 与 Secret，并限定到目标域名。.
+        /// </summary>
+        public static string Text_Dns_Permission_GoDaddy {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.GoDaddy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具 DNS 读写权限的 API Token，并限定到目标域名。.
+        /// </summary>
+        public static string Text_Dns_Permission_Hetzner {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Hetzner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在 hPanel 中创建专用 API Token，仅授予 DNS 相关权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_Hostinger {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Hostinger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API 访问令牌，仅授予 DNS 相关权限；不要使用账户密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Infomaniak {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Infomaniak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议使用专用子账号并仅授予 DNS 管理权限；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Joker {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Joker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 IAM 用户，仅授予目标区域的 Lightsail DNS 相关权限；不要使用根账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Lightsail {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Lightsail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建 Personal Access Token，仅授予 Domains 的读写权限；不要使用账号密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Linode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Linode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具 DNS 管理权限的专用 API 用户；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_LiquidWeb {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.LiquidWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于 DNS 管理的 API 用户，并限制 API 访问的来源 IP。.
+        /// </summary>
+        public static string Text_Dns_Permission_Loopia {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Loopia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API 用户，仅授予目标区域的读写权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_LuaDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.LuaDns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在账户中开启 API 访问并以白名单限制来源 IP，仅授予目标域名的 DNS 管理权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_Namecheap {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Namecheap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Key 与 API 密码，仅用于 DNS 管理；不要使用客户账号密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Netcup {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Netcup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅含 DNS 区域读写权限的 API Key；不要使用账户管理员 Key。.
+        /// </summary>
+        public static string Text_Dns_Permission_NS1 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NS1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议使用专用 IAM 用户与 API 密钥，仅在目标区间授予 DNS 管理权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_OracleCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OracleCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 OVH API 应用（Application Key / Secret / Consumer Key），仅授予目标域名的 DNS 区域编辑权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_Ovh {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Ovh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API Key 与 Secret API Key，并开启 IP 白名单限制。.
+        /// </summary>
+        public static string Text_Dns_Permission_Porkbun {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Porkbun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅可管理目标区域的 API Key，并限制 API 访问的来源 IP。.
+        /// </summary>
+        public static string Text_Dns_Permission_PowerDNS {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.PowerDNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具 DNS 管理权限的专用用户与 API Key；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Rackspace {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Rackspace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 IAM 用户或角色，仅授予目标托管区域的 Route 53 记录修改权限；不要使用根账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Route53 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Route53", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API 密钥对，仅用于 DNS 管理；不要使用账户密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_TransIp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.TransIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅启用 DNS 权限的 API Key；不要使用账户全局 API Key。.
+        /// </summary>
+        public static string Text_Dns_Permission_Vultr {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Vultr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 PDD Token，仅用于目标域名的 DNS 管理。.
+        /// </summary>
+        public static string Text_Dns_Permission_Yandex {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Yandex", resourceCulture);
             }
         }
         
@@ -3039,6 +3759,51 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Access Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 myaccount.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccountName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 密码.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API Secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 粘贴仅含 DNS 编辑权限的 Token.
         /// </summary>
         public static string Text_Dns_Placeholder_ApiToken {
@@ -3048,11 +3813,245 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 例如 https://pdns.example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 用户名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiUser {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 用户名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiUsername {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Application Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApplicationKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApplicationKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Application Secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApplicationSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApplicationSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Auth Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AuthToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AuthToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Client ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ClientId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ClientId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Client Secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ClientSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ClientSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Client Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ClientToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ClientToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ocid1.compartment.oc1..xxxx.
+        /// </summary>
+        public static string Text_Dns_Placeholder_CompartmentId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.CompartmentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ~/.oci/config（选填，留空使用默认值）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ConfigFile {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Consumer Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ConsumerKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ConsumerKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_DnsZone {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.DnsZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ovh-eu.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Endpoint {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Endpoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 akab-xxxx.luna.akamaiapis.net.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Host {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Key {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ns1.example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Nameserver {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Nameserver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 可选，留空即可.
         /// </summary>
         public static string Text_Dns_Placeholder_Optional {
             get {
                 return ResourceManager.GetString("Text.Dns.Placeholder.Optional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴密码.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Password {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 PDD Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PddToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PddToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴永久 API Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PermanentApiToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PermanentApiToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴个人访问令牌.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PersonalAccessToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PersonalAccessToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 /path/to/private.key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PrivateKeyPath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PrivateKeyPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 my-project-123456.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Project {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ap-northeast-1.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Region {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Region", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 SecretAccessKey.
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretAccessKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretAccessKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Secret API Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_SecretApiKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SecretApiKey", resourceCulture);
             }
         }
         
@@ -3071,6 +4070,60 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Dns_Placeholder_SecretKey {
             get {
                 return ResourceManager.GetString("Text.Dns.Placeholder.SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 /path/to/service-account.json.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ServiceAccountFile {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ServiceAccountFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴订阅 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_SubscriptionId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.SubscriptionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴租户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_TenantId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.TenantId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Token.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Token {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴用户名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_User {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴用户名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Username {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Username", resourceCulture);
             }
         }
         
@@ -4068,6 +5121,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Home_Simple_Ignore {
             get {
                 return ResourceManager.GetString("Text.Home.Simple.Ignore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 收件箱.
+        /// </summary>
+        public static string Text_Home_Simple_Inbox {
+            get {
+                return ResourceManager.GetString("Text.Home.Simple.Inbox", resourceCulture);
             }
         }
         
@@ -9929,6 +10991,132 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 下载源.
+        /// </summary>
+        public static string Text_Update_DownloadSource {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 设置更新包的下载线路。.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TPCA Openlist (默认).
+        /// </summary>
+        public static string Text_Update_DownloadSource_TPCA {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSource.TPCA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Github.
+        /// </summary>
+        public static string Text_Update_DownloadSource_GitHub {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSource.GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Github (gh-proxy 镜像).
+        /// </summary>
+        public static string Text_Update_DownloadSource_GitHubGhProxy {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSource.GitHubGhProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Github (moeyy 镜像).
+        /// </summary>
+        public static string Text_Update_DownloadSource_GitHubMoeyy {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSource.GitHubMoeyy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 使用自建 Alist CDN 下载更新包.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDesc_TPCA {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDesc.TPCA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 直接从 GitHub 官方站点获取 Release 安装包.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDesc_GitHub {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDesc.GitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 经 gh-proxy 镜像加速访问 GitHub.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDesc_GitHubGhProxy {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDesc.GitHubGhProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 经 moeyy 镜像加速访问 GitHub.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDesc_GitHubMoeyy {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDesc.GitHubMoeyy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 未知下载源.
+        /// </summary>
+        public static string Text_Update_DownloadSourceDesc_Unknown {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceDesc.Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在从 {0} 下载: {1}.
+        /// </summary>
+        public static string Text_Update_DownloadSourceResolvedFormat {
+            get {
+                return ResourceManager.GetString("Text.Update.DownloadSourceResolvedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 点击确认打开安装文件所在目录，使用 rpm -ivh 或 dnf install 命令安装 rpm 包.
+        /// </summary>
+        public static string Text_Update_InstallTipLinuxRpm {
+            get {
+                return ResourceManager.GetString("Text.Update.InstallTipLinuxRpm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 点击确认打开安装文件所在目录，解压压缩包后按 README 说明覆盖安装.
+        /// </summary>
+        public static string Text_Update_InstallTipLinuxTar {
+            get {
+                return ResourceManager.GetString("Text.Update.InstallTipLinuxTar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 选择下载安装包的编译类型（AOT 或常规）。当目标类型与当前运行时类型一致时，安装程序将不执行自动清理操作。.
         /// </summary>
         public static string Text_Update_CompileTypeDescription {
@@ -11297,5 +12485,3241 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.Empty
+        /// </summary>
+        public static string Text_Inbox_Empty {
+            get {
+                return ResourceManager.GetString("Text.Inbox.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.New
+        /// </summary>
+        public static string Text_Inbox_New {
+            get {
+                return ResourceManager.GetString("Text.Inbox.New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.NoTextPreview
+        /// </summary>
+        public static string Text_Inbox_NoTextPreview {
+            get {
+                return ResourceManager.GetString("Text.Inbox.NoTextPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string for key: Text.Inbox.ViewDetails
+        /// </summary>
+        public static string Text_Inbox_ViewDetails {
+            get {
+                return ResourceManager.GetString("Text.Inbox.ViewDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secret.
+        /// </summary>
+        public static string Text_Dns_Field_Secret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Secret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Secret.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Secret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Secret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to RAM 角色.
+        /// </summary>
+        public static string Text_Dns_Field_RamRole {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.RamRole", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 acs:ram::1234567890:role/dns（选填，留空用 AccessKey）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_RamRole {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.RamRole", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 登录名.
+        /// </summary>
+        public static string Text_Dns_Field_Login {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Login", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴登录名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Login {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Login", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账户昵称.
+        /// </summary>
+        public static string Text_Dns_Field_Nickname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Nickname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴账户昵称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Nickname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Nickname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 个人访问令牌.
+        /// </summary>
+        public static string Text_Dns_Field_PersonalToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PersonalToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴个人访问令牌.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PersonalToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PersonalToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 管理端地址.
+        /// </summary>
+        public static string Text_Dns_Field_ManagerAddress {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ManagerAddress", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 https://bindman.example.com:8080.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ManagerAddress {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ManagerAddress", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 服务器地址.
+        /// </summary>
+        public static string Text_Dns_Field_ServerUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ServerUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 https://bam.example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ServerUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ServerUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 配置名称.
+        /// </summary>
+        public static string Text_Dns_Field_ConfigName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ConfigName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴配置名称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ConfigName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ConfigName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 外部 DNS 视图.
+        /// </summary>
+        public static string Text_Dns_Field_DnsView {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.DnsView", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴外部 DNS 视图名称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_DnsView {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.DnsView", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 视图.
+        /// </summary>
+        public static string Text_Dns_Field_ViewName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ViewName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 DNS 视图名称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ViewName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ViewName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 服务实例 ID.
+        /// </summary>
+        public static string Text_Dns_Field_ServiceInstanceId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ServiceInstanceId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Service Instance ID（parentId）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ServiceInstanceId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ServiceInstanceId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Key ID.
+        /// </summary>
+        public static string Text_Dns_Field_KeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.KeyId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Key ID（登录名）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_KeyId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.KeyId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 邮箱.
+        /// </summary>
+        public static string Text_Dns_Field_Email {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Email", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 you@example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Email {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Email", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to API 用户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_AuthId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AuthId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 用户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AuthId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AuthId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to API 密码.
+        /// </summary>
+        public static string Text_Dns_Field_AuthPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AuthPassword", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 用户对应的密码.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AuthPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AuthPassword", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to API 用户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_ApiUserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiUserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 用户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiUserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiUserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 服务地址.
+        /// </summary>
+        public static string Text_Dns_Field_BaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.BaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 https://panel.example.com:2087.
+        /// </summary>
+        public static string Text_Dns_Placeholder_BaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.BaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 认证地址.
+        /// </summary>
+        public static string Text_Dns_Field_AuthUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AuthUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 https://keystone.example.com:5000/v3.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AuthUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AuthUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 用户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_UserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.UserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴用户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_UserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.UserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 应用凭证 ID（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_ApplicationCredentialId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApplicationCredentialId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴应用凭证 ID（选填）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApplicationCredentialId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApplicationCredentialId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 应用凭证名称（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_ApplicationCredentialName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApplicationCredentialName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴应用凭证名称（选填）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApplicationCredentialName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApplicationCredentialName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 应用凭证密钥（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_ApplicationCredentialSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApplicationCredentialSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴应用凭证密钥（选填）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApplicationCredentialSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApplicationCredentialSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 项目名称.
+        /// </summary>
+        public static string Text_Dns_Field_ProjectName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ProjectName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 my-project.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ProjectName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ProjectName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 区域名称.
+        /// </summary>
+        public static string Text_Dns_Field_RegionName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.RegionName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 RegionOne.
+        /// </summary>
+        public static string Text_Dns_Placeholder_RegionName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.RegionName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to API ID.
+        /// </summary>
+        public static string Text_Dns_Field_ApiId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 凭据对.
+        /// </summary>
+        public static string Text_Dns_Field_Credentials {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Credentials", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.com:password,foo.example.com:password2.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Credentials {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Credentials", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to OAuth 令牌.
+        /// </summary>
+        public static string Text_Dns_Field_OauthToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.OauthToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 OAuth 令牌.
+        /// </summary>
+        public static string Text_Dns_Placeholder_OauthToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.OauthToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 客户名称.
+        /// </summary>
+        public static string Text_Dns_Field_CustomerName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.CustomerName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴客户名称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_CustomerName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.CustomerName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 主机名.
+        /// </summary>
+        public static string Text_Dns_Field_Hostname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Hostname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 foo.example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Hostname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Hostname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to DNS 名称.
+        /// </summary>
+        public static string Text_Dns_Field_DnsName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.DnsName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 dns.smart.
+        /// </summary>
+        public static string Text_Dns_Placeholder_DnsName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.DnsName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to API 签名.
+        /// </summary>
+        public static string Text_Dns_Field_Signature {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Signature", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 签名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Signature {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Signature", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Application ID.
+        /// </summary>
+        public static string Text_Dns_Field_AppId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AppId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Application ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AppId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AppId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 订单 ID.
+        /// </summary>
+        public static string Text_Dns_Field_OrderId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.OrderId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 API 合约的订单 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_OrderId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.OrderId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 外部程序路径.
+        /// </summary>
+        public static string Text_Dns_Field_ExecPath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ExecPath", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 /path/to/myscript.sh.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ExecPath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ExecPath", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 模式（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_ExecMode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ExecMode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to RAW 或留空.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ExecMode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ExecMode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 租户简称.
+        /// </summary>
+        public static string Text_Dns_Field_TenantName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TenantName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 XC 租户简称.
+        /// </summary>
+        public static string Text_Dns_Placeholder_TenantName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.TenantName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 组名.
+        /// </summary>
+        public static string Text_Dns_Field_GroupName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.GroupName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴组名.
+        /// </summary>
+        public static string Text_Dns_Placeholder_GroupName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.GroupName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 令牌 ID.
+        /// </summary>
+        public static string Text_Dns_Field_TokenId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TokenId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴令牌 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_TokenId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.TokenId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 令牌密钥.
+        /// </summary>
+        public static string Text_Dns_Field_TokenSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.TokenSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴令牌密钥.
+        /// </summary>
+        public static string Text_Dns_Placeholder_TokenSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.TokenSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to App Key.
+        /// </summary>
+        public static string Text_Dns_Field_AppKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AppKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 App Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AppKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AppKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 模式（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_Mode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Mode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to RAW 或留空.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Mode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Mode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 记录名:令牌 列表.
+        /// </summary>
+        public static string Text_Dns_Field_Tokens {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.Tokens", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.org:token1,demo.example.org:token2.
+        /// </summary>
+        public static string Text_Dns_Placeholder_Tokens {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.Tokens", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 护照文件路径（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_PassportLocation {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PassportLocation", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 ~/.h1/passport.json（选填，留空用默认值）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PassportLocation {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PassportLocation", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 区域 ID（可选）.
+        /// </summary>
+        public static string Text_Dns_Field_LocationId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.LocationId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 pl-waw-1（选填，留空用默认值）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_LocationId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.LocationId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 服务代码.
+        /// </summary>
+        public static string Text_Dns_Field_DpmServiceCode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.DpmServiceCode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 IIJ 托管 DNS 服务代码.
+        /// </summary>
+        public static string Text_Dns_Placeholder_DpmServiceCode {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.DpmServiceCode", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to ACME-DNS API 地址.
+        /// </summary>
+        public static string Text_Dns_Field_ApiBase {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ApiBase", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 http://10.0.0.8:4443.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ApiBase {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ApiBase", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账号数据文件（与下方二选一）.
+        /// </summary>
+        public static string Text_Dns_Field_StoragePath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.StoragePath", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 /root/.lego-acme-dns-accounts.json.
+        /// </summary>
+        public static string Text_Dns_Placeholder_StoragePath {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.StoragePath", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账号数据服务地址（与上方二选一）.
+        /// </summary>
+        public static string Text_Dns_Field_StorageBaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.StorageBaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 http://10.10.10.10:80.
+        /// </summary>
+        public static string Text_Dns_Placeholder_StorageBaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.StorageBaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账户参考号.
+        /// </summary>
+        public static string Text_Dns_Field_AccountReference {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccountReference", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴四位账户参考号.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccountReference {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccountReference", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 子域:私钥 映射.
+        /// </summary>
+        public static string Text_Dns_Field_PrivateKeysMapping {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PrivateKeysMapping", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 foo:base64key,bar:base64key2.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PrivateKeysMapping {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PrivateKeysMapping", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 主控 ID.
+        /// </summary>
+        public static string Text_Dns_Field_MasterId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.MasterId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 MyDNS 主控 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_MasterId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.MasterId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 客户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_CustomerId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.CustomerId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴客户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_CustomerId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.CustomerId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 域名.
+        /// </summary>
+        public static string Text_Dns_Field_DomainName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.DomainName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.com.
+        /// </summary>
+        public static string Text_Dns_Placeholder_DomainName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.DomainName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 服务地址.
+        /// </summary>
+        public static string Text_Dns_Field_ServerBaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ServerBaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 https://plesk.example.com:8443.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ServerBaseUrl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ServerBaseUrl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 应用 ID.
+        /// </summary>
+        public static string Text_Dns_Field_ServiceId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ServiceId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 DNS 托管应用 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ServiceId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ServiceId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 访问令牌密钥.
+        /// </summary>
+        public static string Text_Dns_Field_AccessTokenSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessTokenSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴访问令牌密钥.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessTokenSecret {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessTokenSecret", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 项目 ID.
+        /// </summary>
+        public static string Text_Dns_Field_ProjectId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.ProjectId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴项目 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_ProjectId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.ProjectId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_AccountId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccountId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴账户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccountId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccountId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 域名:记录 ID 映射.
+        /// </summary>
+        public static string Text_Dns_Field_RecordsMapping {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.RecordsMapping", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 例如 example.com:123:456,foo.example.com:147.
+        /// </summary>
+        public static string Text_Dns_Placeholder_RecordsMapping {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.RecordsMapping", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 账户 ID.
+        /// </summary>
+        public static string Text_Dns_Field_AuthUserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AuthUserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴账户 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AuthUserId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AuthUserId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 公钥.
+        /// </summary>
+        public static string Text_Dns_Field_PublicKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PublicKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴公钥.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PublicKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PublicKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 私钥.
+        /// </summary>
+        public static string Text_Dns_Field_PrivateKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.PrivateKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴私钥.
+        /// </summary>
+        public static string Text_Dns_Placeholder_PrivateKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.PrivateKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Access Key.
+        /// </summary>
+        public static string Text_Dns_Field_AccessKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AccessKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Access Key.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AccessKey {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AccessKey", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to WAPI 密码.
+        /// </summary>
+        public static string Text_Dns_Field_WapiPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.WapiPassword", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 WAPI 密码（需在管理界面生成并放行 IP）.
+        /// </summary>
+        public static string Text_Dns_Placeholder_WapiPassword {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.WapiPassword", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 代理 ID.
+        /// </summary>
+        public static string Text_Dns_Field_AgentId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.AgentId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴代理 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_AgentId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.AgentId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 组织 ID.
+        /// </summary>
+        public static string Text_Dns_Field_OrgId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.OrgId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴组织 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_OrgId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.OrgId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to IAM 令牌.
+        /// </summary>
+        public static string Text_Dns_Field_IamToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.IamToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 base64 编码的 IAM 令牌 JSON.
+        /// </summary>
+        public static string Text_Dns_Placeholder_IamToken {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.IamToken", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 目录 ID.
+        /// </summary>
+        public static string Text_Dns_Field_FolderId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Field.FolderId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 粘贴 Yandex Cloud 目录 ID.
+        /// </summary>
+        public static string Text_Dns_Placeholder_FolderId {
+            get {
+                return ResourceManager.GetString("Text.Dns.Placeholder.FolderId", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「1cloud.ru」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_OneCloudRu {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OneCloudRu", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「35.com/三五互联」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Com35 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Com35", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具「51DNS」DNS 读写权限的专用 API Key / Secret；不要使用账号主密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Dns51 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Dns51", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Abion」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Abion {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Abion", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Active24」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Active24 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Active24", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「AlibabaCloud ESA」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_AliEsa {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AliEsa", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「all-inkl」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_AllInkl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AllInkl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Alwaysdata」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_AlwaysData {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AlwaysData", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Anexia CloudDNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Anexia {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Anexia", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「ANS SafeDNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_SafeDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.SafeDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「ArtFiles」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_ArtFiles {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ArtFiles", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「ArvanCloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_ArvanCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ArvanCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Aurora DNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_AuroraDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AuroraDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Autodns」DNS 管理的专用 API 用户，并限制 API 访问的来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_AutoDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AutoDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Axelname」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_AxelName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AxelName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Azion」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Azion {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Azion", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「Baidu Cloud」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_BaiduCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.BaiduCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Beget.com」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Beget {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Beget", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Binary Lane」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_BinaryLane {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.BinaryLane", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Bindman」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Bindman {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Bindman", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Bluecat」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Bluecat {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Bluecat", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Bluecat v2」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_BluecatV2 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.BluecatV2", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「BookMyName」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_BookMyName {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.BookMyName", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Bunny」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Bunny {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Bunny", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Checkdomain」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Checkdomain {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Checkdomain", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Civo」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Civo {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Civo", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Cloud.ru」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_CloudRu {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.CloudRu", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「CloudDNS」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_CloudDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.CloudDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to ClouDNS 的 API 用户 ID 与密码即该 API 用户的全部权限：建议创建仅授权目标区域的专用 API 子用户；如使用子用户，请填写在「API 子用户 ID」。.
+        /// </summary>
+        public static string Text_Dns_Permission_ClouDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ClouDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Connbyte」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Connbyte {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Connbyte", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「ConoHa v2」DNS 管理的专用 API 用户，并限制 API 访问的来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_ConoHa {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ConoHa", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「ConoHa v3」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_ConoHaV3 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ConoHaV3", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Constellix」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Constellix {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Constellix", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Core-Networks」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_CoreNetworks {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.CoreNetworks", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「CPanel/WHM」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_CPanel {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.CPanel", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Curanet」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Curanet {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Curanet", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Czechia」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Czechia {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Czechia", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「DanDomain」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DanDomain {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DanDomain", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「DDnss (DynDNS Service)」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DDnss {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DDnss", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Derak Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Derak {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Derak", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「deSEC.io」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DeSec {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DeSec", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to OpenStack Designate：建议使用专用应用凭证（Application Credential），仅授予目标项目的 DNS 区域读写权限；不要使用管理员账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Designate {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Designate", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Dinahosting」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Dinahosting {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Dinahosting", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「DirectAdmin」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_DirectAdmin {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DirectAdmin", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具「DNS Made Easy」DNS 读写权限的专用 API Key / Secret；不要使用账号主密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsMadeEasy {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsMadeEasy", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「dns.la」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsLa {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsLa", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「DNS.services」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsServices {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsServices", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「DNScale」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsCale {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsCale", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「DNSExit」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsExit {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsExit", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为每个域名单独生成密码 / 令牌并按最小权限限制更新范围（如「dnsHome.de」的凭据对），不要多处复用同一密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsHomeDe {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsHomeDe", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅含「DNSimple」DNS 管理权限的 OAuth 令牌；不要使用账号密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsSimple {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsSimple", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「DNSMint」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DnsMint {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DnsMint", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Domain Offensive (do.de)」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DomainOffensive {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DomainOffensive", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Domeneshop」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Domeneshop {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Domeneshop", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「DreamHost」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DreamHost {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DreamHost", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Duck DNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_DuckDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DuckDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Dyn」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Dyn {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Dyn", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具「Dynadot」DNS 读写权限的专用 API Key / Secret；不要使用账号主密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Dynadot {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Dynadot", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「DynDnsFree.de」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_DynDnsFree {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.DynDnsFree", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「EdgeCenter」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_EdgeCenter {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EdgeCenter", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Efficient IP」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_EfficientIp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EfficientIp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Epik」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Epik {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Epik", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「EuroDNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_EuroDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EuroDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「EUserv」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_EuServ {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EuServ", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Excedo」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Excedo {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Excedo", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 调用本机外部程序完成 DNS 验证：请填写脚本路径，lego 会以「present / cleanup + FQDN + 记录值」调用它；请确保脚本仅具备目标区域的解析修改权限。.
+        /// </summary>
+        public static string Text_Dns_Permission_ExternalProgram {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ExternalProgram", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「F5 XC」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_F5Xc {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.F5Xc", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「FENO」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Feno {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Feno", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Fornex」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Fornex {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Fornex", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「freemyip.com」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_FreeMyIp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.FreeMyIp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「FusionLayer NameSurfer」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_NameSurfer {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NameSurfer", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Gehirn」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Gehirn {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Gehirn", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Gigahost.no」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_GigahostNo {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.GigahostNo", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Gname」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Gname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Gname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Gravity」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Gravity {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Gravity", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Hosting.de」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_HostingDe {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HostingDe", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Hosting.nl」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_HostingNl {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HostingNl", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Hosttech」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Hosttech {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Hosttech", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「HostUp」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_HostUp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HostUp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 HTTP 服务完成 DNS 验证：请填写服务地址（需响应 /present 与 /cleanup），如启用基本认证请同时填写用户名与密码，并限制服务来源。.
+        /// </summary>
+        public static string Text_Dns_Permission_HttpReq {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HttpReq", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「http.net」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_HttpNet {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HttpNet", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「Huawei Cloud」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_HuaweiCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HuaweiCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hurricane Electric 需先在 DNS 面板为每个 _acme-challenge 记录开启动态更新并生成令牌，再按「记录名:令牌」填入；不要使用账号登录密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Hurricane {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Hurricane", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to HyperOne 通过本机护照文件认证，本表默认留空即可；如需自定义，请填写护照文件路径或区域，并确保该文件仅本机可读。.
+        /// </summary>
+        public static string Text_Dns_Permission_HyperOne {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.HyperOne", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「IBM Cloud (SoftLayer)」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_IbmCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.IbmCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「IIJ DNS Platform Service」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_IijDpf {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.IijDpf", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Infoblox」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Infoblox {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Infoblox", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Internet.bs」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_InternetBs {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.InternetBs", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「INWX」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Inwx {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Inwx", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Ionos」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Ionos {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Ionos", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Ionos Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_IonosCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.IonosCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「IPv64」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Ipv64 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Ipv64", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「ISPConfig 3」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_IspConfig {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.IspConfig", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「ISPConfig 3 - Dynamic DNS (DDNS) Module」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_IspConfigDdns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.IspConfigDdns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「JD Cloud」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_JdCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.JdCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to ACME-DNS 是自建 DNS 服务：只需保存「API 地址 + 账号数据文件或数据服务地址」；账号数据文件包含更新凭据，请确保其仅本机可读，且两种存储方式只能二选一。.
+        /// </summary>
+        public static string Text_Dns_Permission_AcmeDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.AcmeDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Katapult」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Katapult {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Katapult", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「KeyHelp」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_KeyHelp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.KeyHelp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Leaseweb」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Leaseweb {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Leaseweb", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Liara」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Liara {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Liara", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Lima-City」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_LimaCity {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.LimaCity", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Mail-in-a-Box」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_MailInABox {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.MailInABox", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用 API 客户端（Client ID / Secret），仅授予「ManageEngine CloudDNS」DNS 相关权限；不要使用全局凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_ManageEngine {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ManageEngine", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Metaname」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Metaname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Metaname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Metaregistrar」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Metaregistrar {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Metaregistrar", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「mijn.host」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_MijnHost {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.MijnHost", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Mittwald」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Mittwald {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Mittwald", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to myaddr 使用每域名私钥签名请求：请按「子域:私钥」填写映射；私钥仅在本机保存，不要与他人共享。.
+        /// </summary>
+        public static string Text_Dns_Permission_MyAddr {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.MyAddr", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「MyDNS.jp」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_MyDnsJp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.MyDnsJp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具「Myra」DNS 读写权限的专用 API Key / Secret；不要使用账号主密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Myra {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Myra", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「MythicBeasts」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_MythicBeasts {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.MythicBeasts", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Name.com」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NameDotCom {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NameDotCom", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Namesilo」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NameSilo {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NameSilo", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「NearlyFreeSpeech.NET」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NearlyFreeSpeech {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NearlyFreeSpeech", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「NederHost」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NederHost {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NederHost", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Neodigit」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Neodigit {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Neodigit", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Netlify」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Netlify {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Netlify", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Netnod」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Netnod {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Netnod", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「NexDNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NexDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NexDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Ngenix」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Ngenix {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Ngenix", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Nicmanager」DNS 管理的专用 API 用户，并限制 API 访问的来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Nicmanager {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Nicmanager", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「NIFCloud」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_NifCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.NifCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Njalla」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Njalla {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Njalla", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Nodion」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Nodion {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Nodion", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Octenium」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Octenium {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Octenium", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「omg.lol」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_OmgLol {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OmgLol", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Online.net」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_OnlineNet {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OnlineNet", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Open Telekom Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_OpenTelekomCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OpenTelekomCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Openprovider」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Openprovider {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Openprovider", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「OpusDNS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_OpusDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.OpusDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「plesk.com」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Plesk {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Plesk", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「PointDNS/PointHQ」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_PointDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.PointDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Poweradmin」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_PowerAdmin {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.PowerAdmin", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Rage4」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Rage4 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Rage4", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Rain Yun/雨云」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_RainYun {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.RainYun", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「RcodeZero」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_RcodeZero {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.RcodeZero", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「reg.ru」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_RegRu {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.RegRu", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Regfish」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Regfish {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Regfish", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「RimuHosting」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_RimuHosting {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.RimuHosting", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「RU CENTER」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_RuCenter {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.RuCenter", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Sakura Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_SakuraCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.SakuraCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Scaleway」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Scaleway {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Scaleway", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「ScanNet」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_ScanNet {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ScanNet", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Selectel」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Selectel {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Selectel", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Selectel v2」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_SelectelV2 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.SelectelV2", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「SelfHost.(de|eu)」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_SelfHostDe {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.SelfHostDe", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Servercow」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Servercow {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Servercow", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Shellrent」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Shellrent {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Shellrent", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Simply.com」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Simply {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Simply", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Sonic」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Sonic {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Sonic", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅具「Spaceship」DNS 读写权限的专用 API Key / Secret；不要使用账号主密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Spaceship {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Spaceship", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为每个域名单独生成密码 / 令牌并按最小权限限制更新范围（如「Syse」的凭据对），不要多处复用同一密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Syse {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Syse", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「Technitium」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_Technitium {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Technitium", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Tele3」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Tele3 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Tele3", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「Tencent EdgeOne」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_EdgeOne {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.EdgeOne", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Timeweb Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_TimewebCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.TimewebCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「TodayNIC/时代互联」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_TodayNic {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.TodayNic", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「UCloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_UCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.UCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Ultradns」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_UltraDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.UltraDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「United-Domains」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_UnitedDomains {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.UnitedDomains", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Variomedia」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Variomedia {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Variomedia", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Veesp」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Veesp {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Veesp", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「VegaDNS」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_VegaDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.VegaDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Vercel」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Vercel {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Vercel", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「Versio.[nl|eu|uk]」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_Versio {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Versio", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 自建 / 私有服务：建议为「VinylDNS」创建专用 API 账号，并限制 API 访问的来源 IP；不要使用服务器 root 或管理员凭据。.
+        /// </summary>
+        public static string Text_Dns_Permission_VinylDns {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.VinylDns", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Virtualname」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Virtualname {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Virtualname", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「VK Cloud」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_VkCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.VkCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建专用子账号的 AccessKey，仅授予「Volcano Engine/火山引擎」DNS 记录管理权限；不要使用主账号密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_VolcEngine {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.VolcEngine", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Vscale」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Vscale {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Vscale", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Wannafind」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Wannafind {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Wannafind", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Webglobe」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Webglobe {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Webglobe", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「webnames.ca」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_WebNamesCa {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.WebNamesCa", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「webnames.ru」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_WebNamesRu {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.WebNamesRu", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Websupport」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Websupport {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Websupport", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「WEDOS」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Wedos {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Wedos", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅用于「West.cn/西部数码」DNS 管理的专用账号，或在账号中开启 API 访问并限制来源 IP；不要使用主账号。.
+        /// </summary>
+        public static string Text_Dns_Permission_WestCn {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.WestCn", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Xinnet」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Xinnet {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Xinnet", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议创建仅含「Yandex 360」DNS 管理权限的 OAuth 令牌；不要使用账号密码。.
+        /// </summary>
+        public static string Text_Dns_Permission_Yandex360 {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Yandex360", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Yandex Cloud」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_YandexCloud {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.YandexCloud", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「Zilore」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Zilore {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Zilore", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Zone.ee」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_ZoneEe {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ZoneEe", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议为「ZoneEdit」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_ZoneEdit {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.ZoneEdit", resourceCulture);
+            }
+        }
+        
+
+        /// <summary>
+        ///   Looks up a localized string similar to 建议在「Zonomi」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。.
+        /// </summary>
+        public static string Text_Dns_Permission_Zonomi {
+            get {
+                return ResourceManager.GetString("Text.Dns.Permission.Zonomi", resourceCulture);
+            }
+        }
+        
     }
 }

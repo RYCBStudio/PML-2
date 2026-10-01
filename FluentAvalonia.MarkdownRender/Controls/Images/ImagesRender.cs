@@ -16,7 +16,7 @@ using Size = Avalonia.Size;
 using SKPath = SkiaSharp.SKPath;
 using SKPoint = SkiaSharp.SKPoint;
 
-namespace MarkdownAIRender.Controls.Images;
+namespace FluentAvalonia.MarkdownRender.Controls.Images;
 
 public class ImagesRender : UserControl
 {

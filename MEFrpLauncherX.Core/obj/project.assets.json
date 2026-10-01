@@ -1258,7 +1258,7 @@
           }
         }
       },
-      "MarkdownAIRender/1.0.0": {
+      "FluentAvalonia.MarkdownRender/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
@@ -1277,10 +1277,10 @@
           "TextMateSharp.Grammars": "2.0.4"
         },
         "compile": {
-          "bin/placeholder/MarkdownAIRender.dll": {}
+          "bin/placeholder/FluentAvalonia.MarkdownRender.dll": {}
         },
         "runtime": {
-          "bin/placeholder/MarkdownAIRender.dll": {}
+          "bin/placeholder/FluentAvalonia.MarkdownRender.dll": {}
         }
       },
       "Notify.NET/1.0.0": {
@@ -3115,10 +3115,10 @@
         "yamldotnet.nuspec"
       ]
     },
-    "MarkdownAIRender/1.0.0": {
+    "FluentAvalonia.MarkdownRender/1.0.0": {
       "type": "project",
-      "path": "../MarkdownAIRender/MarkdownAIRender.csproj",
-      "msbuildProject": "../MarkdownAIRender/MarkdownAIRender.csproj"
+      "path": "../FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender.csproj",
+      "msbuildProject": "../FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender.csproj"
     },
     "Notify.NET/1.0.0": {
       "type": "project",
@@ -3132,9 +3132,9 @@
       "Avalonia.AvaloniaEdit >= 11.4.1",
       "Downloader >= 5.9.5",
       "FeatherQR.SkiaSharp >= 2.0.0-preview.2",
+      "FluentAvalonia.MarkdownRender >= 1.0.0",
       "FluentAvaloniaUI >= 2.5.1",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.0.5",
-      "MarkdownAIRender >= 1.0.0",
       "Message.Avalonia >= 1.1.0",
       "MessageBox.Avalonia >= 3.3.1.1",
       "Microsoft.International.Converters.PinYinConverter >= 1.0.0",
@@ -3188,8 +3188,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj": {
-              "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MarkdownAIRender\\MarkdownAIRender.csproj"
+            "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
+              "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj"
             },
             "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj"

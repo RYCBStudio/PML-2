@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace MarkdownAIRender.i18n;
+namespace FluentAvalonia.MarkdownRender.i18n;
 
 /// <summary>
 ///     轻量级多语言字符串（zh-CN 默认 / en-US / zh-Hant），按当前 UI 区域性取值

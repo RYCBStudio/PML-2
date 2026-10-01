@@ -224,7 +224,7 @@ public class MainPageFrameViewModel : ViewModelBase
 
     private ReactiveCommand<Unit, Unit> CreateNavigationCommand(string pageName, Func<UserControl> pageFactory)
     {
-        return ReactiveCommand.Create(() =>
+        var command = ReactiveCommand.Create(() =>
         {
             CurrentPage = null;
             try
@@ -239,10 +239,23 @@ public class MainPageFrameViewModel : ViewModelBase
                     ["page"] = pageName
                 });
             }
+            catch (Exception ex)
+            {
+                // 页面构造失败时以前会静默吞掉异常，表现为「整页空白/消失」且无任何日志。
+                // 这里显式记录，保证任何平台（含 AOT 裁剪）都能定位到根因。
+                Core.App.CurrentLogger?.Error(ex, $"导航到页面 '{pageName}' 失败，页面将保持空白");
+            }
             finally
             {
                 IsLoading = false;
             }
         });
+
+        // ReactiveCommand 会把命令体抛出的异常转到 ThrownExceptions（默认无人订阅 => 静默），
+        // 订阅后同样落盘，避免以后再次出现「页面无声消失」。
+        command.ThrownExceptions.Subscribe(ex =>
+            Core.App.CurrentLogger?.Error(ex, $"导航命令 '{pageName}' 执行失败"));
+
+        return command;
     }
 }

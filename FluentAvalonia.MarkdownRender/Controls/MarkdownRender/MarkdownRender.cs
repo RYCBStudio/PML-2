@@ -11,14 +11,15 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Markdig;
 using Markdig.Extensions.Alerts;
+using Markdig.Extensions.Tables;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
-using MarkdownAIRender.Controls.Images;
-using MarkdownAIRender.i18n;
+using FluentAvalonia.MarkdownRender.Controls.Images;
+using FluentAvalonia.MarkdownRender.i18n;
 using TextMateSharp.Grammars;
 using Inline = Avalonia.Controls.Documents.Inline;
 
-namespace MarkdownAIRender.Controls.MarkdownRender;
+namespace FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 
 public partial class MarkdownRender : ContentControl, INotifyPropertyChanged
 {
@@ -368,6 +369,7 @@ public partial class MarkdownRender : ContentControl, INotifyPropertyChanged
             ListBlock listBlock => CreateList(listBlock),
             AlertBlock alertBlock => HtmlBlockRenderer.RenderAlertBlock(alertBlock) ?? CreateQuote(alertBlock),
             QuoteBlock quoteBlock => CreateQuote(quoteBlock),
+            Table table => CreateTable(table),
             HtmlBlock htmlBlock => HtmlBlockRenderer.RenderHtmlBlock(htmlBlock) ?? new SelectableTextBlock
             {
                 IsEnabled = true,
@@ -636,6 +638,184 @@ public partial class MarkdownRender : ContentControl, INotifyPropertyChanged
 
         return border;
     }
+
+    /// <summary>
+    ///     将 Markdig 的表格块（GFM 管道表 / 网格表）渲染为 Avalonia 的 Grid。
+    ///     支持表头行、列对齐（左 / 中 / 右）、单元格内联样式以及列合并（ColumnSpan）。
+    /// </summary>
+    private Control CreateTable(Table table)
+    {
+        var rows = table.OfType<TableRow>().ToList();
+        var columnCount = GetTableColumnCount(table, rows);
+
+        // 无法解析出列数：退化为纯文本，避免出现空白的 Grid
+        if (columnCount <= 0)
+        {
+            return new SelectableTextBlock
+            {
+                IsEnabled = true,
+                Classes = { "markdown" },
+                Margin = new Thickness(0),
+                Background = Brushes.Transparent,
+                TextWrapping = TextWrapping.Wrap,
+                Text = table.ToString()
+            };
+        }
+
+        var grid = new Grid { HorizontalAlignment = HorizontalAlignment.Left };
+        for (var i = 0; i < columnCount; i++)
+        {
+            grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+        }
+
+        for (var rowIndex = 0; rowIndex < rows.Count; rowIndex++)
+        {
+            grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+
+            var runningColumn = 0;
+            foreach (var cell in rows[rowIndex].OfType<TableCell>())
+            {
+                // Markdig 仅在部分解析路径下填充 ColumnIndex，未填充时按顺序累加
+                var column = Math.Clamp(cell.ColumnIndex >= 0 ? cell.ColumnIndex : runningColumn, 0, columnCount - 1);
+                runningColumn = column + Math.Max(1, cell.ColumnSpan);
+
+                var cellControl = CreateTableCell(table, cell, rows[rowIndex].IsHeader, column);
+                Grid.SetRow(cellControl, rowIndex);
+                Grid.SetColumn(cellControl, column);
+                Grid.SetColumnSpan(cellControl, Math.Clamp(cell.ColumnSpan, 1, columnCount - column));
+                Grid.SetRowSpan(cellControl, Math.Clamp(cell.RowSpan, 1, rows.Count - rowIndex));
+
+                grid.Children.Add(cellControl);
+            }
+        }
+
+        var tableBorder = new Border
+        {
+            Classes = { MarkdownClassConst.MdTable },
+            Child = grid,
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
+        // 表格过宽时允许横向滚动，避免挤压或裁切正文
+        return new ScrollViewer
+        {
+            Content = tableBorder,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+    }
+
+    /// <summary>
+    ///     根据列定义（或其缺失时的单元格数量）推断表格的列数。
+    /// </summary>
+    private static int GetTableColumnCount(Table table, List<TableRow> rows)
+    {
+        if (table.ColumnDefinitions is { Count: > 0 })
+        {
+            return table.ColumnDefinitions.Count;
+        }
+
+        var maxColumnCount = 0;
+        foreach (var row in rows)
+        {
+            var count = 0;
+            foreach (var cell in row.OfType<TableCell>())
+            {
+                count += Math.Max(1, cell.ColumnSpan);
+            }
+
+            maxColumnCount = Math.Max(maxColumnCount, count);
+        }
+
+        return maxColumnCount;
+    }
+
+    /// <summary>
+    ///     渲染单个表格单元格，并按列定义应用对齐方式。
+    /// </summary>
+    private Control CreateTableCell(Table table, TableCell cell, bool isHeader, int columnIndex)
+    {
+        var alignment = GetColumnAlignment(table, columnIndex);
+
+        var panel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            VerticalAlignment = VerticalAlignment.Top,
+            HorizontalAlignment = alignment switch
+            {
+                TableColumnAlign.Center => HorizontalAlignment.Center,
+                TableColumnAlign.Right => HorizontalAlignment.Right,
+                _ => HorizontalAlignment.Left
+            }
+        };
+
+        foreach (var block in cell)
+        {
+            var control = ConvertBlock(block);
+            if (control == null)
+            {
+                continue;
+            }
+
+            switch (control)
+            {
+                case SelectableTextBlock textBlock:
+                    textBlock.TextWrapping = TextWrapping.Wrap;
+                    textBlock.TextAlignment = ToTextAlignment(alignment);
+                    textBlock.Margin = new Thickness(0);
+                    if (isHeader)
+                    {
+                        textBlock.FontWeight = FontWeight.Bold;
+                    }
+
+                    break;
+                case TextBlock plainTextBlock:
+                    plainTextBlock.TextAlignment = ToTextAlignment(alignment);
+                    if (isHeader)
+                    {
+                        plainTextBlock.FontWeight = FontWeight.Bold;
+                    }
+
+                    break;
+            }
+
+            panel.Children.Add(control);
+        }
+
+        // 空单元格也要占位，保证网格线连续
+        if (panel.Children.Count == 0)
+        {
+            panel.Children.Add(new SelectableTextBlock
+            {
+                Text = string.Empty,
+                TextWrapping = TextWrapping.Wrap,
+                FontWeight = isHeader ? FontWeight.Bold : FontWeight.Normal
+            });
+        }
+
+        return new Border
+        {
+            Classes = { isHeader ? MarkdownClassConst.MdTableHeaderCell : MarkdownClassConst.MdTableCell },
+            Child = panel
+        };
+    }
+
+    private static TableColumnAlign? GetColumnAlignment(Table table, int columnIndex)
+    {
+        if (table.ColumnDefinitions == null || columnIndex < 0 || columnIndex >= table.ColumnDefinitions.Count)
+        {
+            return null;
+        }
+
+        return table.ColumnDefinitions[columnIndex]?.Alignment;
+    }
+
+    private static TextAlignment ToTextAlignment(TableColumnAlign? alignment) => alignment switch
+    {
+        TableColumnAlign.Center => TextAlignment.Center,
+        TableColumnAlign.Right => TextAlignment.Right,
+        _ => TextAlignment.Left
+    };
 
     #endregion
 

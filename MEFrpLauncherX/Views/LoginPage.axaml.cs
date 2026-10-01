@@ -9,7 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using FluentAvalonia.UI.Controls;
-using MarkdownAIRender.Helper;
+using FluentAvalonia.MarkdownRender.Helper;
 using MEFrpLauncherX.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Analysis;

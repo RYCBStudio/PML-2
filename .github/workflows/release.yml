@@ -538,24 +538,37 @@ jobs:
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
-            <key>CFBundleExecutable</key>
-            <string>${EXE}</string>
-            <key>CFBundleIdentifier</key>
-            <string>tech.rycb.pml2</string>
-            <key>CFBundleName</key>
-            <string>PML2</string>
-            <key>CFBundleDisplayName</key>
-            <string>PML 2</string>
-            <key>CFBundlePackageType</key>
-            <string>APPL</string>
-            <key>CFBundleShortVersionString</key>
-            <string>${V}</string>
-            <key>CFBundleVersion</key>
-            <string>${V}</string>
-            <key>LSMinimumSystemVersion</key>
-            <string>12.0</string>
-            <key>NSHighResolutionCapable</key>
-            <true/>
+          <key>CFBundleExecutable</key>
+          <string>${EXE}</string>
+          <key>CFBundleIdentifier</key>
+          <string>tech.rycb.pml2</string>
+          <key>CFBundleName</key>
+          <string>PML2</string>
+          <key>CFBundleDisplayName</key>
+          <string>PML 2</string>
+          <key>CFBundlePackageType</key>
+          <string>APPL</string>
+          <key>CFBundleShortVersionString</key>
+          <string>${V}</string>
+          <key>CFBundleVersion</key>
+          <string>${V}</string>
+          <key>LSMinimumSystemVersion</key>
+          <string>12.0</string>
+          <key>NSHighResolutionCapable</key>
+          <true/>
+          <key>CFBundleURLTypes</key>
+          <array>
+          <dict>
+          <key>CFBundleURLName</key>
+          <string>tech.rycb.pml2</string>
+          <key>CFBundleTypeRole</key>
+          <string>Viewer</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+          <string>pml2</string>
+          </array>
+          </dict>
+          </array>
           ${ICON_KEY}
           </dict>
           </plist>

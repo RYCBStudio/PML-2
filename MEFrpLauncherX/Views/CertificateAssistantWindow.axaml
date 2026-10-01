@@ -31,7 +31,7 @@
                     <controls:SettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_Certificate_Description}">
                         <controls:SettingsExpanderItem.Footer>
-                            <ComboBox x:Name="EnvBox" MinWidth="180" SelectionChanged="EnvChanged">
+                            <ComboBox x:Name="EnvBox" MinWidth="180" SelectedIndex="0" SelectionChanged="EnvChanged">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Env_Staging}" />
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Env_Production}" />
                             </ComboBox>
@@ -74,7 +74,7 @@
                                            IsExpanded="True">
                     <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Mode}">
                         <controls:SettingsExpanderItem.Footer>
-                            <ComboBox x:Name="ModeBox" MinWidth="260" SelectionChanged="ModeChanged">
+                            <ComboBox x:Name="ModeBox" MinWidth="260" SelectedIndex="0" SelectionChanged="ModeChanged">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Mode_DnsAccount}" />
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Mode_Manual}" />
                             </ComboBox>
@@ -110,7 +110,23 @@
                 <!-- 高级选项 -->
                 <Expander Header="{x:Static languages:Languages.Text_Certificate_Advanced}"
                           IsExpanded="False">
-                    <StackPanel Spacing="6">
+                    <StackPanel Spacing="10">
+                        <!-- 26.4：传播等待上限可调，与 lego 的 dns.propagation-timeout 参数同源 -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Certificate_PropagationTimeout}"
+                                       TextWrapping="Wrap" />
+                            <controls:NumberBox x:Name="PropagationTimeoutBox"
+                                                Minimum="60" Maximum="900"
+                                                SmallChange="30" LargeChange="60"
+                                                Value="300"
+                                                SpinButtonPlacementMode="Inline"
+                                                MinWidth="180"
+                                                HorizontalAlignment="Left" />
+                            <TextBlock Text="{x:Static languages:Languages.Text_Certificate_PropagationTimeoutDescription}"
+                                       TextWrapping="Wrap"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                        </StackPanel>
                         <CheckBox x:Name="SkipPropagationCheck"
                                   Content="{x:Static languages:Languages.Text_Certificate_SkipPropagation}" />
                         <TextBlock Text="{x:Static languages:Languages.Text_Certificate_SkipPropagationWarning}"
@@ -118,6 +134,19 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
                     </StackPanel>
                 </Expander>
+
+                <!-- 本地证书（26.4）：列出已签发证书并支持删除 -->
+                <controls:SettingsExpander x:Name="LocalCertExpander"
+                                           Header="{x:Static languages:Languages.Text_Certificate_LocalList}"
+                                           IsExpanded="False">
+                    <StackPanel Spacing="8">
+                        <TextBlock x:Name="LocalCertEmptyText"
+                                   Text="{x:Static languages:Languages.Text_Certificate_Empty}"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                        <StackPanel x:Name="LocalCertList" Spacing="8" />
+                    </StackPanel>
+                </controls:SettingsExpander>
 
                 <!-- 进度 / 挑战信息 -->
                 <controls:SettingsExpander x:Name="ProgressExpander"

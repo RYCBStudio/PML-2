@@ -56,4 +56,7 @@ public static class ApiCacheKeys
 
     /// <summary>单条隧道错误信息（需拼接 flag，如 <c>tpca/errors/E1001</c>）</summary>
     public const string TunnelErrorPrefix = "tpca/errors/";
+
+    /// <summary>GitHub Release 信息（需拼接 tag，如 <c>github/release/v26.4.0-preview1</c>）</summary>
+    public const string GitHubReleasePrefix = "github/release/";
 }

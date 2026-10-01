@@ -54,10 +54,33 @@ MEFrpLauncherX.sln
 │   ├── Messaging/                   # 消息总线
 │   ├── Storage/                     # 安全存储
 │   └── ...
-├── MarkdownAIRender/                # Markdown 渲染
+├── FluentAvalonia.MarkdownRender/   # Markdown 渲染（Fork 自 Markdown.AIRender）
 ├── MEFrpLauncherX.Fonts/            # 字体资源
 ├── RYCB.PML2.Mixin.TerminalHelper/  # 终端辅助
 └── RYCB.PML2.Extensions.MinecraftExtension/  # Minecraft 扩展
+```
+
+### Markdown 渲染组件（FluentAvalonia.MarkdownRender）
+
+`FluentAvalonia.MarkdownRender` 是本仓库自行维护的 Avalonia Markdown 渲染控件，**Fork 自开源项目 [AIDotNet/Markdown.AIRender](https://github.com/AIDotNet/Markdown.AIRender)**（原包名 `Markdown.AIRender` / 原工程名 `MarkdownAIRender`）。
+
+在此基础上，本仓库做了如下修改：
+
+- 工程、包名与命名空间重命名为 `FluentAvalonia.MarkdownRender`
+- 组件 XML 命名空间由 `https://github.com/AIDotNet/Markdown.AIRender` 变更为 `https://github.com/RYCBStudio/FluentAvalonia.MarkdownRender`
+- **新增 GFM 表格（Table）渲染支持**：表头行、列对齐（`:--` / `:-:` / `--:`）、单元格内联样式、列合并（`ColumnSpan`），表格过宽时自动横向滚动
+- 修复链接下划线动画等若干渲染问题
+
+原项目版权与许可（MIT）归原作者所有，具体见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 [PRIVACY_POLICY.md](PRIVACY_POLICY.md)。
+
+> 说明：仓库中的目录名、`x:Name` 等历史标识符命名可能仍保留 `MarkdownRender` 字样，属于内部约定，不影响使用。
+
+在 XAML 中使用：
+
+```xml
+<Window xmlns:mdRender="https://github.com/RYCBStudio/FluentAvalonia.MarkdownRender">
+    <mdRender:MarkdownRender Value="{Binding MarkdownText}" />
+</Window>
 ```
 
 ## 开发环境要求
@@ -157,6 +180,7 @@ A: 查看崩溃日志 `[应用目录]/Logs/Crash/crash_*.log`。
 
 - [Avalonia UI](https://avaloniaui.net/)
 - [FluentAvalonia](https://github.com/amwx/FluentAvalonia)
+- [Markdown.AIRender](https://github.com/AIDotNet/Markdown.AIRender)（本项目 `FluentAvalonia.MarkdownRender` 的上游原仓库）
 - [LiveCharts2](https://github.com/beto-rodriguez/LiveCharts2)
 - [ReactiveUI](https://www.reactiveui.net/)
 - [Sentry](https://sentry.io/)

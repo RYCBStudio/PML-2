@@ -8,6 +8,8 @@ using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.ViewModels;
 using ReactiveUI;
 using RestSharp;
+using SecretLib;
+
 // ReSharper disable InconsistentNaming
 
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
@@ -113,7 +115,7 @@ public static class RYCBApiConverter
         var response = await client.ExecuteAsync(request);
 
         App.CurrentLogger?.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        
+
         if (string.IsNullOrEmpty(response.Content))
         {
             return new FeedbackResponse { Success = false, Message = "Empty Response" };
@@ -179,6 +181,17 @@ public static class RYCBApiConverter
         }, App.AppJsonSerializerContext.EmailBody);
 
         request.AddParameter("application/json", body, ParameterType.RequestBody);
+        request.AddHeader("Authorization", CryptoStringUtils.DecryptString(
+            "RYCB5:" +
+            "AAST4KFNsd69qz-sdrGZf1w-" +
+            "5ydI6kp7-hadMUmB-6H4D2N9VTLTBt" +
+            "GbphqlL7oDTuaQtU-td3x8FQ4Oc9mSlCBrHWyiok1v" +
+            "BgVQxs7yYMef0JgKgWZG1HlmF8yIzJ3PluGY0QaR_TN0va72R52rfwVwt" +
+            "YcAHew1iaONldKYpVKk5Kj3uvtiu4WH1e0lkeaV",
+            "(Q=Rmp83oK0ncY7tG" +
+            "+7bhĳ(qSroCcMdi=0yRn6b98nq" +
+            "x7NeKbrhJaĳlC+ĳbl6gO)&ĳ5ɡCiVmfkqhRqmodf" +
+            "K6yfWwy6byɡĳF8P1Sɡ7ikw$h_&!y%bIayZw%9vf)xmc1oE"));
 
         using var client = CreateClient("send_email");
         var response = await client.ExecuteAsync(request);

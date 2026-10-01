@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+             xmlns:coreControls="clr-namespace:MEFrpLauncherX.Core.Controls;assembly=MEFrpLauncherX.Core"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="520"
+             x:Class="MEFrpLauncherX.Controls.InboxViewer.InboxViewer"
+             x:DataType="viewModels:InboxViewModel">
+    <Design.DataContext>
+        <viewModels:InboxViewModel />
+    </Design.DataContext>
+    <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="4" Spacing="10" MinWidth="460" MaxWidth="600">
+
+            <!-- ===== 系统通知（弹窗公告，整段 markdown） ===== -->
+            <Border Classes="FluentCard" Padding="14,12">
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="6">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                       Theme="{StaticResource BodyStrongTextBlockStyle}"
+                                       Text="{x:Static languages:Languages.Text_AppearanceSettings_SystemNotice}" />
+                            <!-- 有新内容时显示条数徽标（本地缓存快照差集结果） -->
+                            <controls:InfoBadge VerticalAlignment="Center"
+                                                IsVisible="{Binding IsSystemNoticeUpdateAvailable}"
+                                                Value="{Binding NewSystemNoticeCount}" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Theme="{StaticResource SubtleButtonStyle}"
+                                IsEnabled="{Binding CanShowSystemNoticeDetail}"
+                                Command="{Binding ShowSystemNoticeDetailCommand}"
+                                Content="{x:Static languages:Languages.Text_Inbox_ViewDetails}" />
+                    </Grid>
+
+                    <!-- 列表内只展示剥离 markdown 的纯文本摘要（截断），全文在详情对话框中渲染 -->
+                    <TextBlock Grid.Row="1"
+                               IsVisible="{Binding HasSystemNotice}"
+                               Text="{Binding SystemNoticePreview}"
+                               TextWrapping="Wrap"
+                               MaxLines="3"
+                               TextTrimming="CharacterEllipsis"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    <TextBlock Grid.Row="1"
+                               IsVisible="{Binding IsSystemNoticeEmpty}"
+                               Text="{x:Static languages:Languages.Text_Inbox_Empty}"
+                               FontFamily="{StaticResource GlobalFontFamily}"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                </Grid>
+            </Border>
+
+            <!-- ===== 软件公告（RYCB 公告接口，条目列表） ===== -->
+            <Border Classes="FluentCard" Padding="14,12">
+                <Grid RowDefinitions="Auto,*" RowSpacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
+                                   Theme="{StaticResource BodyStrongTextBlockStyle}"
+                                   Text="{x:Static languages:Languages.Text_AppearanceSettings_SoftwareNotice}" />
+                        <controls:InfoBadge VerticalAlignment="Center"
+                                            IsVisible="{Binding IsSoftwareNoticeUpdateAvailable}"
+                                            Value="{Binding NewSoftwareNoticeCount}" />
+                    </StackPanel>
+
+                    <Panel Grid.Row="1">
+                        <!-- 用 ItemsControl 而非 ListBox：本列表位于对话框外层 ScrollViewer 中，
+                             无需内层滚动与选中态；详情由行内「查看详情」按钮触发 -->
+                        <ItemsControl ItemsSource="{Binding SoftwareNotices}"
+                                      IsVisible="{Binding HasSoftwareNotices}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="viewModels:InboxSoftwareNoticeItem">
+                                    <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,8">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="3">
+                                            <!-- 标题 + 新标记 + 日期 + 类型 -->
+                                            <WrapPanel Grid.Row="0" Grid.Column="0" ItemSpacing="8"
+                                                       Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}"
+                                                           FontWeight="SemiBold"
+                                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                                           TextTrimming="CharacterEllipsis" />
+                                                <controls:InfoBadge IsVisible="{Binding IsNew}"
+                                                                    VerticalAlignment="Center"
+                                                                    Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                                                    BorderThickness="-1"
+                                                                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}">
+                                                    <controls:InfoBadge.IconSource>
+                                                        <controls:FontIconSource
+                                                            FontFamily="{StaticResource GlobalFontFamily}"
+                                                            Glyph="{x:Static languages:Languages.Text_Inbox_New}" />
+                                                    </controls:InfoBadge.IconSource>
+                                                </controls:InfoBadge>
+                                                <Label Theme="{StaticResource CaptionTextBlockStyle}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                                       Content="{Binding Date}" />
+                                                <Label Theme="{StaticResource CaptionTextBlockStyle}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                                       Content="{Binding Type, Converter={x:Static coreControls:TypeToReadableChineseConverter.Instance}}" />
+                                            </WrapPanel>
+
+                                            <!-- 纯文本摘要（截断），全文在详情对话框中渲染 -->
+                                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                                       Text="{Binding Preview}"
+                                                       TextWrapping="Wrap"
+                                                       MaxLines="2"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       FontSize="12"
+                                                       FontFamily="{StaticResource GlobalFontFamily}"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+
+                                            <!-- 详情：复用 Core 中 NoticeContent 既有的对话框命令 -->
+                                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Theme="{StaticResource SubtleButtonStyle}"
+                                                    Command="{Binding ShowNoticeCommand}"
+                                                    Content="{x:Static languages:Languages.Text_Inbox_ViewDetails}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock IsVisible="{Binding IsSoftwareNoticeEmpty}"
+                                   Text="{x:Static languages:Languages.Text_Inbox_Empty}"
+                                   FontFamily="{StaticResource GlobalFontFamily}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </Panel>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

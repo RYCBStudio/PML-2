@@ -62,6 +62,7 @@ public class App : Application
             "zh-Hant" => new CultureInfo("zh-Hant"),
             _ => CultureInfo.CurrentCulture
         };
+        CultureInfo.CurrentCulture = Languages.Culture;
         AvaloniaXamlLoader.Load(this);
         AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
         {

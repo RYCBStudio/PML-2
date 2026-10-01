@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-        xmlns:markdownAiRender="https://github.com/AIDotNet/Markdown.AIRender"
+        xmlns:mdRender="https://github.com/RYCBStudio/FluentAvalonia.MarkdownRender"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         mc:Ignorable="d"
         d:DesignWidth="560" d:DesignHeight="520"
@@ -18,7 +18,7 @@
             <TabStripItem Content="{x:Static languages:Languages.Text_WhatsNew_Blog}"/>
             <TabStripItem Content="{x:Static languages:Languages.Text_WhatsNew_Changelog}"/>
         </TabStrip>
-        <markdownAiRender:MarkdownRender Grid.Row="1" x:Name="BlogPresenter"/>
+        <mdRender:MarkdownRender Grid.Row="1" x:Name="BlogPresenter"/>
         <Grid x:Name="ApiGrid" Grid.Row="1" RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
             <!-- 标题区：版本 + 代号 + 日期 -->
             <StackPanel Grid.Row="0" Spacing="4">
@@ -62,7 +62,7 @@
                                                  Margin="0,4,8,0"
                                                  VerticalAlignment="Top"
                                                  Height="5" Width="5" />
-                                        <markdownAiRender:MarkdownRender Value="{Binding}"
+                                        <mdRender:MarkdownRender Value="{Binding}"
                                                                          TextWrapping="Wrap"
                                                                          FontFamily="{StaticResource GlobalFontFamily}" />
                                     </DockPanel>
