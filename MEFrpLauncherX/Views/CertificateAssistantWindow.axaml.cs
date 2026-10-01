@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -221,7 +222,7 @@ public partial class CertificateAssistantWindow : Window
             {
                 ResultText.Text = string.Format(Languages.Text_Certificate_FailedFormat, result.Message);
                 ProgressBar.Foreground =
-                    App.Current.TryGetResource("SystemFillColorCriticalBrush", App.Current.ActualThemeVariant,
+                    Application.Current.TryGetResource("SystemFillColorCriticalBrush", Application.Current.ActualThemeVariant,
                         out var o1)
                         ? o1 as IBrush
                         : null;
@@ -464,7 +465,7 @@ public partial class CertificateAssistantWindow : Window
     /// </summary>
     private Control BuildLocalCertificateRow(CertificateListItem item)
     {
-        var tertiary = (IBrush?)this.FindResource("TextFillColorTertiaryBrush") ?? Brushes.Gray;
+        var tertiary = (IBrush?)Application.Current.FindResource(Application.Current.ActualThemeVariant, "TextFillColorTertiaryBrush") ?? Brushes.Gray;
 
         var info = new StackPanel { Spacing = 2 };
         info.Children.Add(new TextBlock { Text = item.DisplayName, FontWeight = FontWeight.SemiBold });
@@ -487,7 +488,7 @@ public partial class CertificateAssistantWindow : Window
         {
             Text = item.FullChainPath,
             FontSize = 11,
-            TextTrimming = TextTrimming.CharacterEllipsis,
+            TextTrimming = TextTrimming.LeadingCharacterEllipsis,
             Foreground = tertiary
         });
 
@@ -499,7 +500,7 @@ public partial class CertificateAssistantWindow : Window
         };
         delete.Click += DeleteLocalCertificate;
 
-        var row = new Grid { ColumnDefinitions = new ColumnDefinitions("*,Auto") };
+        var row = new Grid { ColumnDefinitions = [with("*,Auto")] };
         Grid.SetColumn(info, 0);
         Grid.SetColumn(delete, 1);
         row.Children.Add(info);

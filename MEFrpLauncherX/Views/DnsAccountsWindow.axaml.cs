@@ -347,8 +347,7 @@ public partial class DnsAccountsWindow : Window
     {
         var panel = new StackPanel()
         {
-            Spacing = 5,
-            Orientation = Orientation.Horizontal
+            Spacing = 5
         };
         panel.Children.Add(new TextBlock()
         {
