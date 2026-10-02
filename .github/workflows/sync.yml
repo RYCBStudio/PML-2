@@ -9,6 +9,19 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve release tag
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG=$(gh release view --json tagName -q .tagName --repo ${{ github.repository }})
+          fi
+          echo "Resolved tag: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
       - name: Install rclone
         run: curl https://rclone.org/install.sh | sudo bash
 
@@ -29,14 +42,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p downloads
-          gh release download ${{ github.event.release.tag_name }} \
+          gh release download "${{ steps.release.outputs.tag }}" \
             --dir downloads \
-            --repo ${{ github.repository }}
+            --repo ${{ github.repository }} \
+            --pattern '*'
 
       - name: Upload to OpenList
         run: |
           rclone copy downloads \
-            "openlist:/mefrp-desktop/ME-Frp PML2/mefrp/${{ github.event.release.tag_name }}" \
+            "openlist:/mefrp-desktop/ME-Frp PML2/mefrp/${{ steps.release.outputs.tag }}" \
             --progress \
             --transfers 4 \
             --checkers 8
