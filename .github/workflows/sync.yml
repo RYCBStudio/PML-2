@@ -29,10 +29,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 99614720 = 99 * 1024 * 1024
+          # 0 = 所有文件都交给 Actions 处理
           LARGE=$(gh release view "${{ steps.release.outputs.tag }}" \
             --json assets \
-            -q '.assets[] | select(.size >= 99614720) | .name' \
+            -q '.assets[] | select(.size >= 0) | .name' \
             --repo ${{ github.repository }})
           if [ -z "$LARGE" ]; then
             echo "No large assets found. Nothing to do."
