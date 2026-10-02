@@ -2,13 +2,14 @@ name: Sync Large Release Assets to OpenList
 
 on:
   release:
-    types: [published]
-  workflow_dispatch:
+    types: [published]      # Release 发布时自动触发
+  workflow_dispatch:        # 支持手动触发（调试用）
 
 jobs:
   sync-large:
     runs-on: ubuntu-latest
     steps:
+      # ---------- 1. 解析 Release tag ----------
       - name: Resolve release tag
         id: release
         env:
@@ -22,12 +23,13 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "Resolved tag: $TAG"
 
+      # ---------- 2. 筛选大文件（>= 99MB，与 Worker 阈值一致） ----------
       - name: Find large assets (>= 99MB)
         id: large
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 99614720 = 99 * 1024 * 1024，与 Worker 阈值保持一致
+          # 99614720 = 99 * 1024 * 1024
           LARGE=$(gh release view "${{ steps.release.outputs.tag }}" \
             --json assets \
             -q '.assets[] | select(.size >= 99614720) | .name' \
@@ -42,6 +44,7 @@ jobs:
             printf '%s\n' "$LARGE" > /tmp/large_assets.txt
           fi
 
+      # ---------- 3. 下载大文件 ----------
       - name: Download large assets
         if: steps.large.outputs.found == 'true'
         env:
@@ -57,6 +60,7 @@ jobs:
               --repo ${{ github.repository }}
           done < /tmp/large_assets.txt
 
+      # ---------- 4. 上传到 OpenList ----------
       - name: Upload to OpenList via API
         if: steps.large.outputs.found == 'true'
         env:
@@ -67,21 +71,35 @@ jobs:
           TAG: ${{ steps.release.outputs.tag }}
         run: |
           python3 << 'PYEOF'
-          import os
-          import re
-          import sys
-          import json
-          import urllib.request
-          import urllib.parse
+          import os, re, sys, json, urllib.request, urllib.parse
 
-          # ---- 读取环境变量 ----
           url = os.environ['OPENLIST_URL']
           username = os.environ['OPENLIST_USERNAME']
           password = os.environ['OPENLIST_PASSWORD']
           base_path = os.environ['OPENLIST_PATH']
           tag = os.environ['TAG']
 
-          # ---- 1. 登录获取 JWT token ----
+          # ---- 文件名还原（与 Worker 保持一致） ----
+          EXT_REGEX = re.compile(
+              r'\.(tar\.gz|tar\.xz|tar\.bz2|tar\.zst|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
+              re.I
+          )
+          VER_REGEX = re.compile(r'\d+\.\d+\.\d+(?:\.\d+)?')
+
+          def restore_spaces(name):
+              m = EXT_REGEX.search(name)
+              ext = m.group(0) if m else ''
+              base = name[:-len(ext)] if ext else name
+              versions = []
+              def protect(match):
+                  versions.append(match.group(0))
+                  return f'\x00V{len(versions)-1}\x00'
+              base = VER_REGEX.sub(protect, base)
+              base = base.replace('.', ' ')
+              base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
+              return base + ext
+
+          # ---- 1. 登录 OpenList 获取 JWT ----
           print('Logging in to OpenList...')
           login_data = json.dumps({'username': username, 'password': password}).encode()
           req = urllib.request.Request(
@@ -98,43 +116,24 @@ jobs:
               sys.exit(1)
           print('✅ Login successful.')
 
-          # ---- 2. 文件名还原（与 Worker 逻辑一致） ----
-          EXT_REGEX = re.compile(
-              r'\.(tar\.gz|tar\.xz|tar\.bz2|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
-              re.I
+          # ---- 2. 收集待上传文件 ----
+          files = sorted(
+              f for f in os.listdir('downloads')
+              if os.path.isfile(os.path.join('downloads', f))
           )
-          VER_REGEX = re.compile(r'\d+\.\d+\.\d+(?:\.\d+)?')
-
-          def restore_spaces(name: str) -> str:
-              """还原 GitHub 把空格替换成点的文件名。"""
-              m = EXT_REGEX.search(name)
-              ext = m.group(0) if m else ''
-              base = name[:-len(ext)] if ext else name
-
-              versions = []
-              def protect(match):
-                  versions.append(match.group(0))
-                  return f'\x00V{len(versions)-1}\x00'
-
-              base = VER_REGEX.sub(protect, base)
-              base = base.replace('.', ' ')
-              base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
-
-              return base + ext
-
-          # ---- 3. 上传 ----
-          files = sorted(f for f in os.listdir('downloads') if os.path.isfile(os.path.join('downloads', f)))
           if not files:
               print('No files to upload.')
               sys.exit(0)
 
+          # ---- 3. 逐个上传 ----
+          success = 0
           for filename in files:
               filepath = os.path.join('downloads', filename)
               restored = restore_spaces(filename)
               target = f'{base_path}/{tag}/{restored}'
               encoded_target = urllib.parse.quote(target, safe='')
-
               size_mb = os.path.getsize(filepath) / 1024 / 1024
+
               print(f'\n📤 Uploading: {filename}')
               print(f'   → Restored: {restored}')
               print(f'   → Target:   {target}')
@@ -165,7 +164,25 @@ jobs:
               if result.get('code') != 200:
                   print(f'❌ OpenList error: {result}')
                   sys.exit(1)
-              print(f'✅ Done: {restored}')
 
-          print(f'\n🎉 All large assets synced to: {base_path}/{tag}/')
+              print(f'✅ Done: {restored}')
+              success += 1
+
+          print(f'\n🎉 {success}/{len(files)} large assets synced to: {base_path}/{tag}/')
           PYEOF
+
+      # ---------- 5. 触发 Worker 更新 files.json ----------
+      - name: Trigger Worker to update files.json
+        if: steps.large.outputs.found == 'true'
+        run: |
+          echo "Triggering Worker sync for files.json..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://gh-sync.rycb.tech/api/trigger")
+          HTTP_CODE=$(echo "$RESP" | tail -n1)
+          BODY=$(echo "$RESP" | head -n-1)
+          echo "Response: $BODY"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "⚠️ Worker trigger returned HTTP $HTTP_CODE (non-fatal)"
+          else
+            echo "✅ Worker triggered successfully — files.json will be updated shortly."
+          fi
