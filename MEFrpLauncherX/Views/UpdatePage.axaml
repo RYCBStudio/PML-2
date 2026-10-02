@@ -70,7 +70,8 @@
                                      Value="{Binding ProgressValue}"
                                      IsIndeterminate="{Binding IsIdle}" />
                     </DockPanel>
-                    <TabControl ClipToBounds="False" Padding="0" Margin="0" Classes="compact">
+                    <TabControl ClipToBounds="False" Padding="0" Margin="0" Classes="compact"
+                                PageTransition="{StaticResource TabContentTransition}">
                         <TabItem Header="{x:Static languages:Languages.Text_Update_Changelog}">
                             <DockPanel HorizontalSpacing="5">
                                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10">

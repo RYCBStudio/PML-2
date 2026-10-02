@@ -33,7 +33,8 @@
         <!-- </StackPanel> -->
 
         <!-- Tab Control -->
-        <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact">
+        <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact"
+                    PageTransition="{StaticResource TabContentTransition}">
             <TabItem Header="{x:Static languages:Languages.Text_Terminal_DefaultTab}">
                 <console:TerminalControl x:Name="Terminal" />
             </TabItem>

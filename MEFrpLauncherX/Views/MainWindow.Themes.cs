@@ -18,49 +18,95 @@ public partial class MainWindow
 {
     private CancellationTokenSource _accentAnimationCts;
 
+    /// <summary>本帧待应用的最新强调色（可能已被后续插值覆盖）。</summary>
+    private Color? _pendingAccentColor;
+
+    /// <summary>是否已有一帧合并后的更新排队，防止同一帧内重复触发主题重算。</summary>
+    private bool _accentUpdateScheduled;
+
     private async Task AnimateAccentColorAsync(List<AccentMeta> colors, CancellationToken cancellationToken = default)
     {
-        while (!cancellationToken.IsCancellationRequested)
+        if (colors is null || colors.Count == 0)
         {
-            for (var i = 0; i < colors.Count; i++)
+            return;
+        }
+
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
             {
-                var currentColorMeta = colors[i];
-                var nextColorMeta = colors[(i + 1) % colors.Count];
-
-                if (!Color.TryParse(currentColorMeta.Color, out var startColor) ||
-                    !Color.TryParse(nextColorMeta.Color, out var endColor))
+                for (var i = 0; i < colors.Count; i++)
                 {
-                    continue;
-                }
+                    var currentColorMeta = colors[i];
+                    var nextColorMeta = colors[(i + 1) % colors.Count];
 
-                var duration = TimeSpan.FromSeconds(currentColorMeta.Duration);
-                var startTime = DateTime.Now;
-                var elapsed = TimeSpan.Zero;
-
-                while (elapsed < duration && !cancellationToken.IsCancellationRequested)
-                {
-                    var t = elapsed.TotalMilliseconds / duration.TotalMilliseconds;
-                    var interpolatedColor = InterpolateColor(startColor, endColor, t);
-
-                    Dispatcher.UIThread.Post(() =>
+                    if (!Color.TryParse(currentColorMeta.Color, out var startColor) ||
+                        !Color.TryParse(nextColorMeta.Color, out var endColor))
                     {
-                        App.FATheme?.CustomAccentColor = interpolatedColor;
-                    });
+                        continue;
+                    }
 
-                    await Task.Delay(16, cancellationToken); // ~60fps (1000ms/60 ≈ 16.67ms)
-                    elapsed = DateTime.Now - startTime;
-                }
+                    var duration = TimeSpan.FromSeconds(currentColorMeta.Duration);
+                    var startTime = DateTime.Now;
 
-                // 确保最终颜色精确
-                if (!cancellationToken.IsCancellationRequested)
-                {
-                    Dispatcher.UIThread.Post(() =>
+                    // 修复：原实现是「先计算、再 await 16ms、再重新取时间」，
+                    // 而 Dispatcher.Post + 插值本身也要耗时，导致每帧实际间隔 ≈ 16ms + 计算耗时，
+                    // 动画整体比 Duration 声明的时间更长。现在时间基准只取自 startTime，
+                    // 并把「是否结束」作为循环条件，误差不再累积。
+                    while (!cancellationToken.IsCancellationRequested)
                     {
-                        App.FATheme?.CustomAccentColor = endColor;
-                    });
+                        var t = (DateTime.Now - startTime).TotalMilliseconds / duration.TotalMilliseconds;
+                        if (t >= 1)
+                        {
+                            break;
+                        }
+
+                        QueueAccentColor(InterpolateColor(startColor, endColor, t));
+
+                        await Task.Delay(16, cancellationToken);
+                    }
+
+                    // 确保最终颜色精确
+                    QueueAccentColor(endColor);
                 }
             }
         }
+        catch (OperationCanceledException)
+        {
+            // 主题切换或窗口关闭时的正常取消路径，无需处理
+        }
+    }
+
+    /// <summary>
+    ///     把插值后的强调色排入 UI 线程，并保证同一帧内最多只应用一次。
+    /// </summary>
+    /// <remarks>
+    ///     FluentAvaloniaTheme.CustomAccentColor 的 setter 在值变化时会调用 LoadCustomAccentColor()，
+    ///     进而 UpdateAccentColors() 移除并重建包含 7 个 SystemAccentColor* 键的 ResourceDictionary，
+    ///     再 Add/Remove 到 Resources.MergedDictionaries —— 这会让整棵可视树的 DynamicResource
+    ///     全部失效并重新解析。原实现每个插值步都直接 Post 一次，60fps 下等于每秒 60 次全量主题失效。
+    ///     现在改为「只保留最新颜色 + 每帧最多应用一次」，把开销从 O(60/秒) 降到 O(1/帧)。
+    /// </remarks>
+    private void QueueAccentColor(Color color)
+    {
+        _pendingAccentColor = color;
+
+        if (_accentUpdateScheduled)
+        {
+            return;
+        }
+
+        _accentUpdateScheduled = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            _accentUpdateScheduled = false;
+
+            var pending = _pendingAccentColor;
+            if (pending.HasValue)
+            {
+                App.FATheme?.CustomAccentColor = pending.Value;
+            }
+        });
     }
 
     private Color InterpolateColor(Color start, Color end, double t)

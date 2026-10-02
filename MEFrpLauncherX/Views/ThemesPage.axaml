@@ -16,7 +16,7 @@
     <StackPanel Margin="10" Spacing="10" Classes="animated-intro">
         <TextBlock Theme="{StaticResource TitleTextBlockStyle}" Text="{x:Static languages:Languages.Text_Themes_Title}" />
 
-        <TabControl Classes="compact">
+        <TabControl Classes="compact" PageTransition="{StaticResource TabContentTransition}">
             <TabItem Header="{x:Static languages:Languages.Text_Themes_LocalThemes}">
                 <Grid RowDefinitions="Auto, *">
                     <controls:FACommandBar DefaultLabelPosition="Right" Classes="animated">

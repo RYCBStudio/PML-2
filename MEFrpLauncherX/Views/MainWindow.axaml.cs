@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
@@ -42,8 +43,6 @@ namespace MEFrpLauncherX.Views;
 
 public partial class MainWindow : FAAppWindow, IDisposable
 {
-    private DispatcherTimer _accentColorRotator;
-
     private CancellationTokenSource _clearMessageCts;
     private TrayIcon _notifyIcon;
     private bool _backgroundApplied;
@@ -142,7 +141,88 @@ public partial class MainWindow : FAAppWindow, IDisposable
             Focus();
             Activate();
         };
+
+        #region 帧率诊断叠加层（仅 DEBUG）
+
+        // 在窗口左上角实时显示 FPS + 布局耗时图 + 渲染耗时图，用于定位掉帧瓶颈：
+        //   - FPS 曲线掉到基线以下 → 整体帧率不足
+        //   - LayoutTimeGraph 尖峰    → 布局计算是瓶颈（避免动画 Width/Height/Margin）
+        //   - RenderTimeGraph 尖峰    → 绘制是瓶颈（阴影/模糊/大图缩放）
+        // 刻意不启用 DirtyRects：CompositionTargetOverlays.RequireLayer 在该标志下
+        // 会额外引入一层合成层，本身就会改变被观测对象的行为。
+        //
+        // 默认关闭：叠加层本身每帧都要绘制文字与曲线，会轻微影响被测对象。
+        // 需要测量时设置环境变量 PML2_RENDER_DIAG=1（或 fps/layout/render/dirty 组合）再启动。
+#if DEBUG
+        RendererDiagnostics.DebugOverlays = ResolveDebugOverlays();
+#endif
+
+        #endregion
+
         Instance = this;
+    }
+
+#if DEBUG
+    /// <summary>
+    ///     解析 PML2_RENDER_DIAG 环境变量，决定启用哪些渲染诊断叠加层。
+    /// </summary>
+    /// <remarks>
+    ///     取值示例：<c>1</c> / <c>all</c> / <c>fps,render</c>。未设置时返回 <see cref="RendererDebugOverlays.None" />。
+    ///     支持：fps、layout、render、dirty（dirty 会引入额外合成层，仅用于排查脏矩形问题）。
+    /// </remarks>
+    private static RendererDebugOverlays ResolveDebugOverlays()
+    {
+        var raw = Environment.GetEnvironmentVariable("PML2_RENDER_DIAG");
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return RendererDebugOverlays.None;
+        }
+
+        if (raw.Trim() is "1" or "all")
+        {
+            // 注意：RendererDebugOverlays 没有定义 All 成员，必须显式组合。
+            return RendererDebugOverlays.Fps
+                   | RendererDebugOverlays.LayoutTimeGraph
+                   | RendererDebugOverlays.RenderTimeGraph
+                   | RendererDebugOverlays.DirtyRects;
+        }
+
+        var result = RendererDebugOverlays.None;
+        foreach (var part in raw.Split([',', ';', ' '], StringSplitOptions.RemoveEmptyEntries))
+        {
+            result |= part.Trim().ToLowerInvariant() switch
+            {
+                "fps" => RendererDebugOverlays.Fps,
+                "layout" => RendererDebugOverlays.LayoutTimeGraph,
+                "render" => RendererDebugOverlays.RenderTimeGraph,
+                "dirty" => RendererDebugOverlays.DirtyRects,
+                _ => RendererDebugOverlays.None
+            };
+        }
+
+        return result;
+    }
+#endif
+
+    /// <summary>
+    ///     为用作窗口背景的 <see cref="Image" /> 指定位图采样模式。
+    /// </summary>
+    /// <remarks>
+    ///     背景图是整窗缩放的：默认的 <c>BitmapInterpolationMode.Unspecified</c> 与
+    ///     <c>HighQuality</c> 在上采样时都会走三次重采样（HighQuality → SKCubicResampler.Mitchell，
+    ///     见 Avalonia.Skia 的 BitmapInterpolationMode.ToSKSamplingOptions），
+    ///     内置 splash.png 为 1706x1066，在 2560 宽的窗口下每帧都要做一次 260 万像素的三次插值。
+    ///     <para>
+    ///         该属性在 Avalonia 中没有对应的 CLR 属性（只有 Get/SetBitmapInterpolationMode 方法），
+    ///         因此无法写在 XAML 里，只能在此处用代码设置。
+    ///     </para>
+    /// </remarks>
+    private static void SetBackgroundSampling(Image? image, BitmapInterpolationMode mode)
+    {
+        if (image is not null)
+        {
+            RenderOptions.SetBitmapInterpolationMode(image, mode);
+        }
     }
 
     private void CleanupFluentSplash()
@@ -301,6 +381,16 @@ public partial class MainWindow : FAAppWindow, IDisposable
         }
 
         MainLayer.Opacity = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity;
+
+        // 背景图每帧都要整窗缩放绘制：
+        //   - MainBackground 是用户/主题指定的背景（可能是一张远超窗口尺寸的大图）
+        //   - LoginBackground 是内置 splash.png（1706x1066），位于 ZIndex=-1，
+        //     仅当 MainLayer.Opacity < 1（用户把「图层不透明度」调低）时才会透出来
+        // 默认的 HighQuality 在上采样时会使用 Mitchell 三次重采样，故显式降为双线性。
+        // 若把 LayerOpacity 保持为 1，LoginBackground 会被不透明的 MainLayer 完全遮挡，
+        // 此时可以直接删掉 XAML 里 LoginBackground 的 Source 以省下一次 3MB 图片解码。
+        SetBackgroundSampling(MainBackground, BitmapInterpolationMode.MediumQuality);
+        SetBackgroundSampling(LoginBackground, BitmapInterpolationMode.MediumQuality);
 
         if (OperatingSystem.IsLinux() || (Environment.OSVersion.Version.Build <= 22000 &&
                                           ConfigManager.CurrentConfig.Skin.ToUpper(0) == "Mica"
@@ -580,6 +670,7 @@ public partial class MainWindow : FAAppWindow, IDisposable
             Background = null;
             MainBackground.Source = bitmap;
             MainBackground.Stretch = stretch;
+            SetBackgroundSampling(MainBackground, BitmapInterpolationMode.MediumQuality);
             MainBackground.Show();
         }
     }

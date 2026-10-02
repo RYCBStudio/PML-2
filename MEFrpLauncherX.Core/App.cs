@@ -12,7 +12,7 @@ namespace MEFrpLauncherX.Core;
 
 public sealed class App : IDisposable
 {
-    public const string Version = "26.4.0";
+    public const string Version = "26.5.0";
     public const string MEFrpVersion = "0.67.1_20260626_af59eefd";
 
     public static string Flag = "Desktop";

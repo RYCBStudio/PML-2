@@ -32,7 +32,7 @@
         </Style>
     </UserControl.Styles>
 
-    <TabControl Classes="compact">
+    <TabControl Classes="compact" PageTransition="{StaticResource TabContentTransition}">
         <TabItem Classes="compact">
             <TabItem.Header>
                 <controls1:IconContent Symbol="Folder" Label="{x:Static languages:Languages.Text_PluginList_LocalPlugins}" />
@@ -73,7 +73,7 @@
                     <controls:FACommandBar.PrimaryCommands>
                         <controls:FACommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_NewPlugin}"
                                                    Command="{Binding NewPluginCommand}" />
-                        <controls:FACommandBarButton IconSource="Install" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
+                        <controls:FACommandBarButton IconSource="CloudDownload" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
                                                    Command="{Binding InstallPluginCommand}" />
                         <controls:FACommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                    Command="{Binding ReloadPluginsCommand}" />

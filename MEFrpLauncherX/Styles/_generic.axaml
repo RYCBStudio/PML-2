@@ -31,13 +31,15 @@
     <Style Selector="HeaderedContentControl.FluentCard">
         <Setter Property="Template">
             <ControlTemplate>
+                <!-- 阴影改用 Border.BoxShadow 而不是 DropShadowEffect：
+                     DropShadowEffect 属于像素效果，会把 Border 及其子树光栅化到中间 surface 再应用
+                     ImageFilter，每张卡都因此多出一个合成层；首页/收件箱同时存在 11 张 FluentCard，
+                     叠加「强调色呼吸动画每帧触发全树 DynamicResource 失效」后，这些层会被反复重绘。
+                     BoxShadow 由 Border 在绘制背景时直接画阴影，不产生中间 surface，视觉几乎一致。 -->
                 <Border CornerRadius="8"
                         Margin="8"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-
-                    <Border.Effect>
-                        <DropShadowEffect Color="#1A000000" BlurRadius="8" OffsetX="0" OffsetY="2" />
-                    </Border.Effect>
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BoxShadow="0 2 6 0 #14000000">
                     <Grid RowDefinitions="Auto,*">
                         <!-- 标题栏 -->
                         <Border CornerRadius="8,8,0,0"
@@ -67,9 +69,9 @@
 
     <Style Selector="HeaderedContentControl.FluentCard:pointerover">
         <Setter Property="RenderTransform" Value="scale(1.02)" />
-        <Setter Property="Effect">
-            <DropShadowEffect Color="#1A000000" BlurRadius="8" OffsetX="0" OffsetY="2" />
-        </Setter>
+        <!-- 原先这里再设一次 DropShadowEffect，等于给控件额外加一层合成层；
+             模板内的 Border 阴影始终存在，hover 的视觉反馈由放大 + 该阴影共同提供。
+             若需要 hover 时阴影更重，请改用模板内 Border 的 BoxShadow 差值，而不要叠加 Effect。 -->
         <Style.Animations>
             <Animation Duration="0:0:0.3" Easing="SineEaseInOut">
                 <KeyFrame Cue="100%">

@@ -5,7 +5,8 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:msg="https://github.com/xiyaowong/Message.Avalonia"
              xmlns:primitives="clr-namespace:FluentAvalonia.UI.Controls.Primitives;assembly=FluentAvalonia"
-             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core">
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:styling2="clr-namespace:MEFrpLauncherX.Styling">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Resources>
@@ -15,6 +16,9 @@
             <FontFamily x:Key="GlobalFontFamily">avares://MEFrpLauncherX.Fonts/Fonts#HarmonyOS Sans SC</FontFamily>
             <FontFamily x:Key="IconFont">avares://MEFrpLauncherX.Fonts/Fonts#iconfont</FontFamily>
             <FontFamily x:Key="Jbm">avares://MEFrpLauncherX.Fonts/Fonts#Jetbrains Mono</FontFamily>
+            <!-- 标签页切换过渡（TabControl.PageTransition 与 TabStrip 行为共用同一实例）。
+                 具体时长/缓动/缩放由配置项 AnimationLevel（0=关闭 1=精简 2=标准）在运行时决定。 -->
+            <styling2:TabContentFadeScaleTransition x:Key="TabContentTransition" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Styles/TabStripThemes.axaml" />
                 <ResourceInclude Source="Styles/FAFix.axaml" />

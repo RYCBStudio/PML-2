@@ -689,7 +689,13 @@ internal partial class Program
                 "SOFTWARE" => [Win32RenderingMode.Software],
                 _ =>
                 [
-                    Win32RenderingMode.Vulkan, Win32RenderingMode.AngleEgl, Win32RenderingMode.Wgl,
+                    // AngleEgl 必须排在 Vulkan 之前：
+                    // Win32GlManager.InitializeCore() 中只有 AngleEgl 成功分支会调用
+                    // TryRegisterComposition()，从而注册 WinUIComposition / DirectComposition /
+                    // LowLatencyDxgiSwapChain —— 这些合成模式才提供高刷新率对齐渲染。
+                    // 若 Vulkan 优先成功，composition 永不注册，渲染循环退回
+                    // SleepLoopRenderTimer(60)，并且 LowLatencyRendering 开关完全失效。
+                    Win32RenderingMode.AngleEgl, Win32RenderingMode.Vulkan, Win32RenderingMode.Wgl,
                     Win32RenderingMode.Software
                 ]
             }
