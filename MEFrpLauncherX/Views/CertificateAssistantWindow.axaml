@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +15,7 @@
     <Grid RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
 
         <!-- 说明（始终可见，明确本机处理与 ME Frp 无关） -->
-        <controls:InfoBar Grid.Row="0"
+        <controls:FAInfoBar Grid.Row="0"
                           Severity="Informational"
                           IsClosable="False"
                           IsOpen="True"
@@ -26,20 +26,20 @@
             <StackPanel Spacing="10">
 
                 <!-- 环境选择 -->
-                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Env_Staging}"
+                <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Env_Staging}"
                                            IsExpanded="True">
-                    <controls:SettingsExpanderItem
+                    <controls:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_Certificate_Description}">
-                        <controls:SettingsExpanderItem.Footer>
+                        <controls:FASettingsExpanderItem.Footer>
                             <ComboBox x:Name="EnvBox" MinWidth="180" SelectedIndex="0" SelectionChanged="EnvChanged">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Env_Staging}" />
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Env_Production}" />
                             </ComboBox>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                </controls:SettingsExpander>
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                </controls:FASettingsExpander>
 
-                <controls:InfoBar x:Name="ProductionWarning"
+                <controls:FAInfoBar x:Name="ProductionWarning"
                                   Severity="Warning"
                                   IsClosable="False"
                                   IsOpen="False"
@@ -47,42 +47,42 @@
                                   Message="{x:Static languages:Languages.Text_Certificate_Env_ProductionWarning}" />
 
                 <!-- 域名与邮箱 -->
-                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Domain}"
+                <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Domain}"
                                            IsExpanded="True">
-                    <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Domain}">
-                        <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Domain}">
+                        <controls:FASettingsExpanderItem.Footer>
                             <TextBox x:Name="DomainBox" MinWidth="260"
-                                     Watermark="{x:Static languages:Languages.Text_Certificate_DomainPlaceholder}" />
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_AltNames}">
-                        <controls:SettingsExpanderItem.Footer>
+                                     PlaceholderText="{x:Static languages:Languages.Text_Certificate_DomainPlaceholder}" />
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_AltNames}">
+                        <controls:FASettingsExpanderItem.Footer>
                             <TextBox x:Name="AltNamesBox" MinWidth="260"
-                                     Watermark="{x:Static languages:Languages.Text_Certificate_AltNamesPlaceholder}" />
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Email}">
-                        <controls:SettingsExpanderItem.Footer>
+                                     PlaceholderText="{x:Static languages:Languages.Text_Certificate_AltNamesPlaceholder}" />
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Email}">
+                        <controls:FASettingsExpanderItem.Footer>
                             <TextBox x:Name="EmailBox" MinWidth="260"
-                                     Watermark="{x:Static languages:Languages.Text_Certificate_EmailPlaceholder}" />
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                </controls:SettingsExpander>
+                                     PlaceholderText="{x:Static languages:Languages.Text_Certificate_EmailPlaceholder}" />
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                </controls:FASettingsExpander>
 
                 <!-- 验证方式与 DNS 账户（26.4 阶段 B） -->
-                <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Mode}"
+                <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Certificate_Mode}"
                                            IsExpanded="True">
-                    <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Mode}">
-                        <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Mode}">
+                        <controls:FASettingsExpanderItem.Footer>
                             <ComboBox x:Name="ModeBox" MinWidth="260" SelectedIndex="0" SelectionChanged="ModeChanged">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Mode_DnsAccount}" />
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Certificate_Mode_Manual}" />
                             </ComboBox>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                    <controls:SettingsExpanderItem x:Name="DnsAccountItem"
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                    <controls:FASettingsExpanderItem x:Name="DnsAccountItem"
                                                    Content="{x:Static languages:Languages.Text_Certificate_DnsAccount}">
-                        <controls:SettingsExpanderItem.Footer>
+                        <controls:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <ComboBox x:Name="DnsAccountBox" MinWidth="220">
                                     <ComboBox.ItemTemplate>
@@ -97,11 +97,11 @@
                                 <Button x:Name="ManageDnsButton" Click="ManageDnsAccounts"
                                         Content="{x:Static languages:Languages.Text_Certificate_ManageDnsAccounts}" />
                             </StackPanel>
-                        </controls:SettingsExpanderItem.Footer>
-                    </controls:SettingsExpanderItem>
-                </controls:SettingsExpander>
+                        </controls:FASettingsExpanderItem.Footer>
+                    </controls:FASettingsExpanderItem>
+                </controls:FASettingsExpander>
 
-                <controls:InfoBar x:Name="NoDnsAccountHint"
+                <controls:FAInfoBar x:Name="NoDnsAccountHint"
                                   Severity="Warning"
                                   IsClosable="False"
                                   IsOpen="False"
@@ -115,7 +115,7 @@
                         <StackPanel Spacing="4">
                             <TextBlock Text="{x:Static languages:Languages.Text_Certificate_PropagationTimeout}"
                                        TextWrapping="Wrap" />
-                            <controls:NumberBox x:Name="PropagationTimeoutBox"
+                            <controls:FANumberBox x:Name="PropagationTimeoutBox"
                                                 Minimum="60" Maximum="900"
                                                 SmallChange="30" LargeChange="60"
                                                 Value="300"
@@ -136,7 +136,7 @@
                 </Expander>
 
                 <!-- 本地证书（26.4）：列出已签发证书并支持删除 -->
-                <controls:SettingsExpander x:Name="LocalCertExpander"
+                <controls:FASettingsExpander x:Name="LocalCertExpander"
                                            Header="{x:Static languages:Languages.Text_Certificate_LocalList}"
                                            IsExpanded="False">
                     <StackPanel Spacing="8">
@@ -146,10 +146,10 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
                         <StackPanel x:Name="LocalCertList" Spacing="8" />
                     </StackPanel>
-                </controls:SettingsExpander>
+                </controls:FASettingsExpander>
 
                 <!-- 进度 / 挑战信息 -->
-                <controls:SettingsExpander x:Name="ProgressExpander"
+                <controls:FASettingsExpander x:Name="ProgressExpander"
                                            Header="{x:Static languages:Languages.Text_Certificate_Start}"
                                            IsExpanded="True">
                     <StackPanel Spacing="8">
@@ -195,7 +195,7 @@
                                      FontFamily="{StaticResource Jbm}" />
                         </StackPanel>
                     </StackPanel>
-                </controls:SettingsExpander>
+                </controls:FASettingsExpander>
             </StackPanel>
         </ScrollViewer>
 

@@ -13,7 +13,7 @@ using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class ALPSettingsViewModel : ViewModelBase
+public partial class ALPSettingsViewModel : ViewModelBase
 {
     private bool _isLoadingProxies;
 
@@ -71,13 +71,15 @@ public class ALPSettingsViewModel : ViewModelBase
         get;
     } = [];
 
-    public ObservableCollection<UserProxyViewModel> AllFilteredProxies
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial ObservableCollection<UserProxyViewModel> AllFilteredProxies
     {
         get;
         set;
     } = [];
 
-    public List<UserProxyViewModel> AllProxies
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial List<UserProxyViewModel> AllProxies
     {
         get;
         set;

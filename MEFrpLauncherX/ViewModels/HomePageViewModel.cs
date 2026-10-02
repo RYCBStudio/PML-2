@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Input.Platform;
 using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
@@ -27,6 +28,7 @@ using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using SecretLib;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -52,11 +54,11 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
         IsLoading = LoadDataCommand.IsExecuting
             .ToProperty(this, x => x.IsLoading).Value;
-        LoadDataCommand.ThrownExceptions.Subscribe(ex =>
+        ObservableExtensions.Subscribe(LoadDataCommand.ThrownExceptions, ex =>
         {
             Core.App.CurrentLogger?.Error(ex);
         });
-        SignCommand.ThrownExceptions.Subscribe(ex =>
+        ObservableExtensions.Subscribe(SignCommand.ThrownExceptions, ex =>
         {
             Core.App.CurrentLogger?.Error(ex);
         });
@@ -215,22 +217,22 @@ public class HomePageViewModel : ViewModelBase, IDisposable
     public int InboxBadgeValue => Inbox.NewSystemNoticeCount + Inbox.NewSoftwareNoticeCount;
 
     // 命令
-    public ReactiveCommand<Unit, Unit> SignCommand
+    public ReactiveCommand<RxVoid, RxVoid> SignCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> LoadDataCommand
+    public ReactiveCommand<RxVoid, RxVoid> LoadDataCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> CopyUserIdCommand
+    public ReactiveCommand<RxVoid, RxVoid> CopyUserIdCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> CopyEmailCommand
+    public ReactiveCommand<RxVoid, RxVoid> CopyEmailCommand
     {
         get;
     }
@@ -536,13 +538,13 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         get;
     } = [];
 
-    public ReactiveCommand<Unit, Unit> OpenInboxCommand
+    public ReactiveCommand<RxVoid, RxVoid> OpenInboxCommand
     {
         get;
     }
 
     /// <summary>
-    ///     打开收件箱（26.4）：以 <see cref="ContentDialog" /> 展示 <c>InboxViewer</c>，
+    ///     打开收件箱（26.4）：以 <see cref= FAContentDialog" /> 展示 <c>InboxViewer</c>，
     ///     内容取本页已加载的系统通知与软件公告（不额外发起请求）。
     ///     打开即视为「已读」：关闭后由 <see cref="InboxViewModel.MarkAsRead" /> 写回本地快照，
     ///     使红点在下次加载前保持清零。
@@ -553,7 +555,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         {
             // 内容已由 LoadUserDataAsync 注入（含 fetched 标记），此处不再重新 Load，
             // 避免用「当前为空」的数据覆盖收件箱状态。
-            var dialog = new ContentDialog
+            var dialog = new FAContentDialog
             {
                 Title = Languages.Text_Home_Simple_Inbox,
                 Content = new InboxViewer
@@ -561,7 +563,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     DataContext = Inbox
                 },
                 CloseButtonText = Languages.Text_Global_Close,
-                DefaultButton = ContentDialogButton.Close
+                DefaultButton = FAContentDialogButton.Close
             };
 
             await dialog.ShowAsync();
@@ -1078,20 +1080,20 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
         if (Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
         {
-            var btn = new TaskDialogButton
+            var btn = new FATaskDialogButton
             {
-                DialogResult = TaskDialogStandardResult.Cancel,
+                DialogResult = FATaskDialogStandardResult.Cancel,
                 Text = Languages.Text_Global_Cancel,
                 Command = new RelayCommand(async _ =>
                 {
                 })
             };
             var cnt = "";
-            var td = new TaskDialog
+            var td = new FATaskDialog
             {
                 Title = Languages.Text_Main_Initialize_Title,
                 ShowProgressBar = true,
-                IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Download },
                 SubHeader = Languages.Text_Main_Initialize_Resource,
                 Content = cnt,
                 Buttons =
@@ -1099,14 +1101,14 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     btn
                 }
             };
-            td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+            td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
             td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
             td.ShowAsync();
             if (!Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    td.Hide(TaskDialogStandardResult.Cancel);
+                    td.Hide(FATaskDialogStandardResult.Cancel);
                 });
                 return;
             }
@@ -1117,7 +1119,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 Path.Combine(Core.App.StartupPath, "Tools"),
                 (progress, status) =>
                 {
-                    td.SetProgressBarState(progress, TaskDialogProgressState.Normal);
+                    td.SetProgressBarState(progress, FATaskDialogProgressState.Normal);
                     cnt = status;
                 }));
             var cdFile = Path.Combine(Core.App.StartupPath, "Tools", "RYCB.MEFrpLauncherX.CrashDisplayer");
@@ -1135,7 +1137,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
 
             Dispatcher.UIThread.Post(() =>
             {
-                td.Hide(TaskDialogStandardResult.OK);
+                td.Hide(FATaskDialogStandardResult.OK);
             });
             File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
         }
@@ -1143,20 +1145,20 @@ public class HomePageViewModel : ViewModelBase, IDisposable
         if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache"))
             .Any(x => x.StartsWith("update_tmp")))
         {
-            var btn = new TaskDialogButton
+            var btn = new FATaskDialogButton
             {
-                DialogResult = TaskDialogStandardResult.Cancel,
+                DialogResult = FATaskDialogStandardResult.Cancel,
                 Text = Languages.Text_Global_Cancel,
                 Command = new RelayCommand(async _ =>
                 {
                 })
             };
             var cnt = "";
-            var td = new TaskDialog
+            var td = new FATaskDialog
             {
                 Title = Languages.Text_Main_PostUpdateProcess_Title,
                 ShowProgressBar = true,
-                IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Download },
                 SubHeader = Languages.Text_Main_PostUpdateProcess_Cleaning,
                 Content = cnt,
                 Buttons =
@@ -1164,7 +1166,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     btn
                 }
             };
-            td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+            td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
             td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
             td.ShowAsync();
 
@@ -1176,7 +1178,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             {
                 try
                 {
-                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState
+                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState
                         .Normal);
                     Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue(100, 100);
                 }
@@ -1185,10 +1187,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                     /*Ignore*/
                 }
 
-                td.Hide(TaskDialogStandardResult.OK);
+                td.Hide(FATaskDialogStandardResult.OK);
                 try
                 {
-                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                    Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.None);
                 }
                 catch
                 {

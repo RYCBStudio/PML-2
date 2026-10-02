@@ -5,6 +5,7 @@
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:mdRender="https://github.com/RYCBStudio/FluentAvalonia.MarkdownRender"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        xmlns:behaviors="clr-namespace:MEFrpLauncherX.Behaviours"
         mc:Ignorable="d"
         d:DesignWidth="560" d:DesignHeight="520"
         Width="560" Height="520"
@@ -14,7 +15,8 @@
         x:Class="MEFrpLauncherX.Views.WhatsNewWindow">
     <Grid RowDefinitions="Auto, *, Auto" Margin="5">
         <TabStrip SelectionChanged="SwitchSource" Theme="{StaticResource AlternateTabStripTheme}"
-                  ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}">
+                  ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}"
+                  behaviors:TabStripContentTransitionBehavior.Target="{Binding #ApiGrid}">
             <TabStripItem Content="{x:Static languages:Languages.Text_WhatsNew_Blog}"/>
             <TabStripItem Content="{x:Static languages:Languages.Text_WhatsNew_Changelog}"/>
         </TabStrip>
@@ -41,7 +43,7 @@
                     BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
                 <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Spacing="8">
-                        <controls:ProgressRing x:Name="LoadingRing"
+                        <controls:FAProgressRing x:Name="LoadingRing"
                                                IsIndeterminate="True"
                                                Width="36" Height="36"
                                                HorizontalAlignment="Center"

@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,15 +10,15 @@
              x:DataType="controls1:DomainsEdit">
     <Grid RowDefinitions="Auto, *" RowSpacing="5">
         <Grid ColumnDefinitions="*,Auto, Auto" ColumnSpacing="3" Margin="3">
-            <TextBox Text="{Binding currentDomain}" Watermark="{x:Static languages:Languages.Text_Global_InputValue}" />
+            <TextBox Text="{Binding currentDomain}" PlaceholderText="{x:Static languages:Languages.Text_Global_InputValue}" />
             <Button Grid.Column="1" Click="AddDomain">
                 <Button.Content>
-                    <controls:SymbolIcon Symbol="Add" />
+                    <controls:FASymbolIcon Symbol="Add" />
                 </Button.Content>
             </Button>
             <Button Grid.Column="2" Click="RemoveDomain">
                 <Button.Content>
-                    <controls:SymbolIcon Symbol="Remove" />
+                    <controls:FASymbolIcon Symbol="Remove" />
                 </Button.Content>
             </Button>
         </Grid>

@@ -14,6 +14,7 @@
         "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
+        "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -56,56 +57,123 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.20, )"
+              "version": "[12.1.3, )",
+              "versionCentrallyManaged": true
             },
             "Avalonia.AvaloniaEdit": {
               "target": "Package",
-              "version": "[11.4.1, )"
+              "version": "[12.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Avalonia.Skia": {
               "target": "Package",
-              "version": "[11.3.20, )"
-            },
-            "Avalonia.Svg": {
-              "target": "Package",
-              "version": "[11.3.0, )"
+              "version": "[12.1.3, )",
+              "versionCentrallyManaged": true
             },
             "AvaloniaEdit.TextMate": {
               "target": "Package",
-              "version": "[11.4.1, )"
+              "version": "[12.0.0, )",
+              "versionCentrallyManaged": true
             },
             "FluentAvaloniaUI": {
               "target": "Package",
-              "version": "[2.5.1, )"
+              "version": "[3.1.0, )",
+              "versionCentrallyManaged": true
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.5, )"
+              "version": "[2.1.0-dev-798, )",
+              "versionCentrallyManaged": true
             },
             "Markdig": {
               "target": "Package",
-              "version": "[1.4.0, )"
+              "version": "[1.4.0, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[4.151.2, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[3.119.4, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[3.119.4, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
+            },
+            "Svg.Controls.Skia.Avalonia": {
+              "target": "Package",
+              "version": "[12.0.0.17, )",
+              "versionCentrallyManaged": true
             },
             "TextMateSharp": {
               "target": "Package",
-              "version": "[2.0.4, )"
+              "version": "[2.0.4, )",
+              "versionCentrallyManaged": true
             },
             "TextMateSharp.Grammars": {
               "target": "Package",
-              "version": "[2.0.4, )"
+              "version": "[2.0.4, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "AsyncImageLoader.Avalonia": "4.0.0",
+            "Avalonia": "12.1.3",
+            "Avalonia.AvaloniaEdit": "12.0.0",
+            "Avalonia.Desktop": "12.1.3",
+            "Avalonia.Fonts.Inter": "12.1.3",
+            "Avalonia.Headless": "12.1.3",
+            "Avalonia.Skia": "12.1.3",
+            "Avalonia.Themes.Fluent": "12.1.3",
+            "AvaloniaEdit.TextMate": "12.0.0",
+            "CommunityToolkit.Mvvm": "8.2.1",
+            "DialogHost.Avalonia": "0.12.3",
+            "Downloader": "5.9.5",
+            "FeatherQR.SkiaSharp": "2.0.0-preview.2",
+            "FluentAvaloniaUI": "3.1.0",
+            "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+            "IconPacks.Avalonia.FileIcons": "2.0.0",
+            "IconPacks.Avalonia.Lucide": "2.0.0",
+            "IconPacks.Avalonia.Material": "2.0.0",
+            "IconPacks.Avalonia.SimpleIcons": "2.0.0",
+            "LiveChartsCore.SkiaSharpView.Avalonia": "2.1.0-dev-798",
+            "Markdig": "1.4.0",
+            "Message.Avalonia": "2.0.0",
+            "MessageBox.Avalonia": "12.0.0",
+            "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+            "Microsoft.Extensions.Options": "2.1.0",
+            "Microsoft.International.Converters.PinYinConverter": "1.0.0",
+            "Microsoft.Management.Infrastructure": "3.0.0",
+            "Microsoft.Windows.CsWin32": "0.3.335",
+            "NPinyin.Core": "3.0.0",
+            "Packaging.Targets": "0.1.232",
+            "ReactiveUI": "25.1.1",
+            "ReactiveUI.Avalonia": "12.1.5",
+            "RestSharp": "114.0.0",
+            "Sentry": "6.11.1",
+            "SkiaSharp": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
+            "SkiaSharp.NativeAssets.macOS": "4.151.2",
+            "SkiaSharp.NativeAssets.Win32": "4.151.2",
+            "SkiaSharp.QrCode": "2.0.0-preview.2",
+            "Svg.Controls.Skia.Avalonia": "12.0.0.17",
+            "System.Reactive": "6.1.0",
+            "System.Runtime.Caching": "10.0.11",
+            "TextMateSharp": "2.0.4",
+            "TextMateSharp.Grammars": "2.0.4",
+            "Unicode.net": "2.0.0",
+            "Vecc.YamlDotNet.Analyzers.StaticGenerator": "18.1.0",
+            "Wcwidth": "4.0.1",
+            "Xaml.Behaviors.Avalonia": "12.0.7",
+            "Xaml.Behaviors.Interactivity": "12.0.7",
+            "XTerm.NET": "2.0.2",
+            "YamlDotNet": "18.1.0"
           },
           "imports": [
             "net461",
@@ -411,6 +479,7 @@
         "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\MEFrpLauncherX.Core\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
+        "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -460,88 +529,168 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[11.3.20, )"
+              "version": "[12.1.3, )",
+              "versionCentrallyManaged": true
             },
             "Avalonia.AvaloniaEdit": {
               "target": "Package",
-              "version": "[11.4.1, )"
+              "version": "[12.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Downloader": {
               "target": "Package",
-              "version": "[5.9.5, )"
+              "version": "[5.9.5, )",
+              "versionCentrallyManaged": true
             },
             "FeatherQR.SkiaSharp": {
               "target": "Package",
-              "version": "[2.0.0-preview.2, )"
+              "version": "[2.0.0-preview.2, )",
+              "versionCentrallyManaged": true
             },
             "FluentAvaloniaUI": {
               "target": "Package",
-              "version": "[2.5.1, )"
+              "version": "[3.1.0, )",
+              "versionCentrallyManaged": true
             },
             "LiveChartsCore.SkiaSharpView.Avalonia": {
               "target": "Package",
-              "version": "[2.0.5, )"
+              "version": "[2.1.0-dev-798, )",
+              "versionCentrallyManaged": true
             },
             "Message.Avalonia": {
               "target": "Package",
-              "version": "[1.1.0, )"
+              "version": "[2.0.0, )",
+              "versionCentrallyManaged": true
             },
             "MessageBox.Avalonia": {
               "target": "Package",
-              "version": "[3.3.1.1, )"
+              "version": "[12.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.International.Converters.PinYinConverter": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[1.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Management.Infrastructure": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.0, )",
+              "versionCentrallyManaged": true
             },
             "NPinyin.Core": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.0, )",
+              "versionCentrallyManaged": true
             },
             "ReactiveUI": {
               "target": "Package",
-              "version": "[23.2.28, )"
+              "version": "[25.1.1, )",
+              "versionCentrallyManaged": true
             },
             "RestSharp": {
               "target": "Package",
-              "version": "[114.0.0, )"
+              "version": "[114.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Sentry": {
               "target": "Package",
-              "version": "[6.11.1, )"
+              "version": "[6.11.1, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[4.151.2, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[3.119.4, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[3.119.4, )"
+              "version": "[4.151.2, )",
+              "versionCentrallyManaged": true
             },
             "SkiaSharp.QrCode": {
               "target": "Package",
-              "version": "[2.0.0-preview.2, )"
+              "version": "[2.0.0-preview.2, )",
+              "versionCentrallyManaged": true
+            },
+            "System.Reactive": {
+              "target": "Package",
+              "version": "[6.1.0, )",
+              "versionCentrallyManaged": true
             },
             "System.Runtime.Caching": {
               "target": "Package",
-              "version": "[10.0.11, )"
+              "version": "[10.0.11, )",
+              "versionCentrallyManaged": true
             },
             "Vecc.YamlDotNet.Analyzers.StaticGenerator": {
               "target": "Package",
-              "version": "[18.1.0, )"
+              "version": "[18.1.0, )",
+              "versionCentrallyManaged": true
             },
             "YamlDotNet": {
               "target": "Package",
-              "version": "[18.1.0, )"
+              "version": "[18.1.0, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "AsyncImageLoader.Avalonia": "4.0.0",
+            "Avalonia": "12.1.3",
+            "Avalonia.AvaloniaEdit": "12.0.0",
+            "Avalonia.Desktop": "12.1.3",
+            "Avalonia.Fonts.Inter": "12.1.3",
+            "Avalonia.Headless": "12.1.3",
+            "Avalonia.Skia": "12.1.3",
+            "Avalonia.Themes.Fluent": "12.1.3",
+            "AvaloniaEdit.TextMate": "12.0.0",
+            "CommunityToolkit.Mvvm": "8.2.1",
+            "DialogHost.Avalonia": "0.12.3",
+            "Downloader": "5.9.5",
+            "FeatherQR.SkiaSharp": "2.0.0-preview.2",
+            "FluentAvaloniaUI": "3.1.0",
+            "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+            "IconPacks.Avalonia.FileIcons": "2.0.0",
+            "IconPacks.Avalonia.Lucide": "2.0.0",
+            "IconPacks.Avalonia.Material": "2.0.0",
+            "IconPacks.Avalonia.SimpleIcons": "2.0.0",
+            "LiveChartsCore.SkiaSharpView.Avalonia": "2.1.0-dev-798",
+            "Markdig": "1.4.0",
+            "Message.Avalonia": "2.0.0",
+            "MessageBox.Avalonia": "12.0.0",
+            "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+            "Microsoft.Extensions.Options": "2.1.0",
+            "Microsoft.International.Converters.PinYinConverter": "1.0.0",
+            "Microsoft.Management.Infrastructure": "3.0.0",
+            "Microsoft.Windows.CsWin32": "0.3.335",
+            "NPinyin.Core": "3.0.0",
+            "Packaging.Targets": "0.1.232",
+            "ReactiveUI": "25.1.1",
+            "ReactiveUI.Avalonia": "12.1.5",
+            "RestSharp": "114.0.0",
+            "Sentry": "6.11.1",
+            "SkiaSharp": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
+            "SkiaSharp.NativeAssets.macOS": "4.151.2",
+            "SkiaSharp.NativeAssets.Win32": "4.151.2",
+            "SkiaSharp.QrCode": "2.0.0-preview.2",
+            "Svg.Controls.Skia.Avalonia": "12.0.0.17",
+            "System.Reactive": "6.1.0",
+            "System.Runtime.Caching": "10.0.11",
+            "TextMateSharp": "2.0.4",
+            "TextMateSharp.Grammars": "2.0.4",
+            "Unicode.net": "2.0.0",
+            "Vecc.YamlDotNet.Analyzers.StaticGenerator": "18.1.0",
+            "Wcwidth": "4.0.1",
+            "Xaml.Behaviors.Avalonia": "12.0.7",
+            "Xaml.Behaviors.Interactivity": "12.0.7",
+            "XTerm.NET": "2.0.2",
+            "YamlDotNet": "18.1.0"
           },
           "imports": [
             "net461",
@@ -846,6 +995,7 @@
         "packagesPath": "G:\\.Nuget\\packages",
         "outputPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -888,12 +1038,68 @@
           "dependencies": {
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[2.1.0, )"
+              "version": "[2.1.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Options": {
               "target": "Package",
-              "version": "[2.1.0, )"
+              "version": "[2.1.0, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "AsyncImageLoader.Avalonia": "4.0.0",
+            "Avalonia": "12.1.3",
+            "Avalonia.AvaloniaEdit": "12.0.0",
+            "Avalonia.Desktop": "12.1.3",
+            "Avalonia.Fonts.Inter": "12.1.3",
+            "Avalonia.Headless": "12.1.3",
+            "Avalonia.Skia": "12.1.3",
+            "Avalonia.Themes.Fluent": "12.1.3",
+            "AvaloniaEdit.TextMate": "12.0.0",
+            "CommunityToolkit.Mvvm": "8.2.1",
+            "DialogHost.Avalonia": "0.12.3",
+            "Downloader": "5.9.5",
+            "FeatherQR.SkiaSharp": "2.0.0-preview.2",
+            "FluentAvaloniaUI": "3.1.0",
+            "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+            "IconPacks.Avalonia.FileIcons": "2.0.0",
+            "IconPacks.Avalonia.Lucide": "2.0.0",
+            "IconPacks.Avalonia.Material": "2.0.0",
+            "IconPacks.Avalonia.SimpleIcons": "2.0.0",
+            "LiveChartsCore.SkiaSharpView.Avalonia": "2.1.0-dev-798",
+            "Markdig": "1.4.0",
+            "Message.Avalonia": "2.0.0",
+            "MessageBox.Avalonia": "12.0.0",
+            "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0",
+            "Microsoft.Extensions.Options": "2.1.0",
+            "Microsoft.International.Converters.PinYinConverter": "1.0.0",
+            "Microsoft.Management.Infrastructure": "3.0.0",
+            "Microsoft.Windows.CsWin32": "0.3.335",
+            "NPinyin.Core": "3.0.0",
+            "Packaging.Targets": "0.1.232",
+            "ReactiveUI": "25.1.1",
+            "ReactiveUI.Avalonia": "12.1.5",
+            "RestSharp": "114.0.0",
+            "Sentry": "6.11.1",
+            "SkiaSharp": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux": "4.151.2",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
+            "SkiaSharp.NativeAssets.macOS": "4.151.2",
+            "SkiaSharp.NativeAssets.Win32": "4.151.2",
+            "SkiaSharp.QrCode": "2.0.0-preview.2",
+            "Svg.Controls.Skia.Avalonia": "12.0.0.17",
+            "System.Reactive": "6.1.0",
+            "System.Runtime.Caching": "10.0.11",
+            "TextMateSharp": "2.0.4",
+            "TextMateSharp.Grammars": "2.0.4",
+            "Unicode.net": "2.0.0",
+            "Vecc.YamlDotNet.Analyzers.StaticGenerator": "18.1.0",
+            "Wcwidth": "4.0.1",
+            "Xaml.Behaviors.Avalonia": "12.0.7",
+            "Xaml.Behaviors.Interactivity": "12.0.7",
+            "XTerm.NET": "2.0.2",
+            "YamlDotNet": "18.1.0"
           },
           "imports": [
             "net461",

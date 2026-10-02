@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      P4 验收脚本（Avalonia 12 升级）：TrimmerRoots.xml 逐项校验。
+
+      用法：
+        dotnet run  （在 tools/P4Verify 目录下执行）
+        或在仓库根目录指定该项目路径执行
+
+      背景：
+        ILC/linker 对 assembly fullname 不匹配的条目是「静默忽略」，
+        没有错误、没有警告，条目只是不生效。因此必须用 System.Reflection.Metadata
+        读取各程序集的真实 TypeDefinition，与 TrimmerRoots.xml 中声明的
+        (assembly, type) 逐条比对，才能发现 Avalonia 版本升级后失效的裁剪规则。
+
+      判定：
+        全部条目命中 => 退出码 0；存在失效条目 => 退出码 1 并逐条列出。
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+        <!-- 本工具只读元数据；System.Reflection.Metadata 已包含在 net10.0 共享框架内，无需包引用 -->
+    </PropertyGroup>
+
+</Project>

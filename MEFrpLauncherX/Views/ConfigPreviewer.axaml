@@ -21,17 +21,17 @@
 
             <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Global_Type}" />
             <TextBlock VerticalAlignment="Center" x:Name="ConfigTypeTextBlock" />
-            <fa:CommandBar DefaultLabelPosition="Right">
-                <fa:CommandBar.PrimaryCommands>
-                    <fa:CommandBarButton Click="CopyButton_Click" IconSource="Copy"
+            <fa:FACommandBar DefaultLabelPosition="Right">
+                <fa:FACommandBar.PrimaryCommands>
+                    <fa:FACommandBarButton Click="CopyButton_Click" IconSource="Copy"
                                          Label="{x:Static languages:Languages.Text_Global_Copy}" />
-                    <fa:CommandBarButton Click="SaveButton_Click" IconSource="Save"
+                    <fa:FACommandBarButton Click="SaveButton_Click" IconSource="Save"
                                          Label="{x:Static languages:Languages.Text_Global_Save}" />
-                    <fa:CommandBarButton IconSource="Cancel"
+                    <fa:FACommandBarButton IconSource="Cancel"
                                          Click="CloseButton_Click"
                                          Label="{x:Static languages:Languages.Text_Global_Close}" />
-                </fa:CommandBar.PrimaryCommands>
-            </fa:CommandBar>
+                </fa:FACommandBar.PrimaryCommands>
+            </fa:FACommandBar>
         </StackPanel>
 
         <avaloniaEdit:TextEditor

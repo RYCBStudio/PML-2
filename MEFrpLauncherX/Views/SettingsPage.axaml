@@ -10,24 +10,24 @@
              x:Class="MEFrpLauncherX.Views.SettingsPage">
     <ScrollViewer>
         <StackPanel Classes="animated">
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Appearance}"
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Settings_Appearance}"
                                        IconSource="DarkTheme"
                                        Description="{x:Static languages:Languages.Text_Settings_AppearanceDescription}">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Language}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Language}"
                                                Description="{x:Static languages:Languages.Text_Settings_LanguageDescription}"
                                                IconSource="Character">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="LanguageSelectComboBox" SelectionChanged="LanguageChanged">
                             <ComboBoxItem Content="简体中文" Tag="zh-CN"/>
                             <ComboBoxItem Content="English" Tag="en-US"/>
                             <ComboBoxItem Content="繁體中文" Tag="zh-Hant"/>
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
                                                IconSource="New"
                                                Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Theme"
                             SelectionChanged="ThemeChanged">
@@ -37,12 +37,12 @@
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_System}"
                                           Tag="System" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Material}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Material}"
                                                IconSource="Scan"
                                                Description="{x:Static languages:Languages.Text_Settings_MaterialDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox
                             x:Name="Skin"
                             SelectionChanged="SkinChanged">
@@ -57,16 +57,16 @@
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Material_None}"
                                           Tag="None" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Custom}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Custom}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetAppearanceAdvanced" />
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Background}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Background}"
                                                IconSource="FullScreenMaximize"
                                                Description="{x:Static languages:Languages.Text_Settings_BackgroundDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <ComboBox x:Name="StretchBox" SelectionChanged="StretchChanged">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Stretch_None}"
@@ -80,24 +80,24 @@
                                     Tag="UniformToFill" />
                             </ComboBox>
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AnimationLevel}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AnimationLevel}"
                                                IconSource="SlideShow"
                                                Description="{x:Static languages:Languages.Text_Settings_AnimationLevelDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="AnimationLevelBox" SelectionChanged="AnimationLevelChanged">
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Off}" />
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Reduced}" />
                             <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Animation_Standard}" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
                 <!-- 26.3.1 M2：启动画面样式 / 自定义背景图 / 开关 -->
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Splash}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Splash}"
                                                IconSource="Image"
                                                Description="{x:Static languages:Languages.Text_Settings_SplashDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <ToggleSwitch x:Name="SplashEnabledSwitch" IsCheckedChanged="SplashEnabledChanged"
                                           VerticalAlignment="Center" />
@@ -107,106 +107,106 @@
                             <TextBlock Text="{x:Static languages:Languages.Text_Settings_SplashRestartHint}"
                                        FontSize="12" Opacity="0.7" VerticalAlignment="Center" />
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Settings_Startup}"
                                        Description="{x:Static languages:Languages.Text_Settings_StartupDescription}">
-                <controls:SettingsExpander.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
-                        <controls:FontIconSource.Glyph>&#xE770;</controls:FontIconSource.Glyph>
-                    </controls:FontIconSource>
-                </controls:SettingsExpander.IconSource>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoStart}"
+                <controls:FASettingsExpander.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}">
+                        <controls:FAFontIconSource.Glyph>&#xE770;</controls:FAFontIconSource.Glyph>
+                    </controls:FAFontIconSource>
+                </controls:FASettingsExpander.IconSource>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoStart}"
                                                Description="{x:Static languages:Languages.Text_Settings_AutoStartDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoStart"
                             IsCheckedChanged="AutoStartChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLaunch}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLaunch}"
                                                Description="{x:Static languages:Languages.Text_Settings_AutoLaunchDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoLaunch"
                             IsCheckedChanged="AutoLaunchChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem IsVisible="{Binding #AutoLaunch.IsChecked}"
                                                Content="{x:Static languages:Languages.Text_Settings_SetTunnelsToLaunch}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                         <Button x:Name="OpenALPSettingsBtn" Click="OpenALPSettingsWindow" Classes="accent">
-                            <controls:SymbolIcon Symbol="Settings" />
+                            <controls:FASymbolIcon Symbol="Settings" />
                         </Button>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_MinimizeToTray}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_MinimizeToTray}"
                                                Description="{x:Static languages:Languages.Text_Settings_MinimizeToTrayDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="HideInsteadOfClose"
                             IsCheckedChanged="HideInsteadOfCloseChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Settings_TunnelSettings}"
                                        Description="{x:Static languages:Languages.Text_Settings_TunnelSettingsDescription}"
                                        IconSource="AllApps">
                 <!-- 26.4：证书助手入口（为 HTTPS 隧道申请 SSL 证书） -->
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Title}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Certificate_Title}"
                                                Description="{x:Static languages:Languages.Text_Certificate_Description}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="OpenCertificateAssistant" />
                 <!-- 26.4 阶段 B：DNS 账户保险箱（一键自动申请证书的凭据） -->
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Dns_Title}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Dns_Title}"
                                                Description="{x:Static languages:Languages.Text_Dns_Description}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="OpenDnsAccounts" />
-                <controls:SettingsExpanderItem
+                <controls:FASettingsExpanderItem
                     Content="{x:Static languages:Languages.Text_Settings_KickWithoutDisable}"
                     Description="{x:Static languages:Languages.Text_Settings_KickWithoutDisableDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="KickWithoutDisable"
                             IsCheckedChanged="KickWithoutDisableChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ProxyMonitorBar}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ProxyMonitorBar}"
                                                Description="{x:Static languages:Languages.Text_Settings_ProxyMonitorBarDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="pmS" OnContent="{x:Static languages:Languages.Text_Global_On}"
                                       OffContent="{x:Static languages:Languages.Text_Global_Off}"
                                       IsCheckedChanged="PMChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem IsVisible="{Binding #pmS.IsChecked}"
                                                Content="{x:Static languages:Languages.Text_Settings_CustomProxyMonitorBar}"
                                                ActionIconSource="ChevronRight"
                                                IsClickEnabled="True"
                                                Click="SetProxyMonitorBar" />
-            </controls:SettingsExpander>
-            <controls:SettingsExpander IconSource="Download"
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander IconSource="Download"
                                        Description="{x:Static languages:Languages.Text_Settings_DownloadDescription}"
                                        Header="{x:Static languages:Languages.Text_Settings_Download}"
                                        IsExpanded="False">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownload}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_ParallelDownload}"
                                                Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="ParallelDownload"
                             IsCheckedChanged="ParallelDownloadChanged"
 
                             IsChecked="True" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem
                     Content="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettings}"
                     Description="{x:Static languages:Languages.Text_Settings_ParallelDownloadSettingsDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal">
                             <Slider
                                 x:Name="ParallelDownloadThreads"
@@ -218,7 +218,7 @@
                                 ValueChanged="ParallelDownloadThreadsChanged"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}"
                                 Value="8" />
-                            <controls:NumberBox SpinButtonPlacementMode="Inline"
+                            <controls:FANumberBox SpinButtonPlacementMode="Inline"
                                                 Maximum="512"
                                                 Minimum="1"
                                                 VerticalAlignment="Center"
@@ -230,34 +230,34 @@
                                 VerticalAlignment="Center"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
-                    <controls:InfoBar x:Name="TooMoreThreadWarning" Margin="10"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem x:Name="TooMoreThreadWarningExpanderItem">
+                    <controls:FAInfoBar x:Name="TooMoreThreadWarning" Margin="10"
                                       Title="{x:Static languages:Languages.Caption_Warning}"
                                       Message="{x:Static languages:Languages.Text_Settings_TooManyThreadsWarning}"
                                       Severity="Warning" />
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DownloadSource}"
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DownloadSource}"
                                                Description="{x:Static languages:Languages.Text_Settings_DownloadSourceDescription}"
                                                IconSource="CloudDownload">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="DownloadSource" SelectionChanged="DownloadSourceChanged">
                             <ComboBoxItem Tag="TPCA"
                                           Content="{x:Static languages:Languages.Text_Settings_DownloadSource_TPCA}" />
                             <ComboBoxItem Tag="Official"
                                           Content="{x:Static languages:Languages.Text_Settings_DownloadSource_Official}" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Description="{x:Static languages:Languages.Text_Settings_AccountDescription}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Description="{x:Static languages:Languages.Text_Settings_AccountDescription}"
                                        IconSource="Admin" Header="{x:Static languages:Languages.Text_Settings_Account}"
                                        IsExpanded="False">
-                <controls:SettingsExpanderItem
+                <controls:FASettingsExpanderItem
                     Description="{x:Static languages:Languages.Text_Settings_LoginExpireDaysDescription}"
                     Content="{x:Static languages:Languages.Text_Settings_LoginExpireDays}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <Slider
                                 x:Name="ExpireDaysSlider"
@@ -268,7 +268,7 @@
                                 VerticalAlignment="Center"
                                 ValueChanged="ExpireDaysChanged"
                                 Value="30" />
-                            <controls:NumberBox SpinButtonPlacementMode="Inline"
+                            <controls:FANumberBox SpinButtonPlacementMode="Inline"
                                                 VerticalAlignment="Center"
                                                 Maximum="366"
                                                 Minimum="1"
@@ -279,52 +279,52 @@
                                 Text="{x:Static languages:Languages.Text_Settings_Days}"
                                 IsVisible="{Binding ElementName=ParallelDownload, Path=IsChecked}" />
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLogin}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoLogin}"
                                                Description="{x:Static languages:Languages.Text_Settings_AutoLoginDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoLogin"
                             IsCheckedChanged="AutoLoginChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoSignIn}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_AutoSignIn}"
                                                Description="{x:Static languages:Languages.Text_Settings_AutoSignInDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch
                             x:Name="AutoSign"
                             IsCheckedChanged="AutoSignChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem
                     Description="{x:Static languages:Languages.Text_Settings_CaptchaModeDescription}"
                     Content="{x:Static languages:Languages.Text_Settings_CaptchaMode}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="CaptchaModeCBox" SelectionChanged="CaptchaModeChanged">
                             <ComboBoxItem x:Name="NoSenseValidation" Tag="implicit"
                                           Content="{x:Static languages:Languages.Text_Settings_Captcha_Implicit}" />
                             <ComboBoxItem x:Name="BrowserValidation" Tag="explicit"
                                           Content="{x:Static languages:Languages.Text_Settings_Captcha_Explicit}" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem
                     Content="{Binding #CaptchaModeCBox.SelectedIndex, Converter={x:Static views:ValidationModeConverter.Instance}}" />
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Other}"
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Settings_Other}"
                                        IconSource="Settings"
                                        Description="{x:Static languages:Languages.Text_Settings_OtherDescription}">
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DoNotShowResponse}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_DoNotShowResponse}"
                                                Description="{x:Static languages:Languages.Text_Settings_DoNotShowResponseDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="DoNotShowResponseSettings"
                                       IsCheckedChanged="DoNotShowResponseSettingsChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_TerminalEngine}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_TerminalEngine}"
                                                Description="{x:Static languages:Languages.Text_Settings_TerminalEngineDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Orientation="Horizontal" Spacing="3">
                             <ComboBox x:Name="TerminalEngineTypeBox"
                                       SelectionChanged="TerminalEngineTypeChanged">
@@ -333,13 +333,13 @@
                                 <ComboBoxItem Tag="XTerm">XTerm</ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem
                     IsVisible="{Binding #TerminalEngineTypeBox.SelectedIndex, Converter={x:Static meFrpLauncherX:VisibilityConverter.Instance}}"
                     Content="{x:Static languages:Languages.Text_Settings_TerminalSettings}"
                     Description="{x:Static languages:Languages.Text_Settings_TerminalSettingsDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <controls:FAComboBox IsEditable="True" x:Name="TerminalCliComboBox"
                                              SelectionChanged="SetTerminalCli">
                             <controls:FAComboBoxItem Tag="powershell"
@@ -351,26 +351,26 @@
                             <controls:FAComboBoxItem Tag="bash" IsEnabled="{OnPlatform Windows=False, Default=True}">Bash</controls:FAComboBoxItem>
                             <controls:FAComboBoxItem Tag="zsh" IsEnabled="{OnPlatform Windows=False, Default=True}">Zsh</controls:FAComboBoxItem>
                         </controls:FAComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
-                    <controls:InfoBar IsOpen="True" IsClosable="False" Severity="Warning"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
+                    <controls:FAInfoBar IsOpen="True" IsClosable="False" Severity="Warning"
                                       Message="{x:Static languages:Languages.Text_Settings_LinuxShNotice}" />
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_Settings_Advanced}"
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_Settings_Advanced}"
                                        Description="{x:Static languages:Languages.Text_Settings_Advanced_Description}">
-                <controls:SettingsExpander.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE822;"></controls:FontIconSource>
-                </controls:SettingsExpander.IconSource>
-                <controls:InfoBar Message="{x:Static languages:Languages.Text_Settings_Advanced_Warning_Message}"
+                <controls:FASettingsExpander.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE822;"></controls:FAFontIconSource>
+                </controls:FASettingsExpander.IconSource>
+                <controls:FAInfoBar Message="{x:Static languages:Languages.Text_Settings_Advanced_Warning_Message}"
                                   Title="{x:Static languages:Languages.Caption_Warning}"
                                   IsClosable="False"
                                   Severity="Warning"
                                   IsOpen="True" />
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_RenderingMode}"
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_RenderingMode}"
                                                Description="{x:Static languages:Languages.Text_Settings_RenderingModeDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="RenderingModeBox" SelectionChanged="RenderingModeChanged">
                             <ComboBoxItem Tag="Auto"
                                           Content="{x:Static languages:Languages.Text_Settings_Rendering_Auto}" />
@@ -380,32 +380,32 @@
                             <ComboBoxItem Tag="Software"
                                           Content="{x:Static languages:Languages.Text_Settings_Rendering_Software}" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_GpuMemory}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_GpuMemory}"
                                                Description="{x:Static languages:Languages.Text_Settings_GpuMemoryDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ComboBox x:Name="GpuMemoryBox" SelectionChanged="GpuMemoryChanged">
                             <ComboBoxItem Tag="128" Content="128 MB" />
                             <ComboBoxItem Tag="256" Content="256 MB" />
                             <ComboBoxItem Tag="512" Content="512 MB" />
                             <ComboBoxItem Tag="1024" Content="1024 MB" />
                         </ComboBox>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_LowLatency}"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_LowLatency}"
                                                Description="{x:Static languages:Languages.Text_Settings_LowLatencyDescription}">
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <ToggleSwitch x:Name="LowLatencySwitch" IsCheckedChanged="LowLatencyChanged" />
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem>
-                    <controls:InfoBar x:Name="RenderRestartNotice" IsOpen="False" IsClosable="True"
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem>
+                    <controls:FAInfoBar x:Name="RenderRestartNotice" IsOpen="False" IsClosable="True"
                                       Severity="Informational"
                                       Title="{x:Static languages:Languages.Caption_Hint}"
                                       Message="{x:Static languages:Languages.Text_Settings_RestartRequiredNotice}" />
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

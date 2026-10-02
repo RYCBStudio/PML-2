@@ -7,6 +7,7 @@
              xmlns:lvcore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
              xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             xmlns:behaviors="clr-namespace:MEFrpLauncherX.Behaviours"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.TrafficStatusControl"
              x:DataType="controls:TrafficStatusControlViewModel">
@@ -31,11 +32,12 @@
         <TabStrip
             Theme="{StaticResource AlternateTabStripTheme}"
             ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}" SelectedIndex="{Binding SelectedType}"
-            HorizontalAlignment="Right" Classes="compact">
+            HorizontalAlignment="Right" Classes="compact"
+            behaviors:TabStripContentTransitionBehavior.Target="{Binding #ChartArea}">
             <TabStripItem Content="{x:Static languages:Languages.Text_Traffic_LineChart}" />
             <TabStripItem Content="{x:Static languages:Languages.Text_Traffic_BarChart}" />
         </TabStrip>
-        <lvc:CartesianChart Grid.Row="1" LegendPosition="Top"
+        <lvc:CartesianChart x:Name="ChartArea" Grid.Row="1" LegendPosition="Top"
                             ZoomMode="{Binding ZoomMode}" ZoomingSpeed="0.6"
                             XAxes="{Binding XAxes}"
                             YAxes="{Binding YAxes}"
@@ -43,7 +45,7 @@
                             Series="{Binding Series}" />
         <Panel Grid.Row="1" Background="{DynamicResource ControlStrokeColorForStrongFillWhenOnImageBrush}"
                IsVisible="{Binding IsLoading}">
-            <controls1:ProgressRing />
+            <controls1:FAProgressRing />
         </Panel>
     </Grid>
 </UserControl>

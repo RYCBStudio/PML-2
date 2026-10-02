@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,7 +13,7 @@
     <Grid RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
 
         <!-- 说明：明确本机处理、不上传 -->
-        <controls:InfoBar Grid.Row="0"
+        <controls:FAInfoBar Grid.Row="0"
                           Severity="Informational"
                           IsClosable="False"
                           IsOpen="True"
@@ -62,7 +62,7 @@
             <!-- 右：编辑表单（字段表驱动） -->
             <ScrollViewer Grid.Column="1" AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Spacing="10">
-                    <controls:InfoBar Severity="Warning"
+                    <controls:FAInfoBar Severity="Warning"
                                       IsClosable="False"
                                       IsOpen="True"
                                       Message="{x:Static languages:Languages.Text_Dns_StoreHint}" />
@@ -71,7 +71,7 @@
                         <TextBlock Text="{x:Static languages:Languages.Text_Dns_AccountName}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <TextBox x:Name="NameBox"
-                                 Watermark="{x:Static languages:Languages.Text_Dns_AccountNamePlaceholder}" />
+                                 PlaceholderText="{x:Static languages:Languages.Text_Dns_AccountNamePlaceholder}" />
                     </StackPanel>
 
                     <StackPanel Spacing="4">
@@ -81,7 +81,7 @@
                                   SelectionChanged="ProviderChanged" />
                     </StackPanel>
 
-                    <controls:InfoBar x:Name="PermissionHint"
+                    <controls:FAInfoBar x:Name="PermissionHint"
                                       Severity="Informational"
                                       IsClosable="False"
                                       IsOpen="False" />

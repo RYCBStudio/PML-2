@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,36 +15,36 @@
     <Grid RowDefinitions="*, Auto" RowSpacing="5">
         <ScrollViewer x:Name="MainContainer">
             <StackPanel x:Name="OperationPanel" x:DataType="pml2:CreateProxyViewModel">
-                <fa:SettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_BasicSettings}"
+                <fa:FASettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_BasicSettings}"
                                      IconSource="AllApps"
                                      Description="{x:Static languages:Languages.Text_CreateProxy_BasicSettingsDescription}">
-                    <fa:SettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}">
+                    <fa:FASettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_ProxyName}" IsRequired="True" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="ProxyNameBox"
                                 Margin="5"
                                 FontFamily="{StaticResource GlobalFontFamily}"
-                                Watermark="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}"
+                                PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_ProxyNamePlaceholder}"
                                 Text="{Binding ProxyName}" />
 
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}">
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Description="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_LocalAddress}" IsRequired="True" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="LocalAddressBox"
                                 Margin="5"
-                                Watermark="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}"
+                                PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_LocalAddressPlaceholder}"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Text="{Binding LocalAddress}" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem>
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_LocalPort}" IsRequired="True" />
-                        <fa:SettingsExpanderItem.Footer>
-                            <fa:NumberBox
+                        <fa:FASettingsExpanderItem.Footer>
+                            <fa:FANumberBox
                                 x:Name="LocalPortNudBox"
                                 Margin="5"
                                 SpinButtonPlacementMode="Inline"
@@ -52,13 +52,13 @@
                                 Maximum="65535"
                                 Minimum="0"
                                 Value="{Binding LocalPort}" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="RemotePortGrid">
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem x:Name="RemotePortGrid">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_RemotePort}" IsRequired="True" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="4">
-                                <fa:NumberBox
+                                <fa:FANumberBox
                                     x:Name="RemotePortNudBox"
                                     Margin="5"
                                     SpinButtonPlacementMode="Inline"
@@ -73,14 +73,14 @@
                                         Click="GetRemotePort_Click"
                                         Content="{x:Static languages:Languages.Text_CreateProxy_GetRemotePort}"
                                         FontFamily="{StaticResource GlobalFontFamily}" />
-                                    <fa:ProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading" />
+                                    <fa:FAProgressRing IsVisible="False" IsIndeterminate="True" x:Name="Loading" />
                                 </Panel>
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="SourceProtocolSettingsExpanderItemForHttp" IsVisible="False">
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem x:Name="SourceProtocolFASettingsExpanderItemForHttp" IsVisible="False">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_SourceProtocol}" IsRequired="False" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="http" x:Name="SameAsHttp">
                                     <TextBlock VerticalAlignment="Bottom" Text="{x:Static languages:Languages.Text_CreateProxy_SameAsHttp}" />
@@ -89,11 +89,11 @@
                                     <TextBlock VerticalAlignment="Bottom">HTTPS</TextBlock>
                                 </RadioButton>
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="SourceProtocolSettingsExpanderItemForHttps" IsVisible="False">
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem x:Name="SourceProtocolFASettingsExpanderItemForHttps" IsVisible="False">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_SourceProtocol}" IsRequired="False" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="https" x:Name="SameAsHttps">
                                     <TextBlock VerticalAlignment="Bottom" Text="{x:Static languages:Languages.Text_CreateProxy_SameAsHttps}" />
@@ -102,141 +102,141 @@
                                     <TextBlock VerticalAlignment="Bottom">HTTP</TextBlock>
                                 </RadioButton>
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="CertificateSettingsForPath" IsVisible="False" Content="{x:Static languages:Languages.Text_CreateProxy_SslCertPath}"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem x:Name="CertificateSettingsForPath" IsVisible="False" Content="{x:Static languages:Languages.Text_CreateProxy_SslCertPath}"
                                              Description="{x:Static languages:Languages.Text_CreateProxy_SslPathDescription}">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBox x:Name="SslPathBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslCertPathPlaceholder}" />
+                                <TextBox x:Name="SslPathBox" PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_SslCertPathPlaceholder}" />
                                 <!-- 26.4：从证书助手选择已签发的证书（与创建页一致） -->
                                 <Button Click="PickCertificateFromAssistant"
                                         Content="{x:Static languages:Languages.Text_Certificate_SelectForTunnel}" />
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem x:Name="CertificateSettingsForPrivateKey" IsVisible="False"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem x:Name="CertificateSettingsForPrivateKey" IsVisible="False"
                                              Content="{x:Static languages:Languages.Text_CreateProxy_SslKeyPath}" Description="{x:Static languages:Languages.Text_CreateProxy_SslPathDescription}">
-                        <fa:SettingsExpanderItem.Footer>
-                            <TextBox x:Name="SslKeyBox" Watermark="{x:Static languages:Languages.Text_CreateProxy_SslKeyPathPlaceholder}" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem
+                        <fa:FASettingsExpanderItem.Footer>
+                            <TextBox x:Name="SslKeyBox" PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_SslKeyPathPlaceholder}" />
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem
                         x:Name="RemoteAddressStackPanel" Description="{x:Static languages:Languages.Text_CreateProxy_BindDomainsDescription}"
                         IsVisible="False">
                         <pml2:RequiredField Label="{x:Static languages:Languages.Text_CreateProxy_BindDomains}" IsRequired="False" />
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <Button Click="EditDomains">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <fa:FASymbolIcon Symbol="Edit" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                </fa:SettingsExpander>
-                <fa:SettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_AdvancedSettings}"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                </fa:FASettingsExpander>
+                <fa:FASettingsExpander Header="{x:Static languages:Languages.Text_CreateProxy_AdvancedSettings}"
                                      IconSource="Code"
                                      Description="{x:Static languages:Languages.Text_CreateProxy_AdvancedSettingsDescription}">
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_SecurityOptions}" x:Name="SecurityOptionsSettingsExpander"
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_SecurityOptions}" x:Name="SecurityOptionsFASettingsExpander"
                                              IsVisible="False">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <ComboBox x:Name="SecurityOptionsSelect">
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_CreateProxy_Disabled}" />
                                 <ComboBoxItem>HTTP Basic Auth</ComboBoxItem>
                                 <ComboBoxItem Content="{x:Static languages:Languages.Text_CreateProxy_AccessKey}" />
                             </ComboBox>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_AccessKey}" Description="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_AccessKey}" Description="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
                                              IsVisible="{Binding #SecurityOptionsSelect.SelectedIndex, Converter={x:Static pml2:SelectIndexToVisibleConverterReverse.Instance}}">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <TextBox
                                 x:Name="AccessKeyBox"
                                 Margin="5"
-                                Watermark="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
+                                PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_AccessKeyDescription}"
                                 FontFamily="{StaticResource GlobalFontFamily}" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="HTTP Basic Auth" Description="{x:Static languages:Languages.Text_CreateProxy_HttpBasicAuthDescription}"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="HTTP Basic Auth" Description="{x:Static languages:Languages.Text_CreateProxy_HttpBasicAuthDescription}"
                                              IsVisible="{Binding #SecurityOptionsSelect.SelectedIndex, Converter={x:Static pml2:SelectIndexToVisibleConverter.Instance}}">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <TextBox
                                     x:Name="HTTPBasicAuthNameBox"
                                     Margin="5"
-                                    Watermark="{x:Static languages:Languages.Text_CreateProxy_UsernamePlaceholder}"
+                                    PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_UsernamePlaceholder}"
                                     FontFamily="{StaticResource GlobalFontFamily}" />
                                 <TextBox
                                     x:Name="HTTPBasicAuthPwdBox"
                                     Margin="5"
-                                    Watermark="{x:Static languages:Languages.Text_CreateProxy_PasswordPlaceholder}"
+                                    PlaceholderText="{x:Static languages:Languages.Text_CreateProxy_PasswordPlaceholder}"
                                     RevealPassword="{Binding #RevealPwdToggleBtn.IsChecked}"
                                     PasswordChar="•"
                                     FontFamily="{StaticResource GlobalFontFamily}" />
                                 <ToggleButton x:Name="RevealPwdToggleBtn" HorizontalAlignment="Right"
                                               Margin="0 00 12 0">
                                     <ToggleButton.Content>
-                                        <fa:FontIcon Glyph="&#xF78D;"
+                                        <fa:FAFontIcon Glyph="&#xF78D;"
                                                      FontFamily="{StaticResource SymbolThemeFontFamily}" />
                                     </ToggleButton.Content>
                                 </ToggleButton>
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
 
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_TransmissionProtocol}"
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_TransmissionProtocol}"
                                              Description="{x:Static languages:Languages.Text_CreateProxy_TransmissionProtocolDescription}">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <RadioButton GroupName="TransmissionProtocol" Content="TCP" IsChecked="True"
                                              x:Name="TpTcpRb" />
                                 <RadioButton GroupName="TransmissionProtocol" Content="QUIC" x:Name="TpQuicRb" />
                             </StackPanel>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomRequestHeaders}" IsVisible="False" x:Name="CustomRequestHeaderSettings">
-                        <fa:SettingsExpanderItem.Footer>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomRequestHeaders}" IsVisible="False" x:Name="CustomRequestHeaderSettings">
+                        <fa:FASettingsExpanderItem.Footer>
                             <Button Click="EditRequestHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <fa:FASymbolIcon Symbol="Edit" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomResponseHeaders}" IsVisible="False" x:Name="CustomResponseHeaderSettings">
-                        <fa:SettingsExpanderItem.Footer>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_CustomResponseHeaders}" IsVisible="False" x:Name="CustomResponseHeaderSettings">
+                        <fa:FASettingsExpanderItem.Footer>
                             <Button Click="EditResponseHeaders">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <fa:FASymbolIcon Symbol="Edit" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="Locations" Description="{x:Static languages:Languages.Text_CreateProxy_LocationsDescription}" IsVisible="False"
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="Locations" Description="{x:Static languages:Languages.Text_CreateProxy_LocationsDescription}" IsVisible="False"
                                              x:Name="LocationSettings">
-                        <fa:SettingsExpanderItem.Footer>
+                        <fa:FASettingsExpanderItem.Footer>
                             <Button Click="EditLocations">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <fa:SymbolIcon Symbol="Edit" />
+                                        <fa:FASymbolIcon Symbol="Edit" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_Global_Edit}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
 
-                    <fa:SettingsExpanderItem Content="Proxy Protocol">
-                        <fa:SettingsExpanderItem.Footer>
+                    <fa:FASettingsExpanderItem Content="Proxy Protocol">
+                        <fa:FASettingsExpanderItem.Footer>
                             <ComboBox
                                 x:Name="ProxyProtocolCbBox"
                                 Margin="5"
@@ -246,10 +246,10 @@
                                 <ComboBoxItem Content="v1" />
                                 <ComboBoxItem Content="v2" />
                             </ComboBox>
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableEncryption}">
-                        <fa:SettingsExpanderItem.Footer>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableEncryption}">
+                        <fa:FASettingsExpanderItem.Footer>
                             <ToggleSwitch
                                 x:Name="EnableCryptoCBox"
                                 Margin="5,0,5,0"
@@ -257,10 +257,10 @@
                                 OffContent="{x:Static languages:Languages.Text_Global_No}"
                                 OnContent="{x:Static languages:Languages.Text_Global_Yes}"
                                 IsChecked="False" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                    <fa:SettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableCompression}">
-                        <fa:SettingsExpanderItem.Footer>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                    <fa:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_CreateProxy_EnableCompression}">
+                        <fa:FASettingsExpanderItem.Footer>
                             <ToggleSwitch
                                 x:Name="EnableCompressCBox"
                                 Margin="5,0,5,0"
@@ -268,9 +268,9 @@
                                 OnContent="{x:Static languages:Languages.Text_Global_Yes}"
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 IsChecked="False" />
-                        </fa:SettingsExpanderItem.Footer>
-                    </fa:SettingsExpanderItem>
-                </fa:SettingsExpander>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                </fa:FASettingsExpander>
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center"

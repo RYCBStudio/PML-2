@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,17 +16,17 @@
         <!-- 基本信息 -->
         <StackPanel Grid.Row="0" Spacing="8">
             <Grid ColumnDefinitions="*, *" ColumnSpacing="8">
-                <TextBox Watermark="tech.rycb.plugin.xxx"
+                <TextBox PlaceholderText="tech.rycb.plugin.xxx"
                          Text="{Binding Draft.Id}" />
-                <TextBox Grid.Column="1" Watermark="{x:Static languages:Languages.Text_PluginEditor_Name}"
+                <TextBox Grid.Column="1" PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_Name}"
                          Text="{Binding Draft.Name}" />
             </Grid>
             <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="8">
-                <TextBox Watermark="{x:Static languages:Languages.Text_PluginEditor_Description}"
+                <TextBox PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_Description}"
                          Text="{Binding Draft.Description}" />
-                <TextBox Grid.Column="1" Watermark="{x:Static languages:Languages.Text_PluginEditor_Author}"
+                <TextBox Grid.Column="1" PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_Author}"
                          Text="{Binding Draft.Author}" />
-                <TextBox Grid.Column="2" Watermark="{x:Static languages:Languages.Text_PluginEditor_Version}"
+                <TextBox Grid.Column="2" PlaceholderText="{x:Static languages:Languages.Text_PluginEditor_Version}"
                          Text="{Binding Draft.Version}" Width="90" />
             </Grid>
         </StackPanel>
@@ -62,7 +62,7 @@
                                 </Grid>
 
                                 <!-- 条件 -->
-                                <TextBox Watermark="ctx.data.proxyName != '' &amp;&amp; ctx.data.count -gt 1"
+                                <TextBox PlaceholderText="ctx.data.proxyName != '' &amp;&amp; ctx.data.count -gt 1"
                                          Text="{Binding Condition}" />
 
                                 <!-- 动作列表 -->
@@ -96,7 +96,7 @@
                                                     <ItemsControl ItemsSource="{Binding Params}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate x:DataType="pedit:ActionParamDraft">
-                                                                <TextBox Watermark="{Binding Label}"
+                                                                <TextBox PlaceholderText="{Binding Label}"
                                                                          Text="{Binding Value}"
                                                                          Margin="0,4" />
                                                             </DataTemplate>

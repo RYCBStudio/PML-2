@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
@@ -104,7 +104,7 @@ public partial class DnsAccountsWindow : Window
             var box = new TextBox
             {
                 Name = $"Field_{field.Key}",
-                Watermark = ResolveText(field.PlaceholderKey),
+                PlaceholderText= ResolveText(field.PlaceholderKey),
                 PasswordChar = field.IsSecret ? '●' : '\0'
             };
 
@@ -178,7 +178,7 @@ public partial class DnsAccountsWindow : Window
 
             if (entry.Credentials.TryGetValue(field.Key, out var value) && !string.IsNullOrEmpty(value))
             {
-                box.Watermark = SecretRedactor.Mask(value);
+                box.PlaceholderText= SecretRedactor.Mask(value);
             }
         }
     }
@@ -200,15 +200,15 @@ public partial class DnsAccountsWindow : Window
             return;
         }
 
-        var confirm = new FluentAvalonia.UI.Controls.ContentDialog
+        var confirm = new FluentAvalonia.UI.Controls.FAContentDialog
         {
             Title = Languages.Text_Dns_DeleteConfirmTitle,
             Content = $"{summary.DisplayName}（{summary.ProviderDisplayName}）\n\n{Languages.Text_Dns_DeleteConfirm}",
             PrimaryButtonText = Languages.Text_Dns_Delete,
             CloseButtonText = Languages.Text_Global_Cancel,
-            DefaultButton = FluentAvalonia.UI.Controls.ContentDialogButton.Close
+            DefaultButton = FluentAvalonia.UI.Controls.FAContentDialogButton.Close
         };
-        if (await confirm.ShowAsync() != FluentAvalonia.UI.Controls.ContentDialogResult.Primary)
+        if (await confirm.ShowAsync() != FluentAvalonia.UI.Controls.FAContentDialogResult.Primary)
         {
             return;
         }
@@ -357,16 +357,16 @@ public partial class DnsAccountsWindow : Window
         {
             HorizontalAlignment = HorizontalAlignment.Stretch
         });
-        var cd = new ContentDialog()
+        var cd = new FAContentDialog()
         {
             Title = Languages.Text_Dns_SubmitProvider,
             Content = panel,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             CloseButtonText = Languages.Text_Global_Cancel,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             var textBox = panel.Children[1] as TextBox;
             if (textBox is not null)

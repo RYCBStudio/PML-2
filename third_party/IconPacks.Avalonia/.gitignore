@@ -1,0 +1,12 @@
+# 本地 fork 的构建产物（Avalonia 12 spike · 计划 P1.6）
+#
+# 仓库根 .gitignore 的 [Oo]bj/* 与 [Dd]ebug/ 只覆盖一层目录，
+# 无法匹配 src/IconPacks.Avalonia.*/obj 这种深度
+# （实测：git check-ignore 对 third_party/.../obj/probe.json 不命中）。
+# 故在此就近声明，避免把 fork 的中间产物提交进仓库。
+#
+# 采用就近 .gitignore 而非修改根 .gitignore，可避免与并行进行的
+# P0 改动在同一文件上产生冲突。
+
+bin/
+obj/

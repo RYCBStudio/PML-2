@@ -8,7 +8,7 @@ using Avalonia.Threading;
 
 namespace MEFrpLauncherX.Controls;
 
-public partial class AnimatedProgressRing : UserControl
+public partial class AnimatedFAProgressRing : UserControl
 {
     private const double DurTop = 2.0;
     private const double DurLeft = 2.5;
@@ -20,7 +20,7 @@ public partial class AnimatedProgressRing : UserControl
     private readonly Stopwatch _sw = new();
     private readonly DispatcherTimer _timer;
 
-    public AnimatedProgressRing()
+    public AnimatedFAProgressRing()
     {
         InitializeComponent();
 

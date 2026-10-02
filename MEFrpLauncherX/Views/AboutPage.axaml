@@ -29,14 +29,14 @@
     <ScrollViewer>
         <Panel>
             <StackPanel Margin="10" Classes="animated">
-                <controls1:SettingsExpander Description="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
+                <controls1:FASettingsExpander Description="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
                                             IsExpanded="True">
-                    <controls1:SettingsExpander.IconSource>
-                        <controls1:ImageIconSource
+                    <controls1:FASettingsExpander.IconSource>
+                        <controls1:FAImageIconSource
                             Source="/Assets/meflx.png">
-                        </controls1:ImageIconSource>
-                    </controls1:SettingsExpander.IconSource>
-                    <controls1:SettingsExpander.Footer>
+                        </controls1:FAImageIconSource>
+                    </controls1:FASettingsExpander.IconSource>
+                    <controls1:FASettingsExpander.Footer>
                         <StackPanel>
                             <TextBlock Margin="20 0 0  0"
                                        Text="{Binding Source={x:Static meFrpLauncherX:App.Codename}, StringFormat='Codename: {0}'}" />
@@ -63,8 +63,8 @@
                                 </HyperlinkButton>
                             </StackPanel>
                         </StackPanel>
-                    </controls1:SettingsExpander.Footer>
-                    <controls1:SettingsExpander.Header>
+                    </controls1:FASettingsExpander.Footer>
+                    <controls1:FASettingsExpander.Header>
                         <TextBlock
                             FontFamily="{StaticResource GlobalFontFamily}"
                             Theme="{StaticResource BodyStrongTextBlockStyle}"
@@ -76,11 +76,11 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                    </controls1:SettingsExpander.Header>
-                    <controls1:SettingsExpanderItem
+                    </controls1:FASettingsExpander.Header>
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_OpenSourceLicense}"
                         Description="{x:Static languages:Languages.Text_About_PoweredBy}">
-                        <controls1:SettingsExpanderItem.Footer>
+                        <controls1:FASettingsExpanderItem.Footer>
                             <StackPanel>
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                     <HyperlinkButton
@@ -133,20 +133,20 @@
                                         Classes="Danger"
                                         FontFamily="{StaticResource GlobalFontFamily}">
                                         <DockPanel HorizontalSpacing="4">
-                                            <controls1:ProgressRing IsVisible="{Binding IsSubmittingFeedback}"
+                                            <controls1:FAProgressRing IsVisible="{Binding IsSubmittingFeedback}"
                                                                     Maximum="3"
                                                                     Value="{Binding SubmitProgress, Mode=OneWay}"
                                                                     IsIndeterminate="False"
                                                                     DockPanel.Dock="Right" VerticalAlignment="Top"
                                                                     Height="12">
-                                                <controls1:ProgressRing.Transitions>
+                                                <controls1:FAProgressRing.Transitions>
                                                     <Transitions>
                                                         <DoubleTransition Property="Value" Easing="QuarticEaseIn"
                                                                           Duration="0:0:0.1">
                                                         </DoubleTransition>
                                                     </Transitions>
-                                                </controls1:ProgressRing.Transitions>
-                                            </controls1:ProgressRing>
+                                                </controls1:FAProgressRing.Transitions>
+                                            </controls1:FAProgressRing>
                                             <TextBlock
                                                 Text="{x:Static languages:Languages.Text_About_ReportIssue}" />
                                         </DockPanel>
@@ -160,12 +160,12 @@
                                     <Button Content="TestMarkdown" Click="Debug_TestMarkdown" />
                                 </WrapPanel>
                             </StackPanel>
-                        </controls1:SettingsExpanderItem.Footer>
+                        </controls1:FASettingsExpanderItem.Footer>
 
-                    </controls1:SettingsExpanderItem>
-                </controls1:SettingsExpander>
-                <controls1:SettingsExpander>
-                    <controls1:SettingsExpander.Header>
+                    </controls1:FASettingsExpanderItem>
+                </controls1:FASettingsExpander>
+                <controls1:FASettingsExpander>
+                    <controls1:FASettingsExpander.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image
                                 Width="20"
@@ -177,8 +177,8 @@
                                 Theme="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="{x:Static languages:Languages.Text_About_AboutMEFrp}" />
                         </StackPanel>
-                    </controls1:SettingsExpander.Header>
-                    <controls1:SettingsExpander.Footer>
+                    </controls1:FASettingsExpander.Header>
+                    <controls1:FASettingsExpander.Footer>
                         <StackPanel>
                             <TextBlock
                                 Margin="0,5,0,0"
@@ -190,18 +190,18 @@
                                 FontFamily="{StaticResource GlobalFontFamily}"
                                 Text="{x:Static languages:Languages.Text_Login_MEFrpFeature_2}" />
                         </StackPanel>
-                    </controls1:SettingsExpander.Footer>
-                    <controls1:SettingsExpanderItem
+                    </controls1:FASettingsExpander.Footer>
+                    <controls1:FASettingsExpanderItem
                         Description="{Binding Source={x:Static core:App.MEFrpVersion}, StringFormat='Core: v5 Client: v{0}'}">
                         <TextBlock
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="15"
                             FontWeight="Bold"
                             Text="{x:Static languages:Languages.Text_About_MEFrpVersion}" />
-                        <!-- <controls1:SettingsExpanderItem.Description> -->
+                        <!-- <controls1:FASettingsExpanderItem.Description> -->
                         <!--     <Binding Source="{x:Static meFrpLauncherX:App.MEFrpVersion}" ></Binding> -->
-                        <!-- </controls1:SettingsExpanderItem.Description> -->
-                        <controls1:SettingsExpanderItem.Footer>
+                        <!-- </controls1:FASettingsExpanderItem.Description> -->
+                        <controls1:FASettingsExpanderItem.Footer>
                             <HyperlinkButton
                                 Margin="0,5,0,0"
                                 Click="MEFC_Click"
@@ -210,15 +210,15 @@
                                 FontFamily="{StaticResource GlobalFontFamily}">
                                 <TextBlock Text="{x:Static languages:Languages.Text_About_OpenClientFolder}" />
                             </HyperlinkButton>
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
-                    <controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
+                    <controls1:FASettingsExpanderItem>
                         <TextBlock
                             Margin="10"
                             FontFamily="{StaticResource GlobalFontFamily}"
                             FontSize="15"
                             Text="{x:Static languages:Languages.Text_About_FriendlyLinks}" />
-                        <controls1:SettingsExpanderItem.Footer>
+                        <controls1:FASettingsExpanderItem.Footer>
                             <WrapPanel FlowDirection="LeftToRight" ItemSpacing="5">
                                 <HyperlinkButton
                                     Click="OQ_Click"
@@ -241,12 +241,12 @@
                                     <TextBlock Text="{x:Static languages:Languages.Text_About_SupportEmail}" />
                                 </HyperlinkButton>
                             </WrapPanel>
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
-                </controls1:SettingsExpander>
-                <controls1:SettingsExpander Background="Transparent"
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
+                </controls1:FASettingsExpander>
+                <controls1:FASettingsExpander Background="Transparent"
                                             FontFamily="{StaticResource GlobalFontFamily}" IsExpanded="True">
-                    <controls1:SettingsExpander.Header>
+                    <controls1:FASettingsExpander.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image
                                 Width="20"
@@ -258,7 +258,7 @@
                                 Theme="{StaticResource BodyStrongTextBlockStyle}"
                                 Text="{x:Static languages:Languages.Text_About_DailyHitokoto}" />
                         </StackPanel>
-                    </controls1:SettingsExpander.Header>
+                    </controls1:FASettingsExpander.Header>
                     <StackPanel Spacing="5" PointerPressed="RefreshHitokoto_Click" Background="Transparent">
                         <ProgressBar Margin="-10, -10, -10 ,-10" x:Name="HitokotoStatus" IsVisible="False"
                                      VerticalAlignment="Top" IsIndeterminate="True" />
@@ -280,32 +280,32 @@
                             </controls:TypingControl.Text>
                         </controls:TypingControl>
                     </StackPanel>
-                </controls1:SettingsExpander>
+                </controls1:FASettingsExpander>
 
-                <controls1:SettingsExpander IconSource="Repair"
+                <controls1:FASettingsExpander IconSource="Repair"
                                             Header="{x:Static languages:Languages.Text_About_ToolBox_Title}"
                                             Description="{x:Static languages:Languages.Text_About_ToolBox_Description}">
-                    <controls1:SettingsExpanderItem
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_ExportLog}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_ExportLog_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="ExportLog" />
-                    <controls1:SettingsExpanderItem
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="ClearCache" />
-                    <controls1:SettingsExpanderItem
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="OpenLogsFolder" />
-                    <controls1:SettingsExpanderItem
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_OpenRootFolder}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_OpenRootFolder_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="OpenRootFolder" />
-                    <controls1:SettingsExpanderItem
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_CopyDiagnostics}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_CopyDiagnostics_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="CopyDiagnostics" />
-                </controls1:SettingsExpander>
+                </controls1:FASettingsExpander>
             </StackPanel>
         </Panel>
     </ScrollViewer>

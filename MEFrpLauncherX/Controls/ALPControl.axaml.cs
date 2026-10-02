@@ -21,8 +21,8 @@ public partial class ALPControl : UserControl
     {
         if (await MessageBox.ShowAsync(Languages.Text_ALPControl_ConfigChoicePrompt, Languages.Caption_Hint,
             [
-                new TaskDialogButton(Languages.Text_ALPControl_FileButton, TaskDialogStandardResult.Yes),
-                new TaskDialogButton(Languages.Text_ALPControl_ContentButton, TaskDialogStandardResult.No)
+                new FATaskDialogButton(Languages.Text_ALPControl_FileButton, FATaskDialogStandardResult.Yes),
+                new FATaskDialogButton(Languages.Text_ALPControl_ContentButton, FATaskDialogStandardResult.No)
             ]) ==
             MessageBoxResult.Yes)
         {

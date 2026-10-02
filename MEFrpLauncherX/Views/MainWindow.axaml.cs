@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
@@ -40,10 +41,8 @@ using Color = Avalonia.Media.Color;
 
 namespace MEFrpLauncherX.Views;
 
-public partial class MainWindow : AppWindow, IDisposable
+public partial class MainWindow : FAAppWindow, IDisposable
 {
-    private DispatcherTimer _accentColorRotator;
-
     private CancellationTokenSource _clearMessageCts;
     private TrayIcon _notifyIcon;
     private bool _backgroundApplied;
@@ -142,42 +141,130 @@ public partial class MainWindow : AppWindow, IDisposable
             Focus();
             Activate();
         };
+
+        #region 帧率诊断叠加层（仅 DEBUG）
+
+        // 在窗口左上角实时显示 FPS + 布局耗时图 + 渲染耗时图，用于定位掉帧瓶颈：
+        //   - FPS 曲线掉到基线以下 → 整体帧率不足
+        //   - LayoutTimeGraph 尖峰    → 布局计算是瓶颈（避免动画 Width/Height/Margin）
+        //   - RenderTimeGraph 尖峰    → 绘制是瓶颈（阴影/模糊/大图缩放）
+        // 刻意不启用 DirtyRects：CompositionTargetOverlays.RequireLayer 在该标志下
+        // 会额外引入一层合成层，本身就会改变被观测对象的行为。
+        //
+        // 默认关闭：叠加层本身每帧都要绘制文字与曲线，会轻微影响被测对象。
+        // 需要测量时设置环境变量 PML2_RENDER_DIAG=1（或 fps/layout/render/dirty 组合）再启动。
+#if DEBUG
+        RendererDiagnostics.DebugOverlays = ResolveDebugOverlays();
+#endif
+
+        #endregion
+
         Instance = this;
+    }
+
+#if DEBUG
+    /// <summary>
+    ///     解析 PML2_RENDER_DIAG 环境变量，决定启用哪些渲染诊断叠加层。
+    /// </summary>
+    /// <remarks>
+    ///     取值示例：<c>1</c> / <c>all</c> / <c>fps,render</c>。未设置时返回 <see cref="RendererDebugOverlays.None" />。
+    ///     支持：fps、layout、render、dirty（dirty 会引入额外合成层，仅用于排查脏矩形问题）。
+    /// </remarks>
+    private static RendererDebugOverlays ResolveDebugOverlays()
+    {
+        var raw = Environment.GetEnvironmentVariable("PML2_RENDER_DIAG");
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return RendererDebugOverlays.None;
+        }
+
+        if (raw.Trim() is "1" or "all")
+        {
+            // 注意：RendererDebugOverlays 没有定义 All 成员，必须显式组合。
+            return RendererDebugOverlays.Fps
+                   | RendererDebugOverlays.LayoutTimeGraph
+                   | RendererDebugOverlays.RenderTimeGraph
+                   | RendererDebugOverlays.DirtyRects;
+        }
+
+        var result = RendererDebugOverlays.None;
+        foreach (var part in raw.Split([',', ';', ' '], StringSplitOptions.RemoveEmptyEntries))
+        {
+            result |= part.Trim().ToLowerInvariant() switch
+            {
+                "fps" => RendererDebugOverlays.Fps,
+                "layout" => RendererDebugOverlays.LayoutTimeGraph,
+                "render" => RendererDebugOverlays.RenderTimeGraph,
+                "dirty" => RendererDebugOverlays.DirtyRects,
+                _ => RendererDebugOverlays.None
+            };
+        }
+
+        return result;
+    }
+#endif
+
+    /// <summary>
+    ///     为用作窗口背景的 <see cref="Image" /> 指定位图采样模式。
+    /// </summary>
+    /// <remarks>
+    ///     背景图是整窗缩放的：默认的 <c>BitmapInterpolationMode.Unspecified</c> 与
+    ///     <c>HighQuality</c> 在上采样时都会走三次重采样（HighQuality → SKCubicResampler.Mitchell，
+    ///     见 Avalonia.Skia 的 BitmapInterpolationMode.ToSKSamplingOptions），
+    ///     内置 splash.png 为 1706x1066，在 2560 宽的窗口下每帧都要做一次 260 万像素的三次插值。
+    ///     <para>
+    ///         该属性在 Avalonia 中没有对应的 CLR 属性（只有 Get/SetBitmapInterpolationMode 方法），
+    ///         因此无法写在 XAML 里，只能在此处用代码设置。
+    ///     </para>
+    /// </remarks>
+    private static void SetBackgroundSampling(Image? image, BitmapInterpolationMode mode)
+    {
+        if (image is not null)
+        {
+            RenderOptions.SetBitmapInterpolationMode(image, mode);
+        }
     }
 
     private void CleanupFluentSplash()
     {
-        // 1. 清伪类（防止样式还在影响）
+        // 1. 清伪类（让 FAAppWindow 的 ^:splashOpen 样式不再显示 SplashHost）
         PseudoClasses.Set(":splashOpen", false);
 
-        // 2. 从模板里找到 SplashHost 并真正移除
-        if (this.GetTemplateChildren() is { } children)
-        {
-            // 更稳妥：用 NameScope 或 VisualTree 查找
-        }
-
-        var splashHost = this.FindDescendantOfType<AppSplashScreen>() // 或按 Name 找 "SplashHost"
+        // 2. 隐藏模板里的 SplashHost。
+        //
+        // 【重要 · AOT 崩溃修复】这里绝对不能再写 SplashScreen = null;
+        //
+        // FAAppWindow.OnOpened 的 _splashContext 空检查是在 await RunJobs() 之前求值的，
+        // 而本方法正是由 RunJobs() -> SplashScreen.RunTasks() -> InitApp 间接触发。
+        // 一旦把 SplashScreen 置为 null，FA 的 set_SplashScreen 会把 FAAppWindow._splashContext
+        // 整个置空；但 OnOpened 恢复执行后仍会无条件调用内部方法 LoadApp()，
+        // 而 LoadApp() 会直接解引用 _splashContext 与 _splashContext.Host：
+        //
+        //     await Task.WhenAll(aniSplash.RunAsync(_splashContext.Host), ...);
+        //
+        // 结果就是 NullReferenceException（IL 偏移 ~+0xF1，表现为 FAAppWindow.<LoadApp>d__13.MoveNext()）。
+        // 由于本方法是通过 Dispatcher.UIThread.InvokeAsync 从后台线程投递的，与 LoadApp() 构成竞态，
+        // 因此旧代码在 JIT 下常常侥幸不崩、在 AOT 下几乎必崩。
+        //
+        // 另外，set_SplashScreen(null) 自身在 Host 尚未赋值时也会调用 get_Host().set_SplashScreen() 而 NRE。
+        //
+        // 正确做法：只做视觉隐藏，把 :splashOpen 伪类清掉即可；
+        // FA 的 LoadApp() 随后会正常完成淡出动画，并把 :splashOpen 置回 false、
+        // 设置 HasShownSplashScreen = true，模板里的 SplashHost 由 ControlTheme 样式保持隐藏。
+        var splashHost = this.FindDescendantOfType<FAAppSplashScreen>() // 或按 Name 找 "SplashHost"
                          ?? this.GetVisualDescendants()
                              .OfType<Control>()
                              .FirstOrDefault(c => c.Name == "SplashHost");
 
         if (splashHost != null)
         {
-            // 从父容器移除（比只设 Opacity=0 更干净）
-            if (splashHost.Parent is Panel panel)
-                panel.Children.Remove(splashHost);
-            else if (splashHost.Parent is ContentControl cc)
-                cc.Content = null;
-
-            // 再保险
+            // 只透明化 / 隐藏，不从父容器移除：
+            // LoadApp() 仍持有该实例引用并要对其播放淡出动画，移出可视树会导致动画目标悬空。
             splashHost.IsVisible = false;
             splashHost.Opacity = 0;
         }
 
-        // 3. 清掉 SplashScreen 引用，避免后续逻辑再碰它
-        SplashScreen = null;
-
-        // 4. 强制整窗重绘一次
+        // 3. 强制整窗重绘一次
         InvalidateMeasure();
         InvalidateArrange();
         InvalidateVisual();
@@ -256,7 +343,15 @@ public partial class MainWindow : AppWindow, IDisposable
 
     public void Dispose()
     {
-        _notifyIcon.Dispose();
+        // 先从 Application.TrayIcons 注销，再 Dispose：
+        // 只有注销时 Avalonia 才会调用 TrayIcon.Detach() 释放平台图标实现。
+        if (_notifyIcon != null)
+        {
+            TrayIcon.GetIcons(Application.Current!)?.Remove(_notifyIcon);
+            _notifyIcon.Dispose();
+            _notifyIcon = null;
+        }
+
         _backgroundCache?.Image?.Dispose();
         _backgroundCache = null;
         _clearMessageCts?.Cancel();
@@ -287,6 +382,16 @@ public partial class MainWindow : AppWindow, IDisposable
 
         MainLayer.Opacity = ConfigManager.CurrentConfig.BackgroundSettings.LayerOpacity;
 
+        // 背景图每帧都要整窗缩放绘制：
+        //   - MainBackground 是用户/主题指定的背景（可能是一张远超窗口尺寸的大图）
+        //   - LoginBackground 是内置 splash.png（1706x1066），位于 ZIndex=-1，
+        //     仅当 MainLayer.Opacity < 1（用户把「图层不透明度」调低）时才会透出来
+        // 默认的 HighQuality 在上采样时会使用 Mitchell 三次重采样，故显式降为双线性。
+        // 若把 LayerOpacity 保持为 1，LoginBackground 会被不透明的 MainLayer 完全遮挡，
+        // 此时可以直接删掉 XAML 里 LoginBackground 的 Source 以省下一次 3MB 图片解码。
+        SetBackgroundSampling(MainBackground, BitmapInterpolationMode.MediumQuality);
+        SetBackgroundSampling(LoginBackground, BitmapInterpolationMode.MediumQuality);
+
         if (OperatingSystem.IsLinux() || (Environment.OSVersion.Version.Build <= 22000 &&
                                           ConfigManager.CurrentConfig.Skin.ToUpper(0) == "Mica"
             ))
@@ -315,6 +420,11 @@ public partial class MainWindow : AppWindow, IDisposable
             Menu = CreateContextMenu(),
             ToolTipText = Languages.Text_MainWindow_TrayToolTip
         };
+
+        // Avalonia 12 修复：TrayIcon 只是普通对象，必须注册进 Application 的 TrayIcons 集合
+        // （TrayIcon.Icons 附加属性）才会调用 TrayIcon.Attach() 创建平台图标实现并显示。
+        // 旧代码只 new TrayIcon{...} 从未注册，因此托盘图标从来不显示。
+        TrayIcon.SetIcons(Application.Current!, new TrayIcons { _notifyIcon });
         if (OperatingSystem.IsMacOS())
         {
             // 创建原生菜单（26.3.1 M3：重组 macOS 原生菜单，命令与托盘/主界面同源）
@@ -560,6 +670,7 @@ public partial class MainWindow : AppWindow, IDisposable
             Background = null;
             MainBackground.Source = bitmap;
             MainBackground.Stretch = stretch;
+            SetBackgroundSampling(MainBackground, BitmapInterpolationMode.MediumQuality);
             MainBackground.Show();
         }
     }
@@ -599,7 +710,7 @@ public partial class MainWindow : AppWindow, IDisposable
             return;
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Content = new MarkdownRender
             {
@@ -609,17 +720,17 @@ public partial class MainWindow : AppWindow, IDisposable
             CloseButtonText = Languages.Text_MainWindow_Decline,
             IsPrimaryButtonEnabled = true,
             IsSecondaryButtonEnabled = false,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         App.SplashService?.Close();
         var res = await cd.ShowAsync();
         switch (res)
         {
-            case ContentDialogResult.None:
+            case FAContentDialogResult.None:
                 App.Desktop.Shutdown();
                 ConfigManager.CurrentConfig.PrivacyAgreed = false;
                 break;
-            case ContentDialogResult.Primary:
+            case FAContentDialogResult.Primary:
                 ConfigManager.CurrentConfig.IsTelemetryEnabled = true;
                 ConfigManager.CurrentConfig.PrivacyAgreed = true;
                 break;
@@ -650,6 +761,12 @@ public partial class MainWindow : AppWindow, IDisposable
                 ? $"#{data.StartProxyId}"
                 : data.StartProxyName;
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, title);
+
+            // 26.4 修复：必须切到终端页，否则终端进程永远不会启动。
+            // PTY 终端只在控件 Loaded（页面可见）时拉起进程，而 SendToPtyAsync 在页面
+            // 不可见时不会主动启动，只会挂起等待 —— 表现为「链接已触发，但必须手动切到
+            // 终端页才开始启动隧道」。手动启动隧道的路径同样会切页，此处保持一致。
+            MainPageFrameViewModel.RequestTerminalNavigation();
         }
         catch (Exception ex)
         {
@@ -841,7 +958,7 @@ public partial class MainWindow : AppWindow, IDisposable
     }
 }
 
-internal class MainAppSplashScreen : IApplicationSplashScreen
+internal class MainAppSplashScreen : IFAApplicationSplashScreen
 {
     private MainWindow _owner;
 

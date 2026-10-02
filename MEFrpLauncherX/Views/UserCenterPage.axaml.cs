@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,6 +23,7 @@ using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.Views;
 
@@ -294,12 +295,12 @@ public partial class UserCenterViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<InfoClasses.IcpDomain, Unit> DeleteIcpDomainCommand
+    public ReactiveCommand<InfoClasses.IcpDomain, RxVoid> DeleteIcpDomainCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> AddDomainCommand
+    public ReactiveCommand<RxVoid, RxVoid> AddDomainCommand
     {
         get;
     }
@@ -337,20 +338,20 @@ public partial class UserCenterViewModel : ViewModelBase
         {
             var domainBox = new TextBox
             {
-                Watermark = Languages.Text_UserCenter_DomainWatermark,
+                PlaceholderText = Languages.Text_UserCenter_DomainWatermark,
                 Margin = new Thickness(10),
             };
-            var inputDialog = new ContentDialog
+            var inputDialog = new FAContentDialog
             {
                 Title = Languages.Text_UserCenter_AddDomainTitle,
                 Content = domainBox,
                 PrimaryButtonText = Languages.Text_Global_Add,
                 CloseButtonText = Languages.Text_Global_Cancel,
                 IsPrimaryButtonEnabled = true,
-                DefaultButton = ContentDialogButton.Primary,
+                DefaultButton = FAContentDialogButton.Primary,
             };
             var res = await inputDialog.ShowAsync();
-            if (res != ContentDialogResult.Primary || domainBox.Text.IsNullOrEmpty())
+            if (res != FAContentDialogResult.Primary || domainBox.Text.IsNullOrEmpty())
             {
                 return;
             }

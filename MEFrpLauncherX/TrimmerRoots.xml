@@ -1,33 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <linker>
+    <!--
+        Avalonia 12 升级（P4）：本文件已按 Avalonia 12.1.3 的「实际程序集名 / 类型全名」逐项重建。
+
+        背景：ILC/linker 对 <assembly fullname> 不匹配的条目是**静默忽略**的 ——
+        没有错误、没有警告，条目只是不生效。因此 Avalonia 11 时代的旧条目
+        （Avalonia.Markup.Xaml.TypeConverters.* / Iciclecreek.TerminalWindow 等）
+        必须逐项校验后修正，否则 AOT 产物会出现「看似配了裁剪规则、实际没配」的隐蔽故障。
+
+        校验方式（可用 tools/P4Verify 复现）：用 System.Reflection.Metadata 读取各程序集的
+        真实 TypeDefinition 列表，与这里的 fullname 逐条比对。
+    -->
+
     <!-- 保留 MEFrpLauncherX.Fonts 程序集中的所有字体资源 -->
     <assembly fullname="MEFrpLauncherX.Fonts">
         <type fullname="*" preserve="all"/>
     </assembly>
 
-    <!-- 保留 Avalonia 相关的字体处理类型 -->
+    <!-- 保留 Avalonia 相关的字体处理与资源加载类型 -->
     <assembly fullname="Avalonia.Base">
         <type fullname="Avalonia.Media.*" preserve="all"/>
         <!-- 显式保留嵌套命名空间的成像类型（AOT 下通配符可能不跨命名空间匹配） -->
         <type fullname="Avalonia.Media.Imaging.Bitmap" preserve="all"/>
-        <type fullname="Avalonia.Media.Imaging.BitmapTypeConverter" preserve="all"/>
         <type fullname="Avalonia.Media.Imaging.IBitmap" preserve="all"/>
         <type fullname="Avalonia.Media.ImageBrush" preserve="all"/>
         <!-- 保留 Avalonia 资源加载基础设施 -->
         <type fullname="Avalonia.Platform.IAssetLoader" preserve="all"/>
         <type fullname="Avalonia.Platform.AssetLoader" preserve="all"/>
-        <!-- 保留 XAML 类型转换器机制 -->
-        <type fullname="Avalonia.Markup.Xaml.TypeConverters.BitmapTypeConverter" preserve="all"/>
     </assembly>
 
-    <!-- 保留 Avalonia.Markup 程序集中的 XAML 加载相关类型 -->
+    <!--
+        保留 Avalonia.Markup 的绑定/选择器解析类型。
+        注意：Avalonia 12 中本程序集里的类型位于 Avalonia.Markup.*（如 Avalonia.Markup.Parsers、
+        Avalonia.Markup.Data）与 Avalonia.Data.*，**不存在** Avalonia.Markup.Xaml.* 命名空间，
+        原 Avalonia 11 条目 "Avalonia.Markup.Xaml.*" 属静默失效，已修正。
+    -->
     <assembly fullname="Avalonia.Markup">
-        <type fullname="Avalonia.Markup.Xaml.*" preserve="all"/>
+        <type fullname="Avalonia.Markup.*" preserve="all"/>
     </assembly>
 
-    <!-- 保留 Avalonia.Markup.Xaml 程序集（Avalonia 11.x 分离的程序集） -->
+    <!--
+        保留 Avalonia.Markup.Xaml 程序集（XAML 加载器本体）。
+        另：位图类型转换器的 Avalonia 12 真实全名是
+        Avalonia.Markup.Xaml.Converters.BitmapTypeConverter
+        （旧配置写的 Avalonia.Markup.Xaml.TypeConverters.BitmapTypeConverter 在 12 中不存在，
+        而 Avalonia.Base 里也从未有过 Avalonia.Media.Imaging.BitmapTypeConverter）。
+    -->
     <assembly fullname="Avalonia.Markup.Xaml">
         <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="Avalonia.Markup.Xaml">
+        <type fullname="Avalonia.Markup.Xaml.Converters.BitmapTypeConverter" preserve="all"/>
     </assembly>
 
     <!-- 保留字体文件资源 -->
@@ -53,11 +76,17 @@
         <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
     </assembly>
 
-    <!-- 保留可能被 Iciclecreek / Porta.Pty 调用到的程序集 -->
+    <!--
+        保留端子控件程序集。
+        Avalonia 12 升级：原条目 "Iciclecreek.TerminalWindow" 程序集名已不存在
+        （该程序集从未产出，属历史失效条目），实际程序集为
+        Iciclecreek.Avalonia.Terminal（命名空间仍是 Iciclecreek.TerminalWindow）；
+        另补充其依赖的 Iciclecreek.Avalonia.WindowManager。
+    -->
     <assembly fullname="Iciclecreek.Avalonia.Terminal">
         <type fullname="*" preserve="all"/>
     </assembly>
-    <assembly fullname="Iciclecreek.TerminalWindow">
+    <assembly fullname="Iciclecreek.Avalonia.WindowManager">
         <type fullname="*" preserve="all"/>
     </assembly>
 

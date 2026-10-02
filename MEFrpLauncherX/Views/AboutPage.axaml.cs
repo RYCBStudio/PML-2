@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
@@ -97,7 +98,7 @@ public partial class AboutPage : UserControl
 
     private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
     {
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Content = new MarkdownRender
             {
@@ -211,12 +212,12 @@ public partial class AboutPage : UserControl
             MaxHeight = 450,
         };
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_About_OpenSourceSoftware,
             Content = scrollViewer,
             PrimaryButtonText = Languages.Text_Global_Close,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
         };
         await cd.ShowAsync();
@@ -237,9 +238,9 @@ public partial class AboutPage : UserControl
             Languages.Text_About_GroupRules,
             Languages.Caption_Hint,
             [
-                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
-                new TaskDialogButton(Languages.Text_About_CopyGroupNumber, TaskDialogStandardResult.No),
-                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
+                new FATaskDialogButton(Languages.Text_About_AcknowledgeAndGo, FATaskDialogStandardResult.Yes),
+                new FATaskDialogButton(Languages.Text_About_CopyGroupNumber, FATaskDialogStandardResult.No),
+                new FATaskDialogButton(Languages.Text_Global_Cancel, FATaskDialogStandardResult.Cancel)
             ]);
 
         if (res == MessageBoxResult.Yes)
@@ -265,9 +266,9 @@ public partial class AboutPage : UserControl
             Languages.Text_About_GroupRules,
             Languages.Caption_Hint,
             [
-                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
-                new TaskDialogButton(Languages.Text_About_CopyGroupNumber, TaskDialogStandardResult.No),
-                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
+                new FATaskDialogButton(Languages.Text_About_AcknowledgeAndGo, FATaskDialogStandardResult.Yes),
+                new FATaskDialogButton(Languages.Text_About_CopyGroupNumber, FATaskDialogStandardResult.No),
+                new FATaskDialogButton(Languages.Text_Global_Cancel, FATaskDialogStandardResult.Cancel)
             ]);
 
         if (res == MessageBoxResult.Yes)
@@ -293,8 +294,8 @@ public partial class AboutPage : UserControl
             Languages.Text_About_GroupRules,
             Languages.Caption_Hint,
             [
-                new TaskDialogButton(Languages.Text_About_AcknowledgeAndGo, TaskDialogStandardResult.Yes),
-                new TaskDialogButton(Languages.Text_Global_Cancel, TaskDialogStandardResult.Cancel)
+                new FATaskDialogButton(Languages.Text_About_AcknowledgeAndGo, FATaskDialogStandardResult.Yes),
+                new FATaskDialogButton(Languages.Text_Global_Cancel, FATaskDialogStandardResult.Cancel)
             ]);
         if (res == MessageBoxResult.Yes)
         {
@@ -410,7 +411,7 @@ public partial class AboutPage : UserControl
         });
         await MessageBox.ShowAsync(Languages.Text_About_DocOpened, buttons:
         [
-            new TaskDialogButton(Languages.Text_About_Source1, MessageBoxResult.Yes)
+            new FATaskDialogButton(Languages.Text_About_Source1, MessageBoxResult.Yes)
             {
                 Command = new RelayCommand((s) =>
                 {
@@ -422,7 +423,7 @@ public partial class AboutPage : UserControl
                     });
                 })
             },
-            new TaskDialogButton(Languages.Text_About_Source2, MessageBoxResult.No)
+            new FATaskDialogButton(Languages.Text_About_Source2, MessageBoxResult.No)
             {
                 Command = new RelayCommand((s) =>
                 {
@@ -449,29 +450,29 @@ public partial class AboutPage : UserControl
     {
         vm.SubmitProgress = 0;
         vm.IsSubmittingFeedback = true;
-        var askForm = new ContentDialog
+        var askForm = new FAContentDialog
         {
             Content = Languages.Text_About_ReportIssue_Method,
             PrimaryButtonText = Languages.Text_About_Source1,
             CloseButtonText = Languages.Text_About_Source2,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         var askFormResult = await askForm.ShowAsync();
-        if (askFormResult == ContentDialogResult.Primary)
+        if (askFormResult == FAContentDialogResult.Primary)
         {
             var feedbackForm = new FeedbackForm();
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Content = feedbackForm,
                 IsPrimaryButtonEnabled = true,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 MinHeight = 200,
-                DefaultButton = ContentDialogButton.Primary,
+                DefaultButton = FAContentDialogButton.Primary,
                 CloseButtonText = Languages.Text_Global_Cancel,
             };
             var res = await cd.ShowAsync();
             if (!(feedbackForm.Email.IsNullOrEmpty() ||
-                  feedbackForm.Feedback.IsNullOrEmpty()) || res == ContentDialogResult.Primary)
+                  feedbackForm.Feedback.IsNullOrEmpty()) || res == FAContentDialogResult.Primary)
             {
                 //var res = await RYCBApiConverter.SendFeedBackAsync(feedbackForm.Email, feedbackForm.Feedback);
                 //if (res.success)
@@ -504,13 +505,13 @@ public partial class AboutPage : UserControl
 
     private async void CP_Click(object? sender, RoutedEventArgs e)
     {
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_About_CompleteCopyrightStatement,
             Content = Languages.Text_About_CompleteCopyrightStatement_Content,
             PrimaryButtonText = Languages.Text_Global_Confirm,
             CloseButtonText = Languages.Text_Global_Cancel,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         await cd.ShowAsync();
     }
@@ -688,7 +689,7 @@ public partial class AboutPage : UserControl
     private async void ClearCache(object? sender, RoutedEventArgs e)
     {
         var dialog = new CacheCleanupDialog();
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_About_ToolBox_ClearCache_Dialog_Title,
             Content = dialog,

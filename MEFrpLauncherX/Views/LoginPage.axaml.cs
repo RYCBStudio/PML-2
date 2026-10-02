@@ -112,11 +112,11 @@ public partial class LoginPage : UserControl
         {
             await Core.App.MainWindow.Launcher.LaunchUriAsync(
                 new Uri("https://www.mefrp.com/3rdparty/captcha?client=PML%202"));
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Title = Languages.Text_Login_EnterCaptcha,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
-                DefaultButton = ContentDialogButton.Primary,
+                DefaultButton = FAContentDialogButton.Primary,
                 IsSecondaryButtonEnabled = false,
                 CloseButtonText = Languages.Text_Global_Cancel
             };
@@ -124,7 +124,7 @@ public partial class LoginPage : UserControl
             cd.Content = input;
             
             Core.App.CurrentLogger.Log("获取验证码成功");
-            return await cd.ShowAsync() == ContentDialogResult.Primary
+            return await cd.ShowAsync() == FAContentDialogResult.Primary
                 ? MEFrpApiConverter.GetCaptchaResult(input.Text).Split("||")[0]
                 : null;
         }

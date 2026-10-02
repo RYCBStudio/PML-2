@@ -194,7 +194,7 @@ public class OnlineTheme
     }
 }
 
-public class LocalTheme : ReactiveObject
+public partial class LocalTheme : ReactiveObject
 {
     public string Name
     {
@@ -220,13 +220,15 @@ public class LocalTheme : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "";
 
-    public string Path
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Path
     {
         get;
         set;
     } = "";
 
-    public Bitmap? PreviewImage
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial Bitmap? PreviewImage
     {
         get;
         set;

@@ -1,4 +1,4 @@
-﻿using Avalonia.Threading;
+using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using MsBox.Avalonia.Enums;
 
@@ -10,7 +10,7 @@ namespace MEFrpLauncherX.Core.Controls;
 public static class MessageBox
 {
     public static async Task<MessageBoxResult> ShowAsync(object content, string caption = "", string title = "",
-        MessageBoxIcon icon = MessageBoxIcon.Info, IList<TaskDialogButton> buttons = null)
+        MessageBoxIcon icon = MessageBoxIcon.Info, IList<FATaskDialogButton> buttons = null)
     {
         var res = await Dispatcher.UIThread.Invoke(async () =>
         {
@@ -18,27 +18,27 @@ public static class MessageBox
             {
                 buttons = icon switch
                 {
-                    MessageBoxIcon.Error or MessageBoxIcon.Warning => [TaskDialogButton.OKButton],
-                    MessageBoxIcon.Question => [TaskDialogButton.YesButton, TaskDialogButton.NoButton],
-                    _ => [TaskDialogButton.OKButton]
+                    MessageBoxIcon.Error or MessageBoxIcon.Warning => [FATaskDialogButton.OKButton],
+                    MessageBoxIcon.Question => [FATaskDialogButton.YesButton, FATaskDialogButton.NoButton],
+                    _ => [FATaskDialogButton.OKButton]
                 };
             }
 
             var symbol = icon switch
             {
-                MessageBoxIcon.Error => Symbol.Dismiss,
-                MessageBoxIcon.Warning => Symbol.Alert,
-                MessageBoxIcon.Question => Symbol.Help,
-                MessageBoxIcon.Success => Symbol.Accept,
-                _ => Symbol.ContactInfo
+                MessageBoxIcon.Error => FASymbol.Dismiss,
+                MessageBoxIcon.Warning => FASymbol.Alert,
+                MessageBoxIcon.Question => FASymbol.Help,
+                MessageBoxIcon.Success => FASymbol.Accept,
+                _ => FASymbol.ContactInfo
             };
 
-            var td = new TaskDialog
+            var td = new FATaskDialog
             {
                 Title = title,
                 Header = caption,
                 Content = content,
-                IconSource = new SymbolIconSource { Symbol = symbol },
+                IconSource = new FASymbolIconSource { Symbol = symbol },
                 Buttons = buttons,
                 XamlRoot = App.MainWindow ?? App.MainVisual
             };
@@ -72,34 +72,34 @@ public static class MessageBox
             _ => MessageBoxIcon.Info
         }, btn switch
         {
-            ButtonEnum.Ok => new[] { TaskDialogButton.OKButton },
-            ButtonEnum.YesNo => new[] { TaskDialogButton.YesButton, TaskDialogButton.NoButton },
+            ButtonEnum.Ok => new[] { FATaskDialogButton.OKButton },
+            ButtonEnum.YesNo => new[] { FATaskDialogButton.YesButton, FATaskDialogButton.NoButton },
             ButtonEnum.YesNoCancel => new[]
-                { TaskDialogButton.YesButton, TaskDialogButton.NoButton, TaskDialogButton.CancelButton },
-            _ => new[] { TaskDialogButton.OKButton }
+                { FATaskDialogButton.YesButton, FATaskDialogButton.NoButton, FATaskDialogButton.CancelButton },
+            _ => new[] { FATaskDialogButton.OKButton }
         });
     }
 
     // 重载方法，支持按钮参数
-    public static Task<MessageBoxResult> ShowAsync(string message, string caption, IList<TaskDialogButton> buttons) =>
+    public static Task<MessageBoxResult> ShowAsync(string message, string caption, IList<FATaskDialogButton> buttons) =>
         ShowAsync(message, caption, "", MessageBoxIcon.Info, buttons);
 
-    private static MessageBoxResult ConvertToMessageBoxResult(object dialogResult, IList<TaskDialogButton> buttons)
+    private static MessageBoxResult ConvertToMessageBoxResult(object dialogResult, IList<FATaskDialogButton> buttons)
     {
-        if (dialogResult is TaskDialogStandardResult standardResult)
+        if (dialogResult is FATaskDialogStandardResult standardResult)
         {
             return standardResult switch
             {
-                TaskDialogStandardResult.OK => MessageBoxResult.OK,
-                TaskDialogStandardResult.Yes => MessageBoxResult.Yes,
-                TaskDialogStandardResult.No => MessageBoxResult.No,
-                TaskDialogStandardResult.Cancel => MessageBoxResult.Cancel,
+                FATaskDialogStandardResult.OK => MessageBoxResult.OK,
+                FATaskDialogStandardResult.Yes => MessageBoxResult.Yes,
+                FATaskDialogStandardResult.No => MessageBoxResult.No,
+                FATaskDialogStandardResult.Cancel => MessageBoxResult.Cancel,
                 _ => MessageBoxResult.None
             };
         }
 
         // 处理自定义按钮
-        if (dialogResult is TaskDialogButton button)
+        if (dialogResult is FATaskDialogButton button)
         {
             // 这里可以根据按钮的文本或其他属性来映射
             if (button.Text?.Contains("是") == true || button.Text?.Contains("Yes") == true)

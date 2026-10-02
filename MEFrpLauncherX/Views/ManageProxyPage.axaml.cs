@@ -345,11 +345,11 @@ public partial class ManageProxyPage : UserControl
 
     private async void OpenHelp(object? sender, RoutedEventArgs e)
     {
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_ManageProxy_HelpTitle,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Close,
             Content = new ManageProxyHelp()

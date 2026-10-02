@@ -25,7 +25,7 @@ public partial class DownloadHelper
 {
     private readonly Timer jokeTimer; // 添加计时器
 
-    private readonly TaskDialog td;
+    private readonly FATaskDialog td;
     private readonly Visual? VisualRoot;
 
     private string content =
@@ -75,9 +75,9 @@ public partial class DownloadHelper
         downloader.DownloadStarted += DownloaderOnDownloadStarted;
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
-        var btn = new TaskDialogButton
+        var btn = new FATaskDialogButton
         {
-            DialogResult = TaskDialogStandardResult.Cancel,
+            DialogResult = FATaskDialogStandardResult.Cancel,
             Text = Languages.Languages.Text_Global_Cancel,
             Command = new RelayCommand(async _ =>
             {
@@ -87,11 +87,11 @@ public partial class DownloadHelper
                 cts1.Cancel();
             })
         };
-        td = new TaskDialog
+        td = new FATaskDialog
         {
             Title = Languages.Languages.Text_Download_Title,
             ShowProgressBar = true,
-            IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+            IconSource = new FASymbolIconSource { Symbol = FASymbol.Download },
             SubHeader = Languages.Languages.Text_Download_SubHeader,
             Content =
                 content,
@@ -100,7 +100,7 @@ public partial class DownloadHelper
                 btn
             }
         };
-        td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+        td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
         currentJoke = GetRandomJoke();
     }
 
@@ -153,7 +153,7 @@ public partial class DownloadHelper
 
             try
             {
-                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Normal);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.Normal);
                 App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarValue((ulong)e.ReceivedBytesSize,
                     (ulong)e.TotalBytesToReceive);
             }
@@ -161,12 +161,12 @@ public partial class DownloadHelper
             {
             }
 
-            td.SetProgressBarState(e.ProgressPercentage, TaskDialogProgressState.Normal);
+            td.SetProgressBarState(e.ProgressPercentage, FATaskDialogProgressState.Normal);
         }
         catch (Exception ex)
         {
             App.CurrentLogger?.Error(ex);
-            td.SetProgressBarState(50, TaskDialogProgressState.Error | TaskDialogProgressState.Suspended);
+            td.SetProgressBarState(50, FATaskDialogProgressState.Error | FATaskDialogProgressState.Suspended);
         }
     }
 
@@ -200,7 +200,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Error(e.Error, module: EnumLogModule.Net);
             try
             {
-                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Error);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.Error);
             }
             catch
             {
@@ -213,7 +213,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Log("下载完成");
             try
             {
-                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+                App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.None);
             }
             catch
             {
@@ -226,7 +226,7 @@ public partial class DownloadHelper
         App.CurrentLogger.Log($"开始下载: {e.FileName}\n文件大小: {e.TotalBytesToReceive}");
         try
         {
-            App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+            App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.Indeterminate);
         }
         catch
         {
@@ -326,7 +326,7 @@ public partial class DownloadHelper
                     cancellationToken.ThrowIfCancellationRequested();
                     /*
                     td.Content = "验证文件...";
-                    td.SetProgressBarState(100, TaskDialogProgressState.Indeterminate);
+                    td.SetProgressBarState(100, FATaskDialogProgressState.Indeterminate);
                     using var httpClient = new HttpClient();
                     httpClient.BaseAddress = new Uri(ProcessSecurityUri(downloadUrls[res], true));
                     httpClient.Timeout = TimeSpan.FromSeconds(2);
@@ -337,7 +337,7 @@ public partial class DownloadHelper
                         Growl.Error("获取安全信息失败, 取消下载");
                         Dispatcher.UIThread.Post(() =>
                         {
-                            td.Hide(TaskDialogStandardResult.Cancel);
+                            td.Hide(FATaskDialogStandardResult.Cancel);
                         });
                         return false;
                     }
@@ -366,7 +366,7 @@ public partial class DownloadHelper
                     App.CurrentLogger.Log("已安装新版MEFrpClient");
                     Dispatcher.UIThread.Post(() =>
                     {
-                        td.Hide(TaskDialogStandardResult.OK);
+                        td.Hide(FATaskDialogStandardResult.OK);
                     });
 
 
@@ -399,7 +399,7 @@ public partial class DownloadHelper
                     cancellationToken.ThrowIfCancellationRequested();
                     /*
                     td.Content = "验证文件...";
-                    td.SetProgressBarState(100, TaskDialogProgressState.Indeterminate);
+                    td.SetProgressBarState(100, FATaskDialogProgressState.Indeterminate);
                     using var httpClient = new HttpClient();
                     httpClient.BaseAddress = new Uri(ProcessSecurityUri(downloadUrls[res], false));
                     httpClient.Timeout = TimeSpan.FromSeconds(2);
@@ -409,7 +409,7 @@ public partial class DownloadHelper
                         Growl.Error("获取安全信息失败, 取消下载");
                         Dispatcher.UIThread.Post(() =>
                         {
-                            td.Hide(TaskDialogStandardResult.Cancel);
+                            td.Hide(FATaskDialogStandardResult.Cancel);
                         });
                     }
 
@@ -433,7 +433,7 @@ public partial class DownloadHelper
                         "mefrpc.tar.tmp"));
                     Dispatcher.UIThread.Post(() =>
                     {
-                        td.Hide(TaskDialogStandardResult.OK);
+                        td.Hide(FATaskDialogStandardResult.OK);
                     });
                     //}
 
@@ -475,7 +475,7 @@ public partial class DownloadHelper
                     cancellationToken.ThrowIfCancellationRequested();
                     /*
                     td.Content = "验证文件...";
-                    td.SetProgressBarState(100, TaskDialogProgressState.Indeterminate);
+                    td.SetProgressBarState(100, FATaskDialogProgressState.Indeterminate);
                     using var httpClient = new HttpClient();
                     httpClient.BaseAddress = new Uri(ProcessSecurityUri(downloadUrls[res], false));
                     httpClient.Timeout = TimeSpan.FromSeconds(2);
@@ -485,7 +485,7 @@ public partial class DownloadHelper
                         Growl.Error("获取安全信息失败, 取消下载");
                         Dispatcher.UIThread.Post(() =>
                         {
-                            td.Hide(TaskDialogStandardResult.Cancel);
+                            td.Hide(FATaskDialogStandardResult.Cancel);
                         });
                     }
 
@@ -509,7 +509,7 @@ public partial class DownloadHelper
                         "mefrpc.tar.tmp"));
                     Dispatcher.UIThread.Post(() =>
                     {
-                        td.Hide(TaskDialogStandardResult.OK);
+                        td.Hide(FATaskDialogStandardResult.OK);
                     });
                     //}
 
@@ -529,7 +529,7 @@ public partial class DownloadHelper
             // 用户取消了操作
             Dispatcher.UIThread.Post(() =>
             {
-                td.Hide(TaskDialogStandardResult.Cancel);
+                td.Hide(FATaskDialogStandardResult.Cancel);
             });
             jokeTimer.Stop();
             return false;
@@ -539,7 +539,7 @@ public partial class DownloadHelper
             App.CurrentLogger.Error(ex);
             Dispatcher.UIThread.Post(() =>
             {
-                td.Hide(TaskDialogStandardResult.Cancel);
+                td.Hide(FATaskDialogStandardResult.Cancel);
             });
             jokeTimer.Stop();
             return false;

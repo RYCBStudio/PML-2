@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
-using Avalonia.Threading;
 
 namespace MEFrpLauncherX.Controls;
 
@@ -16,16 +14,19 @@ public class RollingNumberTextBlock : TextBlock
             nameof(TargetNumber),
             coerce: OnTargetNumberChanged);
 
-    private readonly DispatcherTimer _timer;
+    private readonly Action _tickHandler;
     private int _currentValue;
+    private bool _isAnimating;
     private DateTime _startTime;
-    private Stopwatch _stopwatch;
     private int _targetValue;
 
     public RollingNumberTextBlock()
     {
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(8) }; // ~120fps
-        _timer.Tick += OnTimerTick;
+        // 不再各自 new DispatcherTimer：
+        // 首页 + 节点监控页同时常驻约 10 个实例，独立计时器会带来约 600 次/秒的
+        // 调度器唤醒，且彼此之间、以及与渲染帧之间都不同步。
+        // 改为共用 RollingAnimationTicker（16ms，Render 优先级，与渲染帧合并）。
+        _tickHandler = OnTimerTick;
         HorizontalAlignment = HorizontalAlignment.Center;
     }
 
@@ -55,13 +56,17 @@ public class RollingNumberTextBlock : TextBlock
         _targetValue = target;
         _startTime = DateTime.Now;
 
-        // 在Avalonia中，我们使用DispatcherTimer而不是CompositionTarget.Rendering
-        _timer.Stop();
-        _timer.Start();
+        _isAnimating = true;
+        RollingAnimationTicker.Register(_tickHandler);
     }
 
-    private void OnTimerTick(object sender, EventArgs e)
+    private void OnTimerTick()
     {
+        if (!_isAnimating)
+        {
+            return;
+        }
+
         var elapsed = (DateTime.Now - _startTime).TotalSeconds;
         var progress = Math.Min(elapsed / AnimationDuration, 1.0);
 
@@ -70,8 +75,29 @@ public class RollingNumberTextBlock : TextBlock
 
         if (progress >= 1.0)
         {
-            _timer.Stop();
+            StopAnimation();
             Text = _targetValue.ToString();
         }
+    }
+
+    private void StopAnimation()
+    {
+        if (!_isAnimating)
+        {
+            return;
+        }
+
+        _isAnimating = false;
+        RollingAnimationTicker.Unregister(_tickHandler);
+    }
+
+    /// <summary>
+    ///     控件离开可视树时立即停止动画。
+    ///     否则「动画未跑完就被导航切走」的控件会在后台持续 tick，无谓占用 UI 线程。
+    /// </summary>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        StopAnimation();
+        base.OnDetachedFromVisualTree(e);
     }
 }

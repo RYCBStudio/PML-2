@@ -17,8 +17,9 @@
   <!-- Pack the repo-root README into the package -->
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.0" />
+    <!-- 版本统一由仓库根目录 Directory.Packages.props 中央管理 -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
   </ItemGroup>
 
   <!-- 预编译原生库（Windows）

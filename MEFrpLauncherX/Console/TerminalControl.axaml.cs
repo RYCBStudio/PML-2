@@ -454,7 +454,7 @@ public partial class TerminalControl : UserControl, IDisposable
                                     {
                                         if (_disposed || ErrorIcon is null || ErrorText is null || SolutionBox is null)
                                             return;
-                                        ErrorIcon.Symbol = Symbol.ReportHacked;
+                                        ErrorIcon.Symbol = FASymbol.ReportHacked;
                                         ErrorText.Text = data.Info ?? string.Empty;
                                         SolutionBox.Text = data.Solution[0];
                                         _tunnelErrorInfoShell = data;
@@ -938,7 +938,7 @@ public partial class TerminalControl : UserControl, IDisposable
                             if (solution is not null)
                             {
                                 var onlineSolution = await RYCBApiConverter.GetTunnelErrorInfoAsync(solution.Flag);
-                                ErrorIcon.Symbol = Symbol.ReportHacked;
+                                ErrorIcon.Symbol = FASymbol.ReportHacked;
                                 ErrorText.Text = onlineSolution?.Data?.Info;
                                 SolutionBox.Text = onlineSolution?.Data?.Solution[0] ?? "";
                                 _tunnelErrorInfoShell = onlineSolution?.Data ?? new TunnelErrorInfo
@@ -1259,16 +1259,16 @@ public partial class TerminalControl : UserControl, IDisposable
     {
         try
         {
-            var cd = new TaskDialog
+            var cd = new FATaskDialog
             {
                 Title = Languages.Text_Terminal_ErrorDetailsTitle,
                 SubHeader = $"{_tunnelErrorInfoShell.Flag}: {_tunnelErrorInfoShell.Info}",
                 Content = new TunnelErrorPresenter(_tunnelErrorInfoShell.Solution),
                 Buttons =
                 {
-                    TaskDialogButton.OKButton
+                    FATaskDialogButton.OKButton
                 },
-                IconSource = new SymbolIconSource { Symbol = Symbol.Admin },
+                IconSource = new FASymbolIconSource { Symbol = FASymbol.Admin },
                 XamlRoot = Core.App.MainWindow
             };
             await cd.ShowAsync();

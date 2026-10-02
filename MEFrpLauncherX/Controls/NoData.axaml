@@ -8,7 +8,7 @@
              MaxHeight="100" MaxWidth="100"
              x:Class="MEFrpLauncherX.Controls.NoData">
     <Grid RowDefinitions="*, Auto" Margin="10">
-        <controls:SymbolIcon Symbol="CloudOfflineFilled" Foreground="{DynamicResource TextFillColorDisabledBrush}"
+        <controls:FASymbolIcon Symbol="CloudOfflineFilled" Foreground="{DynamicResource TextFillColorDisabledBrush}"
                              FontSize="40" />
         <TextBlock Text="{x:Static languages:Languages.Text_Global_NoData}" Grid.Row="1" HorizontalAlignment="Center"
                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" />

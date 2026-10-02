@@ -13,10 +13,11 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public sealed class ManageProxyViewModel : ViewModelBase
+public sealed partial class ManageProxyViewModel : ViewModelBase
 {
     private CancellationTokenSource? _probeCts;
 
@@ -59,7 +60,8 @@ public sealed class ManageProxyViewModel : ViewModelBase
         get;
     } = [];
 
-    public ObservableCollection<UserProxyViewModel> AllProxies
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial ObservableCollection<UserProxyViewModel> AllProxies
     {
         get;
         set;
@@ -131,7 +133,7 @@ public sealed class ManageProxyViewModel : ViewModelBase
     }
 
     /// <summary>批量刷新测速命令（并发受控）</summary>
-    public ReactiveCommand<Unit, Unit> ProbeAllCommand
+    public ReactiveCommand<RxVoid, RxVoid> ProbeAllCommand
     {
         get;
     }

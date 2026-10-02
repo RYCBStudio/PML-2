@@ -1,4 +1,4 @@
-<windowing:AppWindow
+<windowing:FAAppWindow
     x:Class="MEFrpLauncherX.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,7 +15,7 @@
     Width="980"
     Height="600"
     Background="#2f000000"
-    SystemDecorations="Full"
+    WindowDecorations="Full"
     x:Name="Window"
     Closing="Window_Closing"
     WindowStartupLocation="CenterScreen"
@@ -71,4 +71,4 @@
         <msg:MessageHost
             FontFamily="{DynamicResource GlobalFontFamily}" ZIndex="10" HostId="PML2_Msg" />
     </Panel>
-</windowing:AppWindow>
+</windowing:FAAppWindow>

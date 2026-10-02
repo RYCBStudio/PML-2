@@ -24,13 +24,13 @@
         </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" MinWidth="400" Margin="10">
-        <controls:CommandBar DefaultLabelPosition="Right">
-            <controls:CommandBar.PrimaryCommands>
-            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ExportPng}"
+        <controls:FACommandBar DefaultLabelPosition="Right">
+            <controls:FACommandBar.PrimaryCommands>
+            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ExportPng}"
                                        IconSource="Save" Click="SaveFile" />
-            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_CopyToClipBoard}"
-                                       IconSource="Copy" Click="CopyToClipboard" /></controls:CommandBar.PrimaryCommands>
-        </controls:CommandBar>
+            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_UserProxy_QRCodeView_CopyToClipBoard}"
+                                       IconSource="Copy" Click="CopyToClipboard" /></controls:FACommandBar.PrimaryCommands>
+        </controls:FACommandBar>
 
         <!-- 域名轮播导航：仅在存在多个 domain 时显示（单域名场景与原有单二维码行为一致） -->
         <Grid x:Name="NavigationBar"
@@ -104,50 +104,50 @@
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
         </StackPanel>
 
-        <controls:SettingsExpander Grid.Row="4"
+        <controls:FASettingsExpander Grid.Row="4"
                                    Header="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Settings}"
                                    IsExpanded="True">
-            <controls:SettingsExpander.IconSource>
-                <controls:FontIconSource Glyph="&#xED14;"
+            <controls:FASettingsExpander.IconSource>
+                <controls:FAFontIconSource Glyph="&#xED14;"
                                          FontFamily="{StaticResource SymbolThemeFontFamily}" />
-            </controls:SettingsExpander.IconSource>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Size}">
-                <controls:SettingsExpanderItem.Footer>
+            </controls:FASettingsExpander.IconSource>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Size}">
+                <controls:FASettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="4">
                         <Slider x:Name="SizeSlider" MinWidth="200" Minimum="64" Maximum="512" Value="256"
                                 ValueChanged="UpdateSize" IsSnapToTickEnabled="True" TickFrequency="1" />
                         <TextBlock Text="{Binding #SizeSlider.Value, StringFormat='{}{0}px'}"
                                    HorizontalAlignment="Center" />
                     </StackPanel>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Icon}">
-                <controls:SettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_Icon}">
+                <controls:FASettingsExpanderItem.Footer>
                     <Button x:Name="IconButton"
                             Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_SelectIconFile}"
                             Click="SelectIconFile" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_IconSize}">
-                <controls:SettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_IconSize}">
+                <controls:FASettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="4">
                         <Slider x:Name="IconSizeSlider" MinWidth="200" Minimum="1" Maximum="100" Value="10"
                                 ValueChanged="UpdateIconSize" TickFrequency="1" />
                         <TextBlock Text="{Binding #IconSizeSlider.Value, StringFormat='{}{0}%'}"
                                    HorizontalAlignment="Center" />
                     </StackPanel>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ForegroundColor}">
-                <controls:SettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_ForegroundColor}">
+                <controls:FASettingsExpanderItem.Footer>
                     <ColorPicker x:Name="ForeColorPicker" ColorChanged="UpdateForeground" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_BackgroundColor}">
-                <controls:SettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserProxy_QRCodeView_BackgroundColor}">
+                <controls:FASettingsExpanderItem.Footer>
                     <ColorPicker x:Name="BackColorPicker" ColorChanged="UpdateBackground" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-        </controls:SettingsExpander>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+        </controls:FASettingsExpander>
     </Grid>
 </UserControl>

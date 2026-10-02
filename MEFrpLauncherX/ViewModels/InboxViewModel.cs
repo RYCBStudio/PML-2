@@ -12,6 +12,9 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
 using ReactiveUI;
+// ReactiveUI 25：无参 ReactiveCommand 的载体类型 RxVoid（替代 System.Reactive.Unit）位于此命名空间。
+using ReactiveUI.Primitives;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -134,7 +137,7 @@ public class InboxViewModel : ViewModelBase
     public bool IsSystemNoticeEmpty => !HasSystemNotice;
 
     /// <summary>打开系统通知详情（markdown 全文渲染）</summary>
-    public ReactiveCommand<Unit, Unit> ShowSystemNoticeDetailCommand
+    public ReactiveCommand<RxVoid, RxVoid> ShowSystemNoticeDetailCommand
     {
         get;
     }
@@ -348,7 +351,7 @@ public class InboxViewModel : ViewModelBase
 
         try
         {
-            var dialog = new ContentDialog
+            var dialog = new FAContentDialog
             {
                 Title = SystemNoticeUpdateTitle,
                 Content = new MarkdownRender
@@ -360,7 +363,7 @@ public class InboxViewModel : ViewModelBase
                 },
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 CloseButtonText = Languages.Text_Global_Close,
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
 
             await dialog.ShowAsync();
@@ -444,5 +447,5 @@ public sealed class InboxSoftwareNoticeItem : ReactiveObject
     }
 
     /// <summary>打开详情：复用 Core 中 <see cref="NoticeContent" /> 的既有对话框命令。</summary>
-    public ReactiveCommand<Unit, Unit> ShowNoticeCommand => Notice.ShowNoticeCommand;
+    public ReactiveCommand<RxVoid, RxVoid> ShowNoticeCommand => Notice.ShowNoticeCommand;
 }

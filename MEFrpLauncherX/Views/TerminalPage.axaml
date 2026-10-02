@@ -10,19 +10,19 @@
     <Grid RowDefinitions="Auto,*" Classes="animated">
 
         <!-- Toolbar -->
-        <controls:CommandBar DefaultLabelPosition="Right">
-            <controls:CommandBar.PrimaryCommands>
-                <controls:CommandBarButton Click="NewConsoleButton_Click" Label="{x:Static languages:Languages.Text_Terminal_NewConsole}" IconSource="Add" />
-                <controls:CommandBarButton Click="CloseButton_Click" Label="{x:Static languages:Languages.Text_Terminal_CloseTab}" IconSource="Clear" />
-                <controls:CommandBarButton Click="CtrlCButton_Click" Label="{x:Static languages:Languages.Text_Terminal_SendCtrlC}"
+        <controls:FACommandBar DefaultLabelPosition="Right">
+            <controls:FACommandBar.PrimaryCommands>
+                <controls:FACommandBarButton Click="NewConsoleButton_Click" Label="{x:Static languages:Languages.Text_Terminal_NewConsole}" IconSource="Add" />
+                <controls:FACommandBarButton Click="CloseButton_Click" Label="{x:Static languages:Languages.Text_Terminal_CloseTab}" IconSource="Clear" />
+                <controls:FACommandBarButton Click="CtrlCButton_Click" Label="{x:Static languages:Languages.Text_Terminal_SendCtrlC}"
                                            IconSource="StopSlideShow" />
-                <controls:CommandBarButton Click="ClearButton_Click" Label="{x:Static languages:Languages.Text_Terminal_ClearOutput}" IconSource="Delete" />
-            </controls:CommandBar.PrimaryCommands>
-            <controls:CommandBar.SecondaryCommands>
-                <controls:CommandBarButton Click="VisitMEFDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitMEFDoc}" IconSource="Globe" />
-                <controls:CommandBarButton Click="VisitRCDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitConsoleDoc}" IconSource="Document" IsEnabled="False" />
-            </controls:CommandBar.SecondaryCommands>
-        </controls:CommandBar>
+                <controls:FACommandBarButton Click="ClearButton_Click" Label="{x:Static languages:Languages.Text_Terminal_ClearOutput}" IconSource="Delete" />
+            </controls:FACommandBar.PrimaryCommands>
+            <controls:FACommandBar.SecondaryCommands>
+                <controls:FACommandBarButton Click="VisitMEFDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitMEFDoc}" IconSource="Globe" />
+                <controls:FACommandBarButton Click="VisitRCDoc" Label="{x:Static languages:Languages.Text_Terminal_VisitConsoleDoc}" IconSource="Document" IsEnabled="False" />
+            </controls:FACommandBar.SecondaryCommands>
+        </controls:FACommandBar>
         <!-- <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5"> -->
         <!--     <Button Click="NewConsoleButton_Click" Content="新建控制台" /> -->
         <!--     <Button Click="CloseButton_Click" Content="关闭当前选项卡" /> -->
@@ -33,7 +33,8 @@
         <!-- </StackPanel> -->
 
         <!-- Tab Control -->
-        <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact">
+        <TabControl x:Name="MainTabCtrl" Grid.Row="1" Classes="compact"
+                    PageTransition="{StaticResource TabContentTransition}">
             <TabItem Header="{x:Static languages:Languages.Text_Terminal_DefaultTab}">
                 <console:TerminalControl x:Name="Terminal" />
             </TabItem>

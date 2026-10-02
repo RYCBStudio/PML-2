@@ -6,10 +6,10 @@ namespace MEFrpLauncherX.Controls;
 
 public partial class IconContent : UserControl
 {
-    public static readonly DirectProperty<IconContent, Symbol> SymbolProperty = AvaloniaProperty.RegisterDirect<IconContent, Symbol>(
+    public static readonly DirectProperty<IconContent, FASymbol> SymbolProperty = AvaloniaProperty.RegisterDirect<IconContent, FASymbol>(
         nameof(Symbol), o => o.Symbol, (o, v) => o.Symbol = v);
 
-    public Symbol Symbol
+    public FASymbol Symbol
     {
         get;
         set => SetAndRaise(SymbolProperty, ref field, value);

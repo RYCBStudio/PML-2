@@ -15,18 +15,18 @@ using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class CreateProxyGuideViewModel : ViewModelBase
+public partial class CreateProxyGuideViewModel : ViewModelBase
 {
     /// <summary>
     ///     引导模板条目列表，数据源为 create-proxy-template 类型插件的 templates 声明
     ///     （官方内置 + 第三方合并），不再硬编码。
     /// </summary>
-    public AvaloniaList<ProxyType> AvailableTypes
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial AvaloniaList<ProxyType> AvailableTypes
     {
         get;
         set;
     } = [];
-
     public ProxyType? SelectedType
     {
         get;

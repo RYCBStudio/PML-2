@@ -24,3 +24,12 @@
 ## 其他开源依赖
 
 本项目使用的主要第三方开源库（Avalonia、ReactiveUI、FluentAvaloniaUI、LiveChartsCore、Sentry 等）均采用各自的宽松许可证（主要为 MIT），详情请参考对应 NuGet 包或项目仓库。
+
+## 本地 fork / vendored 源码
+
+以下组件原本以 NuGet 包形式引用，为适配 Avalonia 12 升级（`chore/avalonia-12-spike`）改为在仓库内
+以源码形式 fork 并就地构建。均为 MIT 许可，原始版权归各自作者所有：
+
+| 组件 | 位置 | 上游 | 许可 | 说明 |
+|------|------|------|------|------|
+| IconPacks.Avalonia（Core / Lucide / Material / FileIcons / SimpleIcons） | `third_party/IconPacks.Avalonia/` | [MahApps/IconPacks.Avalonia](https://github.com/MahApps/IconPacks.Avalonia) @ `release/2.0.0` (`ff2dff0`) | MIT | 原因与改动清单见该目录 [README](third_party/IconPacks.Avalonia/README.md) |

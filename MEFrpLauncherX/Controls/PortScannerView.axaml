@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
              xmlns:core="clr-namespace:MEFrpLauncherX.Core;assembly=MEFrpLauncherX.Core"
@@ -31,7 +31,7 @@
                     <TextBlock Text="{x:Static languages:Languages.Text_PortScanner_TargetIp}" VerticalAlignment="Center" />
                     <TextBox Text="{Binding TargetIp}"
                              Grid.Column="1"
-                             Watermark="{x:Static languages:Languages.Text_PortScanner_TargetIpPlaceholder}" />
+                             PlaceholderText="{x:Static languages:Languages.Text_PortScanner_TargetIpPlaceholder}" />
                     <Button Content="{x:Static languages:Languages.Text_PortScanner_Localhost}"
                             Grid.Column="2"
                             Command="{Binding UseLocalhostCommand}"
@@ -43,11 +43,11 @@
                     <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Spacing="5">
                         <TextBox Text="{Binding StartPort}"
                                  Width="80"
-                                 Watermark="{x:Static languages:Languages.Text_PortScanner_StartPort}" />
+                                 PlaceholderText="{x:Static languages:Languages.Text_PortScanner_StartPort}" />
                         <TextBlock Text="-" VerticalAlignment="Center" />
                         <TextBox Text="{Binding EndPort}"
                                  Width="80"
-                                 Watermark="{x:Static languages:Languages.Text_PortScanner_EndPort}" />
+                                 PlaceholderText="{x:Static languages:Languages.Text_PortScanner_EndPort}" />
                     </StackPanel>
                     <Button Content="{x:Static languages:Languages.Text_PortScanner_CommonPorts}"
                             Grid.Column="2"

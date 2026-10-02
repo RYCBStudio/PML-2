@@ -5,6 +5,8 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+// Avalonia 12：ContextRequestedEventArgs 位于 Avalonia.Input。
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using FluentAvalonia.UI.Controls;
 
@@ -31,7 +33,7 @@ public partial class UserProxyControl : UserControl
 
     private void ShowMenu()
     {
-        var flyout = Resources["MoreOptionsCmd"] as CommandBarFlyout;
+        var flyout = Resources["MoreOptionsCmd"] as FACommandBarFlyout;
         flyout?.ShowMode = FlyoutShowMode.Standard;
 
         flyout?.ShowAt(MoreOptionsBtn);

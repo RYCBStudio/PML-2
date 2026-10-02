@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  中央包版本管理（CPM）。
+  全仓所有 csproj 的 PackageReference 不再写 Version，统一在此处收敛版本。
+
+  说明：本文件覆盖仓库内全部 14 个 csproj（含不在主 sln 内的
+  MEFrpLauncherX.CrashDisplayer 与 RYCB.PML2.Splash）。
+
+  P0（Avalonia 11 基线）：建立 CPM，统一 11.3.20 与 SkiaSharp 版本。
+  P1（Avalonia 12 对齐）：整体迁到 Avalonia 12.1.x，详见
+  .qoder/plans/Avalonia_12_P1_依赖对齐_成果_5e38763a.md。
+-->
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <!-- 不开启传递依赖固定：保持与升级前一致的解析行为 -->
+        <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+    </PropertyGroup>
+
+    <!-- ===== Avalonia 核心（全仓统一 12.1.3） ===== -->
+    <!-- P1 说明：Avalonia.Diagnostics 已删除。该包在 NuGet 上最高仅 11.3.22，
+         不存在 12.x 版本，不删除会导致还原失败；代码侧亦无 AttachDevTools 用法。 -->
+    <ItemGroup>
+        <PackageVersion Include="Avalonia" Version="12.1.3" />
+        <PackageVersion Include="Avalonia.Desktop" Version="12.1.3" />
+        <!-- 仅供 tools/XamlSmoke 无头冒烟探针使用，不参与任何发布产物 -->
+        <PackageVersion Include="Avalonia.Headless" Version="12.1.3" />
+        <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.1.3" />
+        <PackageVersion Include="Avalonia.Skia" Version="12.1.3" />
+        <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.3" />
+    </ItemGroup>
+
+    <!-- ===== Avalonia 生态 ===== -->
+    <ItemGroup>
+        <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
+        <PackageVersion Include="AvaloniaEdit.TextMate" Version="12.0.0" />
+        <!-- P0.3：Avalonia.Svg（止于 11.3.0，无 12 版本）已替换为 Svg.Controls.Skia.Avalonia。
+             该包命名空间为 Avalonia.Svg.Skia。
+             P1：升到 12.0.0.17（依赖 Avalonia.Skia 12.0.0 + Svg.Skia 5.2.3 + SkiaSharp 4.x）。
+             注意：12.0.0.16 及更早走 SkiaSharp 3.119.x；.17 起走 4.148.0。
+             本项目选择 .17 + SkiaSharp 4.151.2（已实测 Avalonia 12.1.3 + SkiaSharp 4.x 协同正常，
+             见 .qoder/plans/Avalonia_12_P1_依赖对齐_成果_5e38763a.md）。 -->
+        <PackageVersion Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.17" />
+        <PackageVersion Include="FluentAvaloniaUI" Version="3.1.0" />
+        <PackageVersion Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.1.0-dev-798" />
+        <PackageVersion Include="MessageBox.Avalonia" Version="12.0.0" />
+        <!-- MessageBox.Avalonia 12.0.0 传递依赖 DialogHost.Avalonia 0.12.1-nightly.0.1；
+             此处显式钉到稳定版 0.12.3（同样依赖 Avalonia 12.0.0），避免引入 nightly 线。 -->
+        <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
+        <PackageVersion Include="Message.Avalonia" Version="2.0.0" />
+        <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.5" />
+        <PackageVersion Include="ReactiveUI" Version="25.1.1" />
+        <!-- ReactiveUI 25 起不再依赖 System.Reactive（改用 ReactiveUI.Primitives），
+             但仓库仍有 System.Reactive.Unit / IObservable 等直接用法，故显式引用。
+             6.1.0 面向 net6.0，可被 net10.0 使用。 -->
+        <PackageVersion Include="System.Reactive" Version="6.1.0" />
+        <PackageVersion Include="Xaml.Behaviors.Avalonia" Version="12.0.7" />
+        <PackageVersion Include="Xaml.Behaviors.Interactivity" Version="12.0.7" />
+        <PackageVersion Include="AsyncImageLoader.Avalonia" Version="4.0.0" />
+        <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    </ItemGroup>
+
+    <!-- ===== 图标（P1.6：已改为引用 third_party/IconPacks.Avalonia 源码 fork） =====
+         以下条目**保留**仅为回滚便利（切回 PackageReference 即可）。
+         注意：NuGet 上的 2.0.0 针对 Avalonia 11 编译，在 Avalonia 12 下套用 ControlTheme
+         会抛 MissingMethodException 导致图标静默空白，故不可用于本分支。 -->
+    <ItemGroup>
+        <PackageVersion Include="IconPacks.Avalonia.FileIcons" Version="2.0.0" />
+        <PackageVersion Include="IconPacks.Avalonia.Lucide" Version="2.0.0" />
+        <PackageVersion Include="IconPacks.Avalonia.Material" Version="2.0.0" />
+        <PackageVersion Include="IconPacks.Avalonia.SimpleIcons" Version="2.0.0" />
+    </ItemGroup>
+
+    <!-- ===== Skia / 图形（P1.7：全仓统一 4.151.2） =====
+         统一依据（实测）：Avalonia.Skia 12.1.3 的 nuspec 只要求 SkiaSharp >= 3.119.4，
+         而 Svg.Skia 5.2.3 / FeatherQR.SkiaSharp 要求 >= 4.148.0。
+         实测 Avalonia 12.1.3 + SkiaSharp 4.151.2 渲染链路（RenderTargetBitmap、
+         文本字形、PNG 编码、SVG 渲染、二维码生成）全部正常，
+         故统一到 4.151.2，同时满足全部下界。
+
+         ⚠️ 上一版（P0）此处托管 SkiaSharp 为 4.151.2，但 4 个 NativeAssets 中
+         Linux 两个仍为 3.119.4 —— 托管/原生版本不匹配，属缺陷，本批一并修正。 -->
+    <ItemGroup>
+        <PackageVersion Include="SkiaSharp" Version="4.151.2" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.151.2" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.151.2" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.macOS" Version="4.151.2" />
+        <PackageVersion Include="SkiaSharp.NativeAssets.Win32" Version="4.151.2" />
+        <PackageVersion Include="SkiaSharp.QrCode" Version="2.0.0-preview.2" />
+        <PackageVersion Include="FeatherQR.SkiaSharp" Version="2.0.0-preview.2" />
+    </ItemGroup>
+
+    <!-- ===== 终端 ===== -->
+    <ItemGroup>
+        <!-- P1：4.0.4 -> 5.0.1（5.x 明确面向 Avalonia 12） -->
+        <PackageVersion Include="Iciclecreek.Avalonia.WindowManager" Version="5.0.1" />
+        <PackageVersion Include="XTerm.NET" Version="2.0.2" />
+        <PackageVersion Include="Unicode.net" Version="2.0.0" />
+        <PackageVersion Include="Wcwidth" Version="4.0.1" />
+    </ItemGroup>
+
+    <!-- ===== 文本 / Markdown ===== -->
+    <ItemGroup>
+        <PackageVersion Include="Markdig" Version="1.4.0" />
+        <PackageVersion Include="TextMateSharp" Version="2.0.4" />
+        <PackageVersion Include="TextMateSharp.Grammars" Version="2.0.4" />
+    </ItemGroup>
+
+    <!-- ===== 其它业务依赖 ===== -->
+    <ItemGroup>
+        <PackageVersion Include="Downloader" Version="5.9.5" />
+        <PackageVersion Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
+        <PackageVersion Include="System.Runtime.Caching" Version="10.0.11" />
+        <PackageVersion Include="Microsoft.International.Converters.PinYinConverter" Version="1.0.0" />
+        <PackageVersion Include="NPinyin.Core" Version="3.0.0" />
+        <PackageVersion Include="RestSharp" Version="114.0.0" />
+        <PackageVersion Include="Sentry" Version="6.11.1" />
+        <PackageVersion Include="YamlDotNet" Version="18.1.0" />
+        <PackageVersion Include="Vecc.YamlDotNet.Analyzers.StaticGenerator" Version="18.1.0" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.0" />
+        <PackageVersion Include="Microsoft.Extensions.Options" Version="2.1.0" />
+        <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.335" />
+        <!-- 原为 Directory.Build.props 中的浮动版本 0.1.232-*，此处固定为 0.1.232 -->
+        <PackageVersion Include="Packaging.Targets" Version="0.1.232" />
+    </ItemGroup>
+</Project>

@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+// Avalonia 12：IClipboard.SetTextAsync 改为扩展方法（ClipboardExtensions），需导入此命名空间。
+using Avalonia.Input.Platform;
 using MEFrpLauncherX.CrashDisplayer.Models;
 
 namespace MEFrpLauncherX.CrashDisplayer.ViewModels;

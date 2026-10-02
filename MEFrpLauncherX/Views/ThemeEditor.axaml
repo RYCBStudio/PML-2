@@ -21,18 +21,18 @@
 
     <Grid RowDefinitions="Auto,*">
         <!-- 顶部工具栏 -->
-        <controls:CommandBar DefaultLabelPosition="Right">
-            <controls:CommandBar.PrimaryCommands>
-                <controls:CommandBarButton Command="{Binding SaveThemeCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_SaveTheme}"
+        <controls:FACommandBar DefaultLabelPosition="Right">
+            <controls:FACommandBar.PrimaryCommands>
+                <controls:FACommandBarButton Command="{Binding SaveThemeCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_SaveTheme}"
                                            IconSource="Save">
-                </controls:CommandBarButton>
-                <controls:CommandBarButton Command="{Binding AddColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_AddColor}" IconSource="Add">
-                </controls:CommandBarButton>
-                <controls:CommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}" IconSource="Remove"
+                </controls:FACommandBarButton>
+                <controls:FACommandBarButton Command="{Binding AddColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_AddColor}" IconSource="Add">
+                </controls:FACommandBarButton>
+                <controls:FACommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}" IconSource="Remove"
                                            IsEnabled="{Binding CanRemoveColor}">
-                </controls:CommandBarButton>
-            </controls:CommandBar.PrimaryCommands>
-        </controls:CommandBar>
+                </controls:FACommandBarButton>
+            </controls:FACommandBar.PrimaryCommands>
+        </controls:FACommandBar>
 
         <!-- 主内容区域 -->
         <ScrollViewer Grid.Row="1">
@@ -158,28 +158,28 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                                <controls:CommandBar DefaultLabelPosition="Right">
-                                    <controls:CommandBar.PrimaryCommands>
-                                        <controls:CommandBarButton Command="{Binding AddColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_AddColor}"
+                                <controls:FACommandBar DefaultLabelPosition="Right">
+                                    <controls:FACommandBar.PrimaryCommands>
+                                        <controls:FACommandBarButton Command="{Binding AddColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_AddColor}"
                                                                    IconSource="Add">
-                                        </controls:CommandBarButton>
-                                        <controls:CommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}"
+                                        </controls:FACommandBarButton>
+                                        <controls:FACommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}"
                                                                    IconSource="Remove"
                                                                    IsEnabled="{Binding CanRemoveColor}">
-                                        </controls:CommandBarButton>
-                                    </controls:CommandBar.PrimaryCommands>
-                                    <controls:CommandBar.SecondaryCommands>
+                                        </controls:FACommandBarButton>
+                                    </controls:FACommandBar.PrimaryCommands>
+                                    <controls:FACommandBar.SecondaryCommands>
 
-                                        <controls:CommandBarButton Command="{Binding MoveUpCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_MoveUp}"
+                                        <controls:FACommandBarButton Command="{Binding MoveUpCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_MoveUp}"
                                                                    IconSource="ChevronUp"
                                                                    IsEnabled="{Binding CanMoveUp}">
-                                        </controls:CommandBarButton>
-                                        <controls:CommandBarButton Command="{Binding MoveDownCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_MoveDown}"
+                                        </controls:FACommandBarButton>
+                                        <controls:FACommandBarButton Command="{Binding MoveDownCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_MoveDown}"
                                                                    IconSource="ChevronDown"
                                                                    IsEnabled="{Binding CanMoveDown}">
-                                        </controls:CommandBarButton>
-                                    </controls:CommandBar.SecondaryCommands>
-                                </controls:CommandBar>
+                                        </controls:FACommandBarButton>
+                                    </controls:FACommandBar.SecondaryCommands>
+                                </controls:FACommandBar>
                             </StackPanel>
                         </Border>
 

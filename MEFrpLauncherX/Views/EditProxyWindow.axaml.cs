@@ -126,17 +126,17 @@ public partial class EditProxyWindow : Window
             i--;
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditResponseHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             he.Headers.ToList().ForEach(h =>
             {
@@ -156,17 +156,17 @@ public partial class EditProxyWindow : Window
             de.Domains.AddRange(_createProxyViewModel.Locations);
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditLocations,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             _createProxyViewModel.Locations?.Clear();
             _createProxyViewModel.Locations?.AddRange(de.Domains);
@@ -233,17 +233,17 @@ public partial class EditProxyWindow : Window
             i--;
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditRequestHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             he.Headers.ToList().ForEach(h =>
             {
@@ -266,17 +266,17 @@ public partial class EditProxyWindow : Window
             de.Domains.AddRange(enumerable);
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditDomains,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             _createProxyViewModel.RemoteAddress.Clear();
             _createProxyViewModel.RemoteAddress.AddRange([.. de.Domains]);
@@ -385,15 +385,15 @@ public partial class EditProxyWindow : Window
             var items = Core.Services.CertStore.List();
             if (items.Count == 0)
             {
-                var goCreate = new ContentDialog
+                var goCreate = new FAContentDialog
                 {
                     Title = Languages.Text_Certificate_Title,
                     Content = Languages.Text_Certificate_Empty,
                     PrimaryButtonText = Languages.Text_Certificate_OpenDirectory,
                     CloseButtonText = Languages.Text_Global_Cancel,
-                    DefaultButton = ContentDialogButton.Close
+                    DefaultButton = FAContentDialogButton.Close
                 };
-                if (await goCreate.ShowAsync() == ContentDialogResult.Primary)
+                if (await goCreate.ShowAsync() == FAContentDialogResult.Primary)
                 {
                     OpenCertificateRoot();
                 }
@@ -407,15 +407,15 @@ public partial class EditProxyWindow : Window
                 SelectedIndex = 0,
                 MinWidth = 320
             };
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Title = Languages.Text_Certificate_SelectTitle,
                 Content = list,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 CloseButtonText = Languages.Text_Global_Cancel,
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
-            if (await cd.ShowAsync() != ContentDialogResult.Primary)
+            if (await cd.ShowAsync() != FAContentDialogResult.Primary)
             {
                 return;
             }
@@ -482,22 +482,22 @@ public partial class EditProxyWindow : Window
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
             CustomRequestHeaderSettings.Show();
-            SecurityOptionsSettingsExpander.Show();
+            SecurityOptionsFASettingsExpander.Show();
             switch (_type.ToLower())
             {
                 case "http":
-                    SourceProtocolSettingsExpanderItemForHttp.Show();
+                    SourceProtocolFASettingsExpanderItemForHttp.Show();
                     CustomRequestHeaderSettings.Show();
                     CustomResponseHeaderSettings.Show();
                     LocationSettings.Show();
-                    SourceProtocolSettingsExpanderItemForHttps.Hide();
+                    SourceProtocolFASettingsExpanderItemForHttps.Hide();
                     CertificateSettingsForPath.Hide();
                     CertificateSettingsForPrivateKey.Hide();
                     break;
                 case "https":
-                    SourceProtocolSettingsExpanderItemForHttp.Hide();
+                    SourceProtocolFASettingsExpanderItemForHttp.Hide();
                     LocationSettings.Collapse();
-                    SourceProtocolSettingsExpanderItemForHttps.Show();
+                    SourceProtocolFASettingsExpanderItemForHttps.Show();
                     CertificateSettingsForPath.Show();
                     CertificateSettingsForPrivateKey.Show();
                     break;
@@ -510,9 +510,9 @@ public partial class EditProxyWindow : Window
             LocationSettings.Collapse();
             CustomRequestHeaderSettings.Collapse();
             CustomResponseHeaderSettings.Collapse();
-            SecurityOptionsSettingsExpander.Hide();
-            SourceProtocolSettingsExpanderItemForHttp.Hide();
-            SourceProtocolSettingsExpanderItemForHttps.Hide();
+            SecurityOptionsFASettingsExpander.Hide();
+            SourceProtocolFASettingsExpanderItemForHttp.Hide();
+            SourceProtocolFASettingsExpanderItemForHttps.Hide();
             CertificateSettingsForPath.Hide();
             CertificateSettingsForPrivateKey.Hide();
         }

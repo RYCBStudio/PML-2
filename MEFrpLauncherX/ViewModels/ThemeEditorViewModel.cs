@@ -23,6 +23,7 @@ using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -332,52 +333,52 @@ public class ThemeEditorViewModel : ViewModelBase
     ];
 
     // 命令
-    public ReactiveCommand<Unit, Unit> AddColorCommand
+    public ReactiveCommand<RxVoid, RxVoid> AddColorCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> RemoveColorCommand
+    public ReactiveCommand<RxVoid, RxVoid> RemoveColorCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> MoveUpCommand
+    public ReactiveCommand<RxVoid, RxVoid> MoveUpCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> MoveDownCommand
+    public ReactiveCommand<RxVoid, RxVoid> MoveDownCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> SaveThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> SaveThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> PreviewThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> PreviewThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> BrowseBackgroundCommand
+    public ReactiveCommand<RxVoid, RxVoid> BrowseBackgroundCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> BrowsePreviewImageCommand
+    public ReactiveCommand<RxVoid, RxVoid> BrowsePreviewImageCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> BrowseFontCommand
+    public ReactiveCommand<RxVoid, RxVoid> BrowseFontCommand
     {
         get;
     }
 
-    public ReactiveCommand<string, Unit> SetColorCommand
+    public ReactiveCommand<string, RxVoid> SetColorCommand
     {
         get;
     }
@@ -405,7 +406,7 @@ public class ThemeEditorViewModel : ViewModelBase
         // 初始化命令
         AddColorCommand = ReactiveCommand.Create(AddColor);
         RemoveColorCommand = ReactiveCommand.Create(RemoveColor,
-            this.WhenAnyValue(x => x.SelectedAccentColor).Select(x => x != null));
+            Observable.Select(this.WhenAnyValue(x => x.SelectedAccentColor), x => x != null));
         MoveUpCommand = ReactiveCommand.Create(MoveUp, this.WhenAnyValue(x => x.CanMoveUp));
         MoveDownCommand = ReactiveCommand.Create(MoveDown, this.WhenAnyValue(x => x.CanMoveDown));
         SaveThemeCommand = ReactiveCommand.Create(SaveTheme);

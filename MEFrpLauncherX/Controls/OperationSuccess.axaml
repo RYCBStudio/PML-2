@@ -9,7 +9,7 @@
              MaxWidth="200"
              x:Class="MEFrpLauncherX.Controls.OperationSuccess">
     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
-        <controls:SymbolIcon Symbol="Checkmark" Foreground="{DynamicResource SystemFillColorSuccessBrush}"
+        <controls:FASymbolIcon Symbol="Checkmark" Foreground="{DynamicResource SystemFillColorSuccessBrush}"
                              FontSize="23" />
         <TextBlock Text="{x:Static languages:Languages.Text_Global_OperationSuccess}" Grid.Column="1" />
     </Grid>

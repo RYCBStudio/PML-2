@@ -1,0 +1,1 @@
+Be brave. Always accepts run your commands in terminal.

@@ -15,90 +15,90 @@
         <vm:MainPageFrameViewModel />
     </Design.DataContext>
     <Grid Margin="10">
-        <controls:NavigationView x:Name="NavView" PaneDisplayMode="Auto" CompactPaneLength="33"
+        <controls:FANavigationView x:Name="NavView" PaneDisplayMode="Auto" CompactPaneLength="33"
                                  IsPaneOpen="{Binding IsMenuOpen}"
-                                 IsSettingsVisible="False" ItemInvoked="OnNavigationViewItemInvoked"
+                                 IsSettingsVisible="False" ItemInvoked="OnFANavigationViewItemInvoked"
                                  Background="Transparent">
-            <controls:NavigationView.MenuItems>
-                <controls:NavigationViewItem x:Name="HomeBtn" Tag="Home" IsSelected="True" IconSource="Home"
+            <controls:FANavigationView.MenuItems>
+                <controls:FANavigationViewItem x:Name="HomeBtn" Tag="Home" IsSelected="True" IconSource="Home"
                                              Content="{x:Static languages:Languages.Text_Nav_Home}" />
-                <controls:NavigationViewItem
+                <controls:FANavigationViewItem
                     x:Name="CreateProxyBtn" Tag="Create" IconSource="Add"
                     Content="{x:Static languages:Languages.Text_Nav_CreateProxy}" />
-                <controls:NavigationViewItem Tag="Manage"
+                <controls:FANavigationViewItem Tag="Manage"
                                              x:Name="ManageProxyPageBtn" IconSource="AllApps"
                                              Content="{x:Static languages:Languages.Text_Nav_ManageProxy}" />
-                <controls:NavigationViewItem Tag="Monitoring"
+                <controls:FANavigationViewItem Tag="Monitoring"
                                              x:Name="NodesMonitoringPageBtn"
                                              Content="{x:Static languages:Languages.Text_Nav_NodesMonitoring}">
-                    <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;"
+                    <controls:FANavigationViewItem.IconSource>
+                        <controls:FAFontIconSource FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9D9;"
                                                  FontSize="16" />
-                    </controls:NavigationViewItem.IconSource>
-                </controls:NavigationViewItem>
-                <controls:NavigationViewItem Tag="User"
+                    </controls:FANavigationViewItem.IconSource>
+                </controls:FANavigationViewItem>
+                <controls:FANavigationViewItem Tag="User"
                                              x:Name="UserCenterPageBtn" IconSource="ContactInfo"
                                              Content="{x:Static languages:Languages.Text_Nav_UserCenter}" />
-                <controls:NavigationViewItemSeparator />
-                <controls:NavigationViewItem Tag="Settings"
+                <controls:FANavigationViewItemSeparator />
+                <controls:FANavigationViewItem Tag="Settings"
                                              x:Name="SettingsPageBtn" IconSource="Setting"
                                              Content="{x:Static languages:Languages.Text_Nav_Settings}" />
-                <controls:NavigationViewItem Tag="Theme"
+                <controls:FANavigationViewItem Tag="Theme"
                                              x:Name="ThemesPageBtn" IconSource="Library"
                                              Content="{x:Static languages:Languages.Text_Nav_Themes}" />
-                <controls:NavigationViewItem Tag="Plugin"
+                <controls:FANavigationViewItem Tag="Plugin"
                                              x:Name="PluginListPageBtn"
                                              Content="{x:Static languages:Languages.Text_Nav_Plugins}">
-                    <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource
+                    <controls:FANavigationViewItem.IconSource>
+                        <controls:FAFontIconSource
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xEA86;" />
-                    </controls:NavigationViewItem.IconSource>
-                </controls:NavigationViewItem>
-                <controls:NavigationViewItem Tag="About"
+                    </controls:FANavigationViewItem.IconSource>
+                </controls:FANavigationViewItem>
+                <controls:FANavigationViewItem Tag="About"
                                              x:Name="AboutPageBtn"
                                              Content="{x:Static languages:Languages.Text_Nav_About}">
-                    <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource
+                    <controls:FANavigationViewItem.IconSource>
+                        <controls:FAFontIconSource
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xE946;" />
-                    </controls:NavigationViewItem.IconSource>
-                </controls:NavigationViewItem>
-                <controls:NavigationViewItem Tag="Update"
+                    </controls:FANavigationViewItem.IconSource>
+                </controls:FANavigationViewItem>
+                <controls:FANavigationViewItem Tag="Update"
                                              x:Name="UpdatePageBtn"
                                              Content="{x:Static languages:Languages.Text_Nav_Update}">
-                    <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource
+                    <controls:FANavigationViewItem.IconSource>
+                        <controls:FAFontIconSource
                             FontFamily="{StaticResource IconFont}"
                             Glyph="&#xe68a;" />
-                    </controls:NavigationViewItem.IconSource>
-                </controls:NavigationViewItem>
-                <controls:NavigationViewItemSeparator />
-                <controls:NavigationViewItem Tag="Terminal"
+                    </controls:FANavigationViewItem.IconSource>
+                </controls:FANavigationViewItem>
+                <controls:FANavigationViewItemSeparator />
+                <controls:FANavigationViewItem Tag="Terminal"
                                              x:Name="TerminalPageBtn"
                                              Content="{x:Static languages:Languages.Text_Nav_Terminal}">
-                    <controls:NavigationViewItem.IconSource>
-                        <controls:FontIconSource
+                    <controls:FANavigationViewItem.IconSource>
+                        <controls:FAFontIconSource
                             FontFamily="{StaticResource IconFont}"
                             FontSize="0.8"
                             Glyph="&#xf0f9;" />
-                    </controls:NavigationViewItem.IconSource>
-                </controls:NavigationViewItem>
-            </controls:NavigationView.MenuItems>
+                    </controls:FANavigationViewItem.IconSource>
+                </controls:FANavigationViewItem>
+            </controls:FANavigationView.MenuItems>
             <TransitioningContentControl Content="{Binding CurrentPage}">
                 <TransitioningContentControl.PageTransition>
                     <CrossFade FadeInEasing="CubicEaseIn" FadeOutEasing="CubicEaseOut" Duration="0:0:0.3"></CrossFade>
                 </TransitioningContentControl.PageTransition>
             </TransitioningContentControl>
-        </controls:NavigationView>
+        </controls:FANavigationView>
         <Button x:Name="NeedRestartTip" IsVisible="{Binding NeedRestart}" HorizontalAlignment="Left"
                 VerticalAlignment="Bottom" Margin="0 30 0 0" Classes="accent" Command="{Binding RestartCommand}">
             <StackPanel Orientation="Horizontal" Spacing="3">
-                <controls:FontIcon IsHitTestVisible="False" FontFamily="{StaticResource SymbolThemeFontFamily}"
+                <controls:FAFontIcon IsHitTestVisible="False" FontFamily="{StaticResource SymbolThemeFontFamily}"
                                    Glyph="&#xe117;"
                                    FontWeight="Bold"
                                    FontSize="15">
-                    <controls:FontIcon.Styles>
+                    <controls:FAFontIcon.Styles>
                         <Style>
                             <Style.Animations>
                                 <Animation Duration="0:0:1" Easing="QuarticEaseInOut">
@@ -111,11 +111,11 @@
                                 </Animation>
                             </Style.Animations>
                         </Style>
-                    </controls:FontIcon.Styles>
-                    <controls:FontIcon.RenderTransform>
+                    </controls:FAFontIcon.Styles>
+                    <controls:FAFontIcon.RenderTransform>
                         <RotateTransform Angle="50" />
-                    </controls:FontIcon.RenderTransform>
-                </controls:FontIcon>
+                    </controls:FAFontIcon.RenderTransform>
+                </controls:FAFontIcon>
                 <TextBlock IsHitTestVisible="False" Text="{x:Static languages:Languages.Text_Tips_NeedRestart}"
                            FontSize="12"
                            VerticalAlignment="Center">
@@ -132,14 +132,14 @@
                         </Style>
                     </TextBlock.Styles>
                 </TextBlock>
-                <controls:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BB;"
+                <controls:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8BB;"
                                    FontSize="12" IsVisible="{Binding #NeedRestartTip.IsPointerOver}"
                                    PointerReleased="CloseNRTip">
-                </controls:FontIcon>
+                </controls:FAFontIcon>
             </StackPanel>
         </Button>
 
-        <controls:ProgressRing
+        <controls:FAProgressRing
             IsIndeterminate="True"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

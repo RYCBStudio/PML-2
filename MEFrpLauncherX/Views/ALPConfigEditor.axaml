@@ -16,20 +16,20 @@
         Title="{x:Static languages:Languages.Text_ConfigEditor_Title}">
     <Grid RowDefinitions="Auto, *" RowSpacing="4" Margin="3" Classes="animated">
         <DockPanel>
-            <controls:InfoBar x:Name="UnSavedTip" DockPanel.Dock="Right" IconSource="SaveLocal" IsOpen="True"
+            <controls:FAInfoBar x:Name="UnSavedTip" DockPanel.Dock="Right" IconSource="SaveLocal" IsOpen="True"
                               Severity="Warning" IsClosable="False"
                               Message="{x:Static languages:Languages.Text_ConfigEditor_UnsavedChanges}" />
             <StackPanel Orientation="Horizontal" Spacing="5">
-                <controls:CommandBar DefaultLabelPosition="Right">
-                    <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnPasteClicked"
+                <controls:FACommandBar DefaultLabelPosition="Right">
+                    <controls:FACommandBar.PrimaryCommands>
+                        <controls:FACommandBarButton VerticalAlignment="Center" Click="OnPasteClicked"
                                                    Label="{x:Static languages:Languages.Text_Global_Paste}" IconSource="Paste" />
-                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnSaveClicked" Label="{x:Static languages:Languages.Text_Global_Save}"
+                        <controls:FACommandBarButton VerticalAlignment="Center" Click="OnSaveClicked" Label="{x:Static languages:Languages.Text_Global_Save}"
                                                    IconSource="Save" />
-                        <controls:CommandBarButton VerticalAlignment="Center" Click="OnCancelClicked" Label="{x:Static languages:Languages.Text_Global_Cancel}"
+                        <controls:FACommandBarButton VerticalAlignment="Center" Click="OnCancelClicked" Label="{x:Static languages:Languages.Text_Global_Cancel}"
                                                    IconSource="Cancel" />
-                        <controls:CommandBarSeparator />
-                        <controls:CommandBarElementContainer Margin="10 0  0 0">
+                        <controls:FACommandBarSeparator />
+                        <controls:FACommandBarElementContainer Margin="10 0  0 0">
                             <StackPanel Orientation="Horizontal" Spacing="3">
                                 <TextBlock Text="{x:Static languages:Languages.Text_ConfigEditor_FileType}" />
                                 <ComboBox VerticalAlignment="Center" x:Name="FileTypeComboBox"
@@ -40,9 +40,9 @@
                                     <ComboBoxItem Content="INI" />
                                 </ComboBox>
                             </StackPanel>
-                        </controls:CommandBarElementContainer>
-                    </controls:CommandBar.PrimaryCommands>
-                </controls:CommandBar>
+                        </controls:FACommandBarElementContainer>
+                    </controls:FACommandBar.PrimaryCommands>
+                </controls:FACommandBar>
             </StackPanel>
         </DockPanel>
         <avaloniaEdit:TextEditor ShowLineNumbers="True" x:Name="ConfigEdit" Grid.Row="1" />

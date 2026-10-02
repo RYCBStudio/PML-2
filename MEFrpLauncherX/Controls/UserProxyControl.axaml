@@ -20,8 +20,8 @@
     <UserControl.Resources>
         <!-- Converters -->
         <core:BannedToBrushConverter x:Key="BannedToBrushConverter" />
-        <controls1:CommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd" IsOpen="{Binding ShowExtraMenu}">
-            <controls1:CommandBarElementContainer>
+        <controls1:FACommandBarFlyout Placement="Bottom" x:Key="MoreOptionsCmd" IsOpen="{Binding ShowExtraMenu}">
+            <controls1:FACommandBarElementContainer>
                 <Button
                     IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
                     x:Name="LaunchProxyViaConfigBtn"
@@ -41,8 +41,8 @@
                             Text="{x:Static languages:Languages.Text_UserProxy_LaunchViaConfig}" />
                     </StackPanel>
                 </Button>
-            </controls1:CommandBarElementContainer>
-            <controls1:CommandBarElementContainer>
+            </controls1:FACommandBarElementContainer>
+            <controls1:FACommandBarElementContainer>
                 <Button
                     IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
                     x:Name="EditProxyBtn"
@@ -61,8 +61,8 @@
                             Text="{x:Static languages:Languages.Text_Global_Edit}" />
                     </StackPanel>
                 </Button>
-            </controls1:CommandBarElementContainer>
-            <!-- <controls1:CommandBarElementContainer> -->
+            </controls1:FACommandBarElementContainer>
+            <!-- <controls1:FACommandBarElementContainer> -->
             <!--     <Button -->
             <!--         IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}" -->
             <!--         x:Name="EditSSLBtn" -->
@@ -81,8 +81,8 @@
             <!--                 Text="SSL设置" /> -->
             <!--         </StackPanel> -->
             <!--     </Button> -->
-            <!-- </controls1:CommandBarElementContainer> -->
-            <controls1:CommandBarElementContainer>
+            <!-- </controls1:FACommandBarElementContainer> -->
+            <controls1:FACommandBarElementContainer>
                 <WrapPanel Orientation="Horizontal" ItemSpacing="5">
                     <Button
                         IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
@@ -122,8 +122,8 @@
                         </StackPanel>
                     </Button>
                 </WrapPanel>
-            </controls1:CommandBarElementContainer>
-            <controls1:CommandBarElementContainer>
+            </controls1:FACommandBarElementContainer>
+            <controls1:FACommandBarElementContainer>
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <Button
                         IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}"
@@ -162,8 +162,8 @@
                         <ComboBoxItem Content="JSON" Tag="json" />
                     </ComboBox>
                 </StackPanel>
-            </controls1:CommandBarElementContainer>
-        </controls1:CommandBarFlyout>
+            </controls1:FACommandBarElementContainer>
+        </controls1:FACommandBarFlyout>
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.Idle">
@@ -211,7 +211,7 @@
         </Border.Styles>
 
         <Grid RowDefinitions="Auto, Auto,Auto,Auto,Auto,Auto,Auto">
-            <controls1:InfoBadge Margin="0,5,10,0" HorizontalAlignment="Right"
+            <controls1:FAInfoBadge Margin="0,5,10,0" HorizontalAlignment="Right"
                                  Grid.RowSpan="7"
                                  VerticalAlignment="Top"
                                  Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
@@ -220,12 +220,12 @@
                                  FontWeight="Bold"
                                  Foreground="Azure"
                                  IsVisible="{Binding isBanned}">
-                <controls1:InfoBadge.IconSource>
-                    <controls1:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                <controls1:FAInfoBadge.IconSource>
+                    <controls1:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                               Glyph="{x:Static languages:Languages.Text_UserProxy_Banned}" />
-                </controls1:InfoBadge.IconSource>
-            </controls1:InfoBadge>
-            <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7" IsVisible="{Binding IsLoading}" />
+                </controls1:FAInfoBadge.IconSource>
+            </controls1:FAInfoBadge>
+            <controls1:FAProgressRing IsIndeterminate="True" Grid.RowSpan="7" IsVisible="{Binding IsLoading}" />
             <WrapPanel Grid.Row="0" Orientation="Horizontal" ItemSpacing="5">
                 <SelectableTextBlock Text="{Binding proxyName}"
                                      Theme="{DynamicResource SubtitleTextBlockStyle}" />
@@ -237,14 +237,14 @@
                     FontFamily="{StaticResource GlobalFontFamily}" />
             </WrapPanel>
             <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10">
-                <controls1:InfoBadge>
-                    <controls1:InfoBadge.Background>
+                <controls1:FAInfoBadge>
+                    <controls1:FAInfoBadge.Background>
                         <MultiBinding Converter="{x:Static controls:OnlineAndDisabledConverter.Instance}">
                             <Binding Path="isOnline" />
                             <Binding Path="isDisabled" />
                         </MultiBinding>
-                    </controls1:InfoBadge.Background>
-                </controls1:InfoBadge>
+                    </controls1:FAInfoBadge.Background>
+                </controls1:FAInfoBadge>
             </Grid>
             <!-- Other fields -->
             <StackPanel Grid.Row="1" Spacing="5">
@@ -276,7 +276,7 @@
                         Classes.PingIntermediate="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Intermediate'}"
                         Classes.PingBad="{Binding LatencyMs, Converter={x:Static meFrpLauncherX:ProbeStatusConverter.Instance}, ConverterParameter='Bad'}"
                         IsVisible="{Binding ProbeStatusText, Converter={x:Static core:NotNullOrEmptyToBoolConverter.Instance}}" />
-                    <controls1:ProgressRing
+                    <controls1:FAProgressRing
                         Width="12"
                         Height="12"
                         IsIndeterminate="True"
@@ -501,14 +501,14 @@
                     </SplitButton.Content>
                     <SplitButton.Flyout>
                         <controls1:FAMenuFlyout Placement="Bottom">
-                            <controls1:MenuFlyoutItem
+                            <controls1:FAMenuFlyoutItem
                                 Text="{x:Static languages:Languages.Text_UserProxy_GenerateQRCode}"
                                 Command="{Binding GenerateQRCodeCommand}" CommandParameter="{Binding}">
-                                <controls1:MenuFlyoutItem.IconSource>
-                                    <controls1:FontIconSource Glyph="&#xED14;"
+                                <controls1:FAMenuFlyoutItem.IconSource>
+                                    <controls1:FAFontIconSource Glyph="&#xED14;"
                                                               FontFamily="{StaticResource SymbolThemeFontFamily}" />
-                                </controls1:MenuFlyoutItem.IconSource>
-                            </controls1:MenuFlyoutItem>
+                                </controls1:FAMenuFlyoutItem.IconSource>
+                            </controls1:FAMenuFlyoutItem>
                         </controls1:FAMenuFlyout>
                     </SplitButton.Flyout>
                 </SplitButton>
