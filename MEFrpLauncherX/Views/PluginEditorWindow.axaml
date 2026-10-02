@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:MEFrpLauncherX.ViewModels"
         xmlns:pedit="clr-namespace:MEFrpLauncherX.ViewModels.PluginEditor"
         xmlns:p="clr-namespace:MEFrpLauncherX.Plugin.Core;assembly=MEFrpLauncherX.Plugin"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"

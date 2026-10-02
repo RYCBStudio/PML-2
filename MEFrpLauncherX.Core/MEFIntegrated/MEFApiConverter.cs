@@ -843,7 +843,7 @@ public static class MEFrpApiConverter
     /// <returns></returns>
     public static ApiInfo<object> ToggleProxyStatus(int proxyId, bool isDisabled)
     {
-        App.CurrentLogger.Log("正在发送切换隧道状态隧道申请", module: EnumLogModule.Net);
+        App.CurrentLogger.Log("正在发送切换隧道状态申请", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
         var body = JsonSerializer.Serialize(new ToggleProxyInfo

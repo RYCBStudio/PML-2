@@ -1,0 +1,3 @@
+[submodule "FluentAvalonia.MarkdownRender"]
+	path = FluentAvalonia.MarkdownRender
+	url = https://github.com/RYCBStudio/FluentAvalonia.MarkdownRenderer.git
