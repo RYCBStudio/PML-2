@@ -1,12 +1,12 @@
-name: Sync Release to OpenList
+name: Sync Large Release Assets to OpenList
 
 on:
   release:
-    types: [published]      # Release 发布时自动触发
-  workflow_dispatch:        # 也支持手动触发
+    types: [published]
+  workflow_dispatch:
 
 jobs:
-  sync:
+  sync-large:
     runs-on: ubuntu-latest
     steps:
       - name: Resolve release tag
@@ -19,20 +19,46 @@ jobs:
           else
             TAG=$(gh release view --json tagName -q .tagName --repo ${{ github.repository }})
           fi
-          echo "Resolved tag: $TAG"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved tag: $TAG"
 
-      - name: Download release assets
+      - name: Find large assets (>= 99MB)
+        id: large
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 99614720 = 99 * 1024 * 1024，与 Worker 阈值保持一致
+          LARGE=$(gh release view "${{ steps.release.outputs.tag }}" \
+            --json assets \
+            -q '.assets[] | select(.size >= 99614720) | .name' \
+            --repo ${{ github.repository }})
+          if [ -z "$LARGE" ]; then
+            echo "No large assets found. Nothing to do."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found large assets:"
+            echo "$LARGE"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            printf '%s\n' "$LARGE" > /tmp/large_assets.txt
+          fi
+
+      - name: Download large assets
+        if: steps.large.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p downloads
-          gh release download "${{ steps.release.outputs.tag }}" \
-            --dir downloads \
-            --repo ${{ github.repository }} \
-            --pattern '*'
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            echo "Downloading: $name"
+            gh release download "${{ steps.release.outputs.tag }}" \
+              --pattern "$name" \
+              --dir downloads \
+              --repo ${{ github.repository }}
+          done < /tmp/large_assets.txt
 
       - name: Upload to OpenList via API
+        if: steps.large.outputs.found == 'true'
         env:
           OPENLIST_URL: ${{ secrets.OPENLIST_URL }}
           OPENLIST_USERNAME: ${{ secrets.OPENLIST_USERNAME }}
@@ -40,58 +66,106 @@ jobs:
           OPENLIST_PATH: "/mefrp-desktop/ME-Frp PML2/mefrp"
           TAG: ${{ steps.release.outputs.tag }}
         run: |
-          set -e
+          python3 << 'PYEOF'
+          import os
+          import re
+          import sys
+          import json
+          import urllib.request
+          import urllib.parse
 
-          # 1. 登录获取 JWT token
-          echo "Logging in to OpenList..."
-          LOGIN_RESPONSE=$(curl -s -X POST "${OPENLIST_URL}/api/auth/login" \
-            -H "Content-Type: application/json" \
-            -d "{\"username\":\"${OPENLIST_USERNAME}\",\"password\":\"${OPENLIST_PASSWORD}\"}")
+          # ---- 读取环境变量 ----
+          url = os.environ['OPENLIST_URL']
+          username = os.environ['OPENLIST_USERNAME']
+          password = os.environ['OPENLIST_PASSWORD']
+          base_path = os.environ['OPENLIST_PATH']
+          tag = os.environ['TAG']
 
-          TOKEN=$(echo "$LOGIN_RESPONSE" | jq -r '.data.token')
+          # ---- 1. 登录获取 JWT token ----
+          print('Logging in to OpenList...')
+          login_data = json.dumps({'username': username, 'password': password}).encode()
+          req = urllib.request.Request(
+              f'{url}/api/auth/login',
+              data=login_data,
+              headers={'Content-Type': 'application/json'},
+              method='POST'
+          )
+          with urllib.request.urlopen(req) as resp:
+              result = json.loads(resp.read())
+          token = result.get('data', {}).get('token')
+          if not token:
+              print(f'❌ Login failed: {result}')
+              sys.exit(1)
+          print('✅ Login successful.')
 
-          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
-            echo "❌ Login failed: $LOGIN_RESPONSE"
-            exit 1
-          fi
-          echo "✅ Login successful."
+          # ---- 2. 文件名还原（与 Worker 逻辑一致） ----
+          EXT_REGEX = re.compile(
+              r'\.(tar\.gz|tar\.xz|tar\.bz2|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
+              re.I
+          )
+          VER_REGEX = re.compile(r'\d+\.\d+\.\d+(?:\.\d+)?')
 
-          # 2. 逐个上传文件
-          for file in downloads/*; do
-            [ -f "$file" ] || continue
-            filename=$(basename "$file")
-            target="${OPENLIST_PATH}/${TAG}/${filename}"
+          def restore_spaces(name: str) -> str:
+              """还原 GitHub 把空格替换成点的文件名。"""
+              m = EXT_REGEX.search(name)
+              ext = m.group(0) if m else ''
+              base = name[:-len(ext)] if ext else name
 
-            # URL 编码路径（空格 -> %20）
-            encoded_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$target")
+              versions = []
+              def protect(match):
+                  versions.append(match.group(0))
+                  return f'\x00V{len(versions)-1}\x00'
 
-            echo ""
-            echo "📤 Uploading: $filename"
-            echo "   Target: $target"
+              base = VER_REGEX.sub(protect, base)
+              base = base.replace('.', ' ')
+              base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
 
-            HTTP_CODE=$(curl -s -o /tmp/upload_resp.txt -w "%{http_code}" \
-              -X PUT "${OPENLIST_URL}/api/fs/put" \
-              -H "Authorization: ${TOKEN}" \
-              -H "File-Path: ${encoded_path}" \
-              -H "Content-Type: application/octet-stream" \
-              -H "Overwrite: true" \
-              --data-binary "@${file}")
+              return base + ext
 
-            if [ "$HTTP_CODE" != "200" ]; then
-              echo "❌ Upload failed: HTTP $HTTP_CODE"
-              cat /tmp/upload_resp.txt
-              exit 1
-            fi
+          # ---- 3. 上传 ----
+          files = sorted(f for f in os.listdir('downloads') if os.path.isfile(os.path.join('downloads', f)))
+          if not files:
+              print('No files to upload.')
+              sys.exit(0)
 
-            RESP_CODE=$(jq -r '.code' /tmp/upload_resp.txt 2>/dev/null || echo "unknown")
-            if [ "$RESP_CODE" != "200" ]; then
-              echo "❌ OpenList error:"
-              cat /tmp/upload_resp.txt
-              exit 1
-            fi
+          for filename in files:
+              filepath = os.path.join('downloads', filename)
+              restored = restore_spaces(filename)
+              target = f'{base_path}/{tag}/{restored}'
+              encoded_target = urllib.parse.quote(target, safe='')
 
-            echo "✅ Done."
-          done
+              size_mb = os.path.getsize(filepath) / 1024 / 1024
+              print(f'\n📤 Uploading: {filename}')
+              print(f'   → Restored: {restored}')
+              print(f'   → Target:   {target}')
+              print(f'   → Size:     {size_mb:.2f} MB')
 
-          echo ""
-          echo "🎉 All assets synced to: ${OPENLIST_PATH}/${TAG}/"
+              with open(filepath, 'rb') as f:
+                  file_data = f.read()
+
+              req = urllib.request.Request(
+                  f'{url}/api/fs/put',
+                  data=file_data,
+                  headers={
+                      'Authorization': token,
+                      'File-Path': encoded_target,
+                      'Content-Type': 'application/octet-stream',
+                      'Overwrite': 'true',
+                      'As-Task': 'true',
+                  },
+                  method='PUT'
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=600) as resp:
+                      result = json.loads(resp.read())
+              except Exception as e:
+                  print(f'❌ Upload error: {e}')
+                  sys.exit(1)
+
+              if result.get('code') != 200:
+                  print(f'❌ OpenList error: {result}')
+                  sys.exit(1)
+              print(f'✅ Done: {restored}')
+
+          print(f'\n🎉 All large assets synced to: {base_path}/{tag}/')
+          PYEOF
