@@ -31,7 +31,7 @@
 ## 技术栈
 
 - **.NET 10.0**
-- **Avalonia 11.x** + FluentAvaloniaUI
+- **Avalonia 12.1.3** + FluentAvaloniaUI
 - **ReactiveUI**
 - LiveChartsCore、RestSharp、Sentry、Downloader、Tomlyn、YamlDotNet 等
 
@@ -43,9 +43,14 @@ MEFrpLauncherX.sln
 │   ├── Views/                       # UI 视图 (AXAML)
 │   ├── ViewModels/                  # 视图模型 (MVVM)
 │   ├── Controls/                    # 自定义控件
+│   ├── Behaviours/                  # 附加属性行为（动画 / 过渡等）
+│   ├── Styles/                      # 全局样式与控件模板 (AXAML)
+│   ├── Styling/                     # 代码构建的样式与过渡（可运行时切换）
+│   ├── Services/                    # 应用级服务
 │   ├── Console/                     # 终端控制台
 │   ├── NetworkMonitoring/           # 网络监控
 │   ├── Plugins/                     # 插件系统
+│   ├── Tools/                       # 内置工具（证书助手等）
 │   └── Assets/                      # 静态资源
 ├── MEFrpLauncherX.Core/             # 核心类库
 │   ├── MEFIntergrated/              # Frp 集成
@@ -60,7 +65,7 @@ MEFrpLauncherX.sln
 └── RYCB.PML2.Extensions.MinecraftExtension/  # Minecraft 扩展
 ```
 
-### Markdown 渲染组件（FluentAvalonia.MarkdownRender）
+## Markdown 渲染组件（FluentAvalonia.MarkdownRender）
 
 `FluentAvalonia.MarkdownRender` 是本仓库自行维护的 Avalonia Markdown 渲染控件，**Fork 自开源项目 [AIDotNet/Markdown.AIRender](https://github.com/AIDotNet/Markdown.AIRender)**（原包名 `Markdown.AIRender` / 原工程名 `MarkdownAIRender`）。
 
@@ -82,6 +87,51 @@ MEFrpLauncherX.sln
     <mdRender:MarkdownRender Value="{Binding MarkdownText}" />
 </Window>
 ```
+
+## 界面流畅度与诊断
+
+渲染与动画相关的设置集中在 **设置 → 外观 / 高级**：
+
+| 设置项 | 配置文件 | 生效时机 |
+|---|---|---|
+| **动画程度**（关闭 / 精简 / 标准） | `Config/Settings.json`（`AnimationLevel`） | **即时生效**，同时影响页面入场动画与页签切换过渡 |
+| **渲染模式**（自动 / Vulkan / OpenGL / 软件） | `Config/Render.json`（`RenderingMode`） | 需重启 |
+| **显存分配**（128 / 256 / 512 / 1024 MB） | `Config/Render.json`（`GpuMemoryLimitMb`） | 需重启 |
+| **低延迟渲染** | `Config/Render.json`（`LowLatencyRendering`） | 需重启 |
+
+> 渲染相关设置存放在**独立的 `Config/Render.json`**：它们必须在 Avalonia 启动前读取，而 `Settings.json` 的加载时机更晚。
+>
+> Windows 默认渲染模式列表把 **AngleEgl 排在 Vulkan 之前** —— 只有 AngleEgl 的成功分支会注册合成模式（`LowLatencyDxgiSwapChain` / `WinUIComposition` / `DirectComposition`），若 Vulkan 优先成功则合成永不注册，将退回 60Hz 的睡眠式渲染循环。详见 `MEFrpLauncherX/Program.cs` 的 `BuildWin32Options`。
+
+需要测量帧率时，用环境变量开启渲染诊断叠加层（**仅 Debug 构建**，默认关闭）：
+
+```bash
+# Windows (PowerShell)
+$env:PML2_RENDER_DIAG = "1"; dotnet run --project MEFrpLauncherX/MEFrpLauncherX.csproj
+
+# 只显示其中几项：fps / layout / render / dirty（dirty 会引入额外合成层，仅排查脏矩形时用）
+$env:PML2_RENDER_DIAG = "fps,render"
+```
+
+窗口左上角会显示 **FPS 曲线 + 布局耗时图 + 渲染耗时图**：FPS 持续低于刷新率说明帧率不足；布局耗时出现尖峰说明瓶颈在布局（不要对 `Width`/`Height`/`Margin` 做动画）；渲染耗时尖峰说明瓶颈在绘制（阴影、模糊、大图缩放）。
+
+> 帧率上限由显示器刷新率决定（垂直同步），无法超过屏幕刷新率。
+
+进一步的优化记录见 [docs/performance_optimization_summary.md](docs/performance_optimization_summary.md)。
+
+## 自检工具
+
+`tools/` 下的免安装探针脚本（各自独立工程，不参与主解决方案构建）：
+
+| 工具 | 用法 | 作用 |
+|---|---|---|
+| `XamlSmoke` | `dotnet run --project tools/XamlSmoke` | 运行时加载全部 XAML 资源与页面，捕获「编译通过、运行期 XAML 加载失败」 |
+| `TabTransitionVerify` | `dotnet run --project tools/TabTransitionVerify` | 在 headless 环境真实播放标签页过渡，断言不抛异常 |
+| `P1Verify` | `dotnet run --project tools/P1Verify` | 一次性编译全部项目（含不在主 sln 内的 CrashDisplayer / Splash） |
+| `P4Verify` | `dotnet run --project tools/P4Verify` | 逐条校验 `TrimmerRoots.xml` 的裁剪条目是否真实命中 |
+| `P3UiRegression` | `dotnet run --project tools/P3UiRegression` | 用 Avalonia Headless 真实创建窗口并驱动 UI 的回归测试 |
+
+> 这些工具都以**反射方式加载主程序已编译的产物**（主程序是自包含可执行文件，无法被直接引用），因此请先构建主项目。若主程序正在运行导致 `bin` 被占用，`TabTransitionVerify` 会自动改用较新的 `obj` 产物，也可用环境变量 `PML2_VERIFY_APPDIR` 显式指定产物目录。
 
 ## 开发环境要求
 
