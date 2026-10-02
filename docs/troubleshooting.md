@@ -214,3 +214,29 @@ pml2://StartProxy/<隧道ID>?Name=<隧道名>
 | 应用打开了但没启动隧道 | 隧道 ID 不存在/已删除、未登录或获取启动凭证失败；先登录并在主界面确认该隧道可用，失败原因见 `Logs/` |
 | 隧道名显示为 `#123` | 链接未带 `Name` 参数，属正常表现 |
 | 想撤销协议注册 | Windows 删除 `HKCU\Software\Classes\pml2`；Linux 删除 `~/.local/share/applications/pml2-handler.desktop` |
+
+## 界面与动画（26.4）
+
+### 界面太晃 / 想要更跟手
+
+「设置 → 外观 → 动画程度」可切到**精简**或**关闭**（即时生效，无需重启）。该设置同时影响页面入场动画与**页签切换过渡**。关闭后不仅没有动画，也会省下部分渲染开销。
+
+### 切换页签时看起来「闪了一下」
+
+先确认是否为**快速连续点击多个页签**：连续切换时后一次过渡会接管前一次，中途会有一次接管动作，属正常表现。若在**正常间隔**切换时仍明显闪动，请记录具体页面与操作步骤反馈。
+
+### 动画/过渡相关的崩溃（开发者自查）
+
+页签过渡在 headless 环境下的运行期自检工具：
+
+```bash
+dotnet run --project tools/TabTransitionVerify
+```
+
+它会真实播放一次过渡并断言不抛异常，退出码 `0` 表示通过。若提示找不到主程序产物，请先构建主项目；若主程序正在运行导致 `bin` 被占用，该工具会自动改用较新的 `obj` 产物，也可用环境变量 `PML2_VERIFY_APPDIR` 指定产物目录。
+
+> 常见陷阱：**不要对 `RenderTransform` 直接做关键帧动画**（Avalonia 的动画器按属性类型注册，没有 `ITransform` 的条目，运行期会抛 `No animator registered for the property RenderTransform`）；正确做法是动画具体变换上的数值属性（如 `ScaleTransform.ScaleX` / `TranslateTransform.X`）。
+
+### 帧率排查
+
+用环境变量开启诊断叠加层（仅 Debug 构建），见 [用户指南 · 帧率诊断](user_guide.md#帧率诊断排查卡顿时使用)。
