@@ -62,6 +62,26 @@
                     </StackPanel>
                 </Button>
             </controls1:FACommandBarElementContainer>
+            <controls1:FACommandBarElementContainer>
+                <Button
+                    x:Name="MigrateProxyBtn"
+                    Margin="5,2,5,2"
+                    IsEnabled="{Binding CanMigrateTunnel}"
+                    Command="{Binding MigrateTunnelCommand}"
+                    CommandParameter="{Binding}"
+                    FontFamily="{StaticResource GlobalFontFamily}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Text="&#xE8AB;" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{x:Static languages:Languages.Text_UserProxy_MigrateTunnel}" />
+                    </StackPanel>
+                </Button>
+            </controls1:FACommandBarElementContainer>
             <!-- <controls1:FACommandBarElementContainer> -->
             <!--     <Button -->
             <!--         IsEnabled="{Binding node, Converter={x:Static core:NodeNotFoundToBoolConverterReverse.Instance}}" -->

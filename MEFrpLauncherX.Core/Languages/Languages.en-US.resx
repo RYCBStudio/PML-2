@@ -320,7 +320,7 @@
         <value>Adjust the overall opacity of the float window</value>
     </data>
     <data name="Text.ProxyFloat.NoRunningTunnels" xml:space="preserve">
-        <value>No tunnels running</value>
+        <value>No proxies running</value>
     </data>
     <data name="Text.ProxyFloat.WindowPosition" xml:space="preserve">
         <value>Window position</value>
@@ -362,10 +362,10 @@
         <value>Home</value>
     </data>
     <data name="Text.Nav.CreateProxy" xml:space="preserve">
-        <value>Create Tunnel</value>
+        <value>Create Proxy</value>
     </data>
     <data name="Text.Nav.ManageProxy" xml:space="preserve">
-        <value>Manage Tunnels</value>
+        <value>Manage Proxies</value>
     </data>
     <data name="Text.Nav.NodesMonitoring" xml:space="preserve">
         <value>Node Monitoring</value>
@@ -422,7 +422,7 @@
         <value>Detailed Description</value>
     </data>
     <data name="Text.Proxy.SelectedCount" xml:space="preserve">
-        <value>{0} tunnel(s) selected</value>
+        <value>{0} proxy(ies) selected</value>
     </data>
     <data name="Text.Proxy.BatchLaunch" xml:space="preserve">
         <value>Batch Launch</value>
@@ -515,25 +515,25 @@
         <value>Default</value>
     </data>
     <data name="Text.SSL.ConfigFile" xml:space="preserve">
-        <value>Tunnel Configuration File</value>
+        <value>Proxy Configuration File</value>
     </data>
     <data name="Text.SSL.ConfigFileDescription" xml:space="preserve">
-        <value>Configuring SSL certificates for https tunnels requires launching with a configuration file.</value>
+        <value>Configuring SSL certificates for https proxies requires launching with a configuration file.</value>
     </data>
     <data name="Text.SSL.HttpTunnelSettings" xml:space="preserve">
-        <value>http(s) Tunnel Settings</value>
+        <value>http(s) Proxy Settings</value>
     </data>
     <data name="Text.SSL.ProxyName" xml:space="preserve">
         <value>Proxy Name</value>
     </data>
     <data name="Text.SSL.ProxyNameDescription" xml:space="preserve">
-        <value>The proxy name is the unique identifier of this tunnel service, used to distinguish different proxy configurations.</value>
+        <value>The proxy name is the unique identifier of this proxy service, used to distinguish different proxy configurations.</value>
     </data>
     <data name="Text.SSL.Domain" xml:space="preserve">
         <value>Access Domain</value>
     </data>
     <data name="Text.SSL.DomainDescription" xml:space="preserve">
-        <value>Set the access domain of the tunnel.</value>
+        <value>Set the access domain of the proxy.</value>
     </data>
     <data name="Text.SSL.LocalAddress" xml:space="preserve">
         <value>Local Address</value>
@@ -551,7 +551,7 @@
         <value>Certificate File</value>
     </data>
     <data name="Text.SSL.CertFileDescription" xml:space="preserve">
-        <value>The SSL certificate file for https tunnels.</value>
+        <value>The SSL certificate file for https proxies.</value>
     </data>
     <data name="Text.SSL.CertFileWatermark" xml:space="preserve">
         <value>Certificate file, extension usually .crt or .pem</value>
@@ -560,7 +560,7 @@
         <value>Private Key File</value>
     </data>
     <data name="Text.SSL.KeyFileDescription" xml:space="preserve">
-        <value>The private key file for https tunnels.</value>
+        <value>The private key file for https proxies.</value>
     </data>
     <data name="Text.SSL.KeyFileWatermark" xml:space="preserve">
         <value>Private key file, extension usually .key</value>
@@ -653,13 +653,13 @@
         <value>Set whether the software starts on boot. Note: "boot" here means user sign-in.</value>
     </data>
     <data name="Text.Settings.AutoLaunch" xml:space="preserve">
-        <value>Auto-launch some tunnels on startup</value>
+        <value>Auto-launch some proxies on startup</value>
     </data>
     <data name="Text.Settings.AutoLaunchDescription" xml:space="preserve">
-        <value>Set which tunnels to auto-launch on startup. Note: "startup" here means software startup.</value>
+        <value>Set which proxies to auto-launch on startup. Note: "startup" here means software startup.</value>
     </data>
     <data name="Text.Settings.SetTunnelsToLaunch" xml:space="preserve">
-        <value>Set tunnels to launch</value>
+        <value>Set proxies to launch</value>
     </data>
     <data name="Text.Settings.MinimizeToTray" xml:space="preserve">
         <value>Minimize to system tray on close instead of closing directly</value>
@@ -668,25 +668,25 @@
         <value>Enabling this option lets the software run in the background.</value>
     </data>
     <data name="Text.Settings.TunnelSettings" xml:space="preserve">
-        <value>Tunnel Settings</value>
+        <value>Proxy Settings</value>
     </data>
     <data name="Text.Settings.TunnelSettingsDescription" xml:space="preserve">
-        <value>Set tunnel-related options</value>
+        <value>Set proxy-related options</value>
     </data>
     <data name="Text.Settings.KickWithoutDisable" xml:space="preserve">
-        <value>Do not disable tunnels when force-kicking them</value>
+        <value>Do not disable proxies when force-kicking them</value>
     </data>
     <data name="Text.Settings.KickWithoutDisableDescription" xml:space="preserve">
-        <value>The ME Frp website disables tunnels when force-kicking them. With this option, we can re-enable tunnels after force-kicking.</value>
+        <value>The ME Frp website disables proxies when force-kicking them. With this option, we can re-enable proxies after force-kicking.</value>
     </data>
     <data name="Text.Settings.ProxyMonitorBar" xml:space="preserve">
-        <value>"Tunnel Monitor" bar [BETA]</value>
+        <value>"Proxy Monitor" bar [BETA]</value>
     </data>
     <data name="Text.Settings.ProxyMonitorBarDescription" xml:space="preserve">
-        <value>"Tunnel Monitor" is a new feature we launched that can monitor the inbound and outbound traffic of running tunnels.</value>
+        <value>"Proxy Monitor" is a new feature we launched that can monitor the inbound and outbound traffic of running proxies.</value>
     </data>
     <data name="Text.Settings.CustomProxyMonitorBar" xml:space="preserve">
-        <value>Customize "Tunnel Monitor" bar</value>
+        <value>Customize "Proxy Monitor" bar</value>
     </data>
     <data name="Text.Settings.Download" xml:space="preserve">
         <value>Download Settings</value>
@@ -893,7 +893,7 @@
         <value>Font File:</value>
     </data>
     <data name="Text.EditProxy.Title" xml:space="preserve">
-        <value>Edit Tunnel</value>
+        <value>Edit Proxy</value>
     </data>
     <data name="Text.CreateProxy.AllowedPortRange" xml:space="preserve">
         <value>Allowed port range: {0}</value>
@@ -902,7 +902,7 @@
         <value>Basic Settings</value>
     </data>
     <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
-        <value>The following are required settings for creating a tunnel.</value>
+        <value>The following are required settings for creating a proxy.</value>
     </data>
     <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
         <value>Quick ports:</value>
@@ -911,7 +911,7 @@
         <value>Templates</value>
     </data>
     <data name="Text.CreateProxy.TemplatesDescription" xml:space="preserve">
-        <value>Save common tunnel parameters and apply them with one click when creating</value>
+        <value>Save common proxy parameters and apply them with one click when creating</value>
     </data>
     <data name="Text.CreateProxy.ApplyTemplate" xml:space="preserve">
         <value>Apply Template</value>
@@ -941,10 +941,10 @@
         <value>Template deleted</value>
     </data>
     <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
-        <value>Tunnel Name</value>
+        <value>Proxy Name</value>
     </data>
     <data name="Text.CreateProxy.ProxyNamePlaceholder" xml:space="preserve">
-        <value>Please enter the tunnel name</value>
+        <value>Please enter the proxy name</value>
     </data>
     <data name="Text.CreateProxy.LocalAddress" xml:space="preserve">
         <value>Local Address</value>
@@ -968,10 +968,10 @@
         <value>Source Protocol</value>
     </data>
     <data name="Text.CreateProxy.SameAsHttp" xml:space="preserve">
-        <value>Same as tunnel protocol (HTTP)</value>
+        <value>Same as proxy protocol (HTTP)</value>
     </data>
     <data name="Text.CreateProxy.SameAsHttps" xml:space="preserve">
-        <value>Same as tunnel protocol (HTTPS)</value>
+        <value>Same as proxy protocol (HTTPS)</value>
     </data>
     <data name="Text.CreateProxy.SslCertPath" xml:space="preserve">
         <value>SSL Certificate Path</value>
@@ -998,7 +998,7 @@
         <value>Advanced Settings</value>
     </data>
     <data name="Text.CreateProxy.AdvancedSettingsDescription" xml:space="preserve">
-        <value>Tip: Only recommended for technical users. Please make sure your configuration is correct, otherwise the tunnel may fail to start.</value>
+        <value>Tip: Only recommended for technical users. Please make sure your configuration is correct, otherwise the proxy may fail to start.</value>
     </data>
     <data name="Text.CreateProxy.SecurityOptions" xml:space="preserve">
         <value>Security Options</value>
@@ -1034,7 +1034,7 @@
         <value>Custom Response Headers</value>
     </data>
     <data name="Text.CreateProxy.LocationsDescription" xml:space="preserve">
-        <value>Edit the path routing rules of the HTTP tunnel.</value>
+        <value>Edit the path routing rules of the HTTP proxy.</value>
     </data>
     <data name="Text.CreateProxy.NotEnabled" xml:space="preserve">
         <value>Not enabled</value>
@@ -1076,16 +1076,16 @@
         <value>Today's Sign-in</value>
     </data>
     <data name="Text.UserCenter.TrafficAndTunnels" xml:space="preserve">
-        <value>Traffic and Tunnels</value>
+        <value>Traffic and Proxies</value>
     </data>
     <data name="Text.UserCenter.TrafficAndTunnelsDescription" xml:space="preserve">
-        <value>View your traffic usage and tunnel configuration</value>
+        <value>View your traffic usage and proxy configuration</value>
     </data>
     <data name="Text.UserCenter.RemainingTraffic" xml:space="preserve">
         <value>Remaining Traffic</value>
     </data>
     <data name="Text.UserCenter.TunnelCount" xml:space="preserve">
-        <value>Tunnel Count</value>
+        <value>Proxy Count</value>
     </data>
     <data name="Text.UserCenter.InboundBandwidth" xml:space="preserve">
         <value>Inbound Bandwidth</value>
@@ -1103,10 +1103,10 @@
         <value>Domain Whitelist</value>
     </data>
     <data name="Text.UserCenter.DomainWhitelistDescription" xml:space="preserve">
-        <value>View your domain whitelist for creating HTTP/HTTPS tunnels on "Mainland China (excluding HK/MO/TW)" nodes</value>
+        <value>View your domain whitelist for creating HTTP/HTTPS proxies on "Mainland China (excluding HK/MO/TW)" nodes</value>
     </data>
     <data name="Text.UserCenter.DomainWhitelistInfo" xml:space="preserve">
-        <value>This is the domain whitelist for creating HTTP/HTTPS tunnels on "Mainland China (excluding HK/MO/TW)" nodes. Your domain can only be added if it has an ICP filing record with the Ministry of Industry and Information Technology. Domains for sites hosted on non-mainland-China nodes do not need to be whitelisted.</value>
+        <value>This is the domain whitelist for creating HTTP/HTTPS proxies on "Mainland China (excluding HK/MO/TW)" nodes. Your domain can only be added if it has an ICP filing record with the Ministry of Industry and Information Technology. Domains for sites hosted on non-mainland-China nodes do not need to be whitelisted.</value>
     </data>
     <data name="Text.UserCenter.DomainWhitelistWarning" xml:space="preserve">
         <value>When filling in, please enter the root domain directly, e.g. mefrp.com. Do not enter subdomains such as www.mefrp.com, and do not enter free subdomains here. We use real-time data to automatically whitelist domains; submitting invalid domains may result in you being reported!</value>
@@ -1268,7 +1268,7 @@
         <value>Online Users</value>
     </data>
     <data name="Text.NodesMonitoring.OnlineTunnels" xml:space="preserve">
-        <value>Online Tunnels</value>
+        <value>Online Proxies</value>
     </data>
     <data name="Text.NodesMonitoring.TotalInboundTraffic" xml:space="preserve">
         <value>Total Inbound Traffic</value>
@@ -1292,7 +1292,7 @@
         <value>Connections: {0}</value>
     </data>
     <data name="Text.NodesMonitoring.TunnelCountFormat" xml:space="preserve">
-        <value>Tunnels: {0}</value>
+        <value>Proxies: {0}</value>
     </data>
     <data name="Text.NodesMonitoring.Load" xml:space="preserve">
         <value>Load:</value>
@@ -1460,7 +1460,7 @@
         <value>The search syntax is not universal. It currently only applies to this software. You can make this request to other software developers.</value>
     </data>
     <data name="Text.ManageProxyHelp.PidDescription" xml:space="preserve">
-        <value>n is the tunnel ID</value>
+        <value>n is the proxy ID</value>
     </data>
     <data name="Text.ManageProxyHelp.NidDescription" xml:space="preserve">
         <value>n is the node ID</value>
@@ -1472,34 +1472,34 @@
         <value>Examples</value>
     </data>
     <data name="Text.ManageProxyHelp.PidExample" xml:space="preserve">
-        <value>Search all tunnels whose tunnel ID contains "1"</value>
+        <value>Search all proxies whose proxy ID contains "1"</value>
     </data>
     <data name="Text.ManageProxyHelp.NidExample" xml:space="preserve">
-        <value>Search all tunnels whose node ID contains "1"</value>
+        <value>Search all proxies whose node ID contains "1"</value>
     </data>
     <data name="Text.ManageProxyHelp.NExample" xml:space="preserve">
-        <value>Search all tunnels whose node name contains "节点1"</value>
+        <value>Search all proxies whose node name contains "节点1"</value>
     </data>
     <data name="Text.ManageProxyHelp.ColorMeaning" xml:space="preserve">
         <value>Color Meanings</value>
     </data>
     <data name="Text.ManageProxyHelp.GreenOnline" xml:space="preserve">
-        <value>Green: tunnel online</value>
+        <value>Green: proxy online</value>
     </data>
     <data name="Text.ManageProxyHelp.RedOffline" xml:space="preserve">
-        <value>Red: tunnel offline</value>
+        <value>Red: proxy offline</value>
     </data>
     <data name="Text.ManageProxyHelp.YellowDisabled" xml:space="preserve">
-        <value>Yellow: tunnel disabled</value>
+        <value>Yellow: proxy disabled</value>
     </data>
     <data name="Text.ManageProxyHelp.ExampleOnline" xml:space="preserve">
-        <value>Tunnel online</value>
+        <value>Proxy online</value>
     </data>
     <data name="Text.ManageProxyHelp.ExampleOffline" xml:space="preserve">
-        <value>Tunnel offline</value>
+        <value>Proxy offline</value>
     </data>
     <data name="Text.ManageProxyHelp.ExampleOfflineDisabled" xml:space="preserve">
-        <value>Tunnel offline and disabled</value>
+        <value>Proxy offline and disabled</value>
     </data>
     <data name="Caption.Hint" xml:space="preserve">
         <value>Tip</value>
@@ -1559,10 +1559,10 @@
         <value>Banned</value>
     </data>
     <data name="Text.UserProxy.LaunchTunnel" xml:space="preserve">
-        <value>Start Tunnel</value>
+        <value>Start Proxy</value>
     </data>
     <data name="Text.UserProxy.StopTunnel" xml:space="preserve">
-        <value>Stop Tunnel</value>
+        <value>Stop Proxy</value>
     </data>
     <data name="Text.UserProxy.DetailedInfo" xml:space="preserve">
         <value>Detailed Info</value>
@@ -1595,7 +1595,7 @@
         <value>Authentication failed: login credentials are invalid or expired. Please sign in again and retry.</value>
     </data>
     <data name="Text.TunnelError.PortInUse" xml:space="preserve">
-        <value>Port in use: the remote port is already occupied by another tunnel or service. Please change the port and retry.</value>
+        <value>Port in use: the remote port is already occupied by another proxy or service. Please change the port and retry.</value>
     </data>
     <data name="Text.TunnelError.NodeUnreachable" xml:space="preserve">
         <value>Node unreachable: unable to connect to the node or the node is not confirmed online. Please check your network and retry.</value>
@@ -1613,7 +1613,7 @@
         <value>Error info copied</value>
     </data>
     <data name="Text.UserProxy.LaunchFailedFormat" xml:space="preserve">
-        <value>Failed to launch tunnel {0}: {1}</value>
+        <value>Failed to launch proxy {0}: {1}</value>
     </data>
     <data name="Text.Global.Delete" xml:space="preserve">
         <value>Delete</value>
@@ -2305,7 +2305,7 @@ This will delete the currently selected theme configuration file, and takes effe
         <value>Node ID</value>
     </data>
     <data name="Text.Nodes.SortOnlineTunnels" xml:space="preserve">
-        <value>Online tunnels</value>
+        <value>Online proxies</value>
     </data>
     <data name="Text.Nodes.SortCurrentConnections" xml:space="preserve">
         <value>Current connections</value>
@@ -2343,17 +2343,17 @@ This will delete the currently selected theme configuration file, and takes effe
     <data name="Text.CreateProxyGuide.RDPDesc" xml:space="preserve">
         <value>RDP (Remote Desktop Protocol) is a remote access protocol developed by Microsoft. It uses TCP port 3389 by default, allowing users to remotely control a computer through a graphical interface over the network.</value>
     </data>
-    <data name="Text.ManageProxy.MenuTunnels" xml:space="preserve">
-        <value>Tunnels</value>
+    <data name="Text.ManageProxy.MenuProxies" xml:space="preserve">
+        <value>Proxies</value>
     </data>
     <data name="Text.ManageProxy.ManageTunnels" xml:space="preserve">
-        <value>Manage Tunnels</value>
+        <value>Manage Proxies</value>
     </data>
     <data name="Text.ManageProxy.CreateTunnel" xml:space="preserve">
-        <value>Create Tunnel</value>
+        <value>Create Proxy</value>
     </data>
     <data name="Text.ManageProxy.LaunchTunnel" xml:space="preserve">
-        <value>Launch Tunnel</value>
+        <value>Start Proxy</value>
     </data>
     <data name="Text.ManageProxy.ExitApp" xml:space="preserve">
         <value>Exit</value>
@@ -2368,7 +2368,7 @@ This will delete the currently selected theme configuration file, and takes effe
         <value>Help</value>
     </data>
     <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
-        <value>Please enter a tunnel name</value>
+        <value>Please enter a proxy name</value>
     </data>
     <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
         <value>Please enter a local address</value>
@@ -2392,7 +2392,7 @@ This will delete the currently selected theme configuration file, and takes effe
         <value>Edit Locations</value>
     </data>
     <data name="Text.ProxyFloat.WindowTitle" xml:space="preserve">
-        <value>Online Tunnels</value>
+        <value>Online Proxies</value>
     </data>
     <data name="Text.ConfigPreviewer.YamlFile" xml:space="preserve">
         <value>YAML File</value>
@@ -2437,11 +2437,11 @@ This will delete the currently selected theme configuration file, and takes effe
         <value>### PML 2 Privacy Policy (Key Edition)
 **Important notice:** We use [Sentry](https://sentry.io) for error tracking and performance monitoring to improve software stability. Data is stored on Sentry's servers located in the European Union.
 ### 1. Scope of Information Collection
-- **Personal data**: username, email address, tunnel information (such as average API duration, launch failures, etc.)
+- **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
 - **Device data**: device identifiers, operating system version, crash stacks and error logs
 - **Usage behavior**: feature clicks, session duration, error logs
 ___
-**Note:** Telemetry data does not include sensitive information such as your account password or tunnel contents.
+**Note:** Telemetry data does not include sensitive information such as your account password or proxy contents.
 ### 2. Use of Information
 - Providing core services (account verification, data synchronization)
 - Improving user experience (bug fixes, feature improvements)
@@ -2453,7 +2453,7 @@ ___
 - When necessary for cooperation with third-party service providers (such as cloud services)
 ___
 ### 4. Certificate assistant (optional)
-The "certificate assistant" requests SSL certificates for domains **you own** (for HTTPS tunnels). It is unrelated to the official ME Frp certificate service:
+The "certificate assistant" requests SSL certificates for domains **you own** (for HTTPS proxies). It is unrelated to the official ME Frp certificate service:
 - domain, ACME email, certificate, private key and DNS token are processed **locally only** and are never collected or uploaded by us;
 - the flow only talks to Let's Encrypt (CA) and the DNS provider you choose; the test environment is used by default;
 - you can delete local certificates from the assistant at any time.
@@ -2489,7 +2489,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>About</value>
     </data>
     <data name="Text.MainWindow.StopAllTunnels" xml:space="preserve">
-        <value>Stop All Tunnels</value>
+        <value>Stop All Proxies</value>
     </data>
     <data name="Text.MainWindow.MenuFile" xml:space="preserve">
         <value>File</value>
@@ -2498,7 +2498,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>Open Log Directory</value>
     </data>
     <data name="Text.MainWindow.RefreshProxies" xml:space="preserve">
-        <value>Refresh Tunnel List</value>
+        <value>Refresh Proxy List</value>
     </data>
     <data name="Text.MainWindow.MenuNodes" xml:space="preserve">
         <value>Nodes</value>
@@ -2525,7 +2525,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>Check for Updates</value>
     </data>
     <data name="Text.MainWindow.AutoRestoreFailed" xml:space="preserve">
-        <value>Failed to auto-restore tunnels. Check the Terminal page for details</value>
+        <value>Failed to auto-restore proxies. Check the Terminal page for details</value>
     </data>
     <data name="Text.MainWindow.CannotCloseConsole" xml:space="preserve">
         <value>Unable to close the console automatically</value>
@@ -2597,7 +2597,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>Creating main window</value>
     </data>
     <data name="Text.CreateProxy.NodeOverloaded" xml:space="preserve">
-        <value>The node is overloaded and cannot accept any more tunnels.</value>
+        <value>The node is overloaded and cannot accept any more proxies.</value>
     </data>
     <data name="Text.CreateProxy.SelectANode" xml:space="preserve">
         <value>Please select a node.</value>
@@ -2615,13 +2615,13 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>No matching nodes were found. Please select manually.</value>
     </data>
     <data name="Text.CreateProxy.CreateSuccess" xml:space="preserve">
-        <value>Tunnel created successfully.</value>
+        <value>Proxy created successfully.</value>
     </data>
     <data name="Text.CreateProxy.CreateSameNameSuccessFormat" xml:space="preserve">
-        <value>Successfully created a same-named {0} tunnel.</value>
+        <value>Successfully created a same-named {0} proxy.</value>
     </data>
     <data name="Text.CreateProxy.CreateFailed" xml:space="preserve">
-        <value>Failed to create the tunnel.</value>
+        <value>Failed to create the proxy.</value>
     </data>
     <data name="Text.ALPSettings.SaveSuccess" xml:space="preserve">
         <value>Saved successfully.</value>
@@ -2696,7 +2696,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>latest version</value>
     </data>
     <data name="Text.Api.OpTunnelErrorInfo" xml:space="preserve">
-        <value>tunnel error info</value>
+        <value>proxy error info</value>
     </data>
     <data name="Text.Api.CannotGetApiInfo" xml:space="preserve">
         <value>Unable to retrieve API information</value>
@@ -2750,7 +2750,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>Connected node information</value>
     </data>
     <data name="Text.Api.OpProxyList" xml:space="preserve">
-        <value>Tunnel list</value>
+        <value>Proxy list</value>
     </data>
     <data name="Text.Api.OpFrpTokenInfo" xml:space="preserve">
         <value>FrpToken information</value>
@@ -2906,28 +2906,28 @@ Available variables:
         <value>Please check whether the traffic is exhausted</value>
     </data>
     <data name="Text.TunnelError.InfoTunnelNotExist" xml:space="preserve">
-        <value>Tunnel does not exist</value>
+        <value>Proxy does not exist</value>
     </data>
     <data name="Text.TunnelError.SolutionCheckTunnelExists" xml:space="preserve">
-        <value>Please check whether the tunnel exists</value>
+        <value>Please check whether the proxy exists</value>
     </data>
     <data name="Text.TunnelError.InfoTunnelOnline" xml:space="preserve">
-        <value>Tunnel is online</value>
+        <value>Proxy is online</value>
     </data>
     <data name="Text.TunnelError.InfoTunnelDisabled" xml:space="preserve">
-        <value>Tunnel is disabled</value>
+        <value>Proxy is disabled</value>
     </data>
     <data name="Text.TunnelError.SolutionTunnelDisabledDetail" xml:space="preserve">
-        <value>Please check whether the tunnel is disabled (it is disabled when the tunnel is forcibly taken offline), and re-enable it.</value>
+        <value>Please check whether the proxy is disabled (it is disabled when the proxy is forcibly taken offline), and re-enable it.</value>
     </data>
     <data name="Text.TunnelError.SolutionContactAdmin" xml:space="preserve">
         <value>If this was not you, please contact the administrator for assistance.</value>
     </data>
     <data name="Text.TunnelError.InfoTunnelNodeNotExist" xml:space="preserve">
-        <value>The node hosting the tunnel does not exist</value>
+        <value>The node hosting the proxy does not exist</value>
     </data>
     <data name="Text.TunnelError.SolutionCheckTunnelNode" xml:space="preserve">
-        <value>Please check whether the node hosting the tunnel exists</value>
+        <value>Please check whether the node hosting the proxy exists</value>
     </data>
     <data name="Text.TunnelError.InfoNoNodePermission" xml:space="preserve">
         <value>The user does not have permission to use this node</value>
@@ -2975,7 +2975,7 @@ Available variables:
         <value>Required</value>
     </data>
     <data name="Text.Validation.ProxyNameNoDot" xml:space="preserve">
-        <value>Tunnel name cannot contain: .</value>
+        <value>Proxy name cannot contain: .</value>
     </data>
     <data name="Text.Validation.EmailRequired" xml:space="preserve">
         <value>Please enter your ME Frp email</value>
@@ -2987,14 +2987,14 @@ Available variables:
         <value>Download</value>
     </data>
     <data name="Text.UserProxy.LaunchCancelledFormat" xml:space="preserve">
-        <value>Tunnel launch cancelled: {0}</value>
+        <value>Proxy launch cancelled: {0}</value>
     </data>
     <data name="Text.UserProxy.LaunchCancelledErrorFormat" xml:space="preserve">
-        <value>Tunnel launch cancelled due to an internal error: {0}
+        <value>Proxy launch cancelled due to an internal error: {0}
 Details: {1}</value>
     </data>
     <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
-        <value>Tunnel launched successfully: {0}</value>
+        <value>Proxy launched successfully: {0}</value>
     </data>
     <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
         <value>{0} file verification failed, the client needs to be re-downloaded. Close this window to try launching directly; click "No" to cancel the launch.
@@ -3004,16 +3004,16 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Confirm Deletion</value>
     </data>
     <data name="Text.UserProxy.ConfirmDeleteMultipleFormat" xml:space="preserve">
-        <value>Are you sure you want to delete these {0} tunnels?</value>
+        <value>Are you sure you want to delete these {0} proxies?</value>
     </data>
     <data name="Text.UserProxy.DeleteSucceededFormat" xml:space="preserve">
-        <value>Tunnel deleted successfully: {0}</value>
+        <value>Proxy deleted successfully: {0}</value>
     </data>
     <data name="Text.UserProxy.ConfigGeneratedFormat" xml:space="preserve">
-        <value>Launch configuration generated for tunnel {0}</value>
+        <value>Launch configuration generated for proxy {0}</value>
     </data>
     <data name="Text.UserProxy.TunnelDetails" xml:space="preserve">
-        <value>Tunnel Details</value>
+        <value>Proxy Details</value>
     </data>
     <data name="Text.UserProxy.CreatedFromNodeFormat" xml:space="preserve">
         <value>Created from node: {0}</value>
@@ -3052,7 +3052,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>SSL Certificate Configuration</value>
     </data>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
-        <value>Tunnel information copied</value>
+        <value>Proxy information copied</value>
     </data>
     <data name="Text.Settings.Advanced" xml:space="preserve">
         <value>Advanced Settings</value>
@@ -3256,7 +3256,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>	Did you know?</value>
     </data>
     <data name="Text.ProxyStart.StartFailed" xml:space="preserve">
-        <value>Tunnel {0} failed to start.</value>
+        <value>Proxy {0} failed to start.</value>
     </data>
     <data name="Text.TunnelError.LocalServiceUnavailable" xml:space="preserve">
         <value>	Local service is not running.</value>
@@ -3271,10 +3271,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution.</value>
     </data>
     <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
-        <value>No tunnel templates available. Install a create-proxy-template plugin first, or enable it on the Plugins page.</value>
+        <value>No proxy templates available. Install a create-proxy-template plugin first, or enable it on the Plugins page.</value>
     </data>
     <data name="Text.Proxy.Guide.SelectTemplate" xml:space="preserve">
-        <value>Please select a tunnel template first</value>
+        <value>Please select a proxy template first</value>
     </data>
     <data name="Text.PluginList.TypeTemplate" xml:space="preserve">
         <value>Template plugin</value>
@@ -3386,10 +3386,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>System status</value>
     </data>
     <data name="Text.Home.Simple.RunningProxies" xml:space="preserve">
-        <value>Running tunnels</value>
+        <value>Running proxies</value>
     </data>
     <data name="Text.Home.Simple.FailedProxies" xml:space="preserve">
-        <value>Failed tunnels</value>
+        <value>Failed proxies</value>
     </data>
     <data name="Text.Home.Simple.Recommendations" xml:space="preserve">
         <value>Recommended for you</value>
@@ -3405,7 +3405,7 @@ Please note: we are not responsible for any consequences caused by running any u
     </data>
     <!-- 26.4 Tunnel cockpit (my tunnels / quick create / inline actions) -->
     <data name="Text.Home.Simple.MyTunnels" xml:space="preserve">
-        <value>My tunnels</value>
+        <value>My proxies</value>
     </data>
     <data name="Text.Home.Simple.Manage" xml:space="preserve">
         <value>Manage</value>
@@ -3417,19 +3417,19 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>{0} failed</value>
     </data>
     <data name="Text.Home.Simple.TunnelListEmpty" xml:space="preserve">
-        <value>No tunnels yet — create one to get started.</value>
+        <value>No proxies yet — create one to get started.</value>
     </data>
     <data name="Text.Home.Simple.CopyUnavailable" xml:space="preserve">
-        <value>No address available to copy for this tunnel.</value>
+        <value>No address available to copy for this proxy.</value>
     </data>
     <data name="Text.Home.Simple.QuickCreate" xml:space="preserve">
         <value>Quick create</value>
     </data>
     <data name="Text.Home.Recommend.FailedTunnel.Title" xml:space="preserve">
-        <value>Fix a failed tunnel</value>
+        <value>Fix a failed proxy</value>
     </data>
     <data name="Text.Home.Recommend.FailedTunnel.Reason" xml:space="preserve">
-        <value>Tunnel "{0}" failed to start. Check the failure reason on the management page.</value>
+        <value>Proxy "{0}" failed to start. Check the failure reason on the management page.</value>
     </data>
     <data name="Text.Home.Recommend.TrafficLow.Title" xml:space="preserve">
         <value>Traffic reminder</value>
@@ -3441,19 +3441,19 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Traffic exceeded</value>
     </data>
     <data name="Text.Home.Recommend.TrafficExceeded.Reason" xml:space="preserve">
-        <value>Your account traffic limit has been exceeded, tunnels may not start. Check the user center.</value>
+        <value>Your account traffic limit has been exceeded, proxies may not start. Check the user center.</value>
     </data>
     <data name="Text.Home.Recommend.StartAnyTunnel.Title" xml:space="preserve">
-        <value>Start a tunnel</value>
+        <value>Start a proxy</value>
     </data>
     <data name="Text.Home.Recommend.StartAnyTunnel.Reason" xml:space="preserve">
-        <value>You have {0} tunnel(s) but none are running. Start one from the management page.</value>
+        <value>You have {0} proxy(ies) but none are running. Start one from the management page.</value>
     </data>
     <data name="Text.Home.Recommend.CreateTunnel.Title" xml:space="preserve">
-        <value>Create your first tunnel</value>
+        <value>Create your first proxy</value>
     </data>
     <data name="Text.Home.Recommend.CreateTunnel.Reason" xml:space="preserve">
-        <value>No tunnels yet. Start with the guided mode and apply a ready-made template.</value>
+        <value>No proxies yet. Start with the guided mode and apply a ready-made template.</value>
     </data>
     <data name="Text.Home.Recommend.UpdateAvailable.Title" xml:space="preserve">
         <value>Update available</value>
@@ -3471,19 +3471,19 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Read the docs</value>
     </data>
     <data name="Text.Home.Recommend.ReadDocs.Reason" xml:space="preserve">
-        <value>Having trouble? The docs cover tunnel setup, plugins and troubleshooting.</value>
+        <value>Having trouble? The docs cover proxy setup, plugins and troubleshooting.</value>
     </data>
     <data name="Text.Home.Recommend.RecentTunnel.Title" xml:space="preserve">
         <value>Start "{0}"</value>
     </data>
     <data name="Text.Home.Recommend.RecentTunnel.Reason" xml:space="preserve">
-        <value>You started this tunnel recently ({0}). Relaunch it with one click.</value>
+        <value>You started this proxy recently ({0}). Relaunch it with one click.</value>
     </data>
     <data name="Text.Home.Recommend.RecentTunnel.NeverStarted" xml:space="preserve">
         <value>no start record</value>
     </data>
     <data name="Text.Home.Recommend.TunnelMissing" xml:space="preserve">
-        <value>This tunnel no longer exists; it may have been deleted.</value>
+        <value>This proxy no longer exists; it may have been deleted.</value>
     </data>
     <data name="Text.Home.Recommend.Action.Launch" xml:space="preserve">
         <value>Start</value>
@@ -3498,7 +3498,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Start</value>
     </data>
     <data name="Text.Home.Recommend.Action.Create" xml:space="preserve">
-        <value>Create tunnel</value>
+        <value>Create proxy</value>
     </data>
     <data name="Text.Home.Recommend.Action.Update" xml:space="preserve">
         <value>Go update</value>
@@ -3533,10 +3533,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Certificate assistant</value>
     </data>
     <data name="Text.Certificate.Description" xml:space="preserve">
-        <value>Obtain a real SSL certificate for HTTPS tunnels</value>
+        <value>Obtain a real SSL certificate for HTTPS proxies</value>
     </data>
     <data name="Text.Certificate.Intro" xml:space="preserve">
-        <value>The certificate assistant requests SSL certificates only for domains you own. Artifacts are written to Config/Certificates/ on this machine and can be used directly when creating HTTPS tunnels. It is unrelated to the official ME Frp certificate service; the domain, ACME email and private key are processed locally. Let's Encrypt Staging is used by default — such certificates are not trusted by browsers and are meant to validate the flow first.</value>
+        <value>The certificate assistant requests SSL certificates only for domains you own. Artifacts are written to Config/Certificates/ on this machine and can be used directly when creating HTTPS proxies. It is unrelated to the official ME Frp certificate service; the domain, ACME email and private key are processed locally. Let's Encrypt Staging is used by default — such certificates are not trusted by browsers and are meant to validate the flow first.</value>
     </data>
     <data name="Text.Certificate.Env.Staging" xml:space="preserve">
         <value>Staging (test)</value>
@@ -4176,10 +4176,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Switch to manual DNS</value>
     </data>
     <data name="Text.Certificate.UseForTunnel" xml:space="preserve">
-        <value>Use for a tunnel</value>
+        <value>Use for a proxy</value>
     </data>
     <data name="Text.Certificate.UseForTunnelHint" xml:space="preserve">
-        <value>In the HTTPS settings of the create/edit tunnel page, click "Choose from certificate assistant" to use this certificate.</value>
+        <value>In the HTTPS settings of the create/edit proxy page, click "Choose from certificate assistant" to use this certificate.</value>
     </data>
     <data name="Text.Home.Simple.Greeting.Noon" xml:space="preserve">
         <value>Good afternoon, {0}</value>
@@ -4230,7 +4230,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Local certificates</value>
     </data>
     <data name="Text.Certificate.DeleteConfirmFormat" xml:space="preserve">
-        <value>Deleting the local certificate "{0}" will not affect tunnels already using it, but it can no longer be picked from the certificate assistant. Delete it?</value>
+        <value>Deleting the local certificate "{0}" will not affect proxies already using it, but it can no longer be picked from the certificate assistant. Delete it?</value>
     </data>
     <data name="Text.Certificate.PropagationTimeout" xml:space="preserve">
         <value>Wait limit (seconds)</value>

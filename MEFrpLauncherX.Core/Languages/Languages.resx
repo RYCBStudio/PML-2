@@ -524,10 +524,10 @@
         <value>http(s)隧道设置</value>
     </data>
     <data name="Text.SSL.ProxyName" xml:space="preserve">
-        <value>代理名称</value>
+        <value>隧道名称</value>
     </data>
     <data name="Text.SSL.ProxyNameDescription" xml:space="preserve">
-        <value>代理名称是此隧道服务的唯一标识符，用于区分不同的代理配置。</value>
+        <value>隧道名称是此隧道服务的唯一标识符，用于区分不同的隧道配置。</value>
     </data>
     <data name="Text.SSL.Domain" xml:space="preserve">
         <value>访问域名</value>
@@ -3053,6 +3053,101 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>已复制隧道信息</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTunnel" xml:space="preserve">
+        <value>迁移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTitle" xml:space="preserve">
+        <value>迁移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSourceNodeFormat" xml:space="preserve">
+        <value>原节点: #{0} {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectHint" xml:space="preserve">
+        <value>请选择迁移的目标节点: 迁移会先删除原隧道, 再在新节点上按原配置重建一条完全相同的隧道。</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNodeCountFormat" xml:space="preserve">
+        <value>共 {0} 个候选节点</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoMatchingNode" xml:space="preserve">
+        <value>没有符合条件的候选节点</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoNodes" xml:space="preserve">
+        <value>无法获取节点列表, 请稍后重试</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortRecommended" xml:space="preserve">
+        <value>推荐排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLatency" xml:space="preserve">
+        <value>按延迟排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLoad" xml:space="preserve">
+        <value>按负载排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortName" xml:space="preserve">
+        <value>按名称排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateProbeLatency" xml:space="preserve">
+        <value>探测延迟</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyFormat" xml:space="preserve">
+        <value>延迟: {0} ms</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyUnknown" xml:space="preserve">
+        <value>延迟: 未知</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectNodeRequired" xml:space="preserve">
+        <value>请先选择一个目标节点</value>
+    </data>
+    <data name="Text.UserProxy.MigrateInProgressFormat" xml:space="preserve">
+        <value>正在迁移隧道 {0}, 请稍候...</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSucceededFormat" xml:space="preserve">
+        <value>隧道 {0} 已迁移到节点 #{1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateFailedFormat" xml:space="preserve">
+        <value>迁移隧道 {0} 失败: {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeleteFailedFormat" xml:space="preserve">
+        <value>迁移隧道 {0} 失败: 删除原隧道未成功({1}), 未做任何改动</value>
+    </data>
+    <data name="Text.UserProxy.MigrateCreateFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 已在原节点删除, 但在节点 #{1} 上重建失败: {2}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedTitle" xml:space="preserve">
+        <value>隧道已在原节点删除</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedButCreateFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 已从原节点删除, 但在节点 #{1} 上创建失败: {2}
+
+请前往创建隧道页按原配置手动重建。</value>
+    </data>
+    <data name="Text.UserProxy.MigrateGoCreate" xml:space="preserve">
+        <value>前往创建隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNotLoggedIn" xml:space="preserve">
+        <value>尚未登录, 无法迁移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateIncompleteInfo" xml:space="preserve">
+        <value>隧道信息不完整(缺少节点地址或端口), 无法迁移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateBanned" xml:space="preserve">
+        <value>该隧道已被封禁, 无法迁移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateRunningHint" xml:space="preserve">
+        <value>隧道正在运行, 请先停止后再迁移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSameNode" xml:space="preserve">
+        <value>目标节点与原节点相同</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOffline" xml:space="preserve">
+        <value>目标节点当前不在线</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOverloaded" xml:space="preserve">
+        <value>目标节点负载过高</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetUnsupportedFormat" xml:space="preserve">
+        <value>目标节点不支持原隧道的协议类型({0})</value>
     </data>
     <data name="Text.Settings.Advanced" xml:space="preserve">
         <value>高级设置</value>

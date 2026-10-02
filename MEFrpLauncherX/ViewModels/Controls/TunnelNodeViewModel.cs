@@ -24,6 +24,20 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
         init;
     }
 
+    /// <summary>节点主机名（迁移对话框探测延迟时使用）</summary>
+    public string Hostname
+    {
+        get;
+        init;
+    }
+
+    /// <summary>节点服务端口（迁移对话框探测延迟时使用）</summary>
+    public int ServicePort
+    {
+        get;
+        init;
+    }
+
     public string Description
     {
         get;
@@ -122,6 +136,31 @@ public class TunnelNodeViewModel : INotifyPropertyChanged
 
     public bool IsOverloaded => _cachedIsOverloaded ??= LoadPercent >= 85;
     public bool IsNotOverloaded => _cachedIsNotOverloaded ??= !IsOverloaded;
+
+    /// <summary>
+    ///     迁移对话框按需探测得到的节点延迟（毫秒）；null 表示尚未探测或探测失败。
+    ///     不影响既有的节点选择逻辑，仅在迁移候选列表中展示/排序。
+    /// </summary>
+    public long? LatencyMs
+    {
+        get => field;
+        set
+        {
+            if (field == value)
+            {
+                return;
+            }
+
+            field = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(LatencyText));
+        }
+    }
+
+    /// <summary>延迟展示文案（未探测显示占位符）</summary>
+    public string LatencyText => LatencyMs is { } ms
+        ? string.Format(Languages.Text_UserProxy_MigrateLatencyFormat, ms)
+        : Languages.Text_UserProxy_MigrateLatencyUnknown;
 
 
     public event PropertyChangedEventHandler PropertyChanged;

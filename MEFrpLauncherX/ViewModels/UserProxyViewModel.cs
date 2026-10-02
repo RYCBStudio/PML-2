@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -22,7 +22,9 @@ using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
+using MEFrpLauncherX.Core.Storage;
 using MEFrpLauncherX.Plugin.Services;
+using MEFrpLauncherX.ViewModels.Controls;
 using MEFrpLauncherX.Views;
 using MEFrpLauncherX.Views.ProxyMonitor;
 using Notify.NET.Abstractions;
@@ -86,6 +88,7 @@ public partial class UserProxyViewModel : ViewModelBase
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
         CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
         GenerateQRCodeCommand = new RelayCommand<UserProxyViewModel>(GenerateQRCode);
+        MigrateTunnelCommand = new RelayCommand<UserProxyViewModel>(MigrateTunnel);
 
         if (Design.IsDesignMode)
         {
@@ -152,6 +155,7 @@ public partial class UserProxyViewModel : ViewModelBase
         CopyInfoCommand = new RelayCommand<UserProxyViewModel>(CopyInfo);
         CopyErrorCommand = new RelayCommand<UserProxyViewModel>(CopyError);
         GenerateQRCodeCommand = new RelayCommand<UserProxyViewModel>(GenerateQRCode);
+        MigrateTunnelCommand = new RelayCommand<UserProxyViewModel>(MigrateTunnel);
 
         Dispatcher.UIThread.Post(async () =>
         {
@@ -457,6 +461,12 @@ public partial class UserProxyViewModel : ViewModelBase
         get;
     }
 
+    /// <summary>迁移隧道（26.4）：先删除原隧道，再在目标节点上按原配置重建</summary>
+    public ICommand MigrateTunnelCommand
+    {
+        get;
+    }
+
 
     public bool IsLaunched
     {
@@ -490,6 +500,13 @@ public partial class UserProxyViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    ///     是否允许迁移隧道（26.4）：当前用户拥有该隧道（列表即当前用户隧道）、未被封禁、且不处于运行中。
+    ///     运行中的隧道必须先停止再迁移，避免删除后本地 frpc 进程仍指向已失效的隧道。
+    /// </summary>
+    public bool CanMigrateTunnel => proxyId > 0 && !isBanned &&
+        TunnelStatus is not (TunnelStatus.Running or TunnelStatus.Starting or TunnelStatus.Reconnecting);
+
     public bool Detailed
     {
         get;
@@ -512,6 +529,7 @@ public partial class UserProxyViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(StatusText));
             this.RaisePropertyChanged(nameof(StatusBrush));
             this.RaisePropertyChanged(nameof(HasError));
+            this.RaisePropertyChanged(nameof(CanMigrateTunnel));
 
             // 26.3 M6b-Extended：与流量悬浮窗同步状态细节（Running/Reconnecting/Failed）
             if (value is TunnelStatus.Running or TunnelStatus.Reconnecting or TunnelStatus.Failed)
@@ -979,6 +997,285 @@ public partial class UserProxyViewModel : ViewModelBase
         Growl.Success(string.Format(Languages.Text_UserProxy_DeleteSucceededFormat, proxy.proxyName));
         ManageProxyPage.Instance.LoadProxies(true);
         IsLoading = false;
+    }
+
+    // ===== 隧道迁移（26.4）=====
+    // 迁移语义（不得更改）：先删除待迁移的隧道（删除前在内存中保留其完整配置），
+    // 再在用户新选择的节点上用同一配置创建一条新隧道。删除/创建均复用既有链路
+    // （MEFrpApiConverter.DeleteProxy / PostNewTunnelAsync），不另起请求实现。
+
+    /// <summary>
+    ///     迁移单条隧道：校验 → 构造并深拷贝待创建请求 → 选择目标节点 → 校验目标节点 → 删除 → 创建 → 反馈与刷新。
+    ///     令牌入口与既有删除/启停命令一致，仅接受单条 <see cref="UserProxyViewModel" />。
+    /// </summary>
+    private async void MigrateTunnel(object parameter)
+    {
+        if (parameter is not UserProxyViewModel proxy)
+        {
+            return;
+        }
+
+        // 1) 迁移前校验：未登录 / 信息不完整 / 运行中 / 封禁 → 明确提示并中止，不执行删除
+        var sourceError = ValidateMigrateSource(proxy);
+        if (sourceError is not null)
+        {
+            Growl.Warning(sourceError);
+            return;
+        }
+
+        // 2) 先构造待创建请求并深拷贝保留（此时尚未删除任何数据，不依赖已从列表移除的对象）
+        InfoClasses.CreateProxyRequestData pending;
+        try
+        {
+            pending = CloneTunnelRequest(BuildMigrateRequest(proxy));
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, $"构造隧道 {proxy.proxyName} 的迁移请求失败");
+            Growl.Error(Languages.Text_UserProxy_MigrateIncompleteInfo);
+            return;
+        }
+
+        // 3) 选择目标节点：取消或未选择时不做任何改动
+        TunnelNodeViewModel? target;
+        try
+        {
+            var picker = new TunnelMigrateWindow(proxy.proxyName, proxy.nodeId, proxy.node, proxy.proxyType);
+            target = await picker.ShowDialog<TunnelNodeViewModel>(Core.App.MainWindow);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, $"打开隧道 {proxy.proxyName} 的迁移节点选择窗口失败");
+            Growl.Error(string.Format(Languages.Text_UserProxy_MigrateFailedFormat, proxy.proxyName, ex.Message));
+            return;
+        }
+
+        if (target is null)
+        {
+            return;
+        }
+
+        // 4) 目标节点校验：与原节点不同、在线、未过载、支持原隧道协议
+        var targetError = ValidateMigrateTarget(proxy, target);
+        if (targetError is not null)
+        {
+            Growl.Warning(targetError);
+            return;
+        }
+
+        // 目标节点信息转为值快照：删除后不再依赖对话框/列表中的对象引用
+        var targetNodeId = target.NodeId;
+
+        // 5) 执行迁移
+        proxy.IsLoading = true;
+        Growl.Info(string.Format(Languages.Text_UserProxy_MigrateInProgressFormat, proxy.proxyName));
+        Core.App.CurrentLogger.Log($"开始迁移隧道 {proxy.proxyName}：节点 #{proxy.nodeId} -> #{targetNodeId}",
+            port: EnumLogPort.Client, module: EnumLogModule.Main);
+        try
+        {
+            // 临时保留的配置写入目标节点（仅改写 nodeId），再经项目 AOT JSON 上下文序列化
+            pending.nodeId = targetNodeId;
+            var body = JsonSerializer.Serialize(pending, App.AppJsonSerializerContext.CreateProxyRequestData);
+
+            // 6) 先删除（复用既有删除接口）
+            var deleteResult = await Task.Run(() => MEFrpApiConverter.DeleteProxy(proxy.proxyId));
+            if (deleteResult.code != 200)
+            {
+                // 删除未成功：未做任何改动，直接中止
+                Growl.Error(string.Format(Languages.Text_UserProxy_MigrateDeleteFailedFormat, proxy.proxyName,
+                    deleteResult.message));
+                return;
+            }
+
+            // 26.4：删除后清理本地启动记录，避免主页推荐指向已删除的隧道 id
+            HomeRecommendStateStore.ForgetLaunch(proxy.proxyId);
+
+            // 7) 再在目标节点上重建（复用既有创建接口）
+            var createResult = await MEFrpApiConverter.PostNewTunnelAsync(body);
+            if (createResult.code == 200)
+            {
+                Growl.Success(string.Format(Languages.Text_UserProxy_MigrateSucceededFormat, proxy.proxyName,
+                    targetNodeId));
+            }
+            else
+            {
+                // 删除成功但创建失败：原隧道已不存在，必须显式告知并提供补救入口
+                Core.App.CurrentLogger.Error(new InvalidOperationException(createResult.message),
+                    $"迁移隧道 {proxy.proxyName}：原隧道已删除，但在节点 #{targetNodeId} 上重建失败");
+                Growl.Error(string.Format(Languages.Text_UserProxy_MigrateCreateFailedFormat, proxy.proxyName,
+                    targetNodeId, createResult.message));
+                await ShowMigrateRecoveryAsync(proxy, targetNodeId, createResult.message);
+            }
+
+            // 8) 同步各视图（管理页列表 / 主页「我的隧道」投影 / 悬浮窗残留项）
+            await RefreshAfterMigrateAsync(proxy);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Error(ex, $"迁移隧道 {proxy.proxyName} 失败");
+            Growl.Error(string.Format(Languages.Text_UserProxy_MigrateFailedFormat, proxy.proxyName, ex.Message));
+        }
+        finally
+        {
+            proxy.IsLoading = false;
+        }
+    }
+
+    /// <summary>迁移前校验（源隧道）：返回 null 表示通过，否则为需要提示的文案。</summary>
+    private static string? ValidateMigrateSource(UserProxyViewModel proxy)
+    {
+        if (!UserCache.IsLoggedIn(proxy.username))
+        {
+            return Languages.Text_UserProxy_MigrateNotLoggedIn;
+        }
+
+        // 信息完整性：节点地址与端口是重建时必需的信息
+        if (proxy.proxyId <= 0 || proxy.nodeId <= 0 || proxy.Node?.hostname.IsNullOrEmpty() != false)
+        {
+            return Languages.Text_UserProxy_MigrateIncompleteInfo;
+        }
+
+        if (proxy.proxyType.IsNullOrEmpty() || proxy.localIp.IsNullOrEmpty() || proxy.localPort <= 0)
+        {
+            return Languages.Text_UserProxy_MigrateIncompleteInfo;
+        }
+
+        if (proxy.proxyType.ToLowerInvariant() is "tcp" or "udp" && proxy.remotePort <= 0)
+        {
+            return Languages.Text_UserProxy_MigrateIncompleteInfo;
+        }
+
+        if (proxy.isBanned)
+        {
+            return Languages.Text_UserProxy_MigrateBanned;
+        }
+
+        if (proxy.TunnelStatus is TunnelStatus.Running or TunnelStatus.Starting or TunnelStatus.Reconnecting ||
+            proxy.isOnline)
+        {
+            return Languages.Text_UserProxy_MigrateRunningHint;
+        }
+
+        return null;
+    }
+
+    /// <summary>迁移前校验（目标节点）：返回 null 表示通过，否则为需要提示的文案。</summary>
+    private static string? ValidateMigrateTarget(UserProxyViewModel proxy, TunnelNodeViewModel target)
+    {
+        if (target.NodeId == proxy.nodeId)
+        {
+            return Languages.Text_UserProxy_MigrateSameNode;
+        }
+
+        if (!target.IsOnline)
+        {
+            return Languages.Text_UserProxy_MigrateTargetOffline;
+        }
+
+        if (target.IsOverloaded)
+        {
+            return Languages.Text_UserProxy_MigrateTargetOverloaded;
+        }
+
+        var proxyType = proxy.proxyType?.ToLowerInvariant() ?? string.Empty;
+        if (!proxyType.IsNullOrEmpty() && !(target.AllowTypes?.Any(type =>
+                string.Equals(type, proxyType, StringComparison.OrdinalIgnoreCase)) ?? false))
+        {
+            return string.Format(Languages.Text_UserProxy_MigrateTargetUnsupportedFormat, proxy.proxyType);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    ///     按原隧道配置构造「新建隧道」请求（除 nodeId 外全部沿用原隧道）。
+    ///     注意：不设置 proxyId —— 迁移是「删除 + 新建」，而非原地更新。
+    /// </summary>
+    private static InfoClasses.CreateProxyRequestData BuildMigrateRequest(UserProxyViewModel proxy)
+    {
+        var proxyType = proxy.proxyType?.ToLowerInvariant() ?? string.Empty;
+        return new InfoClasses.CreateProxyRequestData
+        {
+            nodeId = proxy.nodeId,
+            proxyName = proxy.proxyName,
+            localIp = proxy.localIp,
+            localPort = proxy.localPort,
+            remotePort = proxyType is "tcp" or "udp" ? proxy.remotePort : null,
+            domain = JsonSerializer.Serialize(proxy.Domains ?? [], App.AppJsonSerializerContext.ListString),
+            requestHeaders = proxy.RequestHeaders!,
+            responseHeaders = proxy.ResponseHeaders!,
+            proxyType = proxyType,
+            accessKey = proxy.accessKey ?? string.Empty,
+            httpPlugin = proxy.httpPlugin ?? string.Empty,
+            httpUser = proxy.httpUser ?? string.Empty,
+            httpPassword = proxy.httpPassword ?? string.Empty,
+            hostHeaderRewrite = proxy.hostHeaderRewrite ?? string.Empty,
+            crtPath = proxy.crtPath ?? string.Empty,
+            keyPath = proxy.keyPath ?? string.Empty,
+            proxyProtocolVersion = proxy.proxyProtocolVersion ?? string.Empty,
+            useEncryption = proxy.useEncryption,
+            useCompression = proxy.useCompression,
+            transportProtocol = proxy.transportProtocol ?? string.Empty,
+            locations = proxy.Locations is null
+                ? string.Empty
+                : JsonSerializer.Serialize(proxy.Locations, App.AppJsonSerializerContext.ListString)
+        };
+    }
+
+    /// <summary>深拷贝创建请求（经项目 AOT JSON 上下文），确保临时保留的配置不被后续逻辑共享引用。</summary>
+    private static InfoClasses.CreateProxyRequestData CloneTunnelRequest(InfoClasses.CreateProxyRequestData source)
+        => JsonSerializer.Deserialize(
+            JsonSerializer.Serialize(source, App.AppJsonSerializerContext.CreateProxyRequestData),
+            App.AppJsonSerializerContext.CreateProxyRequestData)!;
+
+    /// <summary>
+    ///     「删除成功但创建失败」的补救提示：明确说明原隧道已删除，并提供前往创建页手动重建的入口，
+    ///     避免用户无声地丢失隧道。
+    /// </summary>
+    private static async Task ShowMigrateRecoveryAsync(UserProxyViewModel proxy, int targetNodeId,
+        string? reason)
+    {
+        try
+        {
+            var dialog = new FAContentDialog
+            {
+                Title = Languages.Text_UserProxy_MigrateDeletedTitle,
+                Content = string.Format(Languages.Text_UserProxy_MigrateDeletedButCreateFailedFormat, proxy.proxyName,
+                    targetNodeId, reason ?? string.Empty),
+                PrimaryButtonText = Languages.Text_UserProxy_MigrateGoCreate,
+                CloseButtonText = Languages.Text_Global_Close,
+                IsSecondaryButtonEnabled = false,
+                DefaultButton = FAContentDialogButton.Primary
+            };
+            if (await dialog.ShowAsync(Core.App.MainWindow) == FAContentDialogResult.Primary)
+            {
+                MainPageFrameViewModel.Instance?.NavigateToPage("Create");
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "显示隧道迁移补救提示失败");
+        }
+    }
+
+    /// <summary>
+    ///     迁移完成后的视图同步：管理页列表（强制拉取）、主页「我的隧道」投影（主页可见时）与悬浮窗残留项。
+    /// </summary>
+    private static async Task RefreshAfterMigrateAsync(UserProxyViewModel proxy)
+    {
+        // 悬浮窗按隧道名跟踪运行态；迁移后名称不变但实例已重建，清理可能残留的旧项
+        ProxyFloatViewModel.ReportTunnelRemoved(proxy.proxyName);
+
+        if (ManageProxyPage.Instance is { } manage)
+        {
+            await manage.LoadProxies(true);
+        }
+
+        // 主页「我的隧道」投影源自管理页数据源；主页可见时一并刷新（推荐列表随之重算）
+        if (MainPageFrameViewModel.Instance?.CurrentPage is HomePage { DataContext: HomePageViewModel homeViewModel })
+        {
+            await homeViewModel.RefreshTunnelsAsync();
+        }
     }
 
     private async void EditProxy(UserProxyViewModel proxy)

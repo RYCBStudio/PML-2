@@ -240,6 +240,9 @@ public partial class NodesContainerViewModel : ViewModelBase
                     {
                         NodeId = node.nodeId,
                         Name = node.name,
+                        // 迁移对话框按需探测节点延迟时使用（不影响既有节点选择逻辑）
+                        Hostname = node.hostname,
+                        ServicePort = node.servicePort,
                         Description = node.description,
                         AllowTypes = allowTypes,
                         Bandwidth = node.bandwidth,

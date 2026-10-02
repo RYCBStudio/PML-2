@@ -357,10 +357,10 @@
         <value>主頁</value>
     </data>
     <data name="Text.Nav.CreateProxy" xml:space="preserve">
-        <value>建立通道</value>
+        <value>建立隧道</value>
     </data>
     <data name="Text.Nav.ManageProxy" xml:space="preserve">
-        <value>通道管理</value>
+        <value>隧道管理</value>
     </data>
     <data name="Text.Nav.NodesMonitoring" xml:space="preserve">
         <value>節點監控</value>
@@ -414,7 +414,7 @@
         <value>詳細描述</value>
     </data>
     <data name="Text.Proxy.SelectedCount" xml:space="preserve">
-        <value>已選擇 {0} 個通道</value>
+        <value>已選擇 {0} 個隧道</value>
     </data>
     <data name="Text.Proxy.BatchLaunch" xml:space="preserve">
         <value>批次啟動</value>
@@ -507,25 +507,25 @@
         <value>預設</value>
     </data>
     <data name="Text.SSL.ConfigFile" xml:space="preserve">
-        <value>通道設定檔</value>
+        <value>隧道設定檔</value>
     </data>
     <data name="Text.SSL.ConfigFileDescription" xml:space="preserve">
-        <value>設定https通道的SSL憑證需要使用設定檔啟動。</value>
+        <value>設定https隧道的SSL憑證需要使用設定檔啟動。</value>
     </data>
     <data name="Text.SSL.HttpTunnelSettings" xml:space="preserve">
-        <value>http(s)通道設定</value>
+        <value>http(s)隧道設定</value>
     </data>
     <data name="Text.SSL.ProxyName" xml:space="preserve">
-        <value>代理名稱</value>
+        <value>隧道名稱</value>
     </data>
     <data name="Text.SSL.ProxyNameDescription" xml:space="preserve">
-        <value>代理名稱是此通道服務的唯一識別碼，用於區分不同的代理設定。</value>
+        <value>隧道名稱是此隧道服務的唯一識別碼，用於區分不同的隧道設定。</value>
     </data>
     <data name="Text.SSL.Domain" xml:space="preserve">
         <value>存取網域</value>
     </data>
     <data name="Text.SSL.DomainDescription" xml:space="preserve">
-        <value>設定通道的存取網域。</value>
+        <value>設定隧道的存取網域。</value>
     </data>
     <data name="Text.SSL.LocalAddress" xml:space="preserve">
         <value>本機位址</value>
@@ -543,7 +543,7 @@
         <value>憑證檔案</value>
     </data>
     <data name="Text.SSL.CertFileDescription" xml:space="preserve">
-        <value>用於https通道的SSL憑證檔案。</value>
+        <value>用於https隧道的SSL憑證檔案。</value>
     </data>
     <data name="Text.SSL.CertFileWatermark" xml:space="preserve">
         <value>憑證檔案, 副檔名一般為.crt或.pem</value>
@@ -552,7 +552,7 @@
         <value>私密金鑰檔案</value>
     </data>
     <data name="Text.SSL.KeyFileDescription" xml:space="preserve">
-        <value>用於https通道的私密金鑰檔案。</value>
+        <value>用於https隧道的私密金鑰檔案。</value>
     </data>
     <data name="Text.SSL.KeyFileWatermark" xml:space="preserve">
         <value>私密金鑰檔案, 副檔名一般為.key</value>
@@ -645,13 +645,13 @@
         <value>設定軟體是否在開機時啟動。請注意: 此處的“開機”指使用者登入時。</value>
     </data>
     <data name="Text.Settings.AutoLaunch" xml:space="preserve">
-        <value>啟動時自動啟動某些通道</value>
+        <value>啟動時自動啟動某些隧道</value>
     </data>
     <data name="Text.Settings.AutoLaunchDescription" xml:space="preserve">
-        <value>設定啟動時自動啟動某些通道。請注意: 此處的“啟動”指軟體啟動時。</value>
+        <value>設定啟動時自動啟動某些隧道。請注意: 此處的“啟動”指軟體啟動時。</value>
     </data>
     <data name="Text.Settings.SetTunnelsToLaunch" xml:space="preserve">
-        <value>設定要啟動的通道</value>
+        <value>設定要啟動的隧道</value>
     </data>
     <data name="Text.Settings.MinimizeToTray" xml:space="preserve">
         <value>關閉時最小化到系統匣，而不是直接關閉</value>
@@ -660,25 +660,25 @@
         <value>啟用該選項可以讓軟體執行在背景。</value>
     </data>
     <data name="Text.Settings.TunnelSettings" xml:space="preserve">
-        <value>通道設定</value>
+        <value>隧道設定</value>
     </data>
     <data name="Text.Settings.TunnelSettingsDescription" xml:space="preserve">
-        <value>設定通道相關選項</value>
+        <value>設定隧道相關選項</value>
     </data>
     <data name="Text.Settings.KickWithoutDisable" xml:space="preserve">
-        <value>強制下線通道時不同時停用通道</value>
+        <value>強制下線隧道時不同時停用隧道</value>
     </data>
     <data name="Text.Settings.KickWithoutDisableDescription" xml:space="preserve">
-        <value>幻緣對應官網強制下線通道時會同時停用通道, 我們可以在強制下線通道時再啟用通道。</value>
+        <value>幻緣映射官網強制下線隧道時會同時停用隧道, 我們可以在強制下線隧道時再啟用隧道。</value>
     </data>
     <data name="Text.Settings.ProxyMonitorBar" xml:space="preserve">
-        <value>"通道監控"列 [BETA]</value>
+        <value>"隧道監控"列 [BETA]</value>
     </data>
     <data name="Text.Settings.ProxyMonitorBarDescription" xml:space="preserve">
-        <value>"通道監控"是我們推出的一項新功能, 可以監視啟動通道的出入流量資訊。</value>
+        <value>"隧道監控"是我們推出的一項新功能, 可以監視啟動隧道的出入流量資訊。</value>
     </data>
     <data name="Text.Settings.CustomProxyMonitorBar" xml:space="preserve">
-        <value>自訂"通道監控"列</value>
+        <value>自訂"隧道監控"列</value>
     </data>
     <data name="Text.Settings.Download" xml:space="preserve">
         <value>下載設定</value>
@@ -891,7 +891,7 @@
         <value>字型檔案：</value>
     </data>
     <data name="Text.EditProxy.Title" xml:space="preserve">
-        <value>編輯通道</value>
+        <value>編輯隧道</value>
     </data>
     <data name="Text.CreateProxy.AllowedPortRange" xml:space="preserve">
         <value>允許連接埠範圍: {0}</value>
@@ -900,7 +900,7 @@
         <value>基本設定</value>
     </data>
     <data name="Text.CreateProxy.BasicSettingsDescription" xml:space="preserve">
-        <value>以下是建立通道的必填設定。</value>
+        <value>以下是建立隧道的必填設定。</value>
     </data>
     <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
         <value>常用連接埠:</value>
@@ -939,10 +939,10 @@
         <value>範本已刪除</value>
     </data>
     <data name="Text.CreateProxy.ProxyName" xml:space="preserve">
-        <value>通道名稱</value>
+        <value>隧道名稱</value>
     </data>
     <data name="Text.CreateProxy.ProxyNamePlaceholder" xml:space="preserve">
-        <value>請輸入通道名稱</value>
+        <value>請輸入隧道名稱</value>
     </data>
     <data name="Text.CreateProxy.LocalAddress" xml:space="preserve">
         <value>本機位址</value>
@@ -966,10 +966,10 @@
         <value>來源協定</value>
     </data>
     <data name="Text.CreateProxy.SameAsHttp" xml:space="preserve">
-        <value>與通道協定相同(HTTP)</value>
+        <value>與隧道協定相同(HTTP)</value>
     </data>
     <data name="Text.CreateProxy.SameAsHttps" xml:space="preserve">
-        <value>與通道協定相同(HTTPS)</value>
+        <value>與隧道協定相同(HTTPS)</value>
     </data>
     <data name="Text.CreateProxy.SslCertPath" xml:space="preserve">
         <value>SSL憑證路徑</value>
@@ -996,7 +996,7 @@
         <value>進階設定</value>
     </data>
     <data name="Text.CreateProxy.AdvancedSettingsDescription" xml:space="preserve">
-        <value>提示：僅推薦技術使用者使用, 一般使用者請勿隨意填寫。請確保您的設定正確, 否則通道可能無法啟動。</value>
+        <value>提示：僅推薦技術使用者使用, 一般使用者請勿隨意填寫。請確保您的設定正確, 否則隧道可能無法啟動。</value>
     </data>
     <data name="Text.CreateProxy.SecurityOptions" xml:space="preserve">
         <value>安全選項</value>
@@ -1032,7 +1032,7 @@
         <value>自訂回應標頭</value>
     </data>
     <data name="Text.CreateProxy.LocationsDescription" xml:space="preserve">
-        <value>編輯 HTTP 通道的路徑路由規則。</value>
+        <value>編輯 HTTP 隧道的路徑路由規則。</value>
     </data>
     <data name="Text.CreateProxy.NotEnabled" xml:space="preserve">
         <value>不啟用</value>
@@ -3026,7 +3026,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>連結位址</value>
     </data>
     <data name="Text.UserProxy.DetailHttpMappingType" xml:space="preserve">
-        <value>HTTP對應類型</value>
+        <value>HTTP映射類型</value>
     </data>
     <data name="Text.UserProxy.DetailSecurityOption" xml:space="preserve">
         <value>安全選項</value>
@@ -3045,6 +3045,101 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>已複製隧道資訊</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTunnel" xml:space="preserve">
+        <value>遷移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTitle" xml:space="preserve">
+        <value>遷移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSourceNodeFormat" xml:space="preserve">
+        <value>原節點: #{0} {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectHint" xml:space="preserve">
+        <value>請選擇遷移的目標節點: 遷移會先刪除原隧道, 再在新節點上按原設定重建一條完全相同的隧道。</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNodeCountFormat" xml:space="preserve">
+        <value>共 {0} 個候選節點</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoMatchingNode" xml:space="preserve">
+        <value>沒有符合條件的候選節點</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoNodes" xml:space="preserve">
+        <value>無法取得節點清單, 請稍後重試</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortRecommended" xml:space="preserve">
+        <value>推薦排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLatency" xml:space="preserve">
+        <value>按延遲排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLoad" xml:space="preserve">
+        <value>按負載排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortName" xml:space="preserve">
+        <value>按名稱排序</value>
+    </data>
+    <data name="Text.UserProxy.MigrateProbeLatency" xml:space="preserve">
+        <value>探測延遲</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyFormat" xml:space="preserve">
+        <value>延遲: {0} ms</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyUnknown" xml:space="preserve">
+        <value>延遲: 未知</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectNodeRequired" xml:space="preserve">
+        <value>請先選擇一個目標節點</value>
+    </data>
+    <data name="Text.UserProxy.MigrateInProgressFormat" xml:space="preserve">
+        <value>正在遷移隧道 {0}, 請稍候...</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSucceededFormat" xml:space="preserve">
+        <value>隧道 {0} 已遷移至節點 #{1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateFailedFormat" xml:space="preserve">
+        <value>遷移隧道 {0} 失敗: {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeleteFailedFormat" xml:space="preserve">
+        <value>遷移隧道 {0} 失敗: 刪除原隧道未成功({1}), 未做任何變更</value>
+    </data>
+    <data name="Text.UserProxy.MigrateCreateFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 已在原節點刪除, 但在節點 #{1} 上重建失敗: {2}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedTitle" xml:space="preserve">
+        <value>隧道已在原節點刪除</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedButCreateFailedFormat" xml:space="preserve">
+        <value>隧道 {0} 已從原節點刪除, 但在節點 #{1} 上建立失敗: {2}
+
+請前往建立隧道頁按原設定手動重建。</value>
+    </data>
+    <data name="Text.UserProxy.MigrateGoCreate" xml:space="preserve">
+        <value>前往建立隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNotLoggedIn" xml:space="preserve">
+        <value>尚未登入, 無法遷移隧道</value>
+    </data>
+    <data name="Text.UserProxy.MigrateIncompleteInfo" xml:space="preserve">
+        <value>隧道資訊不完整(缺少節點位址或連接埠), 無法遷移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateBanned" xml:space="preserve">
+        <value>該隧道已被封禁, 無法遷移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateRunningHint" xml:space="preserve">
+        <value>隧道正在執行, 請先停止後再遷移</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSameNode" xml:space="preserve">
+        <value>目標節點與原節點相同</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOffline" xml:space="preserve">
+        <value>目標節點目前不在線</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOverloaded" xml:space="preserve">
+        <value>目標節點負載過高</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetUnsupportedFormat" xml:space="preserve">
+        <value>目標節點不支援原隧道的協定類型({0})</value>
     </data>
     <data name="Text.Settings.Advanced" xml:space="preserve">
         <value>進階設定</value>
