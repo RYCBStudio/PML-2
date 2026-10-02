@@ -1,154 +1,231 @@
-- name: Upload to OpenList via API
-  if: steps.large.outputs.found == 'true'
-  env:
-    OPENLIST_URL: ${{ secrets.OPENLIST_URL }}
-    OPENLIST_USERNAME: ${{ secrets.OPENLIST_USERNAME }}
-    OPENLIST_PASSWORD: ${{ secrets.OPENLIST_PASSWORD }}
-    OPENLIST_PATH: "/mefrp-desktop/ME-Frp PML2/mefrp"
-    TAG: ${{ steps.release.outputs.tag }}
-  run: |
-    pip install requests --quiet
-    python3 -u << 'PYEOF'
-    import os, re, sys, json, time
-    import requests
-    from requests.adapters import HTTPAdapter
-    from urllib3.util.retry import Retry
-    import urllib.parse
+name: Sync Release Assets to OpenList
 
-    url = os.environ['OPENLIST_URL']
-    username = os.environ['OPENLIST_USERNAME']
-    password = os.environ['OPENLIST_PASSWORD']
-    base_path = os.environ['OPENLIST_PATH']
-    tag = os.environ['TAG']
+on:
+  release:
+    types: [published]      # Release 发布时自动触发
+  workflow_dispatch:        # 支持手动触发（调试用）
 
-    EXT_REGEX = re.compile(
-        r'\.(tar\.gz|tar\.xz|tar\.bz2|tar\.zst|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
-        re.I
-    )
-    VER_REGEX = re.compile(r'\d+\.\d+\.\d+(?:\.\d+)?')
+jobs:
+  sync-assets:
+    runs-on: ubuntu-latest
+    steps:
+      # ---------- 1. 解析 Release tag ----------
+      - name: Resolve release tag
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG=$(gh release view --json tagName -q .tagName --repo ${{ github.repository }})
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved tag: $TAG"
 
-    def restore_spaces(name):
-        m = EXT_REGEX.search(name)
-        ext = m.group(0) if m else ''
-        base = name[:-len(ext)] if ext else name
-        versions = []
-        def protect(match):
-            versions.append(match.group(0))
-            return f'\x00V{len(versions)-1}\x00'
-        base = VER_REGEX.sub(protect, base)
-        base = base.replace('.', ' ')
-        base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
-        return base + ext
+      # ---------- 2. 列出所有资产 ----------
+      - name: List all assets
+        id: assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ASSETS=$(gh release view "${{ steps.release.outputs.tag }}" \
+            --json assets \
+            -q '.assets[].name' \
+            --repo ${{ github.repository }})
+          if [ -z "$ASSETS" ]; then
+            echo "No assets found. Nothing to do."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found assets:"
+            echo "$ASSETS"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            printf '%s\n' "$ASSETS" > /tmp/assets.txt
+          fi
 
-    def infer_os(filename):
-        """从文件名推断 OS，用于分目录。"""
-        lower = filename.lower()
-        if ('macos' in lower or 'darwin' in lower
-                or '-mac-' in lower or '_mac_' in lower):
-            return 'macos'
-        if 'windows' in lower or 'win' in lower:
-            return 'windows'
-        if 'linux' in lower:
-            return 'linux'
-        # 兜底按扩展名
-        if lower.endswith('.exe') or lower.endswith('.msi'):
-            return 'windows'
-        if lower.endswith('.dmg'):
-            return 'macos'
-        if lower.endswith(('.deb', '.rpm', '.apk')):
-            return 'linux'
-        return 'unknown'
+      # ---------- 3. 下载所有资产 ----------
+      - name: Download assets
+        if: steps.assets.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p downloads
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            echo "Downloading: $name"
+            gh release download "${{ steps.release.outputs.tag }}" \
+              --pattern "$name" \
+              --dir downloads \
+              --repo ${{ github.repository }}
+          done < /tmp/assets.txt
 
-    # ---- 1. 登录 ----
-    print('Logging in to OpenList...', flush=True)
-    r = requests.post(
-        f'{url}/api/auth/login',
-        json={'username': username, 'password': password},
-        timeout=30,
-    )
-    token = r.json().get('data', {}).get('token')
-    if not token:
-        print(f'❌ Login failed: {r.text}', flush=True)
-        sys.exit(1)
-    print('✅ Login successful.', flush=True)
+      # ---------- 4. 上传到 OpenList ----------
+      - name: Upload to OpenList via API
+        if: steps.assets.outputs.found == 'true'
+        env:
+          OPENLIST_URL: ${{ secrets.OPENLIST_URL }}
+          OPENLIST_USERNAME: ${{ secrets.OPENLIST_USERNAME }}
+          OPENLIST_PASSWORD: ${{ secrets.OPENLIST_PASSWORD }}
+          OPENLIST_PATH: "/mefrp-desktop/ME-Frp PML2/mefrp"
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          pip install requests --quiet
+          python3 -u << 'PYEOF'
+          import os, re, sys, time
+          import requests
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+          import urllib.parse
 
-    # ---- 2. 配置带 retry 的 session ----
-    session = requests.Session()
-    adapter = HTTPAdapter(max_retries=Retry(
-        total=3,
-        backoff_factor=5,
-        status_forcelist=[500, 502, 503, 504],
-        allowed_methods=['PUT', 'POST'],
-    ))
-    session.mount('https://', adapter)
-    session.mount('http://', adapter)
+          url = os.environ['OPENLIST_URL']
+          username = os.environ['OPENLIST_USERNAME']
+          password = os.environ['OPENLIST_PASSWORD']
+          base_path = os.environ['OPENLIST_PATH']
+          tag = os.environ['TAG']
 
-    # ---- 3. 逐个上传 ----
-    files = sorted(
-        f for f in os.listdir('downloads')
-        if os.path.isfile(os.path.join('downloads', f))
-    )
-    if not files:
-        print('No files to upload.', flush=True)
-        sys.exit(0)
+          EXT_REGEX = re.compile(
+              r'\.(tar\.gz|tar\.xz|tar\.bz2|tar\.zst|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
+              re.I
+          )
+          VER_REGEX = re.compile(r'\d+\.\d+\.\d+(?:\.\d+)?')
 
-    success = 0
-    failed = []
-    for filename in files:
-        filepath = os.path.join('downloads', filename)
-        restored = restore_spaces(filename)
-        os_name = infer_os(restored)
-        subdir = f'{os_name}-distributions' if os_name != 'unknown' else 'other-distributions'
-        target = f'{base_path}/{subdir}/{tag}/{restored}'
-        encoded_target = urllib.parse.quote(target, safe='')
-        size_mb = os.path.getsize(filepath) / 1024 / 1024
+          def restore_spaces(name):
+              m = EXT_REGEX.search(name)
+              ext = m.group(0) if m else ''
+              base = name[:-len(ext)] if ext else name
+              versions = []
+              def protect(match):
+                  versions.append(match.group(0))
+                  return f'\x00V{len(versions)-1}\x00'
+              base = VER_REGEX.sub(protect, base)
+              base = base.replace('.', ' ')
+              base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
+              return base + ext
 
-        print(f'\n📤 Uploading: {restored} ({size_mb:.2f} MB)', flush=True)
-        print(f'   → Target: {target}', flush=True)
+          def infer_os(filename):
+              """从文件名推断 OS，用于分目录。"""
+              lower = filename.lower()
+              if ('macos' in lower or 'darwin' in lower
+                      or '-mac-' in lower or '_mac_' in lower):
+                  return 'macos'
+              if 'windows' in lower or 'win' in lower:
+                  return 'windows'
+              if 'linux' in lower:
+                  return 'linux'
+              if lower.endswith('.exe') or lower.endswith('.msi'):
+                  return 'windows'
+              if lower.endswith('.dmg'):
+                  return 'macos'
+              if lower.endswith(('.deb', '.rpm', '.apk')):
+                  return 'linux'
+              return 'unknown'
 
-        MAX_ATTEMPTS = 3
-        uploaded = False
-        for attempt in range(1, MAX_ATTEMPTS + 1):
-            try:
-                with open(filepath, 'rb') as f:
-                    file_data = f.read()
-                resp = session.put(
-                    f'{url}/api/fs/put',
-                    data=file_data,
-                    headers={
-                        'Authorization': token,
-                        'File-Path': encoded_target,
-                        'Content-Type': 'application/octet-stream',
-                        'Overwrite': 'true',
-                        'As-Task': 'true',
-                    },
-                    timeout=(30, 900),
-                )
-                result = resp.json()
-                if result.get('code') == 200:
-                    print(f'✅ Done (attempt {attempt})', flush=True)
-                    uploaded = True
-                    break
-                else:
-                    print(f'⚠️ Attempt {attempt} OpenList error: {result}', flush=True)
-            except Exception as e:
-                print(f'⚠️ Attempt {attempt} failed: {type(e).__name__}: {e}', flush=True)
+          # ---- 1. 登录 OpenList ----
+          print('Logging in to OpenList...', flush=True)
+          r = requests.post(
+              f'{url}/api/auth/login',
+              json={'username': username, 'password': password},
+              timeout=30,
+          )
+          token = r.json().get('data', {}).get('token')
+          if not token:
+              print(f'❌ Login failed: {r.text}', flush=True)
+              sys.exit(1)
+          print('✅ Login successful.', flush=True)
 
-            if attempt < MAX_ATTEMPTS:
-                wait = 5 * attempt
-                print(f'   Retrying in {wait}s...', flush=True)
-                time.sleep(wait)
+          # ---- 2. 配置带 retry 的 session ----
+          session = requests.Session()
+          adapter = HTTPAdapter(max_retries=Retry(
+              total=3,
+              backoff_factor=5,
+              status_forcelist=[500, 502, 503, 504],
+              allowed_methods=['PUT', 'POST'],
+          ))
+          session.mount('https://', adapter)
+          session.mount('http://', adapter)
 
-        if uploaded:
-            success += 1
-        else:
-            failed.append(restored)
-            print(f'❌ Giving up: {restored}', flush=True)
+          # ---- 3. 逐个上传 ----
+          files = sorted(
+              f for f in os.listdir('downloads')
+              if os.path.isfile(os.path.join('downloads', f))
+          )
+          if not files:
+              print('No files to upload.', flush=True)
+              sys.exit(0)
 
-    # ---- 4. 结果 ----
-    print(f'\n{"="*50}', flush=True)
-    print(f'🎉 {success}/{len(files)} assets synced', flush=True)
-    if failed:
-        print(f'❌ Failed: {failed}', flush=True)
-        sys.exit(1)
-    PYEOF
+          success = 0
+          failed = []
+          for filename in files:
+              filepath = os.path.join('downloads', filename)
+              restored = restore_spaces(filename)
+              os_name = infer_os(restored)
+              subdir = f'{os_name}-distributions' if os_name != 'unknown' else 'other-distributions'
+              target = f'{base_path}/{subdir}/{tag}/{restored}'
+              encoded_target = urllib.parse.quote(target, safe='')
+              size_mb = os.path.getsize(filepath) / 1024 / 1024
+
+              print(f'\n📤 Uploading: {restored} ({size_mb:.2f} MB)', flush=True)
+              print(f'   → Target: {target}', flush=True)
+
+              MAX_ATTEMPTS = 3
+              uploaded = False
+              for attempt in range(1, MAX_ATTEMPTS + 1):
+                  try:
+                      with open(filepath, 'rb') as f:
+                          file_data = f.read()
+                      resp = session.put(
+                          f'{url}/api/fs/put',
+                          data=file_data,
+                          headers={
+                              'Authorization': token,
+                              'File-Path': encoded_target,
+                              'Content-Type': 'application/octet-stream',
+                              'Overwrite': 'true',
+                              'As-Task': 'true',
+                          },
+                          timeout=(30, 900),
+                      )
+                      result = resp.json()
+                      if result.get('code') == 200:
+                          print(f'✅ Done (attempt {attempt})', flush=True)
+                          uploaded = True
+                          break
+                      else:
+                          print(f'⚠️ Attempt {attempt} OpenList error: {result}', flush=True)
+                  except Exception as e:
+                      print(f'⚠️ Attempt {attempt} failed: {type(e).__name__}: {e}', flush=True)
+
+                  if attempt < MAX_ATTEMPTS:
+                      wait = 5 * attempt
+                      print(f'   Retrying in {wait}s...', flush=True)
+                      time.sleep(wait)
+
+              if uploaded:
+                  success += 1
+              else:
+                  failed.append(restored)
+                  print(f'❌ Giving up: {restored}', flush=True)
+
+          # ---- 4. 结果 ----
+          print(f'\n{"="*50}', flush=True)
+          print(f'🎉 {success}/{len(files)} assets synced', flush=True)
+          if failed:
+              print(f'❌ Failed: {failed}', flush=True)
+              sys.exit(1)
+          PYEOF
+
+      # ---------- 5. 触发 Worker 更新 files.json ----------
+      - name: Trigger Worker to update files.json
+        if: steps.assets.outputs.found == 'true'
+        run: |
+          echo "Triggering Worker sync for files.json..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://gh-sync.rycb.tech/api/trigger")
+          HTTP_CODE=$(echo "$RESP" | tail -n1)
+          BODY=$(echo "$RESP" | head -n-1)
+          echo "Response: $BODY"
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "⚠️ Worker trigger returned HTTP $HTTP_CODE (non-fatal)"
+          else
+            echo "✅ Worker triggered successfully — files.json will be updated shortly."
+          fi
