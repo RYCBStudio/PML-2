@@ -1,0 +1,42 @@
+name: Sync Release to OpenList
+
+on:
+  release:
+    types: [published]      # Release 发布时自动触发
+  workflow_dispatch:        # 也支持在 Actions 页面手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install rclone
+        run: curl https://rclone.org/install.sh | sudo bash
+
+      - name: Setup rclone config
+        run: |
+          mkdir -p ~/.config/rclone
+          cat > ~/.config/rclone/rclone.conf <<EOF
+          [openlist]
+          type = webdav
+          url = ${{ secrets.OPENLIST_URL }}/dav
+          vendor = other
+          user = ${{ secrets.OPENLIST_USERNAME }}
+          pass = ${{ secrets.OPENLIST_PASSWORD_OBSCURED }}
+          EOF
+
+      - name: Download release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p downloads
+          gh release download ${{ github.event.release.tag_name }} \
+            --dir downloads \
+            --repo ${{ github.repository }}
+
+      - name: Upload to OpenList
+        run: |
+          rclone copy downloads \
+            "openlist:/mefrp-desktop/ME-Frp PML2/mefrp/${{ github.event.release.tag_name }}" \
+            --progress \
+            --transfers 4 \
+            --checkers 8
