@@ -1,0 +1,65 @@
+<Project>
+
+    <!--
+      IconPacks.Avalonia 本地 fork 的构建配置（Avalonia 12 spike · 计划 P1.6）。
+
+      来源：https://github.com/MahApps/IconPacks.Avalonia  ->  release/2.0.0 (ff2dff0)
+      仅保留实际使用的 4 个图标包 + 其依赖 Core，其余 40+ 图标包未纳入。
+
+      为什么需要 fork：
+        NuGet 上的 2.0.0 是针对 Avalonia 11.0.13 编译的。Avalonia 12 中
+        Avalonia.Markup.Xaml.MarkupExtensions.DynamicResourceExtension.ProvideValue(IServiceProvider)
+        的返回类型由 Avalonia.Data.IBinding 改为 Avalonia.Data.BindingBase，属二进制不兼容。
+        官方包的 PackIcon.axaml（内含 <StaticResource>/<DynamicResource> 模板）
+        在 Avalonia 12 下套用 ControlTheme 时会抛 MissingMethodException，
+        图标会静默渲染失败（实测：探针 F:\temp\IconPacksProbe）。
+        重新针对 Avalonia 12 编译即可解决；此外需把
+        ConstructorArgumentAttribute 的 using 从 Avalonia.Markup.Xaml 改为 Avalonia.Metadata。
+
+      此文件刻意不导入上游 build/*.props（SourceLink/打包相关），
+      以免给主程序引入额外的构建期依赖与 AOT 裁剪面。
+    -->
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>disable</Nullable>
+        <AnalysisLevel>latest</AnalysisLevel>
+
+        <!-- 与主仓库其余项目保持一致：不隐式 usings，避免与上游源码的显式 using 冲突 -->
+        <ImplicitUsings>disable</ImplicitUsings>
+
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateLibraryLayout>true</GenerateLibraryLayout>
+
+        <!-- CS1591：上游大量公共成员无 XML 注释；NU1510：System.Text.Json 已内置于 net10 -->
+        <NoWarn>$(NoWarn);CS1591;NU1510</NoWarn>
+
+        <!-- 本地 fork 不产出 NuGet 包，避免污染主仓库打包流程 -->
+        <IsPackable>false</IsPackable>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <!-- 程序集签名：沿用上游同一密钥，保持程序集标识连续（AOT/单文件场景下更安全） -->
+    <PropertyGroup>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\build\IconPacks.Avalonia.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+        <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Version>2.0.0</Version>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <FileVersion>2.0.0.0</FileVersion>
+        <InformationalVersion>2.0.0+avalonia12-fork</InformationalVersion>
+        <Company>MahApps</Company>
+        <Authors>Jan Karger</Authors>
+        <Product>IconPacks.Avalonia</Product>
+        <Description>IconPacks for stylish awesome Avalonia applications. (local Avalonia 12 fork)</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/MahApps/IconPacks.Avalonia.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+</Project>

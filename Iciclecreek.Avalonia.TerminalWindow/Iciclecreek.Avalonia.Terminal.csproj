@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -28,11 +28,12 @@
     <AvaloniaResource Include="Themes\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.20" />
-    <PackageReference Include="Iciclecreek.Avalonia.WindowManager" Version="4.0.4" />
-    <PackageReference Include="Unicode.net" Version="2.0.0" />
-    <PackageReference Include="Wcwidth" Version="4.0.1" />
-    <PackageReference Include="XTerm.NET" Version="2.0.2" />
+    <!-- 版本统一由仓库根目录 Directory.Packages.props 中央管理 -->
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Iciclecreek.Avalonia.WindowManager" />
+    <PackageReference Include="Unicode.net" />
+    <PackageReference Include="Wcwidth" />
+    <PackageReference Include="XTerm.NET" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Porta.Pty\Porta.Pty.csproj" />

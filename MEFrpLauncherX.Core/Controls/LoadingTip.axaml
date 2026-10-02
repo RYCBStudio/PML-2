@@ -9,7 +9,7 @@
              x:Class="MEFrpLauncherX.Core.Controls.LoadingTip"
              x:DataType="controls1:LoadingTip">
     <DockPanel>
-        <ui:ProgressRing MaxHeight="{Binding #PART_TIP.Height}" DockPanel.Dock="Left" IsIndeterminate="True" />
+        <ui:FAProgressRing MaxHeight="{Binding #PART_TIP.Height}" DockPanel.Dock="Left" IsIndeterminate="True" />
         <TextBlock x:Name="PART_TIP" Text="{Binding Tip, FallbackValue={x:Static languages:Languages.Text_Global_Loading}}" VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
     </DockPanel>

@@ -74,8 +74,8 @@ public class BoolToVerifiedIconConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is true)
-            return Symbol.Accept;
-        return Symbol.Dismiss;
+            return FASymbol.Accept;
+        return FASymbol.Dismiss;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -126,8 +126,8 @@ public class BoolToStatusIconConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool and true)
-            return Symbol.ClosedCaption;
-        return Symbol.Accept;
+            return FASymbol.ClosedCaption;
+        return FASymbol.Accept;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -311,9 +311,9 @@ public class StatusNumToSeveritryConverter : IValueConverter
 
         return status switch
         {
-            0 => InfoBarSeverity.Success,
-            1 => InfoBarSeverity.Warning,
-            _ => InfoBarSeverity.Error
+            0 => FAInfoBarSeverity.Success,
+            1 => FAInfoBarSeverity.Warning,
+            _ => FAInfoBarSeverity.Error
         };
     }
 

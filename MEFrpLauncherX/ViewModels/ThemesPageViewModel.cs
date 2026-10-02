@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -21,6 +20,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using SecretLib;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -69,57 +69,57 @@ public class ThemesPageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<Unit, Unit> RefreshLocalThemesCommand
+    public ReactiveCommand<RxVoid, RxVoid> RefreshLocalThemesCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> FetchOnlineThemesCommand
+    public ReactiveCommand<RxVoid, RxVoid> FetchOnlineThemesCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DownloadThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> DownloadThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> ApplyLocalThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> ApplyLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> EditLocalThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> EditLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DeleteLocalThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> DeleteLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> PackageLocalThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> PackageLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> AddLocalThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> AddLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> ImportThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> ImportThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> OpenDocumentationCommand
+    public ReactiveCommand<RxVoid, RxVoid> OpenDocumentationCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> RestoreDefaultThemeCommand
+    public ReactiveCommand<RxVoid, RxVoid> RestoreDefaultThemeCommand
     {
         get;
     }
@@ -156,7 +156,7 @@ public class ThemesPageViewModel : ViewModelBase
         });
         RestoreDefaultThemeCommand = ReactiveCommand.CreateFromTask(RestoreDefaultThemeAsync);
         FetchOnlineThemesCommand.Execute();
-        this.WhenAnyValue(x => x.SearchText).Throttle(TimeSpan.FromMilliseconds(300)).Subscribe(text =>
+        ObservableExtensions.Subscribe(this.WhenAnyValue(x => x.SearchText).Throttle(TimeSpan.FromMilliseconds(300)), text =>
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -350,20 +350,20 @@ public class ThemesPageViewModel : ViewModelBase
     private async void PackageLocalTheme()
     {
         if (SelectedLocalTheme == null) return;
-        var btn = new TaskDialogButton
+        var btn = new FATaskDialogButton
         {
-            DialogResult = TaskDialogStandardResult.Cancel,
+            DialogResult = FATaskDialogStandardResult.Cancel,
             Text = Languages.Text_Global_Cancel,
             Command = new RelayCommand(async _ =>
             {
             })
         };
         var path = Path.Combine(Core.App.StartupPath, "Config", "Themes Output");
-        var td = new TaskDialog
+        var td = new FATaskDialog
         {
             Title = Languages.Text_Themes_PackagingTheme,
             ShowProgressBar = true,
-            IconSource = new SymbolIconSource { Symbol = Symbol.Download },
+            IconSource = new FASymbolIconSource { Symbol = FASymbol.Download },
             SubHeader = string.Format(Languages.Text_Themes_ThemeNameFormat, SelectedLocalTheme.Name),
             Content = string.Format(Languages.Text_Themes_PackageInfoFormat, SelectedLocalTheme.Version,
                 SelectedLocalTheme.Author, path),
@@ -372,7 +372,7 @@ public class ThemesPageViewModel : ViewModelBase
                 btn
             }
         };
-        td.SetProgressBarState(0, TaskDialogProgressState.Indeterminate);
+        td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
         td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
         td.ShowAsync();
 
@@ -381,16 +381,16 @@ public class ThemesPageViewModel : ViewModelBase
             Path.Combine(path, $"{SelectedLocalTheme.Name}.pmla"),
             (progress, status) =>
             {
-                td.SetProgressBarState(progress, TaskDialogProgressState.Normal);
+                td.SetProgressBarState(progress, FATaskDialogProgressState.Normal);
             }));
         Dispatcher.UIThread.Post(() =>
         {
-            td.Hide(TaskDialogStandardResult.OK);
+            td.Hide(FATaskDialogStandardResult.OK);
         });
         Growl.Success(Languages.Text_Themes_ThemePackaged);
         await MessageBox.ShowAsync(Languages.Text_Themes_ThemePackageCompleted, buttons:
         [
-            new TaskDialogButton
+            new FATaskDialogButton
             {
                 Text = Languages.Text_Themes_OpenFolder,
                 Command = new RelayCommand(_ =>
@@ -398,7 +398,7 @@ public class ThemesPageViewModel : ViewModelBase
                     Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
                 })
             },
-            new TaskDialogButton
+            new FATaskDialogButton
             {
                 Text = Languages.Text_Global_Confirm,
                 Command = new RelayCommand(_ =>

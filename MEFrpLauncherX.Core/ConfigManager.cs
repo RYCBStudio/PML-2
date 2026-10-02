@@ -346,7 +346,7 @@ public static class ConfigManager
             changed++;
         }
 
-        // ---------- 4. 数值范围：越界值回落到默认值（与设置页 Slider / NumberBox 范围一致） ----------
+        // ---------- 4. 数值范围：越界值回落到默认值（与设置页 Slider / FANumberBox 范围一致） ----------
         changed += NormalizeRange(() => cfg.ParallelCount, v => cfg.ParallelCount = v, 1, 512, d.ParallelCount);
         changed += NormalizeRange(() => cfg.ExpireDays, v => cfg.ExpireDays = v, 1, 366, d.ExpireDays);
         changed += NormalizeRange(() => cfg.AnimationLevel, v => cfg.AnimationLevel = v, 0, 2, d.AnimationLevel);

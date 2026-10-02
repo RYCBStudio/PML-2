@@ -216,11 +216,11 @@ public static partial class HtmlBlockRenderer
     /// </summary>
     private static Control CreateAlertBox(string type, string content)
     {
-        var infoCallout = new InfoBar
+        var infoCallout = new FAInfoBar
         {
             IsOpen = true,
             IsClosable = false,
-            Severity = GetInfoBarSeverity(type),
+            Severity = GetFAInfoBarSeverity(type),
             Title = GetAlertTitle(type),
             Message = content,
             Margin = new Thickness(0, 5, 0, 5)
@@ -230,17 +230,17 @@ public static partial class HtmlBlockRenderer
     }
 
     /// <summary>
-    ///     获取 InfoBar 的严重性级别
+    ///     获取 FAInfoBar 的严重性级别
     /// </summary>
-    private static InfoBarSeverity GetInfoBarSeverity(string type)
+    private static FAInfoBarSeverity GetFAInfoBarSeverity(string type)
     {
         return type.ToLower() switch
         {
-            "tip" => InfoBarSeverity.Success,
-            "note" => InfoBarSeverity.Informational,
-            "warning" or "important" => InfoBarSeverity.Warning,
-            "caution" => InfoBarSeverity.Error,
-            _ => InfoBarSeverity.Informational
+            "tip" => FAInfoBarSeverity.Success,
+            "note" => FAInfoBarSeverity.Informational,
+            "warning" or "important" => FAInfoBarSeverity.Warning,
+            "caution" => FAInfoBarSeverity.Error,
+            _ => FAInfoBarSeverity.Informational
         };
     }
 

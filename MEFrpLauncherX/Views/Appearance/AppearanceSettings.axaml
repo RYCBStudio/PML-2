@@ -14,25 +14,25 @@
     </Design.DataContext>
     <ScrollViewer>
         <StackPanel Margin="5" Spacing="5" Classes="animated">
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectBackground}"
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectBackground}"
                                        IsExpanded="True"
                                        IconSource="Image"
                                        ItemsSource="{Binding Items}" />
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacity}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacityDescription}">
-                <controls:SettingsExpander.Footer>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacity}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundOpacityDescription}">
+                <controls:FASettingsExpander.Footer>
                     <Slider Maximum="100" Minimum="0" Width="200" x:Name="OpacitySlider" ValueChanged="UpdateOpacity" />
-                </controls:SettingsExpander.Footer>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillMode}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillModeDescription}">
-                <controls:SettingsExpander.Footer>
+                </controls:FASettingsExpander.Footer>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillMode}" Description="{x:Static languages:Languages.Text_AppearanceSettings_BackgroundFillModeDescription}">
+                <controls:FASettingsExpander.Footer>
                     <ComboBox x:Name="FillModeBox" SelectionChanged="UpdateBackgroundFillMode">
                         <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_FillToTitleBar}" />
                         <ComboBoxItem Content="{x:Static languages:Languages.Text_AppearanceSettings_FillToWindowOnly}" />
                     </ComboBox>
-                </controls:SettingsExpander.Footer>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectAccentColor}" IconSource="ColorFill" IsExpanded="True">
-                <controls:SettingsExpanderItem>
+                </controls:FASettingsExpander.Footer>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_SelectAccentColor}" IconSource="ColorFill" IsExpanded="True">
+                <controls:FASettingsExpanderItem>
                     <Grid ColumnDefinitions="*, *" RowDefinitions="*,*,*,*">
                         <Border Grid.ColumnSpan="2" Background="{DynamicResource SystemAccentColor}">
                             <TextBlock Text="SystemAccentColor"
@@ -77,23 +77,23 @@
                                        VerticalAlignment="Center" />
                         </Border>
                     </Grid>
-                    <controls:SettingsExpanderItem.Footer>
+                    <controls:FASettingsExpanderItem.Footer>
                         <StackPanel Spacing="3">
                             <ColorPicker Color="{DynamicResource SystemAccentColor}"
                                          ColorChanged="ColorView_OnColorChanged" />
                             <Button Click="RestoreDefaultColors">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <controls:SymbolIcon Symbol="Restore" />
+                                        <controls:FASymbolIcon Symbol="Restore" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_AppearanceSettings_Restore}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </StackPanel>
-                    </controls:SettingsExpanderItem.Footer>
-                </controls:SettingsExpanderItem>
-            </controls:SettingsExpander>
-            <controls:SettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePage}" Description="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePageDescription}">
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+            </controls:FASettingsExpander>
+            <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePage}" Description="{x:Static languages:Languages.Text_AppearanceSettings_CustomizeHomePageDescription}">
                 <StackPanel Spacing="6">
                     <!-- 26.4：主页布局（精简 / 经典）。精简布局忽略下方各显示开关。 -->
                     <Grid ColumnDefinitions="*,Auto">
@@ -131,14 +131,14 @@
                                    Text="{x:Static languages:Languages.Text_AppearanceSettings_HomeLayout_SimpleHint}" />
                     </StackPanel>
                 </StackPanel>
-            </controls:SettingsExpander>
+            </controls:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
 
-    <!-- SettingsExpander supports creating items from DataTemplate -->
+    <!-- FASettingsExpander supports creating items from DataTemplate -->
     <Window.DataTemplates>
         <DataTemplate DataType="appearance:RecentImagesSettingsItem">
-            <controls:SettingsExpanderItem>
+            <controls:FASettingsExpanderItem>
                 <StackPanel Spacing="4">
                     <TextBlock Text="{Binding Header}" />
                     <ListBox ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}">
@@ -172,18 +172,18 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
-            </controls:SettingsExpanderItem>
+            </controls:FASettingsExpanderItem>
         </DataTemplate>
 
         <DataTemplate DataType="appearance:FooterButtonSettingsItem">
-            <controls:SettingsExpanderItem>
-                <controls:SettingsExpanderItem.Footer>
+            <controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem.Footer>
                     <WrapPanel ItemSpacing="5">
                         <Button Content="{Binding Footer}" Command="{Binding SelectBackgroundCommand}" />
                         <Button Content="{x:Static languages:Languages.Text_AppearanceSettings_ClearAllBackgrounds}" Command="{Binding ClearFileCommand}" />
                     </WrapPanel>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
         </DataTemplate>
     </Window.DataTemplates>
 </Window>

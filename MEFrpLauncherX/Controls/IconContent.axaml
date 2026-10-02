@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.IconContent">
     <StackPanel Classes="buttonPanel">
-        <controls:SymbolIcon FontSize="16" Symbol="{Binding Symbol, RelativeSource={RelativeSource AncestorType=controls1:IconContent}}" />
+        <controls:FASymbolIcon FontSize="16" Symbol="{Binding Symbol, RelativeSource={RelativeSource AncestorType=controls1:IconContent}}" />
         <TextBlock Text="{Binding Label, RelativeSource={RelativeSource AncestorType=controls1:IconContent}}" />
     </StackPanel>
 </UserControl>

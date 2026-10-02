@@ -3,6 +3,7 @@ using System.IO;
 using System.Web;
 using System.Xml;
 using Avalonia.Controls;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using AvaloniaEdit.Highlighting;

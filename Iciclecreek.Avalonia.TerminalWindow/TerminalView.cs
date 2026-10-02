@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -542,7 +543,7 @@ namespace Iciclecreek.TerminalWindow
                 return;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            var text = await clipboard.GetTextAsync();
+            var text = await clipboard.TryGetTextAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
             if (!string.IsNullOrEmpty(text))
             {
@@ -1192,7 +1193,7 @@ namespace Iciclecreek.TerminalWindow
             }
         }
 
-        protected async override void OnGotFocus(GotFocusEventArgs e)
+        protected async override void OnGotFocus(FocusChangedEventArgs e)
         {
             base.OnGotFocus(e);
 
@@ -1217,7 +1218,7 @@ namespace Iciclecreek.TerminalWindow
             this.RequestInvalidate();
         }
 
-        protected async override void OnLostFocus(RoutedEventArgs e)
+        protected async override void OnLostFocus(FocusChangedEventArgs e)
         {
             base.OnLostFocus(e);
 
@@ -1933,7 +1934,8 @@ namespace Iciclecreek.TerminalWindow
 
         public override void Render(DrawingContext context)
         {
-            var scale = VisualRoot?.RenderScaling ?? 1.0;
+            // Avalonia 12：RenderScaling 从 Visual 移至 TopLevel，故需显式转换。
+            var scale = (VisualRoot as TopLevel)?.RenderScaling ?? 1.0;
             //Debug.WriteLine("======");
             //Debug.WriteLine(_terminal.Buffer.PrintViewport());
             

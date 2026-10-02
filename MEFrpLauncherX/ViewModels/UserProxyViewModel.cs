@@ -46,7 +46,7 @@ public enum TunnelStatus
     Failed
 }
 
-public class UserProxyViewModel : ViewModelBase
+public partial class UserProxyViewModel : ViewModelBase
 {
     private readonly SemaphoreSlim _signal = new SemaphoreSlim(0, 1);
 
@@ -161,13 +161,17 @@ public class UserProxyViewModel : ViewModelBase
         }, DispatcherPriority.Background);
     }
 
-    public List<string>? Locations
+    // ReactiveUI 25 的源生成器（4.2.0）要求访问器为 set；
+    // 本属性实际仅被读取，改为 set 无行为影响。
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial List<string>? Locations
     {
         get;
-        init;
+        set;
     }
 
-    public string Config
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Config
     {
         get;
         set;
@@ -699,7 +703,7 @@ public class UserProxyViewModel : ViewModelBase
         if (configFiles.Count != 0)
         {
             var cs = new ConfigSelect(configFiles);
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Title = Languages.Text_ALPControl_SelectConfigTitle,
                 Content = cs,
@@ -707,7 +711,7 @@ public class UserProxyViewModel : ViewModelBase
                 CloseButtonText = Languages.Text_Global_Cancel
             };
             ShowExtraMenu = false;
-            if (await cd.ShowAsync(TopLevel.GetTopLevel(Core.App.MainWindow)) == ContentDialogResult.Primary)
+            if (await cd.ShowAsync(TopLevel.GetTopLevel(Core.App.MainWindow)) == FAContentDialogResult.Primary)
             {
                 configFile = cs.SelectedPath;
             }
@@ -843,8 +847,8 @@ public class UserProxyViewModel : ViewModelBase
             "",
             MessageBoxIcon.Warning,
             [
-                new TaskDialogButton(Languages.Text_UserProxy_Download, TaskDialogStandardResult.Yes),
-                new TaskDialogButton(Languages.Text_Global_No, TaskDialogStandardResult.No)
+                new FATaskDialogButton(Languages.Text_UserProxy_Download, FATaskDialogStandardResult.Yes),
+                new FATaskDialogButton(Languages.Text_Global_No, FATaskDialogStandardResult.No)
             ]);
 
         return res switch
@@ -948,8 +952,8 @@ public class UserProxyViewModel : ViewModelBase
                                                                 proxies.Count),
                                                             Languages.Text_UserProxy_ConfirmDeleteTitle,
                                                             [
-                                                                TaskDialogButton.YesButton,
-                                                                TaskDialogButton.NoButton
+                                                                FATaskDialogButton.YesButton,
+                                                                FATaskDialogButton.NoButton
                                                             ]) !=
                                                         MessageBoxResult.Yes:
                 return;
@@ -1061,7 +1065,7 @@ public class UserProxyViewModel : ViewModelBase
 
     private async void ShowExtraInfo(UserProxyViewModel proxy)
     {
-        var td = new TaskDialog
+        var td = new FATaskDialog
         {
             // Title property only applies on Windowed dialogs
             Title = Languages.Text_UserProxy_TunnelDetails,
@@ -1083,7 +1087,7 @@ public class UserProxyViewModel : ViewModelBase
             },
             Buttons =
             {
-                TaskDialogButton.OKButton
+                FATaskDialogButton.OKButton
             },
             XamlRoot = UserProxyControl.Instance
         };
@@ -1335,7 +1339,7 @@ public class UserProxyViewModel : ViewModelBase
                 return;
             }
 
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Title = Languages.Text_UserProxy_QRCodeView_Caption.Split('.', '。')[0],
                 Content = Languages.Text_UserProxy_QRCodeView_Caption,
@@ -1344,15 +1348,15 @@ public class UserProxyViewModel : ViewModelBase
                 CloseButtonText = Languages.Text_Global_Close,
                 IsPrimaryButtonEnabled = true,
                 IsSecondaryButtonEnabled = true,
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
             var res = await cd.ShowAsync();
             switch (res)
             {
-                case ContentDialogResult.Primary:
+                case FAContentDialogResult.Primary:
                 {
                     // 查看：一次性把该代理下全部 domain 的二维码交给控件，由控件内部轮播切换
-                    cd = new ContentDialog
+                    cd = new FAContentDialog
                     {
                         Content = new CustomizeQRCode(items),
                         CloseButtonText = Languages.Text_Global_Close,
@@ -1361,7 +1365,7 @@ public class UserProxyViewModel : ViewModelBase
                     await cd.ShowAsync();
                     break;
                 }
-                case ContentDialogResult.Secondary:
+                case FAContentDialogResult.Secondary:
                 {
                     // 复制到剪贴板：仅一个 domain 时沿用原有的快速复制；多个 domain 时由用户选择要复制哪一个
                     var target = items.Count == 1 ? items[0] : await SelectQRCodeItemAsync(items);
@@ -1417,16 +1421,16 @@ public class UserProxyViewModel : ViewModelBase
             SelectedIndex = 0,
             MinWidth = 280
         };
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_UserProxy_QRCodeView_SelectDomain,
             Content = list,
             PrimaryButtonText = Languages.Text_UserProxy_QRCodeView_CopyToClipBoard,
             CloseButtonText = Languages.Text_Global_Close,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         var res = await cd.ShowAsync();
-        if (res != ContentDialogResult.Primary)
+        if (res != FAContentDialogResult.Primary)
         {
             return null;
         }

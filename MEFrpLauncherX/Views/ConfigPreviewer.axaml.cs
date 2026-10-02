@@ -3,6 +3,8 @@ using System.IO;
 using System.Web;
 using System.Xml;
 using Avalonia.Controls;
+// Avalonia 12：IClipboard.SetTextAsync 改为扩展方法（ClipboardExtensions）。
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using AvaloniaEdit.Highlighting;

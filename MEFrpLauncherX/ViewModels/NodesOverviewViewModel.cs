@@ -10,6 +10,7 @@ using Avalonia.Threading;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.MEFIntegrated;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -23,7 +24,7 @@ public class NodesOverviewViewModel : INotifyPropertyChanged
         _ = LoadDataAsync(false);
     }
 
-    public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RefreshCommand { get; }
 
     public AvaloniaList<InfoClasses.NodeStatus> AllNodes
     {

@@ -15,23 +15,23 @@
             <StackPanel Orientation="Horizontal" Spacing="3" DockPanel.Dock="Right">
                 <Button x:Name="PrevBtn" Click="PrevFile">
                     <Button.Content>
-                        <controls:SymbolIcon Symbol="ChevronLeft" />
+                        <controls:FASymbolIcon Symbol="ChevronLeft" />
                     </Button.Content>
                 </Button>
                 <Button x:Name="NextBtn" Click="NextFile">
                     <Button.Content>
-                        <controls:SymbolIcon Symbol="ChevronRight" />
+                        <controls:FASymbolIcon Symbol="ChevronRight" />
                     </Button.Content>
                 </Button>
             </StackPanel>
             <TextBox IsReadOnly="True" x:Name="ConfigPath" Text="{Binding SelectedPath}" />
         </DockPanel>
         <Panel Grid.Row="2">
-            <controls:InfoBadge HorizontalAlignment="Right" VerticalAlignment="Top">
-                <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}" Glyph="{x:Static languages:Languages.Text_Global_ReadOnly}" />
-                </controls:InfoBadge.IconSource>
-            </controls:InfoBadge>
+            <controls:FAInfoBadge HorizontalAlignment="Right" VerticalAlignment="Top">
+                <controls:FAInfoBadge.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}" Glyph="{x:Static languages:Languages.Text_Global_ReadOnly}" />
+                </controls:FAInfoBadge.IconSource>
+            </controls:FAInfoBadge>
             <avaloniaEdit:TextEditor FontFamily="{StaticResource Jbm}" IsReadOnly="True" x:Name="ConfigPresenter"
                                      ShowLineNumbers="True" />
         </Panel>
@@ -39,7 +39,7 @@
         <!--     <Button Classes="accent" x:Name="SaveBtn"> -->
         <!--         <Button.Content> -->
         <!--             <StackPanel Orientation="Horizontal" Spacing="3"> -->
-        <!--                 <controls:SymbolIcon Symbol="Accept"></controls:SymbolIcon> -->
+        <!--                 <controls:FASymbolIcon Symbol="Accept"></controls:FASymbolIcon> -->
         <!--                 <TextBlock>确认</TextBlock> -->
         <!--             </StackPanel> -->
         <!--         </Button.Content> -->
@@ -47,7 +47,7 @@
         <!--     <Button Classes="Danger" x:Name="CancelBtn"> -->
         <!--         <Button.Content> -->
         <!--             <StackPanel Orientation="Horizontal" Spacing="3"> -->
-        <!--                 <controls:SymbolIcon Symbol="Cancel"></controls:SymbolIcon> -->
+        <!--                 <controls:FASymbolIcon Symbol="Cancel"></controls:FASymbolIcon> -->
         <!--                 <TextBlock>取消</TextBlock> -->
         <!--             </StackPanel> -->
         <!--         </Button.Content> -->

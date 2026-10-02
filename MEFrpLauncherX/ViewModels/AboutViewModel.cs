@@ -70,7 +70,7 @@ public class AboutViewModel : ViewModelBase
             Name = "AsyncImageLoader.Avalonia", Url = "https://github.com/AvaloniaUtils/AsyncImageLoader.Avalonia",
             License = "MIT"
         },
-        new() { Name = "Avalonia.Svg", Url = "https://github.com/wieslawsoltes/Svg.Skia", License = "MIT" },
+        new() { Name = "Svg.Controls.Skia.Avalonia", Url = "https://github.com/wieslawsoltes/Svg.Skia", License = "MIT" },
         new() { Name = "Downloader", Url = "https://github.com/bezzad/Downloader", License = "MIT" },
         new() { Name = "RestSharp", Url = "https://github.com/restsharp/RestSharp", License = "Apache-2.0" },
         new() { Name = "SkiaSharp", Url = "https://github.com/mono/SkiaSharp", License = "MIT" },

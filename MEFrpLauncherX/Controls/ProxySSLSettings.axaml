@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,48 +7,48 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MEFrpLauncherX.Controls.ProxySSLSettings">
     <StackPanel>
-        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_SSL_ConfigFile}" Description="{x:Static languages:Languages.Text_SSL_ConfigFileDescription}">
-            <controls:SettingsExpander.Footer>
+        <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_SSL_ConfigFile}" Description="{x:Static languages:Languages.Text_SSL_ConfigFileDescription}">
+            <controls:FASettingsExpander.Footer>
                 <StackPanel Orientation="Horizontal" Spacing="5">
-                    <TextBox x:Name="ProxyCfgBox" Watermark="{x:Static languages:Languages.Text_SSL_ConfigFile}" />
+                    <TextBox x:Name="ProxyCfgBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_ConfigFile}" />
                     <Button Name="ProxyCfg" Content="..." Click="OpenFile" />
                 </StackPanel>
-            </controls:SettingsExpander.Footer>
-        </controls:SettingsExpander>
-        <controls:SettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_HttpTunnelSettings}">
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_ProxyName}" Description="{x:Static languages:Languages.Text_SSL_ProxyNameDescription}">
-                <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="ProxyNameBox" Watermark="{x:Static languages:Languages.Text_SSL_ProxyName}" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_Domain}" Description="{x:Static languages:Languages.Text_SSL_DomainDescription}">
-                <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="DomainBox" Watermark="{x:Static languages:Languages.Text_SSL_Domain}" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_LocalAddress}" Description="{x:Static languages:Languages.Text_SSL_LocalAddressDescription}">
-                <controls:SettingsExpanderItem.Footer>
-                    <TextBox x:Name="LocalIpBox" Watermark="{x:Static languages:Languages.Text_SSL_LocalAddressWatermark}" />
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-        </controls:SettingsExpander>
-        <controls:SettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_Title}">
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_CertFile}" Description="{x:Static languages:Languages.Text_SSL_CertFileDescription}">
-                <controls:SettingsExpanderItem.Footer>
+            </controls:FASettingsExpander.Footer>
+        </controls:FASettingsExpander>
+        <controls:FASettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_HttpTunnelSettings}">
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_ProxyName}" Description="{x:Static languages:Languages.Text_SSL_ProxyNameDescription}">
+                <controls:FASettingsExpanderItem.Footer>
+                    <TextBox x:Name="ProxyNameBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_ProxyName}" />
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_Domain}" Description="{x:Static languages:Languages.Text_SSL_DomainDescription}">
+                <controls:FASettingsExpanderItem.Footer>
+                    <TextBox x:Name="DomainBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_Domain}" />
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_LocalAddress}" Description="{x:Static languages:Languages.Text_SSL_LocalAddressDescription}">
+                <controls:FASettingsExpanderItem.Footer>
+                    <TextBox x:Name="LocalIpBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_LocalAddressWatermark}" />
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+        </controls:FASettingsExpander>
+        <controls:FASettingsExpander IsExpanded="True" Header="{x:Static languages:Languages.Text_SSL_Title}">
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_CertFile}" Description="{x:Static languages:Languages.Text_SSL_CertFileDescription}">
+                <controls:FASettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBox x:Name="CertFileBox" Watermark="{x:Static languages:Languages.Text_SSL_CertFileWatermark}" />
+                        <TextBox x:Name="CertFileBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_CertFileWatermark}" />
                         <Button Name="CertFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-            <controls:SettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_KeyFile}" Description="{x:Static languages:Languages.Text_SSL_KeyFileDescription}">
-                <controls:SettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+            <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_SSL_KeyFile}" Description="{x:Static languages:Languages.Text_SSL_KeyFileDescription}">
+                <controls:FASettingsExpanderItem.Footer>
                     <StackPanel Orientation="Horizontal" Spacing="5">
-                        <TextBox x:Name="KeyFileBox" Watermark="{x:Static languages:Languages.Text_SSL_KeyFileWatermark}" />
+                        <TextBox x:Name="KeyFileBox" PlaceholderText="{x:Static languages:Languages.Text_SSL_KeyFileWatermark}" />
                         <Button Name="KeyFileB" Content="..." Click="OpenFile" />
                     </StackPanel>
-                </controls:SettingsExpanderItem.Footer>
-            </controls:SettingsExpanderItem>
-        </controls:SettingsExpander>
+                </controls:FASettingsExpanderItem.Footer>
+            </controls:FASettingsExpanderItem>
+        </controls:FASettingsExpander>
     </StackPanel>
 </UserControl>

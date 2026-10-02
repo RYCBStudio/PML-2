@@ -51,7 +51,7 @@
             <Button x:Name="CleanButton" Classes="accent"
                     Content="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Clean}"
                     Click="Clean_Click" />
-            <fluent:ProgressRing x:Name="CleanProgress" IsIndeterminate="True" IsVisible="False"
+            <fluent:FAProgressRing x:Name="CleanProgress" IsIndeterminate="True" IsVisible="False"
                                  Width="18" Height="18" VerticalAlignment="Center" />
             <TextBlock x:Name="CleaningText" IsVisible="False" VerticalAlignment="Center" Opacity="0.7"
                        Text="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Dialog_Cleaning}" />

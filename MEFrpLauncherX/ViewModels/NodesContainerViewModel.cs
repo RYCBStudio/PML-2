@@ -13,7 +13,7 @@ using ReactiveUI;
 
 namespace MEFrpLauncherX.ViewModels;
 
-public class NodesContainerViewModel : ViewModelBase
+public partial class NodesContainerViewModel : ViewModelBase
 {
     private const int DEBOUNCE_DELAY_MS = 300;
     private readonly DispatcherTimer _debounceTimer;
@@ -68,7 +68,8 @@ public class NodesContainerViewModel : ViewModelBase
         }
     }
 
-    public List<TunnelNodeViewModel> AllNodes
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial List<TunnelNodeViewModel> AllNodes
     {
         get;
         set;

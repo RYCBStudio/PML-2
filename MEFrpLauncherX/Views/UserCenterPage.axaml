@@ -21,130 +21,130 @@
         <StackPanel Margin="20" Spacing="16" Classes="animated">
 
             <!-- 用户基本信息卡片 -->
-            <controls1:SettingsExpander
+            <controls1:FASettingsExpander
                 Header="{x:Static languages:Languages.Text_UserCenter_UserInfo}"
                 IconSource="ContactInfo"
                 Description="{x:Static languages:Languages.Text_UserCenter_UserInfoDescription}">
 
-                <controls1:SettingsExpander.Items>
+                <controls1:FASettingsExpander.Items>
                     <!-- 第一行信息 -->
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_Username}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_Username}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="UserNameText" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserId}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserId}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="usrId" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredEmail}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredEmail}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="regMail" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredTime}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RegisteredTime}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="regTime" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
                     <!-- 第二行信息 -->
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserGroup}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_UserGroup}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="group" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AccountStatus}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AccountStatus}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="status" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RealNameStatus}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RealNameStatus}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="isRealNamed" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_DailySignIn}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_DailySignIn}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <Button
                                 x:Name="TodaySignButton"
                                 Click="Sign"
                                 Content="{x:Static languages:Languages.Text_UserCenter_SignIn}"
                                 Classes="accent"
                                 IsVisible="False" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
-                </controls1:SettingsExpander.Items>
-            </controls1:SettingsExpander>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
+                </controls1:FASettingsExpander.Items>
+            </controls1:FASettingsExpander>
 
             <!-- 流量和隧道信息卡片 -->
-            <controls1:SettingsExpander
+            <controls1:FASettingsExpander
                 Header="{x:Static languages:Languages.Text_UserCenter_TrafficAndTunnels}"
                 IconSource="Globe"
                 Description="{x:Static languages:Languages.Text_UserCenter_TrafficAndTunnelsDescription}">
 
-                <controls1:SettingsExpander.Items>
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RemainingTraffic}">
-                        <controls1:SettingsExpanderItem.Footer>
+                <controls1:FASettingsExpander.Items>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_RemainingTraffic}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="traffic" Text="{x:Static languages:Languages.Text_Global_Loading}" FontSize="16" FontWeight="SemiBold" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_TunnelCount}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_TunnelCount}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="proxies" Text="{x:Static languages:Languages.Text_Global_Loading}" FontSize="16" FontWeight="SemiBold" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_InboundBandwidth}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_InboundBandwidth}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="inBound" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
 
-                    <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_OutboundBandwidth}">
-                        <controls1:SettingsExpanderItem.Footer>
+                    <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_OutboundBandwidth}">
+                        <controls1:FASettingsExpanderItem.Footer>
                             <SelectableTextBlock x:Name="outBound" Text="{x:Static languages:Languages.Text_Global_Loading}" />
-                        </controls1:SettingsExpanderItem.Footer>
-                    </controls1:SettingsExpanderItem>
-                </controls1:SettingsExpander.Items>
-            </controls1:SettingsExpander>
+                        </controls1:FASettingsExpanderItem.Footer>
+                    </controls1:FASettingsExpanderItem>
+                </controls1:FASettingsExpander.Items>
+            </controls1:FASettingsExpander>
 
             <!-- 流量统计图表 -->
-            <controls1:SettingsExpander
+            <controls1:FASettingsExpander
                 Header="{x:Static languages:Languages.Text_UserCenter_TrafficStatistics}"
                 IconSource="MapDrive"
                 Description="{x:Static languages:Languages.Text_UserCenter_TrafficStatisticsDescription}"
                 IsExpanded="False">
-                <controls1:SettingsExpanderItem>
+                <controls1:FASettingsExpanderItem>
                     <Panel MinHeight="300">
                         <controls:TrafficStatusControl x:Name="trafficControl" />
                     </Panel>
-                </controls1:SettingsExpanderItem>
-            </controls1:SettingsExpander>
+                </controls1:FASettingsExpanderItem>
+            </controls1:FASettingsExpander>
 
-            <controls1:SettingsExpander IsExpanded="True"
+            <controls1:FASettingsExpander IsExpanded="True"
                                         Header="{x:Static languages:Languages.Text_UserCenter_DomainWhitelist}"
                                         IconSource="CloudSyncComplete"
                                         Description="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistDescription}">
                 <StackPanel Spacing="5">
-                    <controls1:InfoBar Severity="Informational" IsOpen="True"
+                    <controls1:FAInfoBar Severity="Informational" IsOpen="True"
                                        Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistInfo}" />
-                    <controls1:InfoBar Severity="Warning" IsOpen="True"
+                    <controls1:FAInfoBar Severity="Warning" IsOpen="True"
                                        Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistWarning}" />
-                    <controls1:InfoBar Severity="Error" IsOpen="True" Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistError}" />
+                    <controls1:FAInfoBar Severity="Error" IsOpen="True" Message="{x:Static languages:Languages.Text_UserCenter_DomainWhitelistError}" />
                     <Panel>
-                        <controls1:SettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AddDomain}" Command="{Binding AddDomainCommand}"
+                        <controls1:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_UserCenter_AddDomain}" Command="{Binding AddDomainCommand}"
                                                         Description="{Binding AddedDomains, StringFormat={x:Static languages:Languages.Text_UserCenter_AddedDomainsCount}}"
                                                         ActionIconSource="ChevronRight" IsClickEnabled="True" />
-                        <controls1:ProgressRing HorizontalAlignment="Right" Margin="0 0 25 0" Height="20" IsVisible="{Binding IsWorking}" />
+                        <controls1:FAProgressRing HorizontalAlignment="Right" Margin="0 0 25 0" Height="20" IsVisible="{Binding IsWorking}" />
                     </Panel>
                     <ListBox ItemsSource="{Binding IcpDomains}">
                         <ListBox.ItemTemplate>
@@ -154,7 +154,7 @@
                                             Command="{Binding $parent[UserControl].DataContext?.DeleteIcpDomainCommand}"
                                             CommandParameter="{Binding}">
                                         <Button.Content>
-                                            <controls1:SymbolIcon Symbol="Delete" />
+                                            <controls1:FASymbolIcon Symbol="Delete" />
                                         </Button.Content>
                                     </Button>
                                     <StackPanel Spacing="5">
@@ -177,7 +177,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
-            </controls1:SettingsExpander>
+            </controls1:FASettingsExpander>
 
             <!-- 操作区域 -->
             <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
@@ -185,7 +185,7 @@
                     Padding="16">
                 <StackPanel Spacing="12">
                     <DockPanel HorizontalSpacing="5">
-                        <controls1:SymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20" />
+                        <controls1:FASymbolIcon Symbol="Manage" DockPanel.Dock="Left" FontSize="20" />
                         <TextBlock
                             Text="{x:Static languages:Languages.Text_UserCenter_AccountOperations}"
                             FontSize="16"
@@ -214,19 +214,19 @@
                             Click="OpenWeb">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <controls1:SymbolIcon Symbol="Globe" />
+                                    <controls1:FASymbolIcon Symbol="Globe" />
                                     <TextBlock Text="{x:Static languages:Languages.Text_UserCenter_GoToWebPortal}" />
                                 </StackPanel>
                             </Button.Content>
                         </Button>
 
-                        <controls1:InfoBadge
+                        <controls1:FAInfoBadge
                             Theme="{StaticResource AttentionIconInfoBadgeStyle}"
                             ToolTip.Tip="{x:Static languages:Languages.Text_UserCenter_WebPortalTip}">
-                            <controls1:InfoBadge.IconSource>
-                                <controls1:SymbolIconSource Symbol="Help" />
-                            </controls1:InfoBadge.IconSource>
-                        </controls1:InfoBadge>
+                            <controls1:FAInfoBadge.IconSource>
+                                <controls1:FASymbolIconSource Symbol="Help" />
+                            </controls1:FAInfoBadge.IconSource>
+                        </controls1:FAInfoBadge>
                     </StackPanel>
                 </StackPanel>
             </Border>

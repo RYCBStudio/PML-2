@@ -21,19 +21,19 @@
             <TextBlock VerticalAlignment="Center" Text="{x:Static languages:Languages.Text_Global_Type}" />
             <TextBlock VerticalAlignment="Center" x:Name="ConfigTypeTextBlock" />
 
-            <controls:CommandBar DefaultLabelPosition="Right">
-                <controls:CommandBar.PrimaryCommands>
-                    <controls:CommandBarButton VerticalContentAlignment="Center" Margin="8,0,0,0"
+            <controls:FACommandBar DefaultLabelPosition="Right">
+                <controls:FACommandBar.PrimaryCommands>
+                    <controls:FACommandBarButton VerticalContentAlignment="Center" Margin="8,0,0,0"
                                                Click="CloseButton_Click" IconSource="Cancel"
                                                Label="{x:Static languages:Languages.Text_ConfigEditor_CloseAndCancelLaunch}" />
-                    <controls:CommandBarButton Click="CopyButton_Click" IconSource="Copy"
+                    <controls:FACommandBarButton Click="CopyButton_Click" IconSource="Copy"
                                                Label="{x:Static languages:Languages.Text_Global_Copy}" />
-                    <controls:CommandBarButton Click="SaveButton_Click" IconSource="Save"
+                    <controls:FACommandBarButton Click="SaveButton_Click" IconSource="Save"
                                                Label="{x:Static languages:Languages.Text_Global_Save}" />
-                    <controls:CommandBarButton Click="SaveAndRunButton_Click" IconSource="Next"
+                    <controls:FACommandBarButton Click="SaveAndRunButton_Click" IconSource="Next"
                                                Label="{x:Static languages:Languages.Text_ConfigEditor_SaveAndRun}" />
-                </controls:CommandBar.PrimaryCommands>
-            </controls:CommandBar>
+                </controls:FACommandBar.PrimaryCommands>
+            </controls:FACommandBar>
         </StackPanel>
 
         <avaloniaEdit:TextEditor

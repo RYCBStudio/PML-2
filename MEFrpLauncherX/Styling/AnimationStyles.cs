@@ -11,7 +11,7 @@ namespace MEFrpLauncherX.Styling;
 
 /// <summary>
 ///     按动画程度生成全局入场动画样式, 支持运行时切换。
-///     复刻原 App.axaml 中的 .r2l / InfoBar.animated-bar / .animated 三组动画。
+///     复刻原 App.axaml 中的 .r2l / FAInfoBar.animated-bar / .animated 三组动画。
 /// </summary>
 public static class AnimationStyles
 {
@@ -54,9 +54,9 @@ public static class AnimationStyles
                 : BuildSlideAnimation(TimeSpan.FromSeconds(0.75), null, FillMode.Forward,
                     new QuarticEaseIn(), TranslateTransform.XProperty, 25)));
 
-        // InfoBar.animated-bar —— 通知条入场
+        // FAInfoBar.animated-bar —— 通知条入场
         styles.Add(BuildStyle(
-            Selectors.OfType<InfoBar>(null).Class("animated-bar"),
+            Selectors.OfType<FAInfoBar>(null).Class("animated-bar"),
             reduced
                 ? BuildFadeAnimation(TimeSpan.FromSeconds(0.2), null, null)
                 : BuildSlideAnimation(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(0.25), FillMode.Both,

@@ -11,7 +11,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
         <StackPanel Grid.Row="1">
-            <controls:InfoBar IsOpen="True" Title="{x:Static languages:Languages.Caption_Hint}" Message="{x:Static languages:Languages.Text_ManageProxyHelp_SearchSyntaxNote}"
+            <controls:FAInfoBar IsOpen="True" Title="{x:Static languages:Languages.Caption_Hint}" Message="{x:Static languages:Languages.Text_ManageProxyHelp_SearchSyntaxNote}"
                               Severity="Informational" />
             <WrapPanel ItemSpacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Spacing="5">
@@ -56,33 +56,33 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
         <WrapPanel Grid.Row="3" ItemSpacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <controls:InfoBadge
+            <controls:FAInfoBadge
                 Background="{DynamicResource SystemFillColorSuccessBrush}"
                 BorderThickness="-1"
                 Foreground="Azure">
-                <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                <controls:FAInfoBadge.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="{x:Static languages:Languages.Text_ManageProxyHelp_GreenOnline}" />
-                </controls:InfoBadge.IconSource>
-            </controls:InfoBadge>
-            <controls:InfoBadge
+                </controls:FAInfoBadge.IconSource>
+            </controls:FAInfoBadge>
+            <controls:FAInfoBadge
                 Background="{DynamicResource SystemFillColorCriticalBrush}"
                 BorderThickness="-1"
                 Foreground="Azure">
-                <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                <controls:FAInfoBadge.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="{x:Static languages:Languages.Text_ManageProxyHelp_RedOffline}" />
-                </controls:InfoBadge.IconSource>
-            </controls:InfoBadge>
-            <controls:InfoBadge
+                </controls:FAInfoBadge.IconSource>
+            </controls:FAInfoBadge>
+            <controls:FAInfoBadge
                 Background="{DynamicResource SystemFillColorCautionBrush}"
                 BorderThickness="-1"
                 Foreground="Black">
-                <controls:InfoBadge.IconSource>
-                    <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                <controls:FAInfoBadge.IconSource>
+                    <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                              Glyph="{x:Static languages:Languages.Text_ManageProxyHelp_YellowDisabled}" />
-                </controls:InfoBadge.IconSource>
-            </controls:InfoBadge>
+                </controls:FAInfoBadge.IconSource>
+            </controls:FAInfoBadge>
         </WrapPanel>
         <TextBlock Grid.Row="4" Text="{x:Static languages:Languages.Text_ManageProxyHelp_Examples}" Theme="{StaticResource {StaticResource BodyStrongTextBlockStyle}}"
                    FontWeight="Bold"

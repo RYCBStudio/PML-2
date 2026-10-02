@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -63,38 +63,38 @@
                         </Transitions>
                     </Border.Transitions>
                     <Grid RowDefinitions="8* 2*" RowSpacing="3" MaxHeight="100">
-                        <controls:FontIcon Glyph="&#xF8AA;" FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        <controls:FAFontIcon Glyph="&#xF8AA;" FontFamily="{StaticResource SymbolThemeFontFamily}"
                                            FontSize="40" />
                         <TextBlock Grid.Row="1" Text="{x:Static languages:Languages.Text_PluginList_DropPluginFileHere}" FontSize="16" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                     </Grid>
                 </Border>
-                <controls:CommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
-                    <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_NewPlugin}"
+                <controls:FACommandBar DefaultLabelPosition="Right" Classes="animated" Margin="0,0,0,10">
+                    <controls:FACommandBar.PrimaryCommands>
+                        <controls:FACommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_PluginList_NewPlugin}"
                                                    Command="{Binding NewPluginCommand}" />
-                        <controls:CommandBarButton IconSource="Install" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
+                        <controls:FACommandBarButton IconSource="Install" Label="{x:Static languages:Languages.Text_PluginList_InstallPlugin}"
                                                    Command="{Binding InstallPluginCommand}" />
-                        <controls:CommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
+                        <controls:FACommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                    Command="{Binding ReloadPluginsCommand}" />
-                        <controls:CommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_PluginList_OpenFolder}"
+                        <controls:FACommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_PluginList_OpenFolder}"
                                                    Command="{Binding OpenPluginFolderCommand}"
                                                    CommandParameter="plugins" />
-                        <controls:CommandBarSeparator />
-                        <controls:CommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_PluginList_EditPlugin}"
+                        <controls:FACommandBarSeparator />
+                        <controls:FACommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_PluginList_EditPlugin}"
                                                    Command="{Binding EditPluginCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                        <controls:CommandBarButton IconSource="Code" Label="{x:Static languages:Languages.Text_PluginList_ViewSource}"
+                        <controls:FACommandBarButton IconSource="Code" Label="{x:Static languages:Languages.Text_PluginList_ViewSource}"
                                                    Command="{Binding ViewYamlCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                        <controls:CommandBarButton IconSource="Accept" Label="{x:Static languages:Languages.Text_PluginList_ToggleEnable}"
+                        <controls:FACommandBarButton IconSource="Accept" Label="{x:Static languages:Languages.Text_PluginList_ToggleEnable}"
                                                    Command="{Binding TogglePluginCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                        <controls:CommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_PluginList_Uninstall}"
+                        <controls:FACommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_PluginList_Uninstall}"
                                                    Command="{Binding UninstallPluginCommand}"
                                                    IsEnabled="{Binding !!SelectedPlugin}" />
-                    </controls:CommandBar.PrimaryCommands>
-                </controls:CommandBar>
+                    </controls:FACommandBar.PrimaryCommands>
+                </controls:FACommandBar>
 
                 <ListBox Grid.Row="1" ItemsSource="{Binding Plugins}"
                          SelectedItem="{Binding SelectedPlugin}"
@@ -196,23 +196,23 @@
                 <controls1:IconContent Symbol="Globe" Label="{x:Static languages:Languages.Text_PluginList_PluginMarket}" />
             </TabItem.Header>
             <Grid RowDefinitions="Auto, *" Margin="10">
-                <controls:CommandBar DefaultLabelPosition="Right">
-                    <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarElementContainer>
+                <controls:FACommandBar DefaultLabelPosition="Right">
+                    <controls:FACommandBar.PrimaryCommands>
+                        <controls:FACommandBarElementContainer>
                             <StackPanel Orientation="Horizontal" Spacing="5">
                             <AutoCompleteBox VerticalAlignment="Center" FilterMode="StartsWith"
                                              MinimumPopulateDelay="0:0:0:0.3" MinimumPrefixLength="1" MinWidth="200"
-                                             Watermark="{x:Static languages:Languages.Text_PluginList_SearchPlugins}" Text="{Binding OnlineSearchText}" />
+                                             PlaceholderText="{x:Static languages:Languages.Text_PluginList_SearchPlugins}" Text="{Binding OnlineSearchText}" />
                             <ToggleButton x:Name="HelpBtn">
                                 <ToggleButton.Content>
-                                    <controls:SymbolIcon Symbol="Help" />
+                                    <controls:FASymbolIcon Symbol="Help" />
                                 </ToggleButton.Content>
                             </ToggleButton>
-                            <controls:TeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
+                            <controls:FATeachingTip IsOpen="{Binding #HelpBtn.IsChecked, Mode=TwoWay}"
                                                   Target="{Binding #HelpBtn}"
                                                   Title="{x:Static languages:Languages.Text_PluginList_SearchHelp}"
                                                   IconSource="Help">
-                                <controls:TeachingTip.Content>
+                                <controls:FATeachingTip.Content>
                                     <StackPanel Spacing="3">
                                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpNoParams}" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpDesc}" />
@@ -221,21 +221,21 @@
                                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpName}" />
                                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_SearchHelpCaseInsensitive}" />
                                     </StackPanel>
-                                </controls:TeachingTip.Content>
-                                <controls:TeachingTip.CloseButtonContent>
-                                    <controls:SymbolIcon Symbol="Clear" />
-                                </controls:TeachingTip.CloseButtonContent>
-                            </controls:TeachingTip>
+                                </controls:FATeachingTip.Content>
+                                <controls:FATeachingTip.CloseButtonContent>
+                                    <controls:FASymbolIcon Symbol="Clear" />
+                                </controls:FATeachingTip.CloseButtonContent>
+                            </controls:FATeachingTip>
                             </StackPanel>
-                        </controls:CommandBarElementContainer>
-                        <controls:CommandBarSeparator />
-                        <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
+                        </controls:FACommandBarElementContainer>
+                        <controls:FACommandBarSeparator />
+                        <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
                                                    Command="{Binding RefreshOnlinePluginsCommand}" />
-                        <controls:CommandBarButton Label="{x:Static languages:Languages.Text_PluginList_DownloadSelected}" IconSource="Download"
+                        <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_PluginList_DownloadSelected}" IconSource="Download"
                                                    Command="{Binding DownloadSelectedPluginsCommand}" />
-                    </controls:CommandBar.PrimaryCommands>
-                </controls:CommandBar>
-                <controls:ProgressRing HorizontalAlignment="Right" IsVisible="{Binding IsBusy}"></controls:ProgressRing>
+                    </controls:FACommandBar.PrimaryCommands>
+                </controls:FACommandBar>
+                <controls:FAProgressRing HorizontalAlignment="Right" IsVisible="{Binding IsBusy}"></controls:FAProgressRing>
                 <ListBox ItemsSource="{Binding FilteredOnlinePlugins}"
                          x:Name="OnlinePluginsList"
                          SelectionChanged="OnlinePluginsList_OnSelectionChanged"
@@ -319,13 +319,13 @@
                                         Label="{x:Static languages:Languages.Text_PluginList_ExecutionLogs}" />
             </TabItem.Header>
             <Grid RowDefinitions="Auto, *" Margin="10">
-                <controls:CommandBar DefaultLabelPosition="Right" Margin="0,0,0,10">
-                    <controls:CommandBar.PrimaryCommands>
-                        <controls:CommandBarButton IconSource="Delete"
+                <controls:FACommandBar DefaultLabelPosition="Right" Margin="0,0,0,10">
+                    <controls:FACommandBar.PrimaryCommands>
+                        <controls:FACommandBarButton IconSource="Delete"
                                                    Label="{x:Static languages:Languages.Text_PluginList_ClearLogs}"
                                                    Command="{Binding ClearExecutionLogsCommand}" />
-                    </controls:CommandBar.PrimaryCommands>
-                </controls:CommandBar>
+                    </controls:FACommandBar.PrimaryCommands>
+                </controls:FACommandBar>
 
                 <ListBox Grid.Row="1" ItemsSource="{Binding ExecutionLogs}" Margin="0,0,0,10">
                     <ListBox.ItemTemplate>

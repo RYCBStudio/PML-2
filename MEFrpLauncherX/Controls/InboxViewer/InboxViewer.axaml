@@ -24,7 +24,7 @@
                                        Theme="{StaticResource BodyStrongTextBlockStyle}"
                                        Text="{x:Static languages:Languages.Text_AppearanceSettings_SystemNotice}" />
                             <!-- 有新内容时显示条数徽标（本地缓存快照差集结果） -->
-                            <controls:InfoBadge VerticalAlignment="Center"
+                            <controls:FAInfoBadge VerticalAlignment="Center"
                                                 IsVisible="{Binding IsSystemNoticeUpdateAvailable}"
                                                 Value="{Binding NewSystemNoticeCount}" />
                         </StackPanel>
@@ -60,7 +60,7 @@
                         <TextBlock FontFamily="{StaticResource GlobalFontFamily}"
                                    Theme="{StaticResource BodyStrongTextBlockStyle}"
                                    Text="{x:Static languages:Languages.Text_AppearanceSettings_SoftwareNotice}" />
-                        <controls:InfoBadge VerticalAlignment="Center"
+                        <controls:FAInfoBadge VerticalAlignment="Center"
                                             IsVisible="{Binding IsSoftwareNoticeUpdateAvailable}"
                                             Value="{Binding NewSoftwareNoticeCount}" />
                     </StackPanel>
@@ -83,17 +83,17 @@
                                                            FontWeight="SemiBold"
                                                            FontFamily="{StaticResource GlobalFontFamily}"
                                                            TextTrimming="CharacterEllipsis" />
-                                                <controls:InfoBadge IsVisible="{Binding IsNew}"
+                                                <controls:FAInfoBadge IsVisible="{Binding IsNew}"
                                                                     VerticalAlignment="Center"
                                                                     Background="{DynamicResource AccentFillColorDefaultBrush}"
                                                                     BorderThickness="-1"
                                                                     Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}">
-                                                    <controls:InfoBadge.IconSource>
-                                                        <controls:FontIconSource
+                                                    <controls:FAInfoBadge.IconSource>
+                                                        <controls:FAFontIconSource
                                                             FontFamily="{StaticResource GlobalFontFamily}"
                                                             Glyph="{x:Static languages:Languages.Text_Inbox_New}" />
-                                                    </controls:InfoBadge.IconSource>
-                                                </controls:InfoBadge>
+                                                    </controls:FAInfoBadge.IconSource>
+                                                </controls:FAInfoBadge>
                                                 <Label Theme="{StaticResource CaptionTextBlockStyle}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        FontFamily="{StaticResource GlobalFontFamily}"

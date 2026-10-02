@@ -450,7 +450,7 @@ public partial class CustomizeQRCode : UserControl
                 return;
             }
 
-            (QRCode.Source as Bitmap)?.Save(HttpUtility.UrlDecode(file.Path.AbsolutePath));
+            (QRCode.Source as Bitmap)?.Save(HttpUtility.UrlDecode(file.Path.AbsolutePath), new PngBitmapEncoderOptions());
             Growl.Success(Languages.Text_UserProxy_QRCodeView_SavedSuccessfully);
         }
         catch (Exception exception)

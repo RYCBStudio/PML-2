@@ -52,7 +52,7 @@
                   ItemContainerTheme="{DynamicResource AlternateTabStripItemTheme}">
             <TabStripItem>
                 <DockPanel HorizontalSpacing="5">
-                    <controls:ImageIcon Source="{DynamicResource MEFrpLogo}" Width="20"
+                    <controls:FAImageIcon Source="{DynamicResource MEFrpLogo}" Width="20"
                                         Height="20" />
                     <TextBlock Text="{x:Static languages:Languages.Text_Login_Method_MEFrp}" />
                 </DockPanel>
@@ -113,7 +113,7 @@
                         FontFamily="{StaticResource GlobalFontFamily}" />
                     <ToggleButton x:Name="RevealPwdToggleBtn" HorizontalAlignment="Right" Margin="0 00 12 0">
                         <ToggleButton.Content>
-                            <controls:FontIcon Glyph="&#xF78D;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                            <controls:FAFontIcon Glyph="&#xF78D;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                         </ToggleButton.Content>
                     </ToggleButton>
                 </Panel>

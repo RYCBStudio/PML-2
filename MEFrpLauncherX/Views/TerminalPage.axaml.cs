@@ -225,18 +225,18 @@ public partial class TerminalPage : UserControl
             var captchaResult = await Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 var iw = new InputControl(Languages.Text_Terminal_InputPrompt);
-                var cd = new ContentDialog
+                var cd = new FAContentDialog
                 {
                     Title = Languages.Text_Terminal_InputTitle,
                     Content = iw,
                     PrimaryButtonText = Languages.Text_Global_Confirm,
-                    DefaultButton = ContentDialogButton.Primary,
+                    DefaultButton = FAContentDialogButton.Primary,
                     IsSecondaryButtonEnabled = false,
                     CloseButtonText = Languages.Text_Global_Cancel
                 };
                 var captchaWindow = await cd.ShowAsync(Core.App.MainWindow);
 
-                return captchaWindow == ContentDialogResult.Primary ? iw.CaptchaResult : "cancel";
+                return captchaWindow == FAContentDialogResult.Primary ? iw.CaptchaResult : "cancel";
             });
 
             if (captchaResult.Equals("cancel", StringComparison.OrdinalIgnoreCase))

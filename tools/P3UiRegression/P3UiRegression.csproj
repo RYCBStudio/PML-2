@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>P3UiRegression</AssemblyName>
+    <RootNamespace>P3UiRegression</RootNamespace>
+    <!-- 不参与主解决方案构建: 手工执行 dotnet run 指定本工程 -->
+    <ExcludeFromSolution>true</ExcludeFromSolution>
+    <!-- 像素分析需要 fixed 指针访问（CopyPixels 在 Avalonia 12 接收 nint） -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!--
+    说明：主程序 MEFrpLauncherX.csproj 是自包含可执行文件（NETSDK1151 禁止被引用），
+    因此这里不写 ProjectReference，改为在运行时反射加载其产物 DLL。
+    依赖版本由仓库 Directory.Packages.props 统一锁定（CPM），此处不再写 Version。
+  -->
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Headless" />
+    <PackageReference Include="Avalonia.Skia" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="FluentAvaloniaUI" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="System.Reactive" />
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- IconPacks fork 非自包含，可直接工程引用 -->
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Core/IconPacks.Avalonia.Core.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Lucide/IconPacks.Avalonia.Lucide.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Material/IconPacks.Avalonia.Material.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.FileIcons/IconPacks.Avalonia.FileIcons.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.SimpleIcons/IconPacks.Avalonia.SimpleIcons.csproj" />
+  </ItemGroup>
+
+</Project>

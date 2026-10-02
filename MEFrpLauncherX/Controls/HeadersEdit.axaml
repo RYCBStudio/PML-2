@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,16 +10,16 @@
              x:DataType="controls:HeadersEdit">
     <Grid RowDefinitions="Auto, *">
         <Grid ColumnDefinitions="4*,4*, *, *" ColumnSpacing="3" Margin="3">
-            <TextBox Text="{Binding currentHeader_Name}" Watermark="{x:Static languages:Languages.Text_Headers_NameWatermark}" />
-            <TextBox Grid.Column="1" Text="{Binding currentHeader_Value}" Watermark="{x:Static languages:Languages.Text_Headers_ValueWatermark}" />
+            <TextBox Text="{Binding currentHeader_Name}" PlaceholderText="{x:Static languages:Languages.Text_Headers_NameWatermark}" />
+            <TextBox Grid.Column="1" Text="{Binding currentHeader_Value}" PlaceholderText="{x:Static languages:Languages.Text_Headers_ValueWatermark}" />
             <Button Grid.Column="2" Click="AddHeader">
                 <Button.Content>
-                    <controls1:SymbolIcon Symbol="Add" />
+                    <controls1:FASymbolIcon Symbol="Add" />
                 </Button.Content>
             </Button>
             <Button Grid.Column="3" Click="RemoveHeader">
                 <Button.Content>
-                    <controls1:SymbolIcon Symbol="Remove" />
+                    <controls1:FASymbolIcon Symbol="Remove" />
                 </Button.Content>
             </Button>
         </Grid>

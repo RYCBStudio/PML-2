@@ -16,6 +16,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.Views.Appearance;
 
@@ -253,9 +254,10 @@ public class AppearanceSettingsViewModel : ViewModelBase
     }
 }
 
-public class SettingsItemBase : ViewModelBase
+public partial class SettingsItemBase : ViewModelBase
 {
-    public string Header
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Header
     {
         get;
         set;
@@ -347,14 +349,15 @@ public class RecentImagesSettingsItem : SettingsItemBase
     } = [];
 }
 
-public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
+public partial class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
 {
     public FooterButtonSettingsItem()
     {
         Footer = Languages.Text_Appearance_Select;
     }
 
-    public object Footer
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial object Footer
     {
         get;
         set;
@@ -373,8 +376,8 @@ public class FooterButtonSettingsItem : SettingsItemBase, IReactiveObject
         });
     }
 
-    public ReactiveCommand<Unit, Unit> ClearFileCommand => ReactiveCommand.Create(ClearFileImpl);
-    public ReactiveCommand<Unit, Unit> SelectBackgroundCommand => ReactiveCommand.Create(SelectBackgroundImpl);
+    public ReactiveCommand<RxVoid, RxVoid> ClearFileCommand => ReactiveCommand.Create(ClearFileImpl);
+    public ReactiveCommand<RxVoid, RxVoid> SelectBackgroundCommand => ReactiveCommand.Create(SelectBackgroundImpl);
 
     public void ClearFileImpl()
     {

@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:RYCB.PML2.Splash.ViewModels"
         Width="500"
@@ -11,7 +11,7 @@
         PointerReleased="InputElement_OnPointerReleased"
         Topmost="True"
         CanResize="False"
-        SystemDecorations="None"
+        WindowDecorations="None"
         CornerRadius="8"
         WindowStartupLocation="CenterScreen">
 

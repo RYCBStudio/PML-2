@@ -134,7 +134,7 @@ namespace Iciclecreek.TerminalWindow
 
         public int Pid => _terminalView!.Pid;
 
-        protected override void OnGotFocus(GotFocusEventArgs e)
+        protected override void OnGotFocus(FocusChangedEventArgs e)
         {
             base.OnGotFocus(e);
 

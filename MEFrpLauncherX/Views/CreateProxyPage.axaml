@@ -40,7 +40,7 @@
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Spacing="12">
-                    <fa:ProgressRing IsIndeterminate="True"
+                    <fa:FAProgressRing IsIndeterminate="True"
                                      HorizontalAlignment="Center"
                                      Width="48" Height="48" />
                     <TextBlock Text="{x:Static languages:Languages.Text_Proxy_PageLoading}"
@@ -51,17 +51,17 @@
             </Border>
         </Grid>
         <Separator Grid.Row="2" VerticalAlignment="Top" />
-        <fa:CommandBar Grid.Row="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-            <fa:CommandBar.PrimaryCommands>
-                <fa:CommandBarButton Click="Refresh" IconSource="Refresh"
+        <fa:FACommandBar Grid.Row="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+            <fa:FACommandBar.PrimaryCommands>
+                <fa:FACommandBarButton Click="Refresh" IconSource="Refresh"
                                      Label="{x:Static languages:Languages.Text_Global_Refresh}" />
-                <fa:CommandBarButton Click="Back" IconSource="Back"
+                <fa:FACommandBarButton Click="Back" IconSource="Back"
                                      Label="{x:Static languages:Languages.Text_Global_Back}" />
-                <fa:CommandBarButton x:Name="NextBtn"
+                <fa:FACommandBarButton x:Name="NextBtn"
                                      Click="Next" IconSource="Forward"
                                      Label="{x:Static languages:Languages.Text_Global_Next}">
-                </fa:CommandBarButton>
-            </fa:CommandBar.PrimaryCommands>
-        </fa:CommandBar>
+                </fa:FACommandBarButton>
+            </fa:FACommandBar.PrimaryCommands>
+        </fa:FACommandBar>
     </Grid>
 </UserControl>

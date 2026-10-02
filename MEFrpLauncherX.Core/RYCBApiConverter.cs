@@ -7,6 +7,7 @@ using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Core.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using RestSharp;
 using SecretLib;
 
@@ -433,7 +434,7 @@ public static class RYCBApiConverter
     }
 }
 
-public class NoticeContent : ReactiveObject
+public partial class NoticeContent : ReactiveObject
 {
     public NoticeContent()
     {
@@ -441,14 +442,16 @@ public class NoticeContent : ReactiveObject
     }
 
     [JsonPropertyName("active")]
-    public bool Active
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial bool Active
     {
         get;
         set;
     }
 
     [JsonPropertyName("content")]
-    public string ContentOfNotice
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string ContentOfNotice
     {
         get;
         set;
@@ -456,54 +459,59 @@ public class NoticeContent : ReactiveObject
 
 
     [JsonPropertyName("date")]
-    public string Date
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Date
     {
         get;
         set;
     }
 
     [JsonPropertyName("id")]
-    public int Id
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial int Id
     {
         get;
         set;
     }
 
     [JsonPropertyName("priority")]
-    public int Priority
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial int Priority
     {
         get;
         set;
     }
 
     [JsonPropertyName("summary")]
-    public string Summary
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Summary
     {
         get;
         set;
     }
 
     [JsonPropertyName("type")]
-    public string Type
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string Type
     {
         get;
         set;
     }
 
-    public ReactiveCommand<Unit, Unit> ShowNoticeCommand
+    public ReactiveCommand<RxVoid, RxVoid> ShowNoticeCommand
     {
         get;
     }
 
     public void ShowNotice()
     {
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Content = new NoticeView(this, ContentOfNotice),
             Title = Summary,
             PrimaryButtonText = Languages.Languages.Text_Global_Confirm,
             CloseButtonText = Languages.Languages.Text_Global_Close,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         cd.ShowAsync();
     }

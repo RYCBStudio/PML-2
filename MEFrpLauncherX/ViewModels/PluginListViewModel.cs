@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -27,6 +27,10 @@ using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+// 注意：不能 using ReactiveUI.Primitives —— 其 LinqExtensions 复刻了全套 Rx LINQ 扩展，
+// 会与 System.Reactive.Linq 的 Select/Throttle 等产生 CS0121 二义性。
+// 这里只需要 RxVoid 类型，故用别名导入。
+using RxVoid = ReactiveUI.Primitives.RxVoid;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -52,54 +56,54 @@ public class PluginListViewModel : ViewModelBase
 
     // ---- Commands ----
 
-    public ReactiveCommand<Unit, Unit> ReloadPluginsCommand
+    public ReactiveCommand<RxVoid, RxVoid> ReloadPluginsCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> InstallPluginCommand
+    public ReactiveCommand<RxVoid, RxVoid> InstallPluginCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> UninstallPluginCommand
+    public ReactiveCommand<RxVoid, RxVoid> UninstallPluginCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> TogglePluginCommand
+    public ReactiveCommand<RxVoid, RxVoid> TogglePluginCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> ViewYamlCommand
+    public ReactiveCommand<RxVoid, RxVoid> ViewYamlCommand
     {
         get;
     }
 
-    public ReactiveCommand<string, Unit> OpenPluginFolderCommand
+    public ReactiveCommand<string, RxVoid> OpenPluginFolderCommand
     {
         get;
     }
 
     // ---- 表单编辑器入口（26.3.1 S6）----
 
-    public ReactiveCommand<Unit, Unit> NewPluginCommand
+    public ReactiveCommand<RxVoid, RxVoid> NewPluginCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> EditPluginCommand
+    public ReactiveCommand<RxVoid, RxVoid> EditPluginCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DragEnterCommand
+    public ReactiveCommand<RxVoid, RxVoid> DragEnterCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DragLeaveCommand
+    public ReactiveCommand<RxVoid, RxVoid> DragLeaveCommand
     {
         get;
     }
@@ -115,7 +119,7 @@ public class PluginListViewModel : ViewModelBase
 
     public bool IsLogEmpty => !ExecutionLogs.Any();
 
-    public ReactiveCommand<Unit, Unit> ClearExecutionLogsCommand
+    public ReactiveCommand<RxVoid, RxVoid> ClearExecutionLogsCommand
     {
         get;
     }
@@ -126,7 +130,7 @@ public class PluginListViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<DragEventArgs?, Unit> DropCommand
+    public ReactiveCommand<DragEventArgs?, RxVoid> DropCommand
     {
         get;
     }
@@ -155,12 +159,12 @@ public class PluginListViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<Unit, Unit> RefreshOnlinePluginsCommand
+    public ReactiveCommand<RxVoid, RxVoid> RefreshOnlinePluginsCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DownloadSelectedPluginsCommand
+    public ReactiveCommand<RxVoid, RxVoid> DownloadSelectedPluginsCommand
     {
         get;
     }
@@ -211,8 +215,8 @@ public class PluginListViewModel : ViewModelBase
         {
             IsDragOver = false;
 
-            // Avalonia 拖放文件通过 DataFormats.Files 获取
-            var fileList = e?.Data?.GetFiles();
+            // Avalonia 12：拖放数据由 DataTransfer 承载，文件用 TryGetFiles 扩展方法获取。
+            var fileList = e?.DataTransfer.TryGetFiles();
             if (fileList == null) return;
 
             var files = fileList.ToList();
@@ -244,14 +248,13 @@ public class PluginListViewModel : ViewModelBase
         RefreshOnlinePluginsCommand = ReactiveCommand.CreateFromTask(RefreshOnlinePluginsAsync);
         DownloadSelectedPluginsCommand = ReactiveCommand.CreateFromTask(
             DownloadSelectedPluginsAsync,
-            this.WhenAnyValue(x => x.SelectedOnlinePlugins)
-                .Select(coll => coll != null)
-                .CombineLatest(
+            Observable.CombineLatest(
                     // 选中变化时你在 code-behind 里改集合；再补一个可观察信号更稳
-                    this.WhenAnyValue(x => x.IsBusy),
+                    this.WhenAnyValue(x => x.SelectedOnlinePlugins)
+                        .Select(coll => coll != null), this.WhenAnyValue(x => x.IsBusy),
                     (hasColl, busy) => hasColl && !busy)
         );
-        this.WhenAnyValue(x => x.OnlineSearchText).Throttle(TimeSpan.FromMilliseconds(300)).Subscribe(text =>
+        ObservableExtensions.Subscribe(this.WhenAnyValue(x => x.OnlineSearchText).Throttle(TimeSpan.FromMilliseconds(300)), text =>
         {
             if (string.IsNullOrWhiteSpace(OnlineSearchText))
             {
@@ -658,7 +661,7 @@ public class PluginListViewModel : ViewModelBase
                 return;
             }
 
-            var viewer = new ContentDialog
+            var viewer = new FAContentDialog
             {
                 Title = string.Format(Languages.Text_PluginList_PluginSourceTitleFormat, SelectedPlugin.Name),
                 Content = new ScrollViewer

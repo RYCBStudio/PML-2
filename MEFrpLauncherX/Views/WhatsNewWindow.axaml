@@ -41,7 +41,7 @@
                     BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
                 <ScrollViewer AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Spacing="8">
-                        <controls:ProgressRing x:Name="LoadingRing"
+                        <controls:FAProgressRing x:Name="LoadingRing"
                                                IsIndeterminate="True"
                                                Width="36" Height="36"
                                                HorizontalAlignment="Center"

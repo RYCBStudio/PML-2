@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      P1 验收脚本（Avalonia 12 升级）。
+      用法见 Program.cs 顶部注释（dotnet run 指定项目路径）。
+
+      依次检查全部项目（含不在主 sln 内的 CrashDisplayer / Splash）的编译状态，
+      并按计划 P1 的验收标准判定「还原成功 + 编译错误可枚举」。
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    </PropertyGroup>
+
+</Project>

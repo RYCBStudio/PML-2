@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,28 +19,28 @@
         <TabControl Classes="compact">
             <TabItem Header="{x:Static languages:Languages.Text_Themes_LocalThemes}">
                 <Grid RowDefinitions="Auto, *">
-                    <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
-                        <controls:CommandBar.PrimaryCommands>
-                            <controls:CommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
+                    <controls:FACommandBar DefaultLabelPosition="Right" Classes="animated">
+                        <controls:FACommandBar.PrimaryCommands>
+                            <controls:FACommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                        Command="{Binding RefreshLocalThemesCommand}" />
-                            <controls:CommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_Themes_New}"
+                            <controls:FACommandBarButton IconSource="Add" Label="{x:Static languages:Languages.Text_Themes_New}"
                                                        Command="{Binding AddLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Checkmark" Label="{x:Static languages:Languages.Text_Themes_ApplySelected}"
+                            <controls:FACommandBarButton IconSource="Checkmark" Label="{x:Static languages:Languages.Text_Themes_ApplySelected}"
                                                        Command="{Binding ApplyLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_Themes_EditSelected}"
+                            <controls:FACommandBarButton IconSource="Edit" Label="{x:Static languages:Languages.Text_Themes_EditSelected}"
                                                        Command="{Binding EditLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_Themes_DeleteSelected}"
+                            <controls:FACommandBarButton IconSource="Delete" Label="{x:Static languages:Languages.Text_Themes_DeleteSelected}"
                                                        Command="{Binding DeleteLocalThemeCommand}" />
-                            <controls:CommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_Themes_PackageSelected}"
+                            <controls:FACommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_Themes_PackageSelected}"
                                                        Command="{Binding PackageLocalThemeCommand}" />
-                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_Import}" IconSource="Import"
+                            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Themes_Import}" IconSource="Import"
                                                        Command="{Binding ImportThemeCommand}" />
-                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_RestoreDefault}" IconSource="Undo"
+                            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Themes_RestoreDefault}" IconSource="Undo"
                                                        Command="{Binding RestoreDefaultThemeCommand}" />
-                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_OpenDocs}" IconSource="Help"
+                            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Themes_OpenDocs}" IconSource="Help"
                                                        Command="{Binding OpenDocumentationCommand}" />
-                        </controls:CommandBar.PrimaryCommands>
-                    </controls:CommandBar>
+                        </controls:FACommandBar.PrimaryCommands>
+                    </controls:FACommandBar>
                     <ListBox Grid.Row="1" ItemsSource="{Binding LocalThemes}"
                              SelectedItem="{Binding SelectedLocalTheme}"
                              Margin="0,0,0,10">
@@ -76,19 +76,19 @@
                         <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoadingOnlineThemes}" Width="100" />
                         <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsDownloading}" Width="100" />
                     </StackPanel>
-                    <controls:CommandBar DefaultLabelPosition="Right" Classes="animated">
-                        <controls:CommandBar.PrimaryCommands>
-                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
+                    <controls:FACommandBar DefaultLabelPosition="Right" Classes="animated">
+                        <controls:FACommandBar.PrimaryCommands>
+                            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Global_Refresh}" IconSource="Refresh"
                                                        Command="{Binding FetchOnlineThemesCommand}"
                                                        IsEnabled="{Binding !IsLoadingOnlineThemes}" />
-                            <controls:CommandBarButton Label="{x:Static languages:Languages.Text_Themes_DownloadSelected}" IconSource="Download"
+                            <controls:FACommandBarButton Label="{x:Static languages:Languages.Text_Themes_DownloadSelected}" IconSource="Download"
                                                        Command="{Binding DownloadThemeCommand}"
                                                        IsEnabled="{Binding !IsDownloading}" />
-                            <controls:CommandBarElementContainer>
-                                <TextBox Watermark="{x:Static languages:Languages.Text_Themes_Search}" MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
-                            </controls:CommandBarElementContainer>
-                        </controls:CommandBar.PrimaryCommands>
-                    </controls:CommandBar>
+                            <controls:FACommandBarElementContainer>
+                                <TextBox PlaceholderText="{x:Static languages:Languages.Text_Themes_Search}" MaxHeight="10" MinWidth="200" Text="{Binding SearchText}" />
+                            </controls:FACommandBarElementContainer>
+                        </controls:FACommandBar.PrimaryCommands>
+                    </controls:FACommandBar>
                     <ListBox Grid.Row="1" ItemsSource="{Binding FilteredOnlineThemes}"
                              SelectedItem="{Binding SelectedOnlineTheme}"
                              Margin="0,0,0,10">

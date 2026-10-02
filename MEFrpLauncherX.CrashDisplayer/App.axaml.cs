@@ -1,8 +1,5 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using MEFrpLauncherX.CrashDisplayer.ViewModels;
 using MainWindow = MEFrpLauncherX.CrashDisplayer.Views.MainWindow;
@@ -20,9 +17,9 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
+            // Avalonia 12 起不再默认注册 DataAnnotationsValidationPlugin
+            // （默认仅 IndeiValidationPlugin / ExceptionValidationPlugin），
+            // 故原先的「移除 Avalonia 校验插件」逻辑已成死代码，直接删除。
             // 命令行参数防御：主程序崩溃现场可能不完整，任何缺失/损坏的参数都必须能降级展示，
             // 崩溃报告器自身绝不能再崩溃。
             var args = desktop.Args ?? [];
@@ -46,18 +43,5 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    private void DisableAvaloniaDataAnnotationValidation()
-    {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
     }
 }

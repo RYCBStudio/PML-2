@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>IconPacks.Avalonia.Core</AssemblyName>
+        <Title>IconPacks.Avalonia.Core</Title>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EnableTrimWarnings>true</EnableTrimWarnings>
+        <IsTrimmable>true</IsTrimmable>
+        <IsAotCompatible>true</IsAotCompatible>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <!-- 上游引用的 JetBrains.Annotations / System.Text.Json 已移除：
+             前者在本 fork 保留的 5 个项目中无任何特性用法（已全量检索确认），
+             后者自 net10.0 起内置于 BCL，显式引用只会触发 NU1510。 -->
+    </ItemGroup>
+
+</Project>

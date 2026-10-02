@@ -17,6 +17,7 @@ using MEFrpLauncherX.Core.Models;
 using MEFrpLauncherX.Core.Services;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
 // ReSharper disable InconsistentNaming
 
@@ -191,7 +192,7 @@ public class UpdatePageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<Unit, Unit> CheckUpdateCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CheckUpdateCommand { get; }
 
     /// <summary>
     ///     下载失败（网络/校验），显示「重试下载」按钮
@@ -214,12 +215,12 @@ public class UpdatePageViewModel : ViewModelBase
     /// <summary>
     ///     重试下载
     /// </summary>
-    public ReactiveCommand<Unit, Unit> RetryDownloadCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> RetryDownloadCommand { get; }
 
     /// <summary>
     ///     下载并安装更新（绑定入口，禁止直接绑定方法）
     /// </summary>
-    public ReactiveCommand<Unit, Unit> DownloadUpdateCommand { get; }
+    public ReactiveCommand<RxVoid, RxVoid> DownloadUpdateCommand { get; }
 
     /// <summary>
     ///     最近一次「检查更新」的结果（供精简主页推荐使用，避免重复网络请求）。
@@ -272,7 +273,7 @@ public class UpdatePageViewModel : ViewModelBase
         LatestCheckTime = DateTime.Now;
         try
         {
-            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.Indeterminate);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.Indeterminate);
         }
         catch
         {
@@ -390,7 +391,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         try
         {
-            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.None);
         }
         catch
         {
@@ -553,7 +554,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         try
         {
-            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.None);
         }
         catch
         {
@@ -712,7 +713,7 @@ public class UpdatePageViewModel : ViewModelBase
         FailureTip = isVerify ? Languages.Text_Update_VerifyFailed : Languages.Text_Update_DownloadFailed;
         try
         {
-            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(TaskBarProgressBarState.None);
+            Core.App.MainWindow?.PlatformFeatures.SetTaskBarProgressBarState(FATaskBarProgressBarState.None);
         }
         catch
         {

@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Xml;
@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Svg;
+using Avalonia.Svg.Skia;
 using Avalonia.Threading;
 using SkiaSharp;
 using Color = Avalonia.Media.Color;
@@ -157,7 +157,7 @@ public class ImagesRender : UserControl
             {
                 // 静态 SVG
                 using var memStream = new MemoryStream(Encoding.UTF8.GetBytes(svgXml));
-                var svgSource = SvgSource.Load(memStream);
+                var svgSource = SvgSource.LoadFromStream(memStream);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Content = new Border
@@ -220,7 +220,7 @@ public class ImagesRender : UserControl
             {
                 // 静态 SVG
                 memStream.Seek(0, SeekOrigin.Begin);
-                var svgSource = SvgSource.Load(memStream);
+                var svgSource = SvgSource.LoadFromStream(memStream);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     Content = new Border

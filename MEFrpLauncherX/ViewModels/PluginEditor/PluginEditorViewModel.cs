@@ -7,6 +7,8 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Services;
 using ReactiveUI;
+// ReactiveUI 25：无参 ReactiveCommand 的载体类型 RxVoid（替代 System.Reactive.Unit）位于此命名空间。
+using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels.PluginEditor;
 
@@ -57,37 +59,37 @@ public class PluginEditorViewModel : ViewModelBase
     /// <summary>动作注册表</summary>
     public IReadOnlyList<PluginActionInfo> AvailableActions => PluginCatalog.Actions;
 
-    public ReactiveCommand<Unit, Unit> AddTriggerCommand
+    public ReactiveCommand<RxVoid, RxVoid> AddTriggerCommand
     {
         get;
         private set;
     }
 
-    public ReactiveCommand<TriggerDraft, Unit> RemoveTriggerCommand
+    public ReactiveCommand<TriggerDraft, RxVoid> RemoveTriggerCommand
     {
         get;
         private set;
     }
 
-    public ReactiveCommand<TriggerDraft, Unit> AddActionCommand
+    public ReactiveCommand<TriggerDraft, RxVoid> AddActionCommand
     {
         get;
         private set;
     }
 
-    public ReactiveCommand<ActionDraft, Unit> RemoveActionCommand
+    public ReactiveCommand<ActionDraft, RxVoid> RemoveActionCommand
     {
         get;
         private set;
     }
 
-    public ReactiveCommand<Unit, Unit> RefreshPreviewCommand
+    public ReactiveCommand<RxVoid, RxVoid> RefreshPreviewCommand
     {
         get;
         private set;
     }
 
-    public ReactiveCommand<Unit, Unit> SaveCommand
+    public ReactiveCommand<RxVoid, RxVoid> SaveCommand
     {
         get;
         private set;

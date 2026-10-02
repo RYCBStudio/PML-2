@@ -43,7 +43,7 @@
                             Series="{Binding Series}" />
         <Panel Grid.Row="1" Background="{DynamicResource ControlStrokeColorForStrongFillWhenOnImageBrush}"
                IsVisible="{Binding IsLoading}">
-            <controls1:ProgressRing />
+            <controls1:FAProgressRing />
         </Panel>
     </Grid>
 </UserControl>

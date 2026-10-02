@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,7 +13,7 @@
                     Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}">
                 <DockPanel Margin="3" HorizontalSpacing="4" VerticalSpacing="4"
                            IsVisible="{Binding Path=#ErrorText.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                    <controls:SymbolIcon x:Name="ErrorIcon" DockPanel.Dock="Left" Symbol="Alert"
+                    <controls:FASymbolIcon x:Name="ErrorIcon" DockPanel.Dock="Left" Symbol="Alert"
                                          Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
                     <TextBlock x:Name="ErrorText"
                                Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
@@ -23,7 +23,7 @@
                     Background="{DynamicResource SystemFillColorSuccessBackgroundBrush}">
                 <DockPanel Margin="3" HorizontalSpacing="4" VerticalSpacing="4"
                            IsVisible="{Binding Path=#ErrorText.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                    <controls:SymbolIcon x:Name="SolutionIcon" DockPanel.Dock="Left" Symbol="Checkmark"
+                    <controls:FASymbolIcon x:Name="SolutionIcon" DockPanel.Dock="Left" Symbol="Checkmark"
                                          Foreground="{DynamicResource SystemFillColorSuccessBrush}" />
                     <HyperlinkButton DockPanel.Dock="Right" Click="ViewErrorDetails">
                         <TextBlock Text="{x:Static languages:Languages.Text_Terminal_ViewDetails}" />
@@ -42,7 +42,7 @@
         <TextBox x:Name="InputBox"
                  Grid.Row="2"
                  Margin="0,5,0,0"
-                 Watermark="{x:Static languages:Languages.Text_Terminal_CommandWatermark}"
+                 PlaceholderText="{x:Static languages:Languages.Text_Terminal_CommandWatermark}"
                  FontFamily="{StaticResource Jbm}"
                  FontSize="14" />
     </Grid>

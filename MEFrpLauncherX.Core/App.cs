@@ -38,7 +38,7 @@ public sealed class App : IDisposable
         Duration = TimeSpan.FromSeconds(3)
     };
 
-    public static AppWindow? MainWindow
+    public static FAAppWindow? MainWindow
     {
         get;
         set;

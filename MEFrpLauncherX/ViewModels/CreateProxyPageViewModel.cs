@@ -52,7 +52,7 @@ public class CreateProxyPageViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// 异步加载专家版数据：先显示 ProgressRing，再加载数据
+    /// 异步加载专家版数据：先显示 FAProgressRing，再加载数据
     /// </summary>
     public async Task LoadDataAsync(bool isVirtualizationDiabled = false)
     {

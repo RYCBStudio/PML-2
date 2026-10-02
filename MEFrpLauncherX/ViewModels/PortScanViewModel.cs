@@ -8,10 +8,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
+using Avalonia.Input.Platform;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using RYCB.PML2.Extensions.MinecraftExtension;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -29,14 +31,14 @@ public class PortScannerViewModel : ViewModelBase
         StartScanCommand = ReactiveCommand.CreateFromTask(StartScanAsync);
         StopScanCommand = ReactiveCommand.Create(StopScan);
         QuickScanCommand = ReactiveCommand.CreateFromTask(QuickScanAsync);
-        UseLocalhostCommand = ReactiveCommand.Create<Unit>(Unit => TargetIp = "127.0.0.1");
+        UseLocalhostCommand = ReactiveCommand.Create(()=>TargetIp = "127.0.0.1");
         UseCommonPortsCommand = ReactiveCommand.Create(SetCommonPorts);
         ClearResultsCommand = ReactiveCommand.Create(ClearResults);
         CopySelectedPortCommand = ReactiveCommand.CreateFromTask(CopySelectedPortAsync);
         UsePortCommand = ReactiveCommand.Create<int>(UsePort);
 
         // 处理命令的可执行性
-        StartScanCommand.IsExecuting.Subscribe(isExecuting =>
+        ObservableExtensions.Subscribe(StartScanCommand.IsExecuting, isExecuting =>
         {
             IsScanning = isExecuting;
             if (isExecuting)
@@ -109,42 +111,42 @@ public class PortScannerViewModel : ViewModelBase
     public int ResultCount => ScanResults.Count;
 
     // 命令
-    public ReactiveCommand<Unit, Unit> StartScanCommand
+    public ReactiveCommand<RxVoid, RxVoid> StartScanCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> StopScanCommand
+    public ReactiveCommand<RxVoid, RxVoid> StopScanCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> QuickScanCommand
+    public ReactiveCommand<RxVoid, RxVoid> QuickScanCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> UseLocalhostCommand
+    public ReactiveCommand<RxVoid, string> UseLocalhostCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> UseCommonPortsCommand
+    public ReactiveCommand<RxVoid, RxVoid> UseCommonPortsCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> ClearResultsCommand
+    public ReactiveCommand<RxVoid, RxVoid> ClearResultsCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> CopySelectedPortCommand
+    public ReactiveCommand<RxVoid, RxVoid> CopySelectedPortCommand
     {
         get;
     }
 
-    public ReactiveCommand<int, Unit> UsePortCommand
+    public ReactiveCommand<int, RxVoid> UsePortCommand
     {
         get;
     }

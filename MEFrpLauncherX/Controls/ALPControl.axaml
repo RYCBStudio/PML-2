@@ -10,7 +10,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" x:DataType="viewModels:UserProxyViewModel"
              x:Class="MEFrpLauncherX.Controls.ALPControl">
     <Grid RowDefinitions="Auto, Auto, Auto">
-        <controls:InfoBadge Margin="0,5,10,0" HorizontalAlignment="Right"
+        <controls:FAInfoBadge Margin="0,5,10,0" HorizontalAlignment="Right"
                             Grid.RowSpan="7"
                             VerticalAlignment="Top"
                             Background="{DynamicResource SystemFillColorCriticalBackgroundBrush}"
@@ -19,12 +19,12 @@
                             FontWeight="Bold"
                             Foreground="Azure"
                             IsVisible="{Binding isBanned}">
-            <controls:InfoBadge.IconSource>
-                <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+            <controls:FAInfoBadge.IconSource>
+                <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                          Glyph="{x:Static languages:Languages.Text_Main_UserInfo_AccountStatus_Banned}" />
-            </controls:InfoBadge.IconSource>
-        </controls:InfoBadge>
-        <controls1:ProgressRing IsIndeterminate="True" Grid.RowSpan="7"
+            </controls:FAInfoBadge.IconSource>
+        </controls:FAInfoBadge>
+        <controls:FAProgressRing IsIndeterminate="True" Grid.RowSpan="7"
                                 IsVisible="{Binding IsLoading}" />
         <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5">
             <SelectableTextBlock Text="{Binding proxyName}"
@@ -37,15 +37,15 @@
                 FontFamily="{StaticResource GlobalFontFamily}" />
         </StackPanel>
         <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="10" Height="10">
-            <controls:InfoBadge>
-                <controls:InfoBadge.Background>
+            <controls:FAInfoBadge>
+                <controls:FAInfoBadge.Background>
                     <MultiBinding
                         Converter="{x:Static controls1:OnlineAndDisabledConverter.Instance}">
                         <Binding Path="isOnline" />
                         <Binding Path="isDisabled" />
                     </MultiBinding>
-                </controls:InfoBadge.Background>
-            </controls:InfoBadge>
+                </controls:FAInfoBadge.Background>
+            </controls:FAInfoBadge>
         </Grid>
         <!-- Other fields -->
         <StackPanel Grid.Row="1">

@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>XamlSmoke</AssemblyName>
+    <RootNamespace>XamlSmoke</RootNamespace>
+    <!-- 不参与主解决方案构建，仅供手工执行: dotnet run 指定本工程 -->
+    <ExcludeFromSolution>true</ExcludeFromSolution>
+  </PropertyGroup>
+
+  <!--
+    注意：主程序 MEFrpLauncherX.csproj 是自包含可执行文件（NETSDK1151 禁止被引用），
+    因此这里不写 ProjectReference，改为在运行时通过反射加载它已编译好的产物 DLL。
+    依赖（Avalonia / FluentAvalonia / IconPacks 等）通过下面的 PackageReference 补齐版本，
+    保证与主程序 Directory.Packages.props 中锁定的版本一致。
+  -->
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Headless" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="FluentAvaloniaUI" />
+    <!-- 与主程序锁定的 4.151.2 保持一致，避免探针解析到传递依赖带来的 4.151.0 -->
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="System.Reactive" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- IconPacks fork 非自包含，可以直接工程引用 -->
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Core/IconPacks.Avalonia.Core.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Lucide/IconPacks.Avalonia.Lucide.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.Material/IconPacks.Avalonia.Material.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.FileIcons/IconPacks.Avalonia.FileIcons.csproj" />
+    <ProjectReference Include="../../third_party/IconPacks.Avalonia/src/IconPacks.Avalonia.SimpleIcons/IconPacks.Avalonia.SimpleIcons.csproj" />
+  </ItemGroup>
+
+</Project>

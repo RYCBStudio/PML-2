@@ -8,9 +8,9 @@
         WindowStartupLocation="CenterOwner"
         Title="{x:Static languages:Languages.Text_Global_Settings}">
     <StackPanel Margin="5" Spacing="5">
-        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_WindowPosition}"
+        <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_WindowPosition}"
                                    Description="{x:Static languages:Languages.Text_ProxyFloat_WindowPositionDescription}">
-            <controls:SettingsExpander.Footer>
+            <controls:FASettingsExpander.Footer>
                 <ComboBox SelectionChanged="SavePosition" x:Name="PosBox">
                     <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopLeft}" Tag="lt" />
                     <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_TopRight}" Tag="rt" />
@@ -21,29 +21,29 @@
                     <ComboBoxItem Content="{x:Static languages:Languages.Text_ProxyFloat_Position_BottomCenter}"
                                   Tag="cb" />
                 </ComboBox>
-            </controls:SettingsExpander.Footer>
-        </controls:SettingsExpander>
-        <controls:SettingsExpander IsExpanded="True"
+            </controls:FASettingsExpander.Footer>
+        </controls:FASettingsExpander>
+        <controls:FASettingsExpander IsExpanded="True"
                                    Header="{x:Static languages:Languages.Text_ProxyFloat_ClickThrough}"
                                    Description="{x:Static languages:Languages.Text_ProxyFloat_ClickThroughDescription}">
-            <controls:SettingsExpander.Footer>
+            <controls:FASettingsExpander.Footer>
                 <ToggleSwitch x:Name="ClickThroughSwitch" IsCheckedChanged="ClickThroughChanged" />
-            </controls:SettingsExpander.Footer>
-            <controls:InfoBar Severity="Warning" IsOpen="True" Title="{x:Static languages:Languages.Caption_Warning}"
+            </controls:FASettingsExpander.Footer>
+            <controls:FAInfoBar Severity="Warning" IsOpen="True" Title="{x:Static languages:Languages.Caption_Warning}"
                               Message="{x:Static languages:Languages.Text_ProxyFloat_EnableClickThroughWarning}" />
-        </controls:SettingsExpander>
-        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_ShowChart}"
+        </controls:FASettingsExpander>
+        <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_ShowChart}"
                                    Description="{x:Static languages:Languages.Text_ProxyFloat_ShowChartDescription}">
-            <controls:SettingsExpander.Footer>
+            <controls:FASettingsExpander.Footer>
                 <ToggleSwitch x:Name="ShowChartSwitch" IsCheckedChanged="ShowChartChanged" />
-            </controls:SettingsExpander.Footer>
-        </controls:SettingsExpander>
-        <controls:SettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_Opacity}"
+            </controls:FASettingsExpander.Footer>
+        </controls:FASettingsExpander>
+        <controls:FASettingsExpander Header="{x:Static languages:Languages.Text_ProxyFloat_Opacity}"
                                    Description="{x:Static languages:Languages.Text_ProxyFloat_OpacityDescription}">
-            <controls:SettingsExpander.Footer>
+            <controls:FASettingsExpander.Footer>
                 <Slider x:Name="OpacitySlider" Minimum="0.5" Maximum="1" Width="160"
                         ValueChanged="OpacityChanged" />
-            </controls:SettingsExpander.Footer>
-        </controls:SettingsExpander>
+            </controls:FASettingsExpander.Footer>
+        </controls:FASettingsExpander>
     </StackPanel>
 </Window>

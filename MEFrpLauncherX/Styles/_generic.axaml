@@ -3,7 +3,7 @@
         xmlns:controls1="clr-namespace:MEFrpLauncherX.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <controls1:AnimatedProgressRing />
+            <controls1:AnimatedFAProgressRing />
         </Border>
     </Design.PreviewWith>
     
@@ -11,7 +11,7 @@
         <Setter Property="CornerRadius" Value="50" />
     </Style>
 
-    <Style Selector="controls1|AnimatedProgressRing">
+    <Style Selector="controls1|AnimatedFAProgressRing">
         <Style.Animations>
             <Animation Duration="0:0:2.5" IterationCount="INFINITE" Easing="QuarticEaseInOut">
                 <KeyFrame Cue="0%">
@@ -105,8 +105,8 @@
         </Style.Animations>
     </Style>
 
-    <!-- ========== AnimatedProgressRing 动画优化 ========== -->
-    <!-- <Style Selector="controls1|AnimatedProgressRing"> -->
+    <!-- ========== AnimatedFAProgressRing 动画优化 ========== -->
+    <!-- <Style Selector="controls1|AnimatedFAProgressRing"> -->
     <!--     <Style.Animations> -->
     <!--         <Animation Duration="0:0:1.5" IterationCount="INFINITE" Easing="LinearEasing"> -->
     <!--             <KeyFrame Cue="0%"> -->

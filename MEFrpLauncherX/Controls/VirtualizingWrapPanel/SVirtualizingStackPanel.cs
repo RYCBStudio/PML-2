@@ -414,7 +414,7 @@ namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
                     return _element;
                 }
             }
-            else if (this.GetVisualRoot() is ILayoutRoot root)
+            else if (this.VisualRoot is Visual root)
             {
                 RenderElements(index);
                 if (_elementDictionary.TryGetValue(index, out renderModel) && renderModel.Control is Control _element)

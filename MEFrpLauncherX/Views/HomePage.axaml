@@ -22,7 +22,7 @@
     </UserControl.Styles>
     <Grid ColumnDefinitions="5.5*,Auto, 4.5*">
         <Border Grid.ColumnSpan="3" Background="#2f000000">
-            <controls:ProgressRing Height="40" IsVisible="{Binding IsLoading}" />
+            <controls:FAProgressRing Height="40" IsVisible="{Binding IsLoading}" />
         </Border>
 
         <!-- 26.4 精简主页（Layout=simple） -->
@@ -56,7 +56,7 @@
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                             <InlineUIContainer>
-                                <controls:SymbolIcon Symbol="Earth" />
+                                <controls:FASymbolIcon Symbol="Earth" />
                             </InlineUIContainer>
                             <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Nodes}"/>
                         </TextBlock>
@@ -77,7 +77,7 @@
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                             <InlineUIContainer>
-                                <controls:SymbolIcon Symbol="People" />
+                                <controls:FASymbolIcon Symbol="People" />
                             </InlineUIContainer>
                             <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Users}"/>
                         </TextBlock>
@@ -98,7 +98,7 @@
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                             <InlineUIContainer>
-                                <controls:FontIcon Glyph="&#xE74C;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <controls:FAFontIcon Glyph="&#xE74C;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                             </InlineUIContainer>
                             <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_OnlineProxies}"/>
                         </TextBlock>
@@ -123,7 +123,7 @@
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                             <InlineUIContainer>
-                                <controls:FontIcon Glyph="&#xEAFC;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                                <controls:FAFontIcon Glyph="&#xEAFC;" FontFamily="{StaticResource SymbolThemeFontFamily}" />
                             </InlineUIContainer>
                             <Run Text="{x:Static languages:Languages.Text_Main_PlatformStatistics_Traffic}"/>
                         </TextBlock>
@@ -147,7 +147,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="Contact" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="Contact" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Name}" />
@@ -165,7 +165,7 @@
                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        FontSize="12">
                                 <InlineUIContainer>
-                                    <controls:SymbolIcon Symbol="Tag" FontSize="12" Margin="0,0,4,0"
+                                    <controls:FASymbolIcon Symbol="Tag" FontSize="12" Margin="0,0,4,0"
                                                          VerticalAlignment="Center" />
                                 </InlineUIContainer>
                                 <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Id}" />
@@ -176,7 +176,7 @@
                                         Padding="0"
                                         ToolTip.Tip="{x:Static languages:Languages.Text_Global_Copy}"
                                         Command="{Binding CopyUserIdCommand}">
-                                    <controls:SymbolIcon Symbol="Copy" FontSize="12" />
+                                    <controls:FASymbolIcon Symbol="Copy" FontSize="12" />
                                 </Button>
                                 <SelectableTextBlock Text="{Binding UserId}"
                                                      VerticalAlignment="Center"
@@ -194,7 +194,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="Mail" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="Mail" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Email}" />
@@ -206,7 +206,7 @@
                                         Padding="0"
                                         ToolTip.Tip="{x:Static languages:Languages.Text_Global_Copy}"
                                         Command="{Binding CopyEmailCommand}">
-                                    <controls:SymbolIcon Symbol="Copy" FontSize="12" />
+                                    <controls:FASymbolIcon Symbol="Copy" FontSize="12" />
                                 </Button>
                                 <SelectableTextBlock Text="{Binding Email}"
                                                      TextTrimming="CharacterEllipsis" />
@@ -221,7 +221,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="People" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="People" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_Group}" />
@@ -247,7 +247,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:FontIcon Glyph="&#xE928;"
+                                        <controls:FAFontIcon Glyph="&#xE928;"
                                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                            FontSize="12" Margin="0,0,4,0"
                                                            VerticalAlignment="Center" />
@@ -260,7 +260,7 @@
                                     Background="{Binding IsRealNamed, Converter={x:Static core:BoolToVerifiedBackgroundConverter.Instance}}"
                                     HorizontalAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <controls:SymbolIcon
+                                    <controls:FASymbolIcon
                                         Symbol="{Binding IsRealNamed, Converter={x:Static core:BoolToVerifiedIconConverter.Instance}}"
                                         FontSize="12" />
                                     <TextBlock Text="{Binding RealNameStatus}"
@@ -279,7 +279,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="ContactInfo" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="ContactInfo" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_AccountStatus}" />
@@ -290,7 +290,7 @@
                                     Background="{Binding IsBanned, Converter={x:Static core:BoolToStatusBackgroundConverter.Instance}}"
                                     HorizontalAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <controls:SymbolIcon
+                                    <controls:FASymbolIcon
                                         Symbol="{Binding IsBanned, Converter={x:Static core:BoolToStatusIconConverter.Instance}}"
                                         FontSize="12" />
                                     <TextBlock Text="{Binding AccountStatus}"
@@ -310,7 +310,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="AllApps" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="AllApps" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_ProxyCount}" />
@@ -330,7 +330,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="Cloud" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="Cloud" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_RemainingTraffic}" />
@@ -361,7 +361,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="Download" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="Download" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_InboundBandwidth}" />
@@ -380,7 +380,7 @@
                                        FontSize="12">
                                 <TextBlock.Inlines>
                                     <InlineUIContainer>
-                                        <controls:SymbolIcon Symbol="Upload" FontSize="12" Margin="0,0,4,0"
+                                        <controls:FASymbolIcon Symbol="Upload" FontSize="12" Margin="0,0,4,0"
                                                              VerticalAlignment="Center" />
                                     </InlineUIContainer>
                                     <Run Text="{x:Static languages:Languages.Text_Main_UserInfo_OutboundBandwidth}" />
@@ -398,7 +398,7 @@
                       IsVisible="{Binding IsClassicLayout}" />
         <Grid Grid.Column="2" RowDefinitions="Auto, *" 
               IsVisible="{Binding IsClassicLayout}">
-            <controls:InfoBar
+            <controls:FAInfoBar
                 IsVisible="{Binding ShowSystemStatus}"
                 Classes="animated-bar"
                 Margin="3"
@@ -414,7 +414,7 @@
                 <Grid RowDefinitions="4*, 6*" RowSpacing="5">
 
                     <controls1:NoData Grid.Row="1" IsVisible="{Binding IsNoData}" />
-                    <controls1:ProgressRing IsVisible="{Binding IsLoadingNotice}" />
+                    <controls:FAProgressRing IsVisible="{Binding IsLoadingNotice}" />
                     <HeaderedContentControl Classes="FluentCard"
                                             Grid.RowSpan="{Binding SoftwareNoticeSpan2, Converter={x:Static core:IsVisibleToRowSpanConverter.Instance}}"
                                             IsVisible="{Binding ShowSoftwareNotice}" Header="{x:Static languages:Languages.Text_Main_SoftwareNotice_Title}"
@@ -432,19 +432,19 @@
                                             <!-- 标签行 -->
                                             <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,0"
                                                        ItemSpacing="8">
-                                                <controls:InfoBadge>
-                                                    <controls:InfoBadge.IconSource>
-                                                        <controls:FontIconSource
+                                                <controls:FAInfoBadge>
+                                                    <controls:FAInfoBadge.IconSource>
+                                                        <controls:FAFontIconSource
                                                             Glyph="{Binding Id, StringFormat='# {0}'}" />
-                                                    </controls:InfoBadge.IconSource>
-                                                </controls:InfoBadge>
+                                                    </controls:FAInfoBadge.IconSource>
+                                                </controls:FAInfoBadge>
                                                 <Label Classes="Indigo"
                                                        Content="{Binding Type, Converter={x:Static controls2:TypeToReadableChineseConverter.Instance}}" />
                                             </WrapPanel>
                                             <!-- 查看按钮（可改为超链接按钮） -->
                                             <Button Grid.RowSpan="2" Grid.Column="1" Command="{Binding ShowNoticeCommand}"
                                                     Theme="{StaticResource SubtleButtonStyle}">
-                                                <controls:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                <controls:FAFontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                                                    Glyph="&#xE8A7;" />
                                             </Button>
                                         </Grid>

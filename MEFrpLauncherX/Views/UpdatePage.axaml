@@ -87,12 +87,12 @@
                                             <x:Static Member="languages:Languages.Text_Update_VersionInfoTip" />
                                         </ToolTip.Tip>
                                     </TextBlock>
-                                    <controls:InfoBadge>
-                                        <controls:InfoBadge.IconSource>
-                                            <controls:FontIconSource FontFamily="{StaticResource GlobalFontFamily}"
+                                    <controls:FAInfoBadge>
+                                        <controls:FAInfoBadge.IconSource>
+                                            <controls:FAFontIconSource FontFamily="{StaticResource GlobalFontFamily}"
                                                                      Glyph="{Binding Codename}" />
-                                        </controls:InfoBadge.IconSource>
-                                    </controls:InfoBadge>
+                                        </controls:FAInfoBadge.IconSource>
+                                    </controls:FAInfoBadge>
                                 </StackPanel>
                                 <ItemsControl Classes="animated-intro" ItemsSource="{Binding Changelog}"
                                               Margin="15 0 0 0">
@@ -111,10 +111,10 @@
                         </TabItem>
                         <TabItem Header="{x:Static languages:Languages.Text_Update_UpdateSettings}">
                             <StackPanel Classes="animated">
-                                <controls:SettingsExpander
+                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_UpdateMode}"
                                     Description="{x:Static languages:Languages.Text_Update_UpdateModeDescription}">
-                                    <controls:SettingsExpander.Footer>
+                                    <controls:FASettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateMethodBox" SelectedIndex="{Binding UpdateMethod}"
                                                   SelectionChanged="UpdateMethodChange">
                                             <ComboBoxItem Tag="ds"
@@ -124,20 +124,20 @@
                                             <ComboBoxItem Tag="md"
                                                           Content="{x:Static languages:Languages.Text_Update_UpdateMethod_ManualInstall}" />
                                         </ComboBox>
-                                    </controls:SettingsExpander.Footer>
-                                </controls:SettingsExpander>
-                                <controls:SettingsExpander
+                                    </controls:FASettingsExpander.Footer>
+                                </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_KeepProfile}"
                                     Description="{x:Static languages:Languages.Text_Update_KeepProfileDescription}">
-                                    <controls:SettingsExpander.Footer>
+                                    <controls:FASettingsExpander.Footer>
                                         <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged" />
-                                    </controls:SettingsExpander.Footer>
-                                </controls:SettingsExpander>
-                                <controls:SettingsExpander
+                                    </controls:FASettingsExpander.Footer>
+                                </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_UpdateChannel}"
                                     Description="{x:Static languages:Languages.Text_Update_UpdateChannelDescription}"
                                     IsExpanded="True">
-                                    <controls:SettingsExpander.Footer>
+                                    <controls:FASettingsExpander.Footer>
                                         <ComboBox x:Name="UpdateChannelBox" SelectedIndex="{Binding UpdateChannel}"
                                                   SelectionChanged="UpdateChannelChange">
                                             <ComboBoxItem Tag="Stable"
@@ -145,15 +145,15 @@
                                             <ComboBoxItem Tag="Preview"
                                                           Content="{x:Static languages:Languages.Text_Update_Channel_Preview}" />
                                         </ComboBox>
-                                    </controls:SettingsExpander.Footer>
-                                    <controls:SettingsExpanderItem
+                                    </controls:FASettingsExpander.Footer>
+                                    <controls:FASettingsExpanderItem
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
-                                </controls:SettingsExpander>
-                                <controls:SettingsExpander
+                                </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_CompileType}"
                                     Description="{x:Static languages:Languages.Text_Update_CompileTypeDescription}">
-                                    <controls:SettingsExpander.Footer>
+                                    <controls:FASettingsExpander.Footer>
                                         <ComboBox x:Name="CompileTypeBox" SelectedIndex="{Binding TargetCompileType}"
                                                   SelectionChanged="CompileTypeChange">
                                             <ComboBoxItem Tag="AOT"
@@ -161,13 +161,13 @@
                                             <ComboBoxItem Tag="Common"
                                                           Content="{x:Static languages:Languages.Text_Update_CompileType_Common}" />
                                         </ComboBox>
-                                    </controls:SettingsExpander.Footer>
-                                </controls:SettingsExpander>
-                                <controls:SettingsExpander
+                                    </controls:FASettingsExpander.Footer>
+                                </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_DownloadSource}"
                                     Description="{x:Static languages:Languages.Text_Update_DownloadSourceDescription}"
                                     IsExpanded="True">
-                                    <controls:SettingsExpander.Footer>
+                                    <controls:FASettingsExpander.Footer>
                                         <ComboBox x:Name="DownloadSourceBox" SelectedIndex="{Binding DownloadSource}"
                                                   SelectionChanged="DownloadSourceChange">
                                             <ComboBoxItem Tag="TPCA"
@@ -179,11 +179,11 @@
                                             <ComboBoxItem Tag="GitHubMoeyy"
                                                           Content="{x:Static languages:Languages.Text_Update_DownloadSource_GitHubMoeyy}" />
                                         </ComboBox>
-                                    </controls:SettingsExpander.Footer>
-                                    <controls:SettingsExpanderItem
+                                    </controls:FASettingsExpander.Footer>
+                                    <controls:FASettingsExpanderItem
                                         Content="{Binding #DownloadSourceBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateDownloadSourceBoxItemToDescConverter.Instance}}" />
-                                </controls:SettingsExpander>
+                                </controls:FASettingsExpander>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

@@ -11,7 +11,7 @@
         TransparencyLevelHint="AcrylicBlur, Transparent"
         Topmost="True"
         ShowInTaskbar="False"
-        SystemDecorations="None"
+        WindowDecorations="None"
         Background="{DynamicResource LayerOnAcrylicFillColorDefaultBrush}"
         x:DataType="splash:ClassIslandSplashViewModel"
         Title="ClassIslandSplash">
@@ -24,7 +24,7 @@
             <Image Source="/Assets/meflx.png" DockPanel.Dock="Left" />
             <TextBlock Text="PML 2" Theme="{StaticResource TitleTextBlockStyle}" />
         </DockPanel>
-        <controls:ProgressRing Grid.Row="1" IsIndeterminate="True" />
+        <controls:FAProgressRing Grid.Row="1" IsIndeterminate="True" />
         <ProgressBar Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="-4 0 -8 -10"
                      Height="10" VerticalAlignment="Bottom" Background="Transparent"
                      HorizontalAlignment="Stretch" Maximum="100"

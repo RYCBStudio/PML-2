@@ -19,6 +19,7 @@ using MEFrpLauncherX.Core.WindowServices;
 using MEFrpLauncherX.NetworkMonitoring;
 using MEFrpLauncherX.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using SkiaSharp;
 
 namespace MEFrpLauncherX.Views.ProxyMonitor;
@@ -189,19 +190,19 @@ public class ProxyFloatViewModel : ViewModelBase
     }
 
     /// <summary>刷新流量</summary>
-    public ReactiveCommand<Unit, Unit> RefreshTrafficCommand
+    public ReactiveCommand<RxVoid, RxVoid> RefreshTrafficCommand
     {
         get;
     }
 
     /// <summary>打开悬浮窗设置</summary>
-    public ReactiveCommand<Unit, Unit> OpenSettingsCommand
+    public ReactiveCommand<RxVoid, RxVoid> OpenSettingsCommand
     {
         get;
     }
 
     /// <summary>关闭悬浮窗（不退出应用）</summary>
-    public ReactiveCommand<Unit, Unit> CloseFloatCommand
+    public ReactiveCommand<RxVoid, RxVoid> CloseFloatCommand
     {
         get;
     }
@@ -510,7 +511,7 @@ public class ProxyFloatViewModel : ViewModelBase
 /// <summary>
 ///     悬浮窗中的隧道状态项：名称 + 运行状态（颜色/文案与隧道管理页一致）
 /// </summary>
-public class FloatTunnelItem : ViewModelBase
+public partial class FloatTunnelItem : ViewModelBase
 {
     private static readonly IBrush _statusBrushIdle = new SolidColorBrush(Color.FromArgb(255, 138, 138, 138));
     private static readonly IBrush _statusBrushStarting = new SolidColorBrush(Color.FromArgb(255, 0, 120, 212));
@@ -551,7 +552,8 @@ public class FloatTunnelItem : ViewModelBase
     }
 
     /// <summary>失败摘要（Failed 时有值）</summary>
-    public string? ErrorSummary
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial string? ErrorSummary
     {
         get;
         set;

@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+// Avalonia 12：IClipboard.SetTextAsync 改为扩展方法（ClipboardExtensions）。
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -145,15 +147,15 @@ public partial class CertificateAssistantWindow : Window
         // 生产环境二次确认，避免误触消耗签发配额
         if (IsProduction)
         {
-            var cd = new FluentAvalonia.UI.Controls.ContentDialog
+            var cd = new FluentAvalonia.UI.Controls.FAContentDialog
             {
                 Title = Languages.Text_Certificate_Env_Production,
                 Content = Languages.Text_Certificate_Env_ProductionWarning,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 CloseButtonText = Languages.Text_Certificate_Cancel,
-                DefaultButton = FluentAvalonia.UI.Controls.ContentDialogButton.Close
+                DefaultButton = FluentAvalonia.UI.Controls.FAContentDialogButton.Close
             };
-            if (await cd.ShowAsync() != FluentAvalonia.UI.Controls.ContentDialogResult.Primary)
+            if (await cd.ShowAsync() != FluentAvalonia.UI.Controls.FAContentDialogResult.Primary)
             {
                 return;
             }
@@ -519,15 +521,15 @@ public partial class CertificateAssistantWindow : Window
             return;
         }
 
-        var confirm = new FluentAvalonia.UI.Controls.ContentDialog
+        var confirm = new FluentAvalonia.UI.Controls.FAContentDialog
         {
             Title = Languages.Text_Certificate_Delete,
             Content = string.Format(Languages.Text_Certificate_DeleteConfirmFormat, item.DisplayName),
             PrimaryButtonText = Languages.Text_Global_Confirm,
             CloseButtonText = Languages.Text_Global_Cancel,
-            DefaultButton = FluentAvalonia.UI.Controls.ContentDialogButton.Close
+            DefaultButton = FluentAvalonia.UI.Controls.FAContentDialogButton.Close
         };
-        if (await confirm.ShowAsync() != FluentAvalonia.UI.Controls.ContentDialogResult.Primary)
+        if (await confirm.ShowAsync() != FluentAvalonia.UI.Controls.FAContentDialogResult.Primary)
         {
             return;
         }

@@ -1,0 +1,8 @@
+# 本地开发/诊断工具的构建产物
+#
+# 与 third_party/IconPacks.Avalonia/.gitignore 同理：
+# 仓库根 .gitignore 的 [Oo]bj/* 只覆盖一层目录，匹配不到 tools/<Project>/obj 这种深度。
+# 就近声明，避免把工具工程的中间产物提交进仓库。
+
+bin/
+obj/

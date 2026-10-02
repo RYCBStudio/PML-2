@@ -204,7 +204,7 @@ public partial class CreateProxyPage : UserControl
                         var chosenCheck = candidates.First();
                         if (chosenCheck.IsOverloaded)
                         {
-                            await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [TaskDialogButton.OKButton]);
+                            await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [FATaskDialogButton.OKButton]);
                             _index--;
                             break;
                         }
@@ -298,7 +298,7 @@ public partial class CreateProxyPage : UserControl
 
                                 if (chosen.IsOverloaded)
                                 {
-                                    await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [TaskDialogButton.OKButton]);
+                                    await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded, buttons: [FATaskDialogButton.OKButton]);
                                     _index--;
                                     break;
                                 }
@@ -385,7 +385,7 @@ public partial class CreateProxyPage : UserControl
                                     if (chosen.IsOverloaded)
                                     {
                                         await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded,
-                                            buttons: [TaskDialogButton.OKButton]);
+                                            buttons: [FATaskDialogButton.OKButton]);
                                         _index--;
                                         break;
                                     }
@@ -468,7 +468,7 @@ public partial class CreateProxyPage : UserControl
                                     if (chosen.IsOverloaded)
                                     {
                                         await MessageBox.ShowAsync(Languages.Text_CreateProxy_NodeOverloaded,
-                                            buttons: [TaskDialogButton.OKButton]);
+                                            buttons: [FATaskDialogButton.OKButton]);
                                         _index--;
                                         break;
                                     }

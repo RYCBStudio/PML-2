@@ -335,22 +335,22 @@ public partial class CreateProxy : UserControl
         {
             RemotePortGrid.Collapse();
             RemoteAddressStackPanel.Show();
-            SecurityOptionsSettingsExpander.Show();
+            SecurityOptionsFASettingsExpander.Show();
             switch (ProtocolCbBox.SelectedItem?.ToString()?.ToLower())
             {
                 case "http":
-                    SourceProtocolSettingsExpanderItemForHttp.Show();
+                    SourceProtocolFASettingsExpanderItemForHttp.Show();
                     CustomRequestHeaderSettings.Show();
                     CustomResponseHeaderSettings.Show();
                     LocationSettings.Show();
-                    SourceProtocolSettingsExpanderItemForHttps.Hide();
+                    SourceProtocolFASettingsExpanderItemForHttps.Hide();
                     CertificateSettingsForPath.Hide();
                     CertificateSettingsForPrivateKey.Hide();
                     break;
                 case "https":
-                    SourceProtocolSettingsExpanderItemForHttp.Hide();
+                    SourceProtocolFASettingsExpanderItemForHttp.Hide();
                     LocationSettings.Collapse();
-                    SourceProtocolSettingsExpanderItemForHttps.Show();
+                    SourceProtocolFASettingsExpanderItemForHttps.Show();
                     CertificateSettingsForPath.Show();
                     CertificateSettingsForPrivateKey.Show();
                     break;
@@ -363,9 +363,9 @@ public partial class CreateProxy : UserControl
             LocationSettings.Collapse();
             CustomRequestHeaderSettings.Collapse();
             CustomResponseHeaderSettings.Collapse();
-            SecurityOptionsSettingsExpander.Hide();
-            SourceProtocolSettingsExpanderItemForHttp.Hide();
-            SourceProtocolSettingsExpanderItemForHttps.Hide();
+            SecurityOptionsFASettingsExpander.Hide();
+            SourceProtocolFASettingsExpanderItemForHttp.Hide();
+            SourceProtocolFASettingsExpanderItemForHttps.Hide();
             CertificateSettingsForPath.Hide();
             CertificateSettingsForPrivateKey.Hide();
         }
@@ -381,16 +381,16 @@ public partial class CreateProxy : UserControl
                 .Select(kv => new RequestHeader { Name = kv.Key, Value = kv.Value }));
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditRequestHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
-        if (await cd.ShowAsync() == ContentDialogResult.Primary)
+        if (await cd.ShowAsync() == FAContentDialogResult.Primary)
         {
             foreach (var h in he.Headers)
             {
@@ -408,17 +408,17 @@ public partial class CreateProxy : UserControl
             de.Domains.AddRange(_createProxyViewModel.RemoteAddress);
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditDomains,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             _createProxyViewModel.RemoteAddress?.Clear();
             _createProxyViewModel.RemoteAddress?.AddRange(de.Domains);
@@ -436,15 +436,15 @@ public partial class CreateProxy : UserControl
             var items = CertStore.List();
             if (items.Count == 0)
             {
-                var goCreate = new ContentDialog
+                var goCreate = new FAContentDialog
                 {
                     Title = Languages.Text_Certificate_Title,
                     Content = Languages.Text_Certificate_Empty,
                     PrimaryButtonText = Languages.Text_Certificate_OpenDirectory,
                     CloseButtonText = Languages.Text_Global_Cancel,
-                    DefaultButton = ContentDialogButton.Close
+                    DefaultButton = FAContentDialogButton.Close
                 };
-                if (await goCreate.ShowAsync() == ContentDialogResult.Primary)
+                if (await goCreate.ShowAsync() == FAContentDialogResult.Primary)
                 {
                     OpenCertificateRoot();
                 }
@@ -458,15 +458,15 @@ public partial class CreateProxy : UserControl
                 SelectedIndex = 0,
                 MinWidth = 320
             };
-            var cd = new ContentDialog
+            var cd = new FAContentDialog
             {
                 Title = Languages.Text_Certificate_SelectTitle,
                 Content = list,
                 PrimaryButtonText = Languages.Text_Global_Confirm,
                 CloseButtonText = Languages.Text_Global_Cancel,
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
-            if (await cd.ShowAsync() != ContentDialogResult.Primary)
+            if (await cd.ShowAsync() != FAContentDialogResult.Primary)
             {
                 return;
             }
@@ -527,16 +527,16 @@ public partial class CreateProxy : UserControl
     private async void CheckPort(object? sender, RoutedEventArgs e)
     {
         var psv = new PortScannerView();
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_FindMinecraftPort,
             Content = psv,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
-        if (await cd.ShowAsync() == ContentDialogResult.Primary)
+        if (await cd.ShowAsync() == FAContentDialogResult.Primary)
         {
             _createProxyViewModel.LocalPort = psv.DataContext.SelectedResult?.Port ?? 0;
         }
@@ -552,16 +552,16 @@ public partial class CreateProxy : UserControl
                 .Select(kv => new RequestHeader { Name = kv.Key, Value = kv.Value }));
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditResponseHeaders,
             Content = he,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
-        if (await cd.ShowAsync() == ContentDialogResult.Primary)
+        if (await cd.ShowAsync() == FAContentDialogResult.Primary)
         {
             foreach (var h in he.Headers)
             {
@@ -579,17 +579,17 @@ public partial class CreateProxy : UserControl
             de.Domains.AddRange(_createProxyViewModel.Locations);
         }
 
-        var cd = new ContentDialog
+        var cd = new FAContentDialog
         {
             Title = Languages.Text_CreateProxy_EditLocations,
             Content = de,
             PrimaryButtonText = Languages.Text_Global_Confirm,
-            DefaultButton = ContentDialogButton.Primary,
+            DefaultButton = FAContentDialogButton.Primary,
             IsSecondaryButtonEnabled = false,
             CloseButtonText = Languages.Text_Global_Cancel
         };
         var res = await cd.ShowAsync();
-        if (res == ContentDialogResult.Primary)
+        if (res == FAContentDialogResult.Primary)
         {
             _createProxyViewModel.Locations?.Clear();
             _createProxyViewModel.Locations?.AddRange(de.Domains);
@@ -628,7 +628,7 @@ public class LegalProxyNameValidator : ValidationAttribute
     public override bool IsValid(object? value) => value is string name && !name.Contains('.');
 }
 
-public class CreateProxyViewModel : ViewModelBase
+public partial class CreateProxyViewModel : ViewModelBase
 {
     public CreateProxyViewModel()
     {
@@ -637,7 +637,8 @@ public class CreateProxyViewModel : ViewModelBase
         Templates = ConfigManager.CurrentConfig.ProxyTemplates ?? [];
     }
 
-    public TunnelNodeViewModel TunnelNode
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial TunnelNodeViewModel TunnelNode
     {
         get;
         set;
@@ -709,7 +710,8 @@ public class CreateProxyViewModel : ViewModelBase
     } = "";
 
     /// <summary>已保存的创建模板（持久化于 Settings.json）</summary>
-    public List<ProxyTemplate> Templates
+    [ReactiveUI.SourceGenerators.Reactive]
+    public partial List<ProxyTemplate> Templates
     {
         get;
         set;

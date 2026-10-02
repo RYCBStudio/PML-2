@@ -160,7 +160,8 @@ public static class SKImageHelper
     public static SKBitmap ToSKBitmap(this Bitmap bitmap)
     {
         using var ms = new MemoryStream();
-        bitmap.Save(ms);
+        // Avalonia 12：Save(Stream, int?) 已过时，改用 BitmapEncoderOptions 重载。
+        bitmap.Save(ms, new PngBitmapEncoderOptions());
         ms.Position = 0;
         return SKBitmap.Decode(ms);
     }
