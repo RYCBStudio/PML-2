@@ -2319,7 +2319,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 请输入隧道名.
+        ///   Looks up a localized string similar to 请输入隧道名称.
         /// </summary>
         public static string Text_CreateProxy_EnterProxyName {
             get {
@@ -12388,7 +12388,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTunnel
+        ///   Looks up a localized string similar to 迁移隧道.
         /// </summary>
         public static string Text_UserProxy_MigrateTunnel {
             get {
@@ -12397,7 +12397,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTitle
+        ///   Looks up a localized string similar to 迁移隧道.
         /// </summary>
         public static string Text_UserProxy_MigrateTitle {
             get {
@@ -12406,7 +12406,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSourceNodeFormat
+        ///   Looks up a localized string similar to 原节点: #{0} {1}.
         /// </summary>
         public static string Text_UserProxy_MigrateSourceNodeFormat {
             get {
@@ -12415,7 +12415,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSelectHint
+        ///   Looks up a localized string similar to 请选择迁移的目标节点: 迁移会先删除原隧道, 再在新节点上按原配置重建一条完全相同的隧道。.
         /// </summary>
         public static string Text_UserProxy_MigrateSelectHint {
             get {
@@ -12424,7 +12424,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNodeCountFormat
+        ///   Looks up a localized string similar to 共 {0} 个候选节点.
         /// </summary>
         public static string Text_UserProxy_MigrateNodeCountFormat {
             get {
@@ -12433,7 +12433,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNoMatchingNode
+        ///   Looks up a localized string similar to 没有符合条件的候选节点.
         /// </summary>
         public static string Text_UserProxy_MigrateNoMatchingNode {
             get {
@@ -12442,7 +12442,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNoNodes
+        ///   Looks up a localized string similar to 无法获取节点列表, 请稍后重试.
         /// </summary>
         public static string Text_UserProxy_MigrateNoNodes {
             get {
@@ -12451,7 +12451,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortRecommended
+        ///   Looks up a localized string similar to 推荐排序.
         /// </summary>
         public static string Text_UserProxy_MigrateSortRecommended {
             get {
@@ -12460,7 +12460,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortLatency
+        ///   Looks up a localized string similar to 按延迟排序.
         /// </summary>
         public static string Text_UserProxy_MigrateSortLatency {
             get {
@@ -12469,7 +12469,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortLoad
+        ///   Looks up a localized string similar to 按负载排序.
         /// </summary>
         public static string Text_UserProxy_MigrateSortLoad {
             get {
@@ -12478,7 +12478,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortName
+        ///   Looks up a localized string similar to 按名称排序.
         /// </summary>
         public static string Text_UserProxy_MigrateSortName {
             get {
@@ -12487,7 +12487,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateProbeLatency
+        ///   Looks up a localized string similar to 探测延迟.
         /// </summary>
         public static string Text_UserProxy_MigrateProbeLatency {
             get {
@@ -12496,7 +12496,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateLatencyFormat
+        ///   Looks up a localized string similar to 延迟: {0} ms.
         /// </summary>
         public static string Text_UserProxy_MigrateLatencyFormat {
             get {
@@ -12505,7 +12505,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateLatencyUnknown
+        ///   Looks up a localized string similar to 延迟: 未知.
         /// </summary>
         public static string Text_UserProxy_MigrateLatencyUnknown {
             get {
@@ -12514,7 +12514,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSelectNodeRequired
+        ///   Looks up a localized string similar to 请先选择一个目标节点.
         /// </summary>
         public static string Text_UserProxy_MigrateSelectNodeRequired {
             get {
@@ -12523,7 +12523,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateInProgressFormat
+        ///   Looks up a localized string similar to 正在迁移隧道 {0}, 请稍候....
         /// </summary>
         public static string Text_UserProxy_MigrateInProgressFormat {
             get {
@@ -12532,7 +12532,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSucceededFormat
+        ///   Looks up a localized string similar to 隧道 {0} 已迁移到节点 #{1}.
         /// </summary>
         public static string Text_UserProxy_MigrateSucceededFormat {
             get {
@@ -12541,7 +12541,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateFailedFormat
+        ///   Looks up a localized string similar to 迁移隧道 {0} 失败: {1}.
         /// </summary>
         public static string Text_UserProxy_MigrateFailedFormat {
             get {
@@ -12550,7 +12550,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeleteFailedFormat
+        ///   Looks up a localized string similar to 迁移隧道 {0} 失败: 删除原隧道未成功({1}), 未做任何改动.
         /// </summary>
         public static string Text_UserProxy_MigrateDeleteFailedFormat {
             get {
@@ -12559,7 +12559,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateCreateFailedFormat
+        ///   Looks up a localized string similar to 隧道 {0} 已在原节点删除, 但在节点 #{1} 上重建失败: {2}.
         /// </summary>
         public static string Text_UserProxy_MigrateCreateFailedFormat {
             get {
@@ -12568,7 +12568,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeletedTitle
+        ///   Looks up a localized string similar to 隧道已在原节点删除.
         /// </summary>
         public static string Text_UserProxy_MigrateDeletedTitle {
             get {
@@ -12577,7 +12577,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeletedButCreateFailedFormat
+        ///   Looks up a localized string similar to 隧道 {0} 已从原节点删除, 但在节点 #{1} 上创建失败: {2}
+        ///
+        ///请前往创建隧道页按原配置手动重建。.
         /// </summary>
         public static string Text_UserProxy_MigrateDeletedButCreateFailedFormat {
             get {
@@ -12586,7 +12588,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateGoCreate
+        ///   Looks up a localized string similar to 前往创建隧道.
         /// </summary>
         public static string Text_UserProxy_MigrateGoCreate {
             get {
@@ -12595,7 +12597,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNotLoggedIn
+        ///   Looks up a localized string similar to 尚未登录, 无法迁移隧道.
         /// </summary>
         public static string Text_UserProxy_MigrateNotLoggedIn {
             get {
@@ -12604,7 +12606,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateIncompleteInfo
+        ///   Looks up a localized string similar to 隧道信息不完整(缺少节点地址或端口), 无法迁移.
         /// </summary>
         public static string Text_UserProxy_MigrateIncompleteInfo {
             get {
@@ -12613,7 +12615,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateBanned
+        ///   Looks up a localized string similar to 该隧道已被封禁, 无法迁移.
         /// </summary>
         public static string Text_UserProxy_MigrateBanned {
             get {
@@ -12622,7 +12624,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateRunningHint
+        ///   Looks up a localized string similar to 隧道正在运行, 请先停止后再迁移.
         /// </summary>
         public static string Text_UserProxy_MigrateRunningHint {
             get {
@@ -12631,7 +12633,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSameNode
+        ///   Looks up a localized string similar to 目标节点与原节点相同.
         /// </summary>
         public static string Text_UserProxy_MigrateSameNode {
             get {
@@ -12640,7 +12642,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetOffline
+        ///   Looks up a localized string similar to 目标节点当前不在线.
         /// </summary>
         public static string Text_UserProxy_MigrateTargetOffline {
             get {
@@ -12649,7 +12651,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetOverloaded
+        ///   Looks up a localized string similar to 目标节点负载过高.
         /// </summary>
         public static string Text_UserProxy_MigrateTargetOverloaded {
             get {
@@ -12658,7 +12660,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetUnsupportedFormat
+        ///   Looks up a localized string similar to 目标节点不支持原隧道的协议类型({0}).
         /// </summary>
         public static string Text_UserProxy_MigrateTargetUnsupportedFormat {
             get {
@@ -12766,7 +12768,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.Empty
+        ///   Looks up a localized string similar to 暂无通知.
         /// </summary>
         public static string Text_Inbox_Empty {
             get {
@@ -12775,7 +12777,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.New
+        ///   Looks up a localized string similar to 新.
         /// </summary>
         public static string Text_Inbox_New {
             get {
@@ -12784,7 +12786,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.NoTextPreview
+        ///   Looks up a localized string similar to 该通知没有可预览的文字内容，请点击查看详情。.
         /// </summary>
         public static string Text_Inbox_NoTextPreview {
             get {
@@ -12793,7 +12795,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.ViewDetails
+        ///   Looks up a localized string similar to 查看详情.
         /// </summary>
         public static string Text_Inbox_ViewDetails {
             get {

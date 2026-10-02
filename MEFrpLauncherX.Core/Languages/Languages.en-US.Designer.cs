@@ -681,7 +681,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open Logs Folder.
+        ///   Looks up a localized string similar to Open Log Folder.
         /// </summary>
         public static string Text_About_ToolBox_OpenLogsFolder {
             get {
@@ -1311,7 +1311,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System Notices.
+        ///   Looks up a localized string similar to Platform Notices.
         /// </summary>
         public static string Text_AppearanceSettings_SystemNotice {
             get {
@@ -2319,7 +2319,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter a proxy name.
+        ///   Looks up a localized string similar to Please enter the proxy name.
         /// </summary>
         public static string Text_CreateProxy_EnterProxyName {
             get {
@@ -2751,7 +2751,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	Did you know?.
+        ///   Looks up a localized string similar to Did you know?.
         /// </summary>
         public static string Text_DailyTip_DoYouKnow {
             get {
@@ -4173,7 +4173,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	If your DNS provider is not in our list, you can submit it here so we can add support for it..
+        ///   Looks up a localized string similar to If your DNS provider is not in our list, you can submit it here so we can add support for it..
         /// </summary>
         public static string Text_Dns_SubmitDnsProvider_Tip {
             get {
@@ -4796,7 +4796,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Node monitor.
+        ///   Looks up a localized string similar to Monitor nodes.
         /// </summary>
         public static string Text_Home_Recommend_Action_Nodes {
             get {
@@ -5372,7 +5372,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Text_Login_Username {
             get {
@@ -5570,7 +5570,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Limit Exceeded.
+        ///   Looks up a localized string similar to Traffic Exceeded.
         /// </summary>
         public static string Text_Main_UserInfo_AccountStatus_OverTraffic {
             get {
@@ -5624,7 +5624,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Text_Main_UserInfo_Name {
             get {
@@ -5660,7 +5660,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authenticated.
+        ///   Looks up a localized string similar to Verified.
         /// </summary>
         public static string Text_Main_UserInfo_RealNameAuthenticationStatus_Authenticated {
             get {
@@ -5669,7 +5669,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unauthenticated.
+        ///   Looks up a localized string similar to Not verified.
         /// </summary>
         public static string Text_Main_UserInfo_RealNameAuthenticationStatus_UnAuthenticated {
             get {
@@ -5678,7 +5678,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remaining Data Allowance.
+        ///   Looks up a localized string similar to Remaining Traffic.
         /// </summary>
         public static string Text_Main_UserInfo_RemainingTraffic {
             get {
@@ -5858,7 +5858,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open Log Directory.
+        ///   Looks up a localized string similar to Open Log Folder.
         /// </summary>
         public static string Text_MainWindow_OpenLogDirectory {
             get {
@@ -6367,7 +6367,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show only high-traffic-allowed nodes.
+        ///   Looks up a localized string similar to Show only nodes allowing high traffic.
         /// </summary>
         public static string Text_Nodes_Filter_AllowHighTraffic {
             get {
@@ -6511,7 +6511,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use /d:&lt;KEYWORD&gt; to search descriptions.
+        ///   Looks up a localized string similar to Enter /d:&amp;lt;KEYWORD&amp;gt; to search descriptions.
         /// </summary>
         public static string Text_Nodes_SearchHelp_Description {
             get {
@@ -6529,7 +6529,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pinyin search slows down searching and may cause the program to appear frozen..
+        ///   Looks up a localized string similar to Using pinyin search will slow down searching and cause the program to appear frozen..
         /// </summary>
         public static string Text_Nodes_SearchHelp_PerfWarning_Message {
             get {
@@ -6547,7 +6547,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use /pd:&lt;PINYIN&gt; to search descriptions by pinyin.
+        ///   Looks up a localized string similar to Enter /pd:&amp;lt;PINYIN&amp;gt; to search descriptions by pinyin.
         /// </summary>
         public static string Text_Nodes_SearchHelp_PinyinDescription {
             get {
@@ -6556,7 +6556,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use /pn:&lt;PINYIN&gt; to search names by pinyin.
+        ///   Looks up a localized string similar to Enter /pn:&amp;lt;PINYIN&amp;gt; to search names by pinyin.
         /// </summary>
         public static string Text_Nodes_SearchHelp_PinyinName {
             get {
@@ -6646,7 +6646,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No parameters: search by name directly.
+        ///   Looks up a localized string similar to No parameter: search by name directly.
         /// </summary>
         public static string Text_NodesContainer_HelpNoParams {
             get {
@@ -6673,7 +6673,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show only high-traffic nodes.
+        ///   Looks up a localized string similar to Show only nodes allowing high traffic.
         /// </summary>
         public static string Text_NodesContainer_OnlyHighTraffic {
             get {
@@ -6691,7 +6691,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show only site-buildable nodes.
+        ///   Looks up a localized string similar to Show only site-capable nodes.
         /// </summary>
         public static string Text_NodesContainer_OnlySiteBuildable {
             get {
@@ -6727,7 +6727,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HK, MO &amp; TW.
+        ///   Looks up a localized string similar to HK/Macau/TW.
         /// </summary>
         public static string Text_NodesContainer_Region_HKMOTW {
             get {
@@ -8070,7 +8070,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution..
+        ///   Looks up a localized string similar to Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution..
         /// </summary>
         public static string Text_ProxyFloat_EnableClickThroughWarning {
             get {
@@ -10666,7 +10666,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	Local service is not running..
+        ///   Looks up a localized string similar to Local service is not running..
         /// </summary>
         public static string Text_TunnelError_LocalServiceUnavailable {
             get {
@@ -10963,7 +10963,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSource
+        ///   Looks up a localized string similar to Download source.
         /// </summary>
         public static string Text_Update_DownloadSource {
             get {
@@ -10972,7 +10972,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDescription
+        ///   Looks up a localized string similar to Choose the route used to download updates. TPCA uses our self-hosted CDN; GitHub sources fetch the installer from GitHub Releases and can be accelerated through a mirror..
         /// </summary>
         public static string Text_Update_DownloadSourceDescription {
             get {
@@ -10981,7 +10981,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSource.TPCA
+        ///   Looks up a localized string similar to TPCA Openlist (default).
         /// </summary>
         public static string Text_Update_DownloadSource_TPCA {
             get {
@@ -10990,7 +10990,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSource.GitHub
+        ///   Looks up a localized string similar to Github.
         /// </summary>
         public static string Text_Update_DownloadSource_GitHub {
             get {
@@ -10999,7 +10999,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSource.GitHubGhProxy
+        ///   Looks up a localized string similar to Github (gh-proxy mirror).
         /// </summary>
         public static string Text_Update_DownloadSource_GitHubGhProxy {
             get {
@@ -11008,7 +11008,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSource.GitHubMoeyy
+        ///   Looks up a localized string similar to Github (moeyy mirror).
         /// </summary>
         public static string Text_Update_DownloadSource_GitHubMoeyy {
             get {
@@ -11017,7 +11017,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDesc.TPCA
+        ///   Looks up a localized string similar to Downloads updates from our self-hosted Alist CDN, which is the fastest option in mainland China..
         /// </summary>
         public static string Text_Update_DownloadSourceDesc_TPCA {
             get {
@@ -11026,7 +11026,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDesc.GitHub
+        ///   Looks up a localized string similar to Fetches the Release installer directly from GitHub, suitable when GitHub is reachable..
         /// </summary>
         public static string Text_Update_DownloadSourceDesc_GitHub {
             get {
@@ -11035,7 +11035,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDesc.GitHubGhProxy
+        ///   Looks up a localized string similar to Accesses GitHub through the gh-proxy mirror; recommended when a direct GitHub connection is slow or unavailable..
         /// </summary>
         public static string Text_Update_DownloadSourceDesc_GitHubGhProxy {
             get {
@@ -11044,7 +11044,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDesc.GitHubMoeyy
+        ///   Looks up a localized string similar to Accesses GitHub through the moeyy mirror, usable as a fallback for the gh-proxy mirror..
         /// </summary>
         public static string Text_Update_DownloadSourceDesc_GitHubMoeyy {
             get {
@@ -11053,7 +11053,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceDesc.Unknown
+        ///   Looks up a localized string similar to Unknown download source.
         /// </summary>
         public static string Text_Update_DownloadSourceDesc_Unknown {
             get {
@@ -11062,7 +11062,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.DownloadSourceResolvedFormat
+        ///   Looks up a localized string similar to Downloading from {0}: {1}.
         /// </summary>
         public static string Text_Update_DownloadSourceResolvedFormat {
             get {
@@ -11071,7 +11071,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.InstallTipLinuxRpm
+        ///   Looks up a localized string similar to Click Yes to open the folder containing the installer, then install the rpm package with rpm -ivh or dnf install.
         /// </summary>
         public static string Text_Update_InstallTipLinuxRpm {
             get {
@@ -11080,7 +11080,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Update.InstallTipLinuxTar
+        ///   Looks up a localized string similar to Click Yes to open the folder containing the installer, then extract the archive and overwrite the installation as described in the README.
         /// </summary>
         public static string Text_Update_InstallTipLinuxTar {
             get {
@@ -12144,7 +12144,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	Copied to clipboard.
+        ///   Looks up a localized string similar to Copied to clipboard.
         /// </summary>
         public static string Text_UserProxy_QRCodeCopiedToClipboard {
             get {
@@ -12153,7 +12153,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to generate QR code.	.
+        ///   Looks up a localized string similar to Failed to generate QR code..
         /// </summary>
         public static string Text_UserProxy_QRCodeGeneratedFailed {
             get {
@@ -12261,7 +12261,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	QR code saved successfully..
+        ///   Looks up a localized string similar to QR code saved successfully..
         /// </summary>
         public static string Text_UserProxy_QRCodeView_SavedSuccessfully {
             get {
@@ -12360,7 +12360,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTunnel
+        ///   Looks up a localized string similar to Migrate Proxy.
         /// </summary>
         public static string Text_UserProxy_MigrateTunnel {
             get {
@@ -12369,7 +12369,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTitle
+        ///   Looks up a localized string similar to Migrate Proxy.
         /// </summary>
         public static string Text_UserProxy_MigrateTitle {
             get {
@@ -12378,7 +12378,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSourceNodeFormat
+        ///   Looks up a localized string similar to Source node: #{0} {1}.
         /// </summary>
         public static string Text_UserProxy_MigrateSourceNodeFormat {
             get {
@@ -12387,7 +12387,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSelectHint
+        ///   Looks up a localized string similar to Please select the target node: migration deletes the original proxy first, then recreates an identical proxy on the new node using the original configuration..
         /// </summary>
         public static string Text_UserProxy_MigrateSelectHint {
             get {
@@ -12396,7 +12396,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNodeCountFormat
+        ///   Looks up a localized string similar to {0} candidate nodes in total.
         /// </summary>
         public static string Text_UserProxy_MigrateNodeCountFormat {
             get {
@@ -12405,7 +12405,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNoMatchingNode
+        ///   Looks up a localized string similar to No candidate nodes match the current conditions.
         /// </summary>
         public static string Text_UserProxy_MigrateNoMatchingNode {
             get {
@@ -12414,7 +12414,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNoNodes
+        ///   Looks up a localized string similar to Failed to get the node list, please try again later.
         /// </summary>
         public static string Text_UserProxy_MigrateNoNodes {
             get {
@@ -12423,7 +12423,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortRecommended
+        ///   Looks up a localized string similar to Recommended.
         /// </summary>
         public static string Text_UserProxy_MigrateSortRecommended {
             get {
@@ -12432,7 +12432,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortLatency
+        ///   Looks up a localized string similar to By latency.
         /// </summary>
         public static string Text_UserProxy_MigrateSortLatency {
             get {
@@ -12441,7 +12441,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortLoad
+        ///   Looks up a localized string similar to By load.
         /// </summary>
         public static string Text_UserProxy_MigrateSortLoad {
             get {
@@ -12450,7 +12450,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSortName
+        ///   Looks up a localized string similar to By name.
         /// </summary>
         public static string Text_UserProxy_MigrateSortName {
             get {
@@ -12459,7 +12459,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateProbeLatency
+        ///   Looks up a localized string similar to Probe latency.
         /// </summary>
         public static string Text_UserProxy_MigrateProbeLatency {
             get {
@@ -12468,7 +12468,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateLatencyFormat
+        ///   Looks up a localized string similar to Latency: {0} ms.
         /// </summary>
         public static string Text_UserProxy_MigrateLatencyFormat {
             get {
@@ -12477,7 +12477,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateLatencyUnknown
+        ///   Looks up a localized string similar to Latency: unknown.
         /// </summary>
         public static string Text_UserProxy_MigrateLatencyUnknown {
             get {
@@ -12486,7 +12486,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSelectNodeRequired
+        ///   Looks up a localized string similar to Please select a target node first.
         /// </summary>
         public static string Text_UserProxy_MigrateSelectNodeRequired {
             get {
@@ -12495,7 +12495,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateInProgressFormat
+        ///   Looks up a localized string similar to Migrating proxy {0}, please wait....
         /// </summary>
         public static string Text_UserProxy_MigrateInProgressFormat {
             get {
@@ -12504,7 +12504,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSucceededFormat
+        ///   Looks up a localized string similar to Proxy {0} has been migrated to node #{1}.
         /// </summary>
         public static string Text_UserProxy_MigrateSucceededFormat {
             get {
@@ -12513,7 +12513,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateFailedFormat
+        ///   Looks up a localized string similar to Failed to migrate proxy {0}: {1}.
         /// </summary>
         public static string Text_UserProxy_MigrateFailedFormat {
             get {
@@ -12522,7 +12522,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeleteFailedFormat
+        ///   Looks up a localized string similar to Failed to migrate proxy {0}: the original proxy was not deleted ({1}), so no changes were made.
         /// </summary>
         public static string Text_UserProxy_MigrateDeleteFailedFormat {
             get {
@@ -12531,7 +12531,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateCreateFailedFormat
+        ///   Looks up a localized string similar to Proxy {0} was deleted on the original node, but recreating it on node #{1} failed: {2}.
         /// </summary>
         public static string Text_UserProxy_MigrateCreateFailedFormat {
             get {
@@ -12540,7 +12540,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeletedTitle
+        ///   Looks up a localized string similar to The proxy has been deleted on the original node.
         /// </summary>
         public static string Text_UserProxy_MigrateDeletedTitle {
             get {
@@ -12549,7 +12549,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateDeletedButCreateFailedFormat
+        ///   Looks up a localized string similar to Proxy {0} was deleted from the original node, but creating it on node #{1} failed: {2}
+        ///
+        ///Please go to the Create Proxy page and recreate it manually with the original configuration..
         /// </summary>
         public static string Text_UserProxy_MigrateDeletedButCreateFailedFormat {
             get {
@@ -12558,7 +12560,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateGoCreate
+        ///   Looks up a localized string similar to Go to Create Proxy.
         /// </summary>
         public static string Text_UserProxy_MigrateGoCreate {
             get {
@@ -12567,7 +12569,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateNotLoggedIn
+        ///   Looks up a localized string similar to You are not signed in, unable to migrate the proxy.
         /// </summary>
         public static string Text_UserProxy_MigrateNotLoggedIn {
             get {
@@ -12576,7 +12578,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateIncompleteInfo
+        ///   Looks up a localized string similar to Proxy information is incomplete (missing node address or port), unable to migrate.
         /// </summary>
         public static string Text_UserProxy_MigrateIncompleteInfo {
             get {
@@ -12585,7 +12587,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateBanned
+        ///   Looks up a localized string similar to This proxy has been banned, unable to migrate.
         /// </summary>
         public static string Text_UserProxy_MigrateBanned {
             get {
@@ -12594,7 +12596,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateRunningHint
+        ///   Looks up a localized string similar to The proxy is running, please stop it before migrating.
         /// </summary>
         public static string Text_UserProxy_MigrateRunningHint {
             get {
@@ -12603,7 +12605,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateSameNode
+        ///   Looks up a localized string similar to The target node is the same as the original node.
         /// </summary>
         public static string Text_UserProxy_MigrateSameNode {
             get {
@@ -12612,7 +12614,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetOffline
+        ///   Looks up a localized string similar to The target node is currently offline.
         /// </summary>
         public static string Text_UserProxy_MigrateTargetOffline {
             get {
@@ -12621,7 +12623,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetOverloaded
+        ///   Looks up a localized string similar to The target node is overloaded.
         /// </summary>
         public static string Text_UserProxy_MigrateTargetOverloaded {
             get {
@@ -12630,7 +12632,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
 
         /// <summary>
-        ///   Looks up a localized string for key: Text.UserProxy.MigrateTargetUnsupportedFormat
+        ///   Looks up a localized string similar to The target node does not support the original proxy's protocol type ({0}).
         /// </summary>
         public static string Text_UserProxy_MigrateTargetUnsupportedFormat {
             get {
@@ -12666,7 +12668,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 	Blog Updates.
+        ///   Looks up a localized string similar to Blog Updates.
         /// </summary>
         public static string Text_WhatsNew_Blog {
             get {
@@ -12738,7 +12740,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.Empty
+        ///   Looks up a localized string similar to No notices.
         /// </summary>
         public static string Text_Inbox_Empty {
             get {
@@ -12747,7 +12749,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.New
+        ///   Looks up a localized string similar to New.
         /// </summary>
         public static string Text_Inbox_New {
             get {
@@ -12756,7 +12758,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.NoTextPreview
+        ///   Looks up a localized string similar to This notice has no text preview. Click to view details..
         /// </summary>
         public static string Text_Inbox_NoTextPreview {
             get {
@@ -12765,7 +12767,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string for key: Text.Inbox.ViewDetails
+        ///   Looks up a localized string similar to View details.
         /// </summary>
         public static string Text_Inbox_ViewDetails {
             get {

@@ -37,7 +37,7 @@
         <value>Account</value>
     </data>
     <data name="Text.Main.UserInfo.Name" xml:space="preserve">
-        <value>Name</value>
+        <value>Username</value>
     </data>
     <data name="Text.Main.UserInfo.Id" xml:space="preserve">
         <value>ID</value>
@@ -82,13 +82,13 @@
         <value>Network Error</value>
     </data>
     <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.Authenticated" xml:space="preserve">
-        <value>Authenticated</value>
+        <value>Verified</value>
     </data>
     <data name="Text.Main.UserInfo.RemainingTraffic" xml:space="preserve">
-        <value>Remaining Data Allowance</value>
+        <value>Remaining Traffic</value>
     </data>
     <data name="Text.Main.UserInfo.RealNameAuthenticationStatus.UnAuthenticated" xml:space="preserve">
-        <value>Unauthenticated</value>
+        <value>Not verified</value>
     </data>
     <data name="Text.Main.UserInfo.AccountStatus.Normal" xml:space="preserve">
         <value>Normal</value>
@@ -97,7 +97,7 @@
         <value>Banned</value>
     </data>
     <data name="Text.Main.UserInfo.AccountStatus.OverTraffic" xml:space="preserve">
-        <value>Data Limit Exceeded</value>
+        <value>Traffic Exceeded</value>
     </data>
     <data name="Text.Main.UserInfo.AccountStatus.Unknown" xml:space="preserve">
         <value>Unknown</value>
@@ -154,7 +154,7 @@
         <value>Remember Me</value>
     </data>
     <data name="Text.Login.Username" xml:space="preserve">
-        <value>Name</value>
+        <value>Username</value>
     </data>
     <data name="Text.Login.Password" xml:space="preserve">
         <value>Password</value>
@@ -470,25 +470,25 @@
         <value>No parameter: search by name directly</value>
     </data>
     <data name="Text.Nodes.SearchHelp.Description" xml:space="preserve">
-        <value>Use /d:&lt;KEYWORD&gt; to search descriptions</value>
+        <value>Enter /d:&lt;KEYWORD&gt; to search descriptions</value>
     </data>
     <data name="Text.Nodes.SearchHelp.PinyinName" xml:space="preserve">
-        <value>Use /pn:&lt;PINYIN&gt; to search names by pinyin</value>
+        <value>Enter /pn:&lt;PINYIN&gt; to search names by pinyin</value>
     </data>
     <data name="Text.Nodes.SearchHelp.PinyinDescription" xml:space="preserve">
-        <value>Use /pd:&lt;PINYIN&gt; to search descriptions by pinyin</value>
+        <value>Enter /pd:&lt;PINYIN&gt; to search descriptions by pinyin</value>
     </data>
     <data name="Text.Nodes.SearchHelp.PerfWarning.Title" xml:space="preserve">
         <value>Known Performance Warning</value>
     </data>
     <data name="Text.Nodes.SearchHelp.PerfWarning.Message" xml:space="preserve">
-        <value>Pinyin search slows down searching and may cause the program to appear frozen.</value>
+        <value>Using pinyin search will slow down searching and cause the program to appear frozen.</value>
     </data>
     <data name="Text.Nodes.Filter.CanBuildSite" xml:space="preserve">
         <value>Show only site-capable nodes</value>
     </data>
     <data name="Text.Nodes.Filter.AllowHighTraffic" xml:space="preserve">
-        <value>Show only high-traffic-allowed nodes</value>
+        <value>Show only nodes allowing high traffic</value>
     </data>
     <data name="Text.Nodes.Filter.NotOverLoaded" xml:space="preserve">
         <value>Show only non-overloaded nodes</value>
@@ -1505,10 +1505,10 @@
         <value>Tip</value>
     </data>
     <data name="Text.NodesContainer.SearchNodes" xml:space="preserve">
-        <value>Search Nodes</value>
+        <value>Search nodes</value>
     </data>
     <data name="Text.NodesContainer.HelpNoParams" xml:space="preserve">
-        <value>No parameters: search by name directly</value>
+        <value>No parameter: search by name directly</value>
     </data>
     <data name="Text.NodesContainer.HelpDescSearch" xml:space="preserve">
         <value>Enter /d:&lt;KEYWORD&gt; to search descriptions</value>
@@ -1526,10 +1526,10 @@
         <value>Using pinyin search will slow down searching and cause the program to appear frozen.</value>
     </data>
     <data name="Text.NodesContainer.OnlySiteBuildable" xml:space="preserve">
-        <value>Show only site-buildable nodes</value>
+        <value>Show only site-capable nodes</value>
     </data>
     <data name="Text.NodesContainer.OnlyHighTraffic" xml:space="preserve">
-        <value>Show only high-traffic nodes</value>
+        <value>Show only nodes allowing high traffic</value>
     </data>
     <data name="Text.NodesContainer.OnlyNotOverloaded" xml:space="preserve">
         <value>Show only non-overloaded nodes</value>
@@ -1541,7 +1541,7 @@
         <value>Mainland China</value>
     </data>
     <data name="Text.NodesContainer.Region_HKMOTW" xml:space="preserve">
-        <value>HK, MO &amp; TW</value>
+        <value>HK/Macau/TW</value>
     </data>
     <data name="Text.NodesContainer.Region_Overseas" xml:space="preserve">
         <value>Overseas</value>
@@ -1667,7 +1667,7 @@
         <value>Software Notices</value>
     </data>
     <data name="Text.AppearanceSettings.SystemNotice" xml:space="preserve">
-        <value>System Notices</value>
+        <value>Platform Notices</value>
     </data>
     <data name="Text.AppearanceSettings.ClearAllBackgrounds" xml:space="preserve">
         <value>Clear All Backgrounds</value>
@@ -2343,7 +2343,7 @@ This will delete the currently selected theme configuration file, and takes effe
     <data name="Text.CreateProxyGuide.RDPDesc" xml:space="preserve">
         <value>RDP (Remote Desktop Protocol) is a remote access protocol developed by Microsoft. It uses TCP port 3389 by default, allowing users to remotely control a computer through a graphical interface over the network.</value>
     </data>
-    <data name="Text.ManageProxy.MenuProxies" xml:space="preserve">
+    <data name="Text.ManageProxy.MenuTunnels" xml:space="preserve">
         <value>Proxies</value>
     </data>
     <data name="Text.ManageProxy.ManageTunnels" xml:space="preserve">
@@ -2368,7 +2368,7 @@ This will delete the currently selected theme configuration file, and takes effe
         <value>Help</value>
     </data>
     <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
-        <value>Please enter a proxy name</value>
+        <value>Please enter the proxy name</value>
     </data>
     <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
         <value>Please enter a local address</value>
@@ -2495,7 +2495,7 @@ For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.ryc
         <value>File</value>
     </data>
     <data name="Text.MainWindow.OpenLogDirectory" xml:space="preserve">
-        <value>Open Log Directory</value>
+        <value>Open Log Folder</value>
     </data>
     <data name="Text.MainWindow.RefreshProxies" xml:space="preserve">
         <value>Refresh Proxy List</value>
@@ -3054,6 +3054,101 @@ Please note: we are not responsible for any consequences caused by running any u
     <data name="Text.UserProxy.TunnelInfoCopied" xml:space="preserve">
         <value>Proxy information copied</value>
     </data>
+    <data name="Text.UserProxy.MigrateTunnel" xml:space="preserve">
+        <value>Migrate Proxy</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTitle" xml:space="preserve">
+        <value>Migrate Proxy</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSourceNodeFormat" xml:space="preserve">
+        <value>Source node: #{0} {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectHint" xml:space="preserve">
+        <value>Please select the target node: migration deletes the original proxy first, then recreates an identical proxy on the new node using the original configuration.</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNodeCountFormat" xml:space="preserve">
+        <value>{0} candidate nodes in total</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoMatchingNode" xml:space="preserve">
+        <value>No candidate nodes match the current conditions</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNoNodes" xml:space="preserve">
+        <value>Failed to get the node list, please try again later</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortRecommended" xml:space="preserve">
+        <value>Recommended</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLatency" xml:space="preserve">
+        <value>By latency</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortLoad" xml:space="preserve">
+        <value>By load</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSortName" xml:space="preserve">
+        <value>By name</value>
+    </data>
+    <data name="Text.UserProxy.MigrateProbeLatency" xml:space="preserve">
+        <value>Probe latency</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyFormat" xml:space="preserve">
+        <value>Latency: {0} ms</value>
+    </data>
+    <data name="Text.UserProxy.MigrateLatencyUnknown" xml:space="preserve">
+        <value>Latency: unknown</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSelectNodeRequired" xml:space="preserve">
+        <value>Please select a target node first</value>
+    </data>
+    <data name="Text.UserProxy.MigrateInProgressFormat" xml:space="preserve">
+        <value>Migrating proxy {0}, please wait...</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSucceededFormat" xml:space="preserve">
+        <value>Proxy {0} has been migrated to node #{1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateFailedFormat" xml:space="preserve">
+        <value>Failed to migrate proxy {0}: {1}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeleteFailedFormat" xml:space="preserve">
+        <value>Failed to migrate proxy {0}: the original proxy was not deleted ({1}), so no changes were made</value>
+    </data>
+    <data name="Text.UserProxy.MigrateCreateFailedFormat" xml:space="preserve">
+        <value>Proxy {0} was deleted on the original node, but recreating it on node #{1} failed: {2}</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedTitle" xml:space="preserve">
+        <value>The proxy has been deleted on the original node</value>
+    </data>
+    <data name="Text.UserProxy.MigrateDeletedButCreateFailedFormat" xml:space="preserve">
+        <value>Proxy {0} was deleted from the original node, but creating it on node #{1} failed: {2}
+
+Please go to the Create Proxy page and recreate it manually with the original configuration.</value>
+    </data>
+    <data name="Text.UserProxy.MigrateGoCreate" xml:space="preserve">
+        <value>Go to Create Proxy</value>
+    </data>
+    <data name="Text.UserProxy.MigrateNotLoggedIn" xml:space="preserve">
+        <value>You are not signed in, unable to migrate the proxy</value>
+    </data>
+    <data name="Text.UserProxy.MigrateIncompleteInfo" xml:space="preserve">
+        <value>Proxy information is incomplete (missing node address or port), unable to migrate</value>
+    </data>
+    <data name="Text.UserProxy.MigrateBanned" xml:space="preserve">
+        <value>This proxy has been banned, unable to migrate</value>
+    </data>
+    <data name="Text.UserProxy.MigrateRunningHint" xml:space="preserve">
+        <value>The proxy is running, please stop it before migrating</value>
+    </data>
+    <data name="Text.UserProxy.MigrateSameNode" xml:space="preserve">
+        <value>The target node is the same as the original node</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOffline" xml:space="preserve">
+        <value>The target node is currently offline</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetOverloaded" xml:space="preserve">
+        <value>The target node is overloaded</value>
+    </data>
+    <data name="Text.UserProxy.MigrateTargetUnsupportedFormat" xml:space="preserve">
+        <value>The target node does not support the original proxy's protocol type ({0})</value>
+    </data>
     <data name="Text.Settings.Advanced" xml:space="preserve">
         <value>Advanced Settings</value>
     </data>
@@ -3229,7 +3324,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>An error occurred during cleanup, please check the logs</value>
     </data>
     <data name="Text.About.ToolBox.OpenLogsFolder" xml:space="preserve">
-        <value>Open Logs Folder</value>
+        <value>Open Log Folder</value>
     </data>
     <data name="Text.About.ToolBox.OpenLogsFolder.Description" xml:space="preserve">
         <value>Open the log folder in the file manager</value>
@@ -3253,13 +3348,13 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Failed to copy diagnostics</value>
     </data>
     <data name="Text.DailyTip.DoYouKnow" xml:space="preserve">
-        <value>	Did you know?</value>
+        <value>Did you know?</value>
     </data>
     <data name="Text.ProxyStart.StartFailed" xml:space="preserve">
         <value>Proxy {0} failed to start.</value>
     </data>
     <data name="Text.TunnelError.LocalServiceUnavailable" xml:space="preserve">
-        <value>	Local service is not running.</value>
+        <value>Local service is not running.</value>
     </data>
     <data name="Text.Global.Dismiss" xml:space="preserve">
         <value>Dismiss</value>
@@ -3268,7 +3363,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>All</value>
     </data>
     <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
-        <value>	Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution.</value>
+        <value>Enabling window click‑through will prevent you from manually closing the floating window. Please use with caution.</value>
     </data>
     <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
         <value>No proxy templates available. Install a create-proxy-template plugin first, or enable it on the Plugins page.</value>
@@ -3292,7 +3387,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>QR code generated successfully.</value>
     </data>
     <data name="Text.UserProxy.QRCodeGeneratedFailed" xml:space="preserve">
-        <value>Failed to generate QR code.	</value>
+        <value>Failed to generate QR code.</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.Caption" xml:space="preserve">
         <value>QR code generated successfully. Would you like to view it?</value>
@@ -3307,10 +3402,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Copy to Clipboard</value>
     </data>
     <data name="Text.UserProxy.QRCodeCopiedToClipboard" xml:space="preserve">
-        <value>	Copied to clipboard</value>
+        <value>Copied to clipboard</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.SavedSuccessfully" xml:space="preserve">
-        <value>	QR code saved successfully.</value>
+        <value>QR code saved successfully.</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.FailedToSave" xml:space="preserve">
         <value>Failed to save QR code.</value>
@@ -3504,7 +3599,7 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Go update</value>
     </data>
     <data name="Text.Home.Recommend.Action.Nodes" xml:space="preserve">
-        <value>Node monitor</value>
+        <value>Monitor nodes</value>
     </data>
     <data name="Text.Home.Recommend.Action.Docs" xml:space="preserve">
         <value>Open docs</value>
@@ -4200,10 +4295,10 @@ Please note: we are not responsible for any consequences caused by running any u
         <value>Submit DNS Provider</value>
     </data>
     <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
-        <value>	If your DNS provider is not in our list, you can submit it here so we can add support for it.</value>
+        <value>If your DNS provider is not in our list, you can submit it here so we can add support for it.</value>
     </data>
     <data name="Text.WhatsNew.Blog" xml:space="preserve">
-        <value>	Blog Updates</value>
+        <value>Blog Updates</value>
     </data>
     <data name="Text.WhatsNew.Changelog" xml:space="preserve">
         <value>Changelog (API)</value>

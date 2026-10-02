@@ -1044,7 +1044,7 @@
         <value>啟用壓縮</value>
     </data>
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
-        <value>用戶資訊</value>
+        <value>使用者資訊</value>
     </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>檢視並管理您的帳戶基本資訊</value>
@@ -1416,7 +1416,7 @@
         <value>說明文件</value>
     </data>
     <data name="Text.About.OpenSource" xml:space="preserve">
-        <value>開源軟體</value>
+        <value>開放原始碼軟體</value>
     </data>
     <data name="Text.About.ReportIssue" xml:space="preserve">
         <value>回報軟體問題</value>
@@ -1521,7 +1521,7 @@
         <value>已知效能警告</value>
     </data>
     <data name="Text.NodesContainer.PerformanceWarningMessage" xml:space="preserve">
-        <value>使用拼音搜尋會降低搜尋速度，並造成程式假死。</value>
+        <value>使用拼音搜尋將減慢搜尋速度, 並造成程式假死。</value>
     </data>
     <data name="Text.NodesContainer.OnlySiteBuildable" xml:space="preserve">
         <value>僅顯示可建站節點</value>
@@ -2475,7 +2475,7 @@ ___
         <value>開啟終端機</value>
     </data>
     <data name="Text.MainWindow.Exit" xml:space="preserve">
-        <value>退出</value>
+        <value>結束</value>
     </data>
     <data name="Text.MainWindow.About" xml:space="preserve">
         <value>關於</value>
@@ -2487,7 +2487,7 @@ ___
         <value>檔案</value>
     </data>
     <data name="Text.MainWindow.OpenLogDirectory" xml:space="preserve">
-        <value>開啟記錄資料夾</value>
+        <value>開啟日誌目錄</value>
     </data>
     <data name="Text.MainWindow.RefreshProxies" xml:space="preserve">
         <value>重新整理隧道清單</value>
@@ -2547,7 +2547,7 @@ ___
         <value>憑證檔案</value>
     </data>
     <data name="Text.ProxySSL.KeyFiles" xml:space="preserve">
-        <value>私鑰檔案</value>
+        <value>私密金鑰檔案</value>
     </data>
     <data name="Text.ProxySSL.SelectFileTitle" xml:space="preserve">
         <value>請選擇檔案</value>
@@ -3011,7 +3011,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>建立自節點: {0}</value>
     </data>
     <data name="Text.UserProxy.DetailProtocolType" xml:space="preserve">
-        <value>通訊協定類型</value>
+        <value>協定類型</value>
     </data>
     <data name="Text.UserProxy.DetailLocalPort" xml:space="preserve">
         <value>本機連接埠</value>
@@ -3220,7 +3220,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>變更將在重新啟動程式後生效</value>
     </data>
     <data name="Text.Settings.Language" xml:space="preserve">
-        <value>	語言</value>
+        <value>語言</value>
     </data>
     <data name="Text.Settings.LanguageDescription" xml:space="preserve">
         <value>設定軟體的顯示語言。</value>
@@ -3244,7 +3244,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>全球節點</value>
     </data>
     <data name="Text.MappedNodeContainer.SelectedRegion" xml:space="preserve">
-        <value>	已選地區	</value>
+        <value>已選地區</value>
     </data>
     <data name="Text.MappedNodeContainer.CurrentRegion" xml:space="preserve">
         <value>當前地區</value>
@@ -3358,7 +3358,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>全部</value>
     </data>
     <data name="Text.ProxyFloat.EnableClickThroughWarning" xml:space="preserve">
-        <value>	開啟視窗穿透後，您將無法手動關閉懸浮視窗，請謹慎操作。</value>
+        <value>開啟視窗穿透後，您將無法手動關閉懸浮視窗，請謹慎操作。</value>
     </data>
     <data name="Text.Proxy.Guide.NoTemplates" xml:space="preserve">
         <value>暫無可用的隧道範本。請先安裝 create-proxy-template 類型外掛，或到「外掛」頁檢查其是否已啟用。</value>
@@ -3388,7 +3388,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>二維碼產生成功。您想要查看它嗎？</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.View" xml:space="preserve">
-        <value>查看</value>
+        <value>檢視</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.ExportPng" xml:space="preserve">
         <value>匯出圖片</value>
@@ -3397,7 +3397,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>複製到剪貼簿</value>
     </data>
     <data name="Text.UserProxy.QRCodeCopiedToClipboard" xml:space="preserve">
-        <value>	已複製到剪貼簿</value>
+        <value>已複製到剪貼簿</value>
     </data>
     <data name="Text.UserProxy.QRCodeView.SavedSuccessfully" xml:space="preserve">
         <value>二維碼儲存成功</value>
@@ -3638,7 +3638,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>正式環境有簽發頻率限制，請確認網域與 DNS 已就緒後再繼續。</value>
     </data>
     <data name="Text.Certificate.Domain" xml:space="preserve">
-        <value>網域</value>
+        <value>網域名稱</value>
     </data>
     <data name="Text.Certificate.DomainPlaceholder" xml:space="preserve">
         <value>例如 example.com</value>
@@ -4275,7 +4275,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>中午好，{0}</value>
     </data>
     <data name="Text.Home.Simple.Greeting.Afternoon" xml:space="preserve">
-        <value>	下午好，{0}</value>
+        <value>下午好，{0}</value>
     </data>
     <data name="Text.Home.Simple.Greeting.Evening" xml:space="preserve">
         <value>晚上好，{0}</value>
@@ -4287,10 +4287,10 @@ Never Gonna Give the Minecraft Up</value>
         <value>你好，{0}</value>
     </data>
     <data name="Text.Dns.SubmitProvider" xml:space="preserve">
-        <value>	提交 DNS 服務商</value>
+        <value>提交 DNS 服務商</value>
     </data>
     <data name="Text.Dns.SubmitDnsProvider.Tip" xml:space="preserve">
-        <value>	若您的 DNS 服務商不在我們提供的清單中，您可以透過此表單提交，以便我們進行適配。</value>
+        <value>若您的 DNS 服務商不在我們提供的清單中，您可以透過此表單提交，以便我們進行適配。</value>
     </data>
     <data name="Text.WhatsNew.Blog" xml:space="preserve">
         <value>Blog 更新</value>
@@ -4311,7 +4311,7 @@ Never Gonna Give the Minecraft Up</value>
         <value>該通知沒有可預覽的文字內容，請點擊查看詳情。</value>
     </data>
     <data name="Text.Inbox.ViewDetails" xml:space="preserve">
-        <value>檢視詳情</value>
+        <value>檢視詳細資訊</value>
     </data>
     <data name="Text.Dns.Delete" xml:space="preserve">
         <value>刪除</value>

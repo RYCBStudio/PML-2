@@ -2368,7 +2368,7 @@
         <value>帮助</value>
     </data>
     <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
-        <value>请输入隧道名</value>
+        <value>请输入隧道名称</value>
     </data>
     <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
         <value>请输入本地地址</value>
