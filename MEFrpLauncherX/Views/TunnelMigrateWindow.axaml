@@ -1,0 +1,128 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+        xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:nodeVm="clr-namespace:MEFrpLauncherX.ViewModels.Controls"
+        xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        mc:Ignorable="d"
+        x:Class="MEFrpLauncherX.Views.TunnelMigrateWindow"
+        x:DataType="viewModels:TunnelMigrateViewModel"
+        WindowStartupLocation="CenterOwner"
+        Width="880"
+        Height="620"
+        FontFamily="{StaticResource GlobalFontFamily}"
+        Title="{x:Static languages:Languages.Text_UserProxy_MigrateTitle}">
+    <Grid Margin="14" RowDefinitions="Auto,*,Auto" RowSpacing="10">
+
+        <!-- 说明 + 搜索/排序/探测工具条 -->
+        <StackPanel Grid.Row="0" Spacing="6">
+            <TextBlock Text="{Binding SourceNodeText}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       FontFamily="{StaticResource GlobalFontFamily}" />
+            <TextBlock Text="{x:Static languages:Languages.Text_UserProxy_MigrateSelectHint}"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       FontFamily="{StaticResource GlobalFontFamily}" />
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                <TextBox Grid.Column="0"
+                         VerticalAlignment="Center"
+                         PlaceholderText="{x:Static languages:Languages.Text_Nodes_SearchWatermark}"
+                         FontFamily="{StaticResource GlobalFontFamily}"
+                         Text="{Binding SearchText}" />
+                <ComboBox Grid.Column="1"
+                          MinWidth="150"
+                          VerticalAlignment="Center"
+                          FontFamily="{StaticResource GlobalFontFamily}"
+                          ItemsSource="{Binding SortOptions}"
+                          SelectedIndex="{Binding SortModeIndex}" />
+                <Button Grid.Column="2"
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        IsEnabled="{Binding !IsProbing}"
+                        Click="OnProbeLatency"
+                        Content="{x:Static languages:Languages.Text_UserProxy_MigrateProbeLatency}" />
+                <controls1:FAProgressRing Grid.Column="3"
+                                         Width="20"
+                                         Height="20"
+                                         VerticalAlignment="Center"
+                                         IsIndeterminate="True"
+                                         IsVisible="{Binding IsProbing}" />
+            </Grid>
+        </StackPanel>
+
+        <!-- 候选节点列表（复用创建隧道页的节点卡片控件） -->
+        <Grid Grid.Row="1">
+            <ListBox x:Name="NodesList"
+                     Background="Transparent"
+                     ItemsSource="{Binding FilteredNodes}"
+                     SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"
+                                   ItemWidth="270"
+                                   ItemHeight="292"
+                                   ItemSpacing="4"
+                                   LineSpacing="4" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="nodeVm:TunnelNodeViewModel">
+                        <Grid RowDefinitions="Auto,Auto" RowSpacing="4">
+                            <controls:TunnelNodeControl Grid.Row="0" DataContext="{Binding}" />
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10">
+                                <TextBlock FontSize="11"
+                                           VerticalAlignment="Center"
+                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           Text="{Binding RegionDisplay}" />
+                                <TextBlock FontSize="11"
+                                           VerticalAlignment="Center"
+                                           FontFamily="{StaticResource GlobalFontFamily}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           Text="{Binding LatencyText}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <controls1:FAProgressRing HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     IsIndeterminate="True"
+                                     IsVisible="{Binding IsLoading}" />
+
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="480"
+                       TextAlignment="Center"
+                       FontFamily="{StaticResource GlobalFontFamily}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       IsVisible="{Binding !HasCandidates}"
+                       Text="{Binding StatusHint}" />
+        </Grid>
+
+        <!-- 底部：候选统计 + 确认/取消 -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            <TextBlock Grid.Column="0"
+                       VerticalAlignment="Center"
+                       FontFamily="{StaticResource GlobalFontFamily}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       IsVisible="{Binding HasCandidates}"
+                       Text="{Binding StatusHint}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Classes="accent"
+                        Click="OnConfirm"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Content="{x:Static languages:Languages.Text_Global_Confirm}" />
+                <Button Click="OnCancel"
+                        FontFamily="{StaticResource GlobalFontFamily}"
+                        Content="{x:Static languages:Languages.Text_Global_Cancel}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
