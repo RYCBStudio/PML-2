@@ -70,8 +70,13 @@ jobs:
           OPENLIST_PATH: "/mefrp-desktop/ME-Frp PML2/mefrp"
           TAG: ${{ steps.release.outputs.tag }}
         run: |
-          python3 << 'PYEOF'
-          import os, re, sys, json, urllib.request, urllib.parse
+          pip install requests --quiet
+          python3 -u << 'PYEOF'
+          import os, re, sys, json, time
+          import requests
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+          import urllib.parse
 
           url = os.environ['OPENLIST_URL']
           username = os.environ['OPENLIST_USERNAME']
@@ -79,7 +84,6 @@ jobs:
           base_path = os.environ['OPENLIST_PATH']
           tag = os.environ['TAG']
 
-          # ---- 文件名还原（与 Worker 保持一致） ----
           EXT_REGEX = re.compile(
               r'\.(tar\.gz|tar\.xz|tar\.bz2|tar\.zst|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
               re.I
@@ -99,34 +103,42 @@ jobs:
               base = re.sub(r'\x00V(\d+)\x00', lambda m: versions[int(m.group(1))], base)
               return base + ext
 
-          # ---- 1. 登录 OpenList 获取 JWT ----
-          print('Logging in to OpenList...')
-          login_data = json.dumps({'username': username, 'password': password}).encode()
-          req = urllib.request.Request(
+          # ---- 1. 登录 ----
+          print('Logging in to OpenList...', flush=True)
+          r = requests.post(
               f'{url}/api/auth/login',
-              data=login_data,
-              headers={'Content-Type': 'application/json'},
-              method='POST'
+              json={'username': username, 'password': password},
+              timeout=30,
           )
-          with urllib.request.urlopen(req) as resp:
-              result = json.loads(resp.read())
-          token = result.get('data', {}).get('token')
+          token = r.json().get('data', {}).get('token')
           if not token:
-              print(f'❌ Login failed: {result}')
+              print(f'❌ Login failed: {r.text}', flush=True)
               sys.exit(1)
-          print('✅ Login successful.')
+          print('✅ Login successful.', flush=True)
 
-          # ---- 2. 收集待上传文件 ----
+          # ---- 2. 配置带 retry 的 session ----
+          session = requests.Session()
+          # 连接层 retry（针对 DNS、TCP、SSL 错误）
+          adapter = HTTPAdapter(max_retries=Retry(
+              total=3,
+              backoff_factor=5,          # 5s, 10s, 20s
+              status_forcelist=[500, 502, 503, 504],
+              allowed_methods=['PUT', 'POST'],
+          ))
+          session.mount('https://', adapter)
+          session.mount('http://', adapter)
+
+          # ---- 3. 逐个上传 ----
           files = sorted(
               f for f in os.listdir('downloads')
               if os.path.isfile(os.path.join('downloads', f))
           )
           if not files:
-              print('No files to upload.')
+              print('No files to upload.', flush=True)
               sys.exit(0)
 
-          # ---- 3. 逐个上传 ----
           success = 0
+          failed = []
           for filename in files:
               filepath = os.path.join('downloads', filename)
               restored = restore_spaces(filename)
@@ -134,41 +146,54 @@ jobs:
               encoded_target = urllib.parse.quote(target, safe='')
               size_mb = os.path.getsize(filepath) / 1024 / 1024
 
-              print(f'\n📤 Uploading: {filename}')
-              print(f'   → Restored: {restored}')
-              print(f'   → Target:   {target}')
-              print(f'   → Size:     {size_mb:.2f} MB')
+              print(f'\n📤 Uploading: {filename} ({size_mb:.2f} MB)', flush=True)
 
-              with open(filepath, 'rb') as f:
-                  file_data = f.read()
+              # 手动 retry（应对流中断类错误）
+              MAX_ATTEMPTS = 3
+              uploaded = False
+              for attempt in range(1, MAX_ATTEMPTS + 1):
+                  try:
+                      with open(filepath, 'rb') as f:
+                          file_data = f.read()
+                      resp = session.put(
+                          f'{url}/api/fs/put',
+                          data=file_data,
+                          headers={
+                              'Authorization': token,
+                              'File-Path': encoded_target,
+                              'Content-Type': 'application/octet-stream',
+                              'Overwrite': 'true',
+                              'As-Task': 'true',
+                          },
+                          timeout=(30, 900),   # (连接超时, 读超时) 15 分钟
+                      )
+                      result = resp.json()
+                      if result.get('code') == 200:
+                          print(f'✅ Done (attempt {attempt}): {restored}', flush=True)
+                          uploaded = True
+                          break
+                      else:
+                          print(f'⚠️ Attempt {attempt} OpenList error: {result}', flush=True)
+                  except Exception as e:
+                      print(f'⚠️ Attempt {attempt} failed: {type(e).__name__}: {e}', flush=True)
 
-              req = urllib.request.Request(
-                  f'{url}/api/fs/put',
-                  data=file_data,
-                  headers={
-                      'Authorization': token,
-                      'File-Path': encoded_target,
-                      'Content-Type': 'application/octet-stream',
-                      'Overwrite': 'true',
-                      'As-Task': 'true',
-                  },
-                  method='PUT'
-              )
-              try:
-                  with urllib.request.urlopen(req, timeout=600) as resp:
-                      result = json.loads(resp.read())
-              except Exception as e:
-                  print(f'❌ Upload error: {e}')
-                  sys.exit(1)
+                  if attempt < MAX_ATTEMPTS:
+                      wait = 5 * attempt
+                      print(f'   Retrying in {wait}s...', flush=True)
+                      time.sleep(wait)
 
-              if result.get('code') != 200:
-                  print(f'❌ OpenList error: {result}')
-                  sys.exit(1)
+              if uploaded:
+                  success += 1
+              else:
+                  failed.append(restored)
+                  print(f'❌ Giving up on: {restored}', flush=True)
 
-              print(f'✅ Done: {restored}')
-              success += 1
-
-          print(f'\n🎉 {success}/{len(files)} large assets synced to: {base_path}/{tag}/')
+          # ---- 4. 结果 ----
+          print(f'\n{"="*50}', flush=True)
+          print(f'🎉 {success}/{len(files)} assets synced', flush=True)
+          if failed:
+              print(f'❌ Failed: {failed}', flush=True)
+              sys.exit(1)
           PYEOF
 
       # ---------- 5. 触发 Worker 更新 files.json ----------
