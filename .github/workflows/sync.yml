@@ -3,7 +3,7 @@ name: Sync Release to OpenList
 on:
   release:
     types: [published]      # Release 发布时自动触发
-  workflow_dispatch:        # 也支持在 Actions 页面手动触发
+  workflow_dispatch:        # 也支持手动触发
 
 jobs:
   sync:
@@ -22,21 +22,6 @@ jobs:
           echo "Resolved tag: $TAG"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-      - name: Install rclone
-        run: curl https://rclone.org/install.sh | sudo bash
-
-      - name: Setup rclone config
-        run: |
-          mkdir -p ~/.config/rclone
-          cat > ~/.config/rclone/rclone.conf <<EOF
-          [openlist]
-          type = webdav
-          url = ${{ secrets.OPENLIST_URL }}/dav
-          vendor = other
-          user = ${{ secrets.OPENLIST_USERNAME }}
-          pass = ${{ secrets.OPENLIST_PASSWORD_OBSCURED }}
-          EOF
-
       - name: Download release assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,10 +32,66 @@ jobs:
             --repo ${{ github.repository }} \
             --pattern '*'
 
-      - name: Upload to OpenList
+      - name: Upload to OpenList via API
+        env:
+          OPENLIST_URL: ${{ secrets.OPENLIST_URL }}
+          OPENLIST_USERNAME: ${{ secrets.OPENLIST_USERNAME }}
+          OPENLIST_PASSWORD: ${{ secrets.OPENLIST_PASSWORD }}
+          OPENLIST_PATH: "/mefrp-desktop/ME-Frp PML2/mefrp"
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
-          rclone copy downloads \
-            "openlist:/mefrp-desktop/ME-Frp PML2/mefrp/${{ steps.release.outputs.tag }}" \
-            --progress \
-            --transfers 4 \
-            --checkers 8
+          set -e
+
+          # 1. 登录获取 JWT token
+          echo "Logging in to OpenList..."
+          LOGIN_RESPONSE=$(curl -s -X POST "${OPENLIST_URL}/api/auth/login" \
+            -H "Content-Type: application/json" \
+            -d "{\"username\":\"${OPENLIST_USERNAME}\",\"password\":\"${OPENLIST_PASSWORD}\"}")
+
+          TOKEN=$(echo "$LOGIN_RESPONSE" | jq -r '.data.token')
+
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "❌ Login failed: $LOGIN_RESPONSE"
+            exit 1
+          fi
+          echo "✅ Login successful."
+
+          # 2. 逐个上传文件
+          for file in downloads/*; do
+            [ -f "$file" ] || continue
+            filename=$(basename "$file")
+            target="${OPENLIST_PATH}/${TAG}/${filename}"
+
+            # URL 编码路径（空格 -> %20）
+            encoded_path=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$target")
+
+            echo ""
+            echo "📤 Uploading: $filename"
+            echo "   Target: $target"
+
+            HTTP_CODE=$(curl -s -o /tmp/upload_resp.txt -w "%{http_code}" \
+              -X PUT "${OPENLIST_URL}/api/fs/put" \
+              -H "Authorization: ${TOKEN}" \
+              -H "File-Path: ${encoded_path}" \
+              -H "Content-Type: application/octet-stream" \
+              -H "Overwrite: true" \
+              --data-binary "@${file}")
+
+            if [ "$HTTP_CODE" != "200" ]; then
+              echo "❌ Upload failed: HTTP $HTTP_CODE"
+              cat /tmp/upload_resp.txt
+              exit 1
+            fi
+
+            RESP_CODE=$(jq -r '.code' /tmp/upload_resp.txt 2>/dev/null || echo "unknown")
+            if [ "$RESP_CODE" != "200" ]; then
+              echo "❌ OpenList error:"
+              cat /tmp/upload_resp.txt
+              exit 1
+            fi
+
+            echo "✅ Done."
+          done
+
+          echo ""
+          echo "🎉 All assets synced to: ${OPENLIST_PATH}/${TAG}/"
