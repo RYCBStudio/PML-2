@@ -2368,7 +2368,7 @@
         <value>帮助</value>
     </data>
     <data name="Text.CreateProxy.EnterProxyName" xml:space="preserve">
-        <value>请输入隧道名</value>
+        <value>请输入隧道名称</value>
     </data>
     <data name="Text.CreateProxy.EnterLocalAddress" xml:space="preserve">
         <value>请输入本地地址</value>
@@ -2440,12 +2440,14 @@
 - **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
 - **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
 - **使用行为**：功能点击、会话时长、错误日志
+- **匿名使用统计（26.5.0 起，Cloudflare）**：每次启动上报 1 条事件，仅含事件名、随机安装标识（UUID）、版本、平台、CPU 架构
 ___
 **注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。
 ### 2. 信息用途
 - 提供核心功能服务（账号验证、数据同步）
 - 优化用户体验（故障修复、功能改进）
 - 错误监控与性能分析（通过 Sentry）
+- 匿名使用统计（通过 Cloudflare，仅统计活跃安装 / 版本 / 平台分布）
 ### 3. 数据共享
 **我们不会出售用户数据**。仅在以下情况共享：
 - 经您明确同意
@@ -2460,6 +2462,7 @@ ___
 ___
 ### 5. 您的权利
 您有权访问、更正或删除个人信息，可通过设置禁用遥测数据收集。
+关闭遥测后不会发送任何事件、不会生成安装标识，也不会发起相关网络请求。
 **联系方式：** [邮件](mailto:im@rycb.tech) | [官网](https://www.rycb.tech/)
 ___
 详细隐私政策请查看：[PML 2 隐私政策](https://docs.rycb.tech/pml-2/policy)</value>
@@ -5297,5 +5300,14 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Dns.Permission.Zonomi" xml:space="preserve">
         <value>建议在「Zonomi」创建仅用于 DNS 记录管理的专用凭据（最小权限），不要使用账号主密码或全局密钥。</value>
+    </data>
+    <data name="Text.CrashHandling.CrashDisplayerNotFound" xml:space="preserve">
+        <value>[FATAL] 在“{0}”处找不到 CrashDisplayer。崩溃日志已保存至：{1}</value>
+    </data>
+    <data name="Text.CrashHandling.RecursiveCrach" xml:space="preserve">
+        <value>[FATAL] 处理崩溃时发生递归崩溃：{0}</value>
+    </data>
+    <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
+        <value>[FATAL] 启动 CrashDisplayer 失败：{0}</value>
     </data>
 </root>

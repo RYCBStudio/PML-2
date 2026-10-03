@@ -114,6 +114,13 @@ await RunCheck("设置页 SettingsPage（滚轮浏览）", () => {
         return ui;
     });
 
+// DNS 账户管理窗口（26.4 阶段 B）：MVVM 重构后列表 DataTemplate 与动态字段 ItemsControl 均为编译绑定，
+// 这里真实走一遍构造 + 渲染，守住 AVLN2000（DataTemplate 缺 x:DataType）这类「编译期不报错、运行期炸」的问题。
+await RunCheck("DNS 账户窗口 DnsAccountsWindow（列表与表单渲染）", () => {
+        var w = CreateInstance<Window>(appAsm, "MEFrpLauncherX.Views.DnsAccountsWindow");
+        return new UiCase(w, w);
+    });
+
 await RunCheck("图标渲染 PackIconLucide（IconPacks fork）", () => {
         var icon = CreateInstance<Control>(null, "IconPacks.Avalonia.Lucide.PackIconLucide", "IconPacks.Avalonia.Lucide");
         SetEnumIfPossible(icon, "Home");
@@ -270,7 +277,6 @@ double Execute(UiCase uiCase, string shotPath)
 
     // Avalonia 12：布局直接走 TopLevel.UpdateLayout()（LayoutManager 不再公开）
     window.UpdateLayout();
-    AvaloniaHeadlessPlatform.ForceRenderTimerTick();
 
     foreach (var (label, action) in uiCase.Actions)
     {
@@ -292,6 +298,9 @@ double Execute(UiCase uiCase, string shotPath)
         }
     }
 
+    // 注意：不要在这里再调 ForceRenderTimerTick()。
+    // Avalonia 12 的 CaptureRenderedFrame() 内部会 RunJobs 并读取「最近一次已提交的帧」，
+    // 手工多插一次 tick 会让读到的仍是尚未提交的空帧（返回 null），官方测试也是 Show 后直接 capture。
     using var bitmap = window.CaptureRenderedFrame()
                        ?? throw new InvalidOperationException("CaptureRenderedFrame 返回 null（渲染失败）");
     bitmap.Save(shotPath, new PngBitmapEncoderOptions());

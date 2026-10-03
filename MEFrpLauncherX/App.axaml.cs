@@ -154,6 +154,13 @@ public partial class App : Application
             if (ConfigManager.CurrentConfig.IsTelemetryEnabled)
             {
                 AppAnalytics.EnableAnalytics();
+
+                // 26.5.0：Cloudflare 匿名使用统计（仅 startup 事件，统计活跃安装 / 版本 / 平台 / 架构）。
+                // 必须 fire-and-forget：不得阻塞 Splash、MainWindow 创建、插件加载或应用启动流程。
+                // 关闭遥测时完全不进入此分支（不发送、不生成 installation_id、不发起网络请求）。
+#if !DEBUG
+                _ = TelemetryService.TrackStartupAsync();
+#endif
             }
         }
 

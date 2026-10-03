@@ -9,7 +9,7 @@
     xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="views:UserCenterPage"
+    x:DataType="views:UserCenterViewModel"
     AttachedToVisualTree="UserControl_Loaded"
     x:Class="MEFrpLauncherX.Views.UserCenterPage"
     FontFamily="{StaticResource GlobalFontFamily}"
@@ -151,7 +151,7 @@
                             <DataTemplate>
                                 <DockPanel>
                                     <Button DockPanel.Dock="Right" Classes="Danger"
-                                            Command="{Binding $parent[UserControl].DataContext?.DeleteIcpDomainCommand}"
+                                            Command="{Binding $parent[views:UserCenterPage].DataContext?.DeleteIcpDomainCommand}"
                                             CommandParameter="{Binding}">
                                         <Button.Content>
                                             <controls1:FASymbolIcon Symbol="Delete" />

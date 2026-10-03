@@ -26,7 +26,7 @@
         </Border>
 
         <!-- 26.4 精简主页（Layout=simple） -->
-        <controls1:HomeSimplePanel Grid.ColumnSpan="3"
+        <controls1:HomeSimplePanel Grid.ColumnSpan="3" x:DataType="viewModels:HomePageViewModel"
                                    IsVisible="{Binding IsSimpleLayout}"
                                    DataContext="{Binding}" />
 

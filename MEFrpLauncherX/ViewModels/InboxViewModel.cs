@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
@@ -13,7 +12,6 @@ using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Models;
 using ReactiveUI;
 // ReactiveUI 25：无参 ReactiveCommand 的载体类型 RxVoid（替代 System.Reactive.Unit）位于此命名空间。
-using ReactiveUI.Primitives;
 using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;

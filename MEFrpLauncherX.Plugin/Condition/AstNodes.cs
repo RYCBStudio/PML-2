@@ -20,7 +20,11 @@ public interface IValueNode
 /// <summary>路径取值节点（ctx.data.xxx / ctx.variables.xxx）</summary>
 public class PathValueNode : IValueNode
 {
-    public string Path { get; set; } = "";
+    public string Path
+    {
+        get;
+        set;
+    } = "";
 
     public object? Evaluate(ExecutionContext ctx) => PropertyAccessor.GetValue(ctx, Path);
 }
@@ -28,7 +32,11 @@ public class PathValueNode : IValueNode
 /// <summary>常量节点（数字 / 字符串字面量）</summary>
 public class LiteralValueNode : IValueNode
 {
-    public object Value { get; set; } = "";
+    public object Value
+    {
+        get;
+        set;
+    } = "";
 
     public object? Evaluate(ExecutionContext ctx) => Value;
 }
@@ -36,11 +44,23 @@ public class LiteralValueNode : IValueNode
 /// <summary>算术表达式节点：支持 + - * / 与括号，数值类型为主（26.3.1 M4）</summary>
 public class ArithmeticNode : IValueNode
 {
-    public IValueNode Left { get; set; } = null!;
+    public IValueNode Left
+    {
+        get;
+        set;
+    } = null!;
 
-    public string Operator { get; set; } = "";
+    public string Operator
+    {
+        get;
+        set;
+    } = "";
 
-    public IValueNode Right { get; set; } = null!;
+    public IValueNode Right
+    {
+        get;
+        set;
+    } = null!;
 
     public object? Evaluate(ExecutionContext ctx)
     {
@@ -52,6 +72,9 @@ public class ArithmeticNode : IValueNode
             "-" => l - r,
             "*" => l * r,
             "/" => l / r,
+            "%" => l % r,
+            "**" or "^" => Math.Pow(l, r),
+            "//" => Math.Floor(l / r),
             _ => throw new InvalidOperationException($"不支持的算术运算符: {Operator}")
         };
     }
@@ -70,9 +93,17 @@ public class ArithmeticNode : IValueNode
 /// <summary>内置函数调用节点（26.3.1 M5）：len / lower / upper / coalesce / min / max / now</summary>
 public class FunctionCallNode : IValueNode
 {
-    public string Name { get; set; } = "";
+    public string Name
+    {
+        get;
+        set;
+    } = "";
 
-    public List<IValueNode> Arguments { get; set; } = [];
+    public List<IValueNode> Arguments
+    {
+        get;
+        set;
+    } = [];
 
     public object? Evaluate(ExecutionContext ctx)
     {
@@ -82,7 +113,7 @@ public class FunctionCallNode : IValueNode
 }
 
 /// <summary>
-///     表达式内置函数库 v1（26.3.1 M5）。
+///     表达式内置函数库 v2（26.5）。
 ///     函数名小写；参数按需取值（字符串 / 数值 / 集合）。未知函数或参数错误抛出异常，由调用方转为日志，不崩 UI。
 /// </summary>
 public static class ExpressionFunctions
@@ -95,8 +126,27 @@ public static class ExpressionFunctions
             "lower" => Lower(args),
             "upper" => Upper(args),
             "coalesce" => Coalesce(args),
+            
             "min" => MinMax(args, min: true),
             "max" => MinMax(args, min: false),
+            "abs" => Abs(args),
+            "round" => Round(args),
+            "floor" => Floor(args),
+            "ceil" => Ceiling(args),
+            "sqrt" => Sqrt(args),
+            "pow" => Pow(args),
+            "ln" => Log(args, "e"),
+            "log10" => Log(args, "10"),
+            "log2" => Log(args, "2"),
+            "log" => Log(args, "CUSTOM"),
+            "sin" => Trigonometric(args, "sin"),
+            "cos" => Trigonometric(args, "cos"),
+            "tan" => Trigonometric(args, "tan"),
+            "cot" => Trigonometric(args, "cot"),
+            "sec" => Trigonometric(args, "sec"),
+            "csc" => Trigonometric(args, "csc"),
+            
+            "datetime.now.strftime" => DateTimeNowStrftime(args),
             "now" => DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             _ => throw new InvalidOperationException($"未知函数: {name}")
         };
@@ -140,6 +190,111 @@ public static class ExpressionFunctions
         return min ? nums.Min() : nums.Max();
     }
 
+    private static double Abs(object?[] args)
+    {
+        if (args.Length != 1) throw new InvalidOperationException("abs 需要 1 个参数");
+        return Math.Abs(ToNumber(args[0]));
+    }
+    
+    private static double Round(object?[] args)
+    {
+        if (args.Length != 1) throw new InvalidOperationException("round 需要 1 个参数");
+        return Math.Round(ToNumber(args[0]));
+    }
+    
+    private static double Ceiling(object?[] args)
+    {
+        if (args.Length != 1) throw new InvalidOperationException("ceil 需要 1 个参数");
+        return Math.Ceiling(ToNumber(args[0]));
+    }
+    
+    private static double Floor(object?[] args)
+    {
+        if (args.Length != 1) throw new InvalidOperationException("floor 需要 1 个参数");
+        return Math.Floor(ToNumber(args[0]));
+    }
+    
+    private static double Sqrt(object?[] args)
+    {
+        if (args.Length != 1) throw new InvalidOperationException("sqrt 需要 1 个参数");
+        return Math.Sqrt(ToNumber(args[0]));
+    }
+    
+    private static double Pow(object?[] args)
+    {
+        if (args.Length != 2) throw new InvalidOperationException("pow 需要 2 个参数");
+        return Math.Pow(ToNumber(args[0]), ToNumber(args[1]));
+    }
+
+    private static double Log(object?[] args, string baseNum)
+    {
+        if (!double.TryParse(baseNum, out var baseNumValue) && (
+                !baseNum.Equals("e", StringComparison.OrdinalIgnoreCase) || !baseNum.Equals("CUSTOM")))
+        {
+            throw new InvalidOperationException("底数无效");
+        }
+        
+        if (baseNum.Equals("CUSTOM", StringComparison.OrdinalIgnoreCase))
+        {
+            if (args.Length < 2) throw new InvalidOperationException("自定义底数的对数需要 2 个参数");
+            baseNumValue = ToNumber(args[1]);
+        }
+
+        return baseNumValue switch
+        {
+            < 0 => throw new InvalidOperationException("log 底数需要大于 0"),
+            10 => args.Length != 1
+                ? throw new InvalidOperationException("log10 需要 1 个参数")
+                : Math.Log10(ToNumber(args[0])),
+            2 => args.Length != 1 ? throw new InvalidOperationException("log2 需要 1 个参数") : Math.Log2(ToNumber(args[0])),
+            _ => Math.Log(ToNumber(args[0]), baseNumValue)
+        };
+    }
+
+    private static double Trigonometric(object?[] args, string funcName)
+    {
+        if (args.Length != 1) throw new InvalidOperationException($"{funcName} 至少需要 1 个参数");
+        if (args.Length == 2)
+        {
+            var isRadian = args[1]?.ToString()?.Equals("true", StringComparison.OrdinalIgnoreCase);
+            if (isRadian == true)
+            {
+                var value = args[0]?.ToString();
+                if (value?.Contains("\\pi", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    value = value.Replace("\\pi", Math.PI.ToString(), StringComparison.OrdinalIgnoreCase);
+                }
+                return funcName switch
+                {
+                    "sin" => Math.Sin(ToNumber(value)),
+                    "cos" => Math.Cos(ToNumber(value)),
+                    "tan" => Math.Tan(ToNumber(value)),
+                    "cot" => 1 / Math.Tan(ToNumber(value)),
+                    "sec" => 1 / Math.Cos(ToNumber(value)),
+                    "csc" => 1 / Math.Sin(ToNumber(value)),
+                    _ => throw new InvalidOperationException($"未知三角函数: {funcName}")
+                };  
+            }
+        }
+        return funcName switch
+        {
+            "sin" => Math.Sin(ToNumber(args[0])),
+            "cos" => Math.Cos(ToNumber(args[0])),
+            "tan" => Math.Tan(ToNumber(args[0])),
+            "cot" => 1 / Math.Tan(ToNumber(args[0])),
+            "sec" => 1 / Math.Cos(ToNumber(args[0])),
+            "csc" => 1 / Math.Sin(ToNumber(args[0])),
+            _ => throw new InvalidOperationException($"未知三角函数: {funcName}")
+        };
+    }
+    
+    private static string DateTimeNowStrftime(object?[] args)
+    {
+        return DateTime.Now.ToString(args.Length == 0
+            ? "yyyy-MM-dd HH:mm:ss"
+            : args[0]?.ToString() ?? "");
+    }
+
     private static double ToNumber(object? value)
     {
         if (value is double d) return d;
@@ -151,13 +306,25 @@ public static class ExpressionFunctions
     }
 }
 
-public partial class CompareCondition : ICondition
+public class CompareCondition : ICondition
 {
-    public IValueNode Left { get; set; } = null!;
+    public IValueNode Left
+    {
+        get;
+        set;
+    } = null!;
 
-    public string Operator { get; set; } = "";
+    public string Operator
+    {
+        get;
+        set;
+    } = "";
 
-    public IValueNode Right { get; set; } = null!;
+    public IValueNode Right
+    {
+        get;
+        set;
+    } = null!;
 
     public bool Evaluate(ExecutionContext ctx)
     {
@@ -173,6 +340,8 @@ public partial class CompareCondition : ICondition
             "-le" or "<=" => Compare(leftVal, rightVal) <= 0,
             "-like" => LikeMatch(leftVal?.ToString(), rightVal?.ToString()),
             "-notlike" => !LikeMatch(leftVal?.ToString(), rightVal?.ToString()),
+            "-match" => RegexMatch(leftVal?.ToString(), rightVal?.ToString()),
+            "-notmatch" => !RegexMatch(leftVal?.ToString(), rightVal?.ToString()),
             "-contains" => ContainsCompare(leftVal, rightVal),
             "-notcontains" => !ContainsCompare(leftVal, rightVal),
             "-in" => InCompare(leftVal, rightVal),
@@ -194,11 +363,32 @@ public partial class CompareCondition : ICondition
             .CompareTo(Convert.ToDouble(b, System.Globalization.CultureInfo.InvariantCulture))
         : Comparer<object>.Default.Compare(a, b);
 
-    private bool LikeMatch(string? input, string? pattern)
+    /// <summary>
+    ///     通配符匹配（26.4）：<c>*</c> 匹配任意长度字符序列，<c>?</c> 匹配单个字符，其余字符按字面量处理。
+    ///     整串匹配、大小写不敏感。
+    /// </summary>
+    private static bool LikeMatch(string? input, string? pattern)
     {
         if (string.IsNullOrEmpty(pattern)) return string.IsNullOrEmpty(input);
         var regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "$";
-        return LikeRegex().IsMatch(input ?? "");
+        return Regex.IsMatch(input ?? "", regexPattern, RegexOptions.IgnoreCase);
+    }
+
+    /// <summary>
+    ///     正则表达式匹配（26.4）：<paramref name="pattern" /> 为 .NET 正则表达式，子串匹配、无需书写首尾锚点。
+    ///     大小写不敏感；正则非法时返回 <c>false</c>，不抛出异常。
+    /// </summary>
+    private static bool RegexMatch(string? input, string? pattern)
+    {
+        if (string.IsNullOrEmpty(pattern)) return string.IsNullOrEmpty(input);
+        try
+        {
+            return Regex.IsMatch(input ?? "", pattern, RegexOptions.IgnoreCase);
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
     }
 
     private bool ContainsCompare(object? a, object? b)
@@ -209,6 +399,7 @@ public partial class CompareCondition : ICondition
         {
             return list.Cast<object>().Any(item => Equals(item, b));
         }
+
         return false;
     }
 
@@ -220,11 +411,9 @@ public partial class CompareCondition : ICondition
         {
             return list.Cast<object>().Any(item => Equals(item, a));
         }
+
         return false;
     }
-
-    [GeneratedRegex("...", RegexOptions.IgnoreCase)]
-    private static partial Regex LikeRegex();
 }
 
 public class LogicCondition : ICondition

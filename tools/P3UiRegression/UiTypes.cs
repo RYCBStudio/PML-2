@@ -79,10 +79,12 @@ internal sealed class StubApplication : Application
         Resources["IconFont"] = new Avalonia.Media.FontFamily("avares://MEFrpLauncherX.Fonts/Fonts#iconfont");
         Resources["Jbm"] = new Avalonia.Media.FontFamily("avares://MEFrpLauncherX.Fonts/Fonts#Jetbrains Mono");
 
-        // App.axaml 的 3 个 ResourceInclude（它们的路径正是此前 AVLN2000 的失败点）
+        // App.axaml 的 ResourceInclude（它们的路径正是此前 AVLN2000 的失败点）
         AddResourceInclude("avares://MEFrpLauncherX/Styles/TabStripThemes.axaml");
         AddResourceInclude("avares://MEFrpLauncherX/Styles/FAFix.axaml");
-        AddResourceInclude("avares://MEFrpLauncherX/Styles/NavigationViewItemPresenterStyles.axaml");
+        // 注意：Styles/NavigationViewItemPresenterStyles.axaml 已在 P4（41e7042）随 Avalonia 12 升级删除，
+        // App.axaml 中对应引用也已移除。此处若继续 include 会抛 XamlLoadException，
+        // 使后续所有用例的渲染管线一起失效（表现为 CaptureRenderedFrame 返回 null 的大量误报）。
     }
 
     private void AddStyleInclude(string uri)

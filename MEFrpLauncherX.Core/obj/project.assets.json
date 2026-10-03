@@ -206,10 +206,10 @@
           }
         }
       },
-      "Downloader/5.9.5": {
+      "Downloader/5.9.8": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.8"
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Downloader.dll": {}
@@ -520,7 +520,7 @@
           "lib/net8.0/MicroCom.Runtime.dll": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.8": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.12": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -536,10 +536,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/10.0.8": {
+      "Microsoft.Extensions.Logging.Abstractions/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.8"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -899,11 +899,11 @@
           "lib/net10.0/ShimSkiaSharp.dll": {}
         }
       },
-      "SkiaSharp/4.151.2": {
+      "SkiaSharp/4.153.1": {
         "type": "package",
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "4.151.2",
-          "SkiaSharp.NativeAssets.macOS": "4.151.2"
+          "SkiaSharp.NativeAssets.Win32": "4.153.1",
+          "SkiaSharp.NativeAssets.macOS": "4.153.1"
         },
         "compile": {
           "ref/net10.0/SkiaSharp.dll": {}
@@ -931,7 +931,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux/4.151.2": {
+      "SkiaSharp.NativeAssets.Linux/4.153.1": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -994,7 +994,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Linux.NoDependencies/4.151.2": {
+      "SkiaSharp.NativeAssets.Linux.NoDependencies/4.153.1": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -1057,7 +1057,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/4.151.2": {
+      "SkiaSharp.NativeAssets.macOS/4.153.1": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -1085,7 +1085,7 @@
           "buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets": {}
         }
       },
-      "SkiaSharp.NativeAssets.Win32/4.151.2": {
+      "SkiaSharp.NativeAssets.Win32/4.153.1": {
         "type": "package",
         "compile": {
           "lib/net10.0/_._": {}
@@ -1328,20 +1328,16 @@
           }
         }
       },
-      "System.Reactive/6.1.0": {
+      "System.Reactive/7.0.0": {
         "type": "package",
         "compile": {
-          "lib/net6.0/System.Reactive.dll": {
-            "related": ".xml"
-          }
+          "ref/net8.0/System.Reactive.dll": {}
         },
         "runtime": {
-          "lib/net6.0/System.Reactive.dll": {
-            "related": ".xml"
-          }
+          "lib/net8.0/System.Reactive.dll": {}
         },
         "build": {
-          "buildTransitive/net6.0/_._": {}
+          "build/System.Reactive.targets": {}
         }
       },
       "System.Runtime.Caching/10.0.11": {
@@ -1435,9 +1431,9 @@
           "AvaloniaEdit.TextMate": "12.0.0",
           "FluentAvaloniaUI": "3.1.0",
           "Markdig": "1.4.0",
-          "SkiaSharp": "4.151.2",
-          "SkiaSharp.NativeAssets.Linux": "4.151.2",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
+          "SkiaSharp": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
           "Svg.Controls.Skia.Avalonia": "12.0.0.17",
           "TextMateSharp": "2.0.4",
           "TextMateSharp.Grammars": "2.0.4"
@@ -1729,16 +1725,16 @@
         "lib/net8.0/DialogHost.Avalonia.xml"
       ]
     },
-    "Downloader/5.9.5": {
-      "sha512": "Ng4jdJ+v+R7q21gygRdEcOyYQA0M3I0SaiBEsK6XVWW8Xo16NuODEUSSwC1R45aPp7mvXCQRO6oM/SiTNwHSRA==",
+    "Downloader/5.9.8": {
+      "sha512": "lPlrVzpDf+aS/Vv+waTOTOu//O7rFqR8Q/XM3fTqvYgURK+xVPKsLDjiY0wRwtMwmsqqlQjdYyCqkcqEBScZkQ==",
       "type": "package",
-      "path": "downloader/5.9.5",
+      "path": "downloader/5.9.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "README.md",
-        "downloader.5.9.5.nupkg.sha512",
+        "downloader.5.9.8.nupkg.sha512",
         "downloader.nuspec",
         "downloader.png",
         "lib/net10.0/Downloader.dll",
@@ -2146,10 +2142,10 @@
         "microcom.runtime.nuspec"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.8": {
-      "sha512": "21nbDV60SRPWGIivsyl6lqBeEJNG1sginhhfWgRrr3Ais7aQ12To25OAHQxgoiJkjqy1aQ6RxpZBGYuTi7Ge6A==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.12": {
+      "sha512": "9/qymSh7hVDMGTGwrLz8MRp5zRyXy9adGDOs4HwRdnLil3oZGYuWeZjbmHgCQ9BL1qBroVfgUK3U/nb61617Cw==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.8",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2172,15 +2168,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.10.0.8.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.12.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/10.0.8": {
-      "sha512": "fdVadZmsC8jRP0KvKy8mO8f6GV/HyBvElfcSxEhd+5FM5boAw/01iSaCto5G3G37ApJira4A3pNaVvBv8cUiLQ==",
+    "Microsoft.Extensions.Logging.Abstractions/10.0.12": {
+      "sha512": "+24lC4plfbEDNfLAdTV/SWKS7dW+16X4HdydO3R++134kSNTzcbYA4KpR1Hdh6uWisB8Za3AzwyOn+K+NxWIug==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/10.0.8",
+      "path": "microsoft.extensions.logging.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2244,7 +2240,7 @@
         "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.10.0.8.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.10.0.12.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2806,10 +2802,10 @@
         "shimskiasharp.nuspec"
       ]
     },
-    "SkiaSharp/4.151.2": {
-      "sha512": "zqcEy5E17Tqoh2tEvb4uC2G3ulli5YdsljzZuf93pCc/9gQDMx9VrUInxiqkLMGt+MjQi8hNrf1Uxmq25yyU3A==",
+    "SkiaSharp/4.153.1": {
+      "sha512": "TghYLOUaP3q6rTjQw7U9uQaaXh8lEs9rfA1U7/VtmyAptVDtj/SmjtcWzFWmcC/VMWxe3QgbV9uyvqDL7ySFtQ==",
       "type": "package",
-      "path": "skiasharp/4.151.2",
+      "path": "skiasharp/4.153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2884,7 +2880,7 @@
         "ref/net9.0/SkiaSharp.dll",
         "ref/netstandard2.0/SkiaSharp.dll",
         "ref/netstandard2.1/SkiaSharp.dll",
-        "skiasharp.4.151.2.nupkg.sha512",
+        "skiasharp.4.153.1.nupkg.sha512",
         "skiasharp.nuspec"
       ]
     },
@@ -2918,10 +2914,10 @@
         "skiasharp.harfbuzz.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux/4.151.2": {
-      "sha512": "TSeXS5j73N9+avlMn72Q8DC+EGi2LW7Gh7INHTkTo4bVpkEQu32D7tTWvP5LhZ+Fto9Ld6lih7UMwm+V3AQyCQ==",
+    "SkiaSharp.NativeAssets.Linux/4.153.1": {
+      "sha512": "DlBk91MARPfARK5kqd1K6+u6UuUQx+8Rsc+Pwi2dVO7X+S3LsLwqJq1gULLdpIgW2zmcqZ87O6TMfdWkwBXfkQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux/4.151.2",
+      "path": "skiasharp.nativeassets.linux/4.153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2953,14 +2949,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.4.151.2.nupkg.sha512",
+        "skiasharp.nativeassets.linux.4.153.1.nupkg.sha512",
         "skiasharp.nativeassets.linux.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Linux.NoDependencies/4.151.2": {
-      "sha512": "WrEmGx0ntYCIc+DzrXDfroE0/8spBs//pPc4nhgvRKOw+WedKF+ATJMv58XA9SxzxfgqjGqlCRWaK9gDPueIvw==",
+    "SkiaSharp.NativeAssets.Linux.NoDependencies/4.153.1": {
+      "sha512": "NrnPjcxjcRau4GMOY0BTpUdMey+MnmLU3jC5AuExEFHPS2NkX1tdkXW0n/c5nQMMHBTAMpHnt7qEOpXs2FNfIQ==",
       "type": "package",
-      "path": "skiasharp.nativeassets.linux.nodependencies/4.151.2",
+      "path": "skiasharp.nativeassets.linux.nodependencies/4.153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2992,14 +2988,14 @@
         "runtimes/linux-riscv64/native/libSkiaSharp.so",
         "runtimes/linux-x64/native/libSkiaSharp.so",
         "runtimes/linux-x86/native/libSkiaSharp.so",
-        "skiasharp.nativeassets.linux.nodependencies.4.151.2.nupkg.sha512",
+        "skiasharp.nativeassets.linux.nodependencies.4.153.1.nupkg.sha512",
         "skiasharp.nativeassets.linux.nodependencies.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.macOS/4.151.2": {
-      "sha512": "hDGy20k1DJZuKcdbHjwaOfsPeQYY9ty8wJeG1qzJWidPUzrwwvVtTLpDdTiP1M89UWbEYyWAhZo9qOaoYae6iQ==",
+    "SkiaSharp.NativeAssets.macOS/4.153.1": {
+      "sha512": "YTojWeWIhnpF7uC8vpMxB5wRONKkDB2t3r/nNPA3DL2pgj9fqMXRevA/rIanYazWnco4jo1ufgp3HkXuh1Tz8A==",
       "type": "package",
-      "path": "skiasharp.nativeassets.macos/4.151.2",
+      "path": "skiasharp.nativeassets.macos/4.153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3023,7 +3019,7 @@
         "lib/netstandard2.0/_._",
         "lib/netstandard2.1/_._",
         "runtimes/osx/native/libSkiaSharp.dylib",
-        "skiasharp.nativeassets.macos.4.151.2.nupkg.sha512",
+        "skiasharp.nativeassets.macos.4.153.1.nupkg.sha512",
         "skiasharp.nativeassets.macos.nuspec"
       ]
     },
@@ -3065,10 +3061,10 @@
         "skiasharp.nativeassets.webassembly.nuspec"
       ]
     },
-    "SkiaSharp.NativeAssets.Win32/4.151.2": {
-      "sha512": "sTUHSfWXVYThf/lTG81n8y1gMnr0TiN/2zrApwd0jbGfbsEt9g4+GPsj6UVjjgNLXCI9l5CyzxQ6Zh4fP9ZoVQ==",
+    "SkiaSharp.NativeAssets.Win32/4.153.1": {
+      "sha512": "Yqg6rChTVh0BUE8QQxtOA3uUBnihfgID4yex/AvDa0+os2bVcBjmI3Qj9tnOB+R1hd/Jry1Gwl8qw5JI9HZG8Q==",
       "type": "package",
-      "path": "skiasharp.nativeassets.win32/4.151.2",
+      "path": "skiasharp.nativeassets.win32/4.153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3095,7 +3091,7 @@
         "runtimes/win-x64/native/libSkiaSharp.pdb",
         "runtimes/win-x86/native/libSkiaSharp.dll",
         "runtimes/win-x86/native/libSkiaSharp.pdb",
-        "skiasharp.nativeassets.win32.4.151.2.nupkg.sha512",
+        "skiasharp.nativeassets.win32.4.153.1.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
       ]
     },
@@ -3382,30 +3378,29 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Reactive/6.1.0": {
-      "sha512": "M5cCC1ZMkZr9jbSQGTHnVkb5TDN67qWCV7AP8TAHdGkvDlu0puT5NzemESNn9+HkYIDpWpocP68/i+/ame2/2w==",
+    "System.Reactive/7.0.0": {
+      "sha512": "VYaSP2Kt+45GFnr3q7c/b4awT48VvueOJV4jPjdUXi5MxC9mSUy+HkJYtm8rGZ6fC3tNHG9gBu/YwNAR/FYqhg==",
       "type": "package",
-      "path": "system.reactive/6.1.0",
+      "path": "system.reactive/7.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/net6.0-windows10.0.19041/_._",
-        "build/net6.0/_._",
-        "buildTransitive/net6.0-windows10.0.19041/_._",
-        "buildTransitive/net6.0/_._",
+        "analyzers/dotnet/System.Reactive.Analyzers.dll",
+        "build/System.Reactive.PackagesConfigCheck.targets",
+        "build/System.Reactive.targets",
         "icon.png",
         "lib/net472/System.Reactive.dll",
-        "lib/net472/System.Reactive.xml",
-        "lib/net6.0-windows10.0.19041/System.Reactive.dll",
-        "lib/net6.0-windows10.0.19041/System.Reactive.xml",
-        "lib/net6.0/System.Reactive.dll",
-        "lib/net6.0/System.Reactive.xml",
+        "lib/net8.0-windows10.0.19041/System.Reactive.dll",
+        "lib/net8.0/System.Reactive.dll",
         "lib/netstandard2.0/System.Reactive.dll",
-        "lib/netstandard2.0/System.Reactive.xml",
         "lib/uap10.0.18362/System.Reactive.dll",
-        "lib/uap10.0.18362/System.Reactive.xml",
         "readme.md",
-        "system.reactive.6.1.0.nupkg.sha512",
+        "ref/net472/System.Reactive.dll",
+        "ref/net8.0-windows10.0.19041/System.Reactive.dll",
+        "ref/net8.0/System.Reactive.dll",
+        "ref/netstandard2.0/System.Reactive.dll",
+        "ref/uap10.0.18362/System.Reactive.dll",
+        "system.reactive.7.0.0.nupkg.sha512",
         "system.reactive.nuspec"
       ]
     },
@@ -3558,7 +3553,7 @@
     "net10.0": [
       "Avalonia >= 12.1.3",
       "Avalonia.AvaloniaEdit >= 12.0.0",
-      "Downloader >= 5.9.5",
+      "Downloader >= 5.9.8",
       "FeatherQR.SkiaSharp >= 2.0.0-preview.2",
       "FluentAvalonia.MarkdownRender >= 12.1.3.1",
       "FluentAvaloniaUI >= 3.1.0",
@@ -3572,11 +3567,11 @@
       "ReactiveUI >= 25.1.1",
       "RestSharp >= 114.0.0",
       "Sentry >= 6.11.1",
-      "SkiaSharp >= 4.151.2",
-      "SkiaSharp.NativeAssets.Linux >= 4.151.2",
-      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 4.151.2",
+      "SkiaSharp >= 4.153.1",
+      "SkiaSharp.NativeAssets.Linux >= 4.153.1",
+      "SkiaSharp.NativeAssets.Linux.NoDependencies >= 4.153.1",
       "SkiaSharp.QrCode >= 2.0.0-preview.2",
-      "System.Reactive >= 6.1.0",
+      "System.Reactive >= 7.0.0",
       "System.Runtime.Caching >= 10.0.11",
       "Vecc.YamlDotNet.Analyzers.StaticGenerator >= 18.1.0",
       "YamlDotNet >= 18.1.0"
@@ -3611,7 +3606,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "G:\\dotnet\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://mirrors.cloud.tencent.com/nuget/": {}
       },
       "frameworks": {
         "net10.0": {
@@ -3656,7 +3652,7 @@
           },
           "Downloader": {
             "target": "Package",
-            "version": "[5.9.5, )",
+            "version": "[5.9.8, )",
             "versionCentrallyManaged": true
           },
           "FeatherQR.SkiaSharp": {
@@ -3716,17 +3712,17 @@
           },
           "SkiaSharp": {
             "target": "Package",
-            "version": "[4.151.2, )",
+            "version": "[4.153.1, )",
             "versionCentrallyManaged": true
           },
           "SkiaSharp.NativeAssets.Linux": {
             "target": "Package",
-            "version": "[4.151.2, )",
+            "version": "[4.153.1, )",
             "versionCentrallyManaged": true
           },
           "SkiaSharp.NativeAssets.Linux.NoDependencies": {
             "target": "Package",
-            "version": "[4.151.2, )",
+            "version": "[4.153.1, )",
             "versionCentrallyManaged": true
           },
           "SkiaSharp.QrCode": {
@@ -3736,7 +3732,7 @@
           },
           "System.Reactive": {
             "target": "Package",
-            "version": "[6.1.0, )",
+            "version": "[7.0.0, )",
             "versionCentrallyManaged": true
           },
           "System.Runtime.Caching": {
@@ -3767,10 +3763,10 @@
           "AvaloniaEdit.TextMate": "12.0.0",
           "CommunityToolkit.Mvvm": "8.2.1",
           "DialogHost.Avalonia": "0.12.3",
-          "Downloader": "5.9.5",
+          "Downloader": "5.9.8",
           "FeatherQR.SkiaSharp": "2.0.0-preview.2",
           "FluentAvaloniaUI": "3.1.0",
-          "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+          "Iciclecreek.Avalonia.WindowManager": "5.0.2",
           "IconPacks.Avalonia.FileIcons": "2.0.0",
           "IconPacks.Avalonia.Lucide": "2.0.0",
           "IconPacks.Avalonia.Material": "2.0.0",
@@ -3783,21 +3779,21 @@
           "Microsoft.Extensions.Options": "2.1.0",
           "Microsoft.International.Converters.PinYinConverter": "1.0.0",
           "Microsoft.Management.Infrastructure": "3.0.0",
-          "Microsoft.Windows.CsWin32": "0.3.335",
+          "Microsoft.Windows.CsWin32": "0.3.346",
           "NPinyin.Core": "3.0.0",
           "Packaging.Targets": "0.1.232",
           "ReactiveUI": "25.1.1",
           "ReactiveUI.Avalonia": "12.1.5",
           "RestSharp": "114.0.0",
           "Sentry": "6.11.1",
-          "SkiaSharp": "4.151.2",
-          "SkiaSharp.NativeAssets.Linux": "4.151.2",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
-          "SkiaSharp.NativeAssets.macOS": "4.151.2",
-          "SkiaSharp.NativeAssets.Win32": "4.151.2",
+          "SkiaSharp": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
+          "SkiaSharp.NativeAssets.macOS": "4.153.1",
+          "SkiaSharp.NativeAssets.Win32": "4.153.1",
           "SkiaSharp.QrCode": "2.0.0-preview.2",
           "Svg.Controls.Skia.Avalonia": "12.0.0.17",
-          "System.Reactive": "6.1.0",
+          "System.Reactive": "7.0.0",
           "System.Runtime.Caching": "10.0.11",
           "TextMateSharp": "2.0.4",
           "TextMateSharp.Grammars": "2.0.4",
@@ -4104,6 +4100,12 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1507",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "There are 2 package sources defined in your configuration. When using central package management, please map your package sources with package source mapping (https://aka.ms/nuget-package-source-mapping) or specify a single package source. The following sources are defined: nuget.org, Tencent Cloud"
+    },
     {
       "code": "NU1701",
       "level": "Warning",

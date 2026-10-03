@@ -4,12 +4,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        xmlns:models="clr-namespace:MEFrpLauncherX.Core.Models;assembly=MEFrpLauncherX.Core"
+        xmlns:viewModels="clr-namespace:MEFrpLauncherX.ViewModels"
         mc:Ignorable="d"
         d:DesignWidth="640" d:DesignHeight="640"
         Width="640" Height="640"
         WindowStartupLocation="CenterOwner"
+        x:DataType="viewModels:DnsAccountsWindowViewModel"
         Title="{x:Static languages:Languages.Text_Dns_Title}"
         x:Class="MEFrpLauncherX.Views.DnsAccountsWindow">
+    <Design.DataContext>
+        <viewModels:DnsAccountsWindowViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="Auto,*,Auto" Margin="16" RowSpacing="10">
 
         <!-- 说明：明确本机处理、不上传 -->
@@ -26,11 +32,13 @@
             <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="8">
                 <TextBlock Text="{x:Static languages:Languages.Text_Dns_Title}"
                            Theme="{StaticResource SubtitleTextBlockStyle}" />
-                <ListBox x:Name="AccountList" Grid.Row="1"
-                         SelectionChanged="AccountSelectionChanged"
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Accounts}"
+                         SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <!-- 编译绑定不继承窗口级 x:DataType，DataTemplate 必须自带 x:DataType，否则 AVLN2000 -->
+                        <DataTemplate x:DataType="models:DnsAccountSummary">
                             <StackPanel Spacing="2">
                                 <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
                                 <TextBlock Text="{Binding ProviderDisplayName}"
@@ -42,23 +50,23 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <TextBlock x:Name="EmptyHint" Grid.Row="1"
-                           IsVisible="False"
+                <TextBlock Grid.Row="1"
+                           IsVisible="{Binding IsEmpty}"
                            TextWrapping="Wrap"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                            Text="{x:Static languages:Languages.Text_Dns_Empty}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
-                    <Button x:Name="AddButton" Click="AddAccount"
+                    <Button Command="{Binding AddCommand}"
                             Content="{x:Static languages:Languages.Text_Dns_Add}" />
-                    <Button x:Name="DeleteButton" Click="DeleteAccount" IsEnabled="False"
+                    <Button Command="{Binding DeleteCommand}"
+                            IsEnabled="{Binding IsDeleteEnabled}"
                             Content="{x:Static languages:Languages.Text_Dns_Delete}" />
-                    <Button x:Name="SubmitButton" Click="SubmitProvider" IsEnabled="True"
+                    <Button Command="{Binding SubmitProviderCommand}"
                             Content="{x:Static languages:Languages.Text_Dns_SubmitProvider}" />
                 </StackPanel>
             </Grid>
-
             <!-- 右：编辑表单（字段表驱动） -->
             <ScrollViewer Grid.Column="1" AllowAutoHide="True" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Spacing="10">
@@ -71,39 +79,54 @@
                         <TextBlock Text="{x:Static languages:Languages.Text_Dns_AccountName}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
                         <TextBox x:Name="NameBox"
+                                 Text="{Binding AccountName}"
                                  PlaceholderText="{x:Static languages:Languages.Text_Dns_AccountNamePlaceholder}" />
                     </StackPanel>
 
                     <StackPanel Spacing="4">
                         <TextBlock Text="{x:Static languages:Languages.Text_Dns_Provider}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                        <ComboBox x:Name="ProviderBox" HorizontalAlignment="Stretch"
-                                  SelectionChanged="ProviderChanged" />
+                        <ComboBox HorizontalAlignment="Stretch"
+                                  ItemsSource="{Binding ProviderNames}"
+                                  SelectedIndex="{Binding SelectedProviderIndex}" />
                     </StackPanel>
 
-                    <controls:FAInfoBar x:Name="PermissionHint"
-                                      Severity="Informational"
+                    <controls:FAInfoBar Severity="Informational"
                                       IsClosable="False"
-                                      IsOpen="False" />
+                                      Message="{Binding PermissionHint}"
+                                      IsOpen="{Binding IsPermissionHintOpen}" />
 
                     <!-- 动态字段容器：按服务商表驱动生成 -->
-                    <StackPanel x:Name="FieldsPanel" Spacing="10" />
+                    <ItemsControl ItemsSource="{Binding Fields}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="viewModels:DnsFieldViewModel">
+                                <StackPanel Spacing="4" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Label}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    <TextBox Text="{Binding Value}"
+                                             PasswordChar="{Binding PasswordChar}"
+                                             PlaceholderText="{Binding Placeholder}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                    <Button x:Name="DocButton" Click="OpenDocumentation"
+                    <Button Command="{Binding OpenDocumentationCommand}"
+                            IsEnabled="{Binding IsDocumentationEnabled}"
                             Content="{x:Static languages:Languages.Text_Dns_Documentation}" />
 
-                    <TextBlock x:Name="ValidationText"
+                    <TextBlock Text="{Binding ValidationMessage}"
                                TextWrapping="Wrap"
-                               IsVisible="False"
+                               IsVisible="{Binding HasValidation}"
                                Foreground="{DynamicResource SystemFillColorCriticalBrush}" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-            <Button x:Name="SaveButton" Classes="accent" Click="SaveAccount"
+            <Button Classes="accent" Command="{Binding SaveCommand}"
                     Content="{x:Static languages:Languages.Text_Dns_Save}" />
-            <Button x:Name="CloseButton" Click="CloseWindow"
+            <Button Command="{Binding CloseCommand}"
                     Content="{x:Static languages:Languages.Text_Global_Close}" />
         </StackPanel>
     </Grid>

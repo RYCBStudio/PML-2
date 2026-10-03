@@ -3,7 +3,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Collections;

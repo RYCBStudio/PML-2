@@ -1,114 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <linker>
-    <!--
-        Avalonia 12 升级（P4）：本文件已按 Avalonia 12.1.3 的「实际程序集名 / 类型全名」逐项重建。
-
-        背景：ILC/linker 对 <assembly fullname> 不匹配的条目是**静默忽略**的 ——
-        没有错误、没有警告，条目只是不生效。因此 Avalonia 11 时代的旧条目
-        （Avalonia.Markup.Xaml.TypeConverters.* / Iciclecreek.TerminalWindow 等）
-        必须逐项校验后修正，否则 AOT 产物会出现「看似配了裁剪规则、实际没配」的隐蔽故障。
-
-        校验方式（可用 tools/P4Verify 复现）：用 System.Reflection.Metadata 读取各程序集的
-        真实 TypeDefinition 列表，与这里的 fullname 逐条比对。
-    -->
-
-    <!-- 保留 MEFrpLauncherX.Fonts 程序集中的所有字体资源 -->
+    <!-- 主程序集与业务程序集：XAML 反射绑定需要，保守全量保留 -->
+    <assembly fullname="MEFrpLauncherX">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="MEFrpLauncherX.Core">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="MEFrpLauncherX.Plugin">
+        <type fullname="*" preserve="all"/>
+    </assembly>
     <assembly fullname="MEFrpLauncherX.Fonts">
         <type fullname="*" preserve="all"/>
     </assembly>
 
-    <!-- 保留 Avalonia 相关的字体处理与资源加载类型 -->
+    <!-- Avalonia 核心：Media.* 已覆盖 Imaging / ImageBrush 等子命名空间 -->
     <assembly fullname="Avalonia.Base">
         <type fullname="Avalonia.Media.*" preserve="all"/>
-        <!-- 显式保留嵌套命名空间的成像类型（AOT 下通配符可能不跨命名空间匹配） -->
-        <type fullname="Avalonia.Media.Imaging.Bitmap" preserve="all"/>
-        <type fullname="Avalonia.Media.Imaging.IBitmap" preserve="all"/>
-        <type fullname="Avalonia.Media.ImageBrush" preserve="all"/>
-        <!-- 保留 Avalonia 资源加载基础设施 -->
         <type fullname="Avalonia.Platform.IAssetLoader" preserve="all"/>
         <type fullname="Avalonia.Platform.AssetLoader" preserve="all"/>
     </assembly>
 
-    <!--
-        保留 Avalonia.Markup 的绑定/选择器解析类型。
-        注意：Avalonia 12 中本程序集里的类型位于 Avalonia.Markup.*（如 Avalonia.Markup.Parsers、
-        Avalonia.Markup.Data）与 Avalonia.Data.*，**不存在** Avalonia.Markup.Xaml.* 命名空间，
-        原 Avalonia 11 条目 "Avalonia.Markup.Xaml.*" 属静默失效，已修正。
-    -->
+    <!-- Avalonia.Markup.* 已覆盖 Parsers / Data 等子命名空间 -->
     <assembly fullname="Avalonia.Markup">
         <type fullname="Avalonia.Markup.*" preserve="all"/>
     </assembly>
 
-    <!--
-        保留 Avalonia.Markup.Xaml 程序集（XAML 加载器本体）。
-        另：位图类型转换器的 Avalonia 12 真实全名是
-        Avalonia.Markup.Xaml.Converters.BitmapTypeConverter
-        （旧配置写的 Avalonia.Markup.Xaml.TypeConverters.BitmapTypeConverter 在 12 中不存在，
-        而 Avalonia.Base 里也从未有过 Avalonia.Media.Imaging.BitmapTypeConverter）。
-    -->
+    <!-- XAML 加载器本体 -->
     <assembly fullname="Avalonia.Markup.Xaml">
         <type fullname="*" preserve="all"/>
     </assembly>
-    <assembly fullname="Avalonia.Markup.Xaml">
-        <type fullname="Avalonia.Markup.Xaml.Converters.BitmapTypeConverter" preserve="all"/>
-    </assembly>
 
-    <!-- 保留字体文件资源 -->
-    <assembly fullname="MEFrpLauncherX">
+    <!-- 标准控件：若 csproj 已用 TrimmerRootAssembly 保留，可删掉此块 -->
+    <assembly fullname="Avalonia.Controls">
         <type fullname="*" preserve="all"/>
     </assembly>
 
-    <!-- 保留 MEFrpLauncherX.Core 程序集中的所有类型（含 NoticeContent、Converters 等） -->
-    <assembly fullname="MEFrpLauncherX.Core">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-
-    <!-- 保留 MEFrpLauncherX.Plugin 程序集中的所有类型（含 PluginInfo、RawPluginMeta 等）。
-         否则 AOT 裁剪会删除仅被 XAML 反射绑定使用的属性（如 Version、TriggerCount、FunctionCount），
-         导致插件市场列表只能显示名字/作者。 -->
-    <assembly fullname="MEFrpLauncherX.Plugin">
-        <type fullname="*" preserve="all"/>
-    </assembly>
-
-    <!-- 保留 ReactiveUI 相关类型，防止 AOT 裁剪导致 ReactiveCommand 创建失败 -->
+    <!-- ReactiveUI：按实际用到的 API 保留 -->
     <assembly fullname="ReactiveUI">
         <type fullname="ReactiveUI.ReactiveCommand" preserve="all"/>
         <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
+        <type fullname="ReactiveUI.ReactiveObject" preserve="all"/>
+        <type fullname="ReactiveUI.ObservableAsPropertyHelper`1" preserve="all"/>
     </assembly>
 
-    <!--
-        保留端子控件程序集。
-        Avalonia 12 升级：原条目 "Iciclecreek.TerminalWindow" 程序集名已不存在
-        （该程序集从未产出，属历史失效条目），实际程序集为
-        Iciclecreek.Avalonia.Terminal（命名空间仍是 Iciclecreek.TerminalWindow）；
-        另补充其依赖的 Iciclecreek.Avalonia.WindowManager。
-    -->
+    <!-- 端子控件（Avalonia 12 实际程序集名） -->
     <assembly fullname="Iciclecreek.Avalonia.Terminal">
         <type fullname="*" preserve="all"/>
     </assembly>
     <assembly fullname="Iciclecreek.Avalonia.WindowManager">
         <type fullname="*" preserve="all"/>
     </assembly>
-
-    <!-- 已有 Porta.Pty，但保底再保留 Porta.Pty 中所有类型 -->
     <assembly fullname="Porta.Pty">
         <type fullname="*" preserve="all"/>
     </assembly>
 
-    <!-- 尝试保留 BinaryFormatter 相关类型（如果在运行时存在并被用到） -->
-    <assembly fullname="System.Runtime.Serialization.Formatters">
-        <type fullname="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" preserve="all"/>
-    </assembly>
-
-    <!-- 保留 TypeDescriptor / TypeConverter（TypeDescriptor 在 System.ComponentModel.TypeConverter 程序集中） -->
+    <!-- TypeDescriptor / TypeConverter：XAML 类型转换依赖 -->
     <assembly fullname="System.ComponentModel.TypeConverter">
-        <type fullname="System.ComponentModel.TypeDescriptor" preserve="all" />
-        <type fullname="System.ComponentModel.TypeConverter" preserve="all" />
+        <type fullname="System.ComponentModel.TypeDescriptor" preserve="all"/>
+        <type fullname="System.ComponentModel.TypeConverter" preserve="all"/>
     </assembly>
 
-    <!-- 保留 DataAnnotations 的 MaxLengthAttribute（assembly 名为 System.ComponentModel.Annotations） -->
+    <!-- DataAnnotations：仅保留 MaxLengthAttribute，如用 Validator 需扩展 -->
     <assembly fullname="System.ComponentModel.Annotations">
-        <type fullname="System.ComponentModel.DataAnnotations.MaxLengthAttribute" preserve="all" />
+        <type fullname="System.ComponentModel.DataAnnotations.MaxLengthAttribute" preserve="all"/>
     </assembly>
 
+    <!-- 已删除：System.Runtime.Serialization.Formatters（.NET 8+ AOT 不支持） -->
+    <!-- 已删除：重复的 Avalonia.Markup.Xaml 块 -->
+    <!-- 已删除：Avalonia.Media.* 下的冗余显式类型 -->
 </linker>

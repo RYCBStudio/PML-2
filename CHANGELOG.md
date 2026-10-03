@@ -2,7 +2,23 @@
 
 本文档记录 PML 2（MEFrpLauncherX）主要版本的功能变更。应用内「更新」页的更新日志以服务端发布信息为准。
 
-## 26.4.0（开发中）
+## 26.5.0（开发中）
+
+> 主题：**匿名使用统计接入（Cloudflare），仅上报最少必要字段。**
+
+### 遥测（P0）
+
+- **匿名使用统计**：在用户同意隐私政策（`IsTelemetryEnabled`）后，每次启动向 `https://telemetry.rycb.tech/v1/event`
+  上报一条 `startup` 事件，仅含 `event` / `installation_id` / `version` / `platform` / `architecture` 五个字段，
+  用于统计活跃安装数量、软件版本与平台分布。关闭遥测时不发送事件、不生成安装标识、不发起任何网络请求。
+- **安装标识**：`installation_id` 为首次上报时随机生成（`Guid.NewGuid()`）并持久化于 `Config/Settings.json` 的
+  `TelemetryInstallationId`，同一安装长期复用；不由用户名、邮箱、计算机名、MAC 地址、硬盘序列号、Windows SID、
+  IP 地址或上述信息的哈希推导。更新安装（保留配置）时跟随保留。
+- **不影响应用**：上报为 fire-and-forget，3 秒超时，非 2xx / 网络 / 序列化异常一律忽略；不重试、不建立离线队列、不刷日志。
+- **与 Sentry 分工**：Sentry 负责错误 / 崩溃 / 性能，Cloudflare Analytics Engine 仅做匿名活跃安装与版本 / 平台统计；
+  本次接入未改动现有 Sentry 行为。
+
+## 26.4.0（2026-10-01）
 
 > 主题：**主页可精简、证书可自助；更新后一眼看清改了什么。**
 

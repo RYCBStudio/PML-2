@@ -202,7 +202,7 @@ public partial class SettingsPage : UserControl
                 _ => WindowTransparencyLevel.None
             }
         ];
-        if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
+        if (ConfigManager.CurrentConfig.Skin.Equals("None", StringComparison.CurrentCultureIgnoreCase))
         {
             Core.App.MainWindow.Background =
                 ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase)
@@ -582,7 +582,7 @@ public partial class SettingsPage : UserControl
 
             Application.Current?.RequestedThemeVariant = newVariant;
 
-            if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
+            if (ConfigManager.CurrentConfig.Skin.Equals("None", StringComparison.CurrentCultureIgnoreCase))
             {
                 Core.App.MainWindow.Background =
                     newVariant.Equals(ThemeVariant.Dark) == true

@@ -295,7 +295,8 @@ public partial class DownloadHelper
                     App.CurrentLogger.Log("正在下载新版MEFrpClient");
                     await downloader.DownloadFileTaskAsync(
                         GetDownloadUrl(platform.Platform, RuntimeInformation.OSArchitecture == Architecture.Arm64),
-                        ConfigManager.CurrentConfig.DownloadSource.ToUpper() != "TPCA"
+                        !ConfigManager.CurrentConfig.DownloadSource.Equals("TPCA"
+, StringComparison.CurrentCultureIgnoreCase)
                             ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp")
                             : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"),
                         cancellationToken);

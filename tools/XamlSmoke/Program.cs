@@ -447,6 +447,8 @@ var targets = new (string Name, Func<object?> Factory)[]
     ("NodesContainer", () => TryCreate("MEFrpLauncherX.Views.NodesContainer")),
     ("NodesMonitoringPage", () => TryCreate("MEFrpLauncherX.Views.NodesMonitoringPage")),
     ("NodesContainerCompact", () => TryCreate("MEFrpLauncherX.Controls.NodesContainerCompact")),
+    // DNS 账户管理窗口（26.4 阶段 B）：MVVM 重构后 DataTemplate 自带 x:DataType，覆盖 AVLN2000
+    ("DnsAccountsWindow", () => TryCreate("MEFrpLauncherX.Views.DnsAccountsWindow")),
     // 终端面板（焦点/复制）
     ("TerminalControl", () => TryCreate("MEFrpLauncherX.Console.TerminalControl")),
     ("TerminalPage", () => TryCreate("MEFrpLauncherX.Views.TerminalPage")),

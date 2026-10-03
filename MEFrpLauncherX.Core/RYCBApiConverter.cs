@@ -1,5 +1,4 @@
 using System.Net;
-using System.Reactive;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAvalonia.UI.Controls;

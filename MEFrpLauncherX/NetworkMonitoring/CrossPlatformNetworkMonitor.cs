@@ -444,7 +444,7 @@ public class CrossPlatformNetworkMonitor : INetworkMonitor, IDisposable
             if (File.Exists(operstateFile))
             {
                 var state = await File.ReadAllTextAsync(operstateFile);
-                return state.Trim().ToLower() == "up";
+                return state.Trim().Equals("up", StringComparison.CurrentCultureIgnoreCase);
             }
         }
         catch (Exception ex)

@@ -13,8 +13,9 @@ public static class ConfigManager
     ///     当前客户端支持的配置 schema 版本。
     ///     <para>改动配置结构（新增项 / 改变字段含义 / 废弃字段）时递增，启动时会自动迁移旧配置。</para>
     ///     <para>v2：<c>UpdateSettings.DownloadSource</c>（更新页下载源）新增。</para>
+    ///     <para>v3：<c>TelemetryInstallationId</c>（Cloudflare 匿名使用统计的随机安装标识，26.5.0）新增。</para>
     /// </summary>
-    public const int CurrentSchemaVersion = 2;
+    public const int CurrentSchemaVersion = 3;
 
     private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
 
@@ -334,6 +335,14 @@ public static class ConfigManager
             changed++;
         }
 
+        // 遥测安装标识：仅补 null 为空串（不在此生成 UUID —— 关闭遥测时不得生成 installation_id），
+        // 也不校验格式：损坏值留给 TelemetryService 在「已启用遥测」时重新生成。
+        if (cfg.TelemetryInstallationId is null)
+        {
+            cfg.TelemetryInstallationId = string.Empty;
+            changed++;
+        }
+
         if (cfg.SplashCustomImagePath is null)
         {
             cfg.SplashCustomImagePath = string.Empty;
@@ -434,6 +443,18 @@ public static class ConfigManager
         if (!target.IsTelemetryEnabled && source.IsTelemetryEnabled)
         {
             target.IsTelemetryEnabled = source.IsTelemetryEnabled;
+        }
+
+        // 遥测安装标识：跟随用户同意一起保留，保证「同一安装长期复用同一个 installation_id」。
+        // 仅在 target 仍为空时采用备份值，避免覆盖用户切换账号 / 重置后新生成的标识；
+        // 未同意遥测时一律不同步，避免在关闭状态下把标识带回。
+        App.CurrentLogger?.Log(
+            $"正在合并配置项 TelemetryInstallationId: {target.TelemetryInstallationId} -> {source.TelemetryInstallationId}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        if (target.TelemetryInstallationId.IsNullOrEmpty() && source.IsTelemetryEnabled &&
+            !source.TelemetryInstallationId.IsNullOrEmpty())
+        {
+            target.TelemetryInstallationId = source.TelemetryInstallationId;
         }
 
         App.CurrentLogger?.Log($"正在合并配置项 Skin: {target.Skin} -> {source.Skin}",
@@ -834,6 +855,8 @@ public static class ConfigManager
         {
             PrivacyAgreed = false,
             IsTelemetryEnabled = false,
+            // 遥测关闭时不生成 installation_id；仅在用户启用遥测后的首次上报时生成并覆盖此值。
+            TelemetryInstallationId = string.Empty,
             Skin = Environment.OSVersion.Version.Build >= 22000
                 ? "Mica"
                 : OperatingSystem.IsMacOS()
@@ -936,6 +959,20 @@ public class AppConfig
     }
 
     public bool IsTelemetryEnabled
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    ///     Cloudflare 匿名使用统计的随机安装标识（26.5.0）。
+    ///     <para>
+    ///         首次启用遥测时由 <c>TelemetryService</c> 生成随机 UUID 并持久化，同一安装长期复用。
+    ///         禁止由用户名、邮箱、计算机名、MAC 地址、硬盘序列号、Windows SID、IP 地址或上述信息的哈希推导。
+    ///     </para>
+    ///     <para>用户清除或损坏本地配置时会重新生成（老配置本字段为空，属预期）。</para>
+    /// </summary>
+    public string TelemetryInstallationId
     {
         get;
         set;

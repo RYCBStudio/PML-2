@@ -103,7 +103,7 @@ public partial class DownloadHelper
 
     private string GetDownloadUrl(PlatformID platformId, bool isArm)
     {
-        if (ConfigManager.CurrentConfig.DownloadSource.ToUpper() == "TPCA")
+        if (ConfigManager.CurrentConfig.DownloadSource.Equals("TPCA", StringComparison.CurrentCultureIgnoreCase))
         {
             return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
         }

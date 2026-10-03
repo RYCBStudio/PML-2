@@ -6,13 +6,13 @@
         <SelfContained>true</SelfContained>
         <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;win-arm64;linux-arm64;osx-arm64</RuntimeIdentifiers>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\meflx.ico</ApplicationIcon>
-        <AssemblyVersion>26.4.0</AssemblyVersion>
+        <AssemblyVersion>26.5.0</AssemblyVersion>
         <NeutralLanguage>zh-Hans</NeutralLanguage>
-        <Version>26.4.0</Version>
-        <ApplicationVersion>26.4.0</ApplicationVersion>
+        <Version>26.5.0</Version>
+        <ApplicationVersion>26.5.0</ApplicationVersion>
         <LangVersion>preview</LangVersion>
         <Optimize>true</Optimize>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -24,16 +24,36 @@
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
+        <SelfContained>true</SelfContained>
+        <PublishAot>true</PublishAot>
+        <PublishTrimmed>true</PublishTrimmed>
+
+        <!-- 体积优化 -->
+        <OptimizationPreference>Size</OptimizationPreference>
+        <UseSizeOptimizedLinq>true</UseSizeOptimizedLinq>
+        <IlcOptimizationPreference>Size</IlcOptimizationPreference>
+        <IlcTrimMetadata>true</IlcTrimMetadata>
+        <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+        <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+        <IlcDisableReflection>true</IlcDisableReflection>
+
+        <!-- 裁剪与调试符号 -->
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
-        <OptimizationPreference>Size</OptimizationPreference>
-        <IlcDisableReflection>true</IlcDisableReflection>
-        <UseSizeOptimizedLinq>true</UseSizeOptimizedLinq>
+        <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
         <TrimmerSingleWarn>true</TrimmerSingleWarn>
+        <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+        <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+
+        <!-- 运行时与 GC 优化 -->
+        <TieredCompilation>false</TieredCompilation>
+        <TieredPGO>false</TieredPGO>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
         <MetricsSupport>false</MetricsSupport>
-        <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
-        <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
-        <PublishAot>true</PublishAot>
+        <EventSourceSupport>false</EventSourceSupport>
+        
+        
         <DefineConstants>$(DefineConstants);AOT</DefineConstants>
     </PropertyGroup>
     <PropertyGroup>

@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      TelemetryVerify（PML 2 26.5.0 遥测接入验收脚本）。
+
+      用法：
+        dotnet run （在 tools/TelemetryVerify 目录下执行）
+        或在仓库根目录指定该工程路径执行
+
+      背景：
+        遥测的核心约束是「不能影响应用、不能多收一点数据」，这类问题静态审查很难覆盖：
+          - 关闭遥测时是否真的不发请求、不生成 installation_id；
+          - 开启后是否只发一条 startup、字段是否与服务端 / 隐私政策完全一致；
+          - 网络异常时是否吞掉异常（不拖垮启动）、是否发生自动重试。
+
+        因此本脚本反射加载主程序产物，注入本地假 HttpClient，离线断言上述行为。
+
+      判定：
+        全部通过 => 退出码 0；存在失败项 => 退出码 1 并逐条列出。
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>TelemetryVerify</AssemblyName>
+        <RootNamespace>TelemetryVerify</RootNamespace>
+        <!-- 本工具不参与主解决方案构建，仅用手动 dotnet run 指定本工程 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    </PropertyGroup>
+
+</Project>

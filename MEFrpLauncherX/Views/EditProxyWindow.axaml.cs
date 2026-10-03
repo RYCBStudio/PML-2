@@ -49,13 +49,13 @@ public partial class EditProxyWindow : Window
             "tcp" => true,
             _ => false
         };
-        SameAsHttp.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).ToLower() == "http";
+        SameAsHttp.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).Equals("http", StringComparison.CurrentCultureIgnoreCase);
         Http2Https.IsChecked = pr.httpPlugin.ToLower() switch
         {
             "http2https" => true,
             _ => false
         };
-        SameAsHttps.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).ToLower() == "https";
+        SameAsHttps.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).Equals("https", StringComparison.CurrentCultureIgnoreCase);
         Https2Http.IsChecked = pr.httpPlugin.ToLower() switch
         {
             "https2http" => true,
@@ -353,8 +353,8 @@ public partial class EditProxyWindow : Window
             httpUser = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthNameBox.Text : string.Empty,
             httpPassword = SecurityOptionsSelect.SelectedIndex == 1 ? HTTPBasicAuthPwdBox.Text : string.Empty,
             hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
-            crtPath = _type.ToLower() == "https" ? SslPathBox.Text : string.Empty,
-            keyPath = _type.ToLower() == "https" ? SslKeyBox.Text : string.Empty,
+            crtPath = _type.Equals("https", StringComparison.CurrentCultureIgnoreCase) ? SslPathBox.Text : string.Empty,
+            keyPath = _type.Equals("https", StringComparison.CurrentCultureIgnoreCase) ? SslKeyBox.Text : string.Empty,
             proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains(Languages.Text_CreateProxy_NotEnabled)
                 ? ""
                 : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",

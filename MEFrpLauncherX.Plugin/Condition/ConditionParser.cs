@@ -21,7 +21,8 @@ public static class ConditionParser
     /// <summary>是否比较运算符（比较表达式中的操作符 token）</summary>
     private static bool IsCompareOperator(string token) => token is
         "-eq" or "==" or "-ne" or "!=" or "-gt" or ">" or "-lt" or "<" or "-ge" or ">=" or "-le" or "<=" or
-        "-like" or "-notlike" or "-contains" or "-notcontains" or "-in" or "-notin";
+        "-like" or "-notlike" or "-match" or "-notmatch" or
+        "-contains" or "-notcontains" or "-in" or "-notin";
 
     private static List<string> Tokenize(string expr)
     {
