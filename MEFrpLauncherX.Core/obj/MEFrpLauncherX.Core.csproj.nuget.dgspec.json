@@ -29,7 +29,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "G:\\dotnet\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://mirrors.cloud.tencent.com/nuget/": {}
         },
         "frameworks": {
           "net10.0": {
@@ -87,17 +88,17 @@
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "Svg.Controls.Skia.Avalonia": {
@@ -123,9 +124,9 @@
             "AvaloniaEdit.TextMate": "12.0.0",
             "FluentAvaloniaUI": "3.1.0",
             "Markdig": "1.4.0",
-            "SkiaSharp": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
+            "SkiaSharp": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
             "Svg.Controls.Skia.Avalonia": "12.0.0.17",
             "TextMateSharp": "2.0.4",
             "TextMateSharp.Grammars": "2.0.4"
@@ -449,7 +450,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "G:\\dotnet\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://mirrors.cloud.tencent.com/nuget/": {}
         },
         "frameworks": {
           "net10.0": {
@@ -494,7 +496,7 @@
             },
             "Downloader": {
               "target": "Package",
-              "version": "[5.9.5, )",
+              "version": "[5.9.8, )",
               "versionCentrallyManaged": true
             },
             "FeatherQR.SkiaSharp": {
@@ -554,17 +556,17 @@
             },
             "SkiaSharp": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[4.151.2, )",
+              "version": "[4.153.1, )",
               "versionCentrallyManaged": true
             },
             "SkiaSharp.QrCode": {
@@ -574,7 +576,7 @@
             },
             "System.Reactive": {
               "target": "Package",
-              "version": "[6.1.0, )",
+              "version": "[7.0.0, )",
               "versionCentrallyManaged": true
             },
             "System.Runtime.Caching": {
@@ -605,10 +607,10 @@
             "AvaloniaEdit.TextMate": "12.0.0",
             "CommunityToolkit.Mvvm": "8.2.1",
             "DialogHost.Avalonia": "0.12.3",
-            "Downloader": "5.9.5",
+            "Downloader": "5.9.8",
             "FeatherQR.SkiaSharp": "2.0.0-preview.2",
             "FluentAvaloniaUI": "3.1.0",
-            "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+            "Iciclecreek.Avalonia.WindowManager": "5.0.2",
             "IconPacks.Avalonia.FileIcons": "2.0.0",
             "IconPacks.Avalonia.Lucide": "2.0.0",
             "IconPacks.Avalonia.Material": "2.0.0",
@@ -621,21 +623,21 @@
             "Microsoft.Extensions.Options": "2.1.0",
             "Microsoft.International.Converters.PinYinConverter": "1.0.0",
             "Microsoft.Management.Infrastructure": "3.0.0",
-            "Microsoft.Windows.CsWin32": "0.3.335",
+            "Microsoft.Windows.CsWin32": "0.3.346",
             "NPinyin.Core": "3.0.0",
             "Packaging.Targets": "0.1.232",
             "ReactiveUI": "25.1.1",
             "ReactiveUI.Avalonia": "12.1.5",
             "RestSharp": "114.0.0",
             "Sentry": "6.11.1",
-            "SkiaSharp": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
-            "SkiaSharp.NativeAssets.macOS": "4.151.2",
-            "SkiaSharp.NativeAssets.Win32": "4.151.2",
+            "SkiaSharp": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
+            "SkiaSharp.NativeAssets.macOS": "4.153.1",
+            "SkiaSharp.NativeAssets.Win32": "4.153.1",
             "SkiaSharp.QrCode": "2.0.0-preview.2",
             "Svg.Controls.Skia.Avalonia": "12.0.0.17",
-            "System.Reactive": "6.1.0",
+            "System.Reactive": "7.0.0",
             "System.Runtime.Caching": "10.0.11",
             "TextMateSharp": "2.0.4",
             "TextMateSharp.Grammars": "2.0.4",
@@ -965,7 +967,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "G:\\dotnet\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://mirrors.cloud.tencent.com/nuget/": {}
         },
         "frameworks": {
           "net10.0": {
@@ -1014,10 +1017,10 @@
             "AvaloniaEdit.TextMate": "12.0.0",
             "CommunityToolkit.Mvvm": "8.2.1",
             "DialogHost.Avalonia": "0.12.3",
-            "Downloader": "5.9.5",
+            "Downloader": "5.9.8",
             "FeatherQR.SkiaSharp": "2.0.0-preview.2",
             "FluentAvaloniaUI": "3.1.0",
-            "Iciclecreek.Avalonia.WindowManager": "5.0.1",
+            "Iciclecreek.Avalonia.WindowManager": "5.0.2",
             "IconPacks.Avalonia.FileIcons": "2.0.0",
             "IconPacks.Avalonia.Lucide": "2.0.0",
             "IconPacks.Avalonia.Material": "2.0.0",
@@ -1030,21 +1033,21 @@
             "Microsoft.Extensions.Options": "2.1.0",
             "Microsoft.International.Converters.PinYinConverter": "1.0.0",
             "Microsoft.Management.Infrastructure": "3.0.0",
-            "Microsoft.Windows.CsWin32": "0.3.335",
+            "Microsoft.Windows.CsWin32": "0.3.346",
             "NPinyin.Core": "3.0.0",
             "Packaging.Targets": "0.1.232",
             "ReactiveUI": "25.1.1",
             "ReactiveUI.Avalonia": "12.1.5",
             "RestSharp": "114.0.0",
             "Sentry": "6.11.1",
-            "SkiaSharp": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux": "4.151.2",
-            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.151.2",
-            "SkiaSharp.NativeAssets.macOS": "4.151.2",
-            "SkiaSharp.NativeAssets.Win32": "4.151.2",
+            "SkiaSharp": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux": "4.153.1",
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
+            "SkiaSharp.NativeAssets.macOS": "4.153.1",
+            "SkiaSharp.NativeAssets.Win32": "4.153.1",
             "SkiaSharp.QrCode": "2.0.0-preview.2",
             "Svg.Controls.Skia.Avalonia": "12.0.0.17",
-            "System.Reactive": "6.1.0",
+            "System.Reactive": "7.0.0",
             "System.Runtime.Caching": "10.0.11",
             "TextMateSharp": "2.0.4",
             "TextMateSharp.Grammars": "2.0.4",

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Web;
@@ -24,6 +23,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -54,7 +54,7 @@ public class ThemeEditorViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = "1.0.0";
 
-    public Bitmap PreviewImage
+    public Bitmap? PreviewImage
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -178,12 +178,9 @@ public class ThemeEditorViewModel : ViewModelBase
     public string BackgroundType
     {
         get;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-            // this.RaisePropertyChanged(nameof(IsSolidColorBackground));
-            // this.RaisePropertyChanged(nameof(IsImageBackground));
-        }
+        set => this.RaiseAndSetIfChanged(ref field, value);
+        // this.RaisePropertyChanged(nameof(IsSolidColorBackground));
+        // this.RaisePropertyChanged(nameof(IsImageBackground));
     } = "SolidColor";
 
     public bool IsSolidColorBackground
@@ -303,7 +300,7 @@ public class ThemeEditorViewModel : ViewModelBase
         get;
     } = [];
 
-    public AccentColorItem SelectedAccentColor
+    public AccentColorItem? SelectedAccentColor
     {
         get;
         set
@@ -982,7 +979,7 @@ public class StringColorConverter : IValueConverter
         return Color.TryParse(value?.ToString() ?? "", out var color) ? color : null;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

@@ -7,6 +7,12 @@ namespace MEFrpLauncherX.Views;
 
 public partial class ThemeEditor : Window
 {
+    
+    public ThemeEditorViewModel DataContext
+    {
+        get => (ThemeEditorViewModel)base.DataContext;
+        set => base.DataContext = value;
+    }
     public ThemeEditor() : this(null)
     {
     }

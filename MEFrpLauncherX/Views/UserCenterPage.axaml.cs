@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -31,10 +30,17 @@ public partial class UserCenterPage : UserControl
 {
     private UserCenterViewModel _vm;
 
+    public UserCenterViewModel DataContext
+    {
+        get;
+        private set;
+    }
+
     public UserCenterPage()
     {
         InitializeComponent();
         _vm = new UserCenterViewModel();
+        base.DataContext = _vm;
         DataContext = _vm;
         _vm.IcpDomainsChanged += (s, e) =>
         {

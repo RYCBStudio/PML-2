@@ -2432,12 +2432,14 @@
 - **個人資料**：使用者名稱、電子郵件、隧道資訊（如 API 平均時長、啟動失敗等情況）
 - **裝置資料**：裝置識別碼、作業系統版本、崩潰堆疊和錯誤記錄
 - **使用行為**：功能點擊、工作階段時長、錯誤記錄
+- **匿名使用統計（26.5.0 起，Cloudflare）**：每次啟動上報 1 筆事件，僅含事件名稱、隨機安裝識別碼（UUID）、版本、平台、CPU 架構
 ___
 **注意：** 遙測資料不包含您的帳號密碼、隧道內容等敏感資訊。
 ### 2. 資訊用途
 - 提供核心功能服務（帳號驗證、資料同步）
 - 最佳化使用者體驗（故障修復、功能改進）
 - 錯誤監控與效能分析（透過 Sentry）
+- 匿名使用統計（透過 Cloudflare，僅統計活躍安裝 / 版本 / 平台分布）
 ### 3. 資料共享
 **我們不會出售使用者資料**。僅在以下情況共享：
 - 經您明確同意
@@ -2452,6 +2454,7 @@ ___
 ___
 ### 5. 您的權利
 您有權存取、更正或刪除個人資訊，可透過設定停用遙測資料蒐集。
+停用遙測後不會傳送任何事件、不會產生安裝識別碼，也不會發起相關網路請求。
 **聯絡方式：** [郵件](mailto:im@rycb.tech) | [官網](https://www.rycb.tech/)
 ___
 詳細隱私權政策請檢視：[PML 2 隱私權政策](https://docs.rycb.tech/pml-2/policy)</value>
@@ -5288,5 +5291,14 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Dns.Permission.Zonomi" xml:space="preserve">
         <value>建議在「Zonomi」建立僅用於 DNS 記錄管理的專用憑證（最小權限），請勿使用帳號主密碼或全域密鑰。</value>
+    </data>
+    <data name="Text.CrashHandling.CrashDisplayerNotFound" xml:space="preserve">
+        <value>[FATAL] 在「{0}」找不到 CrashDisplayer。崩潰日誌已儲存至：{1}</value>
+    </data>
+    <data name="Text.CrashHandling.RecursiveCrach" xml:space="preserve">
+        <value>[FATAL] 處理崩潰時發生遞迴崩潰：{0}</value>
+    </data>
+    <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
+        <value>[FATAL] 啟動 CrashDisplayer 失敗：{0}</value>
     </data>
 </root>

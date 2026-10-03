@@ -13,20 +13,30 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Rendering.Composition;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Languages;
 using ReactiveUI.Avalonia;
 using SecretLib;
 using Sentry;
 using static MEFrpLauncherX.Core.StringUtils;
+// ReSharper disable LocalizableElement
+// ReSharper disable UnusedMember.Local
+// ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+// ReSharper disable UnusedParameter.Local
 
 namespace MEFrpLauncherX;
 
 internal partial class Program
 {
     private const string AppPipeName = "tech.rycb.pml2";
-    private static Mutex? _mutex;
+    // ReSharper disable once InconsistentNaming
+    private static Mutex? _mutex
+    {
+        get;
+        set;
+    }
+    
     private static CancellationTokenSource? _pipeServerCts;
 
     public static Process SplashProcess
@@ -89,12 +99,10 @@ internal partial class Program
         {
             if (!splashConfig.Enabled)
             {
-                System.Console.WriteLine("[INFO] Splash is disabled by user settings.");
                 Core.App.CurrentLogger?.Log("启动画面已由用户设置关闭。", EnumLogType.Debug);
             }
             else if (!File.Exists(splashFile))
             {
-                System.Console.WriteLine("\e[33m[WARNING] The Splash file is missing. May need to reinstall.\e[0m");
                 Core.App.CurrentLogger?.Log("启动画面文件缺失。", EnumLogType.Warn);
             }
             else
@@ -105,7 +113,7 @@ internal partial class Program
                     Arguments =
                         $"-v \"{Core.App.Version} ‘{App.Codename}’ \" -b \"{ResolveSplashImage(splashConfig)}\" --style \"{splashConfig.Style}\" --pipe \"{splashPipeName}\""
                 });
-                SplashProcess = p;
+                SplashProcess = p!;
                 // 26.3.1 M1：主程序启动阶段进度 → Splash 管道（App.SplashService 由本服务实现）
                 App.SplashService = new Services.PipeSplashService(splashPipeName);
             }
@@ -341,7 +349,8 @@ internal partial class Program
             // 给第一个实例一点时间响应，最多等 2 秒
             client.Connect(2000);
 
-            using var writer = new StreamWriter(client, Encoding.UTF8) { AutoFlush = true };
+            using var writer = new StreamWriter(client, Encoding.UTF8);
+            writer.AutoFlush = true;
             writer.WriteLine(string.IsNullOrWhiteSpace(url) ? ShowSignal : $"{UrlSignalPrefix}{url}");
             return; // 成功发送信号，直接返回
         }
@@ -393,6 +402,7 @@ internal partial class Program
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
@@ -404,6 +414,7 @@ internal partial class Program
     // Windows API 导入（仅Windows平台需要）
     [LibraryImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
+    // ReSharper disable UnusedMethodReturnValue.Local
     private static partial bool SetForegroundWindow(IntPtr hWnd);
 
     [LibraryImport("user32.dll")]
@@ -778,10 +789,11 @@ internal partial class Program
         {
             try
             {
-                System.Console.WriteLine($"[FATAL] Recursive crash during crash handling: {ex.Message}");
+                System.Console.WriteLine(Languages.Text_CrashHandling_RecursiveCrach, ex.Message);
             }
             catch
             {
+                // ignored
             }
 
             return;
@@ -833,8 +845,7 @@ internal partial class Program
             var displayerExe = GetPlatformExe("MEFrpLauncherX.CrashDisplayer");
             if (!File.Exists(displayerExe))
             {
-                System.Console.WriteLine(
-                    $"[FATAL] CrashDisplayer not found at '{displayerExe}'. Crash log saved to: {payloadPath ?? "(unavailable)"}");
+                System.Console.WriteLine(Languages.Text_CrashHandling_CrashDisplayerNotFound, displayerExe, payloadPath ?? "(unavailable)");
                 return;
             }
 
@@ -852,7 +863,7 @@ internal partial class Program
         }
         catch (Exception startEx)
         {
-            System.Console.WriteLine($"[FATAL] Failed to launch CrashDisplayer: {startEx.Message}");
+            System.Console.WriteLine(Languages.Text_CrashHandling_LaunchFailed, startEx.Message);
         }
     }
 

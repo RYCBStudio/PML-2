@@ -2440,12 +2440,14 @@ This will delete the currently selected theme configuration file, and takes effe
 - **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
 - **Device data**: device identifiers, operating system version, crash stacks and error logs
 - **Usage behavior**: feature clicks, session duration, error logs
+- **Anonymous usage statistics (since 26.5.0, via Cloudflare)**: one event per launch containing only the event name, a random installation identifier (UUID), the version, the platform and the CPU architecture
 ___
 **Note:** Telemetry data does not include sensitive information such as your account password or proxy contents.
 ### 2. Use of Information
 - Providing core services (account verification, data synchronization)
 - Improving user experience (bug fixes, feature improvements)
 - Error monitoring and performance analysis (via Sentry)
+- Anonymous usage statistics (via Cloudflare; active installations, version and platform distribution only)
 ### 3. Data Sharing
 **We do not sell user data**. It is only shared in the following cases:
 - With your explicit consent
@@ -2460,6 +2462,7 @@ The "certificate assistant" requests SSL certificates for domains **you own** (f
 ___
 ### 5. Your Rights
 You have the right to access, correct or delete your personal information, and you can disable telemetry data collection in the settings.
+When telemetry is disabled, no event is sent, no installation identifier is generated, and no related network request is made.
 **Contact:** [Email](mailto:im@rycb.tech) | [Website](https://www.rycb.tech/)
 ___
 For the full privacy policy, please see: [PML 2 Privacy Policy](https://docs.rycb.tech/pml-2/policy)</value>
@@ -5293,5 +5296,14 @@ Please go to the Create Proxy page and recreate it manually with the original co
     </data>
     <data name="Text.Dns.Permission.Zonomi" xml:space="preserve">
         <value>Create a dedicated credential in Zonomi limited to DNS record management (least privilege). Do not use the account password or a global key.</value>
+    </data>
+    <data name="Text.CrashHandling.CrashDisplayerNotFound" xml:space="preserve">
+        <value>[FATAL] CrashDisplayer not found at '{0}'. Crash log saved to: {1}</value>
+    </data>
+    <data name="Text.CrashHandling.RecursiveCrach" xml:space="preserve">
+        <value>[FATAL] Recursive crash during crash handling: {0}</value>
+    </data>
+    <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
+        <value>[FATAL] Failed to launch CrashDisplayer: {0}</value>
     </data>
 </root>

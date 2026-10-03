@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using MEFrpLauncherX.Core;

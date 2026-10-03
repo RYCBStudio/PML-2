@@ -21,7 +21,6 @@ using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using ReactiveUI;
 using RYCB.PML2.MEFrpCaptchaLib;
 
 namespace MEFrpLauncherX.Views;

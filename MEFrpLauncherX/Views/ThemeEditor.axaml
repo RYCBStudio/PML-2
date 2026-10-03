@@ -9,6 +9,7 @@
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MEFrpLauncherX.Views.ThemeEditor"
+        x:DataType="viewModels:ThemeEditorViewModel"
         Title="{x:Static languages:Languages.Text_ThemeEditor_Title}"
         Width="900"
         Height="700"
@@ -28,9 +29,7 @@
                 </controls:FACommandBarButton>
                 <controls:FACommandBarButton Command="{Binding AddColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_AddColor}" IconSource="Add">
                 </controls:FACommandBarButton>
-                <controls:FACommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}" IconSource="Remove"
-                                           IsEnabled="{Binding CanRemoveColor}">
-                </controls:FACommandBarButton>
+                <controls:FACommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}" IconSource="Remove" />
             </controls:FACommandBar.PrimaryCommands>
         </controls:FACommandBar>
 
@@ -164,9 +163,7 @@
                                                                    IconSource="Add">
                                         </controls:FACommandBarButton>
                                         <controls:FACommandBarButton Command="{Binding RemoveColorCommand}" Label="{x:Static languages:Languages.Text_ThemeEditor_RemoveColor}"
-                                                                   IconSource="Remove"
-                                                                   IsEnabled="{Binding CanRemoveColor}">
-                                        </controls:FACommandBarButton>
+                                                                   IconSource="Remove"/>
                                     </controls:FACommandBar.PrimaryCommands>
                                     <controls:FACommandBar.SecondaryCommands>
 
@@ -266,7 +263,7 @@
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding}"
-                                                       FontFamily="{Binding $parent[UserControl].DataContext?.PreviewFontFamily}" />
+                                                       FontFamily="{Binding $parent[views:ThemeEditor].DataContext?.PreviewFontFamily}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>

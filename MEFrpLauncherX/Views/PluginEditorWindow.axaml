@@ -10,7 +10,11 @@
         MinWidth="720" MinHeight="520"
         WindowStartupLocation="CenterOwner"
         x:Class="MEFrpLauncherX.Views.PluginEditorWindow"
+        x:DataType="pedit:PluginEditorViewModel"
         Title="{x:Static languages:Languages.Text_PluginEditor_Title}">
+    <Design.DataContext>
+        <pedit:PluginEditorViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="Auto, *, Auto" Margin="14" RowSpacing="10">
         <!-- 基本信息 -->
         <StackPanel Grid.Row="0" Spacing="8">

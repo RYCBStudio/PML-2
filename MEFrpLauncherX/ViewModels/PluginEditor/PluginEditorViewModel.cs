@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Core;
 using MEFrpLauncherX.Plugin.Services;

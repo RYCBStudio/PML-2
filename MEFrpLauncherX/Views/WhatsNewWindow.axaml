@@ -6,13 +6,18 @@
         xmlns:mdRender="https://github.com/RYCBStudio/FluentAvalonia.MarkdownRender"
         xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
         xmlns:behaviors="clr-namespace:MEFrpLauncherX.Behaviours"
+        xmlns:views="clr-namespace:MEFrpLauncherX.Views"
         mc:Ignorable="d"
         d:DesignWidth="560" d:DesignHeight="520"
         Width="560" Height="520"
         CanResize="True"
         WindowStartupLocation="CenterOwner"
         Title="{x:Static languages:Languages.Text_WhatsNew_Title}"
-        x:Class="MEFrpLauncherX.Views.WhatsNewWindow">
+        x:Class="MEFrpLauncherX.Views.WhatsNewWindow"
+        x:DataType="views:WhatsNewViewModel">
+    <Design.DataContext>
+        <views:WhatsNewViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="Auto, *, Auto" Margin="5">
         <TabStrip SelectionChanged="SwitchSource" Theme="{StaticResource AlternateTabStripTheme}"
                   ItemContainerTheme="{StaticResource AlternateTabStripItemTheme}"

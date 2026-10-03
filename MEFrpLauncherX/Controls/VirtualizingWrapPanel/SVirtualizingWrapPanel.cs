@@ -8,7 +8,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.VisualTree;
 
 namespace MEFrpLauncherX.Controls.VirtualizingWrapPanel
 {
