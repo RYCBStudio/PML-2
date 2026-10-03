@@ -370,7 +370,7 @@ public partial class MainWindow : FAAppWindow, IDisposable
         // 复用 App 初始化阶段已创建的 ViewModel，避免重建导致整棵绑定树重新求值
         _vm = DataContext as MainWindowViewModel ?? new MainWindowViewModel();
         DataContext = _vm;
-        if (ConfigManager.CurrentConfig.Skin.ToUpper(0) == "None")
+        if (ConfigManager.CurrentConfig.Skin.Equals("None", StringComparison.CurrentCultureIgnoreCase))
         {
             Background =
                 ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase)
@@ -393,7 +393,8 @@ public partial class MainWindow : FAAppWindow, IDisposable
         SetBackgroundSampling(LoginBackground, BitmapInterpolationMode.MediumQuality);
 
         if (OperatingSystem.IsLinux() || (Environment.OSVersion.Version.Build <= 22000 &&
-                                          ConfigManager.CurrentConfig.Skin.ToUpper(0) == "Mica"
+                                          ConfigManager.CurrentConfig.Skin.Equals("Mica"
+, StringComparison.CurrentCultureIgnoreCase)
             ))
         {
             Background = ConfigManager.CurrentConfig.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase)

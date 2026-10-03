@@ -195,7 +195,7 @@ public class LoginViewModel : ViewModelBase
     /// </summary>
     public bool HasStoredUsernames => StoredUsernames.Count > 0;
 
-    public bool IsDark => ConfigManager.CurrentConfig.Theme.ToLower() == "dark";
+    public bool IsDark => ConfigManager.CurrentConfig.Theme.Equals("dark", StringComparison.CurrentCultureIgnoreCase);
     public bool IsLight => !IsDark;
 
     public int SelectedLoginMode

@@ -245,7 +245,7 @@ public partial class TerminalPage : UserControl
             }
 
             TabItem newTab;
-            if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
+            if (ConfigManager.CurrentConfig.TerminalEngineType.Equals("original", StringComparison.CurrentCultureIgnoreCase))
             {
                 newTab = new TabItem
                 {
@@ -311,7 +311,7 @@ public partial class TerminalPage : UserControl
         Action<string>? onOutput = null)
     {
         TabItem newTab;
-        if (ConfigManager.CurrentConfig.TerminalEngineType.ToLower() == "original")
+        if (ConfigManager.CurrentConfig.TerminalEngineType.Equals("original", StringComparison.CurrentCultureIgnoreCase))
         {
             newTab = new TabItem
             {
