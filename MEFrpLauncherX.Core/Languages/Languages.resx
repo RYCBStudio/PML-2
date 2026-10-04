@@ -913,6 +913,27 @@
     <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
         <value>常用端口:</value>
     </data>
+    <data name="Text.CreateProxy.PortPicker" xml:space="preserve">
+        <value>更多常用端口</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Website" xml:space="preserve">
+        <value>网站服务</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Game" xml:space="preserve">
+        <value>游戏联机</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Database" xml:space="preserve">
+        <value>数据库</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Developer" xml:space="preserve">
+        <value>开发与运维</value>
+    </data>
+    <data name="Text.CreateProxy.PortPolicy" xml:space="preserve">
+        <value>请勿映射代理 / VPN、远程控制等违反 ME Frp 内容策略的服务。</value>
+    </data>
+    <data name="Text.CreateProxy.ViewContentPolicy" xml:space="preserve">
+        <value>查看 ME Frp 内容策略</value>
+    </data>
     <data name="Text.CreateProxy.Templates" xml:space="preserve">
         <value>模板</value>
     </data>

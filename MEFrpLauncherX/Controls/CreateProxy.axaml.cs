@@ -197,12 +197,36 @@ public partial class CreateProxy : UserControl
         }
     }
 
-    /// <summary>常用端口快捷按钮：将 Tag 中的端口号填入本地端口</summary>
+    /// <summary>常用端口快捷项：将 Tag 中的端口号填入本地端口。
+    /// 同时兼容 <see cref="Button"/>（快捷按钮）与 <see cref="FAMenuFlyoutItem"/>（分组下拉菜单）。</summary>
     private void QuickPort_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button { Tag: string tag } && int.TryParse(tag, out var port))
+        var tag = sender switch
+        {
+            Button { Tag: string btnTag } => btnTag,
+            FAMenuFlyoutItem { Tag: string itemTag } => itemTag,
+            _ => null
+        };
+
+        if (tag is not null && int.TryParse(tag, out var port))
         {
             _createProxyViewModel.LocalPort = port;
+        }
+    }
+
+    /// <summary>在默认浏览器中打开 ME Frp 内容策略页面。</summary>
+    private void ViewContentPolicy_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo("https://www.mefrp.com/policy?tab=content")
+            {
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "打开内容策略失败");
         }
     }
 

@@ -144,7 +144,9 @@ internal partial class Program
                     {
                         pmlaFile = args.FirstOrDefault(x =>
                                 x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=") ||
-                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("inPmla=")
+                                )
                             ?.Split('=')[1];
                         outPath = args.FirstOrDefault(x =>
                                 x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPath=") ||
@@ -191,7 +193,9 @@ internal partial class Program
                             ?.Split('=')[1];
                         outPmla = args.FirstOrDefault(x =>
                                 x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("outPmla=") ||
-                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla="))
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmla=") ||
+                                x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("pmlaFile=")
+                                )
                             ?.Split('=')[1];
                         isNewFormat = args.FirstOrDefault(x =>
                                 x.ReplaceAnyToOne(["--", "/p:", "/"]).StartsWith("useNewFormat=") ||

@@ -847,6 +847,12 @@ public partial class SettingsPage : UserControl
             MainPageFrameViewModel.Instance.NeedRestart = true;
         }
     }
+
+    private void SplashRestoreImageClicked(object? sender, RoutedEventArgs e)
+    {
+        ConfigManager.UpdateConfig(config => config.SplashCustomImagePath = "");
+        MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
 }
 
 public class ValidationModeConverter : IValueConverter
