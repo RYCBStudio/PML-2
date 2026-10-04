@@ -108,8 +108,12 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <TargetPath>Config\Plugins\create-proxy-template.yaml</TargetPath>
         </None>
+        <AvaloniaResource Include="Assets\splash.png" />
         <None Remove="Assets\splash.png" />
         <AvaloniaResource Include="Assets\splash.png" />
+        <None Update="Resources\splash.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <!-- 版本统一由仓库根目录 Directory.Packages.props 中央管理 -->

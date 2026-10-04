@@ -104,8 +104,10 @@
                             <Button x:Name="SplashCustomImageBtn" Click="SplashCustomImageClicked"
                                     Classes="accent" VerticalAlignment="Center"
                                     Content="{x:Static languages:Languages.Text_Settings_SplashCustomImage}" />
-                            <TextBlock Text="{x:Static languages:Languages.Text_Settings_SplashRestartHint}"
-                                       FontSize="12" Opacity="0.7" VerticalAlignment="Center" />
+                            <Button x:Name="SplashRestoreImageBtn" Click="SplashRestoreImageClicked"  VerticalAlignment="Center"
+                                    Content="{x:Static languages:Languages.Text_AppearanceSettings_Restore}" />
+                            <!-- <TextBlock Text="{x:Static languages:Languages.Text_Settings_SplashRestartHint}" -->
+                            <!--            FontSize="12" Opacity="0.7" VerticalAlignment="Center" /> -->
                         </StackPanel>
                     </controls:FASettingsExpanderItem.Footer>
                 </controls:FASettingsExpanderItem>
