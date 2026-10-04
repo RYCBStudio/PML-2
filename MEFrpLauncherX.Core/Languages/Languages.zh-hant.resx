@@ -905,6 +905,27 @@
     <data name="Text.CreateProxy.QuickPorts" xml:space="preserve">
         <value>常用連接埠:</value>
     </data>
+    <data name="Text.CreateProxy.PortPicker" xml:space="preserve">
+        <value>更多常用連接埠</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Website" xml:space="preserve">
+        <value>網站服務</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Game" xml:space="preserve">
+        <value>遊戲連線</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Database" xml:space="preserve">
+        <value>資料庫</value>
+    </data>
+    <data name="Text.CreateProxy.PortCategory.Developer" xml:space="preserve">
+        <value>開發與維運</value>
+    </data>
+    <data name="Text.CreateProxy.PortPolicy" xml:space="preserve">
+        <value>請勿映射代理 / VPN、遠端控制等違反 ME Frp 內容策略的服務。</value>
+    </data>
+    <data name="Text.CreateProxy.ViewContentPolicy" xml:space="preserve">
+        <value>查看 ME Frp 內容策略</value>
+    </data>
     <data name="Text.CreateProxy.Templates" xml:space="preserve">
         <value>範本</value>
     </data>

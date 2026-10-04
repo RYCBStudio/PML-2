@@ -15681,5 +15681,69 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More common ports.
+        /// </summary>
+        public static string Text_CreateProxy_PortPicker {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Website {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Website", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Games.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Game {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Databases.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Database {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dev &amp; Ops.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Developer {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Developer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do not tunnel proxies/VPNs, remote control, or other services that violate the ME Frp content policy..
+        /// </summary>
+        public static string Text_CreateProxy_PortPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View ME Frp content policy.
+        /// </summary>
+        public static string Text_CreateProxy_ViewContentPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ViewContentPolicy", resourceCulture);
+            }
+        }
+        
     }
 }

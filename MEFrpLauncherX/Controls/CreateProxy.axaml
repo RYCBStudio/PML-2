@@ -105,6 +105,53 @@
                                 <Button Content="443" Tag="443" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
                                 <Button Content="22" Tag="22" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
                                 <Button Content="25565" Tag="25565" Click="QuickPort_Click" FontFamily="{StaticResource GlobalFontFamily}" />
+                                <!-- 更多常用端口：按用途分组的下拉菜单。仅收录合规的常规服务端口，
+                                     不含 HTTP/Socks 代理、VPN、穿透工具等违反 ME Frp 内容策略的端口。 -->
+                                <DropDownButton
+                                    x:Name="MorePortsBtn"
+                                    FontFamily="{StaticResource GlobalFontFamily}"
+                                    Content="{x:Static languages:Languages.Text_CreateProxy_PortPicker}">
+                                    <ToolTip.Tip>
+                                        <TextBlock MaxWidth="320"
+                                                   TextWrapping="Wrap"
+                                                   Text="{x:Static languages:Languages.Text_CreateProxy_PortPolicy}" />
+                                    </ToolTip.Tip>
+                                    <DropDownButton.Flyout>
+                                        <fa:FAMenuFlyout Placement="BottomEdgeAlignedLeft">
+                                            <fa:FAMenuFlyoutSubItem Text="{x:Static languages:Languages.Text_CreateProxy_PortCategory_Website}">
+                                                <fa:FAMenuFlyoutItem Text="80 · HTTP" Tag="80" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="443 · HTTPS" Tag="443" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="5244 · AList (HTTP)" Tag="5244" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="5245 · AList (HTTPS)" Tag="5245" Click="QuickPort_Click" />
+                                            </fa:FAMenuFlyoutSubItem>
+                                            <fa:FAMenuFlyoutSubItem Text="{x:Static languages:Languages.Text_CreateProxy_PortCategory_Game}">
+                                                <fa:FAMenuFlyoutItem Text="25565 · Minecraft Java" Tag="25565" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="19132 · Minecraft Bedrock" Tag="19132" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="27015 · CS2 / Source" Tag="27015" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="8211 · Palworld" Tag="8211" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="10999 · Don't Starve Together" Tag="10999" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="30120 · FiveM" Tag="30120" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="7777 · ARK / Terraria" Tag="7777" Click="QuickPort_Click" />
+                                            </fa:FAMenuFlyoutSubItem>
+                                            <fa:FAMenuFlyoutSubItem Text="{x:Static languages:Languages.Text_CreateProxy_PortCategory_Database}">
+                                                <fa:FAMenuFlyoutItem Text="3306 · MySQL / MariaDB" Tag="3306" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="5432 · PostgreSQL" Tag="5432" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="1433 · SQL Server" Tag="1433" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="6379 · Redis" Tag="6379" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="27017 · MongoDB" Tag="27017" Click="QuickPort_Click" />
+                                            </fa:FAMenuFlyoutSubItem>
+                                            <fa:FAMenuFlyoutSubItem Text="{x:Static languages:Languages.Text_CreateProxy_PortCategory_Developer}">
+                                                <fa:FAMenuFlyoutItem Text="22 · SSH / SFTP" Tag="22" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="3000 · Node.js / Dev Server" Tag="3000" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="5672 · RabbitMQ" Tag="5672" Click="QuickPort_Click" />
+                                                <fa:FAMenuFlyoutItem Text="9200 · Elasticsearch" Tag="9200" Click="QuickPort_Click" />
+                                            </fa:FAMenuFlyoutSubItem>
+                                            <fa:FAMenuFlyoutSeparator />
+                                            <fa:FAMenuFlyoutItem Text="{x:Static languages:Languages.Text_CreateProxy_ViewContentPolicy}"
+                                                                 Click="ViewContentPolicy_Click" />
+                                        </fa:FAMenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </StackPanel>
                         </fa:FASettingsExpanderItem.Footer>
                     </fa:FASettingsExpanderItem>
