@@ -247,15 +247,14 @@ public partial class AboutPage : UserControl
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName =
-                    "https://qm.qq.com/cgi-bin/qm/qr?authKey=W%2BsWnBZYMUyqre2CMvoILZ4TQniiva5PNFFYkBtY0TaMNb%2BSWiToLDbiglufNaaT&k=bqlThMvikRF4ZaOwEq_ckpedjzthHccE&noverify=0",
+                FileName =  "https://qm.qq.com/q/d14dzj3tXa?from=tim",
                 UseShellExecute = true
             });
         }
         else if (res == MessageBoxResult.No)
         {
             var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
-            await clipboard?.SetTextAsync("1019501085");
+            await clipboard?.SetTextAsync("1128677445");
             Growl.Success(Languages.Text_About_GroupNumberCopied);
         }
     }
