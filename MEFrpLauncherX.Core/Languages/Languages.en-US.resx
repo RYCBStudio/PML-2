@@ -2795,7 +2795,7 @@ JOKE_PLACEHOLDER
         <value>Unknown</value>
     </data>
     <data name="Text.Download.Title" xml:space="preserve">
-        <value>PML Ⅱ is downloading files</value>
+        <value>PML 2 is downloading files</value>
     </data>
     <data name="Text.Download.SubHeader" xml:space="preserve">
         <value>Downloading ME Frp client</value>

@@ -2472,6 +2472,60 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 数据库.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Database {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开发与运维.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Developer {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Developer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 游戏联机.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Game {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 网站服务.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Website {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Website", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 更多常用端口.
+        /// </summary>
+        public static string Text_CreateProxy_PortPicker {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请勿映射代理 / VPN、远程控制等违反 ME Frp 内容策略的服务。.
+        /// </summary>
+        public static string Text_CreateProxy_PortPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 协议类型.
         /// </summary>
         public static string Text_CreateProxy_ProtocolType {
@@ -2720,6 +2774,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_UsernamePlaceholder {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.UsernamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看 ME Frp 内容策略.
+        /// </summary>
+        public static string Text_CreateProxy_ViewContentPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ViewContentPolicy", resourceCulture);
             }
         }
         
@@ -7222,7 +7285,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PML Ⅱ 正在下载文件.
+        ///   Looks up a localized string similar to PML 2 正在下载文件.
         /// </summary>
         public static string Text_Download_Title {
             get {
@@ -8848,21 +8911,18 @@ namespace MEFrpLauncherX.Core.Languages {
         ///- **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
         ///- **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
         ///- **使用行为**：功能点击、会话时长、错误日志
+        ///- **匿名使用统计（26.5.0 起，Cloudflare）**：每次启动上报 1 条事件，仅含事件名、随机安装标识（UUID）、版本、平台、CPU 架构
         ///___
         ///**注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。
         ///### 2. 信息用途
         ///- 提供核心功能服务（账号验证、数据同步）
         ///- 优化用户体验（故障修复、功能改进）
         ///- 错误监控与性能分析（通过 Sentry）
+        ///- 匿名使用统计（通过 Cloudflare，仅统计活跃安装 / 版本 / 平台分布）
         ///### 3. 数据共享
         ///**我们不会出售用户数据**。仅在以下情况共享：
         ///- 经您明确同意
-        ///- 履行法律义务
-        ///- 与第三方服务商合作（如云服务）必需时
-        ///___
-        ///### 4. 证书助手（可选功能）
-        ///「证书助手」用于为您**自有域名**申请 SSL 证书（供 HTTPS 隧道使用），与 ME Frp 官方证书服务**无关**：
-        ///- 域名、ACM [rest of string was truncated]&quot;;.
+        ///-  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_MainWindow_PrivacyPolicy {
             get {
@@ -15710,69 +15770,5 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 更多常用端口.
-        /// </summary>
-        public static string Text_CreateProxy_PortPicker {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortPicker", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 网站服务.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Website {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Website", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 游戏联机.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Game {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Game", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 数据库.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Database {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Database", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 开发与运维.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Developer {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Developer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 请勿映射代理 / VPN、远程控制等违反 ME Frp 内容策略的服务。.
-        /// </summary>
-        public static string Text_CreateProxy_PortPolicy {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 查看 ME Frp 内容策略.
-        /// </summary>
-        public static string Text_CreateProxy_ViewContentPolicy {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.ViewContentPolicy", resourceCulture);
-            }
-        }
-        
     }
 }

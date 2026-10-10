@@ -2795,7 +2795,7 @@ JOKE_PLACEHOLDER
         <value>未知</value>
     </data>
     <data name="Text.Download.Title" xml:space="preserve">
-        <value>PML Ⅱ 正在下载文件</value>
+        <value>PML 2 正在下载文件</value>
     </data>
     <data name="Text.Download.SubHeader" xml:space="preserve">
         <value>正在下载ME Frp客户端</value>

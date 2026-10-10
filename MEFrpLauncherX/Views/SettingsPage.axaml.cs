@@ -334,7 +334,7 @@ public partial class SettingsPage : UserControl
 
     private void SetAutoStartWindows(bool enable)
     {
-        const string appName = "PML Ⅱ"; // 替换为你的应用名称
+        const string appName = "PML 2"; // 替换为你的应用名称
         var executablePath = Environment.ProcessPath;
 
         if (string.IsNullOrEmpty(executablePath) || !OperatingSystem.IsWindows())
