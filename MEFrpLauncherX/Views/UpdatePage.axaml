@@ -185,6 +185,45 @@
                                         Content="{Binding #DownloadSourceBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateDownloadSourceBoxItemToDescConverter.Instance}}" />
                                 </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_KeepOldVersion}"
+                                    Description="{x:Static languages:Languages.Text_Update_KeepOldVersionDescription}"
+                                    IsExpanded="True">
+                                    <controls:FASettingsExpander.Footer>
+                                        <StackPanel Spacing="4">
+                                            <ComboBox x:Name="KeepOldVersionBox"
+                                                      SelectionChanged="KeepOldVersionChange">
+                                                <ComboBoxItem Tag="Ask"
+                                                              Content="{x:Static languages:Languages.Text_Update_KeepOldVersion_Ask}" />
+                                                <ComboBoxItem Tag="Keep"
+                                                              Content="{x:Static languages:Languages.Text_Update_KeepOldVersion_Keep}" />
+                                                <ComboBoxItem Tag="Discard"
+                                                              Content="{x:Static languages:Languages.Text_Update_KeepOldVersion_Discard}" />
+                                            </ComboBox>
+                                            <Button x:Name="CleanupVersionsButton"
+                                                    Content="{x:Static languages:Languages.Text_Update_CleanupVersionsNow}"
+                                                    Click="CleanupVersionsNow"
+                                                    HorizontalAlignment="Stretch"
+                                                    IsVisible="{Binding HasRemovableVersions}" />
+                                            <TextBlock x:Name="VersionStorageText"
+                                                       Classes="CaptionTextBlock"
+                                                       TextWrapping="Wrap"
+                                                       Text="{Binding VersionStorageSummary}"
+                                                       IsVisible="{Binding HasRemovableVersions}" />
+                                        </StackPanel>
+                                    </controls:FASettingsExpander.Footer>
+                                    <controls:FASettingsExpanderItem
+                                        Content="{Binding #KeepOldVersionBox.SelectedIndex, 
+                                        Converter={x:Static views:UpdateKeepOldVersionBoxItemToDescConverter.Instance}}" />
+                                </controls:FASettingsExpander>
+                                <controls:FASettingsExpander
+                                    Header="{x:Static languages:Languages.Text_Update_NotifyRedundantVersion}"
+                                    Description="{x:Static languages:Languages.Text_Update_NotifyRedundantVersionDescription}">
+                                    <controls:FASettingsExpander.Footer>
+                                        <ToggleSwitch x:Name="NotifyRedundantVersionSwitch"
+                                                      IsCheckedChanged="NotifyRedundantVersionChanged" />
+                                    </controls:FASettingsExpander.Footer>
+                                </controls:FASettingsExpander>
                             </StackPanel>
                         </TabItem>
                     </TabControl>

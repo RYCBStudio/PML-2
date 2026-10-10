@@ -54,6 +54,7 @@ namespace MEFrpLauncherX.Core;
 [JsonSerializable(typeof(NoticeContent))]
 [JsonSerializable(typeof(HomeRecommendState))]
 [JsonSerializable(typeof(WhatsNewState))]
+[JsonSerializable(typeof(VersionCleanupState))]
 [JsonSerializable(typeof(InboxNoticeState))]
 [JsonSerializable(typeof(CertificateMeta))]
 [JsonSerializable(typeof(List<CertificateListItem>))]

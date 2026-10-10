@@ -5331,4 +5331,93 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
         <value>[FATAL] 启动 CrashDisplayer 失败：{0}</value>
     </data>
+    <data name="Text.Update.KeepOldVersion" xml:space="preserve">
+        <value>旧版本目录</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDescription" xml:space="preserve">
+        <value>升级后如何处理上一个版本的目录。安装目录采用「代码与数据分离」布局：升级只新增一个版本目录（vXXX），data\ 中的隧道、主题、插件、证书永远保留。保留旧版本可随时回滚（改 launcher.json 的 current 即可），代价是占用约一倍磁盘空间；删除则只保留当前版本。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Ask" xml:space="preserve">
+        <value>每次升级前询问（推荐）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Keep" xml:space="preserve">
+        <value>保留旧版本（可回滚）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Discard" xml:space="preserve">
+        <value>删除旧版本（更省空间）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Ask" xml:space="preserve">
+        <value>每次升级前弹窗询问，最稳妥。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Keep" xml:space="preserve">
+        <value>始终保留上一个版本的目录（占约一倍磁盘空间），新版本有问题时可一键回滚。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Discard" xml:space="preserve">
+        <value>安装完成后直接删除上一个版本的目录，只占用当前版本的磁盘空间，但失去一键回滚能力。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Unavailable" xml:space="preserve">
+        <value>当前为旧版单层安装布局，暂不适用；升级到 26.5 后生效。</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersion" xml:space="preserve">
+        <value>提醒清理多余版本</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersionDescription" xml:space="preserve">
+        <value>启动时检测安装目录中多出的旧版本目录，当可回收空间较多时提醒你处理。同一提醒至少间隔 7 天，避免打扰。</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Title" xml:space="preserve">
+        <value>升级后如何处理旧版本？</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Message" xml:space="preserve">
+        <value>即将升级到 {0}。
+
+安装目录采用「代码与数据分离」布局：升级只会新增一个版本目录，你的隧道、主题、插件与证书始终保留。
+
+你要如何处理上一个版本（{1}）？</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Keep" xml:space="preserve">
+        <value>保留（可回滚）</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Discard" xml:space="preserve">
+        <value>删除（省空间）</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Keep" xml:space="preserve">
+        <value>保留旧版本目录，占用约 {0} 磁盘空间。出现问题时可在「更新」页一键回滚到该版本。</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Discard" xml:space="preserve">
+        <value>安装完成后删除旧版本目录，回收约 {0} 磁盘空间。删除后无法一键回滚，只能重新下载旧版本安装包。</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Title" xml:space="preserve">
+        <value>发现可清理的旧版本目录</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Message" xml:space="preserve">
+        <value>安装目录中有 {0} 个多余的版本目录，占用约 {1}。
+
+它们是历次升级保留下来的回滚点，可以安全删除（不会影响隧道、主题与证书）。</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Done" xml:space="preserve">
+        <value>已清理 {0} 个旧版本目录，回收约 {1}</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Failed" xml:space="preserve">
+        <value>部分版本目录未能删除（可能正被占用），请重启后重试</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_NothingToDo" xml:space="preserve">
+        <value>没有需要清理的版本目录</value>
+    </data>
+    <data name="Text.Update.CleanupVersionsNow" xml:space="preserve">
+        <value>立即清理</value>
+    </data>
+    <data name="Text.Update.VersionStorageSummary" xml:space="preserve">
+        <value>共 {0} 个版本目录，占用 {1}；可清理 {2}，可回收 {3}。</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmTitle" xml:space="preserve">
+        <value>确认清理旧版本目录？</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmMessage" xml:space="preserve">
+        <value>将删除 {0} 个旧版本目录，回收约 {1}。
+
+你的隧道、主题、插件与证书都保存在 data\ 中，不会受影响；但删除后将无法一键回滚到这些版本。</value>
+    </data>
+    <data name="Text.Global.Later" xml:space="preserve">
+        <value>暂不处理</value>
+    </data>
 </root>

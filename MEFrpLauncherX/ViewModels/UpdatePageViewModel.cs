@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Downloader;
+using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -67,6 +73,15 @@ public class UpdatePageViewModel : ViewModelBase
         CheckUpdateCommand = ReactiveCommand.Create(CheckUpdate);
         RetryDownloadCommand = ReactiveCommand.Create(RetryDownload);
         DownloadUpdateCommand = ReactiveCommand.Create(DownloadUpdate);
+
+        // 26.5.0：旧版本目录策略与版本目录占用巡检
+        KeepOldVersionChoice = ConfigManager.CurrentConfig.UpdateSettings.KeepOldVersion switch
+        {
+            UpdateSettings.UpdateOldVersionValues.Keep => UpdateSettings.UpdateOldVersionValues.Keep,
+            UpdateSettings.UpdateOldVersionValues.Discard => UpdateSettings.UpdateOldVersionValues.Discard,
+            _ => UpdateSettings.UpdateOldVersionValues.Ask
+        };
+        RefreshVersionStorage();
     }
 
     public bool HasNewVersion
@@ -146,6 +161,88 @@ public class UpdatePageViewModel : ViewModelBase
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = App.Codename;
+
+    /// <summary>
+    ///     「旧版本目录」下拉的当前选中项（对应 <see cref="UpdateSettings.KeepOldVersion" />）。
+    ///     供设置页与升级前的询问弹窗共用，避免两处逻辑漂移。
+    /// </summary>
+    public string KeepOldVersionChoice { get; private set; }
+
+    /// <summary>
+    ///     是否有可清理的旧版本目录（不含当前版本，也不含回滚点）。
+    ///     仅版本化布局下可能为 true；开发态与旧版单层布局恒为 false。
+    /// </summary>
+    public bool HasRemovableVersions
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>版本目录占用情况的可读摘要（供设置页展示）。</summary>
+    public string VersionStorageSummary
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
+
+    /// <summary>设置「旧版本目录」策略。</summary>
+    public void SetKeepOldVersion(string value)
+    {
+        KeepOldVersionChoice = value;
+        ConfigManager.UpdateConfig(cfg => cfg.UpdateSettings.KeepOldVersion = value);
+    }
+
+    /// <summary>
+    ///     重新巡检版本目录占用，刷新「可清理」相关属性。
+    ///     <para>构造时调用一次即可；删除动作后需再次调用以刷新摘要。</para>
+    /// </summary>
+    public void RefreshVersionStorage()
+    {
+        try
+        {
+            var inspection = VersionCleanupService.Inspect();
+
+            HasRemovableVersions = inspection.Removable.Count > 0;
+            VersionStorageSummary = HasRemovableVersions
+                ? string.Format(
+                    Languages.Text_Update_VersionStorageSummary,
+                    inspection.Entries.Count,
+                    ToolboxService.FormatFileSize(inspection.TotalSizeBytes),
+                    inspection.Removable.Count,
+                    ToolboxService.FormatFileSize(inspection.RemovableSizeBytes))
+                : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "统计版本目录占用失败");
+        }
+    }
+
+    /// <summary>
+    ///     删除全部可清理的旧版本目录（不含当前版本与回滚点）。
+    /// </summary>
+    /// <returns>(删除数量, 失败数量, 回收字节数)</returns>
+    public (int Removed, int Failed, long Freed) CleanupOldVersions()
+    {
+        var result = VersionCleanupService.RemoveAllRemovable();
+        RefreshVersionStorage();
+        return result;
+    }
+
+    /// <summary>
+    ///     依据「旧版本目录」策略产出本次升级应传给安装器的清理开关。
+    ///     <para>
+    ///         对应关系：<c>Keep</c> → <c>/nocleanup</c>（保留回滚点），
+    ///         <c>Discard</c> → <c>/cleanup</c>（安装后删除全部历史版本目录）。
+    ///         两者都不需要传参（安装器默认即保留回滚点）。
+    ///     </para>
+    /// </summary>
+    public string BuildVersionCleanupArgument() => KeepOldVersionChoice switch
+    {
+        UpdateSettings.UpdateOldVersionValues.Keep => " /nocleanup",
+        UpdateSettings.UpdateOldVersionValues.Discard => " /cleanup",
+        _ => string.Empty
+    };
 
     /// <summary>
     ///     0 - 稳定通道
@@ -587,14 +684,18 @@ public class UpdatePageViewModel : ViewModelBase
         if (OperatingSystem.IsWindows())
         {
             Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
-            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
 
             // 26.5.0（分离式布局）：安装器不再需要「卸载旧版」来腾位置，也不会原地覆盖 ——
             // 它只往安装根新增一个 vXXX\ 版本目录并改写 launcher.json，data\ 原样保留。
             // 因此不再需要按「编译类型是否相同」传 /nocleanup（那是旧布局的残留参数），
             // 也不需要 /nodownload（离线安装包根本没有下载步骤）。
-            // 默认保留 previous 回滚点；用户可在提示后手动回退，或用 /cleanup 重装收敛磁盘。
-            var installArgs = "/silent /sp- /nocancel";
+            // 旧版本目录的去留由用户决定：Ask 先问，Keep/Discard 直接沿用设置。
+            var cleanupArg = await ResolveVersionCleanupArgumentAsync();
+
+            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info,
+                MessageBoxIcon.Info);
+
+            var installArgs = "/silent /sp- /nocancel" + cleanupArg;
 
             Core.App.CurrentLogger?.Log($"更新安装参数: {installArgs}", module: EnumLogModule.Update);
 
@@ -604,6 +705,124 @@ public class UpdatePageViewModel : ViewModelBase
             App.Desktop.Shutdown();
         }
     }
+
+    /// <summary>
+    ///     依据「旧版本目录」策略产出本次升级的安装器参数（26.5.0）。
+    ///     <para>
+    ///         策略为 <c>Ask</c> 时弹窗让用户在「保留（可回滚）」与「删除（省空间）」之间选择；
+    ///         仅当确实存在可清理的旧版本目录时才询问 —— 没有旧目录时问了也是废话。
+    ///         选择结果会写回设置，下次升级不再重复询问。
+    ///     </para>
+    /// </summary>
+    /// <returns>传给安装器的参数字符串（可能为空串）</returns>
+    private async Task<string> ResolveVersionCleanupArgumentAsync()
+    {
+        // 非版本化布局（开发态 / ≤26.4）没有版本目录概念，安装器参数无意义
+        if (!Core.AppPaths.IsVersionedLayout)
+        {
+            return string.Empty;
+        }
+
+        if (KeepOldVersionChoice == UpdateSettings.UpdateOldVersionValues.Ask)
+        {
+            var inspection = VersionCleanupService.Inspect();
+            if (inspection.Removable.Count == 0)
+            {
+                // 本次升级不会产生历史目录（首个版本化安装 / 上次已清理干净）
+                return " /nocleanup";
+            }
+
+            var keep = await AskKeepOldVersionAsync(inspection);
+            if (keep is null)
+            {
+                // 用户关闭了弹窗：按安装器默认值（保留回滚点）处理
+                return " /nocleanup";
+            }
+
+            KeepOldVersionChoice = keep.Value ? UpdateSettings.UpdateOldVersionValues.Keep
+                : UpdateSettings.UpdateOldVersionValues.Discard;
+            ConfigManager.UpdateConfig(cfg => cfg.UpdateSettings.KeepOldVersion = KeepOldVersionChoice);
+        }
+
+        return BuildVersionCleanupArgument();
+    }
+
+    /// <summary>
+    ///     询问用户升级后如何处理旧版本目录。
+    /// </summary>
+    /// <returns>true 保留、false 删除、null 用户取消（按默认处理）</returns>
+    private static async Task<bool?> AskKeepOldVersionAsync(VersionCleanupService.Inspection inspection)
+    {
+        // 单个旧版本目录的体积 —— 用它换算「保留」与「删除」各自的代价
+        var singleSize = ToolboxService.FormatFileSize(
+            inspection.Removable.Count > 0 ? inspection.Removable[0].SizeBytes : 0);
+
+        var content = new StackPanel
+        {
+            Spacing = 10,
+            Width = 380,
+            Children =
+            {
+                new TextBlock
+                {
+                    Text = string.Format(Languages.Text_Update_AskKeepOldVersion_Message,
+                        Core.App.Version,
+                        string.Join("、", inspection.Removable.Select(e => e.FolderName))),
+                    TextWrapping = TextWrapping.Wrap
+                },
+                BuildChoiceCard(Languages.Text_Update_AskKeepOldVersion_Keep,
+                    string.Format(Languages.Text_Update_AskKeepOldVersionDetail_Keep, singleSize)),
+                BuildChoiceCard(Languages.Text_Update_AskKeepOldVersion_Discard,
+                    string.Format(Languages.Text_Update_AskKeepOldVersionDetail_Discard, singleSize))
+            }
+        };
+
+        // 用 Primary / Secondary 两个标准按钮承载「保留 / 删除」，
+        // 与仓库内既有对话框（如 DnsAccountsWindowViewModel）保持一致，
+        // 避免为两个固定选项自绘按钮。
+        var dialog = new FAContentDialog
+        {
+            Title = Languages.Text_Update_AskKeepOldVersion_Title,
+            Content = content,
+            PrimaryButtonText = Languages.Text_Update_AskKeepOldVersion_Keep,
+            SecondaryButtonText = Languages.Text_Update_AskKeepOldVersion_Discard,
+            CloseButtonText = Languages.Text_Global_Cancel,
+            DefaultButton = FAContentDialogButton.Primary
+        };
+
+        var result = await dialog.ShowAsync();
+
+        return result switch
+        {
+            FAContentDialogResult.Primary => true,
+            FAContentDialogResult.Secondary => false,
+            _ => null
+        };
+    }
+
+    /// <summary>构造「选项卡片」（标题 + 说明），用于询问弹窗。</summary>
+    private static Border BuildChoiceCard(string title, string description) => new()
+    {
+        Padding = new Thickness(12),
+        CornerRadius = new CornerRadius(6),
+        BorderThickness = new Thickness(1),
+        BorderBrush = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#33808080")),
+        Child = new StackPanel
+        {
+            Spacing = 2,
+            Children =
+            {
+                new TextBlock { Text = title, FontWeight = FontWeight.SemiBold },
+                new TextBlock
+                {
+                    Text = description,
+                    TextWrapping = TextWrapping.Wrap,
+                    Opacity = 0.8,
+                    Classes = { "CaptionTextBlock" }
+                }
+            }
+        }
+    };
 
     /// <summary>
     ///     按平台拼接 TPCA（自建 Alist CDN）线路的更新包下载地址。

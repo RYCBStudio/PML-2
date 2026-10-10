@@ -5322,4 +5322,93 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
         <value>[FATAL] 啟動 CrashDisplayer 失敗：{0}</value>
     </data>
+    <data name="Text.Update.KeepOldVersion" xml:space="preserve">
+        <value>舊版本目錄</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDescription" xml:space="preserve">
+        <value>升級後如何處理上一個版本的目錄。安裝目錄採用「程式碼與資料分離」佈局：升級只會新增一個版本目錄（vXXX），data\ 中的隧道、主題、外掛與憑證永遠保留。保留舊版本可隨時回滾（修改 launcher.json 的 current 即可），代價是占用約一倍磁碟空間；刪除則只保留目前版本。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Ask" xml:space="preserve">
+        <value>每次升級前詢問（建議）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Keep" xml:space="preserve">
+        <value>保留舊版本（可回滾）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Discard" xml:space="preserve">
+        <value>刪除舊版本（更省空間）</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Ask" xml:space="preserve">
+        <value>每次升級前彈窗詢問，最穩妥。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Keep" xml:space="preserve">
+        <value>始終保留上一個版本的目錄（占約一倍磁碟空間），新版本有問題時可一鍵回滾。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Discard" xml:space="preserve">
+        <value>安裝完成後直接刪除上一個版本的目錄，只占用目前版本的磁碟空間，但失去一鍵回滾能力。</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Unavailable" xml:space="preserve">
+        <value>目前為舊版單層安裝佈局，暫不適用；升級到 26.5 後生效。</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersion" xml:space="preserve">
+        <value>提醒清理多餘版本</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersionDescription" xml:space="preserve">
+        <value>啟動時檢查安裝目錄中多出的舊版本目錄，當可回收空間較多時提醒你處理。同一提醒至少間隔 7 天，避免打擾。</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Title" xml:space="preserve">
+        <value>升級後如何處理舊版本？</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Message" xml:space="preserve">
+        <value>即將升級到 {0}。
+
+安裝目錄採用「程式碼與資料分離」佈局：升級只會新增一個版本目錄，你的隧道、主題、外掛與憑證始終保留。
+
+你要如何處理上一個版本（{1}）？</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Keep" xml:space="preserve">
+        <value>保留（可回滾）</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Discard" xml:space="preserve">
+        <value>刪除（省空間）</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Keep" xml:space="preserve">
+        <value>保留舊版本目錄，占用約 {0} 磁碟空間。若新版本有問題，可在「更新」頁一鍵回滾到該版本。</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Discard" xml:space="preserve">
+        <value>安裝完成後刪除舊版本目錄，回收約 {0} 磁碟空間。刪除後無法一鍵回滾，只能重新下載舊版本安裝檔。</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Title" xml:space="preserve">
+        <value>發現可清理的舊版本目錄</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Message" xml:space="preserve">
+        <value>安裝目錄中有 {0} 個多餘的版本目錄，占用約 {1}。
+
+它們是歷次升級保留下來的回滾點，可以安全刪除（不影響隧道、主題與憑證）。</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Done" xml:space="preserve">
+        <value>已清理 {0} 個舊版本目錄，回收約 {1}</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Failed" xml:space="preserve">
+        <value>部分版本目錄未能刪除（可能正被占用），請重新啟動後再試</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_NothingToDo" xml:space="preserve">
+        <value>沒有需要清理的版本目錄</value>
+    </data>
+    <data name="Text.Update.CleanupVersionsNow" xml:space="preserve">
+        <value>立即清理</value>
+    </data>
+    <data name="Text.Update.VersionStorageSummary" xml:space="preserve">
+        <value>共 {0} 個版本目錄，占用 {1}；可清理 {2}，可回收 {3}。</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmTitle" xml:space="preserve">
+        <value>確認清理舊版本目錄？</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmMessage" xml:space="preserve">
+        <value>將刪除 {0} 個舊版本目錄，回收約 {1}。
+
+你的隧道、主題、外掛與憑證都保存在 data\ 中，不會受影響；但刪除後將無法一鍵回滾到這些版本。</value>
+    </data>
+    <data name="Text.Global.Later" xml:space="preserve">
+        <value>暫不處理</value>
+    </data>
 </root>

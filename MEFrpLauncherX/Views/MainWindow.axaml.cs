@@ -566,6 +566,10 @@ public partial class MainWindow : FAAppWindow, IDisposable
         // 放在隐私政策确认之后、隧道自动恢复之前，且异常内部吞掉，不影响启动流程。
         await WhatsNewWindow.ShowIfNeededAsync(this);
 
+        // 26.5.0：安装根里累积了多余版本目录（历次升级保留的回滚点）时提醒一次。
+        // 用户可在「更新 → 旧版本目录」里关闭；内部已做 7 天 + 体积增长双重节流。
+        await Controls.VersionCleanupReminder.ShowIfNeededAsync();
+
         // 触发插件事件：应用启动
         await PluginService.Instance.TriggerAsync("app.startup", new Dictionary<string, object>
         {

@@ -7515,6 +7515,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not now.
+        /// </summary>
+        public static string Text_Global_Later {
+            get {
+                return ResourceManager.GetString("Text.Global.Later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string Text_Global_Loading {
@@ -13880,6 +13889,60 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard (save space).
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep (rollback).
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About to upgrade to {0}. The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved. What should we do with the previous version ({1})?.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Message {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to handle the old version?.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Title {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic updates are not yet supported on the current operating system. Please download the installer manually.
         /// </summary>
         public static string Text_Update_AutoUpdateNotSupported {
@@ -13939,6 +14002,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_Checking {
             get {
                 return ResourceManager.GetString("Text.Update.Checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean up now.
+        /// </summary>
+        public static string Text_Update_CleanupVersionsNow {
+            get {
+                return ResourceManager.GetString("Text.Update.CleanupVersionsNow", resourceCulture);
             }
         }
         
@@ -14204,6 +14276,87 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Old version folders.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ask with a dialog before each upgrade — the safest option..
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the previous version folder right after installation, using disk space only for the current version, at the cost of one-click rollback..
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always keep the previous version folder (roughly twice the disk space), so you can roll back if the new version misbehaves..
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not applicable to the legacy single-folder layout; takes effect after upgrading to 26.5..
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Unavailable {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to handle the previous version folder after upgrading. The install directory uses a code/data separated layout: an upgrade only adds a new version folder (vXXX), and your proxies, themes, plugins and certificates in data\ are always preserved. Keeping the old version lets you roll back at any time (by editing current in launcher.json), at the cost of roughly twice the disk space; discarding keeps only the current version..
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ask before each upgrade (recommended).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard old version (less space).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep old version (rollback).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep Configuration.
         /// </summary>
         public static string Text_Update_KeepProfile {
@@ -14263,6 +14416,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_NewVersionDetected {
             get {
                 return ResourceManager.GetString("Text.Update.NewVersionDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notify about redundant versions.
+        /// </summary>
+        public static string Text_Update_NotifyRedundantVersion {
+            get {
+                return ResourceManager.GetString("Text.Update.NotifyRedundantVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the install directory on startup and notify you when leftover version folders take up noticeable space. The same reminder is shown at most once every 7 days..
+        /// </summary>
+        public static string Text_Update_NotifyRedundantVersionDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.NotifyRedundantVersionDescription", resourceCulture);
             }
         }
         
@@ -14402,6 +14573,51 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} old version folder(s) will be removed, reclaiming about {1}. Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible..
+        /// </summary>
+        public static string Text_Update_VersionCleanup_ConfirmMessage {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_ConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove old version folders?.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_ConfirmTitle {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_ConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removed {0} old version folder(s), reclaiming about {1}.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_Done {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some version folders could not be deleted (possibly in use). Please retry after restarting.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_Failed {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No version folders to clean up.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_NothingToDo {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_NothingToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latest in cloud: {0}           Local version: {1}               Codename:.
         /// </summary>
         public static string Text_Update_VersionInfoFormat {
@@ -14416,6 +14632,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_VersionInfoTip {
             get {
                 return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are {0} leftover version folders in the install directory, taking up about {1}. They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected)..
+        /// </summary>
+        public static string Text_Update_VersionNotify_Message {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionNotify_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leftover version folders found.
+        /// </summary>
+        public static string Text_Update_VersionNotify_Title {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionNotify_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} version folder(s) using {1} in total; {2} can be removed, reclaiming {3}..
+        /// </summary>
+        public static string Text_Update_VersionStorageSummary {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionStorageSummary", resourceCulture);
             }
         }
         

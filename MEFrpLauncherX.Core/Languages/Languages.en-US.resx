@@ -5327,4 +5327,93 @@ Please go to the Create Proxy page and recreate it manually with the original co
     <data name="Text.CrashHandling.LaunchFailed" xml:space="preserve">
         <value>[FATAL] Failed to launch CrashDisplayer: {0}</value>
     </data>
+    <data name="Text.Update.KeepOldVersion" xml:space="preserve">
+        <value>Old version folders</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDescription" xml:space="preserve">
+        <value>How to handle the previous version folder after upgrading. The install directory uses a code/data separated layout: an upgrade only adds a new version folder (vXXX), and your proxies, themes, plugins and certificates in data\ are always preserved. Keeping the old version lets you roll back at any time (by editing current in launcher.json), at the cost of roughly twice the disk space; discarding keeps only the current version.</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Ask" xml:space="preserve">
+        <value>Ask before each upgrade (recommended)</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Keep" xml:space="preserve">
+        <value>Keep old version (rollback)</value>
+    </data>
+    <data name="Text.Update.KeepOldVersion_Discard" xml:space="preserve">
+        <value>Discard old version (less space)</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Ask" xml:space="preserve">
+        <value>Ask with a dialog before each upgrade — the safest option.</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Keep" xml:space="preserve">
+        <value>Always keep the previous version folder (roughly twice the disk space), so you can roll back if the new version misbehaves.</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Discard" xml:space="preserve">
+        <value>Delete the previous version folder right after installation, using disk space only for the current version, at the cost of one-click rollback.</value>
+    </data>
+    <data name="Text.Update.KeepOldVersionDesc_Unavailable" xml:space="preserve">
+        <value>Not applicable to the legacy single-folder layout; takes effect after upgrading to 26.5.</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersion" xml:space="preserve">
+        <value>Notify about redundant versions</value>
+    </data>
+    <data name="Text.Update.NotifyRedundantVersionDescription" xml:space="preserve">
+        <value>Check the install directory on startup and notify you when leftover version folders take up noticeable space. The same reminder is shown at most once every 7 days.</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Title" xml:space="preserve">
+        <value>How to handle the old version?</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Message" xml:space="preserve">
+        <value>About to upgrade to {0}.
+
+The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved.
+
+What should we do with the previous version ({1})?</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Keep" xml:space="preserve">
+        <value>Keep (rollback)</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersion_Discard" xml:space="preserve">
+        <value>Discard (save space)</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Keep" xml:space="preserve">
+        <value>Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong.</value>
+    </data>
+    <data name="Text.Update.AskKeepOldVersionDetail_Discard" xml:space="preserve">
+        <value>Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again.</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Title" xml:space="preserve">
+        <value>Leftover version folders found</value>
+    </data>
+    <data name="Text.Update.VersionNotify_Message" xml:space="preserve">
+        <value>There are {0} leftover version folders in the install directory, taking up about {1}.
+
+They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected).</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Done" xml:space="preserve">
+        <value>Removed {0} old version folder(s), reclaiming about {1}</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_Failed" xml:space="preserve">
+        <value>Some version folders could not be deleted (possibly in use). Please retry after restarting</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_NothingToDo" xml:space="preserve">
+        <value>No version folders to clean up</value>
+    </data>
+    <data name="Text.Update.CleanupVersionsNow" xml:space="preserve">
+        <value>Clean up now</value>
+    </data>
+    <data name="Text.Update.VersionStorageSummary" xml:space="preserve">
+        <value>{0} version folder(s) using {1} in total; {2} can be removed, reclaiming {3}.</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmTitle" xml:space="preserve">
+        <value>Remove old version folders?</value>
+    </data>
+    <data name="Text.Update.VersionCleanup_ConfirmMessage" xml:space="preserve">
+        <value>{0} old version folder(s) will be removed, reclaiming about {1}.
+
+Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible.</value>
+    </data>
+    <data name="Text.Global.Later" xml:space="preserve">
+        <value>Not now</value>
+    </data>
 </root>

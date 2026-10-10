@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using FluentAvalonia.UI.Controls;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -33,7 +32,7 @@ public static class VersionCleanupReminder
     ///     在启动流程中按需提醒用户清理多余版本目录。
     ///     <para>无论是否提醒、用户如何选择，都不会抛出异常。</para>
     /// </summary>
-    public static async Task ShowIfNeededAsync(Window? owner = null)
+    public static async Task ShowIfNeededAsync()
     {
         try
         {
@@ -76,7 +75,7 @@ public static class VersionCleanupReminder
 
             if (result == FAContentDialogResult.Primary)
             {
-                await CleanupAsync(owner);
+                await CleanupAsync();
             }
         }
         catch (Exception ex)
@@ -90,7 +89,7 @@ public static class VersionCleanupReminder
     /// <summary>
     ///     二次确认后删除可清理的版本目录，并给出结果提示。
     /// </summary>
-    private static async Task CleanupAsync(Window? owner)
+    private static async Task CleanupAsync()
     {
         // 弹窗期间用户可能已在别处清理过，重新巡检以免对着空列表操作
         var inspection = VersionCleanupService.Inspect();
