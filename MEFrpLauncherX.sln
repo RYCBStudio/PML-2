@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PML2Test", "PML2Test\PML2Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PML2CertCheck", "PML2CertCheck\PML2CertCheck.csproj", "{28CF3B7F-639E-4D8A-991F-26E57B77037C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAvalonia.MarkdownRender", "FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj", "{15303BDF-4B2D-45CA-8D36-4D4E002D3870}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAvalonia.MarkdownRender", "FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj", "{15303BDF-4B2D-45CA-8D36-4D4E002D3870}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
