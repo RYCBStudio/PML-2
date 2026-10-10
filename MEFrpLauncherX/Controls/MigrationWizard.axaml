@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="520"
+             x:Class="MEFrpLauncherX.Controls.MigrationWizard">
+    <ScrollViewer MaxHeight="520" VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="14" MinWidth="520" Margin="10">
+            <!-- 标题与说明 -->
+            <StackPanel Spacing="6">
+                <TextBlock FontSize="20" FontWeight="SemiBold" Text="数据迁移向导" />
+                <TextBlock TextWrapping="Wrap" Opacity="0.8"
+                           Text="PML 2 从 26.5 起把程序代码与用户数据分开存放：代码放入按版本编号的 vXXX 目录，配置、主题、插件、日志等全部收进 data 目录。这样以后升级只会替换 vXXX，你的数据不会被覆盖。" />
+            </StackPanel>
+
+            <!-- 新旧布局对照 -->
+            <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="12">
+                <Border CornerRadius="8" BorderThickness="1" Padding="12"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                    <StackPanel Spacing="4">
+                        <TextBlock FontSize="12" Opacity="0.7" Text="旧版（≤26.4）" />
+                        <TextBlock FontFamily="Cascadia Code,Consolas" FontSize="12" Opacity="0.9"
+                                   Text="安装目录&#10;├─ MEFrpLauncherX.exe&#10;├─ Config\&#10;├─ Cache\&#10;├─ Logs\&#10;└─ bin\" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="18" Opacity="0.5" Text="→" />
+                <Border Grid.Column="2" CornerRadius="8" BorderThickness="1" Padding="12"
+                        BorderBrush="{DynamicResource AccentFillColorDefaultBrush}"
+                        Background="{DynamicResource AccentFillColorSecondaryBrush}">
+                    <StackPanel Spacing="4">
+                        <TextBlock FontSize="12" Opacity="0.7" Text="新版（26.5+）" />
+                        <TextBlock FontFamily="Cascadia Code,Consolas" FontSize="12"
+                                   Text="安装目录&#10;├─ PML 2.exe&#10;├─ launcher.json&#10;├─ v26.5.0\   ← 代码&#10;└─ data\      ← 你的数据" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 待迁移清单 -->
+            <Border CornerRadius="8" BorderThickness="1" Padding="12"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel Spacing="8">
+                    <TextBlock FontWeight="SemiBold" Opacity="0.8" Text="将要迁移的内容" />
+                    <ItemsControl x:Name="PlanList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="controls:MigrationPlanRow">
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="8" Margin="0,4">
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                               Text="{Binding Icon}" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Label}" FontWeight="SemiBold" />
+                                        <TextBlock FontSize="11" Opacity="0.65" Text="{Binding Path}" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Opacity="0.75"
+                                               Text="{Binding Size}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock x:Name="EmptyHint" IsVisible="False" Opacity="0.7" TextWrapping="Wrap"
+                               Text="没有检测到旧版数据，无需迁移。" />
+                </StackPanel>
+            </Border>
+
+            <!-- 承诺 -->
+            <Border CornerRadius="8" BorderThickness="1" Padding="12"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel Spacing="6">
+                    <TextBlock FontWeight="SemiBold" Opacity="0.8" Text="迁移保证" />
+                    <TextBlock FontSize="12" Opacity="0.8" TextWrapping="Wrap"
+                               Text="· 只复制，不删除：旧目录原地保留，确认无误后可自行删除。&#10;· 不覆盖：data 中已有同名文件时跳过，以新数据为准。&#10;· 可重复执行：中途失败也不影响，下次启动会继续补齐。" />
+                </StackPanel>
+            </Border>
+
+            <!-- 结果 -->
+            <Border CornerRadius="8" BorderThickness="1" Padding="12" IsVisible="False" x:Name="ResultPanel"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <StackPanel Spacing="6">
+                    <TextBlock x:Name="ResultSummary" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <ItemsControl x:Name="ResultList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="controls:MigrationResultRow">
+                                <Grid ColumnDefinitions="20,*" ColumnSpacing="8" Margin="0,3">
+                                    <TextBlock Grid.Column="0" Text="{Binding Icon}" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock FontSize="12" Text="{Binding Label}" />
+                                        <TextBlock FontSize="11" Opacity="0.65" TextWrapping="Wrap" Text="{Binding Detail}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <CheckBox x:Name="ArchiveCheck" IsChecked="True"
+                              Content="迁移完成后把旧目录重命名为 *.old-时间戳（便于确认后再手动删除）" />
+                </StackPanel>
+            </Border>
+
+            <!-- 操作按钮 -->
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                <fluent:FAProgressRing x:Name="BusyRing" IsIndeterminate="True" IsVisible="False"
+                                       Width="18" Height="18" VerticalAlignment="Center" />
+                <Button Content="跳过" Click="Skip_Click" />
+                <Button x:Name="MigrateButton" Classes="accent" Content="开始迁移" Click="Migrate_Click" />
+                <Button x:Name="RestartButton" Classes="accent" IsVisible="False" Content="重启应用"
+                        Click="Restart_Click" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
