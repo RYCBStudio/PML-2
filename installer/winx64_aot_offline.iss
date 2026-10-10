@@ -12,18 +12,20 @@
 #define MyAppURL "https://www.rycb.tech/pml-2"
 ; 26.5.0：布局改为「启动器 + 版本目录 + 数据目录」，详见 docs/install.md
 ;   <app>\PML 2.exe        启动器（版本无关）
-;   <app>\launcher.json    版本槽位
+;   <app>\launcher.json    版本槽位（安装时重新生成：current = 本次版本，previous = 旧版本）
 ;   <app>\v26.5.0\         主程序（只读）
 ;   <app>\data\            用户数据（升级绝不覆盖）
 #define MyAppLauncher "PML 2.exe"
+#define LauncherManifest "launcher.json"
 #ifndef LayoutDir
-  ; 版本目录名，必须与 stage-layout.sh 产出一致
+  ; 版本目录名，必须与 stage-layout.sh 产出一致（格式：v + 主版本.次版本.修订号[-预发布]）
   #define LayoutDir "v26.5.0"
 #endif
 
 ; 相对 installer/：仓库根为 ..
 #ifndef StageDir
-  ; stage-layout.sh 的输出目录（含 PML 2.exe / launcher.json / vXXX / data）
+  ; stage-layout.sh 的输出目录（含 PML 2.exe / vXXX / data）
+  ; 注意：其中的 launcher.json 不会被拷贝 —— 版本槽位由 [Code] 在安装结束时生成。
   #define StageDir "..\dist\layout"
 #endif
 #ifndef IconFile
@@ -67,13 +69,18 @@ Name: "Chinese"; MessagesFile: "./Chinese.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; ---- 启动器与版本槽位（安装根直属）----
+; ---- 启动器（安装根直属，版本无关，升级时不覆盖本体）----
 Source: "{#StageDir}\{#MyAppLauncher}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#StageDir}\launcher.json"; DestDir: "{app}"; Flags: ignoreversion
 
-; ---- 代码：版本目录（只读，升级时被整体替换）----
+; ---- 代码：版本目录（只读，升级时整体替换一个新的 vXXX\）----
+; 注意：这里只写入「本次」版本目录；历史 vXXX\ 由 [Code] 的 PruneOldVersions 在
+; 写入新版本成功之后清理，避免升级失败时把可回滚的旧版本删掉。
 Source: "{#StageDir}\{#LayoutDir}\*"; DestDir: "{app}\{#LayoutDir}"; \
     Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.log,*.dbg,*.mdb"
+
+; launcher.json 不再由 [Files] 直接覆盖 —— 它必须记录「安装前的 current」作为
+; previous（回滚点），只有 [Code] 的 WriteLauncherManifest 才有这个上下文。
+; 首次安装时由该函数生成。
 
 ; ---- 数据：只创建目录骨架，不覆盖已有内容 ----
 ; 用户升级时 data\ 里已有配置/主题/证书/插件，这些必须原样保留，
@@ -83,7 +90,7 @@ Source: "{#StageDir}\data\*"; DestDir: "{app}\data"; \
 
 [Dirs]
 ; 无论 StageDir 里是否带 data 骨架，都确保运行期目录存在。
-; uninstall 删除交给程序自身（旧版本目录由迁移向导归档）。
+; uninstall 只删版本目录与启动器，data\ 保留（隧道、主题、证书不丢）。
 Name: "{app}\data"; Flags: uninsneveruninstall
 Name: "{app}\data\Config"; Flags: uninsneveruninstall
 Name: "{app}\data\Config\frp"; Flags: uninsneveruninstall
@@ -103,68 +110,163 @@ Filename: "{app}\{#MyAppLauncher}"; Description: "{cm:LaunchProgram,{#StringChan
 
 [UninstallDelete]
 ; 只清理代码与启动器；data\ 交由用户决定去留（保留用户的隧道与证书）。
+; 卸载时可能残留若干历史 vXXX\（本次安装只写入了一个版本目录），
+; 由 UninstallRemoveVersionDirs 在运行时统一清理。
 Type: filesandordirs; Name: "{app}\{#LayoutDir}"
 Type: files; Name: "{app}\{#MyAppLauncher}"
-Type: files; Name: "{app}\launcher.json"
+Type: files; Name: "{app}\{#LauncherManifest}"
 
 [Code]
-var
-  NoDownloadParam: Boolean;
-  CleanupParam: Boolean;
+; DateUtils 提供 FormatDateTime / LocalTimeToUTC —— Inno Setup 不会自动引用该单元，
+; 而 updatedAt 需要与启动器（VersionResolver）写入的 UTC 时间保持一致，故显式引入。
+uses DateUtils;
 
-function GetUninstallString(): String;
 var
-  sUnInstPath: String;
-  sUnInstallString: String;
-  AppIdValue: String;
+  CleanupParam: Boolean;
+  { 安装前的 launcher.json current（作为 previous 写入），空串表示首次安装 }
+  PreviousCurrent: String;
+
+const
+  LayoutDirName = '{#LayoutDir}';
+  ManifestName = '{#LauncherManifest}';
+
+{ 是否形如 v26.5.0 / v26.5.0-preview1 的版本目录名 }
+function IsVersionDirName(const DirName: String): Boolean;
 begin
-  AppIdValue := '{#emit SetupSetting("AppId")}';
-  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\' + AppIdValue + '_is1');
-  sUnInstallString := '';
-  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
-    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
-  Result := sUnInstallString;
+  Result := (Length(DirName) > 1) and (DirName[1] = 'v') and
+            (DirName[2] >= '0') and (DirName[2] <= '9');
 end;
 
-function UnInstallOldVersion(): Boolean;
+{ 读取安装根下 launcher.json 的 current 字段。
+  这里做的是「宽松解析」而非完整 JSON 反序列化：安装器只需要这一个字符串，
+  且必须容忍用户手改过的文件（字段缺失 / 引号不全时按空处理，绝不让安装失败）。 }
+function ReadManifestCurrent(): String;
 var
-  sUnInstallString: String;
-  iResultCode: Integer;
+  Content: String;
+  P, Q: Integer;
 begin
-  Result := True;
-  sUnInstallString := GetUninstallString();
-  if sUnInstallString <> '' then begin
-    sUnInstallString := RemoveQuotes(sUnInstallString);
-    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES', '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
-    begin
-      Result := (iResultCode = 0);
-      if Result then
-        Log('旧版本卸载成功')
-      else
-        Log('旧版本卸载失败，错误码: ' + IntToStr(iResultCode));
-    end
-    else
-    begin
-      Result := False;
-      Log('执行卸载程序失败');
-    end;
+  Result := '';
+  if not FileExists(ExpandConstant('{app}\' + ManifestName)) then
+    Exit;
+
+  Content := '';
+  if not LoadStringFromFile(ExpandConstant('{app}\' + ManifestName), Content) then
+    Exit;
+
+  P := Pos('"current"', Content);
+  if P = 0 then
+    Exit;
+  Delete(Content, 1, P + 9);
+
+  Q := Pos(':', Content);
+  if Q = 0 then
+    Exit;
+  Delete(Content, 1, Q);
+
+  P := Pos('"', Content);
+  if P = 0 then
+    Exit;
+  Delete(Content, 1, P);
+  Q := Pos('"', Content);
+  if Q = 0 then
+    Exit;
+
+  Result := Copy(Content, 1, Q - 1);
+
+  { 只有形如版本目录名的值才认为是有效槽位；否则按「无回滚点」处理，
+    绝不把被手工改坏的 launcher.json 内容写回新槽位。 }
+  if not IsVersionDirName(Result) then
+  begin
+    Log('忽略非法/缺失的版本槽位 current: "' + Result + '"');
+    Result := '';
   end
   else
+    Log('检测到安装前版本槽位 current = ' + Result);
+end;
+
+{ 写入版本槽位：current = 本次安装的版本目录，previous = 安装前的 current（回滚点）。
+  必须在 [Files] 写完新版本目录之后调用，否则中途失败会把用户指向一个不存在的版本。 }
+procedure WriteLauncherManifest();
+var
+  Content: String;
+  UtcStamp: String;
+begin
+  { updatedAt 用 UTC（末尾 Z）：安装器本地时区与启动器 / VersionResolver 写入的 UTC 一致，
+    否则排序与诊断会对不上。 }
+  UtcStamp := FormatDateTime('yyyy-mm-dd"T"hh:nn:ss', LocalTimeToUTC(Now), False) + 'Z';
+
+  Content :=
+    '{' + #13#10 +
+    '  "schema": 1,' + #13#10 +
+    '  "current": "' + LayoutDirName + '",' + #13#10 +
+    '  "previous": "' + PreviousCurrent + '",' + #13#10 +
+    '  "aot": true,' + #13#10 +
+    '  "updatedAt": "' + UtcStamp + '"' + #13#10 +
+    '}';
+
+  if not SaveStringToFile(ExpandConstant('{app}\' + ManifestName), Content, False) then
+    Log('警告: 写入 ' + ManifestName + ' 失败，启动器将回退为扫描版本目录')
+  else
+    Log('已写入版本槽位: current=' + LayoutDirName + ' previous=' + PreviousCurrent);
+end;
+
+{ 删除安装根下「除本次版本目录以外」的历史版本目录。
+  默认保留 previous 作为回滚点（数据仍在 data\，回滚只是换一个启动目标）；
+  /cleanup 时连回滚点一起清掉，安装根只剩一个版本。
+  只处理 v + 数字 形式的目录，绝不触碰 data\ 与其他非版本目录。 }
+procedure PruneOldVersions(KeepPrevious: Boolean);
+var
+  FindRec: TFindRec;
+  Entry: String;
+begin
+  if not DirExists(ExpandConstant('{app}')) then
+    Exit;
+
+  if FindFirst(ExpandConstant('{app}\*'), FindRec) then
   begin
-    Log('未找到旧版本的卸载程序');
+    try
+      repeat
+        Entry := FindRec.Name;
+        if (FindRec.Attr and FILE_ATTRIBUTE_DIRECTORY <> 0) and
+           IsVersionDirName(Entry) and
+           (Entry <> LayoutDirName) and
+           ((not KeepPrevious) or (Entry <> PreviousCurrent)) then
+        begin
+          Log('清理历史版本目录: ' + Entry);
+          { 旧版本进程可能尚未完全退出（更新流程是先退出再拉安装器），
+            文件被占用时 DelTree 会抛异常；吞掉它即可 ——
+            残留的版本目录只是占空间，不影响新版本启动。 }
+          try
+            DelTree(ExpandConstant('{app}\' + Entry), True, True, True);
+          except
+            Log('历史版本目录清理失败（可能被占用），保留: ' + Entry);
+          end;
+        end;
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
   end;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if (CurStep = ssInstall) and CleanupParam then
+  if CurStep = ssInstall then
   begin
-    Log('检测到清理模式，开始检查并卸载旧版本...');
-    UnInstallOldVersion();
+    { 必须等到 ssInstall 才读旧槽位：此刻 {app} 才是用户最终确认的安装目录，
+      （InitializeWizard 阶段 {app} 仍是默认值）。此时 [Files] 尚未写入，
+      launcher.json 是「上一次安装留下的」，正是我们要的 previous。 }
+    PreviousCurrent := ReadManifestCurrent();
   end
-  else if CurStep = ssInstall then
+  else if CurStep = ssPostInstall then
   begin
-    Log('未启用清理模式，跳过旧版本卸载，将直接覆盖安装');
+    { 顺序很关键：先写槽位（新版本可用了），再清理旧版本 }
+    WriteLauncherManifest();
+    PruneOldVersions(not CleanupParam);
+    if CleanupParam then
+      Log('清理模式：仅保留当前版本目录 ' + LayoutDirName)
+    else
+      Log('保留回滚点模式：current=' + LayoutDirName + ' previous=' + PreviousCurrent);
   end;
 end;
 
@@ -173,22 +275,26 @@ var
   i: Integer;
   _paramStr: String;
 begin
-  CleanupParam := True;
+  { 默认保留回滚点：升级后仍可手动改 launcher.json 的 current 退回旧版本。 }
+  CleanupParam := False;
   for i := 1 to ParamCount do
   begin
     _paramStr := LowerCase(ParamStr(i));
     if (_paramStr = '/nocleanup') or (_paramStr = '-nocleanup') then
       CleanupParam := False
-    else if (_paramStr = '/cleanup') or (_paramStr = '-cleanup') then
+    else if (_paramStr = '/cleanup') or (_paramStr = '/clean') or (_paramStr = '-cleanup') then
       CleanupParam := True;
   end;
+
+  PreviousCurrent := '';
 end;
 
-function BoolToStr(b: Boolean): String;
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
-  if b then
-    Result := 'True'
-  else
-    Result := 'False';
+  if CurUninstallStep = usPostUninstall then
+  begin
+    { 卸载只删代码与启动器，data\ 原样保留；这里把残留的历史版本目录一并清掉。 }
+    PruneOldVersions(False);
+  end;
 end;
 

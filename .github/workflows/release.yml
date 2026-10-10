@@ -609,8 +609,12 @@ jobs:
           hdiutil verify "$FINAL_DMG" || true
 
       # ========== 26.5.0 布局暂存 ==========
-      # 把扁平的 publish 产物重排为：PML 2.exe + launcher.json + vXXX\ + data\
+      # 把扁平的 publish 产物重排为：PML 2.exe + vXXX\ + data\
       # 必须在 ISCC 之前完成，ISS 的 StageDir 直接指向其输出。
+      #
+      # launcher.json 不再由这里生成：Windows 安装器在 ssPostInstall 自行写入，
+      # 因为只有它知道「安装前的 current」并能把它保留为回滚点（previous）。
+      # 暂存脚本仍会产出一份仅供本地 / 非 Windows 打包参考的 launcher.json。
       - name: Build launcher (PML 2)
         if: steps.cache-tools.outputs.cache-hit != 'true'
         shell: bash
@@ -698,6 +702,7 @@ jobs:
           Write-Host "  LayoutDir=$layoutDir"
           Write-Host "  StageDir=$outDir\layout"
           Write-Host "  OutDir=$outDir"
+          Write-Host "  （launcher.json 由 ISS 在安装结束时写入，current=$layoutDir）"
 
           & $iscc.FullName `
             "/DMyAppVersion=$verDefine" `

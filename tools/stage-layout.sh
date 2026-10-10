@@ -96,6 +96,10 @@ done
 touch "$OUT_DIR/data/.keep"
 
 # ---- 4. 版本槽位 ----
+# 仅供本地打包 / 非 Windows 平台（便携包、deb）参考使用：
+# Windows 的 Inno Setup 安装器不会拷贝这份文件，而是在 ssPostInstall 自行写入
+# launcher.json —— 只有安装器知道「安装前的 current」，才能把它保留为回滚点。
+# 因此这里的 previous 恒为空串。
 cat > "$OUT_DIR/launcher.json" <<EOF
 {
   "schema": 1,

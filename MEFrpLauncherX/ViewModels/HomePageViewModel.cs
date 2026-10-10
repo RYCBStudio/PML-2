@@ -1143,37 +1143,71 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             });
         }
 
-        if (Directory.GetFiles(Core.AppPaths.CacheDirectory)
-            .Any(x => x.StartsWith("update_tmp")))
+        await CleanupLeftoverUpdatePackagesAsync();
+    }
+
+    /// <summary>
+    ///     清理上次更新残留的安装包（26.5.0）。
+    ///     <para>
+    ///         分离式布局下，更新安装包按命名规范落在安装根的 <c>vXXX\</c> 中由启动器管理，
+    ///         应用自身只需清掉「自己下载的那一份」：
+    ///     </para>
+    ///     <list type="bullet">
+    ///         <item><c>data\Cache\update_tmp_*</c>：当前布局的下载产物（数据目录，升级不覆盖）；</item>
+    ///         <item>旧版单层布局遗留在程序目录下的 <c>update_tmp_*</c>：仅非版本化布局时才查程序目录。</item>
+    ///     </list>
+    ///     <para>
+    ///         只删匹配 <c>update_tmp</c> 前缀的文件，不碰 <c>Cache\</c> 里的其他内容
+    ///         （<c>startup.json</c>、<c>home-recommend.json</c> 等都是运行期状态）。
+    ///         目录不存在、文件被占用等情况一律跳过 —— 清理失败不该挡住启动。
+    ///     </para>
+    /// </summary>
+    private async Task CleanupLeftoverUpdatePackagesAsync()
+    {
+        try
         {
+            var stale = CollectStaleUpdatePackages();
+            if (stale.Count == 0)
+            {
+                return;
+            }
+
+            Core.App.CurrentLogger?.Log($"发现 {stale.Count} 个更新残留安装包，开始清理",
+                module: EnumLogModule.Update);
+
             var btn = new FATaskDialogButton
             {
                 DialogResult = FATaskDialogStandardResult.Cancel,
                 Text = Languages.Text_Global_Cancel,
-                Command = new RelayCommand(async _ =>
-                {
-                })
+                Command = new RelayCommand(async _ => { })
             };
-            var cnt = "";
             var td = new FATaskDialog
             {
                 Title = Languages.Text_Main_PostUpdateProcess_Title,
                 ShowProgressBar = true,
                 IconSource = new FASymbolIconSource { Symbol = FASymbol.Download },
                 SubHeader = Languages.Text_Main_PostUpdateProcess_Cleaning,
-                Content = cnt,
-                Buttons =
-                {
-                    btn
-                }
+                Content = "",
+                Buttons = { btn }
             };
             td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
             td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
             td.ShowAsync();
 
-            await Task.Run(() =>
-                Directory.EnumerateFileSystemEntries(Core.AppPaths.CacheDirectory)
-                    .Where(x => x.StartsWith("update_tmp")).ToList().ForEach(File.Delete));
+            await Task.Run(() => stale.ForEach(path =>
+            {
+                try
+                {
+                    File.Delete(path);
+                }
+                catch (Exception ex)
+                {
+                    // 被占用 / 只读：留着也不影响启动，下次启动再清
+                    Core.App.CurrentLogger?.Warning($"清理更新残留文件失败: {path}（{ex.Message}）",
+                        module: EnumLogModule.Update);
+                }
+            }));
+
             Dispatcher.UIThread.Post(() =>
             {
                 try
@@ -1198,6 +1232,56 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 }
             });
         }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "清理更新残留安装包失败");
+        }
+    }
+
+    /// <summary>更新安装包的文件名前缀（与「更新」页下载时保持一致）。</summary>
+    private const string UpdatePackagePrefix = "update_tmp";
+
+    /// <summary>
+    ///     列出需要清理的更新安装包：数据目录 <c>Cache\</c> 下必查；
+    ///     程序目录仅在「非版本化布局」时才查 —— 版本化布局下程序目录是只读的代码目录，
+    ///     且不存在任何 <c>update_tmp_*</c>，无需也无权清理。
+    /// </summary>
+    private static List<string> CollectStaleUpdatePackages()
+    {
+        var result = new List<string>();
+        var searched = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        void Scan(string? directory)
+        {
+            if (string.IsNullOrWhiteSpace(directory) || !searched.Add(directory))
+            {
+                return;
+            }
+
+            try
+            {
+                if (Directory.Exists(directory))
+                {
+                    result.AddRange(Directory.EnumerateFiles(directory, UpdatePackagePrefix + "*"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Core.App.CurrentLogger?.Warning($"扫描更新残留目录失败: {directory}（{ex.Message}）",
+                    module: EnumLogModule.Update);
+            }
+        }
+
+        // 数据目录：升级不覆盖，下载产物会一直留在这里
+        Scan(Core.AppPaths.CacheDirectory);
+
+        // 旧版单层布局：下载曾落在程序目录里，迁移到 26.5 后可能仍有残留
+        if (!Core.AppPaths.IsVersionedLayout)
+        {
+            Scan(Core.AppPaths.VersionDirectory);
+        }
+
+        return result;
     }
 
     private async Task SignAsync()

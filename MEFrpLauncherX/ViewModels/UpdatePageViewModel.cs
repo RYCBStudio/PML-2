@@ -589,15 +589,14 @@ public class UpdatePageViewModel : ViewModelBase
             Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
             await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
 
-            // 当当前运行时编译类型与目标编译类型一致时，传入 /nocleanup 参数
-            var currentType = Core.App.ReleaseFlag;
-            var targetType = ConfigManager.CurrentConfig.UpdateSettings.CompileType;
-            var sameType = string.Equals(currentType, targetType, StringComparison.OrdinalIgnoreCase);
-            var installArgs = sameType ? "/silent /sp- /nocancel /nocleanup" : "/silent /sp- /nocancel";
-            installArgs += " /nodownload";
+            // 26.5.0（分离式布局）：安装器不再需要「卸载旧版」来腾位置，也不会原地覆盖 ——
+            // 它只往安装根新增一个 vXXX\ 版本目录并改写 launcher.json，data\ 原样保留。
+            // 因此不再需要按「编译类型是否相同」传 /nocleanup（那是旧布局的残留参数），
+            // 也不需要 /nodownload（离线安装包根本没有下载步骤）。
+            // 默认保留 previous 回滚点；用户可在提示后手动回退，或用 /cleanup 重装收敛磁盘。
+            var installArgs = "/silent /sp- /nocancel";
 
-            Core.App.CurrentLogger?.Log($"更新安装参数: 当前类型={currentType}, 目标类型={targetType}, 参数={installArgs}",
-                module: EnumLogModule.Update);
+            Core.App.CurrentLogger?.Log($"更新安装参数: {installArgs}", module: EnumLogModule.Update);
 
             Process.Start(
                 new ProcessStartInfo(savePath)
