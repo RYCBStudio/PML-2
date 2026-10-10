@@ -1077,7 +1077,10 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             IsLoadingNotice = false;
         }
 
-        if (Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
+        // 26.5.0：崩溃显示器改为解包到 data\Run\（运行期产物），包本身留在只读的版本目录，
+        // 不再删除 —— 删掉后下次启动要重新走完整解包流程。
+        if (Path.Exists(Core.AppPaths.CrashDisplayerPackageFile)
+            && !File.Exists(Core.AppPaths.CrashDisplayerFile))
         {
             var btn = new FATaskDialogButton
             {
@@ -1103,7 +1106,7 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             td.SetProgressBarState(0, FATaskDialogProgressState.Indeterminate);
             td.XamlRoot = TopLevel.GetTopLevel(Core.App.MainWindow);
             td.ShowAsync();
-            if (!Path.Exists(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla")))
+            if (!Path.Exists(Core.AppPaths.CrashDisplayerPackageFile))
             {
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -1112,16 +1115,16 @@ public class HomePageViewModel : ViewModelBase, IDisposable
                 return;
             }
 
-            Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Tools"));
+            Directory.CreateDirectory(Core.AppPaths.RunDirectory);
             await Task.Run(() => PMLAHelper.UnpackPmla(
-                Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"),
-                Path.Combine(Core.App.StartupPath, "Tools"),
+                Core.AppPaths.CrashDisplayerPackageFile,
+                Core.AppPaths.RunDirectory,
                 (progress, status) =>
                 {
                     td.SetProgressBarState(progress, FATaskDialogProgressState.Normal);
                     cnt = status;
                 }));
-            var cdFile = Path.Combine(Core.App.StartupPath, "Tools", "RYCB.MEFrpLauncherX.CrashDisplayer");
+            var cdFile = Core.AppPaths.CrashDisplayerFile;
             if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
             {
                 if (File.Exists(cdFile))
@@ -1138,10 +1141,9 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             {
                 td.Hide(FATaskDialogStandardResult.OK);
             });
-            File.Delete(Path.Combine(Core.App.StartupPath, "RYCB.MEFrpLauncherX.CrashDisplayer.pmla"));
         }
 
-        if (Directory.GetFiles(Path.Combine(Core.App.StartupPath, "Cache"))
+        if (Directory.GetFiles(Core.AppPaths.CacheDirectory)
             .Any(x => x.StartsWith("update_tmp")))
         {
             var btn = new FATaskDialogButton
@@ -1170,9 +1172,8 @@ public class HomePageViewModel : ViewModelBase, IDisposable
             td.ShowAsync();
 
             await Task.Run(() =>
-                Directory.EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Cache"))
+                Directory.EnumerateFileSystemEntries(Core.AppPaths.CacheDirectory)
                     .Where(x => x.StartsWith("update_tmp")).ToList().ForEach(File.Delete));
-            //Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
             Dispatcher.UIThread.Post(() =>
             {
                 try

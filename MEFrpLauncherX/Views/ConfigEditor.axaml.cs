@@ -57,7 +57,7 @@ public partial class ConfigEditor : Window
             Title = Languages.Text_ConfigPreviewer_SaveConfigTitle,
             SuggestedFileName = Path.GetFileName(_file),
             SuggestedStartLocation =
-                await StorageProvider.TryGetFolderFromPathAsync(new Uri($"file:///{Core.App.StartupPath}/Config/frp")),
+                await StorageProvider.TryGetFolderFromPathAsync(new Uri($"file:///{Core.AppPaths.FrpConfigDirectory}")),
             FileTypeChoices =
             [
                 fpftype_toml,
@@ -132,7 +132,7 @@ public partial class ConfigEditor : Window
         var language = registryOptions.GetLanguageByExtension(scopeName);
         if (scopeName == ".toml")
         {
-            var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Resources", "toml.xshd");
+            var resourceName = Path.Combine(Core.AppPaths.ResourcesDirectory, "toml.xshd");
             using Stream s = new FileStream(resourceName, FileMode.Open, FileAccess.Read,
                 FileShare.ReadWrite | FileShare.Delete);
             using XmlTextReader reader = new(s);

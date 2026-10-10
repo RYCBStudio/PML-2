@@ -149,7 +149,7 @@ public partial class ALPConfigEditor : Window
         var language = registryOptions.GetLanguageByExtension(scopeName);
         if (scopeName == ".toml")
         {
-            var resourceName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Resources", "toml.xshd");
+            var resourceName = System.IO.Path.Combine(Core.AppPaths.ResourcesDirectory, "toml.xshd");
             using Stream s = new FileStream(resourceName, FileMode.Open, FileAccess.Read,
                 FileShare.ReadWrite | FileShare.Delete);
             using XmlTextReader reader = new(s);

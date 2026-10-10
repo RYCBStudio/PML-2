@@ -134,8 +134,7 @@ public static partial class AcmeCertificateService
     /// <summary>DNS 传播等待默认上限（秒）</summary>
     public const int DefaultPropagationTimeoutSeconds = 300;
 
-    private static string WorkRoot { get; } = Path.Combine(
-        AppDomain.CurrentDomain.BaseDirectory, "Tools", "lego");
+    private static string WorkRoot { get; } = Path.Combine(AppPaths.RunDirectory, "lego");
 
     /// <summary>lego 的工作目录（账户密钥与证书都落在这里，避免污染用户配置目录）</summary>
     public static string WorkPath => Path.Combine(WorkRoot, "accounts");

@@ -20,7 +20,7 @@ public static class CertStore
     private static string RootDirectory
     {
         get;
-    } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Certificates");
+    } = AppPaths.CertificatesDirectory;
 
     /// <summary>证书根目录（供 UI 显示与「打开目录」）</summary>
     public static string RootPath => RootDirectory;

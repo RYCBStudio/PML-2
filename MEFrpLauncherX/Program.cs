@@ -80,7 +80,7 @@ internal partial class Program
         EnsureUrlProtocolRegistered();
         // 26.3.1 M1：Splash 进度管道名（与单实例激活管道 tech.rycb.pml2 严格分离）
         var splashPipeName = $"tech.rycb.pml2.splash.{Environment.ProcessId}";
-        var splashFile = GetPlatformExe(Path.Combine(Core.App.StartupPath, "Tools", "splash"), true);
+        var splashFile = Core.AppPaths.SplashFile;
         // if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
         // {
         //     File.SetUnixFileMode(splashFile, UnixFileMode.UserRead | UnixFileMode.UserExecute);
@@ -432,20 +432,22 @@ internal partial class Program
 
     private static string GetBackground()
     {
+        // 26.5.0：Splash 图属随包分发的静态资源，固定位于版本目录（vXXX\Resources\）下。
+        var resources = Core.AppPaths.ResourcesDirectory;
         var possiblePaths = new List<string>
         {
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.png"),
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.gif"),
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.webp"),
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.jpeg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "splash.bmp"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.png"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.gif"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.webp"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.jpeg"),
-            Path.Combine(Core.App.StartupPath, "Resources", "Splash.bmp")
+            Path.Combine(resources, "splash.png"),
+            Path.Combine(resources, "splash.jpg"),
+            Path.Combine(resources, "splash.gif"),
+            Path.Combine(resources, "splash.webp"),
+            Path.Combine(resources, "splash.jpeg"),
+            Path.Combine(resources, "splash.bmp"),
+            Path.Combine(resources, "Splash.jpg"),
+            Path.Combine(resources, "Splash.png"),
+            Path.Combine(resources, "Splash.gif"),
+            Path.Combine(resources, "Splash.webp"),
+            Path.Combine(resources, "Splash.jpeg"),
+            Path.Combine(resources, "Splash.bmp")
         };
         foreach (var possiblePath in possiblePaths.Where(File.Exists))
         {
@@ -460,7 +462,7 @@ internal partial class Program
     {
         try
         {
-            var configPath = Path.Combine(Core.App.StartupPath, "Config", "Settings.json");
+            var configPath = Core.AppPaths.SettingsFile;
             if (!File.Exists(configPath)) return (true, "default", string.Empty);
             using var doc = JsonDocument.Parse(File.ReadAllText(configPath),
                 new JsonDocumentOptions
@@ -558,7 +560,7 @@ internal partial class Program
                 break;
             }
             case [""]:
-                Directory.CreateDirectory(Path.Combine(Core.App.StartupPath, "Cache"));
+                Directory.CreateDirectory(Core.AppPaths.CacheDirectory);
                 break;
         }
 
@@ -579,7 +581,7 @@ internal partial class Program
             return true;
         }
 
-        File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", "startup.json"),
+        File.WriteAllText(Path.Combine(Core.AppPaths.CacheDirectory, "startup.json"),
             JsonSerializer.Serialize(data, App.AppJsonSerializerContext.StartupData));
         return true;
     }
@@ -846,7 +848,9 @@ internal partial class Program
         // 3. 启动崩溃报告器；报告器缺失/启动失败时降级为控制台 + 文件留档
         try
         {
-            var displayerExe = GetPlatformExe("MEFrpLauncherX.CrashDisplayer");
+            // 26.5.0：崩溃显示器随 .pmla 插件包在运行期解包到 data\Run\（可变目录），
+            // 与 Tools\（只读、随包分发）分离，因此不能再用 GetPlatformExe。
+            var displayerExe = Core.AppPaths.CrashDisplayerFile;
             if (!File.Exists(displayerExe))
             {
                 System.Console.WriteLine(Languages.Text_CrashHandling_CrashDisplayerNotFound, displayerExe, payloadPath ?? "(unavailable)");
@@ -877,7 +881,7 @@ internal partial class Program
         var fileName = $"crash_{DateTime.Now:yyyyMMdd_HHmmss}.log";
         try
         {
-            var logPath = Path.Combine(Core.App.StartupPath, "Logs", "Crash");
+            var logPath = Core.AppPaths.CrashLogsDirectory;
             Directory.CreateDirectory(logPath);
             var logFile = Path.Combine(logPath, fileName);
             File.WriteAllText(logFile, crashLog);
@@ -908,8 +912,8 @@ internal partial class Program
                 ? Path.Combine(filename + ".exe")
                 : filename
         : OperatingSystem.IsWindows()
-            ? Path.Combine(AppContext.BaseDirectory, "Tools", filename + ".exe")
-            : Path.Combine(AppContext.BaseDirectory, "Tools", filename);
+            ? Path.Combine(Core.AppPaths.ToolsDirectory, filename + ".exe")
+            : Path.Combine(Core.AppPaths.ToolsDirectory, filename);
 }
 
 public record StartupData

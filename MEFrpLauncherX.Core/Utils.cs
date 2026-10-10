@@ -37,10 +37,7 @@ public static class IEnumerableUtils
 public static class DeviceIdHelper
 {
     // 存储设备ID的本地路径（跨平台）
-    private static readonly string _deviceIdPath = Path.Combine(
-        AppDomain.CurrentDomain.BaseDirectory,
-        "Config",
-        "device.id");
+    private static readonly string _deviceIdPath = AppPaths.DeviceIdFile;
 
     /// <summary>
     ///     获取设备唯一ID（优先读本地，没有则生成）

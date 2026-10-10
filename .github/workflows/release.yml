@@ -608,6 +608,54 @@ jobs:
           ls -lh "$FINAL_DMG" || true
           hdiutil verify "$FINAL_DMG" || true
 
+      # ========== 26.5.0 布局暂存 ==========
+      # 把扁平的 publish 产物重排为：PML 2.exe + launcher.json + vXXX\ + data\
+      # 必须在 ISCC 之前完成，ISS 的 StageDir 直接指向其输出。
+      - name: Build launcher (PML 2)
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="launcher-publish/${{ matrix.rid }}"
+          mkdir -p "$OUT"
+
+          # 启动器以「单文件 self-contained」发布：安装根只多出一个 PML 2.exe。
+          # 若去掉 PublishSingleFile，数百个运行时 DLL 会堆进安装根，破坏布局整洁。
+          dotnet publish PML2.Launcher/PML2.Launcher.csproj \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # 清掉残留的调试符号，避免被 stage-layout.sh 的污染检查误报
+          find "$OUT" -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" \) -delete 2>/dev/null || true
+
+          echo "===== Launcher (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" | head -20
+
+      - name: Stage versioned layout
+        shell: bash
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            PUB="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          else
+            PUB="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          fi
+
+          LAUNCHER="${{ github.workspace }}/launcher-publish/${{ matrix.rid }}"
+          STAGE="${{ github.workspace }}/dist/layout"
+
+          bash tools/stage-layout.sh "$PUB" "$LAUNCHER" "$STAGE" "$VERSION" "${{ matrix.mode }}"
+
       # ========== Windows 打包（Inno Setup 离线安装包）==========
       - name: Install Inno Setup
         if: matrix.os_name == 'windows'
@@ -632,7 +680,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "$ws/dist" | Out-Null
 
           # ISS 使用相对路径（相对 installer/），无需替换硬编码盘符路径。
-          # 通过 /D 注入版本与输出目录（脚本内为 #ifndef，可被命令行覆盖）。
+          # 通过 /D 注入版本、布局目录名、暂存目录与输出目录。
           $iss = Join-Path $ws "installer/${{ matrix.iss_script }}"
           if (-not (Test-Path $iss)) { throw "ISS not found: $iss" }
 
@@ -642,16 +690,26 @@ jobs:
             $V
           }
           $outDir = Join-Path $ws "dist"
+          # 暂存布局中版本目录名带 v 前缀；ISS 需要与之一致。
+          $layoutDir = "v$V"
 
           Write-Host "Compiling $iss"
           Write-Host "  MyAppVersion=$verDefine"
+          Write-Host "  LayoutDir=$layoutDir"
+          Write-Host "  StageDir=$outDir\layout"
           Write-Host "  OutDir=$outDir"
 
           & $iscc.FullName `
             "/DMyAppVersion=$verDefine" `
+            "/DLayoutDir=$layoutDir" `
+            "/DStageDir=$outDir\layout" `
             "/DOutDir=$outDir" `
             $iss
           if ($LASTEXITCODE -ne 0) { throw "ISCC failed for ${{ matrix.iss_script }}" }
+
+          # 安装包生成后删除暂存布局：dist\ 里只应留下可分发的安装包，
+          # 否则 upload-artifact 会把整个展开目录也传上去。
+          Remove-Item -Recurse -Force (Join-Path $outDir "layout") -ErrorAction SilentlyContinue
 
           Write-Host "===== dist ====="
           Get-ChildItem "$ws/dist" | Select-Object Name, Length

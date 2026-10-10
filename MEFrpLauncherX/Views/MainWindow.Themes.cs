@@ -129,10 +129,7 @@ public partial class MainWindow
         string selectedTheme;
         try
         {
-            selectedTheme =
-                (await File.ReadAllTextAsync(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                    "selected")))
-                .Trim();
+            selectedTheme = (await File.ReadAllTextAsync(Core.AppPaths.SelectedThemeFile)).Trim();
         }
         catch (FileNotFoundException)
         {
@@ -150,7 +147,7 @@ public partial class MainWindow
             return;
         }
 
-        var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
+        var themePath = Path.Combine(Core.AppPaths.ThemesDirectory, selectedTheme);
         var themeManifest =
             ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
         if (themeManifest != null)
@@ -161,7 +158,7 @@ public partial class MainWindow
                 if (themeManifest.Background.Type == "Image")
                 {
                     var fullImagePath = Path.GetFullPath(themeManifest.Background.Image,
-                        Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme));
+                        Path.Combine(Core.AppPaths.ThemesDirectory, selectedTheme));
                     c.BackgroundSettings.BackgroundImage = fullImagePath;
                     c.BackgroundSettings.Stretch = themeManifest.Background.FillMode;
                 }

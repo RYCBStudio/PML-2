@@ -95,7 +95,7 @@ public static class ToolboxService
     /// <returns>导出后的完整目录路径；没有可导出的日志时返回 null。</returns>
     public static string? ExportLogs(string targetDirectory, string? logDirectory = null)
     {
-        logDirectory ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            logDirectory ??= AppPaths.LogsDirectory;
         if (!Directory.Exists(logDirectory))
         {
             return null;

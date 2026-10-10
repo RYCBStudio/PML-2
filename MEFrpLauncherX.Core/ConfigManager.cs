@@ -17,7 +17,7 @@ public static class ConfigManager
     /// </summary>
     public const int CurrentSchemaVersion = 3;
 
-    private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
+    private static readonly string ConfigDirectory = AppPaths.ConfigDirectory;
 
     private static AppConfig _currentConfig;
     private static readonly object _lock = new();

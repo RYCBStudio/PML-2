@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading.Tasks;
+using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Plugin;
 
 namespace MEFrpLauncherX.Plugins;
@@ -17,10 +18,9 @@ public class PluginService
 
     public PluginService()
     {
-        // 插件目录：在程序所在目录的 Plugins 文件夹
-        _pluginsDirectory = Path.Combine(
-            AppContext.BaseDirectory,
-            "Plugins");
+        // 插件目录：26.5.0 起统一为 data\Config\Plugins（与 MEFrpLauncherX.Plugin 的现行实现一致）。
+        // 原先指向程序根的 Plugins 文件夹，会导致两套插件引擎各读各的目录。
+        _pluginsDirectory = Core.AppPaths.PluginsDirectory;
 
         EnsurePluginsDirectory();
     }

@@ -87,7 +87,7 @@ public sealed class AppShellCommands : IAppShellCommands
     {
         try
         {
-            var logDir = Path.Combine(Core.App.StartupPath, "Logs");
+            var logDir = Core.AppPaths.LogsDirectory;
             Directory.CreateDirectory(logDir);
             if (OperatingSystem.IsWindows())
             {

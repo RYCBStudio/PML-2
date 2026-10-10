@@ -48,7 +48,7 @@ public static class HomeRecommendStateStore
     private static string StatePath
     {
         get;
-    } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "home-recommend.json");
+    } = Path.Combine(AppPaths.CacheDirectory, "home-recommend.json");
 
     /// <summary>读取状态；文件缺失或损坏时返回空状态（不抛出）。</summary>
     public static HomeRecommendState Load()

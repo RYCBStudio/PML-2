@@ -54,11 +54,11 @@ public partial class MainWindow : FAAppWindow, IDisposable
         #region 透明度设置与渲染优化
 
         WindowTransparencyLevel preferredTLH;
-        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")))
+        if (File.Exists(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update")))
         {
-            var preference = File.ReadAllText(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")).Trim();
+            var preference = File.ReadAllText(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update")).Trim();
             ConfigManager.CurrentConfig.Skin = preference;
-            File.Delete(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"));
+            File.Delete(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update"));
             preferredTLH = preference.ToUpper(0) switch
             {
                 "Mica" => WindowTransparencyLevel.Mica,
@@ -548,6 +548,20 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         await CheckPolicy();
 
+        // 26.5.0：首次从旧版单层布局升级时自动弹出数据迁移向导。
+        // 放在隐私政策确认之后、隧道自动恢复之前；标记「已询问」保证只打扰一次，
+        // 用户日后仍可从「关于 → 工具箱 → 数据迁移向导」重新打开。
+        if (Controls.MigrationWizard.ShouldPromptOnStartup())
+        {
+            Controls.MigrationWizard.MarkPrompted();
+            await new FluentAvalonia.UI.Controls.FAContentDialog
+            {
+                Title = "数据迁移向导",
+                Content = new Controls.MigrationWizard(),
+                CloseButtonText = Languages.Text_Global_Close
+            }.ShowAsync();
+        }
+
         // 26.4：应用升级后首次启动展示「本次更新内容」（版本未变化时不弹出）。
         // 放在隐私政策确认之后、隧道自动恢复之前，且异常内部吞掉，不影响启动流程。
         await WhatsNewWindow.ShowIfNeededAsync(this);
@@ -563,7 +577,7 @@ public partial class MainWindow : FAAppWindow, IDisposable
         _vm.IsBusy = false;
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
-        var startupFile = Path.Combine(Core.App.StartupPath, "Cache", "startup.json");
+        var startupFile = Path.Combine(Core.AppPaths.CacheDirectory, "startup.json");
         // 26.4 修复：只认「刚刚写入」的临时文件。
         // 原判据要求文件时间落在「1 分钟前 ~ 2 分钟前」，刚写入的文件永远不满足，
         // 导致 pml2:// 链接启动隧道从未生效。

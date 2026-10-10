@@ -518,7 +518,7 @@ public class UpdatePageViewModel : ViewModelBase
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
 
-        var savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
+        var savePath = Path.Combine(Core.AppPaths.CacheDirectory, tempFileName);
 
         // ===== 3.5 下载（失败不再静默：明确文案 + 重试入口） =====
         try
@@ -573,7 +573,7 @@ public class UpdatePageViewModel : ViewModelBase
             if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
             {
                 File.Copy(ConfigManager.ConfigPath, ConfigManager.BackupConfigPath, true);
-                await File.WriteAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"),
+                await File.WriteAllTextAsync(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update"),
                     $"{ConfigManager.CurrentConfig.Skin}");
             }
         }
@@ -778,7 +778,7 @@ public class UpdatePageViewModel : ViewModelBase
         await downloader.DownloadFileTaskAsync(
             $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
             $"{LatestVersion}/pml2_setup%20{LatestVersion}.exe",
-            Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
+            Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"));
         Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
@@ -788,7 +788,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info, ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
-                OpenFileInExplorer(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
+                OpenFileInExplorer(Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"));
                 return;
             }
         }
@@ -796,7 +796,7 @@ public class UpdatePageViewModel : ViewModelBase
         Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
         await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
         Process.Start(
-            new ProcessStartInfo(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"))
+                new ProcessStartInfo(Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"))
                 { UseShellExecute = true, Arguments = "/silent /sp- /nocancel" });
         App.Desktop.Shutdown();
     }

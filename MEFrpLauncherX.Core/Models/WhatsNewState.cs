@@ -23,7 +23,7 @@ public static class WhatsNewStateStore
     private static string StatePath
     {
         get;
-    } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache", "whats-new.json");
+    } = Path.Combine(AppPaths.CacheDirectory, "whats-new.json");
 
     /// <summary>读取状态；缺失或损坏时返回空状态。</summary>
     public static WhatsNewState Load()

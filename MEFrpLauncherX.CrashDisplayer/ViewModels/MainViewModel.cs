@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -157,7 +159,13 @@ public partial class MainViewModel
     }
 
     /// <summary>
-    ///     定位主程序可执行文件。发布布局下崩溃报告器位于 &lt;AppRoot&gt;/Tools/，主程序位于 &lt;AppRoot&gt;/。
+    ///     定位主程序可执行文件。
+    ///     <para>
+    ///         26.5.0 起布局为 <c>&lt;安装根&gt;/vXXX/MEFrpLauncherX.exe</c> + <c>&lt;安装根&gt;/data/Run/</c>，
+    ///         崩溃报告器位于 <c>&lt;安装根&gt;/data/Run/</c>，因此需向上两级回到安装根，
+    ///         再扫描版本目录（版本号最大者优先）。
+    ///     </para>
+    ///     <para>旧版布局（报告器在主程序旁的 Tools/）保留为回退分支。</para>
     /// </summary>
     private static string? LocateMainExecutable()
     {
@@ -166,6 +174,17 @@ public partial class MainViewModel
             var exeName = OperatingSystem.IsWindows() ? "MEFrpLauncherX.exe" : "MEFrpLauncherX";
             var baseDir = AppContext.BaseDirectory;
 
+            // 新版：data\Run\ → 安装根；再从 launcher.json 或扫描取版本目录
+            var installRoot = Path.GetFullPath(Path.Combine(baseDir, "..", ".."));
+            foreach (var candidate in EnumerateCandidatePaths(installRoot, exeName))
+            {
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+            }
+
+            // 旧版布局：报告器与主程序同目录，或位于其下 Tools\
             var publishLayout = Path.GetFullPath(Path.Combine(baseDir, "..", exeName));
             if (File.Exists(publishLayout))
             {
@@ -184,6 +203,52 @@ public partial class MainViewModel
         }
 
         return null;
+    }
+
+    /// <summary>枚举 <paramref name="installRoot" /> 下可能的主程序路径（launcher.json 优先，其次版本号降序）。</summary>
+    private static IEnumerable<string> EnumerateCandidatePaths(string installRoot, string exeName)
+    {
+        // 1. launcher.json 的 current 字段最权威
+        var manifest = Path.Combine(installRoot, "launcher.json");
+        if (File.Exists(manifest))
+        {
+            string? current = null;
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(manifest));
+                if (doc.RootElement.TryGetProperty("current", out var value))
+                {
+                    current = value.GetString();
+                }
+            }
+            catch
+            {
+                // manifest 损坏时回退到扫描
+            }
+
+            if (!string.IsNullOrEmpty(current))
+            {
+                yield return Path.Combine(installRoot, current, exeName);
+            }
+        }
+
+        // 2. 扫描 vXXX 目录，按版本号降序
+        if (!Directory.Exists(installRoot))
+        {
+            yield break;
+        }
+
+        foreach (var dir in Directory.EnumerateDirectories(installRoot)
+                     .Select(Path.GetFileName)
+                     .Where(name => !string.IsNullOrEmpty(name) && name.Length > 1 &&
+                                    (name[0] == 'v' || name[0] == 'V') && char.IsDigit(name[1]))
+                     .OrderByDescending(name => name, StringComparer.OrdinalIgnoreCase))
+        {
+            yield return Path.Combine(installRoot, dir!, exeName);
+        }
+
+        // 3. 开发态：主程序就在安装根下
+        yield return Path.Combine(installRoot, exeName);
     }
 
     /// <summary>推导日志目录：优先根据负载文件路径（Logs/Crash/*.log → Logs），其次按主程序目录推导。</summary>
@@ -208,11 +273,22 @@ public partial class MainViewModel
 
             if (_mainExePath is not null)
             {
-                var appRoot = Path.GetDirectoryName(_mainExePath);
-                var logs = Path.Combine(appRoot ?? "", "Logs");
+                // 26.5.0：主程序位于 <安装根>/vXXX/，日志/配置在 <安装根>/data/ 下。
+                var versionDir = Path.GetDirectoryName(_mainExePath);
+                var installRoot = Path.GetDirectoryName(versionDir ?? "");
+                var dataRoot = Path.Combine(installRoot ?? "", "data");
+
+                var logs = Path.Combine(dataRoot, "Logs");
                 if (Directory.Exists(logs))
                 {
                     return logs;
+                }
+
+                // 旧版单层布局回退：日志就在主程序目录下的 Logs\
+                var legacyLogs = Path.Combine(versionDir ?? "", "Logs");
+                if (Directory.Exists(legacyLogs))
+                {
+                    return legacyLogs;
                 }
             }
 
@@ -236,11 +312,20 @@ public partial class MainViewModel
         {
             if (_mainExePath is not null)
             {
-                var appRoot = Path.GetDirectoryName(_mainExePath);
-                var config = Path.Combine(appRoot ?? "", "Config");
+                // 26.5.0：配置在 <安装根>/data/Config/；旧版布局在主程序目录下的 Config\。
+                var versionDir = Path.GetDirectoryName(_mainExePath);
+                var installRoot = Path.GetDirectoryName(versionDir ?? "");
+
+                var config = Path.Combine(installRoot ?? "", "data", "Config");
                 if (Directory.Exists(config))
                 {
                     return config;
+                }
+
+                var legacyConfig = Path.Combine(versionDir ?? "", "Config");
+                if (Directory.Exists(legacyConfig))
+                {
+                    return legacyConfig;
                 }
             }
 

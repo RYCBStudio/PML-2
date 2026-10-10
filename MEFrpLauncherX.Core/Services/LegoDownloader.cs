@@ -22,7 +22,7 @@ public static class LegoDownloader
     private static string ToolsRoot
     {
         get;
-    } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tools", "lego");
+    } = Path.Combine(AppPaths.RunDirectory, "lego");
 
     /// <summary>下载基址（GitHub 官方发布页）</summary>
     private static readonly string[] ReleaseBases =

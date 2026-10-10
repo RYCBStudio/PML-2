@@ -111,14 +111,14 @@ public partial class TerminalControl : UserControl, IDisposable
     {
         try
         {
-            // 检查常见位置
+            // 检查常见位置（26.5.0：随包资源固定在版本目录下）
             var possiblePaths = new[]
             {
+                Path.Combine(Core.AppPaths.ResourcesDirectory, "Terminal.xshd"),
+                Path.Combine(Core.AppPaths.AssetsDirectory, "Terminal.xshd"),
+                Path.Combine(Core.AppPaths.VersionDirectory, "Terminal.xshd"),
                 "Resources/Terminal.xshd",
-                "Assets/Terminal.xshd",
-                "Terminal.xshd",
-                Path.Combine(AppContext.BaseDirectory, "Assets", "Terminal.xshd"),
-                Path.Combine(AppContext.BaseDirectory, "Terminal.xshd")
+                "Terminal.xshd"
             };
 
             foreach (var path in possiblePaths)

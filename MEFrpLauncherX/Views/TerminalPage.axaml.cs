@@ -278,15 +278,17 @@ public partial class TerminalPage : UserControl
                 : captchaResult.Trim();
 
             // 变量替换（客户端路径按平台生成；macOS/Linux 路径可能含空格，加引号包裹）
+            // 26.5.0：mefrpc 现位于 data\Run\；{startup} 改为数据根目录，
+            // 因为版本目录是只读的，终端在其下生成临时文件会失败。
             var res = shell.Replace("{mefrpc}", OperatingSystem.IsWindows()
-                    ? Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")
-                    : '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
+                    ? Core.AppPaths.MefrpcFile
+                    : '"' + Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName(), "mefrpc") + '"')
                 .Replace("{mefrpcp}", OperatingSystem.IsWindows()
-                    ? Path.Combine(Core.App.StartupPath, "bin")
-                    : '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()) + '"')
+                    ? Core.AppPaths.RunDirectory
+                    : '"' + Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName()) + '"')
                 .Replace("{startup}", OperatingSystem.IsWindows()
-                    ? Core.App.StartupPath
-                    : '"' + Core.App.StartupPath + '"');
+                    ? Core.AppPaths.DataRoot
+                    : '"' + Core.AppPaths.DataRoot + '"');
             var isMEFrpCExe = shell.Contains("{mefrpc}");
 
             if (newTab.Content is TerminalControl terminal)
@@ -361,9 +363,9 @@ public partial class TerminalPage : UserControl
         {
             var res = rs.Replace("{mefrpc}",
                     (ConfigManager.CurrentConfig.TerminalCli.ToLower() is "cmd" or "cmd.exe" ? "" : "& ") +
-                    $"\"{Path.Combine(Core.App.StartupPath, "bin", "mefrpc.exe")}\"")
-                .Replace("{mefrpcp}", $"\"{Path.Combine(Core.App.StartupPath, "bin")}\"")
-                .Replace("{startup}", Core.App.StartupPath);
+                    $"\"{Core.AppPaths.MefrpcFile}\"")
+                .Replace("{mefrpcp}", $"\"{Core.AppPaths.RunDirectory}\"")
+                .Replace("{startup}", Core.AppPaths.DataRoot);
 
             Core.App.CurrentLogger.LogDebug(res);
             var isMEFrpCExe = rs.Contains("{mefrpc}");
@@ -388,24 +390,24 @@ public partial class TerminalPage : UserControl
         }
         else if (OperatingSystem.IsLinux())
         {
+            // 26.5.0：Linux 安装目录不再固定为 /opt/pml-2，统一用推导出的数据根。
             var res = rs.Replace("{mefrpc}", '"' +
-                    Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
-                .Replace("{mefrpcp}", Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()))
-                .Replace("{startup}", Core.App.StartupPath);
+                    Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName(), "mefrpc") + '"')
+                .Replace("{mefrpcp}", Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName()))
+                .Replace("{startup}", Core.AppPaths.DataRoot);
 
             var isMEFrpCExe = rs.Contains("{mefrpc}");
 
 
             if (newTab.Content is TerminalControl terminal)
             {
-                await terminal.SendCommandAsync("cd /" + Path.Combine("opt", "pml-2"));
+                await terminal.SendCommandAsync("cd \"" + Core.AppPaths.DataRoot + '"');
                 await terminal.SendCommandAsync($"""
                                                  echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                  """);
                 await terminal.SendCommandAsync("tar -xvf \"" +
-                                                Path.Combine(Core.App.StartupPath, "bin",
-                                                    "mefrpc.tar") +
-                                                $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1");
+                                                Core.AppPaths.MefrpcFile +
+                                                $"\" -C \"{Core.AppPaths.RunDirectory}\" > /dev/null 2>&1");
                 if (isMEFrpCExe)
                 {
                     // 修改5: 移除CurrentConhostId检查，直接发送命令
@@ -416,14 +418,13 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
-                await terminal1.SendToPtyAsync("cd /" + Path.Combine("opt", "pml-2") + "\n");
+                await terminal1.SendToPtyAsync("cd \"" + Core.AppPaths.DataRoot + "\"\n");
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                 """ + "\n");
                 await terminal1.SendToPtyAsync("tar -xvf \"" +
-                                               Path.Combine(Core.App.StartupPath, "bin",
-                                                   "mefrpc.tar") +
-                                               $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1" +
+                                               Core.AppPaths.MefrpcFile +
+                                               $"\" -C \"{Core.AppPaths.RunDirectory}\" > /dev/null 2>&1" +
                                                "\n");
                 if (isMEFrpCExe)
                 {
@@ -437,23 +438,22 @@ public partial class TerminalPage : UserControl
         {
             // macOS 应用路径含空格（如 /Applications/PML 2.app/...），必须加引号包裹
             var res = rs.Replace("{mefrpc}",
-                    '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName(), "mefrpc") + '"')
-                .Replace("{mefrpcp}", '"' + Path.Combine(Core.App.StartupPath, "bin", GetArchiveFileName()) + '"')
-                .Replace("{startup}", '"' + Core.App.StartupPath + '"');
+                    '"' + Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName(), "mefrpc") + '"')
+                .Replace("{mefrpcp}", '"' + Path.Combine(Core.AppPaths.RunDirectory, GetArchiveFileName()) + '"')
+                .Replace("{startup}", '"' + Core.AppPaths.DataRoot + '"');
 
             var isMEFrpCExe = rs.Contains("{mefrpc}");
 
 
             if (newTab.Content is TerminalControl terminal)
             {
-                await terminal.SendCommandAsync("cd \"" + Core.App.StartupPath + '"');
+                await terminal.SendCommandAsync("cd \"" + Core.AppPaths.DataRoot + '"');
                 await terminal.SendCommandAsync($"""
                                                  echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m"
                                                  """);
                 await terminal.SendCommandAsync("tar -xvf \"" +
-                                                Path.Combine(Core.App.StartupPath, "bin",
-                                                    "mefrpc.tar") +
-                                                $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1");
+                                                Core.AppPaths.MefrpcFile +
+                                                $"\" -C \"{Core.AppPaths.RunDirectory}\" > /dev/null 2>&1");
                 if (isMEFrpCExe)
                 {
                     // 修改5: 移除CurrentConhostId检查，直接发送命令
@@ -464,14 +464,13 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
-                await terminal1.SendToPtyAsync("cd \"" + Core.App.StartupPath + "\"\n");
+                await terminal1.SendToPtyAsync("cd \"" + Core.AppPaths.DataRoot + "\"\n");
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
                                                 """ + "\n");
                 await terminal1.SendToPtyAsync("tar -xvf \"" +
-                                               Path.Combine(Core.App.StartupPath, "bin",
-                                                   "mefrpc.tar") +
-                                               $"\" -C \"{Path.Combine(Core.App.StartupPath, "bin")}\" > /dev/null 2>&1" +
+                                               Core.AppPaths.MefrpcFile +
+                                               $"\" -C \"{Core.AppPaths.RunDirectory}\" > /dev/null 2>&1" +
                                                "\n");
                 if (isMEFrpCExe)
                 {

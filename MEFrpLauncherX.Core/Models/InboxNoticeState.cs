@@ -43,8 +43,7 @@ public static class InboxNoticeStateStore
     private static string StatePath
     {
         get;
-    } = Path.Combine(
-        AppDomain.CurrentDomain.BaseDirectory, "Cache", "inbox-notice.json");
+    } = Path.Combine(AppPaths.CacheDirectory, "inbox-notice.json");
 
     /// <summary>读取状态；文件缺失或损坏时返回空状态（不抛出）。</summary>
     public static InboxNoticeState Load()

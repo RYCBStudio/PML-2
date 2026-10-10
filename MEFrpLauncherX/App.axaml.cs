@@ -186,10 +186,7 @@ public partial class App : Application
             string selectedTheme;
             try
             {
-                selectedTheme =
-                    File.ReadAllText(Path.Combine(Core.App.StartupPath, "Config", "Themes",
-                            "selected"))
-                        .Trim();
+                selectedTheme = File.ReadAllText(Core.AppPaths.SelectedThemeFile).Trim();
             }
             catch (FileNotFoundException)
             {
@@ -207,7 +204,7 @@ public partial class App : Application
                 goto CONTINUE;
             }
 
-            var themePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", selectedTheme);
+            var themePath = Path.Combine(Core.AppPaths.ThemesDirectory, selectedTheme);
             var themeManifest =
                 ThemeProcessor.LoadTheme(Path.Combine(themePath, "index.json"));
             if (themeManifest is { FontFamily: not null })

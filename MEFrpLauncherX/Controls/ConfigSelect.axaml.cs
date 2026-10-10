@@ -86,7 +86,7 @@ public partial class ConfigSelect : UserControl, INotifyPropertyChanged
         var language = registryOptions.GetLanguageByExtension(type);
         if (type == ".toml")
         {
-            var resourceName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Resources", "toml.xshd");
+            var resourceName = Path.Combine(Core.AppPaths.ResourcesDirectory, "toml.xshd");
             using Stream s = new FileStream(resourceName, FileMode.Open, FileAccess.Read,
                 FileShare.ReadWrite | FileShare.Delete);
             using XmlTextReader reader = new(s);

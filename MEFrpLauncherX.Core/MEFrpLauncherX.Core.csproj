@@ -46,6 +46,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- 26.5.0：版本槽位解析器与启动器 PML2.Launcher 共享同一份源码，
+             保证「启动器读到的版本」与「主程序看到的布局」永远一致。 -->
+        <Compile Include="..\Shared\VersionResolver.cs" Link="Shared\VersionResolver.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Update="FontResources.axaml">
             <Generator>MSBuild:Compile</Generator>
         </None>

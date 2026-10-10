@@ -319,7 +319,7 @@ public partial class AboutPage : UserControl
 
     private void MEFC_Click(object sender, RoutedEventArgs e)
     {
-        var exePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe");
+        var exePath = Core.AppPaths.MefrpcFile;
         OpenFileInExplorer(exePath);
     }
 
@@ -698,9 +698,28 @@ public partial class AboutPage : UserControl
         await cd.ShowAsync();
     }
 
+    /// <summary>
+    ///     手动打开数据迁移向导（26.5.0）。
+    ///     <para>工具箱中的常驻入口：即使用户当初跳过了自动提示，也能随时重新执行。</para>
+    /// </summary>
+    private async void RunMigrationWizard(object? sender, RoutedEventArgs e)
+    {
+        // 手动打开时先清掉「已询问」标记，否则向导会误以为自己刚被自动弹出过。
+        Controls.MigrationWizard.ResetPrompt();
+
+        var wizard = new Controls.MigrationWizard();
+        var cd = new FAContentDialog
+        {
+            Title = "数据迁移向导",
+            Content = wizard,
+            CloseButtonText = Languages.Text_Global_Close,
+        };
+        await cd.ShowAsync();
+    }
+
     private void OpenLogsFolder(object? sender, RoutedEventArgs e)
     {
-        var logsDir = Path.Combine(Core.App.StartupPath, "Logs");
+        var logsDir = Core.AppPaths.LogsDirectory;
         if (!Directory.Exists(logsDir))
         {
             Directory.CreateDirectory(logsDir);
@@ -709,7 +728,8 @@ public partial class AboutPage : UserControl
         OpenFolderInExplorer(logsDir);
     }
 
-    private void OpenRootFolder(object? sender, RoutedEventArgs e) => OpenFolderInExplorer(Core.App.StartupPath);
+    /// <summary>打开安装根目录（launcher + vXXX + data），而非易变的版本目录。</summary>
+    private void OpenRootFolder(object? sender, RoutedEventArgs e) => OpenFolderInExplorer(Core.AppPaths.InstallRoot);
 
     private async void CopyDiagnostics(object? sender, RoutedEventArgs e)
     {

@@ -6,15 +6,25 @@
 
 #define MyAppName "PML 2"
 #ifndef MyAppVersion
-  #define MyAppVersion "26.2.0 AOT"
+  #define MyAppVersion "26.5.0 AOT"
 #endif
 #define MyAppPublisher "RYCB Studio"
 #define MyAppURL "https://www.rycb.tech/pml-2"
-#define MyAppExeName "MEFrpLauncherX.exe"
+; 26.5.0：布局改为「启动器 + 版本目录 + 数据目录」，详见 docs/install.md
+;   <app>\PML 2.exe        启动器（版本无关）
+;   <app>\launcher.json    版本槽位
+;   <app>\v26.5.0\         主程序（只读）
+;   <app>\data\            用户数据（升级绝不覆盖）
+#define MyAppLauncher "PML 2.exe"
+#ifndef LayoutDir
+  ; 版本目录名，必须与 stage-layout.sh 产出一致
+  #define LayoutDir "v26.5.0"
+#endif
 
 ; 相对 installer/：仓库根为 ..
-#ifndef PublishDir
-  #define PublishDir "..\MEFrpLauncherX\bin\Release\net10.0\win-x64-aot\publish"
+#ifndef StageDir
+  ; stage-layout.sh 的输出目录（含 PML 2.exe / launcher.json / vXXX / data）
+  #define StageDir "..\dist\layout"
 #endif
 #ifndef IconFile
   #define IconFile "..\MEFrpLauncherX\Assets\meflx.ico"
@@ -32,7 +42,8 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={localappdata}\{#MyAppName}
-UninstallDisplayIcon={app}\{#MyAppExeName}
+; 26.5.0：卸载图标指向启动器，它才是真正的入口
+UninstallDisplayIcon={app}\{#MyAppLauncher}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=true
@@ -56,18 +67,45 @@ Name: "Chinese"; MessagesFile: "./Chinese.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; CrashDisplayer / Splash 由 CI 构建并放入 publish\Tools\，随递归拷贝安装
-Source: "{#PublishDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.log"
+; ---- 启动器与版本槽位（安装根直属）----
+Source: "{#StageDir}\{#MyAppLauncher}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#StageDir}\launcher.json"; DestDir: "{app}"; Flags: ignoreversion
+
+; ---- 代码：版本目录（只读，升级时被整体替换）----
+Source: "{#StageDir}\{#LayoutDir}\*"; DestDir: "{app}\{#LayoutDir}"; \
+    Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb,*.log,*.dbg,*.mdb"
+
+; ---- 数据：只创建目录骨架，不覆盖已有内容 ----
+; 用户升级时 data\ 里已有配置/主题/证书/插件，这些必须原样保留，
+; 因此这里用 external 风格的手动建目录，而不是拷贝 .keep。
+Source: "{#StageDir}\data\*"; DestDir: "{app}\data"; \
+    Flags: ignoreversion recursesubdirs createallsubdirs onlyifdoesntexist uninsneveruninstall
+
+[Dirs]
+; 无论 StageDir 里是否带 data 骨架，都确保运行期目录存在。
+; uninstall 删除交给程序自身（旧版本目录由迁移向导归档）。
+Name: "{app}\data"; Flags: uninsneveruninstall
+Name: "{app}\data\Config"; Flags: uninsneveruninstall
+Name: "{app}\data\Config\frp"; Flags: uninsneveruninstall
+Name: "{app}\data\Config\Themes"; Flags: uninsneveruninstall
+Name: "{app}\data\Config\Plugins"; Flags: uninsneveruninstall
+Name: "{app}\data\Config\Certificates"; Flags: uninsneveruninstall
+Name: "{app}\data\Cache"; Flags: uninsneveruninstall
+Name: "{app}\data\Logs"; Flags: uninsneveruninstall
+Name: "{app}\data\Run"; Flags: uninsneveruninstall
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppLauncher}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppLauncher}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppLauncher}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{app}"
+; 只清理代码与启动器；data\ 交由用户决定去留（保留用户的隧道与证书）。
+Type: filesandordirs; Name: "{app}\{#LayoutDir}"
+Type: files; Name: "{app}\{#MyAppLauncher}"
+Type: files; Name: "{app}\launcher.json"
 
 [Code]
 var
