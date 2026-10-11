@@ -27,10 +27,35 @@ public static class ConfigManager
         get;
     } = Path.Combine(ConfigDirectory, "Settings.json");
 
-    public static string BackupConfigPath
+    /// <summary>
+    ///     清理旧布局遗留的「更新前配置备份」（26.5.0 起不再生成）。
+    ///     <para>
+    ///         仅删除历史文件，不做任何合并：分离式布局下 <c>data\Config\Settings.json</c>
+    ///         升级时不会被覆盖，配置自然延续，无需还原。
+    ///     </para>
+    /// </summary>
+    private static void CleanupLegacyUpdateBackup()
     {
-        get;
-    } = Path.Combine(ConfigDirectory, "Settings.json.bak.update");
+        foreach (var name in new[] { "Settings.json.bak.update", "KEEP_PROFILE" })
+        {
+            try
+            {
+                var path = Path.Combine(ConfigDirectory, name);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    App.CurrentLogger?.Log($"已清理旧版更新备份: {name}",
+                        module: EnumLogModule.Custom, customModuleName: "配置管理");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 清理失败不影响启动
+                App.CurrentLogger?.Log($"清理旧版更新备份失败: {name}（{ex.Message}）",
+                    module: EnumLogModule.Custom, customModuleName: "配置管理");
+            }
+        }
+    }
 
     /// <summary>
     ///     获取当前配置（只读）
@@ -83,35 +108,13 @@ public static class ConfigManager
                 var json = File.ReadAllText(ConfigPath);
                 _currentConfig =
                     JsonSerializer.Deserialize<AppConfig>(json, App.AppJsonSerializerContext.AppConfig);
-                var updateBakFile = BackupConfigPath;
-                if (!File.Exists(updateBakFile))
-                {
-                    return;
-                }
 
-                App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                var _bak_json = File.ReadAllText(updateBakFile);
-                var _bak_config =
-                    JsonSerializer.Deserialize<AppConfig>(_bak_json, App.AppJsonSerializerContext.AppConfig);
-                App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                MergeConfig(_bak_config, ref _currentConfig);
-                App.CurrentLogger?.Log($"合并更新配置文件: {updateBakFile} 完成",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                try
-                {
-                    File.Delete(updateBakFile);
-                    File.Delete(Path.Combine(ConfigDirectory, "KEEP_PROFILE"));
-                }
-                catch
-                {
-                    App.CurrentLogger?.Log($"删除更新配置文件失败: {updateBakFile}",
-                        module: EnumLogModule.Custom, customModuleName: "配置管理");
-                }
+                // 26.5.0：更新前的配置备份 / 还原逻辑移除。
+                // 旧布局下更新会原地覆盖程序目录，Settings.json 可能被新版本重写，
+                // 因此才需要先备份再于下次启动合并回来。分离式布局下代码在 vXXX\、
+                // 配置在 data\，升级不触碰 data\ —— 备份文件不会再产生，历史遗留的
+                // Settings.json.bak.update 也一并在此清理掉。
+                CleanupLegacyUpdateBackup();
             }
         }
         catch (Exception ex)
@@ -163,7 +166,6 @@ public static class ConfigManager
     private static readonly string[] LanguageValues = ["zh-CN", "en-US", "zh-Hant"];
     private static readonly string[] UpdateChannelValues = ["Preview", "Stable"];
     private static readonly string[] UpdateMethodValues = ["ds", "dd", "md"];
-    private static readonly string[] CompileTypeValues = ["AOT", "Common"];
 
     /// <summary>
     ///     更新页下载源取值（26.4）。
@@ -309,8 +311,6 @@ public static class ConfigManager
             UpdateChannelValues, d.UpdateSettings.Channel);
         changed += NormalizeChoice(() => cfg.UpdateSettings.Method, v => cfg.UpdateSettings.Method = v,
             UpdateMethodValues, d.UpdateSettings.Method);
-        changed += NormalizeChoice(() => cfg.UpdateSettings.CompileType, v => cfg.UpdateSettings.CompileType = v,
-            CompileTypeValues, d.UpdateSettings.CompileType);
         changed += NormalizeChoice(() => cfg.UpdateSettings.DownloadSource,
             v => cfg.UpdateSettings.DownloadSource = v,
             UpdateDownloadSourceValues, d.UpdateSettings.DownloadSource);
@@ -647,20 +647,6 @@ public static class ConfigManager
             source.Channel = target.Channel;
         }
 
-        App.CurrentLogger?.Log($"正在合并配置项 Update>KeepProfile: {source.KeepProfile} -> {target.KeepProfile}",
-            module: EnumLogModule.Custom, customModuleName: "配置管理");
-        if (source.KeepProfile != target.KeepProfile)
-        {
-            source.KeepProfile = target.KeepProfile;
-        }
-
-        App.CurrentLogger?.Log($"正在合并配置项 Update>CompileType: {source.CompileType} -> {target.CompileType}",
-            module: EnumLogModule.Custom, customModuleName: "配置管理");
-        if (string.IsNullOrEmpty(source.CompileType) && !string.IsNullOrEmpty(target.CompileType))
-        {
-            source.CompileType = target.CompileType;
-        }
-
         // 下载源：旧配置没有该字段（空值）时采用用户已保存的取值
         App.CurrentLogger?.Log(
             $"正在合并配置项 Update>DownloadSource: {source.DownloadSource} -> {target.DownloadSource}",
@@ -907,8 +893,6 @@ public static class ConfigManager
                 AutoCheck = true,
                 Channel = "Preview",
                 Method = "ds",
-                KeepProfile = true,
-                CompileType = App.ReleaseFlag,
                 DownloadSource = Services.GitHubUpdateSources.Tpca,
                 KeepOldVersion = UpdateSettings.UpdateOldVersionValues.Ask,
                 NotifyRedundantVersion = true
@@ -1285,21 +1269,6 @@ public class UpdateSettings
         get;
         set;
     }
-
-    public bool KeepProfile
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
-    ///     目标安装包的编译类型：<c>AOT</c> 或 <c>Common</c>
-    /// </summary>
-    public string CompileType
-    {
-        get;
-        set;
-    } = App.ReleaseFlag;
 
     /// <summary>
     ///     更新页下载源（26.4）。

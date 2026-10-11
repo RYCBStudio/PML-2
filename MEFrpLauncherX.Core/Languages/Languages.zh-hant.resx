@@ -1352,12 +1352,6 @@
     <data name="Text.Update.UpdateMethod.ManualInstall" xml:space="preserve">
         <value>手動檢查更新並安裝</value>
     </data>
-    <data name="Text.Update.KeepProfile" xml:space="preserve">
-        <value>保留設定</value>
-    </data>
-    <data name="Text.Update.KeepProfileDescription" xml:space="preserve">
-        <value>設定應用程式是否應該保留目前設定。請注意: 某些新版本可能新增或變更了設定, 強行覆寫可能會導致意想不到的後果。</value>
-    </data>
     <data name="Text.Update.UpdateChannel" xml:space="preserve">
         <value>更新通道</value>
     </data>
@@ -1369,18 +1363,6 @@
     </data>
     <data name="Text.Update.Channel.Preview" xml:space="preserve">
         <value>發布預覽通道</value>
-    </data>
-    <data name="Text.Update.CompileType" xml:space="preserve">
-        <value>目標編譯類型</value>
-    </data>
-    <data name="Text.Update.CompileTypeDescription" xml:space="preserve">
-        <value>選擇下載安裝包的編譯類型（AOT 或一般）。當目標類型與目前執行時類型一致時，安裝程式將不執行自動清理作業。</value>
-    </data>
-    <data name="Text.Update.CompileType.AOT" xml:space="preserve">
-        <value>AOT（預編譯）</value>
-    </data>
-    <data name="Text.Update.CompileType.Common" xml:space="preserve">
-        <value>一般</value>
     </data>
     <data name="Text.Update.DownloadSource" xml:space="preserve">
         <value>下載來源</value>

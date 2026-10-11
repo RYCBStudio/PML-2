@@ -14015,42 +14015,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target Compile Type.
-        /// </summary>
-        public static string Text_Update_CompileType {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AOT (Precompiled).
-        /// </summary>
-        public static string Text_Update_CompileType_AOT {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.AOT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Common.
-        /// </summary>
-        public static string Text_Update_CompileType_Common {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the compile type of the installer to download (AOT or Common). When the target type matches the current runtime type, the installer will not perform the automatic cleanup..
-        /// </summary>
-        public static string Text_Update_CompileTypeDescription {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileTypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download and Install Update.
         /// </summary>
         public static string Text_Update_DownloadAndInstall {
@@ -14353,24 +14317,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_KeepOldVersion_Keep {
             get {
                 return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep Configuration.
-        /// </summary>
-        public static string Text_Update_KeepProfile {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set whether the app should keep the current configuration. Note: some new versions may add or change configuration; forcing an overwrite may cause unexpected consequences..
-        /// </summary>
-        public static string Text_Update_KeepProfileDescription {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepProfileDescription", resourceCulture);
             }
         }
         

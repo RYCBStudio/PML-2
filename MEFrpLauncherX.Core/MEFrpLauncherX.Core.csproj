@@ -92,6 +92,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj"/>
+        <ProjectReference Include="..\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj" />
         <ProjectReference Include="..\Notify.NET\Notify.NET.csproj"/>
     </ItemGroup>
 

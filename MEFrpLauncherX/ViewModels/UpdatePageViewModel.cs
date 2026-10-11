@@ -55,12 +55,6 @@ public class UpdatePageViewModel : ViewModelBase
             "md" => 2,
             _ => 0
         };
-        TargetCompileType = ConfigManager.CurrentConfig.UpdateSettings.CompileType switch
-        {
-            "AOT" => 0,
-            "Common" => 1,
-            _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
-        };
         DownloadSource =
             GitHubUpdateSources.Normalize(ConfigManager.CurrentConfig.UpdateSettings.DownloadSource) switch
             {
@@ -260,16 +254,6 @@ public class UpdatePageViewModel : ViewModelBase
     ///     2 - 手动下载
     /// </summary>
     public int UpdateMethod
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    /// <summary>
-    ///     0 - AOT（预编译）
-    ///     1 - Common（常规）
-    /// </summary>
-    public int TargetCompileType
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -665,21 +649,12 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
-        try
-        {
-            if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
-            {
-                File.Copy(ConfigManager.ConfigPath, ConfigManager.BackupConfigPath, true);
-                await File.WriteAllTextAsync(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update"),
-                    $"{ConfigManager.CurrentConfig.Skin}");
-            }
-        }
-        catch
-        {
-            Icon = Icons.ERROR;
-            Status = Languages.Text_Update_BackupConfigFailed;
-        }
-
+        // 26.5.0（分离式布局）：配置备份 / 还原整体移除。
+        // 旧布局下更新会原地覆盖程序目录，配置可能被新版本重写，因此才需要
+        // 「先备份 Settings.json + 记住材质，启动时再合并回来」（见 ConfigManager.LoadConfig
+        // 中对 BackupConfigPath 的处理）。现在代码在 vXXX\、配置在 data\，
+        // 升级只新增版本目录、data\ 全程不被覆盖 —— 备份与还原都成了无意义的历史包袱。
+        //
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {
@@ -832,7 +807,9 @@ public class UpdatePageViewModel : ViewModelBase
         return platform switch
         {
             PlatformID.Win32NT =>
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT" ? "%20AOT" : "")}.exe",
+                // 26.5.0：编译类型固定为当前运行时（AOT 包名带 "%20AOT" 后缀），
+                // 不再取用户配置 —— 否则可能下到另一种编译产物。
+                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(Core.App.ReleaseFlag == "AOT" ? "%20AOT" : "")}.exe",
             PlatformID.MacOSX =>
                 $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{latestVersion}-macos-x64.dmg",
             PlatformID.Unix =>
@@ -901,11 +878,14 @@ public class UpdatePageViewModel : ViewModelBase
             return null;
         }
 
-        var asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType, excludedNames);
+        // 26.5.0：编译类型不再是用户可选项 —— 更新包始终与当前运行时一致，
+        // 否则可能下载到另一种编译产物（AOT ↔ Common 无法原地替换运行）。
+        var asset = GitHubReleaseService.SelectAsset(release, LatestVersion, Core.App.ReleaseFlag,
+            excludedNames);
         if (asset is null && excludedNames.Count > 0)
         {
             // 排除列表把候选资产筛空时放宽限制再选一次（保证「重试」仍有机会成功）
-            asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType);
+            asset = GitHubReleaseService.SelectAsset(release, LatestVersion, Core.App.ReleaseFlag);
         }
 
         return asset;

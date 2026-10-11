@@ -128,13 +128,6 @@
                                     </controls:FASettingsExpander.Footer>
                                 </controls:FASettingsExpander>
                                 <controls:FASettingsExpander
-                                    Header="{x:Static languages:Languages.Text_Update_KeepProfile}"
-                                    Description="{x:Static languages:Languages.Text_Update_KeepProfileDescription}">
-                                    <controls:FASettingsExpander.Footer>
-                                        <ToggleSwitch x:Name="KeepProfileSwitch" IsCheckedChanged="KeepProfileChanged" />
-                                    </controls:FASettingsExpander.Footer>
-                                </controls:FASettingsExpander>
-                                <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_UpdateChannel}"
                                     Description="{x:Static languages:Languages.Text_Update_UpdateChannelDescription}"
                                     IsExpanded="True">
@@ -150,19 +143,6 @@
                                     <controls:FASettingsExpanderItem
                                         Content="{Binding #UpdateChannelBox.SelectedIndex, 
                                         Converter={x:Static views:UpdateChannelBoxItemToDescConverter.Instance}}" />
-                                </controls:FASettingsExpander>
-                                <controls:FASettingsExpander
-                                    Header="{x:Static languages:Languages.Text_Update_CompileType}"
-                                    Description="{x:Static languages:Languages.Text_Update_CompileTypeDescription}">
-                                    <controls:FASettingsExpander.Footer>
-                                        <ComboBox x:Name="CompileTypeBox" SelectedIndex="{Binding TargetCompileType}"
-                                                  SelectionChanged="CompileTypeChange">
-                                            <ComboBoxItem Tag="AOT"
-                                                          Content="{x:Static languages:Languages.Text_Update_CompileType_AOT}" />
-                                            <ComboBoxItem Tag="Common"
-                                                          Content="{x:Static languages:Languages.Text_Update_CompileType_Common}" />
-                                        </ComboBox>
-                                    </controls:FASettingsExpander.Footer>
                                 </controls:FASettingsExpander>
                                 <controls:FASettingsExpander
                                     Header="{x:Static languages:Languages.Text_Update_DownloadSource}"

@@ -53,32 +53,17 @@ public partial class MainWindow : FAAppWindow, IDisposable
     {
         #region 透明度设置与渲染优化
 
-        WindowTransparencyLevel preferredTLH;
-        if (File.Exists(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update")))
+        // 26.5.0：原先这里会读取「preference.update」把更新前的材质还原回来
+        // （配套「保留配置」设置项）。分离式布局下 data\Config\Settings.json 升级时不被覆盖，
+        // 材质自然延续，因此不再需要该文件；这里直接按当前配置决定窗口透明度。
+        var preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
         {
-            var preference = File.ReadAllText(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update")).Trim();
-            ConfigManager.CurrentConfig.Skin = preference;
-            File.Delete(Path.Combine(Core.AppPaths.CacheDirectory, "preference.update"));
-            preferredTLH = preference.ToUpper(0) switch
-            {
-                "Mica" => WindowTransparencyLevel.Mica,
-                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-                "Blur" => WindowTransparencyLevel.Blur,
-                "Transparent" => WindowTransparencyLevel.Transparent,
-                _ => WindowTransparencyLevel.None
-            };
-        }
-        else
-        {
-            preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
-            {
-                "Mica" => WindowTransparencyLevel.Mica,
-                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-                "Blur" => WindowTransparencyLevel.Blur,
-                "Transparent" => WindowTransparencyLevel.Transparent,
-                _ => WindowTransparencyLevel.None
-            };
-        }
+            "Mica" => WindowTransparencyLevel.Mica,
+            "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+            "Blur" => WindowTransparencyLevel.Blur,
+            "Transparent" => WindowTransparencyLevel.Transparent,
+            _ => WindowTransparencyLevel.None
+        };
 
         TransparencyLevelHint = [preferredTLH];
 

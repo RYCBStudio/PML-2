@@ -34,13 +34,6 @@ public partial class UpdatePage : UserControl
             "Preview" => 1,
             _ => 0
         };
-        KeepProfileSwitch.IsChecked = ConfigManager.CurrentConfig.UpdateSettings.KeepProfile;
-        CompileTypeBox.SelectedIndex = ConfigManager.CurrentConfig.UpdateSettings.CompileType switch
-        {
-            "AOT" => 0,
-            "Common" => 1,
-            _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
-        };
         DownloadSourceBox.SelectedIndex =
             GitHubUpdateSources.Normalize(ConfigManager.CurrentConfig.UpdateSettings.DownloadSource) switch
             {
@@ -88,31 +81,6 @@ public partial class UpdatePage : UserControl
         ConfigManager.UpdateConfig(cfg =>
         {
             cfg.UpdateSettings.Channel = ((sender as ComboBox).SelectedItem as ComboBoxItem)?.Tag?.ToString();
-        });
-    }
-
-    private void KeepProfileChanged(object? sender, RoutedEventArgs e)
-    {
-        if (!_init)
-        {
-            return;
-        }
-
-        ConfigManager.UpdateConfig(cfg =>
-            cfg.UpdateSettings.KeepProfile = (sender as ToggleSwitch)?.IsChecked ?? false);
-    }
-
-    private void CompileTypeChange(object? sender, SelectionChangedEventArgs e)
-    {
-        if (!_init)
-        {
-            return;
-        }
-
-        ConfigManager.UpdateConfig(cfg =>
-        {
-            cfg.UpdateSettings.CompileType = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Tag?.ToString()
-                                             ?? Core.App.ReleaseFlag;
         });
     }
 

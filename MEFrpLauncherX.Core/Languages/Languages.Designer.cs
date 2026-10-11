@@ -14040,42 +14040,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 目标编译类型.
-        /// </summary>
-        public static string Text_Update_CompileType {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AOT（预编译）.
-        /// </summary>
-        public static string Text_Update_CompileType_AOT {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.AOT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 常规.
-        /// </summary>
-        public static string Text_Update_CompileType_Common {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 选择下载安装包的编译类型（AOT 或常规）。当目标类型与当前运行时类型一致时，安装程序将不执行自动清理操作。.
-        /// </summary>
-        public static string Text_Update_CompileTypeDescription {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileTypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 下载并安装更新.
         /// </summary>
         public static string Text_Update_DownloadAndInstall {
@@ -14378,24 +14342,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_KeepOldVersion_Keep {
             get {
                 return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 保留配置.
-        /// </summary>
-        public static string Text_Update_KeepProfile {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 设置应用是否应该保留当前配置。请注意: 某些新版本可能新增或更改了配置, 强行覆盖可能会导致意想不到的后果。.
-        /// </summary>
-        public static string Text_Update_KeepProfileDescription {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepProfileDescription", resourceCulture);
             }
         }
         

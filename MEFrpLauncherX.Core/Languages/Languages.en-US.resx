@@ -1354,12 +1354,6 @@
     <data name="Text.Update.UpdateMethod.ManualInstall" xml:space="preserve">
         <value>Manually check for updates and install</value>
     </data>
-    <data name="Text.Update.KeepProfile" xml:space="preserve">
-        <value>Keep Configuration</value>
-    </data>
-    <data name="Text.Update.KeepProfileDescription" xml:space="preserve">
-        <value>Set whether the app should keep the current configuration. Note: some new versions may add or change configuration; forcing an overwrite may cause unexpected consequences.</value>
-    </data>
     <data name="Text.Update.UpdateChannel" xml:space="preserve">
         <value>Update Channel</value>
     </data>
@@ -1371,18 +1365,6 @@
     </data>
     <data name="Text.Update.Channel.Preview" xml:space="preserve">
         <value>Release Preview Channel</value>
-    </data>
-    <data name="Text.Update.CompileType" xml:space="preserve">
-        <value>Target Compile Type</value>
-    </data>
-    <data name="Text.Update.CompileTypeDescription" xml:space="preserve">
-        <value>Select the compile type of the installer to download (AOT or Common). When the target type matches the current runtime type, the installer will not perform the automatic cleanup.</value>
-    </data>
-    <data name="Text.Update.CompileType.AOT" xml:space="preserve">
-        <value>AOT (Precompiled)</value>
-    </data>
-    <data name="Text.Update.CompileType.Common" xml:space="preserve">
-        <value>Common</value>
     </data>
     <data name="Text.Update.DownloadSource" xml:space="preserve">
         <value>Download source</value>
