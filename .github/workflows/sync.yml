@@ -189,7 +189,7 @@ jobs:
                               'File-Path': encoded_target,
                               'Content-Type': 'application/octet-stream',
                               'Overwrite': 'true',
-                              'As-Task': 'true',
+                              'As-Task': 'false',
                           },
                           timeout=(30, 900),
                       )
