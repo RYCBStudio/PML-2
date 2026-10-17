@@ -12,7 +12,7 @@ namespace MEFrpLauncherX.Core;
 
 public sealed class App : IDisposable
 {
-    public const string Version = "26.5.0";
+    public const string Version = "26.5.1-preview1";
     public const string MEFrpVersion = "0.67.1_20260626_af59eefd";
 
     public static string Flag = "Desktop";
@@ -28,6 +28,7 @@ public sealed class App : IDisposable
     /// </summary>
     public static readonly string StartupPath = AppPaths.VersionDirectory;
 
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 'required' 修饰符或声明为可以为 null。
     public static AppJsonSerializerContext AppJsonSerializerContext;
 
     public static string? SelectedTheme

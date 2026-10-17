@@ -10,6 +10,17 @@
 - 版本号四段式：**前三位对齐所适配的 Avalonia 版本，末位为组件修订号**（如 12.1.3.1 = 适配 Avalonia 12.1.3）。
 - 子仓自带 `Directory.Packages.props`（CPM），依赖版本与 PML-2 解耦；改依赖去子仓改。
 
+## 组件仓为双项目（2026-10-10 起）
+
+- `FluentAvalonia.MarkdownRender/`（原包，依赖 FluentAvaloniaUI，Alert 用其 InfoBar）
+- `MarkdownRenderX.Avalonia/`（新包，**无 FluentAvalonia 依赖**，命名空间
+  `MarkdownRenderX.Avalonia.*`，XAML URI `https://github.com/RYCBStudio/MarkdownRenderX.Avalonia`，
+  Alert 为自绘 `MdAlertBox`，强调色用自带键 `MdAccentTextFillColor*`）
+- 两版是**独立副本**，不是共享源码：改 FAMR 的代码后必须手工镜像到 MarkdownRenderX，否则行为漂移。
+- 一次性 tag 发两个包（CI 用 tag 覆盖两项目版本）；回归用 `dotnet run --project tools/MrxSmoke -c Release`（无头，断言 Alert 配色与资源键）。
+- PML-2 的 submodule 路径不变，但 sln 里的项目路径多一层：
+  `FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj`。
+
 ## GitHub Actions 注意
 
 - job 级 `if` **不能引用 `secrets` 上下文**（整个 workflow 会解析失败、0s 失败）。

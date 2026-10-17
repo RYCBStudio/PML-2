@@ -31,7 +31,7 @@ namespace MEFrpLauncherX;
 
 public partial class App : Application
 {
-    public const string Codename = "Sulphur";
+    public const string Codename = "Chlorine";
 #pragma warning disable CA2211
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
