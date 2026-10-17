@@ -44,7 +44,7 @@ public class RenderSettings
 public static class RenderConfigManager
 {
     public static string RenderConfigPath =>
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Render.json");
+        AppPaths.RenderConfigFile;
 
     private static readonly object Lock = new();
 

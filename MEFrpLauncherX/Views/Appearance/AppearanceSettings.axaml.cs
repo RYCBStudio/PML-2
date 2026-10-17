@@ -267,9 +267,9 @@ public class RecentImagesSettingsItem : SettingsItemBase
 {
     public RecentImagesSettingsItem()
     {
-        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", ".photos")))
+        if (File.Exists(Path.Combine(Core.AppPaths.CacheDirectory, ".photos")))
         {
-            var cnt = File.ReadAllLines(Path.Combine(Core.App.StartupPath, "Cache", ".photos"));
+            var cnt = File.ReadAllLines(Path.Combine(Core.AppPaths.CacheDirectory, ".photos"));
             ImagePaths = [.. cnt];
 
             if (ImagePaths.Count <= 1)
@@ -364,7 +364,7 @@ public partial class FooterButtonSettingsItem : SettingsItemBase, IReactiveObjec
 
     public static void ClearFile()
     {
-        File.WriteAllText(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), string.Empty);
+        File.WriteAllText(Path.Combine(Core.AppPaths.CacheDirectory, ".photos"), string.Empty);
         ConfigManager.UpdateConfig(config => config.BackgroundSettings.BackgroundImage = string.Empty);
         Dispatcher.UIThread.Invoke(() =>
         {
@@ -406,7 +406,7 @@ public partial class FooterButtonSettingsItem : SettingsItemBase, IReactiveObjec
                     !x.Equals(file, StringComparison.OrdinalIgnoreCase)) ||
                 RecentImagesSettingsItem.Instance.ImagePaths.Count == 0)
             {
-                await File.AppendAllLinesAsync(Path.Combine(Core.App.StartupPath, "Cache", ".photos"), [file]);
+                await File.AppendAllLinesAsync(Path.Combine(Core.AppPaths.CacheDirectory, ".photos"), [file]);
             }
 
             await ConfigManager.UpdateConfigAsync(config => config.BackgroundSettings.BackgroundImage = file);

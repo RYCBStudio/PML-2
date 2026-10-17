@@ -46,7 +46,7 @@ public class ThemeService
 
     public static AvaloniaList<LocalTheme> GetLocalThemes()
     {
-        var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+        var themesDir = Core.AppPaths.ThemesDirectory;
         var localThemes = new AvaloniaList<LocalTheme>();
 
         if (Directory.Exists(themesDir))
@@ -100,7 +100,7 @@ public class ThemeService
             await response.Content.CopyToAsync(fs);
 
             // 解压主题包
-            var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+            var themesDir = Core.AppPaths.ThemesDirectory;
             var themeDir = Path.Combine(themesDir, theme.Name);
             if (Directory.Exists(themeDir))
             {
@@ -133,7 +133,7 @@ public class ThemeService
 
     public async void ApplyTheme(string themePath)
     {
-        var selectedPath = Path.Combine(Core.App.StartupPath, "Config", "Themes", "selected");
+        var selectedPath = Core.AppPaths.SelectedThemeFile;
         var themeName = Path.GetFileName(themePath);
         await File.WriteAllTextAsync(selectedPath, themeName);
         Core.App.SelectedTheme = themeName;

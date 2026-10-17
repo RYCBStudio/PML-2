@@ -2472,6 +2472,60 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 数据库.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Database {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开发与运维.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Developer {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Developer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 游戏联机.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Game {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 网站服务.
+        /// </summary>
+        public static string Text_CreateProxy_PortCategory_Website {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Website", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 更多常用端口.
+        /// </summary>
+        public static string Text_CreateProxy_PortPicker {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请勿映射代理 / VPN、远程控制等违反 ME Frp 内容策略的服务。.
+        /// </summary>
+        public static string Text_CreateProxy_PortPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.PortPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 协议类型.
         /// </summary>
         public static string Text_CreateProxy_ProtocolType {
@@ -2720,6 +2774,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_CreateProxy_UsernamePlaceholder {
             get {
                 return ResourceManager.GetString("Text.CreateProxy.UsernamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 查看 ME Frp 内容策略.
+        /// </summary>
+        public static string Text_CreateProxy_ViewContentPolicy {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.ViewContentPolicy", resourceCulture);
             }
         }
         
@@ -7222,7 +7285,7 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PML Ⅱ 正在下载文件.
+        ///   Looks up a localized string similar to PML 2 正在下载文件.
         /// </summary>
         public static string Text_Download_Title {
             get {
@@ -7461,6 +7524,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_JustNow {
             get {
                 return ResourceManager.GetString("Text.Global.JustNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 暂不处理.
+        /// </summary>
+        public static string Text_Global_Later {
+            get {
+                return ResourceManager.GetString("Text.Global.Later", resourceCulture);
             }
         }
         
@@ -8848,21 +8920,18 @@ namespace MEFrpLauncherX.Core.Languages {
         ///- **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
         ///- **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
         ///- **使用行为**：功能点击、会话时长、错误日志
+        ///- **匿名使用统计（26.5.0 起，Cloudflare）**：每次启动上报 1 条事件，仅含事件名、随机安装标识（UUID）、版本、平台、CPU 架构
         ///___
         ///**注意：** 遥测数据不包含您的账号密码、隧道内容等敏感信息。
         ///### 2. 信息用途
         ///- 提供核心功能服务（账号验证、数据同步）
         ///- 优化用户体验（故障修复、功能改进）
         ///- 错误监控与性能分析（通过 Sentry）
+        ///- 匿名使用统计（通过 Cloudflare，仅统计活跃安装 / 版本 / 平台分布）
         ///### 3. 数据共享
         ///**我们不会出售用户数据**。仅在以下情况共享：
         ///- 经您明确同意
-        ///- 履行法律义务
-        ///- 与第三方服务商合作（如云服务）必需时
-        ///___
-        ///### 4. 证书助手（可选功能）
-        ///「证书助手」用于为您**自有域名**申请 SSL 证书（供 HTTPS 隧道使用），与 ME Frp 官方证书服务**无关**：
-        ///- 域名、ACM [rest of string was truncated]&quot;;.
+        ///-  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_MainWindow_PrivacyPolicy {
             get {
@@ -13845,6 +13914,60 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 安装完成后删除旧版本目录，回收约 {0} 磁盘空间。删除后无法一键回滚，只能重新下载旧版本安装包。.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留旧版本目录，占用约 {0} 磁盘空间。出现问题时可在「更新」页一键回滚到该版本。.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除（省空间）.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留（可回滚）.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 即将升级到 {0}。 安装目录采用「代码与数据分离」布局：升级只会新增一个版本目录，你的隧道、主题、插件与证书始终保留。 你要如何处理上一个版本（{1}）？.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Message {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 升级后如何处理旧版本？.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersion_Title {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 暂不支持当前操作系统的自动更新，请手动下载安装包.
         /// </summary>
         public static string Text_Update_AutoUpdateNotSupported {
@@ -13908,38 +14031,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 目标编译类型.
+        ///   Looks up a localized string similar to 立即清理.
         /// </summary>
-        public static string Text_Update_CompileType {
+        public static string Text_Update_CleanupVersionsNow {
             get {
-                return ResourceManager.GetString("Text.Update.CompileType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AOT（预编译）.
-        /// </summary>
-        public static string Text_Update_CompileType_AOT {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.AOT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 常规.
-        /// </summary>
-        public static string Text_Update_CompileType_Common {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileType.Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 选择下载安装包的编译类型（AOT 或常规）。当目标类型与当前运行时类型一致时，安装程序将不执行自动清理操作。.
-        /// </summary>
-        public static string Text_Update_CompileTypeDescription {
-            get {
-                return ResourceManager.GetString("Text.Update.CompileTypeDescription", resourceCulture);
+                return ResourceManager.GetString("Text.Update.CleanupVersionsNow", resourceCulture);
             }
         }
         
@@ -14169,20 +14265,83 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 保留配置.
+        ///   Looks up a localized string similar to 旧版本目录.
         /// </summary>
-        public static string Text_Update_KeepProfile {
+        public static string Text_Update_KeepOldVersion {
             get {
-                return ResourceManager.GetString("Text.Update.KeepProfile", resourceCulture);
+                return ResourceManager.GetString("Text.Update.KeepOldVersion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 设置应用是否应该保留当前配置。请注意: 某些新版本可能新增或更改了配置, 强行覆盖可能会导致意想不到的后果。.
+        ///   Looks up a localized string similar to 每次升级前弹窗询问，最稳妥。.
         /// </summary>
-        public static string Text_Update_KeepProfileDescription {
+        public static string Text_Update_KeepOldVersionDesc_Ask {
             get {
-                return ResourceManager.GetString("Text.Update.KeepProfileDescription", resourceCulture);
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 安装完成后直接删除上一个版本的目录，只占用当前版本的磁盘空间，但失去一键回滚能力。.
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 始终保留上一个版本的目录（占约一倍磁盘空间），新版本有问题时可一键回滚。.
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 当前为旧版单层安装布局，暂不适用；升级到 26.5 后生效。.
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDesc_Unavailable {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDesc_Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 升级后如何处理上一个版本的目录。安装目录采用「代码与数据分离」布局：升级只新增一个版本目录（vXXX），data\ 中的隧道、主题、插件、证书永远保留。保留旧版本可随时回滚（改 launcher.json 的 current 即可），代价是占用约一倍磁盘空间；删除则只保留当前版本。.
+        /// </summary>
+        public static string Text_Update_KeepOldVersionDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 每次升级前询问（推荐）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除旧版本（更省空间）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留旧版本（可回滚）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
             }
         }
         
@@ -14228,6 +14387,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_NewVersionDetected {
             get {
                 return ResourceManager.GetString("Text.Update.NewVersionDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 提醒清理多余版本.
+        /// </summary>
+        public static string Text_Update_NotifyRedundantVersion {
+            get {
+                return ResourceManager.GetString("Text.Update.NotifyRedundantVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动时检测安装目录中多出的旧版本目录，当可回收空间较多时提醒你处理。同一提醒至少间隔 7 天，避免打扰。.
+        /// </summary>
+        public static string Text_Update_NotifyRedundantVersionDescription {
+            get {
+                return ResourceManager.GetString("Text.Update.NotifyRedundantVersionDescription", resourceCulture);
             }
         }
         
@@ -14367,6 +14544,51 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 将删除 {0} 个旧版本目录，回收约 {1}。 你的隧道、主题、插件与证书都保存在 data\ 中，不会受影响；但删除后将无法一键回滚到这些版本。.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_ConfirmMessage {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_ConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认清理旧版本目录？.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_ConfirmTitle {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_ConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已清理 {0} 个旧版本目录，回收约 {1}.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_Done {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 部分版本目录未能删除（可能正被占用），请重启后重试.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_Failed {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 没有需要清理的版本目录.
+        /// </summary>
+        public static string Text_Update_VersionCleanup_NothingToDo {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionCleanup_NothingToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 云端最新: {0}           本地版本: {1}               版本代号:.
         /// </summary>
         public static string Text_Update_VersionInfoFormat {
@@ -14381,6 +14603,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_VersionInfoTip {
             get {
                 return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 安装目录中有 {0} 个多余的版本目录，占用约 {1}。 它们是历次升级保留下来的回滚点，可以安全删除（不会影响隧道、主题与证书）。.
+        /// </summary>
+        public static string Text_Update_VersionNotify_Message {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionNotify_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 发现可清理的旧版本目录.
+        /// </summary>
+        public static string Text_Update_VersionNotify_Title {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionNotify_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 共 {0} 个版本目录，占用 {1}；可清理 {2}，可回收 {3}。.
+        /// </summary>
+        public static string Text_Update_VersionStorageSummary {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionStorageSummary", resourceCulture);
             }
         }
         
@@ -15710,69 +15959,5 @@ namespace MEFrpLauncherX.Core.Languages {
                 return ResourceManager.GetString("Text.WhatsNew.Unavailable", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 更多常用端口.
-        /// </summary>
-        public static string Text_CreateProxy_PortPicker {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortPicker", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 网站服务.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Website {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Website", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 游戏联机.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Game {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Game", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 数据库.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Database {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Database", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 开发与运维.
-        /// </summary>
-        public static string Text_CreateProxy_PortCategory_Developer {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortCategory.Developer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 请勿映射代理 / VPN、远程控制等违反 ME Frp 内容策略的服务。.
-        /// </summary>
-        public static string Text_CreateProxy_PortPolicy {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.PortPolicy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 查看 ME Frp 内容策略.
-        /// </summary>
-        public static string Text_CreateProxy_ViewContentPolicy {
-            get {
-                return ResourceManager.GetString("Text.CreateProxy.ViewContentPolicy", resourceCulture);
-            }
-        }
-        
     }
 }

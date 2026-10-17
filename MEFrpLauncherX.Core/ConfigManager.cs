@@ -17,7 +17,7 @@ public static class ConfigManager
     /// </summary>
     public const int CurrentSchemaVersion = 3;
 
-    private static readonly string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
+    private static readonly string ConfigDirectory = AppPaths.ConfigDirectory;
 
     private static AppConfig _currentConfig;
     private static readonly object _lock = new();
@@ -27,10 +27,35 @@ public static class ConfigManager
         get;
     } = Path.Combine(ConfigDirectory, "Settings.json");
 
-    public static string BackupConfigPath
+    /// <summary>
+    ///     清理旧布局遗留的「更新前配置备份」（26.5.0 起不再生成）。
+    ///     <para>
+    ///         仅删除历史文件，不做任何合并：分离式布局下 <c>data\Config\Settings.json</c>
+    ///         升级时不会被覆盖，配置自然延续，无需还原。
+    ///     </para>
+    /// </summary>
+    private static void CleanupLegacyUpdateBackup()
     {
-        get;
-    } = Path.Combine(ConfigDirectory, "Settings.json.bak.update");
+        foreach (var name in new[] { "Settings.json.bak.update", "KEEP_PROFILE" })
+        {
+            try
+            {
+                var path = Path.Combine(ConfigDirectory, name);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    App.CurrentLogger?.Log($"已清理旧版更新备份: {name}",
+                        module: EnumLogModule.Custom, customModuleName: "配置管理");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 清理失败不影响启动
+                App.CurrentLogger?.Log($"清理旧版更新备份失败: {name}（{ex.Message}）",
+                    module: EnumLogModule.Custom, customModuleName: "配置管理");
+            }
+        }
+    }
 
     /// <summary>
     ///     获取当前配置（只读）
@@ -83,35 +108,13 @@ public static class ConfigManager
                 var json = File.ReadAllText(ConfigPath);
                 _currentConfig =
                     JsonSerializer.Deserialize<AppConfig>(json, App.AppJsonSerializerContext.AppConfig);
-                var updateBakFile = BackupConfigPath;
-                if (!File.Exists(updateBakFile))
-                {
-                    return;
-                }
 
-                App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                var _bak_json = File.ReadAllText(updateBakFile);
-                var _bak_config =
-                    JsonSerializer.Deserialize<AppConfig>(_bak_json, App.AppJsonSerializerContext.AppConfig);
-                App.CurrentLogger?.Log($"正在合并更新配置文件: {updateBakFile}",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                MergeConfig(_bak_config, ref _currentConfig);
-                App.CurrentLogger?.Log($"合并更新配置文件: {updateBakFile} 完成",
-                    module: EnumLogModule.Custom, customModuleName: "配置管理");
-
-                try
-                {
-                    File.Delete(updateBakFile);
-                    File.Delete(Path.Combine(ConfigDirectory, "KEEP_PROFILE"));
-                }
-                catch
-                {
-                    App.CurrentLogger?.Log($"删除更新配置文件失败: {updateBakFile}",
-                        module: EnumLogModule.Custom, customModuleName: "配置管理");
-                }
+                // 26.5.0：更新前的配置备份 / 还原逻辑移除。
+                // 旧布局下更新会原地覆盖程序目录，Settings.json 可能被新版本重写，
+                // 因此才需要先备份再于下次启动合并回来。分离式布局下代码在 vXXX\、
+                // 配置在 data\，升级不触碰 data\ —— 备份文件不会再产生，历史遗留的
+                // Settings.json.bak.update 也一并在此清理掉。
+                CleanupLegacyUpdateBackup();
             }
         }
         catch (Exception ex)
@@ -163,7 +166,6 @@ public static class ConfigManager
     private static readonly string[] LanguageValues = ["zh-CN", "en-US", "zh-Hant"];
     private static readonly string[] UpdateChannelValues = ["Preview", "Stable"];
     private static readonly string[] UpdateMethodValues = ["ds", "dd", "md"];
-    private static readonly string[] CompileTypeValues = ["AOT", "Common"];
 
     /// <summary>
     ///     更新页下载源取值（26.4）。
@@ -172,6 +174,8 @@ public static class ConfigManager
     /// </summary>
     private static readonly string[] UpdateDownloadSourceValues =
         ["TPCA", "GitHub", "GitHubGhProxy", "GitHubMoeyy"];
+
+    private static readonly string[] UpdateOldVersionValues = UpdateSettings.UpdateOldVersionValues.All;
 
     private static readonly string[] SplashStyleValues = ["default", "dark", "minimal"];
     private static readonly string[] HomeLayoutValues = ["classic", "simple"];
@@ -307,11 +311,12 @@ public static class ConfigManager
             UpdateChannelValues, d.UpdateSettings.Channel);
         changed += NormalizeChoice(() => cfg.UpdateSettings.Method, v => cfg.UpdateSettings.Method = v,
             UpdateMethodValues, d.UpdateSettings.Method);
-        changed += NormalizeChoice(() => cfg.UpdateSettings.CompileType, v => cfg.UpdateSettings.CompileType = v,
-            CompileTypeValues, d.UpdateSettings.CompileType);
         changed += NormalizeChoice(() => cfg.UpdateSettings.DownloadSource,
             v => cfg.UpdateSettings.DownloadSource = v,
             UpdateDownloadSourceValues, d.UpdateSettings.DownloadSource);
+        changed += NormalizeChoice(() => cfg.UpdateSettings.KeepOldVersion,
+            v => cfg.UpdateSettings.KeepOldVersion = v,
+            UpdateOldVersionValues, d.UpdateSettings.KeepOldVersion);
         changed += NormalizeChoice(() => cfg.SplashStyle, v => cfg.SplashStyle = v, SplashStyleValues, d.SplashStyle);
         changed += NormalizeChoice(() => cfg.HomeSettings.Layout, v => cfg.HomeSettings.Layout = v, HomeLayoutValues,
             d.HomeSettings.Layout);
@@ -642,20 +647,6 @@ public static class ConfigManager
             source.Channel = target.Channel;
         }
 
-        App.CurrentLogger?.Log($"正在合并配置项 Update>KeepProfile: {source.KeepProfile} -> {target.KeepProfile}",
-            module: EnumLogModule.Custom, customModuleName: "配置管理");
-        if (source.KeepProfile != target.KeepProfile)
-        {
-            source.KeepProfile = target.KeepProfile;
-        }
-
-        App.CurrentLogger?.Log($"正在合并配置项 Update>CompileType: {source.CompileType} -> {target.CompileType}",
-            module: EnumLogModule.Custom, customModuleName: "配置管理");
-        if (string.IsNullOrEmpty(source.CompileType) && !string.IsNullOrEmpty(target.CompileType))
-        {
-            source.CompileType = target.CompileType;
-        }
-
         // 下载源：旧配置没有该字段（空值）时采用用户已保存的取值
         App.CurrentLogger?.Log(
             $"正在合并配置项 Update>DownloadSource: {source.DownloadSource} -> {target.DownloadSource}",
@@ -663,6 +654,26 @@ public static class ConfigManager
         if (string.IsNullOrEmpty(source.DownloadSource) && !string.IsNullOrEmpty(target.DownloadSource))
         {
             source.DownloadSource = target.DownloadSource;
+        }
+
+        // 旧版本目录策略：旧配置没有该字段（空值）时采用用户已保存的取值；
+        // 已显式选择过（Keep/Discard）的用户不被默认值 Ask 覆盖。
+        App.CurrentLogger?.Log(
+            $"正在合并配置项 Update>KeepOldVersion: {source.KeepOldVersion} -> {target.KeepOldVersion}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        if (string.IsNullOrEmpty(source.KeepOldVersion) && !string.IsNullOrEmpty(target.KeepOldVersion))
+        {
+            source.KeepOldVersion = target.KeepOldVersion;
+        }
+
+        // 仅当旧配置没有该字段时（bool 不可区分「缺失」与 false，这里以默认 true 为准，
+        // 只有用户在旧配置里显式关过才保持关闭）才写入默认开启。
+        App.CurrentLogger?.Log(
+            $"正在合并配置项 Update>NotifyRedundantVersion: {source.NotifyRedundantVersion} -> {target.NotifyRedundantVersion}",
+            module: EnumLogModule.Custom, customModuleName: "配置管理");
+        if (source.NotifyRedundantVersion != target.NotifyRedundantVersion)
+        {
+            source.NotifyRedundantVersion = target.NotifyRedundantVersion;
         }
     }
 
@@ -882,9 +893,9 @@ public static class ConfigManager
                 AutoCheck = true,
                 Channel = "Preview",
                 Method = "ds",
-                KeepProfile = true,
-                CompileType = App.ReleaseFlag,
-                DownloadSource = Services.GitHubUpdateSources.Tpca
+                DownloadSource = Services.GitHubUpdateSources.Tpca,
+                KeepOldVersion = UpdateSettings.UpdateOldVersionValues.Ask,
+                NotifyRedundantVersion = true
             },
             HomeSettings = new HomeConfig
             {
@@ -1213,6 +1224,29 @@ public class HomeConfig
 
 public class UpdateSettings
 {
+    /// <summary>
+    ///     <see cref="UpdateSettings.KeepOldVersion" /> 的全部合法取值。
+    ///     <para>
+    ///         用「常量持有类」而非 enum：这些值要作为字符串直接落进
+    ///     <c>Settings.json</c>，并在配置归一化里与历史值比对，用字符串可避免
+    ///     枚举成员改名导致旧配置集体失效。
+    ///     </para>
+    /// </summary>
+    public class UpdateOldVersionValues
+    {
+        /// <summary>每次升级前询问用户（默认）。</summary>
+        public const string Ask = "Ask";
+
+        /// <summary>保留旧版本目录作为回滚点。</summary>
+        public const string Keep = "Keep";
+
+        /// <summary>安装完成后删除全部历史版本目录。</summary>
+        public const string Discard = "Discard";
+
+        /// <summary>全部合法取值；顺序即 UI 下拉框顺序。</summary>
+        public static readonly string[] All = [Ask, Keep, Discard];
+    }
+
     public bool AutoCheck
     {
         get;
@@ -1236,21 +1270,6 @@ public class UpdateSettings
         set;
     }
 
-    public bool KeepProfile
-    {
-        get;
-        set;
-    }
-
-    /// <summary>
-    ///     目标安装包的编译类型：<c>AOT</c> 或 <c>Common</c>
-    /// </summary>
-    public string CompileType
-    {
-        get;
-        set;
-    } = App.ReleaseFlag;
-
     /// <summary>
     ///     更新页下载源（26.4）。
     ///     <para>
@@ -1264,6 +1283,35 @@ public class UpdateSettings
         get;
         set;
     } = Services.GitHubUpdateSources.Tpca;
+
+    /// <summary>
+    ///     升级后如何处理旧版本目录（26.5.0，分离式布局）。
+    ///     <para>
+    ///         合法取值：<c>Ask</c>（每次升级前询问，默认）/ <c>Keep</c>（保留回滚点）/
+    ///         <c>Discard</c>（安装后删除全部历史版本目录）。
+    ///     </para>
+    ///     <para>
+    ///         取值语义直接对应安装器的 <c>/nocleanup</c> 与 <c>/cleanup</c> 开关；
+    ///         非法值由 <see cref="ConfigManager.NormalizeToLatestSchema" /> 归一化。
+    ///     </para>
+    /// </summary>
+    public string KeepOldVersion
+    {
+        get;
+        set;
+    } = UpdateOldVersionValues.Ask;
+
+    /// <summary>
+    ///     是否在启动时检测到多余版本目录就提醒用户清理（26.5.0）。
+    ///     <para>
+    ///         仅对版本化布局有意义；每 7 天最多提醒一次，避免反复打扰。
+    ///     </para>
+    /// </summary>
+    public bool NotifyRedundantVersion
+    {
+        get;
+        set;
+    } = true;
 }
 
 public class BackgroundSettings

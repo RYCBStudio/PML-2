@@ -583,11 +583,11 @@ public class ThemeEditorViewModel : ViewModelBase
             {
                 savePath = _editFilePath;
                 themeDir = Path.GetDirectoryName(savePath) ??
-                           Path.Combine(Core.App.StartupPath, "Config", "Themes", SanitizeFileName(Name));
+                           Path.Combine(Core.AppPaths.ThemesDirectory, SanitizeFileName(Name));
             }
             else
             {
-                themeDir = Path.Combine(Core.App.StartupPath, "Config", "Themes", SanitizeFileName(Name));
+                themeDir = Path.Combine(Core.AppPaths.ThemesDirectory, SanitizeFileName(Name));
                 Directory.CreateDirectory(themeDir);
                 savePath = Path.Combine(themeDir, "index.json");
             }
@@ -752,7 +752,7 @@ public class ThemeEditorViewModel : ViewModelBase
             File.WriteAllText(tempPath, json);
 
             // 保存当前选中的主题路径，以便恢复
-            var selectedThemePath = Path.Combine(Core.App.StartupPath, "Config", "Themes", "selected");
+            var selectedThemePath = Core.AppPaths.SelectedThemeFile;
             string? originalTheme = null;
             if (File.Exists(selectedThemePath))
             {
@@ -783,8 +783,11 @@ public class ThemeEditorViewModel : ViewModelBase
             {
                 if (t.Result == ButtonResult.Yes)
                 {
-                    // 重启应用
-                    System.Diagnostics.Process.Start(Core.App.StartupPath, "MEFrpLauncherX.exe");
+                    // 26.5.0：原先写作 Process.Start(Core.App.StartupPath, "MEFrpLauncherX.exe")，
+                    // 把「目录」当成可执行文件传入，在任何平台都起不来。
+                    // 改为启动安装根下的启动器（PML 2.exe），由它转发到当前版本，
+                    // 这样主题预览的重启也能顺带验证版本槽位是否正常。
+                    Core.AppPaths.RestartViaLauncher();
                     Environment.Exit(0);
                 }
             });

@@ -22,7 +22,11 @@ public sealed class App : IDisposable
 #if !AOT
     public const string ReleaseFlag = "Common";
 #endif
-    public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
+    /// <summary>
+    ///     程序目录（只读代码所在处）。26.5.0 起<b>语义已变为「版本目录」</b>（<c>vXXX\</c>）；
+    ///     新代码请用 <see cref="AppPaths" /> 的细分属性，不要再直接拼 <c>StartupPath</c>。
+    /// </summary>
+    public static readonly string StartupPath = AppPaths.VersionDirectory;
 
     public static AppJsonSerializerContext AppJsonSerializerContext;
 
@@ -81,23 +85,12 @@ public sealed class App : IDisposable
 
     public static async Task Initialize(bool externalUse = false)
     {
-        if (!externalUse)
-        {
-            Directory.CreateDirectory(Path.Combine(StartupPath, "Cache"));
-            Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "frp"));
-        }
-
-        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            WriteIndented = true,
-            PropertyNameCaseInsensitive = true
-        });
-
-        NodeProbeService = new NodeProbeService();
+        // 26.5.0：先建立目录骨架（含 Logs\），再完成旧版单层布局的数据迁移。
+        // 顺序很重要：迁移过程本身要写日志，因此 Logs\ 必须先于迁移存在。
+        AppPaths.EnsureDirectories();
 
         // 使用 Path.Combine 处理跨平台路径
-        var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+        var logDirectory = AppPaths.LogsDirectory;
 
         // 确保目录存在
         if (!Directory.Exists(logDirectory))
@@ -109,15 +102,35 @@ public sealed class App : IDisposable
         var logPath = Path.Combine(logDirectory, $"{DateTime.Now:yyyy-MM-dd}.log");
 
         CurrentLogger = new LogUtil(logPath);
+
+        // 迁移放在日志就绪之后：既是幂等的（重复执行无副作用），
+        // 也让「升级搬了什么」在日志中可追溯，便于排查用户反馈。
+        LegacyLayoutMigrator.TryMigrate(CurrentLogger);
+
+        if (!externalUse)
+        {
+            Directory.CreateDirectory(AppPaths.CacheDirectory);
+            Directory.CreateDirectory(AppPaths.FrpConfigDirectory);
+        }
+
+        AppJsonSerializerContext = new AppJsonSerializerContext(new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true
+        });
+
+        NodeProbeService = new NodeProbeService();
+
         CurrentLogger.Log("Core App init");
         CurrentLogger.Log("Current OS: " + Environment.OSVersion.Platform);
 
         if (!externalUse)
         {
             ConfigManager.Initialize();
-            if (!Directory.Exists(Path.Combine(StartupPath, "Config", "Themes")))
+            if (!Directory.Exists(AppPaths.ThemesDirectory))
             {
-                Directory.CreateDirectory(Path.Combine(StartupPath, "Config", "Themes"));
+                Directory.CreateDirectory(AppPaths.ThemesDirectory);
             }
 
             // 26.3.1 S3：通知服务必须在首个 await（SelectedTheme 文件读取 / RYCBApiConverter 网络初始化）之前创建：
@@ -137,8 +150,8 @@ public sealed class App : IDisposable
                 CurrentLogger?.Error(ex, "初始化系统通知服务失败");
             }
 
-            SelectedTheme = File.Exists(Path.Combine(StartupPath, "Config", "Themes", "selected"))
-                ? (await File.ReadAllTextAsync(Path.Combine(StartupPath, "Config", "Themes", "selected"))).Trim()
+            SelectedTheme = File.Exists(AppPaths.SelectedThemeFile)
+                ? (await File.ReadAllTextAsync(AppPaths.SelectedThemeFile)).Trim()
                 : null;
             await RYCBApiConverter.InitializeAsync();
         }

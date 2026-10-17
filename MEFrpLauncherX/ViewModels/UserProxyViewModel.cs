@@ -710,7 +710,7 @@ public partial class UserProxyViewModel : ViewModelBase
         List<string> configFiles =
         [
             .. Directory
-                .EnumerateFileSystemEntries(Path.Combine(Core.App.StartupPath, "Config", "frp"), "*.*",
+                .EnumerateFileSystemEntries(Core.AppPaths.FrpConfigDirectory, "*.*",
                     SearchOption.TopDirectoryOnly)
                 .Where(fs => fs.EndsWithEx(".ini,.json,.toml,.yaml,.yml") && Path.GetFileNameWithoutExtension(fs)
                     .Contains(proxy.proxyName, StringComparison.OrdinalIgnoreCase))
@@ -850,7 +850,7 @@ public partial class UserProxyViewModel : ViewModelBase
             return -1;
         }
 
-        var filePath = Path.Combine(Core.App.StartupPath, "bin", clientConfig.FileName);
+        var filePath = Path.Combine(Core.AppPaths.RunDirectory, clientConfig.FileName);
 
         // 文件校验通过，直接启动
         if (DownloadHelper.ValidateFileSimple(filePath, clientConfig.Md5Hash))

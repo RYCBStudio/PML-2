@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      PML2.Launcher —— 安装根下的「PML 2.exe」。
+
+      职责极窄且刻意保持极小（无 Avalonia、无网络、无 UI）：
+        1. 读取 launcher.json 决定启动哪个 vXXX 目录中的 MEFrpLauncherX.exe；
+        2. 通过环境变量把安装根与数据根告知主程序；
+        3. 原样透传命令行参数（pml2:// 链接、pmla 打包参数等）；
+        4. 退出码 = 子进程退出码，保证脚本与快捷方式的自动化语义不变。
+
+      版本槽位的解析逻辑与主程序共用 Shared/VersionResolver.cs，
+      避免「启动器看到的版本」与「主程序算出的布局」出现分歧。
+    -->
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <!-- 关闭 nullable 注解：Shared/VersionResolver.cs 被同时编译进本项目和
+             MEFrpLauncherX.Core（后者 <Nullable>enable</Nullable>），
+             为让同一份源码在两边都不产生 CS8632 警告，统一不使用 ? 注解。 -->
+        <Nullable>disable</Nullable>
+        <NoWarn>$(NoWarn);CS8632</NoWarn>
+        <ImplicitUsings>false</ImplicitUsings>
+        <LangVersion>preview</LangVersion>
+        <!-- 注意：不要在这里改 AssemblyName。
+             输出文件名（PML 2.exe / PML 2）由发布布局暂存步骤重命名，
+             避免带空格的程序集名影响 AOT 与单文件打包。 -->
+        <AssemblyName>PML2.Launcher</AssemblyName>
+        <RootNamespace>PML2.Launcher</RootNamespace>
+        <!-- 启动器必须能在任何机器上直接跑，因此 SelfContained 且不做 AOT：
+             AOT 会把 NativeAOT 运行时一并编进来，体积反而比 self-contained JIT 更大。
+
+             以「单文件」发布是关键：安装根目录只保留一个 PML 2.exe，
+             否则 self-contained 的数百个 *.dll 会堆在根目录，抵消布局整洁的意义。
+             启动器只依赖 BCL，单文件自解压的开销可忽略。 -->
+        <SelfContained>true</SelfContained>
+        <PublishAot>false</PublishAot>
+        <PublishTrimmed>true</PublishTrimmed>
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <UseAppHost>true</UseAppHost>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Shared\VersionResolver.cs" Link="VersionResolver.cs" />
+    </ItemGroup>
+
+</Project>

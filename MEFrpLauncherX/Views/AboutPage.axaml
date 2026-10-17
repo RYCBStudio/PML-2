@@ -294,6 +294,10 @@
                         Description="{x:Static languages:Languages.Text_About_ToolBox_ClearCache_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="ClearCache" />
                     <controls1:FASettingsExpanderItem
+                        Content="数据迁移向导"
+                        Description="从旧版单层目录结构迁移到 26.5 的「vXXX + data」布局"
+                        ActionIconSource="ChevronRight" IsClickEnabled="True" Click="RunMigrationWizard" />
+                    <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder}"
                         Description="{x:Static languages:Languages.Text_About_ToolBox_OpenLogsFolder_Description}"
                         ActionIconSource="ChevronRight" IsClickEnabled="True" Click="OpenLogsFolder" />

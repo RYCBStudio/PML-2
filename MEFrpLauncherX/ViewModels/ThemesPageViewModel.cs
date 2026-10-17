@@ -192,8 +192,7 @@ public class ThemesPageViewModel : ViewModelBase
             },
             Title = Languages.Text_Themes_ImportThemeTitle,
             SuggestedStartLocation =
-                await MainWindow.Instance.StorageProvider.TryGetFolderFromPathAsync(Path.Combine(Core.App.StartupPath,
-                    "Config", "Themes"))
+                await MainWindow.Instance.StorageProvider.TryGetFolderFromPathAsync(Core.AppPaths.ThemesDirectory)
         });
         if (res.Count <= 0)
         {
@@ -208,7 +207,7 @@ public class ThemesPageViewModel : ViewModelBase
             MainWindowViewModel.Instance.AppMessage = string.Format(Languages.Text_Themes_ImportingThemeFormat, storageFile.Name);
             MainWindowViewModel.Instance.Progress = cnt;
             PMLAHelper.UnpackPmla(storageFile.TryGetLocalPath(),
-                Path.Combine(Core.App.StartupPath, "Config", "Themes",
+                Path.Combine(Core.AppPaths.ThemesDirectory,
                     Path.GetFileNameWithoutExtension(storageFile.Name)));
             if (i == total - 1)
             {
@@ -294,7 +293,7 @@ public class ThemesPageViewModel : ViewModelBase
         IsDownloading = true;
         try
         {
-            var themesDir = Path.Combine(Core.App.StartupPath, "Config", "Themes");
+            var themesDir = Core.AppPaths.ThemesDirectory;
             if (!Directory.Exists(themesDir))
             {
                 Directory.CreateDirectory(themesDir);
@@ -357,7 +356,7 @@ public class ThemesPageViewModel : ViewModelBase
             {
             })
         };
-        var path = Path.Combine(Core.App.StartupPath, "Config", "Themes Output");
+        var path = Path.Combine(Core.AppPaths.ConfigDirectory, "Themes Output");
         var td = new FATaskDialog
         {
             Title = Languages.Text_Themes_PackagingTheme,
@@ -417,7 +416,7 @@ public class ThemesPageViewModel : ViewModelBase
 
         if (result != ButtonResult.Yes) return;
 
-        var selectedPath = Path.Combine(Core.App.StartupPath, "Config", "Themes", "selected");
+        var selectedPath = Core.AppPaths.SelectedThemeFile;
         try
         {
             if (File.Exists(selectedPath))

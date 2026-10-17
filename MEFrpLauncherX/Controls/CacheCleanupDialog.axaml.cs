@@ -71,8 +71,8 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
     {
         var (cacheSize, logsSize) = await Task.Run(() =>
         (
-            ToolboxService.GetDirectorySize(Path.Combine(Core.App.StartupPath, "Cache")),
-            ToolboxService.GetDirectorySize(Path.Combine(Core.App.StartupPath, "Logs"))
+            ToolboxService.GetDirectorySize(Core.AppPaths.CacheDirectory),
+            ToolboxService.GetDirectorySize(Core.AppPaths.LogsDirectory)
         ));
         CacheSizeText = ToolboxService.FormatFileSize(cacheSize);
         LogsSizeText = ToolboxService.FormatFileSize(logsSize);
@@ -95,8 +95,8 @@ public partial class CacheCleanupDialog : UserControl, INotifyPropertyChanged
             var span = days.HasValue ? TimeSpan.FromDays(days.Value) : TimeSpan.MaxValue;
             var (deleted, freed) = await Task.Run(() =>
             {
-                var cache = ToolboxService.CleanOldFiles(Path.Combine(Core.App.StartupPath, "Cache"), span);
-                var logs = ToolboxService.CleanOldFiles(Path.Combine(Core.App.StartupPath, "Logs"), span);
+                var cache = ToolboxService.CleanOldFiles(Core.AppPaths.CacheDirectory, span);
+                var logs = ToolboxService.CleanOldFiles(Core.AppPaths.LogsDirectory, span);
                 return (cache.DeletedCount + logs.DeletedCount, cache.FreedBytes + logs.FreedBytes);
             });
             await RefreshSizesAsync();

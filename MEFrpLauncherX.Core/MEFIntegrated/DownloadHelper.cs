@@ -141,8 +141,8 @@ public partial class DownloadHelper
             if (downloader.IsCancelled || isCancelled)
             {
                 File.Delete(OperatingSystem.IsWindows()
-                    ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp")
-                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.tar.tmp"));
+                    ? Path.Combine(AppPaths.RunDirectory, "mefrpc.exe.tmp")
+                    : Path.Combine(AppPaths.RunDirectory, "mefrpc.tar.tmp"));
                 throw new OperationCanceledException();
             }
 
@@ -284,7 +284,7 @@ public partial class DownloadHelper
                     App.CurrentLogger.Log("正在删除旧版MEFrpClient");
                     try
                     {
-                        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe"));
+                        File.Delete(AppPaths.MefrpcFile);
                     }
                     catch
                     {
@@ -297,8 +297,8 @@ public partial class DownloadHelper
                         GetDownloadUrl(platform.Platform, RuntimeInformation.OSArchitecture == Architecture.Arm64),
                         !ConfigManager.CurrentConfig.DownloadSource.Equals("TPCA"
 , StringComparison.CurrentCultureIgnoreCase)
-                            ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp")
-                            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"),
+                            ? Path.Combine(AppPaths.RunDirectory, "mefrpc.zip.tmp")
+                            : Path.Combine(AppPaths.RunDirectory, "mefrpc.exe.tmp"),
                         cancellationToken);
                     App.CurrentLogger.Log("已下载新版MEFrpClient");
                     App.CurrentLogger.Log("正在解压新版MEFrpClient");
@@ -308,18 +308,18 @@ public partial class DownloadHelper
                         throw new OperationCanceledException();
                     }
 
-                    if (Path.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp")))
+                    if (Path.Exists(Path.Combine(AppPaths.RunDirectory, "mefrpc.zip.tmp")))
                     {
                         await ZipFile.ExtractToDirectoryAsync(
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp"),
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), true, cancellationToken);
-                        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.zip.tmp"));
+                            Path.Combine(AppPaths.RunDirectory, "mefrpc.zip.tmp"),
+                            AppPaths.RunDirectory, true, cancellationToken);
+                        File.Delete(Path.Combine(AppPaths.RunDirectory, "mefrpc.zip.tmp"));
                         File.Move(
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin",
+                            Path.Combine(AppPaths.RunDirectory,
                                 $"mefrpc_windows_amd64_{App.MEFrpVersion}",
                                 "mefrpc.exe"),
-                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"), true);
-                        Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin",
+                            Path.Combine(AppPaths.RunDirectory, "mefrpc.exe.tmp"), true);
+                        Directory.Delete(Path.Combine(AppPaths.RunDirectory,
                             $"mefrpc_windows_amd64_{App.MEFrpVersion}"), true);
                     }
 
@@ -350,7 +350,7 @@ public partial class DownloadHelper
                             sha1 = string.Empty,
                             sha256 = string.Empty,
                         });
-                    if (!ValidateFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.exe.tmp"),
+                    if (!ValidateFile(Path.Combine(AppPaths.RunDirectory, "mefrpc.exe.tmp"),
                             securityInfo?.md5, securityInfo?.sha256, securityInfo?.sha1))
                     {
                         return true;
@@ -358,12 +358,8 @@ public partial class DownloadHelper
 */
                     // All done, auto close the dialog here
                     td.Content = Languages.Languages.Text_Download_InstallingClient;
-                    new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.exe.tmp")).MoveTo(
-                        Path.Combine(AppContext.BaseDirectory, "bin",
-                            "mefrpc.exe.tmp"), true);
-                    File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.exe.tmp"));
+                    // 26.5.0 修复：原先误写成 MoveTo(x, x) 自我移动后立刻 Delete，等于把刚下好的客户端删掉。
+                    AppPaths.InstallMefrpc(App.CurrentLogger);
                     App.CurrentLogger.Log("已安装新版MEFrpClient");
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -394,7 +390,7 @@ public partial class DownloadHelper
 
                     await downloader.DownloadFileTaskAsync(
                         GetDownloadUrl(platform.Platform, RuntimeInformation.OSArchitecture == Architecture.Arm64),
-                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.tar.tmp"),
+                        Path.Combine(AppPaths.RunDirectory, "mefrpc.tar.tmp"),
                         cancellationToken);
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -421,17 +417,12 @@ public partial class DownloadHelper
                             sha1 = string.Empty,
                             sha256 = string.Empty,
                         });
-                    if (ValidateFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.tar.tmp"),
+                    if (ValidateFile(Path.Combine(AppPaths.RunDirectory, "mefrpc.tar.tmp"),
                             securityInfo?.md5, securityInfo?.sha256, securityInfo?.sha1))
                         // All done, auto close the dialog here
                     {
                     */
-                    new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.tar.tmp")).MoveTo(
-                        Path.Combine(AppContext.BaseDirectory, "bin",
-                            "mefrpc.tar"), true);
-                    File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.tar.tmp"));
+                    AppPaths.InstallMefrpc(App.CurrentLogger);
                     Dispatcher.UIThread.Post(() =>
                     {
                         td.Hide(FATaskDialogStandardResult.OK);
@@ -470,7 +461,7 @@ public partial class DownloadHelper
 
                     await downloader.DownloadFileTaskAsync(
                         GetDownloadUrl(PlatformID.MacOSX, RuntimeInformation.OSArchitecture == Architecture.Arm64),
-                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.tar.tmp"),
+                        Path.Combine(AppPaths.RunDirectory, "mefrpc.tar.tmp"),
                         cancellationToken);
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -497,17 +488,12 @@ public partial class DownloadHelper
                             sha1 = string.Empty,
                             sha256 = string.Empty,
                         });
-                    if (ValidateFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "mefrpc.tar.tmp"),
+                    if (ValidateFile(Path.Combine(AppPaths.RunDirectory, "mefrpc.tar.tmp"),
                             securityInfo?.md5, securityInfo?.sha256, securityInfo?.sha1))
                         // All done, auto close the dialog here
                     {
                     */
-                    new FileInfo(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.tar.tmp")).MoveTo(
-                        Path.Combine(AppContext.BaseDirectory, "bin",
-                            "mefrpc.tar"), true);
-                    File.Delete(Path.Combine(AppContext.BaseDirectory, "bin",
-                        "mefrpc.tar.tmp"));
+                    AppPaths.InstallMefrpc(App.CurrentLogger);
                     Dispatcher.UIThread.Post(() =>
                     {
                         td.Hide(FATaskDialogStandardResult.OK);

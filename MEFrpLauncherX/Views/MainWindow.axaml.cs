@@ -53,32 +53,17 @@ public partial class MainWindow : FAAppWindow, IDisposable
     {
         #region 透明度设置与渲染优化
 
-        WindowTransparencyLevel preferredTLH;
-        if (File.Exists(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")))
+        // 26.5.0：原先这里会读取「preference.update」把更新前的材质还原回来
+        // （配套「保留配置」设置项）。分离式布局下 data\Config\Settings.json 升级时不被覆盖，
+        // 材质自然延续，因此不再需要该文件；这里直接按当前配置决定窗口透明度。
+        var preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
         {
-            var preference = File.ReadAllText(Path.Combine(Core.App.StartupPath, "Cache", "preference.update")).Trim();
-            ConfigManager.CurrentConfig.Skin = preference;
-            File.Delete(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"));
-            preferredTLH = preference.ToUpper(0) switch
-            {
-                "Mica" => WindowTransparencyLevel.Mica,
-                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-                "Blur" => WindowTransparencyLevel.Blur,
-                "Transparent" => WindowTransparencyLevel.Transparent,
-                _ => WindowTransparencyLevel.None
-            };
-        }
-        else
-        {
-            preferredTLH = ConfigManager.CurrentConfig.Skin.ToUpper(0) switch
-            {
-                "Mica" => WindowTransparencyLevel.Mica,
-                "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
-                "Blur" => WindowTransparencyLevel.Blur,
-                "Transparent" => WindowTransparencyLevel.Transparent,
-                _ => WindowTransparencyLevel.None
-            };
-        }
+            "Mica" => WindowTransparencyLevel.Mica,
+            "AcrylicBlur" or "Acrylic" => WindowTransparencyLevel.AcrylicBlur,
+            "Blur" => WindowTransparencyLevel.Blur,
+            "Transparent" => WindowTransparencyLevel.Transparent,
+            _ => WindowTransparencyLevel.None
+        };
 
         TransparencyLevelHint = [preferredTLH];
 
@@ -548,9 +533,27 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         await CheckPolicy();
 
+        // 26.5.0：首次从旧版单层布局升级时自动弹出数据迁移向导。
+        // 放在隐私政策确认之后、隧道自动恢复之前；标记「已询问」保证只打扰一次，
+        // 用户日后仍可从「关于 → 工具箱 → 数据迁移向导」重新打开。
+        if (Controls.MigrationWizard.ShouldPromptOnStartup())
+        {
+            Controls.MigrationWizard.MarkPrompted();
+            await new FluentAvalonia.UI.Controls.FAContentDialog
+            {
+                Title = "数据迁移向导",
+                Content = new Controls.MigrationWizard(),
+                CloseButtonText = Languages.Text_Global_Close
+            }.ShowAsync();
+        }
+
         // 26.4：应用升级后首次启动展示「本次更新内容」（版本未变化时不弹出）。
         // 放在隐私政策确认之后、隧道自动恢复之前，且异常内部吞掉，不影响启动流程。
         await WhatsNewWindow.ShowIfNeededAsync(this);
+
+        // 26.5.0：安装根里累积了多余版本目录（历次升级保留的回滚点）时提醒一次。
+        // 用户可在「更新 → 旧版本目录」里关闭；内部已做 7 天 + 体积增长双重节流。
+        await Controls.VersionCleanupReminder.ShowIfNeededAsync();
 
         // 触发插件事件：应用启动
         await PluginService.Instance.TriggerAsync("app.startup", new Dictionary<string, object>
@@ -563,7 +566,7 @@ public partial class MainWindow : FAAppWindow, IDisposable
         _vm.IsBusy = false;
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
-        var startupFile = Path.Combine(Core.App.StartupPath, "Cache", "startup.json");
+        var startupFile = Path.Combine(Core.AppPaths.CacheDirectory, "startup.json");
         // 26.4 修复：只认「刚刚写入」的临时文件。
         // 原判据要求文件时间落在「1 分钟前 ~ 2 分钟前」，刚写入的文件永远不满足，
         // 导致 pml2:// 链接启动隧道从未生效。

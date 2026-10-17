@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Downloader;
+using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
@@ -49,12 +55,6 @@ public class UpdatePageViewModel : ViewModelBase
             "md" => 2,
             _ => 0
         };
-        TargetCompileType = ConfigManager.CurrentConfig.UpdateSettings.CompileType switch
-        {
-            "AOT" => 0,
-            "Common" => 1,
-            _ => Core.App.ReleaseFlag == "AOT" ? 0 : 1
-        };
         DownloadSource =
             GitHubUpdateSources.Normalize(ConfigManager.CurrentConfig.UpdateSettings.DownloadSource) switch
             {
@@ -67,6 +67,15 @@ public class UpdatePageViewModel : ViewModelBase
         CheckUpdateCommand = ReactiveCommand.Create(CheckUpdate);
         RetryDownloadCommand = ReactiveCommand.Create(RetryDownload);
         DownloadUpdateCommand = ReactiveCommand.Create(DownloadUpdate);
+
+        // 26.5.0：旧版本目录策略与版本目录占用巡检
+        KeepOldVersionChoice = ConfigManager.CurrentConfig.UpdateSettings.KeepOldVersion switch
+        {
+            UpdateSettings.UpdateOldVersionValues.Keep => UpdateSettings.UpdateOldVersionValues.Keep,
+            UpdateSettings.UpdateOldVersionValues.Discard => UpdateSettings.UpdateOldVersionValues.Discard,
+            _ => UpdateSettings.UpdateOldVersionValues.Ask
+        };
+        RefreshVersionStorage();
     }
 
     public bool HasNewVersion
@@ -148,6 +157,88 @@ public class UpdatePageViewModel : ViewModelBase
     } = App.Codename;
 
     /// <summary>
+    ///     「旧版本目录」下拉的当前选中项（对应 <see cref="UpdateSettings.KeepOldVersion" />）。
+    ///     供设置页与升级前的询问弹窗共用，避免两处逻辑漂移。
+    /// </summary>
+    public string KeepOldVersionChoice { get; private set; }
+
+    /// <summary>
+    ///     是否有可清理的旧版本目录（不含当前版本，也不含回滚点）。
+    ///     仅版本化布局下可能为 true；开发态与旧版单层布局恒为 false。
+    /// </summary>
+    public bool HasRemovableVersions
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    /// <summary>版本目录占用情况的可读摘要（供设置页展示）。</summary>
+    public string VersionStorageSummary
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
+
+    /// <summary>设置「旧版本目录」策略。</summary>
+    public void SetKeepOldVersion(string value)
+    {
+        KeepOldVersionChoice = value;
+        ConfigManager.UpdateConfig(cfg => cfg.UpdateSettings.KeepOldVersion = value);
+    }
+
+    /// <summary>
+    ///     重新巡检版本目录占用，刷新「可清理」相关属性。
+    ///     <para>构造时调用一次即可；删除动作后需再次调用以刷新摘要。</para>
+    /// </summary>
+    public void RefreshVersionStorage()
+    {
+        try
+        {
+            var inspection = VersionCleanupService.Inspect();
+
+            HasRemovableVersions = inspection.Removable.Count > 0;
+            VersionStorageSummary = HasRemovableVersions
+                ? string.Format(
+                    Languages.Text_Update_VersionStorageSummary,
+                    inspection.Entries.Count,
+                    ToolboxService.FormatFileSize(inspection.TotalSizeBytes),
+                    inspection.Removable.Count,
+                    ToolboxService.FormatFileSize(inspection.RemovableSizeBytes))
+                : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "统计版本目录占用失败");
+        }
+    }
+
+    /// <summary>
+    ///     删除全部可清理的旧版本目录（不含当前版本与回滚点）。
+    /// </summary>
+    /// <returns>(删除数量, 失败数量, 回收字节数)</returns>
+    public (int Removed, int Failed, long Freed) CleanupOldVersions()
+    {
+        var result = VersionCleanupService.RemoveAllRemovable();
+        RefreshVersionStorage();
+        return result;
+    }
+
+    /// <summary>
+    ///     依据「旧版本目录」策略产出本次升级应传给安装器的清理开关。
+    ///     <para>
+    ///         对应关系：<c>Keep</c> → <c>/nocleanup</c>（保留回滚点），
+    ///         <c>Discard</c> → <c>/cleanup</c>（安装后删除全部历史版本目录）。
+    ///         两者都不需要传参（安装器默认即保留回滚点）。
+    ///     </para>
+    /// </summary>
+    public string BuildVersionCleanupArgument() => KeepOldVersionChoice switch
+    {
+        UpdateSettings.UpdateOldVersionValues.Keep => " /nocleanup",
+        UpdateSettings.UpdateOldVersionValues.Discard => " /cleanup",
+        _ => string.Empty
+    };
+
+    /// <summary>
     ///     0 - 稳定通道
     ///     1 - 预览通道
     /// </summary>
@@ -163,16 +254,6 @@ public class UpdatePageViewModel : ViewModelBase
     ///     2 - 手动下载
     /// </summary>
     public int UpdateMethod
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    /// <summary>
-    ///     0 - AOT（预编译）
-    ///     1 - Common（常规）
-    /// </summary>
-    public int TargetCompileType
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -518,7 +599,7 @@ public class UpdatePageViewModel : ViewModelBase
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
         downloader.DownloadFileCompleted += DownloaderOnDownloadFileCompleted;
 
-        var savePath = Path.Combine(Core.App.StartupPath, "Cache", tempFileName);
+        var savePath = Path.Combine(Core.AppPaths.CacheDirectory, tempFileName);
 
         // ===== 3.5 下载（失败不再静默：明确文案 + 重试入口） =====
         try
@@ -568,36 +649,30 @@ public class UpdatePageViewModel : ViewModelBase
             }
         }
 
-        try
-        {
-            if (ConfigManager.CurrentConfig.UpdateSettings.KeepProfile)
-            {
-                File.Copy(ConfigManager.ConfigPath, ConfigManager.BackupConfigPath, true);
-                await File.WriteAllTextAsync(Path.Combine(Core.App.StartupPath, "Cache", "preference.update"),
-                    $"{ConfigManager.CurrentConfig.Skin}");
-            }
-        }
-        catch
-        {
-            Icon = Icons.ERROR;
-            Status = Languages.Text_Update_BackupConfigFailed;
-        }
-
+        // 26.5.0（分离式布局）：配置备份 / 还原整体移除。
+        // 旧布局下更新会原地覆盖程序目录，配置可能被新版本重写，因此才需要
+        // 「先备份 Settings.json + 记住材质，启动时再合并回来」（见 ConfigManager.LoadConfig
+        // 中对 BackupConfigPath 的处理）。现在代码在 vXXX\、配置在 data\，
+        // 升级只新增版本目录、data\ 全程不被覆盖 —— 备份与还原都成了无意义的历史包袱。
+        //
         // 仅 Windows 执行自动安装
         if (OperatingSystem.IsWindows())
         {
             Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
-            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
 
-            // 当当前运行时编译类型与目标编译类型一致时，传入 /nocleanup 参数
-            var currentType = Core.App.ReleaseFlag;
-            var targetType = ConfigManager.CurrentConfig.UpdateSettings.CompileType;
-            var sameType = string.Equals(currentType, targetType, StringComparison.OrdinalIgnoreCase);
-            var installArgs = sameType ? "/silent /sp- /nocancel /nocleanup" : "/silent /sp- /nocancel";
-            installArgs += " /nodownload";
+            // 26.5.0（分离式布局）：安装器不再需要「卸载旧版」来腾位置，也不会原地覆盖 ——
+            // 它只往安装根新增一个 vXXX\ 版本目录并改写 launcher.json，data\ 原样保留。
+            // 因此不再需要按「编译类型是否相同」传 /nocleanup（那是旧布局的残留参数），
+            // 也不需要 /nodownload（离线安装包根本没有下载步骤）。
+            // 旧版本目录的去留由用户决定：Ask 先问，Keep/Discard 直接沿用设置。
+            var cleanupArg = await ResolveVersionCleanupArgumentAsync();
 
-            Core.App.CurrentLogger?.Log($"更新安装参数: 当前类型={currentType}, 目标类型={targetType}, 参数={installArgs}",
-                module: EnumLogModule.Update);
+            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info,
+                MessageBoxIcon.Info);
+
+            var installArgs = "/silent /sp- /nocancel" + cleanupArg;
+
+            Core.App.CurrentLogger?.Log($"更新安装参数: {installArgs}", module: EnumLogModule.Update);
 
             Process.Start(
                 new ProcessStartInfo(savePath)
@@ -607,6 +682,124 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
+    ///     依据「旧版本目录」策略产出本次升级的安装器参数（26.5.0）。
+    ///     <para>
+    ///         策略为 <c>Ask</c> 时弹窗让用户在「保留（可回滚）」与「删除（省空间）」之间选择；
+    ///         仅当确实存在可清理的旧版本目录时才询问 —— 没有旧目录时问了也是废话。
+    ///         选择结果会写回设置，下次升级不再重复询问。
+    ///     </para>
+    /// </summary>
+    /// <returns>传给安装器的参数字符串（可能为空串）</returns>
+    private async Task<string> ResolveVersionCleanupArgumentAsync()
+    {
+        // 非版本化布局（开发态 / ≤26.4）没有版本目录概念，安装器参数无意义
+        if (!Core.AppPaths.IsVersionedLayout)
+        {
+            return string.Empty;
+        }
+
+        if (KeepOldVersionChoice == UpdateSettings.UpdateOldVersionValues.Ask)
+        {
+            var inspection = VersionCleanupService.Inspect();
+            if (inspection.Removable.Count == 0)
+            {
+                // 本次升级不会产生历史目录（首个版本化安装 / 上次已清理干净）
+                return " /nocleanup";
+            }
+
+            var keep = await AskKeepOldVersionAsync(inspection);
+            if (keep is null)
+            {
+                // 用户关闭了弹窗：按安装器默认值（保留回滚点）处理
+                return " /nocleanup";
+            }
+
+            KeepOldVersionChoice = keep.Value ? UpdateSettings.UpdateOldVersionValues.Keep
+                : UpdateSettings.UpdateOldVersionValues.Discard;
+            ConfigManager.UpdateConfig(cfg => cfg.UpdateSettings.KeepOldVersion = KeepOldVersionChoice);
+        }
+
+        return BuildVersionCleanupArgument();
+    }
+
+    /// <summary>
+    ///     询问用户升级后如何处理旧版本目录。
+    /// </summary>
+    /// <returns>true 保留、false 删除、null 用户取消（按默认处理）</returns>
+    private static async Task<bool?> AskKeepOldVersionAsync(VersionCleanupService.Inspection inspection)
+    {
+        // 单个旧版本目录的体积 —— 用它换算「保留」与「删除」各自的代价
+        var singleSize = ToolboxService.FormatFileSize(
+            inspection.Removable.Count > 0 ? inspection.Removable[0].SizeBytes : 0);
+
+        var content = new StackPanel
+        {
+            Spacing = 10,
+            Width = 380,
+            Children =
+            {
+                new TextBlock
+                {
+                    Text = string.Format(Languages.Text_Update_AskKeepOldVersion_Message,
+                        Core.App.Version,
+                        string.Join("、", inspection.Removable.Select(e => e.FolderName))),
+                    TextWrapping = TextWrapping.Wrap
+                },
+                BuildChoiceCard(Languages.Text_Update_AskKeepOldVersion_Keep,
+                    string.Format(Languages.Text_Update_AskKeepOldVersionDetail_Keep, singleSize)),
+                BuildChoiceCard(Languages.Text_Update_AskKeepOldVersion_Discard,
+                    string.Format(Languages.Text_Update_AskKeepOldVersionDetail_Discard, singleSize))
+            }
+        };
+
+        // 用 Primary / Secondary 两个标准按钮承载「保留 / 删除」，
+        // 与仓库内既有对话框（如 DnsAccountsWindowViewModel）保持一致，
+        // 避免为两个固定选项自绘按钮。
+        var dialog = new FAContentDialog
+        {
+            Title = Languages.Text_Update_AskKeepOldVersion_Title,
+            Content = content,
+            PrimaryButtonText = Languages.Text_Update_AskKeepOldVersion_Keep,
+            SecondaryButtonText = Languages.Text_Update_AskKeepOldVersion_Discard,
+            CloseButtonText = Languages.Text_Global_Cancel,
+            DefaultButton = FAContentDialogButton.Primary
+        };
+
+        var result = await dialog.ShowAsync();
+
+        return result switch
+        {
+            FAContentDialogResult.Primary => true,
+            FAContentDialogResult.Secondary => false,
+            _ => null
+        };
+    }
+
+    /// <summary>构造「选项卡片」（标题 + 说明），用于询问弹窗。</summary>
+    private static Border BuildChoiceCard(string title, string description) => new()
+    {
+        Padding = new Thickness(12),
+        CornerRadius = new CornerRadius(6),
+        BorderThickness = new Thickness(1),
+        BorderBrush = new Avalonia.Media.SolidColorBrush(Avalonia.Media.Color.Parse("#33808080")),
+        Child = new StackPanel
+        {
+            Spacing = 2,
+            Children =
+            {
+                new TextBlock { Text = title, FontWeight = FontWeight.SemiBold },
+                new TextBlock
+                {
+                    Text = description,
+                    TextWrapping = TextWrapping.Wrap,
+                    Opacity = 0.8,
+                    Classes = { "CaptionTextBlock" }
+                }
+            }
+        }
+    };
+
+    /// <summary>
     ///     按平台拼接 TPCA（自建 Alist CDN）线路的更新包下载地址。
     /// </summary>
     private static string BuildAlistDownloadUrl(PlatformID platform, string latestVersion)
@@ -614,7 +807,9 @@ public class UpdatePageViewModel : ViewModelBase
         return platform switch
         {
             PlatformID.Win32NT =>
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(ConfigManager.CurrentConfig.UpdateSettings.CompileType == "AOT" ? "%20AOT" : "")}.exe",
+                // 26.5.0：编译类型固定为当前运行时（AOT 包名带 "%20AOT" 后缀），
+                // 不再取用户配置 —— 否则可能下到另一种编译产物。
+                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(Core.App.ReleaseFlag == "AOT" ? "%20AOT" : "")}.exe",
             PlatformID.MacOSX =>
                 $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{latestVersion}-macos-x64.dmg",
             PlatformID.Unix =>
@@ -683,11 +878,14 @@ public class UpdatePageViewModel : ViewModelBase
             return null;
         }
 
-        var asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType, excludedNames);
+        // 26.5.0：编译类型不再是用户可选项 —— 更新包始终与当前运行时一致，
+        // 否则可能下载到另一种编译产物（AOT ↔ Common 无法原地替换运行）。
+        var asset = GitHubReleaseService.SelectAsset(release, LatestVersion, Core.App.ReleaseFlag,
+            excludedNames);
         if (asset is null && excludedNames.Count > 0)
         {
             // 排除列表把候选资产筛空时放宽限制再选一次（保证「重试」仍有机会成功）
-            asset = GitHubReleaseService.SelectAsset(release, LatestVersion, cfg.CompileType);
+            asset = GitHubReleaseService.SelectAsset(release, LatestVersion, Core.App.ReleaseFlag);
         }
 
         return asset;
@@ -778,7 +976,7 @@ public class UpdatePageViewModel : ViewModelBase
         await downloader.DownloadFileTaskAsync(
             $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/" +
             $"{LatestVersion}/pml2_setup%20{LatestVersion}.exe",
-            Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
+            Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"));
         Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
@@ -788,7 +986,7 @@ public class UpdatePageViewModel : ViewModelBase
         {
             if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info, ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
-                OpenFileInExplorer(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"));
+                OpenFileInExplorer(Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"));
                 return;
             }
         }
@@ -796,7 +994,7 @@ public class UpdatePageViewModel : ViewModelBase
         Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
         await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
         Process.Start(
-            new ProcessStartInfo(Path.Combine(Core.App.StartupPath, "Cache", $"update_tmp_{LatestVersion}.exe"))
+                new ProcessStartInfo(Path.Combine(Core.AppPaths.CacheDirectory, $"update_tmp_{LatestVersion}.exe"))
                 { UseShellExecute = true, Arguments = "/silent /sp- /nocancel" });
         App.Desktop.Shutdown();
     }
