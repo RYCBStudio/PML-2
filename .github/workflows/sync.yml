@@ -82,7 +82,6 @@ jobs:
           import os, re, sys, time
           import requests
           from requests.adapters import HTTPAdapter
-          from urllib3.util.retry import Retry
           import urllib.parse
 
           url = os.environ['OPENLIST_URL']
@@ -141,16 +140,11 @@ jobs:
               sys.exit(1)
           print('✅ Login successful.', flush=True)
 
-          # ---- 2. 配置带 retry 的 session ----
+          # ---- 2. 配置 session ----
+          # 上传失败只由外层循环重试，避免 urllib3 隐式重试导致大文件重复传输。
           session = requests.Session()
-          adapter = HTTPAdapter(max_retries=Retry(
-              total=3,
-              backoff_factor=5,
-              status_forcelist=[500, 502, 503, 504],
-              allowed_methods=['PUT', 'POST'],
-          ))
-          session.mount('https://', adapter)
-          session.mount('http://', adapter)
+          session.mount('https://', HTTPAdapter(max_retries=0))
+          session.mount('http://', HTTPAdapter(max_retries=0))
 
           # ---- 3. 逐个上传 ----
           files = sorted(
@@ -175,36 +169,53 @@ jobs:
               print(f'\n📤 Uploading: {restored} ({size_mb:.2f} MB)', flush=True)
               print(f'   → Target: {target}', flush=True)
 
-              MAX_ATTEMPTS = 3
+              MAX_ATTEMPTS = 4
               uploaded = False
               for attempt in range(1, MAX_ATTEMPTS + 1):
+                  started = time.monotonic()
                   try:
-                      with open(filepath, 'rb') as f:
-                          file_data = f.read()
-                      resp = session.put(
-                          f'{url}/api/fs/put',
-                          data=file_data,
-                          headers={
-                              'Authorization': token,
-                              'File-Path': encoded_target,
-                              'Content-Type': 'application/octet-stream',
-                              'Overwrite': 'true',
-                              'As-Task': 'true',
-                          },
-                          timeout=(30, 900),
-                      )
+                      # 以文件流上传，避免将整个大型安装包一次性读入内存。
+                      with open(filepath, 'rb') as file_stream:
+                          resp = session.put(
+                              f'{url}/api/fs/put',
+                              data=file_stream,
+                              headers={
+                                  'Authorization': token,
+                                  'File-Path': encoded_target,
+                                  'Content-Type': 'application/octet-stream',
+                                  'Content-Length': str(os.path.getsize(filepath)),
+                                  'Overwrite': 'true',
+                                  'As-Task': 'true',
+                              },
+                              timeout=(30, 900),
+                          )
+                      elapsed = max(time.monotonic() - started, 0.001)
                       result = resp.json()
                       if result.get('code') == 200:
-                          print(f'✅ Done (attempt {attempt})', flush=True)
+                          speed_mib = size_mb / elapsed
+                          print(
+                              f'✅ Done (attempt {attempt}; {elapsed:.1f}s; '
+                              f'{speed_mib:.2f} MiB/s)',
+                              flush=True,
+                          )
                           uploaded = True
                           break
                       else:
-                          print(f'⚠️ Attempt {attempt} OpenList error: {result}', flush=True)
+                          print(
+                              f'⚠️ Attempt {attempt} OpenList error after {elapsed:.1f}s: '
+                              f'{result}',
+                              flush=True,
+                          )
                   except Exception as e:
-                      print(f'⚠️ Attempt {attempt} failed: {type(e).__name__}: {e}', flush=True)
+                      elapsed = time.monotonic() - started
+                      print(
+                          f'⚠️ Attempt {attempt} failed after {elapsed:.1f}s: '
+                          f'{type(e).__name__}: {e}',
+                          flush=True,
+                      )
 
                   if attempt < MAX_ATTEMPTS:
-                      wait = 5 * attempt
+                      wait = min(5 * attempt, 20)
                       print(f'   Retrying in {wait}s...', flush=True)
                       time.sleep(wait)
 
