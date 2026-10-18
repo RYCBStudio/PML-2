@@ -27,7 +27,7 @@ PUBLISH_DIR="${1:?用法: stage-layout.sh <publish-dir> <launcher-dir> <out-dir>
 LAUNCHER_DIR="${2:?缺少启动器 publish 目录}"
 OUT_DIR="${3:?缺少输出目录}"
 VERSION="${4:-}"
-MODE="${5:-aot}"
+LAYOUT_MODE="${5:-aot}"
 
 die() { echo "错误: $*" >&2; exit 1; }
 
@@ -45,7 +45,7 @@ case "$VERSION" in
   *)  VERSION_DIR="v$VERSION" ;;
 esac
 
-echo "==> 暂存版本目录: $VERSION_DIR（模式 $MODE）"
+echo "==> 暂存版本目录: $VERSION_DIR（模式 $LAYOUT_MODE）"
 
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
@@ -105,7 +105,7 @@ cat > "$OUT_DIR/launcher.json" <<EOF
   "schema": 1,
   "current": "$VERSION_DIR",
   "previous": "",
-  "aot": $([[ "$MODE" == "aot" ]] && echo true || echo false),
+  "aot": $([[ "$LAYOUT_MODE" == "aot" ]] && echo true || echo false),
   "updatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
@@ -117,4 +117,4 @@ echo "    版本目录  : $VERSION_DIR"
 echo "    数据目录  : data/"
 echo
 echo "目录结构:"
-find "$OUT_DIR" -maxdepth 2 -not -path '*/v*/*' | sed "s|$OUT_DIR|<安装目录>|" | sort | head -30
+find "$OUT_DIR" -maxdepth 2 ! -path '*/v*/*' | sed "s|$OUT_DIR|<安装目录>|" | sort | head -30
