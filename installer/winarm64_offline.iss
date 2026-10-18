@@ -110,9 +110,42 @@ Type: files; Name: "{app}\{#MyAppLauncher}"
 Type: files; Name: "{app}\{#LauncherManifest}"
 
 [Code]
-; DateUtils 提供 FormatDateTime / LocalTimeToUTC —— Inno Setup 不会自动引用该单元，
-; 而 updatedAt 需要与启动器（VersionResolver）写入的 UTC 时间保持一致，故显式引入。
-uses DateUtils;
+{ Inno Setup 的 Pascal Script 没有 Delphi 的 DateUtils / FormatDateTime / LocalTimeToUTC。
+  这里直接调用 WinAPI GetSystemTime —— 它返回的就是 UTC（无需本地时区转换），
+  与启动器 VersionResolver 写入的 UTC 时间保持一致，否则排序与诊断会对不上。 }
+
+type
+  TSystemTime = record
+    wYear, wMonth, wDayOfWeek, wDay: Word;
+    wHour, wMinute, wSecond, wMilliseconds: Word;
+  end;
+
+function GetSystemTime(var lpSystemTime: TSystemTime): Boolean;
+  external 'GetSystemTime@kernel32.dll stdcall';
+
+{ 生成形如 2026-10-18T08:30:15Z 的 UTC 时间戳（秒级，无毫秒）。
+   刻意不用 Format + '%04d'：Inno Setup 的预处理器会把 % 当作 ISPP 语法，
+   在 [Code] 里写 % 会导致解析错乱。改用 IntToStr + 补零最稳妥。 }
+function PadLeftZero(V: Integer; Width: Integer): String;
+begin
+  Result := IntToStr(V);
+  while Length(Result) < Width do
+    Result := '0' + Result;
+end;
+
+function UtcNowIso8601(): String;
+var
+  ST: TSystemTime;
+begin
+  GetSystemTime(ST);
+  Result :=
+    PadLeftZero(ST.wYear, 4) + '-' +
+    PadLeftZero(ST.wMonth, 2) + '-' +
+    PadLeftZero(ST.wDay, 2) + 'T' +
+    PadLeftZero(ST.wHour, 2) + ':' +
+    PadLeftZero(ST.wMinute, 2) + ':' +
+    PadLeftZero(ST.wSecond, 2) + 'Z';
+end;
 
 var
   CleanupParam: Boolean;
@@ -135,7 +168,7 @@ end;
   且必须容忍用户手改过的文件（字段缺失 / 引号不全时按空处理，绝不让安装失败）。 }
 function ReadManifestCurrent(): String;
 var
-  Content: String;
+  Content: AnsiString;
   P, Q: Integer;
 begin
   Result := '';
@@ -186,7 +219,7 @@ var
 begin
   { updatedAt 用 UTC（末尾 Z）：与启动器 / VersionResolver 写入的 UTC 一致，
     否则排序与诊断会对不上。 }
-  UtcStamp := FormatDateTime('yyyy-mm-dd"T"hh:nn:ss', LocalTimeToUTC(Now), False) + 'Z';
+  UtcStamp := UtcNowIso8601();
 
   Content :=
     '{' + #13#10 +
@@ -220,7 +253,7 @@ begin
     try
       repeat
         Entry := FindRec.Name;
-        if (FindRec.Attr and FILE_ATTRIBUTE_DIRECTORY <> 0) and
+        if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and
            IsVersionDirName(Entry) and
            (Entry <> LayoutDirName) and
            ((not KeepPrevious) or (Entry <> PreviousCurrent)) then
@@ -246,9 +279,9 @@ procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then
   begin
-    { 必须等到 ssInstall 才读旧槽位：此刻 {app} 才是用户最终确认的安装目录，
-      （InitializeWizard 阶段 {app} 仍是默认值）。此时 [Files] 尚未写入，
-      launcher.json 是「上一次安装留下的」，正是我们要的 previous。 }
+    { 必须等到 ssInstall 才读旧槽位：此刻安装目录常量才指向用户最终确认的
+      路径（InitializeWizard 阶段它仍是默认值）。此时 [Files] 尚未
+      写入，launcher.json 还是「上一次安装留下的」，正是我们要的 previous。 }
     PreviousCurrent := ReadManifestCurrent();
   end
   else if CurStep = ssPostInstall then

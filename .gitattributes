@@ -1,0 +1,26 @@
+# Shell 脚本必须以 LF 结尾提交。
+# 仓库 core.autocrlf=true 会把工作区写成 CRLF，但 macOS/BSD bash 与部分工具
+# 无法容忍脚本里的 \r（Linux 的 GNU bash 能容忍，所以只在 macOS 上炸）。
+# 因此对所有 shell 脚本强制 text eol=lf，让 git 在入库与检出时都归一为 LF。
+*.sh text eol=lf
+*.bash text eol=lf
+*.command text eol=lf
+
+# Inno Setup 脚本：ISS 的 Pascal Script 对 \r 同样敏感（[Code] 段尤其），
+# 且 ISCC 官方推荐 CRLF。这里显式锁 CRLF，避免不同平台 checkout 行为漂移。
+*.iss text eol=crlf
+
+# 二进制与资源不参与换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.icns binary
+*.dll binary
+*.exe binary
+*.zip binary
+*.7z binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
