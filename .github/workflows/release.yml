@@ -107,12 +107,37 @@ jobs:
           path: |
             tools-cache/${{ matrix.rid }}/CrashDisplayer
             tools-cache/${{ matrix.rid }}/Splash
-          key: tools-${{ matrix.rid }}-${{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', '.github/workflows/release.yml') }}
+          # key 必须覆盖所有会影响这两个工具二进制的输入：工具源码（含各自的
+          # Directory.Build.props）+ 中央包版本清单（Avalonia / SkiaSharp 等版本都在
+          # Directory.Packages.props）+ 本工作流。漏掉 Directory.Packages.props 时，
+          # 升级依赖后仍会命中旧缓存，拿旧二进制去打包。
+          key: tools-${{ matrix.rid }}-${{ hashFiles('MEFrpLauncherX.CrashDisplayer/**', 'RYCB.PML2.Splash/**', 'Directory.Packages.props', '.github/workflows/release.yml') }}
           restore-keys: |
             tools-${{ matrix.rid }}-
 
+      # cache-hit 只代表「key 精确命中」，并不保证两个子目录真的在归档里。
+      # 这里按目录实际内容再判定一次：目录缺失/为空就重建，从根上消除
+      # 「缓存命中 → 少产物 → 下游 Place/Stage 报路径不存在」的连锁失败。
+      - name: Detect cached tools
+        id: tools-present
+        shell: bash
+        run: |
+          set -euo pipefail
+          for pair in "crash:CrashDisplayer" "splash:Splash"; do
+            key="${pair%%:*}"
+            name="${pair##*:}"
+            dir="tools-cache/${{ matrix.rid }}/${name}"
+            if [ -d "$dir" ] && [ -n "$(ls -A "$dir" 2>/dev/null || true)" ]; then
+              echo "${key}=true" >> "$GITHUB_OUTPUT"
+              echo "cached ${name}: yes"
+            else
+              echo "${key}=false" >> "$GITHUB_OUTPUT"
+              echo "cached ${name}: no -> 将重新构建"
+            fi
+          done
+
       - name: Publish CrashDisplayer (AOT + SingleFile)
-        if: steps.cache-tools.outputs.cache-hit != 'true'
+        if: steps.tools-present.outputs.crash != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -147,7 +172,7 @@ jobs:
           ls -lh "$OUT" || true
 
       - name: Publish Splash (AOT + SingleFile)
-        if: steps.cache-tools.outputs.cache-hit != 'true'
+        if: steps.tools-present.outputs.splash != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -322,6 +347,83 @@ jobs:
             echo "No SENTRY_DSN secret, skip"
           fi
 
+      # ========== 26.5.0 布局暂存（必须在所有打包步骤之前）==========
+      # 把扁平的 publish 产物重排为：PML 2 + launcher.json + vXXX/ + data/
+      # Linux/macOS 的 tar.gz/tar.zst、deb/rpm、.app 均以该目录为内容，
+      # Windows 的 ISCC 在后面消费同一个目录（StageDir 相对 installer/ 为 ..\dist\layout）。
+      #
+      # launcher.json 不再由这里生成：Windows 安装器在 ssPostInstall 自行写入，
+      # 因为只有它知道「安装前的 current」并能把它保留为回滚点（previous）。
+      # 暂存脚本仍会产出一份供非 Windows 分发包使用的 launcher.json。
+      #
+      # 注意：启动器不参与 tools-cache（该缓存只存 tools-cache/<rid>/CrashDisplayer|Splash），
+      # 因此本步骤必须无条件执行。若加上 `if: cache-hit != 'true'`，缓存命中的矩阵项会
+      # 直接跳过这里，launcher-publish/<rid>/ 从未生成，随后 Stage 步骤必然报
+      # 「启动器目录不存在」—— 这正是 Linux/macOS 全部失败的根因。
+      - name: Build launcher (PML 2)
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="launcher-publish/${{ matrix.rid }}"
+          # 先清空，避免上一次构建的残留文件伪装成本次产物
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+
+          # 启动器以「单文件 self-contained」发布：安装根只多出一个 PML 2.exe。
+          # 若去掉 PublishSingleFile，数百个运行时 DLL 会堆进安装根，破坏布局整洁。
+          dotnet publish PML2.Launcher/PML2.Launcher.csproj \
+            -c Release \
+            -r "${{ matrix.rid }}" \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=none \
+            -p:DebugSymbols=false \
+            -o "$OUT" \
+            --nologo -v minimal
+
+          # 清掉残留的调试符号，避免被 stage-layout.sh 的污染检查误报
+          find "$OUT" -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" \) -delete 2>/dev/null || true
+
+          echo "===== Launcher (${{ matrix.rid }}) ====="
+          ls -lh "$OUT" | head -20
+
+      - name: Stage versioned layout
+        shell: bash
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          set -euo pipefail
+          if [ "${{ matrix.os_name }}" = "windows" ]; then
+            PUB="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
+          else
+            PUB="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          fi
+
+          LAUNCHER="${{ github.workspace }}/launcher-publish/${{ matrix.rid }}"
+          STAGE="${{ github.workspace }}/dist/layout"
+
+          # 前置校验：上游产物缺失时给出可读提示，而不是让暂存脚本抛路径错误。
+          # 这里只做「报错更清楚」，不跳过任何构建步骤。
+          if [ ! -d "$PUB" ]; then
+            echo "ERROR: 主程序 publish 目录缺失: $PUB"
+            ls -la "${{ github.workspace }}/publish" 2>/dev/null || true
+            exit 1
+          fi
+          if [ ! -d "$LAUNCHER" ]; then
+            echo "ERROR: 启动器产物目录缺失: $LAUNCHER"
+            echo "       → 上游步骤 'Build launcher (PML 2)' 未执行或失败"
+            ls -la "${{ github.workspace }}/launcher-publish" 2>/dev/null || true
+            exit 1
+          fi
+
+          bash tools/stage-layout.sh "$PUB" "$LAUNCHER" "$STAGE" "$VERSION" "${{ matrix.mode }}"
+
+          # 四个平台统一在此产出 dist/layout（PML 2(.exe) + vXXX/ + data/ + launcher.json）。
+          # 后续 tar/deb/rpm/.app 与 Windows 的 ISCC 都以它为唯一输入。
+          ls -la "$STAGE" || true
+
       # ========== Linux 打包 ==========
       - name: Install zstd (Ubuntu)
         if: matrix.os_name == 'linux'
@@ -335,28 +437,36 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          # 26.5.0 起分发包内容 = 安装布局本身（PML 2 + launcher.json + vXXX/ + data/），
+          # 解包即安装根，与 Windows 安装包、macOS .app 保持一致。
+          LAYOUT="${{ github.workspace }}/dist/layout"
           DIST="${{ github.workspace }}/dist"
           OS_NAME="${{ matrix.os_name }}"
           ARCH="${{ matrix.arch }}"
           MODE="${{ matrix.mode }}"
 
           mkdir -p "$DIST"
-          echo "Packing from: $OUT"
-          if [ ! -d "$OUT" ]; then
-            echo "ERROR: publish dir missing: $OUT"
-            ls -la "${{ github.workspace }}/publish" || true
+          echo "Packing from: $LAYOUT"
+          if [ ! -d "$LAYOUT" ]; then
+            echo "ERROR: 布局目录缺失: $LAYOUT（Stage versioned layout 未执行或失败）"
+            ls -la "${{ github.workspace }}/dist" || true
             exit 1
           fi
 
           TGZ="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.gz"
           TZST="pml2-${V}-${OS_NAME}-${ARCH}-${MODE}-portable.tar.zst"
 
-          tar -C "$OUT" -cf - . | gzip -9 > "$DIST/$TGZ"
-          tar -C "$OUT" -cf - . | zstd -T0 -19 -o "$DIST/$TZST"
+          tar -C "$LAYOUT" -cf - . | gzip -9 > "$DIST/$TGZ"
+          tar -C "$LAYOUT" -cf - . | zstd -T0 -19 -o "$DIST/$TZST"
 
           gzip -t "$DIST/$TGZ"
           zstd -t "$DIST/$TZST"
+
+          # 包内必须是「安装根」布局，防止静默退回扁平 publish
+          tar -tzf "$DIST/$TGZ" | grep -qx "./launcher.json"
+          tar -tzf "$DIST/$TGZ" | grep -qx "./PML 2"
+          echo "Layout verified in $TGZ"
+
           ls -lh "$DIST" || true
 
       - name: Install nFPM
@@ -376,39 +486,48 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          # 26.5.0 起包内容 = 安装布局，安装根即 /opt/pml-2：
+          #   /opt/pml-2/PML 2        启动器（版本无关）
+          #   /opt/pml-2/launcher.json
+          #   /opt/pml-2/vXXX/         只读代码
+          #   /opt/pml-2/data/         用户数据
+          LAYOUT="${{ github.workspace }}/dist/layout"
           DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           PKG_ARCH="${{ matrix.pkg_arch }}"
           MODE="${{ matrix.mode }}"
           ROOT="${{ github.workspace }}/pkgroot"
-          EXE="${{ env.APP_EXE }}"
+          LAUNCHER="PML 2"
 
-          if [ ! -d "$OUT" ]; then
-            echo "ERROR: publish dir missing: $OUT"
+          if [ ! -d "$LAYOUT" ]; then
+            echo "ERROR: 布局目录缺失: $LAYOUT（Stage versioned layout 未执行或失败）"
+            ls -la "${{ github.workspace }}/dist" || true
             exit 1
           fi
 
           rm -rf "$ROOT"
           mkdir -p "$ROOT/opt/pml-2" "$ROOT/usr/bin" "$ROOT/usr/share/applications"
-          cp -a "$OUT/." "$ROOT/opt/pml-2/"
+          cp -a "$LAYOUT/." "$ROOT/opt/pml-2/"
 
-          # Settings.json 单独作为 conffile（deb）/ %config（rpm）打包
-          mkdir -p "$ROOT/conffiles"
+          # Settings.json 单独作为 conffile（deb）/ %config（rpm）打包。
+          # 新布局下用户配置位于 data/Config/，安装包里默认不带该文件（首次运行由程序生成），
+          # 因此这里通常走 WARNING 分支；若将来把默认配置放进 data/，此处自动生效。
           CONFFILE_ENTRY=""
-          if [ -f "$ROOT/opt/pml-2/Config/Settings.json" ]; then
-            mv "$ROOT/opt/pml-2/Config/Settings.json" "$ROOT/conffiles/Settings.json"
+          if [ -f "$ROOT/opt/pml-2/data/Config/Settings.json" ]; then
+            mkdir -p "$ROOT/conffiles"
+            mv "$ROOT/opt/pml-2/data/Config/Settings.json" "$ROOT/conffiles/Settings.json"
             CONFFILE_ENTRY="yes"
           else
-            echo "WARNING: Settings.json not found in publish output, skip conffile packaging"
+            echo "WARNING: data/Config/Settings.json not found in layout, skip conffile packaging"
           fi
 
+          # 入口指向安装根的启动器（版本无关）；文件名含空格，必须加引号。
           cat > "$ROOT/usr/bin/pml-2" << EOF
           #!/bin/sh
-          exec /opt/pml-2/${EXE} "\$@"
+          exec "/opt/pml-2/${LAUNCHER}" "\$@"
           EOF
           chmod +x "$ROOT/usr/bin/pml-2"
-          chmod +x "$ROOT/opt/pml-2/${EXE}" 2>/dev/null || true
+          chmod +x "$ROOT/opt/pml-2/${LAUNCHER}" 2>/dev/null || true
 
           cat > "$ROOT/usr/share/applications/pml-2.desktop" << 'EOF'
           [Desktop Entry]
@@ -488,7 +607,7 @@ jobs:
           if [ "$CONFFILE_ENTRY" = "yes" ]; then
             cat >> "${{ github.workspace }}/nfpm.yaml" << EOF
             - src: ${ROOT}/conffiles/Settings.json
-              dst: /opt/pml-2/Config/Settings.json
+              dst: /opt/pml-2/data/Config/Settings.json
               type: config
           EOF
           fi
@@ -505,28 +624,31 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.version }}"
-          OUT="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
+          # 26.5.0 起 .app 内容 = 安装布局：Contents/MacOS 就是「安装根」，
+          # PML 2（启动器）+ launcher.json + vXXX/ + data/，与 Windows/Linux 一致。
+          # 启动器用 Environment.ProcessPath 推导安装根，因此这里布局成立。
+          LAYOUT="${{ github.workspace }}/dist/layout"
           DIST="${{ github.workspace }}/dist"
           ARCH="${{ matrix.arch }}"
           MODE="${{ matrix.mode }}"
-          EXE="${{ env.APP_EXE }}"
+          LAUNCHER="PML 2"
           BUNDLE="${{ env.APP_BUNDLE_NAME }}"
           STAGE="${{ github.workspace }}/dmg-stage"
 
-          echo "DMG from: $OUT (mode=$MODE arch=$ARCH)"
-          if [ ! -d "$OUT" ]; then
-            echo "ERROR: publish dir missing: $OUT"
-            ls -la "${{ github.workspace }}/publish" || true
+          echo "DMG from: $LAYOUT (mode=$MODE arch=$ARCH)"
+          if [ ! -d "$LAYOUT" ]; then
+            echo "ERROR: 布局目录缺失: $LAYOUT（Stage versioned layout 未执行或失败）"
+            ls -la "${{ github.workspace }}/dist" || true
             exit 1
           fi
 
           rm -rf "$STAGE"
           APP="$STAGE/$BUNDLE"
           mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-          cp -a "$OUT/." "$APP/Contents/MacOS/"
-          chmod +x "$APP/Contents/MacOS/${EXE}" || true
-          chmod +x "$APP/Contents/MacOS/Tools/splash" || true
-          find "$APP/Contents/MacOS/Tools" -type f -exec chmod +x {} \; 2>/dev/null || true
+          cp -a "$LAYOUT/." "$APP/Contents/MacOS/"
+          # 可执行位：启动器在安装根，splash 在 vXXX/Tools/ 下
+          chmod +x "$APP/Contents/MacOS/${LAUNCHER}" || true
+          find "$APP/Contents/MacOS" -path "*/Tools/*" -type f -exec chmod +x {} \; 2>/dev/null || true
 
           if [ -f "${{ github.workspace }}/installer/macos/AppIcon.icns" ]; then
             cp "${{ github.workspace }}/installer/macos/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
@@ -541,7 +663,7 @@ jobs:
           <plist version="1.0">
           <dict>
           <key>CFBundleExecutable</key>
-          <string>${EXE}</string>
+          <string>${LAUNCHER}</string>
           <key>CFBundleIdentifier</key>
           <string>tech.rycb.pml2</string>
           <key>CFBundleName</key>
@@ -608,57 +730,9 @@ jobs:
           ls -lh "$FINAL_DMG" || true
           hdiutil verify "$FINAL_DMG" || true
 
-      # ========== 26.5.0 布局暂存 ==========
-      # 把扁平的 publish 产物重排为：PML 2.exe + vXXX\ + data\
-      # 必须在 ISCC 之前完成，ISS 的 StageDir 直接指向其输出。
-      #
-      # launcher.json 不再由这里生成：Windows 安装器在 ssPostInstall 自行写入，
-      # 因为只有它知道「安装前的 current」并能把它保留为回滚点（previous）。
-      # 暂存脚本仍会产出一份仅供本地 / 非 Windows 打包参考的 launcher.json。
-      - name: Build launcher (PML 2)
-        if: steps.cache-tools.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="launcher-publish/${{ matrix.rid }}"
-          mkdir -p "$OUT"
-
-          # 启动器以「单文件 self-contained」发布：安装根只多出一个 PML 2.exe。
-          # 若去掉 PublishSingleFile，数百个运行时 DLL 会堆进安装根，破坏布局整洁。
-          dotnet publish PML2.Launcher/PML2.Launcher.csproj \
-            -c Release \
-            -r "${{ matrix.rid }}" \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:EnableCompressionInSingleFile=true \
-            -p:DebugType=none \
-            -p:DebugSymbols=false \
-            -o "$OUT" \
-            --nologo -v minimal
-
-          # 清掉残留的调试符号，避免被 stage-layout.sh 的污染检查误报
-          find "$OUT" -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" \) -delete 2>/dev/null || true
-
-          echo "===== Launcher (${{ matrix.rid }}) ====="
-          ls -lh "$OUT" | head -20
-
-      - name: Stage versioned layout
-        shell: bash
-        env:
-          VERSION: ${{ steps.ver.outputs.version }}
-        run: |
-          set -euo pipefail
-          if [ "${{ matrix.os_name }}" = "windows" ]; then
-            PUB="${{ github.workspace }}/MEFrpLauncherX/bin/Release/net10.0/${{ matrix.publish_sub }}/publish"
-          else
-            PUB="${{ github.workspace }}/publish/${{ matrix.rid }}-${{ matrix.mode }}"
-          fi
-
-          LAUNCHER="${{ github.workspace }}/launcher-publish/${{ matrix.rid }}"
-          STAGE="${{ github.workspace }}/dist/layout"
-
-          bash tools/stage-layout.sh "$PUB" "$LAUNCHER" "$STAGE" "$VERSION" "${{ matrix.mode }}"
+      # 布局暂存（Build launcher + Stage versioned layout）已上移到所有打包步骤之前：
+      # Linux/macOS 的 tar.gz / deb / rpm / .app 内容直接取自 dist/layout，
+      # Windows 的 ISCC 仍在下面消费同一个目录。
 
       # ========== Windows 打包（Inno Setup 离线安装包）==========
       - name: Install Inno Setup
@@ -702,7 +776,7 @@ jobs:
           Write-Host "  LayoutDir=$layoutDir"
           Write-Host "  StageDir=$outDir\layout"
           Write-Host "  OutDir=$outDir"
-          Write-Host "  （launcher.json 由 ISS 在安装结束时写入，current=$layoutDir）"
+          Write-Host "  （launcher.json 由 ISS 在安装结束时写入，current=${layoutDir}）"
 
           & $iscc.FullName `
             "/DMyAppVersion=$verDefine" `
@@ -724,7 +798,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pml2-${{ steps.ver.outputs.version }}-${{ matrix.rid }}-${{ matrix.mode }}${{ matrix.os_name == 'windows' && '-offline' || '' }}
-          path: ${{ github.workspace }}/dist/*
+          # dist/layout 是打包用中间产物：Windows 侧在 ISCC 之后已删除，非 Windows 侧会保留。
+          # 必须在这里排除，否则 release 任务的 "Flatten files" 会把整棵布局树
+          # （`find artifacts -type f`）展开成几百个零散的 release 附件。
+          path: |
+            ${{ github.workspace }}/dist/*
+            !${{ github.workspace }}/dist/layout/**
           if-no-files-found: error
 
   release:
