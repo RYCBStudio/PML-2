@@ -387,7 +387,9 @@ jobs:
           find "$OUT" -type f \( -name "*.pdb" -o -name "*.dbg" -o -name "*.mdb" \) -delete 2>/dev/null || true
 
           echo "===== Launcher (${{ matrix.rid }}) ====="
-          ls -lh "$OUT" | head -20
+          # `ls | head` 在 pipefail 下可能因 SIGPIPE 返回非零（产物异常多时），
+          # 这里只用于展示，不能让展示命令影响步骤结果。
+          ls -lh "$OUT" | head -20 || true
 
       - name: Stage versioned layout
         shell: bash
@@ -462,9 +464,19 @@ jobs:
           gzip -t "$DIST/$TGZ"
           zstd -t "$DIST/$TZST"
 
-          # 包内必须是「安装根」布局，防止静默退回扁平 publish
-          tar -tzf "$DIST/$TGZ" | grep -qx "./launcher.json"
-          tar -tzf "$DIST/$TGZ" | grep -qx "./PML 2"
+          # 包内必须是「安装根」布局，防止静默退回扁平 publish。
+          #
+          # 注意：这里刻意不用 `tar -tzf … | grep -qx …`。grep -q 命中即退出，
+          # 而真实布局的清单有几百条（> 64KB 管道缓冲），tar 会继续往已关闭的
+          # 管道写，报 "tar: stdout: write error"（exit 2）；在工作流的
+          # `set -euo pipefail` 下会把整个步骤判成失败（Linux x64/arm64 已踩过）。
+          # 因此先把清单落盘再校验，彻底避开 SIGPIPE。
+          LIST="${RUNNER_TEMP:-/tmp}/pml2-layout-list.txt"
+          tar -tzf "$DIST/$TGZ" > "$LIST"
+          grep -qx "./launcher.json" "$LIST"
+          grep -qx "./PML 2" "$LIST"
+          echo "Layout entries: $(wc -l < "$LIST")"
+          rm -f "$LIST"
           echo "Layout verified in $TGZ"
 
           ls -lh "$DIST" || true
