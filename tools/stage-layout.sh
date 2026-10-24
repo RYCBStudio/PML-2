@@ -23,6 +23,23 @@
 # =============================================================================
 set -euo pipefail
 
+# ---- locale 归一化（跨平台一致性）----
+# macOS 自带的 bash 3.2 在 C/POSIX locale 下按字节而非字符处理字符串：
+# 「变量名紧跟全角字符」的写法（如 `$VERSION_DIR（`）会把全角括号的首字节
+# 吞进变量名，实际解析成 `VERSION_DIR<乱码>`，配合 set -u 立刻报
+# "VERSION_DIR: unbound variable"。这里显式挑一个可用的 UTF-8 locale，
+# 并且本脚本所有变量引用统一写成 ${} 花括号形式 —— 二者互为双保险，
+# 以后再加中文标点也不会复发。
+if [[ -z "${LC_ALL:-}" ]]; then
+  for _locale in C.UTF-8 en_US.UTF-8 UTF-8; do
+    if locale -a 2>/dev/null | grep -qxF "${_locale}"; then
+      export LC_ALL="${_locale}"
+      break
+    fi
+  done
+  unset _locale
+fi
+
 PUBLISH_DIR="${1:?用法: stage-layout.sh <publish-dir> <launcher-dir> <out-dir> [version] [mode]}"
 LAUNCHER_DIR="${2:?缺少启动器 publish 目录}"
 OUT_DIR="${3:?缺少输出目录}"
@@ -31,29 +48,29 @@ LAYOUT_MODE="${5:-aot}"
 
 die() { echo "错误: $*" >&2; exit 1; }
 
-[[ -d "$PUBLISH_DIR" ]] || die "publish 目录不存在: $PUBLISH_DIR"
-[[ -d "$LAUNCHER_DIR" ]] || die "启动器目录不存在: $LAUNCHER_DIR"
+[[ -d "${PUBLISH_DIR:-}" ]] || die "publish 目录不存在: ${PUBLISH_DIR:-}"
+[[ -d "${LAUNCHER_DIR:-}" ]] || die "启动器目录不存在: ${LAUNCHER_DIR:-}"
 
 # ---- 版本号：优先显式传入，否则从主程序文件名旁的版本标记或 csproj 推导 ----
-if [[ -z "$VERSION" ]]; then
+if [[ -z "${VERSION:-}" ]]; then
   # 发布产物里没有版本信息时回落到调用方传入值，避免出现 v 空目录名。
   die "必须显式传入版本号（例如 26.5.0）"
 fi
 
-case "$VERSION" in
-  v*) VERSION_DIR="$VERSION" ;;
-  *)  VERSION_DIR="v$VERSION" ;;
+case "${VERSION}" in
+  v*) VERSION_DIR="${VERSION}" ;;
+  *)  VERSION_DIR="v${VERSION}" ;;
 esac
 
-echo "==> 暂存版本目录: $VERSION_DIR（模式 $LAYOUT_MODE）"
+echo "==> 暂存版本目录: ${VERSION_DIR}（模式 ${LAYOUT_MODE}）"
 
-rm -rf "$OUT_DIR"
-mkdir -p "$OUT_DIR"
+rm -rf "${OUT_DIR}"
+mkdir -p "${OUT_DIR}"
 
 # ---- 1. 主程序进版本目录 ----
-VERSION_PATH="$OUT_DIR/$VERSION_DIR"
-mkdir -p "$VERSION_PATH"
-cp -a "$PUBLISH_DIR/." "$VERSION_PATH/"
+VERSION_PATH="${OUT_DIR}/${VERSION_DIR}"
+mkdir -p "${VERSION_PATH}"
+cp -a "${PUBLISH_DIR}/." "${VERSION_PATH}/"
 
 # publish 产物里的 Tools\ 由 CI 预先放入（CrashDisplayer / splash），
 # 它们属于「随包分发的只读资源」，留在版本目录内是正确的。
@@ -63,58 +80,60 @@ cp -a "$PUBLISH_DIR/." "$VERSION_PATH/"
 # 启动器以「单文件 self-contained」发布，因此 publish 目录里只有：
 #   PML2.Launcher.exe（Windows）/ PML2.Launcher（Unix）  ＋ .pdb（已排除）
 # 安装根因此只多出一个 PML 2.exe，不会堆入运行时 DLL。
-if [[ -f "$LAUNCHER_DIR/PML2.Launcher.exe" ]]; then
-  LAUNCHER_EXE="$LAUNCHER_DIR/PML2.Launcher.exe"
-  LAUNCHER_TARGET="$OUT_DIR/PML 2.exe"
-elif [[ -f "$LAUNCHER_DIR/PML2.Launcher" ]]; then
-  LAUNCHER_EXE="$LAUNCHER_DIR/PML2.Launcher"
-  LAUNCHER_TARGET="$OUT_DIR/PML 2"
+if [[ -f "${LAUNCHER_DIR}/PML2.Launcher.exe" ]]; then
+  LAUNCHER_EXE="${LAUNCHER_DIR}/PML2.Launcher.exe"
+  LAUNCHER_TARGET="${OUT_DIR}/PML 2.exe"
+elif [[ -f "${LAUNCHER_DIR}/PML2.Launcher" ]]; then
+  LAUNCHER_EXE="${LAUNCHER_DIR}/PML2.Launcher"
+  LAUNCHER_TARGET="${OUT_DIR}/PML 2"
 else
-  die "在 $LAUNCHER_DIR 下找不到 PML2.Launcher 可执行文件（应已以 PublishSingleFile 发布）"
+  die "在 ${LAUNCHER_DIR} 下找不到 PML2.Launcher 可执行文件（应已以 PublishSingleFile 发布）"
 fi
 
-cp -a "$LAUNCHER_EXE" "$LAUNCHER_TARGET"
-chmod +x "$LAUNCHER_TARGET" 2>/dev/null || true
+cp -a "${LAUNCHER_EXE}" "${LAUNCHER_TARGET}"
+chmod +x "${LAUNCHER_TARGET}" 2>/dev/null || true
 
 # 单文件发布仍有少量同名附属文件（.pdb / .json），
 # 除可执行文件本体外一律不复制 —— 根目录必须保持最小。
 # 若出现意外文件，说明 PublishSingleFile 未生效，此时直接报错而非静默堆文件。
-STRAY=$(find "$LAUNCHER_DIR" -maxdepth 1 -type f \
+# 注：`find | head` 在 pipefail 下可能因 SIGPIPE 返回非零，故显式 `|| true`，
+# 否则 set -e 会让脚本在「只是打印告警」的路径上莫名中断。
+STRAY=$(find "${LAUNCHER_DIR}" -maxdepth 1 -type f \
   ! -name "PML2.Launcher" ! -name "PML2.Launcher.exe" \
-  ! -name "*.pdb" ! -name "*.json" | head -5)
-if [[ -n "$STRAY" ]]; then
+  ! -name "*.pdb" ! -name "*.json" | head -5 || true)
+if [[ -n "${STRAY:-}" ]]; then
   echo "警告: 启动器目录存在非单文件产物，安装根可能被污染:" >&2
-  echo "$STRAY" >&2
+  echo "${STRAY}" >&2
 fi
 
 # ---- 3. 数据目录骨架 ----
 # 只创建空目录并放 .keep：真实内容由程序首次启动时生成，
 # 这样安装包里不会混入开发期残留的用户数据。
 for d in Config/frp Config/Themes Config/Plugins Cache Logs Run; do
-  mkdir -p "$OUT_DIR/data/$d"
+  mkdir -p "${OUT_DIR}/data/${d}"
 done
-touch "$OUT_DIR/data/.keep"
+touch "${OUT_DIR}/data/.keep"
 
 # ---- 4. 版本槽位 ----
 # 仅供本地打包 / 非 Windows 平台（便携包、deb）参考使用：
 # Windows 的 Inno Setup 安装器不会拷贝这份文件，而是在 ssPostInstall 自行写入
 # launcher.json —— 只有安装器知道「安装前的 current」，才能把它保留为回滚点。
 # 因此这里的 previous 恒为空串。
-cat > "$OUT_DIR/launcher.json" <<EOF
+cat > "${OUT_DIR}/launcher.json" <<EOF
 {
   "schema": 1,
-  "current": "$VERSION_DIR",
+  "current": "${VERSION_DIR}",
   "previous": "",
-  "aot": $([[ "$LAYOUT_MODE" == "aot" ]] && echo true || echo false),
+  "aot": $([[ "${LAYOUT_MODE}" == "aot" ]] && echo true || echo false),
   "updatedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
 
 # ---- 5. 输出摘要 ----
-echo "==> 布局完成: $OUT_DIR"
-echo "    启动器    : $(basename "$LAUNCHER_TARGET")"
-echo "    版本目录  : $VERSION_DIR"
+echo "==> 布局完成: ${OUT_DIR}"
+echo "    启动器    : $(basename "${LAUNCHER_TARGET}")"
+echo "    版本目录  : ${VERSION_DIR}"
 echo "    数据目录  : data/"
 echo
 echo "目录结构:"
-find "$OUT_DIR" -maxdepth 2 ! -path '*/v*/*' | sed "s|$OUT_DIR|<安装目录>|" | sort | head -30
+find "${OUT_DIR}" -maxdepth 2 ! -path '*/v*/*' | sed "s|${OUT_DIR}|<安装目录>|" | sort | head -30 || true
