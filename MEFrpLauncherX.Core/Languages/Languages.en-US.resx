@@ -2820,6 +2820,77 @@ The all-new interface and split-screen features make Windows Tablet easy to use.
 You can always trust BugJump's update speed!
 Never Gonna Give the Minecraft Up</value>
     </data>
+    <data name="Text.Download.FailedTitle" xml:space="preserve">
+        <value>Failed to download the ME Frp client</value>
+    </data>
+    <data name="Text.Download.FailedContentFormat" xml:space="preserve">
+        <value>{0}
+
+File name: {1}
+Platform: {2}
+Suggestion: {3}
+{4}</value>
+    </data>
+    <data name="Text.Download.FailedNetwork" xml:space="preserve">
+        <value>Cannot reach the download server. The network may be unavailable or the connection timed out.</value>
+    </data>
+    <data name="Text.Download.FailedHttpStatusFormat" xml:space="preserve">
+        <value>The download server returned an unexpected status (HTTP {0}).</value>
+    </data>
+    <data name="Text.Download.FailedIncomplete" xml:space="preserve">
+        <value>The downloaded file is missing, empty, or has an unexpected size. The download may have been interrupted.</value>
+    </data>
+    <data name="Text.Download.FailedHashMismatch" xml:space="preserve">
+        <value>The downloaded file failed the integrity check. The content may be corrupted.</value>
+    </data>
+    <data name="Text.Download.FailedExtract" xml:space="preserve">
+        <value>Failed to extract the downloaded archive. The file may be corrupted or write permission may be denied.</value>
+    </data>
+    <data name="Text.Download.FailedWrite" xml:space="preserve">
+        <value>Cannot write into the data/Run directory. The disk may be full, the file may be in use, or permission may be denied.</value>
+    </data>
+    <data name="Text.Download.FailedUnknown" xml:space="preserve">
+        <value>An unknown error occurred while downloading.</value>
+    </data>
+    <data name="Text.Download.AdviceNetwork" xml:space="preserve">
+        <value>Check your network, DNS and proxy settings, then try again later; you can also switch to another download source.</value>
+    </data>
+    <data name="Text.Download.AdviceHttpStatus" xml:space="preserve">
+        <value>The server is temporarily unavailable. Try again later, or switch to another download source.</value>
+    </data>
+    <data name="Text.Download.AdviceIncomplete" xml:space="preserve">
+        <value>Make sure the network is stable and try again; switch the download source if it keeps failing.</value>
+    </data>
+    <data name="Text.Download.AdviceHashMismatch" xml:space="preserve">
+        <value>Switch the download source and try again, and watch out for network hijacking or proxy tampering.</value>
+    </data>
+    <data name="Text.Download.AdviceExtract" xml:space="preserve">
+        <value>Make sure the data/Run directory is writable and there is enough free disk space, then try again.</value>
+    </data>
+    <data name="Text.Download.AdviceWrite" xml:space="preserve">
+        <value>Close any program using mefrpc, make sure there is enough disk space and the directory is writable, then try again.</value>
+    </data>
+    <data name="Text.Download.AdviceUnknown" xml:space="preserve">
+        <value>Try again later; if it keeps failing, check the logs or switch to another download source.</value>
+    </data>
+    <data name="Text.Download.FailedSourcesFormat" xml:space="preserve">
+        <value>Download sources already tried: {0}</value>
+    </data>
+    <data name="Text.Download.FailedExhaustedFormat" xml:space="preserve">
+        <value>Tried {0} times without success. The download has been stopped; please retry manually later.</value>
+    </data>
+    <data name="Text.Download.FailedCloseButton" xml:space="preserve">
+        <value>OK</value>
+    </data>
+    <data name="Text.Download.RetryButton" xml:space="preserve">
+        <value>Retry</value>
+    </data>
+    <data name="Text.Download.CancelButton" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Text.Download.RetrySubHeaderFormat" xml:space="preserve">
+        <value>Attempt {0}/{1}, downloading the ME Frp client again</value>
+    </data>
     <data name="Text.Terminal.ProcessExitedFormat" xml:space="preserve">
         <value>[Terminal] Process exited with code: {0}</value>
     </data>

@@ -2812,6 +2812,77 @@ Windows沙盒正在關閉並將關閉
 你永遠可以相信BugJump的更新速度！
 Never Gonna Give the Minecraft Up</value>
     </data>
+    <data name="Text.Download.FailedTitle" xml:space="preserve">
+        <value>下載 ME Frp 用戶端失敗</value>
+    </data>
+    <data name="Text.Download.FailedContentFormat" xml:space="preserve">
+        <value>{0}
+
+檔案名稱：{1}
+平台：{2}
+建議：{3}
+{4}</value>
+    </data>
+    <data name="Text.Download.FailedNetwork" xml:space="preserve">
+        <value>無法連線到下載伺服器，可能是網路不可用或連線逾時。</value>
+    </data>
+    <data name="Text.Download.FailedHttpStatusFormat" xml:space="preserve">
+        <value>下載伺服器傳回異常狀態（HTTP {0}）。</value>
+    </data>
+    <data name="Text.Download.FailedIncomplete" xml:space="preserve">
+        <value>下載的檔案不存在、為空或大小異常，下載可能被中斷。</value>
+    </data>
+    <data name="Text.Download.FailedHashMismatch" xml:space="preserve">
+        <value>檔案完整性校驗未通過，下載內容可能已損毀。</value>
+    </data>
+    <data name="Text.Download.FailedExtract" xml:space="preserve">
+        <value>解壓縮下載的壓縮包失敗，檔案可能已損毀或沒有寫入權限。</value>
+    </data>
+    <data name="Text.Download.FailedWrite" xml:space="preserve">
+        <value>無法寫入 data/Run 目錄，可能是磁碟空間不足、檔案被佔用或沒有權限。</value>
+    </data>
+    <data name="Text.Download.FailedUnknown" xml:space="preserve">
+        <value>下載過程中發生未知錯誤。</value>
+    </data>
+    <data name="Text.Download.AdviceNetwork" xml:space="preserve">
+        <value>請檢查網路連線、DNS 與系統代理設定，稍後重試；也可以切換到另一個下載來源後再試。</value>
+    </data>
+    <data name="Text.Download.AdviceHttpStatus" xml:space="preserve">
+        <value>伺服器暫時無法使用，請稍後重試；若持續出現，請切換到另一個下載來源。</value>
+    </data>
+    <data name="Text.Download.AdviceIncomplete" xml:space="preserve">
+        <value>請確認網路穩定後重試；反覆失敗時請切換下載來源。</value>
+    </data>
+    <data name="Text.Download.AdviceHashMismatch" xml:space="preserve">
+        <value>請切換下載來源後重試，並留意是否存在網路劫持或代理竄改。</value>
+    </data>
+    <data name="Text.Download.AdviceExtract" xml:space="preserve">
+        <value>請確認 data/Run 目錄可寫入、磁碟空間充足後重試。</value>
+    </data>
+    <data name="Text.Download.AdviceWrite" xml:space="preserve">
+        <value>請關閉正在佔用 mefrpc 的程式，確認磁碟空間充足且目錄可寫入後重試。</value>
+    </data>
+    <data name="Text.Download.AdviceUnknown" xml:space="preserve">
+        <value>請稍後重試；若持續失敗，請查看日誌或切換到另一個下載來源。</value>
+    </data>
+    <data name="Text.Download.FailedSourcesFormat" xml:space="preserve">
+        <value>已嘗試的下載來源：{0}</value>
+    </data>
+    <data name="Text.Download.FailedExhaustedFormat" xml:space="preserve">
+        <value>已嘗試 {0} 次仍未成功，已停止下載，請稍後手動重試。</value>
+    </data>
+    <data name="Text.Download.FailedCloseButton" xml:space="preserve">
+        <value>確定</value>
+    </data>
+    <data name="Text.Download.RetryButton" xml:space="preserve">
+        <value>重試</value>
+    </data>
+    <data name="Text.Download.CancelButton" xml:space="preserve">
+        <value>取消</value>
+    </data>
+    <data name="Text.Download.RetrySubHeaderFormat" xml:space="preserve">
+        <value>第 {0}/{1} 次嘗試，正在重新下載 ME Frp 用戶端</value>
+    </data>
     <data name="Text.Terminal.ProcessExitedFormat" xml:space="preserve">
         <value>[終端機] 處理程序已結束，結束代碼：{0}</value>
     </data>

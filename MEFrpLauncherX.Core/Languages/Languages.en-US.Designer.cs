@@ -7206,6 +7206,78 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make sure the data/Run directory is writable and there is enough free disk space, then try again..
+        /// </summary>
+        public static string Text_Download_AdviceExtract {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceExtract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch the download source and try again, and watch out for network hijacking or proxy tampering..
+        /// </summary>
+        public static string Text_Download_AdviceHashMismatch {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceHashMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server is temporarily unavailable. Try again later, or switch to another download source..
+        /// </summary>
+        public static string Text_Download_AdviceHttpStatus {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceHttpStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make sure the network is stable and try again; switch the download source if it keeps failing..
+        /// </summary>
+        public static string Text_Download_AdviceIncomplete {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check your network, DNS and proxy settings, then try again later; you can also switch to another download source..
+        /// </summary>
+        public static string Text_Download_AdviceNetwork {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try again later; if it keeps failing, check the logs or switch to another download source..
+        /// </summary>
+        public static string Text_Download_AdviceUnknown {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close any program using mefrpc, make sure there is enough disk space and the directory is writable, then try again..
+        /// </summary>
+        public static string Text_Download_AdviceWrite {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Text_Download_CancelButton {
+            get {
+                return ResourceManager.GetString("Text.Download.CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///Current source: {1}
         ///Download speed: {0}
@@ -7226,6 +7298,114 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Download_ContentHeaderFormat {
             get {
                 return ResourceManager.GetString("Text.Download.ContentHeaderFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string Text_Download_FailedCloseButton {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedCloseButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} File name: {1} Platform: {2} Suggestion: {3} {4}.
+        /// </summary>
+        public static string Text_Download_FailedContentFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedContentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tried {0} times without success. The download has been stopped; please retry manually later..
+        /// </summary>
+        public static string Text_Download_FailedExhaustedFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedExhaustedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to extract the downloaded archive. The file may be corrupted or write permission may be denied..
+        /// </summary>
+        public static string Text_Download_FailedExtract {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedExtract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded file failed the integrity check. The content may be corrupted..
+        /// </summary>
+        public static string Text_Download_FailedHashMismatch {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedHashMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The download server returned an unexpected status (HTTP {0})..
+        /// </summary>
+        public static string Text_Download_FailedHttpStatusFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedHttpStatusFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded file is missing, empty, or has an unexpected size. The download may have been interrupted..
+        /// </summary>
+        public static string Text_Download_FailedIncomplete {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot reach the download server. The network may be unavailable or the connection timed out..
+        /// </summary>
+        public static string Text_Download_FailedNetwork {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download sources already tried: {0}.
+        /// </summary>
+        public static string Text_Download_FailedSourcesFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedSourcesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to download the ME Frp client.
+        /// </summary>
+        public static string Text_Download_FailedTitle {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unknown error occurred while downloading..
+        /// </summary>
+        public static string Text_Download_FailedUnknown {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot write into the data/Run directory. The disk may be full, the file may be in use, or permission may be denied..
+        /// </summary>
+        public static string Text_Download_FailedWrite {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedWrite", resourceCulture);
             }
         }
         
@@ -7259,6 +7439,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Download_Jokes {
             get {
                 return ResourceManager.GetString("Text.Download.Jokes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Text_Download_RetryButton {
+            get {
+                return ResourceManager.GetString("Text.Download.RetryButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempt {0}/{1}, downloading the ME Frp client again.
+        /// </summary>
+        public static string Text_Download_RetrySubHeaderFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.RetrySubHeaderFormat", resourceCulture);
             }
         }
         

@@ -45,10 +45,15 @@
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <ApplicationIcon>meflx.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="..\Shared\VersionResolver.cs" Link="VersionResolver.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="meflx.ico" />
     </ItemGroup>
 
 </Project>
