@@ -181,6 +181,16 @@ internal static class VersionResolver
     }
 
     /// <summary>读取 launcher.json；缺失或损坏返回 null。</summary>
+    /// <remarks>
+    ///     刻意用 <see cref="JsonDocument" /> 而非 <c>JsonSerializer.Deserialize&lt;T&gt;</c>：
+    ///     <list type="number">
+    ///         <item>序列化器只认 <c>public</c> 成员，而本类型成员是 <c>internal</c>，
+    ///               反射方案会静默返回全空对象（于是 launcher.json 形同虚设）；</item>
+    ///         <item>启动器以 PublishTrimmed、主程序以 NativeAOT 发布，
+    ///               反射式 JSON 在这两种发布下都不可靠。</item>
+    ///     </list>
+    ///     JsonDocument 是纯前瞻式 API，两种发布下行为一致。
+    /// </remarks>
     internal static LauncherManifest? TryLoadManifest(string installRoot)
     {
         try
@@ -191,8 +201,50 @@ internal static class VersionResolver
                 return null;
             }
 
-            var manifest = JsonSerializer.Deserialize<LauncherManifest>(File.ReadAllText(path));
-            return manifest != null && manifest.Schema <= LauncherSchema.Current ? manifest : null;
+            using var document = JsonDocument.Parse(File.ReadAllText(path));
+            var root = document.RootElement;
+            if (root.ValueKind != JsonValueKind.Object)
+            {
+                return null;
+            }
+
+            var schema = root.TryGetProperty("schema", out var schemaElement) &&
+                         schemaElement.ValueKind == JsonValueKind.Number &&
+                         schemaElement.TryGetInt32(out var schemaValue)
+                ? schemaValue
+                : LauncherSchema.Current;
+
+            if (schema > LauncherSchema.Current)
+            {
+                return null;
+            }
+
+            var manifest = new LauncherManifest { Schema = schema };
+
+            if (root.TryGetProperty("current", out var current) && current.ValueKind == JsonValueKind.String)
+            {
+                manifest.Current = current.GetString() ?? "";
+            }
+
+            if (root.TryGetProperty("previous", out var previous) && previous.ValueKind == JsonValueKind.String)
+            {
+                manifest.Previous = previous.GetString() ?? "";
+            }
+
+            if (root.TryGetProperty("aot", out var aot) &&
+                aot.ValueKind is JsonValueKind.True or JsonValueKind.False)
+            {
+                manifest.Aot = aot.GetBoolean();
+            }
+
+            if (root.TryGetProperty("updatedAt", out var updatedAt) &&
+                updatedAt.ValueKind == JsonValueKind.String &&
+                DateTimeOffset.TryParse(updatedAt.GetString(), out var parsed))
+            {
+                manifest.UpdatedAt = parsed;
+            }
+
+            return manifest;
         }
         catch
         {
@@ -202,6 +254,7 @@ internal static class VersionResolver
     }
 
     /// <summary>写入 launcher.json（原子替换，避免半写状态）。</summary>
+    /// <remarks>与读取同理，用 <see cref="Utf8JsonWriter" /> 手写结构，不依赖反射。</remarks>
     internal static bool TrySaveManifest(string installRoot, LauncherManifest manifest)
     {
         try
@@ -210,7 +263,25 @@ internal static class VersionResolver
             var path = Path.Combine(installRoot, LauncherSchema.ManifestFileName);
             var temp = path + ".tmp";
 
-            File.WriteAllText(temp, JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true }));
+            byte[] payload;
+            using (var buffer = new MemoryStream())
+            {
+                using (var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = true }))
+                {
+                    writer.WriteStartObject();
+                    writer.WriteNumber("schema", manifest.Schema);
+                    writer.WriteString("current", manifest.Current ?? "");
+                    writer.WriteString("previous", manifest.Previous ?? "");
+                    writer.WriteBoolean("aot", manifest.Aot);
+                    writer.WriteString("updatedAt",
+                        (manifest.UpdatedAt ?? DateTimeOffset.UtcNow).ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    writer.WriteEndObject();
+                }
+
+                payload = buffer.ToArray();
+            }
+
+            File.WriteAllBytes(temp, payload);
 
             // File.Move 的 overwrite 参数在部分平台上会先删除目标，
             // 这里显式删除再移动，行为跨平台一致。

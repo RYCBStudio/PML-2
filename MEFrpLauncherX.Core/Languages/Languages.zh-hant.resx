@@ -1406,6 +1406,36 @@
     <data name="Text.Update.InstallTipLinuxTar" xml:space="preserve">
         <value>點擊確認開啟安裝檔所在目錄，解壓縮後依 README 說明覆蓋安裝</value>
     </data>
+    <data name="Text.Update.Extracting" xml:space="preserve">
+        <value>正在解壓縮更新包…</value>
+    </data>
+    <data name="Text.Update.ExtractFailed" xml:space="preserve">
+        <value>更新包解壓縮失敗，已保留目前版本；可點擊「重試下載」重新下載</value>
+    </data>
+    <data name="Text.Update.VersionLayoutRequired" xml:space="preserve">
+        <value>應用內自動更新需要 26.5 起的分離式安裝佈局（安裝目錄下有啟動器與 launcher.json）。目前佈局不符合此條件，請從發佈頁手動下載安裝包。</value>
+    </data>
+    <data name="Text.Legacy.Title" xml:space="preserve">
+        <value>整理舊版檔案</value>
+    </data>
+    <data name="Text.Legacy.Message" xml:space="preserve">
+        <value>偵測到 {0} 項不屬於目前版本的舊檔案（共 {1}），已移入 legacy 目錄：{2}。這些檔案已不再使用，可以安全刪除。</value>
+    </data>
+    <data name="Text.Legacy.MessagePath" xml:space="preserve">
+        <value>位置：{0}</value>
+    </data>
+    <data name="Text.Legacy.DeleteNow" xml:space="preserve">
+        <value>立即刪除</value>
+    </data>
+    <data name="Text.Legacy.OpenFolder" xml:space="preserve">
+        <value>開啟 legacy 目錄</value>
+    </data>
+    <data name="Text.Legacy.Deleted" xml:space="preserve">
+        <value>已刪除舊版檔案，回收 {0}</value>
+    </data>
+    <data name="Text.Legacy.DeleteFailed" xml:space="preserve">
+        <value>部分舊版檔案正被佔用，未能刪除；可稍後開啟 legacy 目錄手動清理</value>
+    </data>
     <data name="Text.About.PoweredBy" xml:space="preserve">
         <value>由開源軟體和 ME Frp 提供支援。</value>
     </data>

@@ -34,6 +34,16 @@ public static class AppPaths
     /// <summary>数据根目录名（安装根下的 <c>data\</c>）。</summary>
     public const string DataFolderName = "data";
 
+    /// <summary>
+    ///     旧版残留收拢目录名（安装根下的 <c>legacy\</c>）。
+    ///     <para>
+    ///         旧版（≤26.4）把所有文件平铺在安装根，升级后 <c>Resources\</c> / <c>runtimes\</c> /
+    ///         <c>Tools\</c> 等散落文件以及迁移向导产生的 <c>*.old-*</c> 归档会一直留在根目录。
+    ///         它们已不属于当前版本，统一收拢到此目录等待用户确认删除。
+    ///     </para>
+    /// </summary>
+    public const string LegacyFolderName = "legacy";
+
     /// <summary>版本目录名前缀，形如 <c>v26.5.0</c>。</summary>
     public const string VersionFolderPrefix = "v";
 
@@ -56,6 +66,15 @@ public static class AppPaths
 
     /// <summary>数据根目录：安装根下的 <c>data\</c>。</summary>
     public static string DataRoot => LazyDataRoot.Value;
+
+    /// <summary>
+    ///     旧版残留收拢目录：安装根下的 <c>legacy\</c>。
+    ///     <para>
+    ///         只做「搬移」不做删除：里面的内容都是已不被当前版本引用的旧文件，
+    ///         由用户在提示框中确认后再删除（详见 <see cref="Services.LegacyLayoutCleaner" />）。
+    ///     </para>
+    /// </summary>
+    public static string LegacyDirectory => Path.Combine(InstallRoot, LegacyFolderName);
 
     /// <summary>
     ///     当前是否处于「版本化发布布局」（即代码目录名为 <c>vXXX</c>，与数据目录分离）。
@@ -378,6 +397,71 @@ public static class AppPaths
             }
 
             manifest.Current = folderName;
+
+            if (!PML2.Shared.VersionResolver.TrySaveManifest(InstallRoot, manifest))
+            {
+                error = "写入 launcher.json 失败";
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            return false;
+        }
+    }
+
+    /// <summary>
+    ///     直接写入版本槽位：<c>current</c> = <paramref name="folderName" />，
+    ///     <c>previous</c> = <paramref name="previousFolder" />（传空串表示不留回滚点）。
+    ///     <para>
+    ///         应用内的 zip 更新使用本方法：它已经自己决定好了「新版本」与「回滚点」
+    ///         （旧版本目录可能因正在运行而删不掉，仍需作为 previous 保留）。
+    ///         与 <see cref="TrySwitchVersion" /> 的区别是不去推导 previous。
+    ///     </para>
+    /// </summary>
+    /// <param name="folderName">新版本目录名（形如 <c>v26.5.1</c>）</param>
+    /// <param name="previousFolder">回滚点目录名；空串表示无回滚点</param>
+    /// <param name="error">失败原因</param>
+    public static bool TryWriteVersionSlot(string folderName, string previousFolder, out string? error)
+    {
+        error = null;
+
+        if (!IsVersionFolderName(folderName))
+        {
+            error = "目录名不是合法的版本目录";
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(previousFolder) && !IsVersionFolderName(previousFolder))
+        {
+            error = "回滚点不是合法的版本目录";
+            return false;
+        }
+
+        var executable = Path.Combine(
+            InstallRoot,
+            folderName,
+            OperatingSystem.IsWindows() ? "MEFrpLauncherX.exe" : "MEFrpLauncherX");
+
+        if (!File.Exists(executable))
+        {
+            error = $"该版本目录下缺少 {Path.GetFileName(executable)}";
+            return false;
+        }
+
+        try
+        {
+            var manifest = PML2.Shared.VersionResolver.TryLoadManifest(InstallRoot)
+                           ?? new PML2.Shared.LauncherManifest();
+
+            manifest.Current = folderName;
+            manifest.Previous = string.Equals(previousFolder, folderName, StringComparison.OrdinalIgnoreCase)
+                ? ""
+                : previousFolder;
+            manifest.Aot = string.Equals(App.ReleaseFlag, "AOT", StringComparison.OrdinalIgnoreCase);
 
             if (!PML2.Shared.VersionResolver.TrySaveManifest(InstallRoot, manifest))
             {

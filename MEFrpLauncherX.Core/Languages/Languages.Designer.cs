@@ -8455,6 +8455,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 部分旧版文件正被占用，未能删除；可稍后打开 legacy 目录手动清理.
+        /// </summary>
+        public static string Text_Legacy_DeleteFailed {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 立即删除.
+        /// </summary>
+        public static string Text_Legacy_DeleteNow {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已删除旧版文件，回收 {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 检测到 {0} 项不属于当前版本的旧文件（共 {1}），已移入 legacy 目录：{2}。这些文件已不再被使用，可以安全删除。.
+        /// </summary>
+        public static string Text_Legacy_Message {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 位置：{0}.
+        /// </summary>
+        public static string Text_Legacy_MessagePath {
+            get {
+                return ResourceManager.GetString("Text.Legacy.MessagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开 legacy 目录.
+        /// </summary>
+        public static string Text_Legacy_OpenFolder {
+            get {
+                return ResourceManager.GetString("Text.Legacy.OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 整理旧版文件.
+        /// </summary>
+        public static string Text_Legacy_Title {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 人机验证方式.
         /// </summary>
         public static string Text_Login_AuthMode {
@@ -14391,6 +14454,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 更新包解压失败，已保留当前版本；可点击「重试下载」重新下载.
+        /// </summary>
+        public static string Text_Update_ExtractFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.ExtractFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在解压更新包….
+        /// </summary>
+        public static string Text_Update_Extracting {
+            get {
+                return ResourceManager.GetString("Text.Update.Extracting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 获取更新失败.
         /// </summary>
         public static string Text_Update_FetchFailed {
@@ -14801,6 +14882,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_VersionInfoTip {
             get {
                 return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 应用内自动更新需要 26.5 起的分离式安装布局（安装目录下有启动器与 launcher.json）。当前布局不满足该条件，请从发布页手动下载安装包。.
+        /// </summary>
+        public static string Text_Update_VersionLayoutRequired {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionLayoutRequired", resourceCulture);
             }
         }
         

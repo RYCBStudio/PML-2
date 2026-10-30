@@ -8442,6 +8442,69 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some leftover files are in use and could not be deleted. Open the legacy folder later to clean them up manually.
+        /// </summary>
+        public static string Text_Legacy_DeleteFailed {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete now.
+        /// </summary>
+        public static string Text_Legacy_DeleteNow {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leftover files deleted, freed {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found {0} items ({1}) that do not belong to the current version and moved them into the legacy folder: {2}. They are no longer used and can be deleted safely..
+        /// </summary>
+        public static string Text_Legacy_Message {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location: {0}.
+        /// </summary>
+        public static string Text_Legacy_MessagePath {
+            get {
+                return ResourceManager.GetString("Text.Legacy.MessagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open legacy folder.
+        /// </summary>
+        public static string Text_Legacy_OpenFolder {
+            get {
+                return ResourceManager.GetString("Text.Legacy.OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean up leftover files.
+        /// </summary>
+        public static string Text_Legacy_Title {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CAPTCHA method.
         /// </summary>
         public static string Text_Login_AuthMode {
@@ -14366,6 +14429,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to extract the update package. The current version is kept; click Retry to download it again.
+        /// </summary>
+        public static string Text_Update_ExtractFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.ExtractFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting the update package….
+        /// </summary>
+        public static string Text_Update_Extracting {
+            get {
+                return ResourceManager.GetString("Text.Update.Extracting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to get update information.
         /// </summary>
         public static string Text_Update_FetchFailed {
@@ -14776,6 +14857,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_VersionInfoTip {
             get {
                 return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In-app updates require the split installation layout introduced in 26.5 (a launcher and launcher.json in the install directory). The current layout does not qualify, please download the installer manually.
+        /// </summary>
+        public static string Text_Update_VersionLayoutRequired {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionLayoutRequired", resourceCulture);
             }
         }
         

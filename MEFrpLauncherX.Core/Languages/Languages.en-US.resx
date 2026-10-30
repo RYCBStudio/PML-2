@@ -1408,6 +1408,36 @@
     <data name="Text.Update.InstallTipLinuxTar" xml:space="preserve">
         <value>Click Yes to open the folder containing the installer, then extract the archive and overwrite the installation as described in the README</value>
     </data>
+    <data name="Text.Update.Extracting" xml:space="preserve">
+        <value>Extracting the update package…</value>
+    </data>
+    <data name="Text.Update.ExtractFailed" xml:space="preserve">
+        <value>Failed to extract the update package. The current version is kept; click Retry to download it again</value>
+    </data>
+    <data name="Text.Update.VersionLayoutRequired" xml:space="preserve">
+        <value>In-app updates require the split installation layout introduced in 26.5 (a launcher and launcher.json in the install directory). The current layout does not qualify, please download the installer manually</value>
+    </data>
+    <data name="Text.Legacy.Title" xml:space="preserve">
+        <value>Clean up leftover files</value>
+    </data>
+    <data name="Text.Legacy.Message" xml:space="preserve">
+        <value>Found {0} items ({1}) that do not belong to the current version and moved them into the legacy folder: {2}. They are no longer used and can be deleted safely.</value>
+    </data>
+    <data name="Text.Legacy.MessagePath" xml:space="preserve">
+        <value>Location: {0}</value>
+    </data>
+    <data name="Text.Legacy.DeleteNow" xml:space="preserve">
+        <value>Delete now</value>
+    </data>
+    <data name="Text.Legacy.OpenFolder" xml:space="preserve">
+        <value>Open legacy folder</value>
+    </data>
+    <data name="Text.Legacy.Deleted" xml:space="preserve">
+        <value>Leftover files deleted, freed {0}</value>
+    </data>
+    <data name="Text.Legacy.DeleteFailed" xml:space="preserve">
+        <value>Some leftover files are in use and could not be deleted. Open the legacy folder later to clean them up manually</value>
+    </data>
     <data name="Text.About.PoweredBy" xml:space="preserve">
         <value>Powered by open-source software and ME Frp.</value>
     </data>
