@@ -103,11 +103,28 @@ public partial class DownloadHelper
 
     private string GetDownloadUrl(PlatformID platformId, bool isArm)
     {
-        if (ConfigManager.CurrentConfig.DownloadSource.Equals("TPCA", StringComparison.CurrentCultureIgnoreCase))
+        if (IsTpcaSource())
         {
             return isArm ? armDownloadUrls[platformId] : downloadUrls[platformId];
         }
 
         return isArm ? officialArmDownloadUrls[platformId] : officialDownloadUrls[platformId];
     }
+
+    /// <summary>当前设置中是否选择了 TPCA 下载源。</summary>
+    private static bool IsTpcaSource() =>
+        ConfigManager.CurrentConfig.DownloadSource.Equals("TPCA", StringComparison.CurrentCultureIgnoreCase);
+
+    /// <summary>
+    ///     备用下载地址（重试时切源用）。
+    ///     <para>
+    ///         仅 TPCA 源存在备用命名版本（<c>downloadRetryUrls</c> / <c>armRetryDownloadUrls</c>，
+    ///         与主地址同一主机、同为直接可用的 exe/tar）；
+    ///         官方源没有备用地址，返回 <see langword="null" />，由调用方沿用主地址 —— 不虚构不存在的下载源。
+    ///     </para>
+    /// </summary>
+    private string? GetFallbackDownloadUrl(PlatformID platformId, bool isArm) =>
+        IsTpcaSource()
+            ? isArm ? armRetryDownloadUrls[platformId] : downloadRetryUrls[platformId]
+            : null;
 }

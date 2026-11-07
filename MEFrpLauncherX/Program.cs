@@ -64,6 +64,12 @@ internal partial class Program
         // 3. 尝试创建或打开已存在的命名Mutex
         // 将 mutex 存入 static 字段，不依赖 using var 来维持生命周期
         _mutex = new Mutex(true, $"Global\\{AppPipeName}", out var createdNew);
+        if (!createdNew && TryTakeOverMutex(_mutex))
+        {
+            // 旧实例正在退出（典型：应用内更新写完槽位后拉起启动器再关闭自己）
+            createdNew = true;
+        }
+
         if (!createdNew)
         {
             // 已有实例在运行：把链接透传给它（无链接时只激活窗口），再退出当前进程
@@ -271,6 +277,38 @@ internal partial class Program
         return 0;
     }
 
+
+    /// <summary>
+    ///     单实例锁已被占用时，短暂等待它释放并接管。
+    ///     <para>
+    ///         26.5.1：应用内更新完成后的重启顺序是「先拉起启动器 → 当前进程退出」，
+    ///         新版本实例可能在旧实例完全退出前就执行到这段代码。若直接判定「已有实例」
+    ///         并把请求透传过去，旧实例已处于关闭流程，结果是重启后应用直接消失。
+    ///         因此先给旧实例几秒完成退出；它仍在运行时（用户重复双击）也会在超时后
+    ///         退回原有的「激活已有窗口」行为。
+    ///     </para>
+    ///     <para>
+    ///         超时取 2 秒：旧实例的关闭（App.Desktop.Shutdown）通常是百毫秒级，
+    ///         给足余量即可；再长会让「重复双击图标」的动作明显变卡。
+    ///     </para>
+    /// </summary>
+    /// <returns>true 表示已获得所有权，应当继续作为主实例启动</returns>
+    private static bool TryTakeOverMutex(Mutex mutex)
+    {
+        try
+        {
+            return mutex.WaitOne(TimeSpan.FromSeconds(2));
+        }
+        catch (AbandonedMutexException)
+        {
+            // 上一个实例没释放就退出了：所有权已转交本进程
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 
     /// <summary>
     ///     启动 Named Pipe 服务器，在后台线程上监听第二个实例的"激活窗口"请求

@@ -16,6 +16,7 @@ using FluentAvalonia.UI.Controls;
 using FluentAvalonia.MarkdownRender.Controls.MarkdownRender;
 using FluentAvalonia.MarkdownRender.Helper;
 using MEFrpLauncherX.Controls;
+using MEFrpLauncherX.Controls.PortalEasterEgg;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
@@ -31,6 +32,8 @@ namespace MEFrpLauncherX.Views;
 public partial class AboutPage : UserControl
 {
     private readonly AboutViewModel vm;
+    private readonly PortalEasterEggTrigger _portalTrigger = new();
+    private bool _portalPlaying;
     private int debug_count;
 
     public AboutPage()
@@ -626,6 +629,65 @@ public partial class AboutPage : UserControl
         Hitokoto = null;
 
         HitokotoStatus.Hide();
+    }
+
+    #endregion
+
+    #region 传送门彩蛋
+
+    /// <summary>
+    ///     About 页应用图标的点击入口。
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         只做「把点击交给 <see cref="PortalEasterEggTrigger" />」这一件事，判定规则全在触发器里，
+    ///         因此这里的代码与动画、与彩蛋本身完全解耦。
+    ///     </para>
+    ///     <para>
+    ///         不设置 <see cref="RoutedEventArgs.Handled" />：图标所在整行仍会照常切换
+    ///         <c>FASettingsExpander</c> 的展开状态，原有交互不受影响。
+    ///     </para>
+    /// </remarks>
+    private void AppIcon_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (_portalPlaying)
+        {
+            return;
+        }
+
+        // 触摸 / 手写笔同样映射为左键按下，因此这一个判断覆盖全部点击方式
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            return;
+        }
+
+        if (!_portalTrigger.RegisterClick(DateTimeOffset.UtcNow))
+        {
+            return;
+        }
+
+        PlayPortalEasterEgg();
+    }
+
+    private void PlayPortalEasterEgg()
+    {
+        if (_portalPlaying)
+        {
+            return;
+        }
+
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel is null)
+        {
+            // 理论上不会发生；拿不到宿主时直接清空计数，避免下一次点击从「7 缺 1」继续
+            _portalTrigger.Reset();
+            return;
+        }
+
+        _portalPlaying = true;
+
+        // 覆盖层挂在窗口内容根的最上层，不新建窗口、不阻塞其它窗口
+        PortalEasterEggOverlay.Show(topLevel, () => _portalPlaying = false);
     }
 
     #endregion

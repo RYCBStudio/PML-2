@@ -555,6 +555,12 @@ public partial class MainWindow : FAAppWindow, IDisposable
         // 用户可在「更新 → 旧版本目录」里关闭；内部已做 7 天 + 体积增长双重节流。
         await Controls.VersionCleanupReminder.ShowIfNeededAsync();
 
+        // 26.5.1：把安装根下不属于当前版本的旧版文件/目录收拢到 legacy\，
+        // 并提示用户删除（旧版扁平布局的 Resources\ / runtimes\ / Tools\ 、
+        // 以及迁移向导归档出的 *.old-* 都会堆在根目录里）。
+        // 必须放在数据迁移向导之后：向导尚未消费的旧目录由收拢器自行保护。
+        await Controls.LegacyLeftoverReminder.ShowIfNeededAsync();
+
         // 触发插件事件：应用启动
         await PluginService.Instance.TriggerAsync("app.startup", new Dictionary<string, object>
         {

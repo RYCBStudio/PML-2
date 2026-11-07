@@ -7206,6 +7206,78 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 请确认 data/Run 目录可写、磁盘空间充足后重试。.
+        /// </summary>
+        public static string Text_Download_AdviceExtract {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceExtract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请切换下载源后重试，并留意是否存在网络劫持或代理篡改。.
+        /// </summary>
+        public static string Text_Download_AdviceHashMismatch {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceHashMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 服务器暂时不可用，请稍后重试；若持续出现，请切换到另一个下载源。.
+        /// </summary>
+        public static string Text_Download_AdviceHttpStatus {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceHttpStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请确认网络稳定后重试；反复失败时请切换下载源。.
+        /// </summary>
+        public static string Text_Download_AdviceIncomplete {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请检查网络连接、DNS 与系统代理设置，稍后重试；也可以切换到另一个下载源再试。.
+        /// </summary>
+        public static string Text_Download_AdviceNetwork {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请稍后重试；若持续失败，请查看日志或切换到另一个下载源。.
+        /// </summary>
+        public static string Text_Download_AdviceUnknown {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请关闭正在占用 mefrpc 的程序，确认磁盘空间充足且目录可写后重试。.
+        /// </summary>
+        public static string Text_Download_AdviceWrite {
+            get {
+                return ResourceManager.GetString("Text.Download.AdviceWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 取消.
+        /// </summary>
+        public static string Text_Download_CancelButton {
+            get {
+                return ResourceManager.GetString("Text.Download.CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///当前线路: {1}
         ///下载速度: {0}
@@ -7226,6 +7298,114 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Download_ContentHeaderFormat {
             get {
                 return ResourceManager.GetString("Text.Download.ContentHeaderFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确定.
+        /// </summary>
+        public static string Text_Download_FailedCloseButton {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedCloseButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 文件名: {1} 平台: {2} 建议: {3} {4}.
+        /// </summary>
+        public static string Text_Download_FailedContentFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedContentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已尝试 {0} 次仍未成功，已停止下载，请稍后手动重试。.
+        /// </summary>
+        public static string Text_Download_FailedExhaustedFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedExhaustedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 解压下载的压缩包失败，文件可能已损坏或没有写入权限。.
+        /// </summary>
+        public static string Text_Download_FailedExtract {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedExtract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 文件完整性校验未通过，下载内容可能已损坏。.
+        /// </summary>
+        public static string Text_Download_FailedHashMismatch {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedHashMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下载服务器返回了异常状态（HTTP {0}）。.
+        /// </summary>
+        public static string Text_Download_FailedHttpStatusFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedHttpStatusFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下载的文件不存在、为空或大小异常，下载可能被中断。.
+        /// </summary>
+        public static string Text_Download_FailedIncomplete {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 无法连接到下载服务器，可能是网络不可用或连接超时。.
+        /// </summary>
+        public static string Text_Download_FailedNetwork {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已尝试的下载源: {0}.
+        /// </summary>
+        public static string Text_Download_FailedSourcesFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedSourcesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下载 ME Frp 客户端失败.
+        /// </summary>
+        public static string Text_Download_FailedTitle {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下载过程中发生未知错误。.
+        /// </summary>
+        public static string Text_Download_FailedUnknown {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 无法写入 data/Run 目录，可能是磁盘空间不足、文件被占用或没有权限。.
+        /// </summary>
+        public static string Text_Download_FailedWrite {
+            get {
+                return ResourceManager.GetString("Text.Download.FailedWrite", resourceCulture);
             }
         }
         
@@ -7272,6 +7452,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Download_Jokes {
             get {
                 return ResourceManager.GetString("Text.Download.Jokes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重试.
+        /// </summary>
+        public static string Text_Download_RetryButton {
+            get {
+                return ResourceManager.GetString("Text.Download.RetryButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 第 {0}/{1} 次尝试，正在重新下载 ME Frp 客户端.
+        /// </summary>
+        public static string Text_Download_RetrySubHeaderFormat {
+            get {
+                return ResourceManager.GetString("Text.Download.RetrySubHeaderFormat", resourceCulture);
             }
         }
         
@@ -8253,6 +8451,69 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Inbox_ViewDetails {
             get {
                 return ResourceManager.GetString("Text.Inbox.ViewDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 部分旧版文件正被占用，未能删除；可稍后打开 legacy 目录手动清理.
+        /// </summary>
+        public static string Text_Legacy_DeleteFailed {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 立即删除.
+        /// </summary>
+        public static string Text_Legacy_DeleteNow {
+            get {
+                return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 已删除旧版文件，回收 {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 检测到 {0} 项不属于当前版本的旧文件（共 {1}），已移入 legacy 目录：{2}。这些文件已不再被使用，可以安全删除。.
+        /// </summary>
+        public static string Text_Legacy_Message {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 位置：{0}.
+        /// </summary>
+        public static string Text_Legacy_MessagePath {
+            get {
+                return ResourceManager.GetString("Text.Legacy.MessagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 打开 legacy 目录.
+        /// </summary>
+        public static string Text_Legacy_OpenFolder {
+            get {
+                return ResourceManager.GetString("Text.Legacy.OpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 整理旧版文件.
+        /// </summary>
+        public static string Text_Legacy_Title {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Title", resourceCulture);
             }
         }
         
@@ -14193,6 +14454,24 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 更新包解压失败，已保留当前版本；可点击「重试下载」重新下载.
+        /// </summary>
+        public static string Text_Update_ExtractFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.ExtractFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 正在解压更新包….
+        /// </summary>
+        public static string Text_Update_Extracting {
+            get {
+                return ResourceManager.GetString("Text.Update.Extracting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 获取更新失败.
         /// </summary>
         public static string Text_Update_FetchFailed {
@@ -14603,6 +14882,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_VersionInfoTip {
             get {
                 return ResourceManager.GetString("Text.Update.VersionInfoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 应用内自动更新需要 26.5 起的分离式安装布局（安装目录下有启动器与 launcher.json）。当前布局不满足该条件，请从发布页手动下载安装包。.
+        /// </summary>
+        public static string Text_Update_VersionLayoutRequired {
+            get {
+                return ResourceManager.GetString("Text.Update.VersionLayoutRequired", resourceCulture);
             }
         }
         

@@ -45,6 +45,9 @@ public static class GitHubUpdateSources
     /// <summary>GitHub 官方 API</summary>
     private const string OfficialApi = "https://api.github.com";
 
+    /// <summary>TPCA（自建 Alist CDN）上 PML 2 分发包的根目录。</summary>
+    private const string TpcaDistBase = "https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp";
+
     /// <summary>把配置中的任意取值归一化为合法值（非法 / 空值回落到 <see cref="Tpca" />）。</summary>
     public static string Normalize(string? value)
     {
@@ -112,4 +115,23 @@ public static class GitHubUpdateSources
         var prefix = GetDownloadPrefix(source);
         return string.IsNullOrEmpty(prefix) ? browserDownloadUrl : prefix + browserDownloadUrl;
     }
+
+    /// <summary>
+    ///     拼接 TPCA（自建 Alist CDN）线路上的<b>应用内更新 zip</b> 地址。
+    ///     <para>
+    ///         目录约定与其它分发包完全一致（维护者只需把 Release 里的 zip 原样上传）：
+    ///         Windows 按版本号分子目录，macOS / Linux 直接平铺在各自的 distributions 目录下。
+    ///     </para>
+    ///     <para>文件名规则与发布工作流产出一致：<c>pml2-{version}-{os}-{arch}-{mode}.zip</c>。</para>
+    /// </summary>
+    /// <param name="fileName">文件名，由 <see cref="GitHubReleaseService.BuildUpdatePackageName" /> 产出</param>
+    /// <param name="version">版本号（不含前导 v）</param>
+    /// <param name="platform">平台标记（windows / macos / linux）</param>
+    public static string BuildTpcaUpdatePackageUrl(string fileName, string version, string platform) =>
+        platform switch
+        {
+            "windows" => $"{TpcaDistBase}/windows-distributions/{version}/{fileName}",
+            "macos" => $"{TpcaDistBase}/macos-distributions/{fileName}",
+            _ => $"{TpcaDistBase}/linux-distributions/{fileName}"
+        };
 }

@@ -84,7 +84,8 @@ jobs:
         if: matrix.os_name == 'linux'
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y clang zlib1g-dev
+          # zip 用于打「应用内更新包」（见下方 Pack update zip 步骤）
+          sudo apt-get install -y clang zlib1g-dev zip
 
       - name: Resolve version
         id: ver
@@ -423,8 +424,117 @@ jobs:
           bash tools/stage-layout.sh "$PUB" "$LAUNCHER" "$STAGE" "$VERSION" "${{ matrix.mode }}"
 
           # 四个平台统一在此产出 dist/layout（PML 2(.exe) + vXXX/ + data/ + launcher.json）。
-          # 后续 tar/deb/rpm/.app 与 Windows 的 ISCC 都以它为唯一输入。
+          # 后续 tar/deb/rpm/.app、Windows 的 ISCC 以及应用内更新 zip 都以它为唯一输入。
           ls -la "$STAGE" || true
+
+      # ========== 应用内更新包（zip，26.5.1）==========
+      # 与安装包的语义区分：
+      #   安装包（exe / dmg / deb / rpm / tar.gz）→ 面向用户手动下载安装（含首次安装）；
+      #   zip                                     → 仅供**应用内自动更新**下载后解压。
+      #
+      # zip 内容 = dist/layout/vXXX/ 的**内容本身**（不含 vXXX 这一层）：
+      # 应用内更新只新增一个版本目录，启动器（PML 2）与 data/ 都是版本无关的，
+      # 因此解压目标就是安装根下的新 vXXX，不需要重装，也不会多套一层父目录。
+      #
+      # 命名必须与 assets 挑选逻辑（GitHubReleaseService.ScoreAsset）严格对齐：
+      #   pml2-{version}-{os}-{arch}-{mode}.zip
+      #   os   ∈ windows | linux | macos
+      #   arch ∈ x64 | arm64
+      #   mode ∈ aot | r2r（ReadyToRun）
+      - name: Pack update zip (Linux/macOS)
+        if: matrix.os_name != 'windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          V="${{ steps.ver.outputs.version }}"
+          LAYOUT="${{ github.workspace }}/dist/layout/v${V}"
+          DIST="${{ github.workspace }}/dist"
+          ZIP="pml2-${V}-${{ matrix.os_name }}-${{ matrix.arch }}-${{ matrix.mode }}.zip"
+
+          if [ ! -d "$LAYOUT" ]; then
+            echo "ERROR: 版本目录缺失: $LAYOUT（Stage versioned layout 未执行或失败）"
+            ls -la "$DIST" || true
+            exit 1
+          fi
+
+          mkdir -p "$DIST"
+          rm -f "$DIST/$ZIP"
+
+          # 在版本目录**内部**打包，条目因此是相对路径（解压即得到 vXXX/ 的内容）。
+          # 刻意不加 -y：符号链接按实体文件存储 —— .NET 的 ZipFile 解压不会还原
+          # 符号链接（会解成一个内容为链接目标的普通文件），存实体才是安全的。
+          ( cd "$LAYOUT" && zip -qr -9 "$DIST/$ZIP" . )
+
+          if [ ! -s "$DIST/$ZIP" ]; then
+            echo "ERROR: zip 未生成或为空: $DIST/$ZIP"
+            exit 1
+          fi
+
+          # 包内顶层必须是主程序本身，而不是 vXXX/ 或 dist/ 之类的父目录。
+          # 部分 zip 实现会给条目加 "./" 前缀（解压结果等价），因此先归一化再判断；
+          # 用 unzip -Z1 列清单（Linux/macOS 均自带 unzip，不必额外装 zipinfo）。
+          LIST="${RUNNER_TEMP:-/tmp}/pml2-zip-list.txt"
+          unzip -Z1 "$DIST/$ZIP" | sed 's|^\./||' > "$LIST"
+          grep -qx "MEFrpLauncherX" "$LIST"
+          echo "zip entries: $(wc -l < "$LIST")"
+          rm -f "$LIST"
+          ls -lh "$DIST/$ZIP"
+
+      - name: Pack update zip (Windows)
+        if: matrix.os_name == 'windows'
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $V = $env:VERSION
+          $layout = Join-Path $env:GITHUB_WORKSPACE "dist/layout/v$V"
+          if (-not (Test-Path $layout)) { throw "版本目录缺失: $layout" }
+
+          $dist = Join-Path $env:GITHUB_WORKSPACE 'dist'
+          New-Item -ItemType Directory -Force -Path $dist | Out-Null
+          $zip = Join-Path $dist "pml2-$V-${{ matrix.os_name }}-${{ matrix.arch }}-${{ matrix.mode }}.zip"
+          if (Test-Path $zip) { Remove-Item -Force $zip }
+
+          # 首选内置 Compress-Archive：无需外部工具，条目取通配符父目录的相对路径
+          #（解压即得到 vXXX/ 的内容），行为已在本机验证。
+          # 失败时用 windows runner 预装的 7-Zip 兜底。
+          $packed = $false
+          try {
+            Compress-Archive -Path (Join-Path $layout '*') -DestinationPath $zip -CompressionLevel Optimal
+            $packed = $true
+          } catch {
+            Write-Host "Compress-Archive 失败（$($_.Exception.Message)），改用 7-Zip"
+          }
+
+          if (-not $packed) {
+            $sevenZip = 'C:\Program Files\7-Zip\7z.exe'
+            if (-not (Test-Path $sevenZip)) { throw "打包失败：Compress-Archive 与 7-Zip 均不可用" }
+            Push-Location $layout
+            try {
+              & $sevenZip a -tzip -mx=9 -y $zip '.\*' | Out-Null
+              if ($LASTEXITCODE -ne 0) { throw "7z 打包失败（exit $LASTEXITCODE）" }
+            } finally {
+              Pop-Location
+            }
+          }
+
+          if (-not (Test-Path $zip) -or (Get-Item $zip).Length -le 0) { throw "zip 未生成或为空: $zip" }
+
+          # 包内顶层必须是主程序本身（用 .NET ZipFile 校验条目，避免依赖外部工具）
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $names = @($archive.Entries | ForEach-Object { $_.FullName })
+            if ($names -notcontains 'MEFrpLauncherX.exe') {
+              $preview = ($names | Select-Object -First 5) -join ', '
+              throw "zip 顶层缺少 MEFrpLauncherX.exe（条目示例: $preview）"
+            }
+          } finally {
+            $archive.Dispose()
+          }
+
+          Write-Host "update zip: $zip（$((Get-Item $zip).Length) 字节）"
 
       # ========== Linux 打包 ==========
       - name: Install zstd (Ubuntu)
@@ -813,6 +923,9 @@ jobs:
           # dist/layout 是打包用中间产物：Windows 侧在 ISCC 之后已删除，非 Windows 侧会保留。
           # 必须在这里排除，否则 release 任务的 "Flatten files" 会把整棵布局树
           # （`find artifacts -type f`）展开成几百个零散的 release 附件。
+          #
+          # 注意：应用内更新 zip 落在 dist/ **根目录**（pml2-<ver>-<os>-<arch>-<mode>.zip），
+          # 不在 dist/layout 之下，因此不会被上面的排除规则误伤。
           path: |
             ${{ github.workspace }}/dist/*
             !${{ github.workspace }}/dist/layout/**

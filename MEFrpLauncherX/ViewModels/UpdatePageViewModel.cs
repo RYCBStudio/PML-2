@@ -224,21 +224,6 @@ public class UpdatePageViewModel : ViewModelBase
     }
 
     /// <summary>
-    ///     依据「旧版本目录」策略产出本次升级应传给安装器的清理开关。
-    ///     <para>
-    ///         对应关系：<c>Keep</c> → <c>/nocleanup</c>（保留回滚点），
-    ///         <c>Discard</c> → <c>/cleanup</c>（安装后删除全部历史版本目录）。
-    ///         两者都不需要传参（安装器默认即保留回滚点）。
-    ///     </para>
-    /// </summary>
-    public string BuildVersionCleanupArgument() => KeepOldVersionChoice switch
-    {
-        UpdateSettings.UpdateOldVersionValues.Keep => " /nocleanup",
-        UpdateSettings.UpdateOldVersionValues.Discard => " /cleanup",
-        _ => string.Empty
-    };
-
-    /// <summary>
     ///     0 - 稳定通道
     ///     1 - 预览通道
     /// </summary>
@@ -510,37 +495,28 @@ public class UpdatePageViewModel : ViewModelBase
         FailureTip = null;
         ProgressValue = 0;
 
-        // ===== 1. 解析下载源与临时文件名 =====
-        string tempFileName;
-        string systemTip; // 下载完成后的安装提示
-
-        if (OperatingSystem.IsWindows())
+        // ===== 1. 前置判定：应用内更新只支持 zip + 分离式布局 =====
+        // 26.5.1 起的语义区分：
+        //   安装包（exe / dmg / deb / rpm / tar.gz）→ 仅面向用户**手动**下载安装；
+        //   zip                                   → 应用内自动更新专用（解压进新的 vXXX\）。
+        // 这套流程依赖安装根下的启动器与 launcher.json；开发态 / ≤26.4 的扁平布局
+        // 没有启动器来加载新版本目录，只能到发布页手动下载安装包。
+        if (!Core.AppPaths.IsVersionedLayout)
         {
-            tempFileName = $"update_tmp_{LatestVersion}.exe";
-            systemTip = Languages.Text_Update_InstallTipWindows;
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
-            tempFileName = $"update_tmp_{LatestVersion}.dmg";
-            systemTip = Languages.Text_Update_InstallTipMacOS;
-        }
-        else if (OperatingSystem.IsLinux())
-        {
-            tempFileName = $"update_tmp_{LatestVersion}.deb";
-            systemTip = Languages.Text_Update_InstallTipLinux;
-        }
-        else
-        {
-            await MessageBox.ShowAsync(Languages.Text_Update_AutoUpdateNotSupported, Languages.Text_Update_UnsupportedSystem,
-                MessageBoxIcon.Error);
+            Core.App.CurrentLogger?.Warning("当前不是版本化安装布局，应用内自动更新不可用",
+                module: EnumLogModule.Update);
             IsLoading = false;
             IsIdle = true;
+            Icon = Icons.ERROR;
+            Status = Languages.Text_Update_VersionLayoutRequired;
+            FailureTip = Languages.Text_Update_VersionLayoutRequired;
             return;
         }
 
+        // ===== 2. 解析下载源（两条线路都返回 zip 更新包） =====
         var resolved = await ResolveDownloadAsync();
 
-        // 解析失败（GitHub 线路下无匹配资产 / 网络不可用）时进入失败态，保留重试入口
+        // 解析失败（GitHub 线路下无匹配 zip / 网络不可用）时进入失败态，保留重试入口
         if (resolved is null)
         {
             EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, null);
@@ -548,29 +524,11 @@ public class UpdatePageViewModel : ViewModelBase
         }
 
         var downloadUrl = resolved.Url;
-        // 按实际资产扩展名修正临时文件名与安装提示（GitHub 线路下包格式可能不是 deb）
-        if (!string.IsNullOrEmpty(resolved.AssetName))
-        {
-            var ext = GitHubReleaseService.PickInstallExtension(resolved.AssetName);
-            if (OperatingSystem.IsWindows() && ext != "exe")
-            {
-                EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, null);
-                return;
-            }
 
-            tempFileName = $"update_tmp_{LatestVersion}.{ext}";
-            if (OperatingSystem.IsLinux())
-            {
-                systemTip = ext switch
-                {
-                    "rpm" => Languages.Text_Update_InstallTipLinuxRpm,
-                    "tar.gz" or "tar.zst" => Languages.Text_Update_InstallTipLinuxTar,
-                    _ => Languages.Text_Update_InstallTipLinux
-                };
-            }
-        }
+        // 临时文件名固定为 .zip：更新包只有一种格式，不再按 deb / exe / dmg 推断安装方式
+        var tempFileName = $"update_tmp_{LatestVersion}{UpdatePackageService.PackageExtension}";
 
-        // ===== 2. 下载配置（复用原有逻辑） =====
+        // ===== 3. 下载配置（复用原有逻辑） =====
         var DownloadOpt = new DownloadConfiguration
         {
             BufferBlockSize = 1024 * 32,
@@ -593,7 +551,7 @@ public class UpdatePageViewModel : ViewModelBase
             }
         };
 
-        // ===== 3. 初始化下载器并开始下载 =====
+        // ===== 4. 初始化下载器并开始下载 =====
         downloader = new DownloadService(DownloadOpt);
         downloader.DownloadStarted += DownloaderOnDownloadStarted;
         downloader.DownloadProgressChanged += DownloaderOnDownloadProgressChanged;
@@ -601,7 +559,7 @@ public class UpdatePageViewModel : ViewModelBase
 
         var savePath = Path.Combine(Core.AppPaths.CacheDirectory, tempFileName);
 
-        // ===== 3.5 下载（失败不再静默：明确文案 + 重试入口） =====
+        // ===== 5. 下载（失败不再静默：明确文案 + 重试入口） =====
         try
         {
             await downloader.DownloadFileTaskAsync(downloadUrl, savePath);
@@ -625,8 +583,8 @@ public class UpdatePageViewModel : ViewModelBase
             return;
         }
 
-        // ===== 4. 下载完成后处理 =====
-        Core.App.CurrentLogger?.Log("下载更新完成", module: EnumLogModule.Update);
+        // ===== 6. 下载完成后处理 =====
+        Core.App.CurrentLogger?.Log("下载更新包完成", module: EnumLogModule.Update);
         IsLoading = false;
         IsIdle = true;
         Icon = Icons.LATEST;
@@ -638,64 +596,99 @@ public class UpdatePageViewModel : ViewModelBase
         }
         catch
         {
-        } // Windows 自动安装逻辑保留，Linux/macOS 仅打开目录+提示
-
-        if (UpdateMethod != 0 || !OperatingSystem.IsWindows())
-        {
-            if (await MessageBox.ShowAsync($"{systemTip}", Languages.Text_Update_DownloadCompleted, ButtonEnum.YesNo) == MessageBoxResult.Yes)
-            {
-                OpenFileInExplorer(savePath);
-                return;
-            }
+            // 忽略：任务栏进度条只是辅助反馈
         }
 
-        // 26.5.0（分离式布局）：配置备份 / 还原整体移除。
-        // 旧布局下更新会原地覆盖程序目录，配置可能被新版本重写，因此才需要
-        // 「先备份 Settings.json + 记住材质，启动时再合并回来」（见 ConfigManager.LoadConfig
-        // 中对 BackupConfigPath 的处理）。现在代码在 vXXX\、配置在 data\，
-        // 升级只新增版本目录、data\ 全程不被覆盖 —— 备份与还原都成了无意义的历史包袱。
-        //
-        // 仅 Windows 执行自动安装
-        if (OperatingSystem.IsWindows())
+        // 「仅下载 / 手动下载」模式：只把 zip 放进 data/Cache，询问是否打开所在目录
+        if (UpdateMethod != 0)
         {
-            Core.App.CurrentLogger?.Log("正在安装更新", module: EnumLogModule.Update);
+            if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info,
+                    ButtonEnum.YesNo) == MessageBoxResult.Yes)
+            {
+                OpenFileInExplorer(savePath);
+            }
 
-            // 26.5.0（分离式布局）：安装器不再需要「卸载旧版」来腾位置，也不会原地覆盖 ——
-            // 它只往安装根新增一个 vXXX\ 版本目录并改写 launcher.json，data\ 原样保留。
-            // 因此不再需要按「编译类型是否相同」传 /nocleanup（那是旧布局的残留参数），
-            // 也不需要 /nodownload（离线安装包根本没有下载步骤）。
-            // 旧版本目录的去留由用户决定：Ask 先问，Keep/Discard 直接沿用设置。
-            var cleanupArg = await ResolveVersionCleanupArgumentAsync();
+            return;
+        }
 
-            await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info,
-                MessageBoxIcon.Info);
+        // ===== 7. 解压并切换版本（不再调用任何系统安装器） =====
+        Status = Languages.Text_Update_Extracting;
+        Icon = Icons.DOWNLOAD;
+        IsLoading = true;
+        // 解压阶段没有可用的字节进度：切到不确定进度，避免进度条停在 100% 造成误解
+        IsIdle = true;
 
-            var installArgs = "/silent /sp- /nocancel" + cleanupArg;
+        // 旧版本目录的去留：Ask 先问（没有可清理的旧目录时直接保留），Keep / Discard 沿用设置
+        var removeOldVersions = await ResolveRemoveOldVersionsAsync();
 
-            Core.App.CurrentLogger?.Log($"更新安装参数: {installArgs}", module: EnumLogModule.Update);
+        // 解压属于磁盘密集型操作，放到线程池执行，避免卡住 UI 线程
+        var applyResult = await Task.Run(() => UpdatePackageService.Apply(
+            savePath, LatestVersion, removeOldVersions, Core.App.CurrentLogger));
 
-            Process.Start(
-                new ProcessStartInfo(savePath)
-                    { UseShellExecute = true, Arguments = installArgs });
+        IsLoading = false;
+        IsIdle = true;
+
+        if (!applyResult.Success)
+        {
+            // 解压 / 槽位写入失败：保留「重试下载」入口（重新下载并重试落地）。
+            // 这种失败与网络无关，提示不要引导用户“切换下载源”，而是直接给解压失败文案。
+            EnterDownloadFailedState(Languages.Text_Update_ExtractFailed, null);
+            FailureTip = Languages.Text_Update_ExtractFailed;
+            return;
+        }
+
+        // 更新包已落地进版本目录，zip 本体不再需要（继续保留只会占用 data/Cache）
+        try
+        {
+            File.Delete(savePath);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Warning($"删除更新包缓存失败: {ex.Message}", module: EnumLogModule.Update);
+        }
+
+        // 刷新「可清理版本」统计（设置页与更新页共用）
+        RefreshVersionStorage();
+
+        Icon = Icons.LATEST;
+        Status = Languages.Text_Update_DownloadCompleted;
+        Core.App.CurrentLogger?.Log(
+            $"更新包已安装到 {applyResult.VersionFolder}（清理旧版本: {(removeOldVersions ? "是" : "否")}），重启后生效",
+            module: EnumLogModule.Update);
+
+        await MessageBox.ShowAsync(Languages.Text_Update_RestartToInstall, Languages.Caption_Info, MessageBoxIcon.Info);
+
+        // 重启交给安装根下的启动器：它读取 launcher.json 后进入新的 vXXX 目录。
+        // 不可直接启动 MEFrpLauncherX.exe —— 那会跳过版本管理，还锁死在旧目录上。
+        Core.App.CurrentLogger?.Log("正在重启到新版本", module: EnumLogModule.Update);
+        Core.AppPaths.RestartViaLauncher();
+
+        // 走统一退出入口（先给所有终端发 Ctrl+C 停掉隧道），避免更新后残留 mefrpc 进程占端口
+        if (Views.MainWindow.Instance is { } mainWindow)
+        {
+            mainWindow.ExitApplication();
+        }
+        else
+        {
             App.Desktop.Shutdown();
         }
     }
 
     /// <summary>
-    ///     依据「旧版本目录」策略产出本次升级的安装器参数（26.5.0）。
+    ///     依据「旧版本目录」策略决定本次升级是否连回滚点一起清理（26.5.1）。
     ///     <para>
     ///         策略为 <c>Ask</c> 时弹窗让用户在「保留（可回滚）」与「删除（省空间）」之间选择；
     ///         仅当确实存在可清理的旧版本目录时才询问 —— 没有旧目录时问了也是废话。
     ///         选择结果会写回设置，下次升级不再重复询问。
     ///     </para>
     /// </summary>
-    /// <returns>传给安装器的参数字符串（可能为空串）</returns>
-    private async Task<string> ResolveVersionCleanupArgumentAsync()
+    /// <returns>true 表示连回滚点一起删除；false 表示保留回滚点</returns>
+    private async Task<bool> ResolveRemoveOldVersionsAsync()
     {
-        // 非版本化布局（开发态 / ≤26.4）没有版本目录概念，安装器参数无意义
+        // 非版本化布局（开发态 / ≤26.4）没有版本目录概念，无从清理
         if (!Core.AppPaths.IsVersionedLayout)
         {
-            return string.Empty;
+            return false;
         }
 
         if (KeepOldVersionChoice == UpdateSettings.UpdateOldVersionValues.Ask)
@@ -704,14 +697,14 @@ public class UpdatePageViewModel : ViewModelBase
             if (inspection.Removable.Count == 0)
             {
                 // 本次升级不会产生历史目录（首个版本化安装 / 上次已清理干净）
-                return " /nocleanup";
+                return false;
             }
 
             var keep = await AskKeepOldVersionAsync(inspection);
             if (keep is null)
             {
-                // 用户关闭了弹窗：按安装器默认值（保留回滚点）处理
-                return " /nocleanup";
+                // 用户关闭了弹窗：按默认值（保留回滚点）处理
+                return false;
             }
 
             KeepOldVersionChoice = keep.Value ? UpdateSettings.UpdateOldVersionValues.Keep
@@ -719,7 +712,7 @@ public class UpdatePageViewModel : ViewModelBase
             ConfigManager.UpdateConfig(cfg => cfg.UpdateSettings.KeepOldVersion = KeepOldVersionChoice);
         }
 
-        return BuildVersionCleanupArgument();
+        return KeepOldVersionChoice == UpdateSettings.UpdateOldVersionValues.Discard;
     }
 
     /// <summary>
@@ -800,35 +793,19 @@ public class UpdatePageViewModel : ViewModelBase
     };
 
     /// <summary>
-    ///     按平台拼接 TPCA（自建 Alist CDN）线路的更新包下载地址。
-    /// </summary>
-    private static string BuildAlistDownloadUrl(PlatformID platform, string latestVersion)
-    {
-        return platform switch
-        {
-            PlatformID.Win32NT =>
-                // 26.5.0：编译类型固定为当前运行时（AOT 包名带 "%20AOT" 后缀），
-                // 不再取用户配置 —— 否则可能下到另一种编译产物。
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/windows-distributions/{latestVersion}/pml2_setup%20{latestVersion}{(Core.App.ReleaseFlag == "AOT" ? "%20AOT" : "")}.exe",
-            PlatformID.MacOSX =>
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/macos-distributions/pml2-{latestVersion}-macos-x64.dmg",
-            PlatformID.Unix =>
-                $"https://alist.yealqp.cn/download/ME-Frp%20PML2/mefrp/linux-distributions/pml2-{latestVersion}-linux-x64.deb",
-            _ => throw new NotSupportedException($"Unsupported platform: {platform}")
-        };
-    }
-
-    /// <summary>
-    ///     解析出的下载目标：URL 与 GitHub 资产名（TPCA 线路下资产名为 null）。
+    ///     解析出的下载目标：URL 与资产名（TPCA 线路下也提供，由命名规则拼出）。
     /// </summary>
     private sealed record ResolvedDownload(string Url, string? AssetName);
 
     /// <summary>
-    ///     按当前「下载源」解析更新包下载地址。
+    ///     按当前「下载源」解析更新包（zip）下载地址。
     ///     <para>
-    ///         TPCA 线路直接拼接 Alist CDN 地址；GitHub 线路通过 GitHub REST API
-    ///         获取 Release 资产列表，挑选与本机平台 / 架构 / 编译类型匹配的安装包，
-    ///         并按「镜像前缀 + 原始下载地址」拼接（与 install.sh 的规则一致）。
+    ///         两条线路解析到的都是同一份东西 —— <b>应用内更新 zip</b>，与安装包完全无关：
+    ///         <list type="bullet">
+    ///             <item>TPCA：按「版本 + 平台 + 架构 + 编译类型」直接拼 Alist CDN 地址；</item>
+    ///             <item>GitHub 线路：通过 REST API 拉 Release，挑选同名 zip 资产，
+    ///                   并按「镜像前缀 + 原始下载地址」拼接（与 install.sh 的规则一致）。</item>
+    ///         </list>
     ///     </para>
     /// </summary>
     /// <returns>解析结果；失败返回 null（原因已记日志）</returns>
@@ -836,14 +813,26 @@ public class UpdatePageViewModel : ViewModelBase
     {
         var source = ConfigManager.CurrentConfig.UpdateSettings.DownloadSource;
 
+        // 文件名与发布工作流产出一致：pml2-{version}-{os}-{arch}-{mode}.zip
+        var fileName = GitHubReleaseService.BuildUpdatePackageName(LatestVersion);
+        if (fileName is null)
+        {
+            Core.App.CurrentLogger?.Warning(
+                $"无法确定本机平台 / 架构的更新包名（{RuntimeInformation.RuntimeIdentifier}）",
+                module: EnumLogModule.Update);
+            return null;
+        }
+
         if (!GitHubUpdateSources.IsGitHub(source))
         {
-            var platform = OperatingSystem.IsWindows()
-                ? PlatformID.Win32NT
-                : OperatingSystem.IsMacOS()
-                    ? PlatformID.MacOSX
-                    : PlatformID.Unix;
-            return new ResolvedDownload(BuildAlistDownloadUrl(platform, LatestVersion), null);
+            var platform = GitHubReleaseService.PlatformTag;
+            if (platform is null)
+            {
+                return null;
+            }
+
+            return new ResolvedDownload(
+                GitHubUpdateSources.BuildTpcaUpdatePackageUrl(fileName, LatestVersion, platform), fileName);
         }
 
         var asset = await SelectGitHubAssetAsync(_failedAssetNames);

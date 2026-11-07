@@ -5,16 +5,22 @@ using MEFrpLauncherX.Core.Models;
 namespace MEFrpLauncherX.Core.Services;
 
 /// <summary>
-///     GitHub Release 查询与资产挑选（26.4）。
+///     GitHub Release 查询与资产挑选（26.4，26.5.1 改为 zip 更新包）。
 ///     <para>
 ///         设计要点：
 ///         <list type="bullet">
 ///             <item>API 依次尝试「当前线路 → 其他镜像线路 → 官方」，任一成功即返回（对齐 install.sh 的多源回退）；</item>
 ///             <item>tag 先试 <c>v{version}</c> 再试 <c>{version}</c>；</item>
 ///             <item>结果写入统一缓存（5 分钟），避免反复消耗 GitHub 匿名接口额度；</item>
-///             <item>资产挑选按「平台 / 架构」硬过滤，再按「版本号、编译类型、包格式」打分，
+///             <item>资产挑选按「平台 / 架构 / 包格式」硬过滤，再按「版本号、编译类型」打分，
 ///                   并支持排除指定资产（供下载失败后「重试」挑选替代包）。</item>
 ///         </list>
+///     </para>
+///     <para>
+///         <b>包格式语义（26.5.1 起）：</b>Release 里同时存在两类资产 ——
+///         <c>exe / dmg / deb / rpm / tar.gz</c> 面向用户手动下载安装；
+///         <c>zip</c> 是应用内自动更新专用（解压进新的 <c>vXXX\</c> 版本目录）。
+///         应用内更新因此只接受 zip。
 ///     </para>
 /// </summary>
 public static class GitHubReleaseService
@@ -183,9 +189,10 @@ public static class GitHubReleaseService
     }
 
     /// <summary>
-    ///     从 Release 中挑选与当前运行环境匹配的安装包。
+    ///     从 Release 中挑选与当前运行环境匹配的<b>应用内更新包</b>（zip）。
     ///     <br />
-    ///     硬过滤：平台与 CPU 架构必须匹配；软打分：版本号、编译类型、包格式、在线包优先。
+    ///     硬过滤：包格式必须是 zip（安装包 exe/dmg/deb/rpm/tar.gz 不参与自动更新）、
+    ///     平台与 CPU 架构必须匹配；软打分：版本号、编译类型。
     /// </summary>
     /// <param name="release">Release 信息</param>
     /// <param name="version">目标版本号，用于优先选择文件名含完整版本号的资产</param>
@@ -195,8 +202,8 @@ public static class GitHubReleaseService
     public static GitHubAsset? SelectAsset(GitHubRelease release, string version, string? compileType,
         IReadOnlyCollection<string>? excludedNames = null)
     {
-        var platform = GetPlatformTag();
-        var arch = GetArchTag();
+        var platform = PlatformTag;
+        var arch = ArchTag;
         if (platform is null || arch is null)
         {
             App.CurrentLogger?.Warning(
@@ -240,42 +247,40 @@ public static class GitHubReleaseService
         {
             var reason = excludedNames is { Count: > 0 } ? "（已排除上次失败的资产）" : string.Empty;
             App.CurrentLogger?.Warning(
-                $"Release {release.TagName} 中没有匹配 {platform}-{arch} 的安装包" +
+                $"Release {release.TagName} 中没有匹配 {platform}-{arch} 的更新包（.zip）" +
                 $"（目标编译类型: {(wantAot ? "AOT" : "Common")}）{reason}",
                 module: EnumLogModule.Update);
             return null;
         }
 
-        App.CurrentLogger?.Log($"已选择 GitHub 资产: {best.Name}（{best.Size} 字节，评分 {bestScore}）",
+        App.CurrentLogger?.Log($"已选择 GitHub 更新包: {best.Name}（{best.Size} 字节，评分 {bestScore}）",
             module: EnumLogModule.Update);
         return best;
     }
 
     /// <summary>
-    ///     为资产打分。返回负值表示平台 / 架构不匹配（不可用）。
+    ///     为资产打分。返回负值表示不可用（不是 zip，或平台 / 架构不匹配）。
     /// </summary>
     private static int ScoreAsset(string name, string platform, string arch, string version, string shortVersion,
         bool wantAot)
     {
         var lower = name.ToLowerInvariant();
 
-        // ---------- 1. 平台硬过滤（按文件扩展名判定） ----------
-        var platformMatched = platform switch
-        {
-            "windows" => lower.EndsWith(".exe", StringComparison.Ordinal),
-            "macos" => lower.EndsWith(".dmg", StringComparison.Ordinal),
-            "linux" => lower.EndsWith(".deb", StringComparison.Ordinal) ||
-                       lower.EndsWith(".rpm", StringComparison.Ordinal) ||
-                       lower.EndsWith(".tar.gz", StringComparison.Ordinal) ||
-                       lower.EndsWith(".tar.zst", StringComparison.Ordinal),
-            _ => false
-        };
-        if (!platformMatched)
+        // ---------- 1. 包格式：应用内更新只认 zip ----------
+        // 安装包（exe / dmg / deb / rpm / tar.gz）仅供用户手动下载安装，
+        // 自动更新不会调用系统安装器，因此在这里直接排除，避免误选后又解不开。
+        if (!lower.EndsWith(UpdatePackageService.PackageExtension, StringComparison.Ordinal))
         {
             return -1;
         }
 
-        // ---------- 2. 架构硬过滤 ----------
+        // ---------- 2. 平台硬过滤（按文件名中的平台标记） ----------
+        if (!lower.Contains(platform, StringComparison.Ordinal))
+        {
+            return -1;
+        }
+
+        // ---------- 3. 架构硬过滤 ----------
         var isArm = arch == "arm64";
         if (isArm != lower.Contains("arm64", StringComparison.Ordinal))
         {
@@ -284,7 +289,7 @@ public static class GitHubReleaseService
 
         var score = 10;
 
-        // ---------- 3. 版本号：文件名含完整版本号（含 -previewN）优先级最高 ----------
+        // ---------- 4. 版本号：文件名含完整版本号（含 -previewN）优先级最高 ----------
         if (!string.IsNullOrEmpty(version) && lower.Contains(version.ToLowerInvariant(), StringComparison.Ordinal))
         {
             score += 100;
@@ -295,26 +300,12 @@ public static class GitHubReleaseService
             score += 40;
         }
 
-        // ---------- 4. 编译类型：AOT 期待 aot 标记，Common 期待 r2r / 无标记 ----------
+        // ---------- 5. 编译类型：AOT 期待 aot 标记，Common 期待 r2r / 无标记 ----------
         var hasAot = lower.Contains("aot", StringComparison.Ordinal);
         var hasR2R = lower.Contains("r2r", StringComparison.Ordinal);
         score += wantAot
             ? hasAot ? 30 : -20
             : hasR2R ? 30 : hasAot ? -20 : 0;
-
-        // ---------- 5. 包格式偏好（Linux 优先 deb，与 TPCA 线路的历史行为一致） ----------
-        score += platform switch
-        {
-            "linux" when lower.EndsWith(".deb", StringComparison.Ordinal) => 20,
-            "linux" when lower.EndsWith(".rpm", StringComparison.Ordinal) => 10,
-            _ => 0
-        };
-
-        // ---------- 6. 在线安装包优先于离线包（体积更小，与既有行为一致） ----------
-        if (lower.Contains("offline", StringComparison.Ordinal))
-        {
-            score -= 15;
-        }
 
         return score;
     }
@@ -334,23 +325,26 @@ public static class GitHubReleaseService
     }
 
     /// <summary>当前平台的资产平台标识（与 GitHub 资产命名保持一致）。</summary>
-    private static string? GetPlatformTag()
+    public static string? PlatformTag
     {
-        if (OperatingSystem.IsWindows())
+        get
         {
-            return "windows";
-        }
+            if (OperatingSystem.IsWindows())
+            {
+                return "windows";
+            }
 
-        if (OperatingSystem.IsMacOS())
-        {
-            return "macos";
-        }
+            if (OperatingSystem.IsMacOS())
+            {
+                return "macos";
+            }
 
-        return OperatingSystem.IsLinux() ? "linux" : null;
+            return OperatingSystem.IsLinux() ? "linux" : null;
+        }
     }
 
     /// <summary>当前 CPU 架构的资产标识。</summary>
-    private static string? GetArchTag() =>
+    public static string? ArchTag =>
         System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture switch
         {
             System.Runtime.InteropServices.Architecture.X64 => "x64",
@@ -359,20 +353,28 @@ public static class GitHubReleaseService
         };
 
     /// <summary>
-    ///     根据资产文件名推断安装包扩展名（小写，不含点），供保存临时文件与安装提示使用。
+    ///     当前运行时的编译类型标记（与发布工作流的 <c>matrix.mode</c> 对齐）。
+    ///     <para>
+    ///         应用内更新包必须与当前运行时同一编译类型：AOT ↔ ReadyToRun 无法混用。
+    ///     </para>
     /// </summary>
-    public static string PickInstallExtension(string assetName)
+    public static string UpdateModeTag =>
+        string.Equals(App.ReleaseFlag, "AOT", StringComparison.OrdinalIgnoreCase) ? "aot" : "r2r";
+
+    /// <summary>
+    ///     按发布工作流的命名规则拼出本机应下载的更新包文件名：
+    ///     <c>pml2-{version}-{os}-{arch}-{mode}.zip</c>。
+    ///     无法确定平台 / 架构时返回 null。
+    /// </summary>
+    public static string? BuildUpdatePackageName(string version)
     {
-        var lower = assetName.ToLowerInvariant();
-        foreach (var ext in new[] { ".tar.gz", ".tar.zst", ".deb", ".rpm", ".dmg", ".exe" })
+        var platform = PlatformTag;
+        var arch = ArchTag;
+        if (platform is null || arch is null || string.IsNullOrWhiteSpace(version))
         {
-            if (lower.EndsWith(ext, StringComparison.Ordinal))
-            {
-                return ext.TrimStart('.');
-            }
+            return null;
         }
 
-        var dot = lower.LastIndexOf('.');
-        return dot >= 0 && dot < lower.Length - 1 ? lower[(dot + 1)..] : "bin";
+        return $"pml2-{version}-{platform}-{arch}-{UpdateModeTag}.zip";
     }
 }
