@@ -31,11 +31,38 @@
             <StackPanel Margin="10" Classes="animated">
                 <controls1:FASettingsExpander Description="Copyright (c) 2026 RYCB Studio, All Rights Reserved."
                                             IsExpanded="True">
-                    <controls1:FASettingsExpander.IconSource>
-                        <controls1:FAImageIconSource
-                            Source="/Assets/meflx.png">
-                        </controls1:FAImageIconSource>
-                    </controls1:FASettingsExpander.IconSource>
+                    <controls1:FASettingsExpander.Header>
+                        <!--
+                            应用图标（取代原来的 FAImageIconSource）。
+                            图标必须是可命中测试的元素，才能承载「连点 N 次触发传送门彩蛋」；
+                            布局与原 IconSource + SettingsExpanderItemContentMargin(42) 一致：
+                            图标 24px、右边距 18px，正文仍从 42px 开始。
+                            点击不标记 Handled，图标「点击切换展开状态」的原有行为保持不变。
+                        -->
+                        <Grid ColumnDefinitions="24,18,*">
+                            <Image
+                                Grid.Column="0"
+                                Width="24"
+                                Height="24"
+                                Source="/Assets/meflx.png"
+                                Stretch="Uniform"
+                                VerticalAlignment="Center"
+                                Cursor="Hand"
+                                PointerPressed="AppIcon_PointerPressed" />
+                            <TextBlock
+                                Grid.Column="2"
+                                FontFamily="{StaticResource GlobalFontFamily}"
+                                Theme="{StaticResource BodyStrongTextBlockStyle}"
+                                PointerPressed="EnableDebugMode">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="PML {0} ({1})">
+                                        <Binding Source="{x:Static core:App.Version}" />
+                                        <Binding Source="{x:Static core:App.ReleaseFlag}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </controls1:FASettingsExpander.Header>
                     <controls1:FASettingsExpander.Footer>
                         <StackPanel>
                             <TextBlock Margin="20 0 0  0"
@@ -64,19 +91,6 @@
                             </StackPanel>
                         </StackPanel>
                     </controls1:FASettingsExpander.Footer>
-                    <controls1:FASettingsExpander.Header>
-                        <TextBlock
-                            FontFamily="{StaticResource GlobalFontFamily}"
-                            Theme="{StaticResource BodyStrongTextBlockStyle}"
-                            PointerPressed="EnableDebugMode">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="PML {0} ({1})">
-                                    <Binding Source="{x:Static core:App.Version}" />
-                                    <Binding Source="{x:Static core:App.ReleaseFlag}" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </controls1:FASettingsExpander.Header>
                     <controls1:FASettingsExpanderItem
                         Content="{x:Static languages:Languages.Text_About_OpenSourceLicense}"
                         Description="{x:Static languages:Languages.Text_About_PoweredBy}">

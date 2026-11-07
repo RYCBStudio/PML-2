@@ -713,8 +713,12 @@ static Assembly? LoadAppAssembly()
 {
     var repoRoot = FindRepoRoot();
 
+    // 与 TabTransitionVerify 一致：主程序正在运行 / 设计器占用 bin 时，可用
+    // PML2_VERIFY_APPDIR 显式指定一份已编译产物目录（例如把构建输出重定向到临时目录）。
+    var overridden = Environment.GetEnvironmentVariable("PML2_VERIFY_APPDIR");
     var candidates = new[]
     {
+        !string.IsNullOrWhiteSpace(overridden) ? Path.Combine(overridden, "MEFrpLauncherX.dll") : null,
         Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Debug", "net10.0", "MEFrpLauncherX.dll"),
         Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Release", "net10.0", "MEFrpLauncherX.dll"),
         Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Debug", "net8.0", "MEFrpLauncherX.dll"),
@@ -722,7 +726,7 @@ static Assembly? LoadAppAssembly()
 
     foreach (var path in candidates)
     {
-        if (!File.Exists(path))
+        if (path is null || !File.Exists(path))
         {
             continue;
         }
