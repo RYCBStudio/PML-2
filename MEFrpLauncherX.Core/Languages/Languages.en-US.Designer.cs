@@ -2373,6 +2373,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to get remote free port: {0}.
+        /// </summary>
+        public static string Text_CreateProxy_GetRemotePortFailed {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.GetRemotePortFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter the username and password.
         /// </summary>
         public static string Text_CreateProxy_HttpBasicAuthDescription {
@@ -7311,7 +7320,12 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} File name: {1} Platform: {2} Suggestion: {3} {4}.
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///File name: {1}
+        ///Platform: {2}
+        ///Suggestion: {3}
+        ///{4}.
         /// </summary>
         public static string Text_Download_FailedContentFormat {
             get {
@@ -7433,8 +7447,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///Countdown to happiness
         ///Windows 10 isn&apos;t for all of us, it&apos;s for each of us.
         ///You and your PC need to restart.
-        ///Heads up
-        ///Windows twe [rest of string was truncated]&quot;;.
+        ///Heads  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_Download_Jokes {
             get {
@@ -8442,6 +8455,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leftover files deleted, freed {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some leftover files are in use and could not be deleted. Open the legacy folder later to clean them up manually.
         /// </summary>
         public static string Text_Legacy_DeleteFailed {
@@ -8456,15 +8478,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Legacy_DeleteNow {
             get {
                 return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Leftover files deleted, freed {0}.
-        /// </summary>
-        public static string Text_Legacy_Deleted {
-            get {
-                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
             }
         }
         
@@ -9167,7 +9180,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///### 1. Scope of Information Collection
         ///- **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
         ///- **Device data**: device identifiers, operating system version, crash stacks and error logs
-        ///- **Usage behavior**: f [rest of string was truncated]&quot;;.
+        ///- **Usage behavior [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_MainWindow_PrivacyPolicy {
             get {
@@ -10495,6 +10508,141 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_PluginList_InstalledOnlineCountFormat {
             get {
                 return ResourceManager.GetString("Text.PluginList.InstalledOnlineCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugins with updates available ({0} = count).
+        /// </summary>
+        public static string Text_PluginList_UpdateAvailableFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAvailableFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update all.
+        /// </summary>
+        public static string Text_PluginList_UpdateAll {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update.
+        /// </summary>
+        public static string Text_PluginList_UpdateBadge {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateBadge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   All plugins are up to date.
+        /// </summary>
+        public static string Text_PluginList_UpToDate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Updated {0} plugin(s).
+        /// </summary>
+        public static string Text_PluginList_UpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Automatically updated {0} plugin(s).
+        /// </summary>
+        public static string Text_PluginList_AutoUpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.AutoUpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Some plugins failed to update.
+        /// </summary>
+        public static string Text_PluginList_UpdateFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugin auto-update.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugin auto-update description.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdateDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Manual check only.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Off {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check automatically and notify.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Check {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check automatically and update silently.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Silent {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Silent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm install after download.
+        /// </summary>
+        public static string Text_Update_ConfirmInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.ConfirmInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Version {0} downloaded automatically.
+        /// </summary>
+        public static string Text_Update_AutoDownloaded {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the update automatically.
+        /// </summary>
+        public static string Text_Update_AutoDownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloadFailed", resourceCulture);
             }
         }
         
@@ -14150,24 +14298,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again..
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong..
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Discard (save space).
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Discard {
@@ -14186,7 +14316,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About to upgrade to {0}. The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved. What should we do with the previous version ({1})?.
+        ///   Looks up a localized string similar to About to upgrade to {0}.
+        ///
+        ///The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved.
+        ///
+        ///What should we do with the previous version ({1})?.
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Message {
             get {
@@ -14200,6 +14334,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_AskKeepOldVersion_Title {
             get {
                 return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
             }
         }
         
@@ -14528,6 +14680,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ask before each upgrade (recommended).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard old version (less space).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep old version (rollback).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ask with a dialog before each upgrade — the safest option..
         /// </summary>
         public static string Text_Update_KeepOldVersionDesc_Ask {
@@ -14569,33 +14748,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_KeepOldVersionDescription {
             get {
                 return ResourceManager.GetString("Text.Update.KeepOldVersionDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ask before each upgrade (recommended).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Ask {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Discard old version (less space).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep old version (rollback).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
             }
         }
         
@@ -14798,7 +14950,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} old version folder(s) will be removed, reclaiming about {1}. Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible..
+        ///   Looks up a localized string similar to {0} old version folder(s) will be removed, reclaiming about {1}.
+        ///
+        ///Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible..
         /// </summary>
         public static string Text_Update_VersionCleanup_ConfirmMessage {
             get {
@@ -14870,7 +15024,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are {0} leftover version folders in the install directory, taking up about {1}. They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected)..
+        ///   Looks up a localized string similar to There are {0} leftover version folders in the install directory, taking up about {1}.
+        ///
+        ///They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected)..
         /// </summary>
         public static string Text_Update_VersionNotify_Message {
             get {

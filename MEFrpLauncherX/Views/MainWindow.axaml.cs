@@ -820,23 +820,42 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         if (!_updateChecked)
         {
-            var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
-            // 26.4：把结果回报给静态状态，供精简主页推荐复用（避免重复网络请求）
-            UpdatePageViewModel.ReportUpdateCheck(hasNew, latest);
-            if (hasNew)
-            {
-                Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
-                    string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
-
-                // 触发插件事件：检测到新版本
-                _ = PluginService.Instance.TriggerAsync("app.update.available", new Dictionary<string, object>
-                {
-                    ["currentVersion"] = Core.App.Version,
-                    ["latestVersion"] = latest
-                });
-            }
-
             _updateChecked = true;
+
+            // 更新模式决定是否在启动时自动检查：
+            //   ds（自动检查并安装）/ dd（自动检查并下载）→ 自动检查；
+            //   md（手动检查并安装）→ 不自动检查，等用户到「更新」页手动点。
+            var method = ConfigManager.CurrentConfig.UpdateSettings.Method;
+            var autoCheck = UpdatePageViewModel.ShouldAutoCheckOnStartup(method);
+            if (autoCheck)
+            {
+                try
+                {
+                    var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
+                    // 26.4：把结果回报给静态状态，供精简主页推荐复用（避免重复网络请求）
+                    UpdatePageViewModel.ReportUpdateCheck(hasNew, latest);
+                    if (hasNew)
+                    {
+                        Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
+                            string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
+
+                        // 触发插件事件：检测到新版本
+                        _ = PluginService.Instance.TriggerAsync("app.update.available", new Dictionary<string, object>
+                        {
+                            ["currentVersion"] = Core.App.Version,
+                            ["latestVersion"] = latest
+                        });
+
+                        // ds：自动下载后在安装前确认；dd：仅自动下载。md 不会走到这里。
+                        await UpdatePageViewModel.AutoDownloadAsync(latest);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 启动检查失败绝不能让 async void 异常冒泡导致崩溃
+                    Core.App.CurrentLogger?.Warning($"启动自动检查更新失败: {ex.Message}");
+                }
+            }
         }
 
         App.SplashService?.Close();

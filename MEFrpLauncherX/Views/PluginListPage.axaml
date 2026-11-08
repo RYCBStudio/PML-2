@@ -36,7 +36,7 @@
             <TabItem.Header>
                 <controls1:IconContent Symbol="Folder" Label="{x:Static languages:Languages.Text_PluginList_LocalPlugins}" />
             </TabItem.Header>
-            <Grid RowDefinitions="Auto, *" Margin="10" DragDrop.AllowDrop="True">
+            <Grid RowDefinitions="Auto, Auto, *" Margin="10" DragDrop.AllowDrop="True">
                 <Interaction.Behaviors>
                     <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragEnterEvent}">
                         <RoutedEventTriggerBehavior.Actions>
@@ -54,7 +54,7 @@
                         </RoutedEventTriggerBehavior.Actions>
                     </RoutedEventTriggerBehavior>
                 </Interaction.Behaviors>
-                <Border IsVisible="{Binding IsDragOver}" Grid.RowSpan="2"
+                <Border IsVisible="{Binding IsDragOver}" Grid.RowSpan="3"
                         Background="{DynamicResource SmokeFillColorDefaultBrush}">
                     <Border.Transitions>
                         <Transitions>
@@ -76,6 +76,8 @@
                                                    Command="{Binding InstallPluginCommand}" />
                         <controls:FACommandBarButton IconSource="Refresh" Label="{x:Static languages:Languages.Text_Global_Refresh}"
                                                    Command="{Binding ReloadPluginsCommand}" />
+                        <controls:FACommandBarButton IconSource="Sync" Label="{x:Static languages:Languages.Text_Update_CheckForUpdates}"
+                                                   Command="{Binding CheckUpdatesCommand}" />
                         <controls:FACommandBarButton IconSource="OpenFile" Label="{x:Static languages:Languages.Text_PluginList_OpenFolder}"
                                                    Command="{Binding OpenPluginFolderCommand}"
                                                    CommandParameter="plugins" />
@@ -95,7 +97,18 @@
                     </controls:FACommandBar.PrimaryCommands>
                 </controls:FACommandBar>
 
-                <ListBox Grid.Row="1" ItemsSource="{Binding Plugins}"
+                <controls:FAInfoBar Grid.Row="1" Margin="0,0,0,10"
+                                   IsOpen="{Binding IsUpdateBarOpen, Mode=TwoWay}"
+                                   Severity="Informational"
+                                   Title="{x:Static languages:Languages.Caption_Hint}"
+                                   Message="{Binding UpdateBarMessage}">
+                    <controls:FAInfoBar.ActionButton>
+                        <Button Content="{x:Static languages:Languages.Text_PluginList_UpdateAll}"
+                                Command="{Binding UpdateAllPluginsCommand}" />
+                    </controls:FAInfoBar.ActionButton>
+                </controls:FAInfoBar>
+
+                <ListBox Grid.Row="2" ItemsSource="{Binding Plugins}"
                          SelectedItem="{Binding SelectedPlugin}"
                          Margin="0,0,0,10">
                     <ListBox.ItemTemplate>
@@ -121,6 +134,16 @@
                                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_TypeTemplate}"
                                                    FontSize="11"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    </Border>
+                                    <!-- 可更新徽标 -->
+                                    <Border CornerRadius="4" Padding="4,1"
+                                            Background="{DynamicResource SystemFillColorAttentionBackgroundBrush}"
+                                            IsVisible="{Binding UpdateAvailable}">
+                                        <TextBlock FontSize="11"
+                                                   Foreground="{DynamicResource SystemFillColorAttentionBrush}">
+                                            <Run Text="{x:Static languages:Languages.Text_PluginList_UpdateBadge}" />
+                                            <Run Text="{Binding LatestVersion}" />
+                                        </TextBlock>
                                     </Border>
                                     <!-- 核心版本不兼容提示 -->
                                     <Border CornerRadius="4" Padding="4,1"
@@ -176,7 +199,7 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
 
-                <Border Grid.Row="1" IsHitTestVisible="False" IsVisible="{Binding IsEmpty}"
+                <Border Grid.Row="2" IsHitTestVisible="False" IsVisible="{Binding IsEmpty}"
                         VerticalAlignment="Center" HorizontalAlignment="Center">
                     <StackPanel Spacing="12" HorizontalAlignment="Center">
                         <TextBlock Text="{x:Static languages:Languages.Text_PluginList_NoPlugins}" FontSize="18"

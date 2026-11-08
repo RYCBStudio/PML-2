@@ -355,6 +355,19 @@
                         </controls:FAComboBox>
                     </controls:FASettingsExpanderItem.Footer>
                 </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate}"
+                                               Description="{x:Static languages:Languages.Text_Settings_PluginAutoUpdateDescription}">
+                    <controls:FASettingsExpanderItem.Footer>
+                        <ComboBox x:Name="PluginAutoUpdateBox" SelectionChanged="PluginAutoUpdateChanged">
+                            <ComboBoxItem Tag="0"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Off}" />
+                            <ComboBoxItem Tag="1"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Check}" />
+                            <ComboBoxItem Tag="2"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Silent}" />
+                        </ComboBox>
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
                 <controls:FASettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">
                     <controls:FAInfoBar IsOpen="True" IsClosable="False" Severity="Warning"
                                       Message="{x:Static languages:Languages.Text_Settings_LinuxShNotice}" />

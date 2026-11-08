@@ -2,8 +2,9 @@
 
 ## FluentAvalonia.MarkdownRender 已独立
 
-- 自 2026-10-02 起，该组件是 PML-2 的 **git submodule**，路径不变（`FluentAvalonia.MarkdownRender/`）。
-  克隆 PML-2 必须加 `--recursive`，否则该目录为空、sln 构建失败。
+- **2026-11-07 起改为 NuGet 包引用**：`FluentAvalonia.MarkdownRender` 12.1.3.8（版本在 PML-2 的
+  `Directory.Packages.props`），git submodule、`.gitmodules` 与工作目录均已删除，克隆**不再需要**
+  `--recursive`。2026-10-02 ~ 11-07 期间曾是 submodule。
 - 同时以 NuGet 包发布：`FluentAvalonia.MarkdownRender`，仓库
   https://github.com/RYCBStudio/FluentAvalonia.MarkdownRenderer（仓库名带 **er**，
   PackageId 与 XAML 命名空间 URI 仍是 `FluentAvalonia.MarkdownRender`，**不可改**）。
@@ -18,8 +19,9 @@
   Alert 为自绘 `MdAlertBox`，强调色用自带键 `MdAccentTextFillColor*`）
 - 两版是**独立副本**，不是共享源码：改 FAMR 的代码后必须手工镜像到 MarkdownRenderX，否则行为漂移。
 - 一次性 tag 发两个包（CI 用 tag 覆盖两项目版本）；回归用 `dotnet run --project tools/MrxSmoke -c Release`（无头，断言 Alert 配色与资源键）。
-- PML-2 的 submodule 路径不变，但 sln 里的项目路径多一层：
-  `FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj`。
+- PML-2 的 sln 已移除该项目条目（改 NuGet 后），`MEFrpLauncherX/TrimmerRoots.xml` 里保留
+  `FluentAvalonia.MarkdownRender` 与 `MarkdownRenderX.Avalonia` 两个程序集（XAML 走 `avares://`
+  运行时加载，不产生静态类型引用，错误 fullname 会被 linker 静默忽略）。
 
 ## 扩展点与 KaTeX 公式包（2026-10-31 起）
 

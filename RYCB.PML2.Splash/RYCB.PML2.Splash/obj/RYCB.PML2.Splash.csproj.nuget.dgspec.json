@@ -120,6 +120,7 @@
             "DialogHost.Avalonia": "0.12.3",
             "Downloader": "5.9.8",
             "FeatherQR.SkiaSharp": "2.0.0-preview.2",
+            "FluentAvalonia.MarkdownRender": "12.1.3.8",
             "FluentAvaloniaUI": "3.1.0",
             "Iciclecreek.Avalonia.WindowManager": "5.0.2",
             "IconPacks.Avalonia.FileIcons": "2.0.0",

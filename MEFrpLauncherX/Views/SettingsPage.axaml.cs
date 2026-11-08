@@ -157,6 +157,12 @@ public partial class SettingsPage : UserControl
             1 => 1,
             _ => 2
         };
+        PluginAutoUpdateBox.SelectedIndex = ConfigManager.CurrentConfig.PluginAutoUpdateMode switch
+        {
+            0 => 0,
+            2 => 2,
+            _ => 1
+        };
         // 26.3.1 M2：启动画面样式 / 开关
         SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
         var renderConfig = RenderConfigManager.Load();
@@ -700,6 +706,21 @@ public partial class SettingsPage : UserControl
         }
 
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
+    }
+
+    /// <summary>插件自动更新模式：0=仅手动 1=自动检查并提示 2=静默自动更新。</summary>
+    private void PluginAutoUpdateChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        if ((sender as ComboBox)?.SelectedItem is ComboBoxItem item &&
+            int.TryParse(item.Tag?.ToString(), out var mode))
+        {
+            ConfigManager.UpdateConfig(config => config.PluginAutoUpdateMode = mode);
+        }
     }
 
     private void TerminalEngineTypeChanged(object? sender, RoutedEventArgs e)

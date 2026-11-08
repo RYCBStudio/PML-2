@@ -766,6 +766,21 @@
     <data name="Text.Settings.OtherDescription" xml:space="preserve">
         <value>Set some miscellaneous options.</value>
     </data>
+    <data name="Text.Settings.PluginAutoUpdate" xml:space="preserve">
+        <value>Plugin auto-update</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdateDescription" xml:space="preserve">
+        <value>How to handle new plugin versions when you open the Plugins page. The old file is always backed up as .bak before updating.</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Off" xml:space="preserve">
+        <value>Manual check only</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Check" xml:space="preserve">
+        <value>Check automatically and notify (default)</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Silent" xml:space="preserve">
+        <value>Check automatically and update silently</value>
+    </data>
     <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
         <value>Do not show request responses</value>
     </data>
@@ -1960,6 +1975,15 @@
     <data name="Text.Update.DownloadCompleted" xml:space="preserve">
         <value>Update downloaded</value>
     </data>
+    <data name="Text.Update.ConfirmInstall" xml:space="preserve">
+        <value>The update package has been downloaded. Install it now and restart into the new version?</value>
+    </data>
+    <data name="Text.Update.AutoDownloaded" xml:space="preserve">
+        <value>Version {0} has been downloaded automatically. Open the Update page to install it manually.</value>
+    </data>
+    <data name="Text.Update.AutoDownloadFailed" xml:space="preserve">
+        <value>Failed to download the update automatically. Check your network or switch the download source on the Update page, then retry.</value>
+    </data>
     <data name="Text.Update.InstallTipWindows" xml:space="preserve">
         <value>Click OK to open the folder containing the installer, then double-click the exe file to complete the installation</value>
     </data>
@@ -2088,6 +2112,27 @@ Restart now?</value>
     </data>
     <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
         <value>Successfully installed {0} online plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.UpdateAvailableFormat" xml:space="preserve">
+        <value>{0} plugin(s) have updates available</value>
+    </data>
+    <data name="Text.PluginList.UpdateAll" xml:space="preserve">
+        <value>Update all</value>
+    </data>
+    <data name="Text.PluginList.UpdateBadge" xml:space="preserve">
+        <value>Update</value>
+    </data>
+    <data name="Text.PluginList.UpToDate" xml:space="preserve">
+        <value>All plugins are up to date</value>
+    </data>
+    <data name="Text.PluginList.UpdatedCountFormat" xml:space="preserve">
+        <value>Updated {0} plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.AutoUpdatedCountFormat" xml:space="preserve">
+        <value>Automatically updated {0} plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.UpdateFailed" xml:space="preserve">
+        <value>Some plugins failed to update. Please retry later or check your network.</value>
     </data>
     <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
         <value>Failed to download and install: {0}</value>
@@ -5498,5 +5543,8 @@ Your proxies, themes, plugins and certificates all live in data\ and are unaffec
     </data>
     <data name="Text.Global.Later" xml:space="preserve">
         <value>Not now</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
+        <value>Failed to get remote free port: {0}</value>
     </data>
 </root>
