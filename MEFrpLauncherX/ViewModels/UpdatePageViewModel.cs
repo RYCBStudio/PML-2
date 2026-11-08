@@ -484,7 +484,26 @@ public class UpdatePageViewModel : ViewModelBase
         };
     }
 
-    public async void DownloadUpdate()
+    /// <summary>用户点击「下载并安装更新」时的入口。</summary>
+    public async void DownloadUpdate() => await DownloadUpdateAsync(autoTriggered: false);
+
+    /// <summary>
+    /// 启动时是否应自动检查更新：ds / dd 自动检查；md（手动检查）不自动检查。
+    /// </summary>
+    public static bool ShouldAutoCheckOnStartup(string? method)
+    {
+        var m = string.IsNullOrWhiteSpace(method) ? "ds" : method.ToLowerInvariant();
+        return m is "ds" or "dd";
+    }
+
+    /// <summary>
+    /// 下载并处理更新包。
+    /// </summary>
+    /// <param name="autoTriggered">
+    /// true 表示由启动时的自动检查发起（页面可能未打开）：失败改用 Growl 提示，
+    /// 且不弹出「已下载打开目录」这类需要交互的对话框。
+    /// </param>
+    public async Task DownloadUpdateAsync(bool autoTriggered)
     {
         Core.App.CurrentLogger?.Log("正在下载更新", module: EnumLogModule.Update);
         Status = Languages.Text_Update_Downloading;
@@ -520,6 +539,11 @@ public class UpdatePageViewModel : ViewModelBase
         if (resolved is null)
         {
             EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, null);
+            if (autoTriggered)
+            {
+                Growl.Error(Languages.Text_Update_AutoDownloadFailed);
+            }
+
             return;
         }
 
@@ -573,6 +597,11 @@ public class UpdatePageViewModel : ViewModelBase
             }
 
             EnterDownloadFailedState(Languages.Text_Update_DownloadFailed, ex);
+            if (autoTriggered)
+            {
+                Growl.Error(Languages.Text_Update_AutoDownloadFailed);
+            }
+
             return;
         }
 
@@ -580,6 +609,11 @@ public class UpdatePageViewModel : ViewModelBase
         if (!File.Exists(savePath) || new FileInfo(savePath).Length <= 0)
         {
             EnterDownloadFailedState(Languages.Text_Update_VerifyFailed, null, isVerify: true);
+            if (autoTriggered)
+            {
+                Growl.Error(Languages.Text_Update_AutoDownloadFailed);
+            }
+
             return;
         }
 
@@ -599,13 +633,34 @@ public class UpdatePageViewModel : ViewModelBase
             // 忽略：任务栏进度条只是辅助反馈
         }
 
-        // 「仅下载 / 手动下载」模式：只把 zip 放进 data/Cache，询问是否打开所在目录
-        if (UpdateMethod != 0)
+        // 「更新模式」决定下载完成后的走向：
+        //   dd（自动下载）      → 只下载，不安装；
+        //   ds（自动检查并安装）/ md（手动检查并安装） → 询问后安装并重启。
+        var method = (ConfigManager.CurrentConfig.UpdateSettings.Method ?? "ds").ToLowerInvariant();
+        if (method == "dd")
         {
-            if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info,
-                    ButtonEnum.YesNo) == MessageBoxResult.Yes)
+            Core.App.CurrentLogger?.Log("更新模式为「自动下载」：保留更新包，等待用户手动安装",
+                module: EnumLogModule.Update);
+            if (autoTriggered)
+            {
+                Growl.Info(string.Format(Languages.Text_Update_AutoDownloaded, LatestVersion));
+            }
+            else if (await MessageBox.ShowAsync(Languages.Text_Update_DownloadCompletedOpenDir, Languages.Caption_Info,
+                         ButtonEnum.YesNo) == MessageBoxResult.Yes)
             {
                 OpenFileInExplorer(savePath);
+            }
+
+            return;
+        }
+
+        // ds / md：安装前确认一次（自动下载场景尤其需要，避免在工作时被强制重启）
+        if (!await ConfirmInstallAsync())
+        {
+            Core.App.CurrentLogger?.Log("用户选择暂不安装更新", module: EnumLogModule.Update);
+            if (autoTriggered)
+            {
+                Growl.Info(string.Format(Languages.Text_Update_AutoDownloaded, LatestVersion));
             }
 
             return;
@@ -671,6 +726,36 @@ public class UpdatePageViewModel : ViewModelBase
         else
         {
             App.Desktop.Shutdown();
+        }
+    }
+
+    /// <summary>安装前确认：更新包已下载完成，是否立即安装并在新版本中重启。</summary>
+    private static async Task<bool> ConfirmInstallAsync() =>
+        await MessageBox.ShowAsync(Languages.Text_Update_ConfirmInstall, Languages.Caption_Info, ButtonEnum.YesNo)
+        == MessageBoxResult.Yes;
+
+    /// <summary>
+    /// 启动时自动检查命中新版本后调用：创建一个临时 VM 完成自动下载。
+    /// 更新模式决定后续走向（dd 仅下载 / ds、md 安装前确认），与手动点击完全同一套逻辑。
+    /// </summary>
+    public static async Task AutoDownloadAsync(string latestVersion)
+    {
+        try
+        {
+            if (!Core.AppPaths.IsVersionedLayout)
+            {
+                Core.App.CurrentLogger?.Warning("当前非分离式安装布局，跳过自动下载更新",
+                    module: EnumLogModule.Update);
+                return;
+            }
+
+            var vm = new UpdatePageViewModel { LatestVersion = latestVersion };
+            await vm.DownloadUpdateAsync(autoTriggered: true).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "自动下载更新失败", module: EnumLogModule.Update);
+            Growl.Error(Languages.Text_Update_AutoDownloadFailed);
         }
     }
 

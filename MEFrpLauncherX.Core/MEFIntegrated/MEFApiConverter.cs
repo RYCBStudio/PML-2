@@ -187,7 +187,8 @@ public static class MEFrpApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_FetchingFormat, operationName);
+        MainWindowViewModel.Instance?.AppMessage =
+            string.Format(Languages.Languages.Text_Api_FetchingFormat, operationName);
 
         using var client = CreateClient(endpoint);
 
@@ -240,7 +241,8 @@ public static class MEFrpApiConverter
         }
 
         HandleResponse(result);
-        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
+        MainWindowViewModel.Instance?.AppMessage =
+            string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
         return result;
     }
 
@@ -268,6 +270,7 @@ public static class MEFrpApiConverter
         {
             return (null, string.Empty);
         }
+
         return (
             JsonSerializer.Deserialize<CaptchaResultX?>(response.Content ?? "",
                 App.AppJsonSerializerContext.CaptchaResultX), response.Content ?? "");
@@ -312,7 +315,7 @@ public static class MEFrpApiConverter
 
         return result;
     }
-    
+
     public static async Task<ApiInfo<object>> AddIcpDomainAsync(string domain)
     {
         var request = CreateRequest(Method.Post);
@@ -646,16 +649,21 @@ public static class MEFrpApiConverter
     /// <param name="nodeId">节点ID</param>
     /// <param name="protocol">要获取端口的协议, 只有tcp和udp。</param>
     /// <returns>空闲的端口，返回-1则说明获取失败</returns>
-    public static async Task<ApiInfo<int>> GetFreePortAsync(int nodeId, string protocol = "tcp")
+    public static async Task<ApiInfo<int>> GetFreePortAsync(int? nodeId, string protocol = "tcp")
     {
         App.CurrentLogger.Log("正在获取空闲端口", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
         protocol = protocol.ToLower();
 
+        if (nodeId is null or < 0)
+        {
+            return new ApiInfo<int>() { data = -1 };
+        }
+
         var body = JsonSerializer.Serialize(new FreePortBody
         {
-            nodeId = nodeId,
+            nodeId = (int)nodeId,
             protocol = protocol
         }, App.AppJsonSerializerContext.FreePortBody);
 
@@ -790,7 +798,8 @@ public static class MEFrpApiConverter
         ApiInfo<FrpTokenInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.proxy.token", async () =>
         {
-            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", Languages.Languages.Text_Api_OpFrpTokenInfo);
+            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken",
+                Languages.Languages.Text_Api_OpFrpTokenInfo);
         });
         return result;
     }
@@ -1058,7 +1067,7 @@ public static class MEFrpApiConverter
         // 26.4：不同周期各自独立缓存（键带周期），在 5 分钟有效期内直接复用上次结果
         var cacheKey = $"{ApiCacheKeys.TrafficStatsPrefix}{period}";
         if (!forceRefresh && TryGetCached<TrafficStatus>(cacheKey, Languages.Languages.Text_Api_OpTrafficStatus)
-            is { } cachedTraffic)
+                is { } cachedTraffic)
         {
             return cachedTraffic;
         }

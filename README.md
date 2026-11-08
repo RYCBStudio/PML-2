@@ -59,7 +59,6 @@ MEFrpLauncherX.sln
 │   ├── Messaging/                   # 消息总线
 │   ├── Storage/                     # 安全存储
 │   └── ...
-├── FluentAvalonia.MarkdownRender/   # Markdown 渲染（Fork 自 Markdown.AIRender）
 ├── MEFrpLauncherX.Fonts/            # 字体资源
 ├── RYCB.PML2.Mixin.TerminalHelper/  # 终端辅助
 └── RYCB.PML2.Extensions.MinecraftExtension/  # Minecraft 扩展
@@ -67,7 +66,9 @@ MEFrpLauncherX.sln
 
 ## Markdown 渲染组件（FluentAvalonia.MarkdownRender）
 
-`FluentAvalonia.MarkdownRender` 是本仓库自行维护的 Avalonia Markdown 渲染控件，**Fork 自开源项目 [AIDotNet/Markdown.AIRender](https://github.com/AIDotNet/Markdown.AIRender)**（原包名 `Markdown.AIRender` / 原工程名 `MarkdownAIRender`）。
+`FluentAvalonia.MarkdownRender` 是独立维护（[RYCBStudio/FluentAvalonia.MarkdownRenderer](https://github.com/RYCBStudio/FluentAvalonia.MarkdownRenderer)）的 Avalonia Markdown 渲染控件，**Fork 自开源项目 [AIDotNet/Markdown.AIRender](https://github.com/AIDotNet/Markdown.AIRender)**（原包名 `Markdown.AIRender` / 原工程名 `MarkdownAIRender`）。
+
+> **引用方式**：自 12.1.3.8 起本仓库改为 **NuGet 包引用**（`FluentAvalonia.MarkdownRender`，版本由 `Directory.Packages.props` 统一管理），不再使用 git submodule。克隆仓库不再需要 `--recursive`。可选扩展包：`MarkdownRenderX.Avalonia.KaTeX`（公式）、`.Emoji`（短代码）、`.Mermaid`（图表），均需在启动时调用对应的 `Register()`。
 
 在此基础上，本仓库做了如下修改：
 

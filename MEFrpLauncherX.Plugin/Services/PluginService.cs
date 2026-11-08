@@ -219,6 +219,47 @@ public class PluginService
     }
 
     /// <summary>
+    /// 用给定内容覆盖已安装插件：就地写入原文件（保留文件名，避免出现同名不同文件的重复插件），
+    /// 写入前把旧文件备份为 <c>.bak</c>。不主动触发重载，批量更新后由调用方统一 <see cref="ReloadPlugins" />。
+    /// </summary>
+    public bool UpdatePluginContent(string pluginId, string content)
+    {
+        var info = _plugins.FirstOrDefault(p => p.Id == pluginId);
+        if (info == null || string.IsNullOrEmpty(info.FilePath) || !File.Exists(info.FilePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            // 先写临时文件再原子替换，避免写到一半崩溃留下半截 YAML
+            var tmp = info.FilePath + ".tmp";
+            File.WriteAllText(tmp, content);
+
+            var bak = info.FilePath + ".bak";
+            File.Copy(info.FilePath, bak, true);
+
+            File.Move(tmp, info.FilePath, true);
+
+            App.CurrentLogger.Log($"已更新插件: {info.Name} ({pluginId})", module: EnumLogModule.Plugin);
+            AppAnalytics.TrackAction("plugin.update", new Dictionary<string, string>
+            {
+                ["pluginId"] = pluginId,
+                ["from"] = info.Version
+            });
+            // 触发插件事件：插件更新（沿用安装事件语义，便于监听方刷新缓存）
+            _ = TriggerAsync("plugin.install", new Dictionary<string, object> { ["file"] = Path.GetFileName(info.FilePath) });
+            return true;
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger.Error(ex, $"更新插件失败: {pluginId}", module: EnumLogModule.Plugin);
+            AppAnalytics.CaptureException(ex, "plugin.update");
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 卸载插件
     /// </summary>
     public bool UninstallPlugin(string pluginId)
@@ -488,6 +529,12 @@ public class PluginInfo
     public int TriggerCount { get; set; }
     public int FunctionCount { get; set; }
     public bool IsEnabled { get; set; } = true;
+
+    /// <summary>在线市场中的最新版本（未比对或无需更新时为 null）</summary>
+    public string? LatestVersion { get; set; }
+
+    /// <summary>在线市场存在比已安装版本更高的版本</summary>
+    public bool UpdateAvailable { get; set; }
 
     /// <summary>是否为资源型插件（模板插件等，非事件插件）</summary>
     public bool IsTemplatePlugin =>

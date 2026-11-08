@@ -91,7 +91,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender\FluentAvalonia.MarkdownRender.csproj" />
+        <PackageReference Include="FluentAvalonia.MarkdownRender" />
         <ProjectReference Include="..\Notify.NET\Notify.NET.csproj"/>
     </ItemGroup>
 

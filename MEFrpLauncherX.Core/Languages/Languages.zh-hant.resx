@@ -764,6 +764,21 @@
     <data name="Text.Settings.OtherDescription" xml:space="preserve">
         <value>設定一些雜項。</value>
     </data>
+    <data name="Text.Settings.PluginAutoUpdate" xml:space="preserve">
+        <value>外掛自動更新</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdateDescription" xml:space="preserve">
+        <value>進入外掛頁時如何處理線上商城的新版本。無論哪種模式，覆蓋前都會先把舊檔案備份為 .bak。</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Off" xml:space="preserve">
+        <value>僅手動檢查</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Check" xml:space="preserve">
+        <value>自動檢查並提示（預設）</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Silent" xml:space="preserve">
+        <value>自動檢查並靜默更新</value>
+    </data>
     <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
         <value>不顯示請求回應</value>
     </data>
@@ -1952,6 +1967,15 @@
     <data name="Text.Update.DownloadCompleted" xml:space="preserve">
         <value>更新下載完成</value>
     </data>
+    <data name="Text.Update.ConfirmInstall" xml:space="preserve">
+        <value>更新包已下載完成，是否立即安裝並在新版本中重新啟動？</value>
+    </data>
+    <data name="Text.Update.AutoDownloaded" xml:space="preserve">
+        <value>新版本 {0} 已自動下載，可在「更新」頁手動安裝。</value>
+    </data>
+    <data name="Text.Update.AutoDownloadFailed" xml:space="preserve">
+        <value>自動下載更新失敗，請到「更新」頁檢查網路或切換下載來源後重試。</value>
+    </data>
     <data name="Text.Update.InstallTipWindows" xml:space="preserve">
         <value>點選確認開啟安裝檔所在目錄，按兩下 exe 檔案完成安裝</value>
     </data>
@@ -2080,6 +2104,27 @@
     </data>
     <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
         <value>成功安裝 {0} 個線上外掛</value>
+    </data>
+    <data name="Text.PluginList.UpdateAvailableFormat" xml:space="preserve">
+        <value>{0} 個外掛有新版本</value>
+    </data>
+    <data name="Text.PluginList.UpdateAll" xml:space="preserve">
+        <value>全部更新</value>
+    </data>
+    <data name="Text.PluginList.UpdateBadge" xml:space="preserve">
+        <value>可更新</value>
+    </data>
+    <data name="Text.PluginList.UpToDate" xml:space="preserve">
+        <value>所有外掛皆為最新版本</value>
+    </data>
+    <data name="Text.PluginList.UpdatedCountFormat" xml:space="preserve">
+        <value>已更新 {0} 個外掛</value>
+    </data>
+    <data name="Text.PluginList.AutoUpdatedCountFormat" xml:space="preserve">
+        <value>已自動更新 {0} 個外掛</value>
+    </data>
+    <data name="Text.PluginList.UpdateFailed" xml:space="preserve">
+        <value>部分外掛更新失敗，請稍後重試或檢查網路。</value>
     </data>
     <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
         <value>下載安裝失敗: {0}</value>
@@ -5493,5 +5538,8 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Global.Later" xml:space="preserve">
         <value>暫不處理</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
+        <value>取得遠端閒置連接埠失敗：{0}</value>
     </data>
 </root>
