@@ -757,6 +757,23 @@ namespace Iciclecreek.TerminalWindow
             }
         }
 
+        /// <summary>
+        /// True when the key is a modifier (or lock) key pressed on its own, which produces
+        /// no character. Such a press must not clear an active selection: pressing Ctrl
+        /// fires its own KeyDown before the C of Ctrl+C arrives, so clearing here would
+        /// lose the selection before it can be copied (and let Ctrl+C hit the process).
+        /// </summary>
+        private static bool IsModifierKey(Key key) => key switch
+        {
+            Key.LeftShift or Key.RightShift or
+            Key.LeftCtrl or Key.RightCtrl or
+            Key.LeftAlt or Key.RightAlt or
+            Key.LWin or Key.RWin or
+            Key.CapsLock or Key.NumLock or Key.Scroll =>
+                true,
+            _ => false
+        };
+
         protected async override void OnKeyDown(KeyEventArgs e)
         {
             // Only process input if this terminal has focus
@@ -809,8 +826,10 @@ namespace Iciclecreek.TerminalWindow
                     }
                 }
 
-                // Clear selection for any other keystroke
-                if (_terminal.Selection.HasSelection)
+                // Clear selection for any other keystroke - but not for a bare modifier
+                // (Ctrl/Shift/Alt/Meta/lock) press: the modifier's own KeyDown arrives
+                // before Ctrl+C and would otherwise wipe the selection we are about to copy.
+                if (_terminal.Selection.HasSelection && !IsModifierKey(e.Key))
                 {
                     _terminal.Selection.ClearSelection();
                     this.RequestInvalidate();
