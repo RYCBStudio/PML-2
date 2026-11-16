@@ -142,11 +142,14 @@ public partial class UserCenterPage : UserControl
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
-                var trafficStatusData = await Task.Run(() => MEFrpApiConverter.GetTrafficStatusAsync(7));
+                // 26.5.1 C3：GetTrafficStatusAsync 已保证永不返回 null，
+                // 这里再对 data 判空 —— 失败时让它走 UpdateTrafficData 的「无数据」分支，
+                // 而不是把图表标成可见却不填数据。
+                var trafficStatusData = await MEFrpApiConverter.GetTrafficStatusAsync(7);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
-                    trafficControl.IsVisible = true;
+                    trafficControl.IsVisible = trafficStatusData.data is not null;
                 });
                 var domains = await MEFrpApiConverter.GetIcpDomainListAsync();
                 if (domains.code == 200)

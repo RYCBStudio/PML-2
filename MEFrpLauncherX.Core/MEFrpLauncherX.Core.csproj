@@ -23,6 +23,13 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <!-- 26.5.1 C3：允许流量统计自检工具访问 internal 的响应判定逻辑 -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>TrafficVerify</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
     <ItemGroup>
         <!-- 版本统一由仓库根目录 Directory.Packages.props 中央管理 -->
         <PackageReference Include="Avalonia"/>

@@ -1188,7 +1188,7 @@ public static class MEFrpApiConverter
     /// </summary>
     /// <param name="period">获取的周期，官网上只有 7，15，30</param>
     /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
-    /// <returns>用户的流量信息</returns>
+    /// <returns>用户的流量信息。<b>永不返回 null</b> —— 失败时返回带错误码的实例。</returns>
     public static async Task<ApiInfo<TrafficStatus>> GetTrafficStatusAsync(int period, bool forceRefresh = false)
     {
         // 26.4：不同周期各自独立缓存（键带周期），在 5 分钟有效期内直接复用上次结果
@@ -1210,29 +1210,22 @@ public static class MEFrpApiConverter
 
         using var client = CreateClient("auth/user/trafficStats");
 
-        ApiInfo<TrafficStatus> result;
         var response = await client.ExecuteAsync(request).ConfigureAwait(false);
 
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        if (response.Content?.StartsWith('<') == true)
-        {
-            return default;
-        }
 
-        if (!response.IsSuccessful)
+        // 26.5.1 C3：原先响应体是 HTML 时这里 `return default`（即 null），
+        // 而三个调用点都直接解引用返回值（trafficStatusData.data / (await ...).data / r.code），
+        // 一旦网关/代理/CDN 返回错误页就会抛 NullReferenceException。
+        // 现在改为统一走纯函数构造结果 —— 任何输入都不会得到 null，也不会抛异常。
+        var isHtmlResponse = response.Content?.StartsWith('<') == true;
+        var result = BuildTrafficStatusResult(response.Content, (int)response.StatusCode, response.IsSuccessful);
+
+        // HTML 错误页静默失败：不弹 Growl、也不写缓存。
+        // 与 ExecuteRequestAsync 的「<」分支保持一致（网关/运营商提示页不是用户能处理的错误）。
+        if (isHtmlResponse)
         {
-            result = new ApiInfo<TrafficStatus>
-            {
-                code = (int)response.StatusCode,
-                message = string.Format(Languages.Languages.Text_Api_RequestFailedFormat, (int)response.StatusCode),
-                data = default
-            };
-        }
-        else
-        {
-            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",
-                         App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
-                     new ApiInfo<TrafficStatus>();
+            return result;
         }
 
         // 26.4：仅成功结果写入缓存（失败不缓存，避免把错误状态固化 5 分钟）
@@ -1247,5 +1240,73 @@ public static class MEFrpApiConverter
 
         HandleResponse(result);
         return result;
+    }
+
+    /// <summary>
+    ///     根据流量统计接口的 HTTP 响应构造结果（26.5.1 C3）。
+    ///     <para>
+    ///         抽成独立方法以便直接测试。约定：<b>永不返回 null，也不抛异常</b> ——
+    ///         调用方会直接解引用 <c>.data</c> / <c>.code</c>，返回 null 等于让调用处崩。
+    ///         任何异常输入（HTML 错误页 / 空体 / 非法 JSON）都降级为带错误码的实例。
+    ///     </para>
+    /// </summary>
+    /// <param name="content">响应体，可能为 null。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <param name="isSuccessful">RestSharp 的 IsSuccessful（已含传输层失败判定）。</param>
+    internal static ApiInfo<TrafficStatus> BuildTrafficStatusResult(string? content, int statusCode, bool isSuccessful)
+    {
+        // 响应体是 HTML：通常是网关/代理/CDN 返回的提示页（例如流量被劫持时的运营商公告）
+        if (content?.StartsWith('<') == true)
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 502,
+                message = Languages.Languages.Text_Api_OriginFallbackFailed,
+                data = default
+            };
+        }
+
+        if (!isSuccessful)
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = statusCode,
+                message = string.Format(Languages.Languages.Text_Api_RequestFailedFormat, statusCode),
+                data = default
+            };
+        }
+
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 0,
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                data = default
+            };
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(content,
+                       App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
+                   new ApiInfo<TrafficStatus>
+                   {
+                       code = 0,
+                       message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                       data = default
+                   };
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "流量统计响应解析失败", port: EnumLogPort.Server,
+                module: EnumLogModule.Net);
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 0,
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                data = default
+            };
+        }
     }
 }
