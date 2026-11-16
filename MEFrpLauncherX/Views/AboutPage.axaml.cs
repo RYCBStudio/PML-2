@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -50,53 +49,118 @@ public partial class AboutPage : UserControl
             }
 
             HitokotoBox.Text = string.Empty;
-            HitokotoResource Hitokoto = new()
-            {
-                hitokoto = Languages.Text_About_HitokotoFallback,
-                from = Languages.Text_About_HitokotoSource,
-                from_who = Languages.Text_About_HitokotoAuthor
-            };
             MainPageFrameViewModel.Instance?.IsLoading = true;
             try
             {
-                Hitokoto = await ExecuteHitokotoRequest(CreateRequest(), "一言");
-            }
-            catch (ArgumentNullException)
-            {
-                Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
-                Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
+                var hitokoto = await ResolveHitokotoAsync();
+                vm.Hitokoto = hitokoto.hitokoto;
+                vm.From = hitokoto.from;
+                vm.Author = hitokoto.from_who;
+                //MainPageFrameViewModel.Instance.CurrentPage = this;
+                MainPageFrameViewModel.AboutPage = this;
             }
             catch (Exception ex)
             {
-                Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
-                Hitokoto = null;
+                // 26.5.1 C5：此处是 async 事件处理器，异常会抛到同步上下文；
+                // ResolveHitokotoAsync 已尽量不抛，这里只作为最后一道防线。
+                Core.App.CurrentLogger.Error(ex, "加载一言失败");
+                ApplyHitokotoFallback(vm);
             }
-
-            if (Hitokoto == null)
+            finally
             {
-                if (Random.Shared.Next() % 2 == 0)
-                {
-                    Hitokoto = new HitokotoResource
-                    {
-                        hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
-                        from = Languages.Text_About_MicrosoftStyleChinese,
-                        creator = "Microsoft"
-                    };
-                }
-
-                Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
+                MainPageFrameViewModel.Instance?.IsLoading = false;
+                HitokotoStatus.Hide();
             }
-
-
-            vm.Hitokoto = Hitokoto.hitokoto;
-            vm.From = Hitokoto.from;
-            vm.Author = Hitokoto.from_who;
-            Hitokoto = null;
-            //MainPageFrameViewModel.Instance.CurrentPage = this;
-            MainPageFrameViewModel.AboutPage = this;
-            MainPageFrameViewModel.Instance.IsLoading = false;
-            HitokotoStatus.Hide();
         };
+    }
+
+    /// <summary>
+    ///     获取一言内容，<b>保证返回非 null</b>（26.5.1 C5）。
+    ///     <para>
+    ///         原实现的两份拷贝都有同一个 bug：兜底分支写成
+    ///         <c>if (Random.Shared.Next() % 2 == 0) { 填充兜底 }</c> ——
+    ///         只有 50% 概率赋值，另一半概率 <c>Hitokoto</c> 仍是 null，
+    ///         紧接着的 <c>Hitokoto.hitokoto</c> 直接抛 NullReferenceException。
+    ///         也就是说「刷新一言」有 50% 概率崩。
+    ///     </para>
+    ///     <para>
+    ///         现在改为：主源 → 备用源 → 本地兜底，任一步拿到有效内容就返回；
+    ///         全部失败时返回随机笑话（50%）或固定的本地兜底文案（50%），
+    ///         两条分支都<b>必定</b>产生非 null 结果。
+    ///     </para>
+    /// </summary>
+    private static async Task<HitokotoResource> ResolveHitokotoAsync()
+    {
+        // 主源
+        try
+        {
+            var primary = await ExecuteHitokotoRequest(CreateRequest(), "一言");
+            if (IsUsable(primary))
+            {
+                return primary!;
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Log($"获取一言失败（主源）：{ex.Message}", EnumLogType.Warn,
+                EnumLogPort.Client, EnumLogModule.Net);
+        }
+
+        // 备用源
+        try
+        {
+            var backup = await ExecuteHitokotoBackupRequest(CreateRequest(), "一言");
+            if (IsUsable(backup))
+            {
+                return backup!;
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger.Log($"获取一言失败（备用源）：{ex.Message}", EnumLogType.Warn,
+                EnumLogPort.Client, EnumLogModule.Net);
+        }
+
+        // 本地兜底：50% 随机笑话，50% 固定文案 —— 两者都非 null
+        Core.App.CurrentLogger.Log("一言主源与备用源均失败，使用本地兜底", EnumLogType.Warn,
+            EnumLogPort.Client, EnumLogModule.Net);
+        return CreateLocalFallback();
+
+        static bool IsUsable(HitokotoResource? r) => !string.IsNullOrWhiteSpace(r?.hitokoto);
+    }
+
+    /// <summary>
+    ///     构造本地兜底的一言内容（26.5.1 C5）：<b>必定非 null 且 hitokoto 非空</b>。
+    /// </summary>
+    private static HitokotoResource CreateLocalFallback()
+    {
+        if (Random.Shared.Next() % 2 == 0 && CrashHandler.Jokes.Length > 0)
+        {
+            return new HitokotoResource
+            {
+                hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
+                from = Languages.Text_About_MicrosoftStyleChinese,
+                creator = "Microsoft"
+            };
+        }
+
+        return new HitokotoResource
+        {
+            hitokoto = Languages.Text_About_HitokotoFallback,
+            from = Languages.Text_About_HitokotoSource,
+            from_who = Languages.Text_About_HitokotoAuthor
+        };
+    }
+
+    /// <summary>
+    ///     异常兜底路径：把本地兜底文案写入 ViewModel（26.5.1 C5）。
+    /// </summary>
+    private static void ApplyHitokotoFallback(AboutViewModel viewModel)
+    {
+        var fallback = CreateLocalFallback();
+        viewModel.Hitokoto = fallback.hitokoto;
+        viewModel.From = fallback.from;
+        viewModel.Author = fallback.from_who;
     }
 
     private async void Debug_TestMarkdown(object? sender, RoutedEventArgs e)
@@ -531,7 +595,16 @@ public partial class AboutPage : UserControl
         return request;
     }
 
-    private static async Task<HitokotoResource> ExecuteHitokotoRequest(RestRequest request, string operationName)
+    /// <summary>
+    ///     从主源（v1.hitokoto.cn）获取一言（26.5.1 C5）。
+    ///     <para>
+    ///         原实现直接对 <c>response.Content</c> 反序列化：响应体为 null 或非 JSON 时
+    ///         抛 <see cref="ArgumentNullException" /> / <see cref="JsonException" />，
+    ///         调用方不得不靠 <c>catch (ArgumentNullException)</c> 当作「换备用源」的控制流。
+    ///         现在改为：失败返回 null，由 <see cref="ResolveHitokotoAsync" /> 统一判定。
+    ///     </para>
+    /// </summary>
+    private static async Task<HitokotoResource?> ExecuteHitokotoRequest(RestRequest request, string operationName)
     {
         Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
 
@@ -543,32 +616,68 @@ public partial class AboutPage : UserControl
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        var result =
-            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
-                App.AppJsonSerializerContext.HitokotoResource);
-        return result;
+        return ParseHitokotoResponse(response, "主源");
     }
 
-    private static async Task<HitokotoResource> ExecuteHitokotoBackupRequest(RestRequest request,
+    /// <summary>
+    ///     从备用源（hitokoto.yealqp.cn）获取一言（26.5.1 C5）。
+    ///     <para>
+    ///         原实现用 <c>new RestClient(url)</c> 建客户端，<b>没有设置超时</b> ——
+    ///         RestSharp 未设置时默认 100 秒，该备用源不稳定时会让「关于」页长时间卡在加载态。
+    ///         这里补上与主源一致的 3 秒超时。
+    ///     </para>
+    /// </summary>
+    private static async Task<HitokotoResource?> ExecuteHitokotoBackupRequest(RestRequest request,
         string operationName)
     {
-        Core.App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        Core.App.CurrentLogger.Log($"正在获取{operationName}（备用源）", port: EnumLogPort.Client,
+            module: EnumLogModule.Net);
 
-        using var client = new RestClient("https://hitokoto.yealqp.cn/");
+        using var client = new RestClient(new RestClientOptions("https://hitokoto.yealqp.cn/")
+        {
+            Timeout = TimeSpan.FromSeconds(3)
+        });
         var response = await client.ExecuteAsync(request);
 
         Core.App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
 
-        if (response.StatusCode != HttpStatusCode.OK)
+        return ParseHitokotoResponse(response, "备用源");
+    }
+
+    /// <summary>
+    ///     解析一言接口的响应（26.5.1 C5）。
+    ///     <para>
+    ///         约定：<b>不抛异常</b>，失败一律返回 null —— 由调用方决定是否降级到兜底文案。
+    ///         覆盖三种异常输入：HTTP 失败 / 空响应体 / 响应体不是合法 JSON。
+    ///     </para>
+    /// </summary>
+    private static HitokotoResource? ParseHitokotoResponse(RestResponse response, string sourceName)
+    {
+        if (!response.IsSuccessful)
         {
-            Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
+            Core.App.CurrentLogger.Log($"{sourceName}获取一言失败：{response.ResponseStatus} / {response.StatusCode}",
+                EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
             return null;
         }
 
-        var result =
-            JsonSerializer.Deserialize<HitokotoResource>(response.Content,
+        if (string.IsNullOrWhiteSpace(response.Content))
+        {
+            Core.App.CurrentLogger.Log($"{sourceName}获取一言失败：响应体为空", EnumLogType.Warn,
+                EnumLogPort.Client, EnumLogModule.Net);
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<HitokotoResource>(response.Content,
                 App.AppJsonSerializerContext.HitokotoResource);
-        return result;
+        }
+        catch (JsonException ex)
+        {
+            Core.App.CurrentLogger.Log($"{sourceName}获取一言失败：响应体无法解析（{ex.Message}）",
+                EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
+            return null;
+        }
     }
 
     #endregion
@@ -588,48 +697,26 @@ public partial class AboutPage : UserControl
         vm.Author = "";
         vm.From = "";
 
-        // 获取新一言
-        HitokotoResource Hitokoto = new()
-        {
-            hitokoto = Languages.Text_About_HitokotoFallback,
-            from = Languages.Text_About_HitokotoSource
-        };
+        // 26.5.1 C5：原实现在这里有一份与 AttachedToVisualTree 完全相同的拷贝，
+        // 同样只有 50% 概率填充兜底，另一半概率 Hitokoto.hitokoto 抛 NRE。
+        // 现在统一走 ResolveHitokotoAsync（保证非 null）。
         try
         {
-            Hitokoto = await Task.Run(() => ExecuteHitokotoRequest(CreateRequest(), "一言"));
-        }
-        catch (ArgumentNullException)
-        {
-            Core.App.CurrentLogger.Log("获取一言失败，使用备用源", EnumLogType.Warn, EnumLogPort.Client, EnumLogModule.Net);
-            Hitokoto = await Task.Run(() => ExecuteHitokotoBackupRequest(CreateRequest(), "一言"));
+            var hitokoto = await ResolveHitokotoAsync();
+            vm.Hitokoto = hitokoto.hitokoto;
+            vm.From = hitokoto.from;
+            vm.Author = hitokoto.from_who;
         }
         catch (Exception ex)
         {
-            Core.App.CurrentLogger.Error(ex, port: EnumLogPort.Server, type: EnumLogType.Warn);
-            Hitokoto = null;
+            // async void 事件处理器：异常必须自兜底，否则抛到同步上下文。
+            Core.App.CurrentLogger.Error(ex, "刷新一言失败");
+            ApplyHitokotoFallback(vm);
         }
-
-        if (Hitokoto == null)
+        finally
         {
-            if (Random.Shared.Next() % 2 == 0)
-            {
-                Hitokoto = new HitokotoResource
-                {
-                    hitokoto = CrashHandler.Jokes[Random.Shared.Next(CrashHandler.Jokes.Length)],
-                    from = Languages.Text_About_MicrosoftStyleChinese,
-                    creator = "Microsoft"
-                };
-            }
-
-            Core.App.CurrentLogger.Log("获取一言失败", EnumLogType.Error, EnumLogPort.Client, EnumLogModule.Net);
+            HitokotoStatus.Hide();
         }
-
-        vm.Hitokoto = Hitokoto.hitokoto;
-        vm.From = Hitokoto.from;
-        vm.Author = Hitokoto.from_who;
-        Hitokoto = null;
-
-        HitokotoStatus.Hide();
     }
 
     #endregion

@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      HitokotoVerify：PML 2 一言获取链路自检（26.5.1 C5 回归）
+
+      用法：
+        dotnet run 工具目录 tools/HitokotoVerify
+
+      背景（C5）：
+        AboutPage 里「获取一言」的逻辑有两份完全相同的拷贝
+        （AttachedToVisualTree 与 RefreshHitokoto_Click），都写成：
+
+            if (Hitokoto == null)
+            {
+                if (Random.Shared.Next() % 2 == 0)   // ← 只有 50% 概率赋值
+                {
+                    Hitokoto = new HitokotoResource { ... };
+                }
+            }
+            vm.Hitokoto = Hitokoto.hitokoto;   // ← 另一半概率 NRE
+
+        也就是说刷新一言有 50% 概率抛 NullReferenceException。
+        同一路径上还有：备用源客户端没有超时（RestSharp 默认 100 秒）、
+        主源直接对 null 响应体反序列化并靠 ArgumentNullException 当控制流。
+
+      验证策略：
+        A. 行为验证：反射调用真实的 CreateLocalFallback()，多次调用断言
+           每次结果都非 null 且 hitokoto 非空（这是「必定兜底」的核心不变量）。
+        B. 源码断言：兜底不再被随机数条件包裹、备用源客户端有超时、
+           两个入口都走统一解析、不再有 ArgumentNullException 控制流。
+
+      退出码：
+        全部通过 => 退出码 0；任一失败 => 退出码 1 并打印失败原因
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>HitokotoVerify</AssemblyName>
+        <RootNamespace>HitokotoVerify</RootNamespace>
+        <!-- 避免 dotnet run 提示找不到项目 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <!--
+      主程序是自包含可执行文件（NETSDK1151 禁止被引用），
+      因此在运行时反射加载其产物 DLL —— 与 XamlSmoke 同一套做法。
+    -->
+
+</Project>
