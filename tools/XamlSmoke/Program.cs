@@ -436,6 +436,8 @@ var targets = new (string Name, Func<object?> Factory)[]
     ("AnimatedProgressRing", () => TryCreate("MEFrpLauncherX.Controls.AnimatedProgressRing")),
     ("IconContent", () => TryCreate("MEFrpLauncherX.Controls.IconContent")),
     ("NoData", () => TryCreate("MEFrpLauncherX.Controls.NoData")),
+    // 26.5.1 C2：网络不可用占位控件（LoginPage 断网时展示）
+    ("NoConnection", () => TryCreate("MEFrpLauncherX.Controls.NoConnection")),
     // ---- P3 回归补充项 ----
     // 重要公告 Markdown（统一走 FluentAvalonia.MarkdownRender）
     ("MarkdownRender", () => TryCreate("FluentAvalonia.MarkdownRender.Controls.MarkdownRender.MarkdownRender", "FluentAvalonia.MarkdownRender")),

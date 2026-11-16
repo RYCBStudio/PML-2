@@ -89,6 +89,17 @@ public static class MEFrpApiConverter
         }
     }
 
+    /// <summary>
+    ///     人机验证码相关请求（challenge / redeem）的超时时间。
+    ///     <para>
+    ///         26.5.1 C2：这两个请求原先用 <c>new RestClient(url)</c> 建客户端，
+    ///         没有设置 <see cref="RestClientOptions.Timeout" /> —— RestSharp 在未设置时
+    ///         默认 <b>100 秒</b>，断网时请求会一直挂着，登录页的 <c>IsBusy</c> 永远为 true，
+    ///         表现为「登录界面卡死无响应」。
+    ///     </para>
+    /// </summary>
+    private static readonly TimeSpan CaptchaRequestTimeout = TimeSpan.FromSeconds(10);
+
     private static RestClient CreateClient(string endpoint)
     {
         return new RestClient(new RestClientOptions(BaseApiUrl + endpoint)
@@ -96,6 +107,23 @@ public static class MEFrpApiConverter
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : $"RYCB-PML2/Desktop {App.Version}",
             Timeout = TimeSpan.FromSeconds(3)
+        });
+    }
+
+    /// <summary>
+    ///     创建人机验证码服务（captcha.mefrp.com）的客户端。
+    ///     <para>
+    ///         26.5.1 C2：必须显式设置超时，否则断网时会挂满 RestSharp 的默认 100 秒。
+    ///         验证码服务是独立于 <see cref="BaseApiUrl" /> 的另一个域名，故单独建客户端。
+    ///     </para>
+    /// </summary>
+    private static RestClient CreateCaptchaClient(string url)
+    {
+        return new RestClient(new RestClientOptions(url)
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : $"RYCB-PML2/Desktop {App.Version}",
+            Timeout = CaptchaRequestTimeout
         });
     }
 
@@ -246,34 +274,133 @@ public static class MEFrpApiConverter
         return result;
     }
 
-    public static async Task<ChallengeInfo> PostChallengeAsync(string challengeContent)
+    /// <summary>
+    ///     提交人机验证挑战，获取 challenge 凭证。
+    ///     <para>
+    ///         26.5.1 C2：原先客户端没有超时（默认 100 秒），断网时登录界面会一直卡在
+    ///         <c>IsBusy = true</c>；且响应体为空/非 JSON 时 <c>JsonSerializer.Deserialize</c> 会抛
+    ///         <see cref="JsonException" />，把「网络问题」变成「未处理的异常」。
+    ///         现在改为：显式超时 + 失败时返回 null（由调用方给出可读提示）。
+    ///     </para>
+    /// </summary>
+    /// <returns>challenge 凭证；网络失败或响应无法解析时返回 <c>null</c>。</returns>
+    public static async Task<ChallengeInfo?> PostChallengeAsync(string challengeContent)
     {
         App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
         request.AddParameter("application/json", challengeContent, ParameterType.RequestBody);
-        using var client = new RestClient(Constants.ChallengeUrl);
-        var response = await client.ExecuteAsync(request);
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "",
-            App.AppJsonSerializerContext.ChallengeInfo)!;
-    }
+        using var client = CreateCaptchaClient(Constants.ChallengeUrl);
 
-    public static async Task<(CaptchaResultX?, string)> GetRedeemAsync(string redeemBody)
-    {
-        App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        var request = CreateRequest(Method.Post);
-        request.AddParameter("application/json", redeemBody, ParameterType.RequestBody);
-        using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+
         if (!response.IsSuccessful)
         {
-            return (null, string.Empty);
+            // IsSuccessful 为 false 覆盖了「传输层失败（断网/超时）」与「HTTP 状态码非 2xx」两种情况
+            App.CurrentLogger.Error(
+                $"人机验证 challenge 请求失败: {response.ResponseStatus} / {response.StatusCode} / {response.ErrorMessage}",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
         }
 
-        return (
-            JsonSerializer.Deserialize<CaptchaResultX?>(response.Content ?? "",
-                App.AppJsonSerializerContext.CaptchaResultX), response.Content ?? "");
+        if (string.IsNullOrWhiteSpace(response.Content))
+        {
+            App.CurrentLogger.Error("人机验证 challenge 响应为空", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
+
+        return ParseChallengeResponse(response.Content);
+    }
+
+    /// <summary>
+    ///     解析 challenge 响应体（26.5.1 C2）。
+    ///     <para>
+    ///         抽成独立方法以便直接测试：响应体为空或不是合法 JSON 时返回 <c>null</c>，
+    ///         绝不抛 <see cref="JsonException" /> —— 断网/服务端异常是「可预期的失败」，
+    ///         不该变成未处理异常把调用方的加载态卡住。
+    ///     </para>
+    /// </summary>
+    /// <returns>解析成功返回 challenge 凭证，否则返回 <c>null</c>。</returns>
+    internal static ChallengeInfo? ParseChallengeResponse(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<ChallengeInfo>(content,
+                App.AppJsonSerializerContext.ChallengeInfo);
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "人机验证 challenge 响应解析失败",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     兑换人机验证答案。
+    ///     <para>
+    ///         26.5.1 C2：同 <see cref="PostChallengeAsync" />，客户端补上超时，响应解析加保护。
+    ///     失败时返回 <c>(null, 错误信息)</c>，由调用方展示。
+    ///     </para>
+    /// </summary>
+    public static async Task<(CaptchaResultX?, string)> GetRedeemAsync(string redeemBody)
+    {
+        App.CurrentLogger.Log("Sending Captcha Redeem Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        var request = CreateRequest(Method.Post);
+        request.AddParameter("application/json", redeemBody, ParameterType.RequestBody);
+        using var client = CreateCaptchaClient(Constants.RedeemUrl);
+
+        var response = await client.ExecuteAsync(request);
+        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+
+        if (!response.IsSuccessful)
+        {
+            App.CurrentLogger.Error(
+                $"人机验证 redeem 请求失败: {response.ResponseStatus} / {response.StatusCode} / {response.ErrorMessage}",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return (null, response.ErrorMessage ?? response.StatusDescription ?? "");
+        }
+
+        if (string.IsNullOrWhiteSpace(response.Content))
+        {
+            App.CurrentLogger.Error("人机验证 redeem 响应为空", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return (null, "");
+        }
+
+        var parsed = ParseRedeemResponse(response.Content);
+        return (parsed, parsed is null ? "" : response.Content);
+    }
+
+    /// <summary>
+    ///     解析 redeem 响应体（26.5.1 C2）。
+    ///     <para>
+    ///         同 <see cref="ParseChallengeResponse" />：响应体为空或不是合法 JSON 时返回 <c>null</c>，
+    ///         不抛 <see cref="JsonException" />。
+    ///     </para>
+    /// </summary>
+    internal static CaptchaResultX? ParseRedeemResponse(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<CaptchaResultX?>(content,
+                App.AppJsonSerializerContext.CaptchaResultX);
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "人机验证 redeem 响应解析失败",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
     }
 
     /// <summary>

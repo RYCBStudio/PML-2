@@ -17,6 +17,17 @@ public partial class PluginEngine : IAction
     private readonly CallFunctionAction _callFuncAction;
     private readonly ConcurrentQueue<PluginExecutionLogEntry> _executionLogs = new();
 
+    /// <summary>
+    ///     插件注册表（触发器 + 函数）的写锁（26.5.1）。
+    ///     <para>
+    ///         <see cref="Reload" /> = <see cref="Unload" /> + <see cref="LoadAll" />，
+    ///         必须原子执行 —— 否则热重载线程与 UI 线程的显式重载交错时，
+    ///         会出现「Unload 清空后、LoadAll 追加前，另一方又 LoadAll 一次」，
+    ///         导致同一插件的触发器被注册两次，事件被触发两遍。
+    ///     </para>
+    /// </summary>
+    private readonly object _registryLock = new();
+
     /// <summary>执行日志新增事件（UI 订阅刷新）</summary>
     public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
 
@@ -96,56 +107,62 @@ public partial class PluginEngine : IAction
         var skippedDisabled = 0;
         var seenFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var pluginsFolder in pluginsFolders)
+        // 26.5.1：注册表的写入必须与 Unload 互斥 —— 否则并发重载会让同一插件
+        // 的触发器被注册两次（事件被触发两遍）。
+        lock (_registryLock)
         {
-            if (!Directory.Exists(pluginsFolder))
+            foreach (var pluginsFolder in pluginsFolders)
             {
-                continue;
-            }
-
-            foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
-            {
-                // 同一文件名在多个目录出现时只处理一次（数据目录优先）。
-                if (!seenFiles.Add(Path.GetFileName(file)))
+                if (!Directory.Exists(pluginsFolder))
                 {
                     continue;
                 }
 
-                try
+                foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
                 {
-                    var plugin = preprocessor.Process(file, _funcRegistry);
-                    if (plugin.Id == "错误")
+                    // 同一文件名在多个目录出现时只处理一次（数据目录优先）。
+                    if (!seenFiles.Add(Path.GetFileName(file)))
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        var plugin = preprocessor.Process(file, _funcRegistry);
+                        if (plugin.Id == "错误")
+                        {
+                            failed++;
+                            continue;
+                        }
+
+                        // 仅事件类插件参与触发器注册；create-proxy-template 等资源型插件不进入事件引擎
+                        if (!string.Equals(plugin.Type, "event", StringComparison.OrdinalIgnoreCase))
+                        {
+                            skippedNonEvent++;
+                            continue;
+                        }
+
+                        // 26.5.1：被禁用的插件不注册触发器（禁用必须真正生效）。
+                        if (disabledPluginIds is not null && disabledPluginIds.Contains(plugin.Id))
+                        {
+                            skippedDisabled++;
+                            continue;
+                        }
+
+                        loaded++;
+                        foreach (var trigger in plugin.Triggers)
+                        {
+                            if (!_triggerMap.ContainsKey(trigger.On))
+                                _triggerMap[trigger.On] = [];
+                            _triggerMap[trigger.On].Add(plugin);
+                        }
+                    }
+                    catch (Exception ex)
                     {
                         failed++;
-                        continue;
+                        App.CurrentLogger.Warning($"加载插件文件失败: {file}, {ex.Message}",
+                            module: EnumLogModule.Plugin);
                     }
-
-                    // 仅事件类插件参与触发器注册；create-proxy-template 等资源型插件不进入事件引擎
-                    if (!string.Equals(plugin.Type, "event", StringComparison.OrdinalIgnoreCase))
-                    {
-                        skippedNonEvent++;
-                        continue;
-                    }
-
-                    // 26.5.1：被禁用的插件不注册触发器（禁用必须真正生效）。
-                    if (disabledPluginIds is not null && disabledPluginIds.Contains(plugin.Id))
-                    {
-                        skippedDisabled++;
-                        continue;
-                    }
-
-                    loaded++;
-                    foreach (var trigger in plugin.Triggers)
-                    {
-                        if (!_triggerMap.ContainsKey(trigger.On))
-                            _triggerMap[trigger.On] = [];
-                        _triggerMap[trigger.On].Add(plugin);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    failed++;
-                    App.CurrentLogger.Warning($"加载插件文件失败: {file}, {ex.Message}", module: EnumLogModule.Plugin);
                 }
             }
         }
@@ -284,10 +301,14 @@ public partial class PluginEngine : IAction
     /// </summary>
     public void Unload()
     {
-        _triggerMap.Clear();
-        // 26.5.1：函数注册表也要清 —— 否则被卸载插件定义的函数仍然可被 call_function 调用，
-        // 且注册表会随每次重载单调增长。
-        _funcRegistry.Clear();
+        lock (_registryLock)
+        {
+            _triggerMap.Clear();
+            // 26.5.1：函数注册表也要清 —— 否则被卸载插件定义的函数仍然可被 call_function 调用，
+            // 且注册表会随每次重载单调增长。
+            _funcRegistry.Clear();
+        }
+
         App.CurrentLogger.LogDebug("插件引擎已卸载所有插件", module: EnumLogModule.Plugin);
     }
 
@@ -306,8 +327,15 @@ public partial class PluginEngine : IAction
     /// </summary>
     public void Reload(IReadOnlyList<string> pluginsFolders, ISet<string>? disabledPluginIds = null)
     {
-        Unload();
-        LoadAll(pluginsFolders, disabledPluginIds);
+        // 26.5.1：整个「卸载 + 重载」必须原子执行 ——
+        // Monitor 可重入，所以这里持锁后调用 Unload/LoadAll 不会自锁，
+        // 但能防止另一线程（热重载）在 Unload 与 LoadAll 之间插入 LoadAll，
+        // 导致同一插件的触发器被注册两次。
+        lock (_registryLock)
+        {
+            Unload();
+            LoadAll(pluginsFolders, disabledPluginIds);
+        }
     }
 
     private static readonly Regex TemplateRegex = MyRegex();

@@ -7794,6 +7794,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 网络连接已断开.
+        /// </summary>
+        public static string Text_Global_NoConnection {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请检查网络连接后重试.
+        /// </summary>
+        public static string Text_Global_NoConnectionAdvice {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnectionAdvice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重试.
+        /// </summary>
+        public static string Text_Global_Retry {
+            get {
+                return ResourceManager.GetString("Text.Global.Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 还未实现.
         /// </summary>
         public static string Text_Global_NotImplemented {
@@ -8546,6 +8573,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Login_CaptchaStep {
             get {
                 return ResourceManager.GetString("Text.Login.CaptchaStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 人机验证失败，请重试。.
+        /// </summary>
+        public static string Text_Login_CaptchaValidationFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 无法连接人机验证服务器，请检查网络连接后重试。.
+        /// </summary>
+        public static string Text_Login_CaptchaNetworkFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaNetworkFailed", resourceCulture);
             }
         }
         

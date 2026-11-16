@@ -7780,6 +7780,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network connection lost.
+        /// </summary>
+        public static string Text_Global_NoConnection {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check your network connection and retry.
+        /// </summary>
+        public static string Text_Global_NoConnectionAdvice {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnectionAdvice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Text_Global_Retry {
+            get {
+                return ResourceManager.GetString("Text.Global.Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not implemented yet.
         /// </summary>
         public static string Text_Global_NotImplemented {
@@ -8532,6 +8559,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Login_CaptchaStep {
             get {
                 return ResourceManager.GetString("Text.Login.CaptchaStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Captcha validation failed. Please retry..
+        /// </summary>
+        public static string Text_Login_CaptchaValidationFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to reach the captcha server. Please check your network connection and retry..
+        /// </summary>
+        public static string Text_Login_CaptchaNetworkFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaNetworkFailed", resourceCulture);
             }
         }
         

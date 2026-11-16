@@ -8,7 +8,23 @@ public class HotReloadService
     private readonly List<FileSystemWatcher> _watchers = [];
     private DateTime _lastReload = DateTime.MinValue;
 
-    public HotReloadService(PluginEngine engine) => _engine = engine;
+    /// <summary>
+    ///     被禁用的插件集合提供者（26.5.1 C2 修复）。
+    ///     <para>
+    ///         热重载时必须一并传给引擎 —— 否则热重载后被禁用的插件会重新注册触发器，
+    ///         「禁用」就失效了（原 <see cref="PluginEngine.Reload(IReadOnlyList{string}, ISet{string})" />
+    ///         的第二个参数默认为 null）。
+    ///     </para>
+    /// </summary>
+    private readonly Func<ISet<string>?> _disabledProvider;
+
+    public HotReloadService(PluginEngine engine, Func<ISet<string>?>? disabledProvider = null)
+    {
+        _engine = engine;
+        // 用委托而不是直接传集合：禁用状态会随用户在界面上操作而变化，
+        // 热重载发生时必须取「当前」的禁用集合，而不是启动时的快照。
+        _disabledProvider = disabledProvider ?? (() => null);
+    }
 
     /// <summary>
     /// 开始监听插件目录。
@@ -53,7 +69,8 @@ public class HotReloadService
             module: EnumLogModule.Plugin);
         try
         {
-            _engine.Reload(folders);
+            // 26.5.1：必须带上当前禁用集合，否则热重载会让被禁用的插件复活
+            _engine.Reload(folders, _disabledProvider());
         }
         catch (Exception ex)
         {

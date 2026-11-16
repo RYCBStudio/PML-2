@@ -131,7 +131,9 @@ public class PluginService
             }
 
             // 启动热重载
-            _hotReload = new HotReloadService(_engine);
+            // 26.5.1：传入禁用集合的提供者 —— 热重载时必须用「当前」的禁用状态，
+            // 否则被禁用的插件会在文件变更后复活（禁用失效）。
+            _hotReload = new HotReloadService(_engine, () => _disabledPlugins);
             _hotReload.Start(_readFolders);
 
             IsLoaded = true;

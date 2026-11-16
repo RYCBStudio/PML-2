@@ -165,8 +165,23 @@
     <data name="Text.Login.Register" xml:space="preserve">
         <value>Register</value>
     </data>
+    <data name="Text.Login.CaptchaNetworkFailed" xml:space="preserve">
+        <value>Unable to reach the captcha server. Please check your network connection and retry.</value>
+    </data>
+    <data name="Text.Login.CaptchaValidationFailed" xml:space="preserve">
+        <value>Captcha validation failed. Please retry.</value>
+    </data>
     <data name="Text.Global.NoData" xml:space="preserve">
         <value>No data</value>
+    </data>
+    <data name="Text.Global.NoConnection" xml:space="preserve">
+        <value>Network connection lost</value>
+    </data>
+    <data name="Text.Global.NoConnectionAdvice" xml:space="preserve">
+        <value>Please check your network connection and retry</value>
+    </data>
+    <data name="Text.Global.Retry" xml:space="preserve">
+        <value>Retry</value>
     </data>
     <data name="Text.Global.OperationSuccess" xml:space="preserve">
         <value>Operation completed successfully</value>

@@ -168,6 +168,11 @@ try
     Console.WriteLine();
     Console.WriteLine("== 4. 同名插件去重（数据目录优先） ==");
     // =====================================================================
+    // 注意：这里必须先停掉热重载 —— 写文件会触发 FileSystemWatcher 的异步回调，
+    // 与下面的显式 LoadPlugins() 竞争，导致引擎被重载两次、触发器重复注册。
+    // 这是测试的竞态，不是产品缺陷（产品里 Reload 已加锁保证原子性）。
+    svc.DisableHotReload();
+
     // 在数据目录放一个与随包同名、但内容不同的插件
     File.WriteAllText(Path.Combine(dataPlugins, "bundled-probe.yaml"),
         BundledPluginYaml.Replace("BUNDLED_HIT", "SHADOW_HIT"));
@@ -256,6 +261,58 @@ try
     engine.Unload();
     engine.LoadAll(new[] { dataPlugins });
     Check("反复 LoadAll/Unload 不崩溃", engine.ExecutionLogs.Count >= fnCountAfterLoad);
+
+    // =====================================================================
+    Console.WriteLine();
+    Console.WriteLine("== 9. 热重载后禁用状态仍然有效 ==");
+    // =====================================================================
+    // 26.5.1 修复：热重载此前调用 engine.Reload(folders) 时没有传禁用集合，
+    // 导致被禁用的插件在文件变更后复活（禁用失效）。
+    //
+    // 注意：必须复用同一个 PluginService 实例 —— 产品里是单例，
+    // 而多个实例会共享同一数据目录、互相覆盖 .disabled 文件并重复触发热重载。
+    // 其余实例的 watcher 先停掉，避免干扰。
+    svc2.DisableHotReload();
+    svc.EnableHotReload();
+
+    // 第 6 步末尾把 user-probe 重新启用了（并清空了 .disabled），
+    // 这里重新禁用一次，作为热重载的起点。
+    svc.DisablePlugin("user-probe");
+
+    // svc 在第 5 步已禁用 user-probe；确认当前状态
+    svc.ClearExecutionLogs();
+    await svc.TriggerAsync("probe.event", new Dictionary<string, object>());
+    Check("热重载前：被禁用的插件不响应事件", CountActions(svc, "用户探针") == 0,
+        $"仍执行 {CountActions(svc, "用户探针")} 次");
+
+    // 触发一次热重载（新增文件让 FileSystemWatcher 感知到变化）
+    // 热重载是异步的，且自身有 1 秒防抖，这里等待它完成。
+    var probeFile = Path.Combine(dataPlugins, "hot-reload-probe.yaml");
+    File.WriteAllText(probeFile, """
+id: hot-reload-probe
+name: 热重载探针
+description: 用于触发热重载
+author: verify
+version: "1.0"
+triggers:
+  - on: probe.event
+    actions:
+      - name: log
+        params:
+          msg: "HOT_RELOAD_HIT"
+""");
+
+    // 等待热重载发生（防抖 1 秒 + 加载耗时）
+    await Task.Delay(2500);
+
+    svc.ClearExecutionLogs();
+    await svc.TriggerAsync("probe.event", new Dictionary<string, object>());
+    Check("热重载后被禁用的插件仍然不响应事件",
+        CountActions(svc, "用户探针") == 0,
+        $"仍执行 {CountActions(svc, "用户探针")} 次");
+    Check("热重载本身生效（新插件被加载）",
+        CountActions(svc, "热重载探针") == 1,
+        $"执行 {CountActions(svc, "热重载探针")} 次");
 }
 catch (Exception ex)
 {

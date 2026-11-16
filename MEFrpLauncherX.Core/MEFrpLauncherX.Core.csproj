@@ -16,6 +16,13 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <!-- 26.5.1 C2：允许人机验证自检工具访问 internal 的响应解析逻辑 -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>CaptchaVerify</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
     <ItemGroup>
         <!-- 版本统一由仓库根目录 Directory.Packages.props 中央管理 -->
         <PackageReference Include="Avalonia"/>
