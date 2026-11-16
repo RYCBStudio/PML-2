@@ -1105,6 +1105,9 @@
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
         <value>用户信息</value>
     </data>
+    <data name="Text.UserCenter.LoadFailed" xml:space="preserve">
+        <value>加载用户数据失败</value>
+    </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>查看和管理您的账户基本信息</value>
     </data>

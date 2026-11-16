@@ -1099,6 +1099,9 @@
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
         <value>User Information</value>
     </data>
+    <data name="Text.UserCenter.LoadFailed" xml:space="preserve">
+        <value>Failed to load user data</value>
+    </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>View and manage your account's basic information</value>
     </data>

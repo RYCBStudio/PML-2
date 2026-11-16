@@ -15536,6 +15536,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 加载用户数据失败.
+        /// </summary>
+        public static string Text_UserCenter_LoadFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.LoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 查看和管理您的账户基本信息.
         /// </summary>
         public static string Text_UserCenter_UserInfoDescription {

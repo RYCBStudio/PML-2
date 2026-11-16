@@ -1097,6 +1097,9 @@
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
         <value>使用者資訊</value>
     </data>
+    <data name="Text.UserCenter.LoadFailed" xml:space="preserve">
+        <value>載入使用者資料失敗</value>
+    </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>檢視並管理您的帳戶基本資訊</value>
     </data>
