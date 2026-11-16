@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      ProxyStopVerify：PML 2 隧道停止的进程精确性自检（26.5.1 C6 回归）
+
+      用法：
+        dotnet run 工具目录 tools/ProxyStopVerify
+
+      背景（C6）：
+        UserProxyViewModel.ForceOfflineProxy 原实现对 Windows 用
+        `taskkill /im mefrpc.exe /T /F`、对 Linux 用 `pkill mefrpc` ——
+        两者都按「进程名」匹配，会把本机所有隧道的 mefrpc 进程一起杀掉。
+        而该方法也被 StopProxy 调用，于是停掉一个隧道会连带断开其他所有隧道。
+
+      验证策略：
+        A. OS 级实证：起两个同名进程，分别用 /im（按名）与 /PID（按进程号）
+           终止，实测「按名会全杀、按进程号只杀一个」—— 这是本缺陷的物理根因。
+        B. 源码断言：ForceOfflineProxy 不再按进程名杀、改为按隧道名精确定位；
+           StopProxy 不重复终止进程。
+
+      注意：本工具会启动并清理若干 pml2verifytarget.exe 临时进程，
+            除此之外不触碰系统上的任何进程。
+
+      退出码：
+        全部通过 => 退出码 0；任一失败 => 退出码 1 并打印失败原因
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>ProxyStopVerify</AssemblyName>
+        <RootNamespace>ProxyStopVerify</RootNamespace>
+        <!-- 避免 dotnet run 提示找不到项目 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+</Project>

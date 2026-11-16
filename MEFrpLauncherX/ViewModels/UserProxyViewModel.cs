@@ -1286,36 +1286,84 @@ public partial class UserProxyViewModel : ViewModelBase
         await ManageProxyPage.Instance.LoadProxies(true);
     }
 
-    private async void ForceOfflineProxy(UserProxyViewModel proxy)
+    /// <summary>
+    ///     UI「强制下线」入口（26.5.1 C6）。
+    /// </summary>
+    private async void ForceOfflineProxy(UserProxyViewModel proxy) =>
+        await ForceOfflineProxyCoreAsync(proxy, stopLocalClient: true);
+
+    /// <summary>
+    ///     强制下线隧道：终止本隧道的本地客户端进程，并在服务端踢下线（可选同时禁用）。
+    ///     <para>
+    ///         26.5.1 C6：原实现对 Windows 用 <c>taskkill /im mefrpc.exe /T /F</c>、
+    ///         对 Linux 用 <c>pkill mefrpc</c> —— 两者都会杀掉本机<b>所有</b>隧道的
+    ///         mefrpc 进程。由于本方法也被 <see cref="StopProxy" /> 调用，
+    ///         停掉一个隧道会连带把其他正在运行的隧道全部断开。
+    ///     </para>
+    ///     <para>
+    ///         现在改为按隧道名精确定位：每个隧道的客户端进程都跑在自己那个终端标签里，
+    ///         <see cref="TerminalPage.SendCtrlCCommandToSelected" /> 会按标签头（= 隧道名）
+    ///         找到对应的终端并终止它自己的进程树，不影响其他隧道。
+    ///     </para>
+    /// </summary>
+    /// <param name="proxy">目标隧道。</param>
+    /// <param name="stopLocalClient">
+    ///     是否终止本地客户端进程。<see cref="StopProxy" /> 已在调用前精确停止过，
+    ///     传 false 避免重复操作（重复调用会让终端多打一行「没有活动进程」）。
+    /// </param>
+    private async Task ForceOfflineProxyCoreAsync(UserProxyViewModel proxy, bool stopLocalClient)
     {
         IsLoading = true;
-        Core.App.CurrentLogger.Log($"正在强制下线隧道 {proxy.proxyName}", port: EnumLogPort.Client, module: EnumLogModule.Main);
-        // 强制下线隧道逻辑
-        if (OperatingSystem.IsWindows())
+        try
         {
-            using var killProcess = new Process();
-            killProcess.StartInfo.FileName = "taskkill";
-            killProcess.StartInfo.Arguments = "/im mefrpc.exe /T /F";
-            killProcess.StartInfo.UseShellExecute = false;
-            killProcess.StartInfo.CreateNoWindow = true;
-            killProcess.Start();
-        }
-        else if (OperatingSystem.IsLinux())
-        {
-            Process.Start("pkill", "mefrpc")?.WaitForExit(1000);
-        }
+            Core.App.CurrentLogger.Log($"正在强制下线隧道 {proxy.proxyName}", port: EnumLogPort.Client,
+                module: EnumLogModule.Main);
 
-        await Task.Run(async () =>
-        {
-            MEFrpApiConverter.KickProxy(proxy.proxyId);
-            if (ConfigManager.CurrentConfig.KickWithoutDisable)
+            if (stopLocalClient)
             {
-                MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false);
+                await StopLocalClientAsync(proxy.proxyName);
             }
 
-            await ManageProxyPage.Instance.LoadProxies(true);
-        });
-        IsLoading = false;
+            await Task.Run(async () =>
+            {
+                MEFrpApiConverter.KickProxy(proxy.proxyId);
+                if (ConfigManager.CurrentConfig.KickWithoutDisable)
+                {
+                    MEFrpApiConverter.ToggleProxyStatus(proxy.proxyId, false);
+                }
+
+                await ManageProxyPage.Instance.LoadProxies(true);
+            });
+        }
+        catch (Exception ex)
+        {
+            // async void 调用方（含 StopProxy）无法承接异常，这里必须兜底。
+            Core.App.CurrentLogger.Error(ex, $"强制下线隧道 {proxy.proxyName} 失败");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    /// <summary>
+    ///     终止指定隧道自己的本地客户端进程（26.5.1 C6）。
+    ///     <para>
+    ///         每个隧道的 mefrpc 都运行在自己的终端标签里，标签头即隧道名。
+    ///         按标签头查找可精确命中该隧道的进程树 —— 这是
+    ///         <see cref="StopProxy" /> 一直在用的方式，不会波及其他隧道。
+    ///     </para>
+    ///     <para>
+    ///         若该隧道不在本地运行（没有对应标签），这里静默跳过：
+    ///         它本来就没有需要终止的本地进程，服务端踢下线仍然照常执行。
+    ///     </para>
+    /// </summary>
+    private static async Task StopLocalClientAsync(string proxyName)
+    {
+        if (TerminalPage.Instance is { } terminalPage)
+        {
+            await terminalPage.SendCtrlCCommandToSelected(proxyName);
+        }
     }
 
     private async void DisableProxy(UserProxyViewModel proxy)
@@ -1422,10 +1470,13 @@ public partial class UserProxyViewModel : ViewModelBase
 
     private async void StopProxy(UserProxyViewModel obj)
     {
-        await TerminalPage.Instance.SendCtrlCCommandToSelected(obj.proxyName);
+        // 26.5.1 C6：按隧道名精确终止本隧道的客户端进程（不影响其他隧道）。
+        // 下面的 ForceOfflineProxyCoreAsync 传 stopLocalClient: false —— 这里已经停过了，
+        // 原实现在 ForceOfflineProxy 内部用 taskkill /im 会把所有隧道一起杀掉。
+        await StopLocalClientAsync(obj.proxyName);
         // 26.3 M6b：停止 → 悬浮窗移除对应隧道项（与关闭标签页一致；TerminalPage 内也会报告，此处保证链路完整）
         ProxyFloatViewModel.ReportTunnelRemoved(obj.proxyName);
-        ForceOfflineProxy(obj);
+        await ForceOfflineProxyCoreAsync(obj, stopLocalClient: false);
         IsLaunched = false;
         TunnelStatus = TunnelStatus.Stopped;
     }
