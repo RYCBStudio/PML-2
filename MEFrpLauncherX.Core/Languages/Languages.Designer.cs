@@ -16359,6 +16359,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 启动 [{0}]隧道 [{1}] 成功，您可以使用 [{2}] 访问您的服务.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动 [{0}]隧道 [{1}] 成功，隧道已可用.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyNoAddressFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyNoAddressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道已可用.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyTitle {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请填写您的 ME Frp 邮箱.
         /// </summary>
         public static string Text_Validation_EmailRequired {

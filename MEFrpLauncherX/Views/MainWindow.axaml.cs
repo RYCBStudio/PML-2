@@ -770,12 +770,8 @@ public partial class MainWindow : FAAppWindow, IDisposable
                 ? $"#{data.StartProxyId}"
                 : data.StartProxyName;
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, title);
-
-            // 26.4 修复：必须切到终端页，否则终端进程永远不会启动。
-            // PTY 终端只在控件 Loaded（页面可见）时拉起进程，而 SendToPtyAsync 在页面
-            // 不可见时不会主动启动，只会挂起等待 —— 表现为「链接已触发，但必须手动切到
-            // 终端页才开始启动隧道」。手动启动隧道的路径同样会切页，此处保持一致。
-            MainPageFrameViewModel.RequestTerminalNavigation();
+            // 26.5.1：链接启动不再切到终端页；PTY 引擎由 TerminalPage 主动拉起进程，
+            // 成功与否通过「隧道已可用」通知反馈（含访问地址）。
         }
         catch (Exception ex)
         {

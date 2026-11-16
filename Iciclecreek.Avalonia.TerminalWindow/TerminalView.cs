@@ -1449,6 +1449,47 @@ namespace Iciclecreek.TerminalWindow
 
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
+        /// <summary>
+        ///     Starts the PTY process without waiting for the control to be attached to a visible page.
+        ///     Background tunnel launches (26.5.1) create the terminal tab but no longer navigate to it,
+        ///     so waiting for <c>Loaded</c> here would leave the tunnel process unstarted.
+        /// </summary>
+        /// <param name="timeout">How long to wait for the PTY to become ready.</param>
+        /// <returns><see langword="true" /> when a PTY connection is available.</returns>
+        public async Task<bool> EnsureProcessStartedAsync(TimeSpan? timeout = null)
+        {
+            if (_ptyConnection != null)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(Process))
+            {
+                return false;
+            }
+
+            // LaunchProcess touches terminal state and must run on the UI thread.
+            if (Dispatcher.UIThread.CheckAccess())
+            {
+                LaunchProcess();
+            }
+            else
+            {
+                Dispatcher.UIThread.Post(LaunchProcess);
+            }
+
+            try
+            {
+                await _ptyReady.Task.WaitAsync(timeout ?? TimeSpan.FromSeconds(15)).ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+                return false;
+            }
+
+            return _ptyConnection != null;
+        }
+
         public async Task SendToPtyAsync(string data, CancellationToken ct = default)
         {
             // Capture the connection reference locally to avoid any potential race conditions

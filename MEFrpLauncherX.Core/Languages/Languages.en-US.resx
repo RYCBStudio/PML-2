@@ -3166,6 +3166,15 @@ Details: {1}</value>
     <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
         <value>Proxy launched successfully: {0}</value>
     </data>
+    <data name="Text.UserProxy.TunnelReadyTitle" xml:space="preserve">
+        <value>Tunnel ready</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyFormat" xml:space="preserve">
+        <value>Started [{0}] tunnel [{1}] successfully. You can access your service via [{2}].</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyNoAddressFormat" xml:space="preserve">
+        <value>Started [{0}] tunnel [{1}] successfully. The tunnel is ready.</value>
+    </data>
     <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
         <value>{0} file verification failed, the client needs to be re-downloaded. Close this window to try launching directly; click "No" to cancel the launch.
 Please note: we are not responsible for any consequences caused by running any unofficial file (different from the file verification values we provide).</value>

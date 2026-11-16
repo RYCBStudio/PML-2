@@ -16335,6 +16335,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Started [{0}] tunnel [{1}] successfully. You can access your service via [{2}]..
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started [{0}] tunnel [{1}] successfully. The tunnel is ready..
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyNoAddressFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyNoAddressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel ready.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyTitle {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter your ME Frp email.
         /// </summary>
         public static string Text_Validation_EmailRequired {

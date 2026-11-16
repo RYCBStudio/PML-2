@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -12,7 +14,9 @@ using Avalonia.Threading;
 using FluentAvalonia.UI.Controls;
 using Iciclecreek.TerminalWindow;
 using MEFrpLauncherX.Core;
+using MEFrpLauncherX.Core.Controls;
 using MEFrpLauncherX.Core.Languages;
+using MEFrpLauncherX.Core.Services;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
 using MEFrpLauncherX.Views.ProxyMonitor;
@@ -22,6 +26,13 @@ namespace MEFrpLauncherX.Views;
 
 public partial class TerminalPage : UserControl
 {
+    /// <summary>
+    ///     具名隧道的终端输出累计（26.5.1）：用于在后台启动时识别客户端输出的
+    ///     「成功，您可以使用 [地址] 访问您的服务」，并据此发布可用通知。
+    /// </summary>
+    private readonly Dictionary<string, TunnelOutputTracker> _tunnelOutputs =
+        new(StringComparer.OrdinalIgnoreCase);
+
     public static int RelaunchAttempts
     {
         get;
@@ -200,6 +211,7 @@ public partial class TerminalPage : UserControl
         }
 
         MainTabCtrl.Items.RemoveAt(index);
+        _tunnelOutputs.Remove(closedTabName);
 
         if (MainTabCtrl.Items.Count > 0)
         {
@@ -359,6 +371,22 @@ public partial class TerminalPage : UserControl
             }
         }
 
+        // 26.5.1：具名隧道（非手动控制台）额外观察输出，识别「隧道已可用」的成功日志。
+        // 启动隧道不再强制切到终端页，因此成功提示必须由这里统一发布。
+        if (!consoleTitle.IsNullOrEmpty())
+        {
+            _tunnelOutputs[consoleTitle] = new TunnelOutputTracker();
+            switch (newTab.Content)
+            {
+                case TerminalControl tc:
+                    tc.OutputReceived += output => ObserveTunnelOutput(consoleTitle, output);
+                    break;
+                case TerminalView tv:
+                    tv.OutputReceived += output => ObserveTunnelOutput(consoleTitle, output);
+                    break;
+            }
+        }
+
         if (OperatingSystem.IsWindows())
         {
             var res = rs.Replace("{mefrpc}",
@@ -383,7 +411,8 @@ public partial class TerminalPage : UserControl
             {
                 if (isMEFrpCExe)
                 {
-                    await Task.Delay(500); // 确保终端初始化完成
+                    // 26.5.1：终端页可能不可见，主动拉起 PTY，否则 SendToPtyAsync 会一直等待页面显示。
+                    await terminal1.EnsureProcessStartedAsync();
                     await terminal1.SendToPtyAsync(res + " \r");
                 }
             }
@@ -418,6 +447,8 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
+                // 26.5.1：终端页可能不可见，先拉起 PTY 再发送命令。
+                await terminal1.EnsureProcessStartedAsync();
                 await terminal1.SendToPtyAsync("cd \"" + Core.AppPaths.DataRoot + "\"\n");
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
@@ -464,6 +495,8 @@ public partial class TerminalPage : UserControl
             }
             else if (newTab.Content is TerminalView terminal1)
             {
+                // 26.5.1：终端页可能不可见，先拉起 PTY 再发送命令。
+                await terminal1.EnsureProcessStartedAsync();
                 await terminal1.SendToPtyAsync("cd \"" + Core.AppPaths.DataRoot + "\"\n");
                 await terminal1.SendToPtyAsync($""" 
                                                 echo -e "\e[33m{Languages.Text_Terminal_Unpacking}\e[0m" 
@@ -491,6 +524,120 @@ public partial class TerminalPage : UserControl
         if (!consoleTitle.IsNullOrEmpty())
         {
             ProxyFloatViewModel.ReportTunnelStarted(consoleTitle);
+        }
+    }
+
+    /// <summary>
+    ///     累计单条具名隧道的终端输出，识别客户端打印的「隧道已可用」日志（26.5.1）。
+    /// </summary>
+    private void ObserveTunnelOutput(string proxyName, string output)
+    {
+        if (string.IsNullOrEmpty(output))
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (!_tunnelOutputs.TryGetValue(proxyName, out var tracker) || tracker.ReadyReported)
+            {
+                return;
+            }
+
+            tracker.Append(output);
+            var ready = TunnelReadyParser.TryParse(tracker.Buffer.ToString());
+            if (ready is null)
+            {
+                return;
+            }
+
+            tracker.ReadyReported = true;
+            ReportTunnelReady(proxyName, ready);
+        });
+    }
+
+    /// <summary>
+    ///     把「隧道已可用」同步到管理页 / 悬浮窗，并发出包含访问地址的通知。
+    /// </summary>
+    private async void ReportTunnelReady(string proxyName, TunnelReadyInfo ready)
+    {
+        try
+        {
+            var proxy = (ManageProxyPage.Instance?.DataContext as ManageProxyViewModel)?.AllProxies
+                .FirstOrDefault(p => string.Equals(p.proxyName, proxyName, StringComparison.OrdinalIgnoreCase));
+
+            proxy?.ConfirmTunnelReady();
+            if (proxy is null)
+            {
+                // 自动启动/链接启动时管理页可能尚未创建，至少让悬浮窗显示正确状态。
+                ProxyFloatViewModel.ReportTunnelStatus(proxyName, TunnelStatus.Running, null);
+            }
+
+            var type = ready.ProxyType ?? proxy?.proxyType;
+            var address = ready.Address ?? SimpleProxyItem.ResolvePublicAddress(proxy);
+            var displayName = string.IsNullOrWhiteSpace(proxy?.proxyName) ? proxyName : proxy!.proxyName;
+            var message = string.IsNullOrWhiteSpace(address)
+                ? string.Format(Languages.Text_UserProxy_TunnelReadyNoAddressFormat, type ?? "-", displayName)
+                : string.Format(Languages.Text_UserProxy_TunnelReadyFormat, type ?? "-", displayName, address);
+
+            Core.App.CurrentLogger?.Log(message, EnumLogType.Info, EnumLogPort.Client, EnumLogModule.Main);
+            Growl.Success(message, Languages.Text_UserProxy_TunnelReadyTitle);
+
+            await ShowTunnelReadySystemNotificationAsync(displayName, message);
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "处理隧道可用状态失败");
+        }
+    }
+
+    /// <summary>
+    ///     窗口不在前台时补发系统通知（自动启动/链接启动常见），前台时 Growl 已足够。
+    /// </summary>
+    private static async Task ShowTunnelReadySystemNotificationAsync(string proxyName, string message)
+    {
+        var window = Core.App.MainWindow;
+        if (window is { IsVisible: true, IsActive: true, WindowState: not WindowState.Minimized })
+        {
+            return;
+        }
+
+        var service = Core.App.NotificationService;
+        if (service is not { IsSupported: true })
+        {
+            return;
+        }
+
+        try
+        {
+            var request = service.RequestNotification(proxyName, message);
+            if (request is not null)
+            {
+                await service.ShowAsync(request);
+            }
+        }
+        catch (Exception ex)
+        {
+            Core.App.CurrentLogger?.Error(ex, "显示隧道可用通知失败");
+        }
+    }
+
+    /// <summary>单条隧道输出的累计缓冲区（只保留尾部，避免长时间运行占用内存）。</summary>
+    private sealed class TunnelOutputTracker
+    {
+        private const int MaxBufferLength = 16 * 1024;
+
+        public StringBuilder Buffer { get; } = new();
+
+        public bool ReadyReported { get; set; }
+
+        public void Append(string output)
+        {
+            Buffer.Append(output);
+            if (Buffer.Length > MaxBufferLength)
+            {
+                Buffer.Remove(0, Buffer.Length - MaxBufferLength);
+            }
         }
     }
 

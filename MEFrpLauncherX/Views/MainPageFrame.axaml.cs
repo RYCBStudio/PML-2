@@ -21,10 +21,6 @@ public partial class MainPageFrame : UserControl
 
         // 非点击导航（代码调用 NavigateToPage，如托盘/悬浮窗/页面内跳转）时，同步 FANavigationView 选中指示条
         viewModel.PropertyChanged += OnViewModelPropertyChanged;
-
-        // 冷启动时链接可能在用户登录之前就已触发（当时主界面还不存在，导航请求被挂起）。
-        // 这里补做那次请求，否则终端页永远不显示、终端进程也不会启动。
-        MainPageFrameViewModel.ConsumePendingTerminalNavigation();
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)

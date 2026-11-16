@@ -796,21 +796,25 @@ public partial class UserProxyViewModel : ViewModelBase
         }
 
         MainPageFrameViewModel.TerminalPage ??= new TerminalPage();
+        // 26.5.1：启动隧道不再跳转到控制台；终端页内的成功日志解析负责发布「隧道已可用」通知。
         MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, proxy.proxyName);
         // 26.3 M6b-Extended：隧道启动 → 悬浮窗状态同步（TerminalPage 内也会报告，此处保持既有语义）
         ProxyFloatViewModel.ReportTunnelStarted(proxy.proxyName);
         // 26.4：记录本次启动，使主页「最近启动的隧道」推荐立即反映（不依赖服务端 lastStartTime 回传）
         HomeRecommendStateStore.RecordLaunch(proxy.proxyId);
         IsLoading = false;
-        MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
-        MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
         if (ConfigManager.CurrentConfig.PMSettings.Enabled)
         {
             ProxyFloat.Instance?.Show();
         }
 
-        Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy?.proxyName));
         IsLaunched = true;
+        if (TunnelStatus != TunnelStatus.Running)
+        {
+            TunnelStatus = TunnelStatus.Starting;
+        }
+
+        ScheduleStartupTimeoutCheck();
     }
 
     /// <summary>
@@ -932,11 +936,14 @@ public partial class UserProxyViewModel : ViewModelBase
             // 26.4：记录本次启动，供主页「最近启动的隧道」推荐使用
             HomeRecommendStateStore.RecordLaunch(proxy.proxyId);
             IsLoading = false;
-            MainPageFrameViewModel.Instance.NavigateToPage("Terminal");
-            MainPageFrameViewModel.Instance.CurrentPage = MainPageFrameViewModel.TerminalPage;
-            Growl.Success(string.Format(Languages.Text_UserProxy_LaunchSucceededFormat, proxy.proxyName));
+            // 26.5.1：先进入「启动中」，等客户端输出成功日志后再由 TerminalPage 确认 Running，
+            // 并发出带访问地址的可用通知；不再强制切到控制台页。
             IsLaunched = true;
-            TunnelStatus = TunnelStatus.Running;
+            if (TunnelStatus != TunnelStatus.Running)
+            {
+                TunnelStatus = TunnelStatus.Starting;
+            }
+
             ScheduleStartupTimeoutCheck();
         }
         catch (Exception ex)
@@ -1665,6 +1672,23 @@ public partial class UserProxyViewModel : ViewModelBase
         }
 
         _startupTimeoutCts = null;
+    }
+
+    /// <summary>
+    ///     客户端确认隧道已可用（26.5.1）：结束「启动中 / 重连中」状态并停止启动超时检测。
+    ///     由 <see cref="Views.TerminalPage" /> 从客户端成功日志驱动，
+    ///     避免进程刚拉起就误报成功，同时保证自动启动/链接启动也能更新状态。
+    /// </summary>
+    public void ConfirmTunnelReady()
+    {
+        CancelStartupTimeout();
+        IsLoading = false;
+        IsLaunched = true;
+        LastErrorSummary = string.Empty;
+        if (TunnelStatus != TunnelStatus.Running)
+        {
+            TunnelStatus = TunnelStatus.Running;
+        }
     }
 
     /// <summary>复制错误信息（应用版本 + mefrpc 版本 + 失败摘要），便于反馈排查</summary>

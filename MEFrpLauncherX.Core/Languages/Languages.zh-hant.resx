@@ -3158,6 +3158,15 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
         <value>啟動隧道: {0} 成功</value>
     </data>
+    <data name="Text.UserProxy.TunnelReadyTitle" xml:space="preserve">
+        <value>隧道已可用</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyFormat" xml:space="preserve">
+        <value>啟動 [{0}]隧道 [{1}] 成功，您可以使用 [{2}] 存取您的服務</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyNoAddressFormat" xml:space="preserve">
+        <value>啟動 [{0}]隧道 [{1}] 成功，隧道已可用</value>
+    </data>
     <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
         <value>{0} 檔案校驗失敗，需要重新下載用戶端。關閉此視窗嘗試直接啟動; 點擊「否」以取消啟動。
 請注意: 我們不對任何非官方(與我們提供的檔案校驗值不同)的檔案執行所造成的任何後果負責。</value>
