@@ -95,14 +95,23 @@
         <None Update="Resources\splash-minimal.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <!-- 26.5.1：随包分发的插件改为随「数据目录」一起发布（data\Config\Plugins），
+             不再随代码目录（vXXX\Config\Plugins）发布。
+             理由：插件目录是用户数据（可写、升级不覆盖），代码目录是只读的；
+             插件引擎读写的必须是同一个可写目录，否则安装/保存插件会因只读而失败。
+             注意：publish 产物里这两个路径是并列的，实际搬运由 tools/stage-layout.sh
+             与 installer\*.iss 完成（把 Config\Plugins 移入 data\Config\Plugins）。 -->
         <None Update="Config\Plugins\tech.rycb.plugin.demo-functions.yaml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <TargetPath>Config\Plugins\tech.rycb.plugin.demo-functions.yaml</TargetPath>
         </None>
         <None Update="Config\Plugins\tech.rycb.plugin.proxy-guard.yaml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <TargetPath>Config\Plugins\tech.rycb.plugin.proxy-guard.yaml</TargetPath>
         </None>
         <None Update="Config\Plugins\tech.rycb.plugin.proxy-notify.yaml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <TargetPath>Config\Plugins\tech.rycb.plugin.proxy-notify.yaml</TargetPath>
         </None>
         <None Update="Config\Plugins\create-proxy-template.yaml">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      PluginVerify：PML 2 插件子系统自检脚本（26.5.1 C1/H2/H3/H4 回归）
+
+      用法：
+        dotnet run 工具目录 tools/PluginVerify
+
+      验证内容（全部在临时目录内进行，不触碰真实用户数据）：
+        1. 读写分离：写入只落在「数据目录」，不会写只读的「版本目录」
+        2. 读取覆盖两个目录：随包插件（版本目录）与用户插件（数据目录）都能加载
+        3. 同名插件去重：数据目录优先（可遮蔽随包插件）
+        4. 禁用生效：被禁用的插件不注册触发器，事件不再触发
+        5. 禁用持久化：.disabled 写入后能被读回（重启后仍禁用）
+        6. 重载不重复注册：反复重载后事件只触发一次（不是 N 次）
+
+      退出码：
+        全部通过 =&gt; 退出码 0；任一失败 =&gt; 退出码 1 并打印失败原因
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>PluginVerify</AssemblyName>
+        <RootNamespace>PluginVerify</RootNamespace>
+        <!-- 避免 dotnet run 提示找不到项目 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+        <NoWarn>$(NoWarn);CS8600;CS8602;CS8604</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\MEFrpLauncherX.Plugin\MEFrpLauncherX.Plugin.csproj" />
+    </ItemGroup>
+
+</Project>
