@@ -24,6 +24,14 @@
                         </ComboBox>
                     </controls:FASettingsExpanderItem.Footer>
                 </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Welcome_Reopen}"
+                                                IconSource="Education"
+                                                Description="{x:Static languages:Languages.Text_Welcome_ReopenDescription}">
+                    <controls:FASettingsExpanderItem.Footer>
+                        <Button Content="{x:Static languages:Languages.Text_Welcome_Reopen}"
+                                Click="OpenWelcomeWizard" />
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
                 <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
                                                IconSource="New"
                                                Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">

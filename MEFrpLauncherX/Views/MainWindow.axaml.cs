@@ -533,6 +533,9 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         await CheckPolicy();
 
+        // 首次启动：在隐私确认后展示欢迎向导，完成/跳过后再继续其他启动提醒。
+        await WelcomeWindow.ShowIfNeededAsync(this);
+
         // 26.5.0：首次从旧版单层布局升级时自动弹出数据迁移向导。
         // 放在隐私政策确认之后、隧道自动恢复之前；标记「已询问」保证只打扰一次，
         // 用户日后仍可从「关于 → 工具箱 → 数据迁移向导」重新打开。

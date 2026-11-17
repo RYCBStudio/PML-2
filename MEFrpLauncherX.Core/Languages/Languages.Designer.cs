@@ -16413,6 +16413,159 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 主题色将应用于按钮、进度条和选中状态。.
+        /// </summary>
+        public static string Text_Welcome_AccentDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择主题色.
+        /// </summary>
+        public static string Text_Welcome_AccentPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 最后，挑选一个喜欢的主题色。.
+        /// </summary>
+        public static string Text_Welcome_AccentStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 上一步.
+        /// </summary>
+        public static string Text_Welcome_Back {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 完成.
+        /// </summary>
+        public static string Text_Welcome_Finish {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择应用显示语言，重启后完整生效。.
+        /// </summary>
+        public static string Text_Welcome_LanguageDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 设置您的语言.
+        /// </summary>
+        public static string Text_Welcome_LanguagePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎使用 PML 2，先让我们完成一些基础设置。.
+        /// </summary>
+        public static string Text_Welcome_LanguageStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下一步.
+        /// </summary>
+        public static string Text_Welcome_Next {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎向导.
+        /// </summary>
+        public static string Text_Welcome_Reopen {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Reopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重新设置语言、明暗模式和主题色。.
+        /// </summary>
+        public static string Text_Welcome_ReopenDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ReopenDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跳过向导.
+        /// </summary>
+        public static string Text_Welcome_Skip {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 第 {0} 步，共 {1} 步.
+        /// </summary>
+        public static string Text_Welcome_StepFormat {
+            get {
+                return ResourceManager.GetString("Text.Welcome.StepFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择明暗模式.
+        /// </summary>
+        public static string Text_Welcome_ThemePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择更舒适的界面外观。.
+        /// </summary>
+        public static string Text_Welcome_ThemeStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎.
+        /// </summary>
+        public static string Text_Welcome_Title {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跟随系统主题色.
+        /// </summary>
+        public static string Text_Welcome_UseSystemAccent {
+            get {
+                return ResourceManager.GetString("Text.Welcome.UseSystemAccent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 博客更新.
         /// </summary>
         public static string Text_WhatsNew_Blog {

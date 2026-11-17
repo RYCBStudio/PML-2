@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -5577,5 +5577,57 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
         <value>获取远程空闲端口失败：{0}</value>
+    </data>
+
+    <data name="Text.Welcome.Title" xml:space="preserve">
+        <value>欢迎</value>
+    </data>
+    <data name="Text.Welcome.LanguagePrompt" xml:space="preserve">
+        <value>设置您的语言</value>
+    </data>
+    <data name="Text.Welcome.LanguageDescription" xml:space="preserve">
+        <value>选择应用显示语言，重启后完整生效。</value>
+    </data>
+    <data name="Text.Welcome.LanguageStep" xml:space="preserve">
+        <value>欢迎使用 PML 2，先让我们完成一些基础设置。</value>
+    </data>
+    <data name="Text.Welcome.ThemePrompt" xml:space="preserve">
+        <value>选择明暗模式</value>
+    </data>
+    <data name="Text.Welcome.ThemeStep" xml:space="preserve">
+        <value>选择更舒适的界面外观。</value>
+    </data>
+    <data name="Text.Welcome.AccentPrompt" xml:space="preserve">
+        <value>选择主题色</value>
+    </data>
+    <data name="Text.Welcome.AccentDescription" xml:space="preserve">
+        <value>主题色将应用于按钮、进度条和选中状态。</value>
+    </data>
+    <data name="Text.Welcome.AccentStep" xml:space="preserve">
+        <value>最后，挑选一个喜欢的主题色。</value>
+    </data>
+    <data name="Text.Welcome.UseSystemAccent" xml:space="preserve">
+        <value>跟随系统主题色</value>
+    </data>
+    <data name="Text.Welcome.Back" xml:space="preserve">
+        <value>上一步</value>
+    </data>
+    <data name="Text.Welcome.Next" xml:space="preserve">
+        <value>下一步</value>
+    </data>
+    <data name="Text.Welcome.Finish" xml:space="preserve">
+        <value>完成</value>
+    </data>
+    <data name="Text.Welcome.Skip" xml:space="preserve">
+        <value>跳过向导</value>
+    </data>
+    <data name="Text.Welcome.StepFormat" xml:space="preserve">
+        <value>第 {0} 步，共 {1} 步</value>
+    </data>
+    <data name="Text.Welcome.Reopen" xml:space="preserve">
+        <value>欢迎向导</value>
+    </data>
+    <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
+        <value>重新设置语言、明暗模式和主题色。</value>
     </data>
 </root>

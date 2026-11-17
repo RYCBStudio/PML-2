@@ -1,0 +1,130 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+        mc:Ignorable="d"
+        x:Class="MEFrpLauncherX.Views.WelcomeWindow"
+        Title="{x:Static languages:Languages.Text_Welcome_Title}"
+        Width="720" Height="500"
+        MinWidth="620" MinHeight="440"
+        CanResize="True"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="28" RowSpacing="20">
+        <StackPanel Spacing="5">
+            <TextBlock Text="{x:Static languages:Languages.Text_Welcome_Title}"
+                       FontSize="30" FontWeight="SemiBold" />
+            <TextBlock x:Name="StepDescription"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <!-- 第一页：多语言问候 + 应用语言 -->
+            <Grid x:Name="LanguagePanel" ColumnDefinitions="*,*" ColumnSpacing="28">
+                <Border CornerRadius="12"
+                        Padding="20"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+                    <Grid RowDefinitions="*,Auto" RowSpacing="12">
+                        <Carousel x:Name="GreetingCarousel">
+                            <Carousel.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <TextBlock Text="{Binding}"
+                                               FontSize="32"
+                                               FontWeight="SemiBold"
+                                               TextAlignment="Center"
+                                               TextWrapping="Wrap" />
+                                </DataTemplate>
+                            </Carousel.ItemTemplate>
+                        </Carousel>
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding #GreetingCarousel.SelectedIndex}"
+                                   HorizontalAlignment="Center"
+                                   IsVisible="False" />
+                    </Grid>
+                </Border>
+                <StackPanel Grid.Column="1" Spacing="14" VerticalAlignment="Center">
+                    <TextBlock Text="{x:Static languages:Languages.Text_Welcome_LanguagePrompt}"
+                               FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <TextBlock Text="{x:Static languages:Languages.Text_Welcome_LanguageDescription}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    <ComboBox x:Name="LanguageBox"
+                              HorizontalAlignment="Stretch"
+                              SelectionChanged="LanguageChanged">
+                        <ComboBoxItem Content="简体中文（中国）" Tag="zh-CN" />
+                        <ComboBoxItem Content="繁體中文（台灣）" Tag="zh-Hant" />
+                        <ComboBoxItem Content="English (United States)" Tag="en-US" />
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+
+            <!-- 第二页：明暗模式 -->
+            <StackPanel x:Name="ThemePanel" IsVisible="False" Spacing="18">
+                <TextBlock Text="{x:Static languages:Languages.Text_Welcome_ThemePrompt}"
+                           FontSize="20" FontWeight="SemiBold" />
+                <ComboBox x:Name="ThemeBox"
+                          Width="280" HorizontalAlignment="Left"
+                          SelectionChanged="ThemeChanged">
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_System}" Tag="System" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Light}" Tag="Light" />
+                    <ComboBoxItem Content="{x:Static languages:Languages.Text_Settings_Theme_Dark}" Tag="Dark" />
+                </ComboBox>
+                <Border Height="150" CornerRadius="10" Padding="20"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="PML 2" FontSize="24" FontWeight="SemiBold" />
+                        <ProgressBar Value="65" Maximum="100" />
+                        <Button Content="{x:Static languages:Languages.Text_Global_Confirm}"
+                                Classes="accent" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- 第三页：主题色预设；空值表示跟随系统 -->
+            <StackPanel x:Name="AccentPanel" IsVisible="False" Spacing="18">
+                <TextBlock Text="{x:Static languages:Languages.Text_Welcome_AccentPrompt}"
+                           FontSize="20" FontWeight="SemiBold" />
+                <TextBlock Text="{x:Static languages:Languages.Text_Welcome_AccentDescription}"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                <ItemsControl x:Name="AccentColorList">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Button Width="64" Height="64" Margin="0,0,12,12"
+                                    Padding="4" Click="AccentColorClicked"
+                                    Tag="{Binding}">
+                                <Ellipse Width="42" Height="42" Fill="{Binding}" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <CheckBox x:Name="SystemAccentCheckBox"
+                          Content="{x:Static languages:Languages.Text_Welcome_UseSystemAccent}"
+                          IsCheckedChanged="SystemAccentChanged" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+            <TextBlock x:Name="StepIndicator" VerticalAlignment="Center"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Button Grid.Column="2" x:Name="BackButton"
+                    Content="{x:Static languages:Languages.Text_Welcome_Back}" Click="BackClicked" />
+            <Button Grid.Column="3" x:Name="NextButton"
+                    Content="{x:Static languages:Languages.Text_Welcome_Next}"
+                    Classes="accent" Click="NextClicked" />
+        </Grid>
+        <Button Grid.Row="2" HorizontalAlignment="Center"
+                Content="{x:Static languages:Languages.Text_Welcome_Skip}" Click="SkipClicked" />
+    </Grid>
+</Window>

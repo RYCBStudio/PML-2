@@ -83,6 +83,7 @@ public partial class SettingsPage : UserControl
         Theme.SelectedIndex = ConfigManager.CurrentConfig.Theme.ToLower().ToUpper(0) switch
         {
             "Light" => 1,
+            "System" => 2,
             _ => 0
         };
         HideInsteadOfClose.IsChecked = ConfigManager.CurrentConfig.HideInsteadOfClose;
@@ -819,6 +820,12 @@ public partial class SettingsPage : UserControl
         RenderConfigManager.UpdateConfig(cfg => cfg.LowLatencyRendering = (sender as ToggleSwitch).IsChecked.Value);
         RenderRestartNotice.IsOpen = true;
         MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private async void OpenWelcomeWizard(object? sender, RoutedEventArgs e)
+    {
+        await WelcomeWindow.ShowIfNeededAsync(Core.App.MainWindow, force: true);
+        InitializeFromConfig();
     }
 
     private void LanguageChanged(object? sender, SelectionChangedEventArgs e)

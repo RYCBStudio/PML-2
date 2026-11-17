@@ -16389,6 +16389,159 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The accent color is used for buttons, progress bars, and selections..
+        /// </summary>
+        public static string Text_Welcome_AccentDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose an accent color.
+        /// </summary>
+        public static string Text_Welcome_AccentPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finally, pick your favorite accent color..
+        /// </summary>
+        public static string Text_Welcome_AccentStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Text_Welcome_Back {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish.
+        /// </summary>
+        public static string Text_Welcome_Finish {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the app display language. Restart to apply it everywhere..
+        /// </summary>
+        public static string Text_Welcome_LanguageDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose your language.
+        /// </summary>
+        public static string Text_Welcome_LanguagePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to PML 2. Let’s set up the basics..
+        /// </summary>
+        public static string Text_Welcome_LanguageStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Text_Welcome_Next {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome setup.
+        /// </summary>
+        public static string Text_Welcome_Reopen {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Reopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change your language, color mode, and accent color again..
+        /// </summary>
+        public static string Text_Welcome_ReopenDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ReopenDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip setup.
+        /// </summary>
+        public static string Text_Welcome_Skip {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step {0} of {1}.
+        /// </summary>
+        public static string Text_Welcome_StepFormat {
+            get {
+                return ResourceManager.GetString("Text.Welcome.StepFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a color mode.
+        /// </summary>
+        public static string Text_Welcome_ThemePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the appearance that works best for you..
+        /// </summary>
+        public static string Text_Welcome_ThemeStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Text_Welcome_Title {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use my system accent color.
+        /// </summary>
+        public static string Text_Welcome_UseSystemAccent {
+            get {
+                return ResourceManager.GetString("Text.Welcome.UseSystemAccent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blog Updates.
         /// </summary>
         public static string Text_WhatsNew_Blog {

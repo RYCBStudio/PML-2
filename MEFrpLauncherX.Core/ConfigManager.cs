@@ -14,8 +14,9 @@ public static class ConfigManager
     ///     <para>改动配置结构（新增项 / 改变字段含义 / 废弃字段）时递增，启动时会自动迁移旧配置。</para>
     ///     <para>v2：<c>UpdateSettings.DownloadSource</c>（更新页下载源）新增。</para>
     ///     <para>v3：<c>TelemetryInstallationId</c>（Cloudflare 匿名使用统计的随机安装标识，26.5.0）新增。</para>
+    ///     <para>v4：<c>WelcomeCompleted</c>（首次启动欢迎向导）新增。</para>
     /// </summary>
-    public const int CurrentSchemaVersion = 3;
+    public const int CurrentSchemaVersion = 4;
 
     private static readonly string ConfigDirectory = AppPaths.ConfigDirectory;
 
@@ -225,6 +226,13 @@ public static class ConfigManager
         _schemaChecked = true;
 
         var actionCount = NormalizeToLatestSchema(_currentConfig);
+
+        // v4 新增欢迎向导：已有配置的升级用户不再被打扰；只有全新配置显示向导。
+        if (_currentConfig.SchemaVersion < 4)
+        {
+            _currentConfig.WelcomeCompleted = true;
+            actionCount++;
+        }
 
         if (_currentConfig.SchemaVersion != CurrentSchemaVersion)
         {
@@ -964,6 +972,13 @@ public class AppConfig
     }
 
     public bool PrivacyAgreed
+    {
+        get;
+        set;
+    }
+
+    /// <summary>是否已完成或跳过首次启动欢迎向导。</summary>
+    public bool WelcomeCompleted
     {
         get;
         set;

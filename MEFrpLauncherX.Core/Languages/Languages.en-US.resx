@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -5573,5 +5573,57 @@ Your proxies, themes, plugins and certificates all live in data\ and are unaffec
     </data>
     <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
         <value>Failed to get remote free port: {0}</value>
+    </data>
+
+    <data name="Text.Welcome.Title" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="Text.Welcome.LanguagePrompt" xml:space="preserve">
+        <value>Choose your language</value>
+    </data>
+    <data name="Text.Welcome.LanguageDescription" xml:space="preserve">
+        <value>Choose the app display language. Restart to apply it everywhere.</value>
+    </data>
+    <data name="Text.Welcome.LanguageStep" xml:space="preserve">
+        <value>Welcome to PML 2. Let’s set up the basics.</value>
+    </data>
+    <data name="Text.Welcome.ThemePrompt" xml:space="preserve">
+        <value>Choose a color mode</value>
+    </data>
+    <data name="Text.Welcome.ThemeStep" xml:space="preserve">
+        <value>Choose the appearance that works best for you.</value>
+    </data>
+    <data name="Text.Welcome.AccentPrompt" xml:space="preserve">
+        <value>Choose an accent color</value>
+    </data>
+    <data name="Text.Welcome.AccentDescription" xml:space="preserve">
+        <value>The accent color is used for buttons, progress bars, and selections.</value>
+    </data>
+    <data name="Text.Welcome.AccentStep" xml:space="preserve">
+        <value>Finally, pick your favorite accent color.</value>
+    </data>
+    <data name="Text.Welcome.UseSystemAccent" xml:space="preserve">
+        <value>Use my system accent color</value>
+    </data>
+    <data name="Text.Welcome.Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Text.Welcome.Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Text.Welcome.Finish" xml:space="preserve">
+        <value>Finish</value>
+    </data>
+    <data name="Text.Welcome.Skip" xml:space="preserve">
+        <value>Skip setup</value>
+    </data>
+    <data name="Text.Welcome.StepFormat" xml:space="preserve">
+        <value>Step {0} of {1}</value>
+    </data>
+    <data name="Text.Welcome.Reopen" xml:space="preserve">
+        <value>Welcome setup</value>
+    </data>
+    <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
+        <value>Change your language, color mode, and accent color again.</value>
     </data>
 </root>
