@@ -89,6 +89,17 @@ public static class MEFrpApiConverter
         }
     }
 
+    /// <summary>
+    ///     人机验证码相关请求（challenge / redeem）的超时时间。
+    ///     <para>
+    ///         26.5.1 C2：这两个请求原先用 <c>new RestClient(url)</c> 建客户端，
+    ///         没有设置 <see cref="RestClientOptions.Timeout" /> —— RestSharp 在未设置时
+    ///         默认 <b>100 秒</b>，断网时请求会一直挂着，登录页的 <c>IsBusy</c> 永远为 true，
+    ///         表现为「登录界面卡死无响应」。
+    ///     </para>
+    /// </summary>
+    private static readonly TimeSpan CaptchaRequestTimeout = TimeSpan.FromSeconds(10);
+
     private static RestClient CreateClient(string endpoint)
     {
         return new RestClient(new RestClientOptions(BaseApiUrl + endpoint)
@@ -96,6 +107,23 @@ public static class MEFrpApiConverter
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : $"RYCB-PML2/Desktop {App.Version}",
             Timeout = TimeSpan.FromSeconds(3)
+        });
+    }
+
+    /// <summary>
+    ///     创建人机验证码服务（captcha.mefrp.com）的客户端。
+    ///     <para>
+    ///         26.5.1 C2：必须显式设置超时，否则断网时会挂满 RestSharp 的默认 100 秒。
+    ///         验证码服务是独立于 <see cref="BaseApiUrl" /> 的另一个域名，故单独建客户端。
+    ///     </para>
+    /// </summary>
+    private static RestClient CreateCaptchaClient(string url)
+    {
+        return new RestClient(new RestClientOptions(url)
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            UserAgent = OperatingSystem.IsAndroid() ? "RYCB-PML2/Android 0.0.1" : $"RYCB-PML2/Desktop {App.Version}",
+            Timeout = CaptchaRequestTimeout
         });
     }
 
@@ -187,7 +215,8 @@ public static class MEFrpApiConverter
         App.CurrentLogger.LogDebug($"GET {BaseApiUrl + endpoint}", EnumLogPort.Server,
             EnumLogModule.Custom, "API");
         App.CurrentLogger.Log($"正在获取{operationName}", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_FetchingFormat, operationName);
+        MainWindowViewModel.Instance?.AppMessage =
+            string.Format(Languages.Languages.Text_Api_FetchingFormat, operationName);
 
         using var client = CreateClient(endpoint);
 
@@ -240,37 +269,138 @@ public static class MEFrpApiConverter
         }
 
         HandleResponse(result);
-        MainWindowViewModel.Instance?.AppMessage = string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
+        MainWindowViewModel.Instance?.AppMessage =
+            string.Format(Languages.Languages.Text_Api_DoneCodeFormat, result.code);
         return result;
     }
 
-    public static async Task<ChallengeInfo> PostChallengeAsync(string challengeContent)
+    /// <summary>
+    ///     提交人机验证挑战，获取 challenge 凭证。
+    ///     <para>
+    ///         26.5.1 C2：原先客户端没有超时（默认 100 秒），断网时登录界面会一直卡在
+    ///         <c>IsBusy = true</c>；且响应体为空/非 JSON 时 <c>JsonSerializer.Deserialize</c> 会抛
+    ///         <see cref="JsonException" />，把「网络问题」变成「未处理的异常」。
+    ///         现在改为：显式超时 + 失败时返回 null（由调用方给出可读提示）。
+    ///     </para>
+    /// </summary>
+    /// <returns>challenge 凭证；网络失败或响应无法解析时返回 <c>null</c>。</returns>
+    public static async Task<ChallengeInfo?> PostChallengeAsync(string challengeContent)
     {
         App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
         var request = CreateRequest(Method.Post);
         request.AddParameter("application/json", challengeContent, ParameterType.RequestBody);
-        using var client = new RestClient(Constants.ChallengeUrl);
-        var response = await client.ExecuteAsync(request);
-        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        return JsonSerializer.Deserialize<ChallengeInfo>(response.Content ?? "",
-            App.AppJsonSerializerContext.ChallengeInfo)!;
-    }
+        using var client = CreateCaptchaClient(Constants.ChallengeUrl);
 
-    public static async Task<(CaptchaResultX?, string)> GetRedeemAsync(string redeemBody)
-    {
-        App.CurrentLogger.Log("Sending Captcha Challenge Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        var request = CreateRequest(Method.Post);
-        request.AddParameter("application/json", redeemBody, ParameterType.RequestBody);
-        using var client = new RestClient(Constants.RedeemUrl);
         var response = await client.ExecuteAsync(request);
         App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+
         if (!response.IsSuccessful)
         {
-            return (null, string.Empty);
+            // IsSuccessful 为 false 覆盖了「传输层失败（断网/超时）」与「HTTP 状态码非 2xx」两种情况
+            App.CurrentLogger.Error(
+                $"人机验证 challenge 请求失败: {response.ResponseStatus} / {response.StatusCode} / {response.ErrorMessage}",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
         }
-        return (
-            JsonSerializer.Deserialize<CaptchaResultX?>(response.Content ?? "",
-                App.AppJsonSerializerContext.CaptchaResultX), response.Content ?? "");
+
+        if (string.IsNullOrWhiteSpace(response.Content))
+        {
+            App.CurrentLogger.Error("人机验证 challenge 响应为空", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
+
+        return ParseChallengeResponse(response.Content);
+    }
+
+    /// <summary>
+    ///     解析 challenge 响应体（26.5.1 C2）。
+    ///     <para>
+    ///         抽成独立方法以便直接测试：响应体为空或不是合法 JSON 时返回 <c>null</c>，
+    ///         绝不抛 <see cref="JsonException" /> —— 断网/服务端异常是「可预期的失败」，
+    ///         不该变成未处理异常把调用方的加载态卡住。
+    ///     </para>
+    /// </summary>
+    /// <returns>解析成功返回 challenge 凭证，否则返回 <c>null</c>。</returns>
+    internal static ChallengeInfo? ParseChallengeResponse(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<ChallengeInfo>(content,
+                App.AppJsonSerializerContext.ChallengeInfo);
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "人机验证 challenge 响应解析失败",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     兑换人机验证答案。
+    ///     <para>
+    ///         26.5.1 C2：同 <see cref="PostChallengeAsync" />，客户端补上超时，响应解析加保护。
+    ///     失败时返回 <c>(null, 错误信息)</c>，由调用方展示。
+    ///     </para>
+    /// </summary>
+    public static async Task<(CaptchaResultX?, string)> GetRedeemAsync(string redeemBody)
+    {
+        App.CurrentLogger.Log("Sending Captcha Redeem Request", port: EnumLogPort.Client, module: EnumLogModule.Net);
+        var request = CreateRequest(Method.Post);
+        request.AddParameter("application/json", redeemBody, ParameterType.RequestBody);
+        using var client = CreateCaptchaClient(Constants.RedeemUrl);
+
+        var response = await client.ExecuteAsync(request);
+        App.CurrentLogger.Log($"状态: {response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
+
+        if (!response.IsSuccessful)
+        {
+            App.CurrentLogger.Error(
+                $"人机验证 redeem 请求失败: {response.ResponseStatus} / {response.StatusCode} / {response.ErrorMessage}",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return (null, response.ErrorMessage ?? response.StatusDescription ?? "");
+        }
+
+        if (string.IsNullOrWhiteSpace(response.Content))
+        {
+            App.CurrentLogger.Error("人机验证 redeem 响应为空", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return (null, "");
+        }
+
+        var parsed = ParseRedeemResponse(response.Content);
+        return (parsed, parsed is null ? "" : response.Content);
+    }
+
+    /// <summary>
+    ///     解析 redeem 响应体（26.5.1 C2）。
+    ///     <para>
+    ///         同 <see cref="ParseChallengeResponse" />：响应体为空或不是合法 JSON 时返回 <c>null</c>，
+    ///         不抛 <see cref="JsonException" />。
+    ///     </para>
+    /// </summary>
+    internal static CaptchaResultX? ParseRedeemResponse(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<CaptchaResultX?>(content,
+                App.AppJsonSerializerContext.CaptchaResultX);
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "人机验证 redeem 响应解析失败",
+                port: EnumLogPort.Server, module: EnumLogModule.Net);
+            return null;
+        }
     }
 
     /// <summary>
@@ -312,7 +442,7 @@ public static class MEFrpApiConverter
 
         return result;
     }
-    
+
     public static async Task<ApiInfo<object>> AddIcpDomainAsync(string domain)
     {
         var request = CreateRequest(Method.Post);
@@ -646,16 +776,21 @@ public static class MEFrpApiConverter
     /// <param name="nodeId">节点ID</param>
     /// <param name="protocol">要获取端口的协议, 只有tcp和udp。</param>
     /// <returns>空闲的端口，返回-1则说明获取失败</returns>
-    public static async Task<ApiInfo<int>> GetFreePortAsync(int nodeId, string protocol = "tcp")
+    public static async Task<ApiInfo<int>> GetFreePortAsync(int? nodeId, string protocol = "tcp")
     {
         App.CurrentLogger.Log("正在获取空闲端口", module: EnumLogModule.Net);
 
         var request = CreateRequest(Method.Post);
         protocol = protocol.ToLower();
 
+        if (nodeId is null or < 0)
+        {
+            return new ApiInfo<int>() { data = -1 };
+        }
+
         var body = JsonSerializer.Serialize(new FreePortBody
         {
-            nodeId = nodeId,
+            nodeId = (int)nodeId,
             protocol = protocol
         }, App.AppJsonSerializerContext.FreePortBody);
 
@@ -790,7 +925,8 @@ public static class MEFrpApiConverter
         ApiInfo<FrpTokenInfo> result = null;
         await AppAnalytics.TrackCostAsync("api.proxy.token", async () =>
         {
-            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken", Languages.Languages.Text_Api_OpFrpTokenInfo);
+            result = await ExecuteRequestAsync<FrpTokenInfo>(CreateRequest(), "auth/user/frpToken",
+                Languages.Languages.Text_Api_OpFrpTokenInfo);
         });
         return result;
     }
@@ -1052,13 +1188,13 @@ public static class MEFrpApiConverter
     /// </summary>
     /// <param name="period">获取的周期，官网上只有 7，15，30</param>
     /// <param name="forceRefresh">true 表示跳过 5 分钟缓存、强制重新请求</param>
-    /// <returns>用户的流量信息</returns>
+    /// <returns>用户的流量信息。<b>永不返回 null</b> —— 失败时返回带错误码的实例。</returns>
     public static async Task<ApiInfo<TrafficStatus>> GetTrafficStatusAsync(int period, bool forceRefresh = false)
     {
         // 26.4：不同周期各自独立缓存（键带周期），在 5 分钟有效期内直接复用上次结果
         var cacheKey = $"{ApiCacheKeys.TrafficStatsPrefix}{period}";
         if (!forceRefresh && TryGetCached<TrafficStatus>(cacheKey, Languages.Languages.Text_Api_OpTrafficStatus)
-            is { } cachedTraffic)
+                is { } cachedTraffic)
         {
             return cachedTraffic;
         }
@@ -1074,29 +1210,22 @@ public static class MEFrpApiConverter
 
         using var client = CreateClient("auth/user/trafficStats");
 
-        ApiInfo<TrafficStatus> result;
         var response = await client.ExecuteAsync(request).ConfigureAwait(false);
 
         App.CurrentLogger.Log($"状态：{response.StatusCode}", port: EnumLogPort.Server, module: EnumLogModule.Net);
-        if (response.Content?.StartsWith('<') == true)
-        {
-            return default;
-        }
 
-        if (!response.IsSuccessful)
+        // 26.5.1 C3：原先响应体是 HTML 时这里 `return default`（即 null），
+        // 而三个调用点都直接解引用返回值（trafficStatusData.data / (await ...).data / r.code），
+        // 一旦网关/代理/CDN 返回错误页就会抛 NullReferenceException。
+        // 现在改为统一走纯函数构造结果 —— 任何输入都不会得到 null，也不会抛异常。
+        var isHtmlResponse = response.Content?.StartsWith('<') == true;
+        var result = BuildTrafficStatusResult(response.Content, (int)response.StatusCode, response.IsSuccessful);
+
+        // HTML 错误页静默失败：不弹 Growl、也不写缓存。
+        // 与 ExecuteRequestAsync 的「<」分支保持一致（网关/运营商提示页不是用户能处理的错误）。
+        if (isHtmlResponse)
         {
-            result = new ApiInfo<TrafficStatus>
-            {
-                code = (int)response.StatusCode,
-                message = string.Format(Languages.Languages.Text_Api_RequestFailedFormat, (int)response.StatusCode),
-                data = default
-            };
-        }
-        else
-        {
-            result = JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(response.Content ?? "",
-                         App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
-                     new ApiInfo<TrafficStatus>();
+            return result;
         }
 
         // 26.4：仅成功结果写入缓存（失败不缓存，避免把错误状态固化 5 分钟）
@@ -1111,5 +1240,73 @@ public static class MEFrpApiConverter
 
         HandleResponse(result);
         return result;
+    }
+
+    /// <summary>
+    ///     根据流量统计接口的 HTTP 响应构造结果（26.5.1 C3）。
+    ///     <para>
+    ///         抽成独立方法以便直接测试。约定：<b>永不返回 null，也不抛异常</b> ——
+    ///         调用方会直接解引用 <c>.data</c> / <c>.code</c>，返回 null 等于让调用处崩。
+    ///         任何异常输入（HTML 错误页 / 空体 / 非法 JSON）都降级为带错误码的实例。
+    ///     </para>
+    /// </summary>
+    /// <param name="content">响应体，可能为 null。</param>
+    /// <param name="statusCode">HTTP 状态码。</param>
+    /// <param name="isSuccessful">RestSharp 的 IsSuccessful（已含传输层失败判定）。</param>
+    internal static ApiInfo<TrafficStatus> BuildTrafficStatusResult(string? content, int statusCode, bool isSuccessful)
+    {
+        // 响应体是 HTML：通常是网关/代理/CDN 返回的提示页（例如流量被劫持时的运营商公告）
+        if (content?.StartsWith('<') == true)
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 502,
+                message = Languages.Languages.Text_Api_OriginFallbackFailed,
+                data = default
+            };
+        }
+
+        if (!isSuccessful)
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = statusCode,
+                message = string.Format(Languages.Languages.Text_Api_RequestFailedFormat, statusCode),
+                data = default
+            };
+        }
+
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 0,
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                data = default
+            };
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<ApiInfo<TrafficStatus>>(content,
+                       App.AppJsonSerializerContext.ApiInfoTrafficStatus) ??
+                   new ApiInfo<TrafficStatus>
+                   {
+                       code = 0,
+                       message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                       data = default
+                   };
+        }
+        catch (JsonException ex)
+        {
+            App.CurrentLogger?.Error(ex, "流量统计响应解析失败", port: EnumLogPort.Server,
+                module: EnumLogModule.Net);
+            return new ApiInfo<TrafficStatus>
+            {
+                code = 0,
+                message = Languages.Languages.Text_Api_CannotGetApiInfo,
+                data = default
+            };
+        }
     }
 }

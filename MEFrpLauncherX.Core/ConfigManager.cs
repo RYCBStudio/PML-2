@@ -14,8 +14,9 @@ public static class ConfigManager
     ///     <para>改动配置结构（新增项 / 改变字段含义 / 废弃字段）时递增，启动时会自动迁移旧配置。</para>
     ///     <para>v2：<c>UpdateSettings.DownloadSource</c>（更新页下载源）新增。</para>
     ///     <para>v3：<c>TelemetryInstallationId</c>（Cloudflare 匿名使用统计的随机安装标识，26.5.0）新增。</para>
+    ///     <para>v4：<c>WelcomeCompleted</c>（首次启动欢迎向导）新增。</para>
     /// </summary>
-    public const int CurrentSchemaVersion = 3;
+    public const int CurrentSchemaVersion = 4;
 
     private static readonly string ConfigDirectory = AppPaths.ConfigDirectory;
 
@@ -225,6 +226,13 @@ public static class ConfigManager
         _schemaChecked = true;
 
         var actionCount = NormalizeToLatestSchema(_currentConfig);
+
+        // v4 新增欢迎向导：已有配置的升级用户不再被打扰；只有全新配置显示向导。
+        if (_currentConfig.SchemaVersion < 4)
+        {
+            _currentConfig.WelcomeCompleted = true;
+            actionCount++;
+        }
 
         if (_currentConfig.SchemaVersion != CurrentSchemaVersion)
         {
@@ -969,6 +977,13 @@ public class AppConfig
         set;
     }
 
+    /// <summary>是否已完成或跳过首次启动欢迎向导。</summary>
+    public bool WelcomeCompleted
+    {
+        get;
+        set;
+    }
+
     public bool IsTelemetryEnabled
     {
         get;
@@ -1154,6 +1169,16 @@ public class AppConfig
         set;
     } = 2;
 
+    /// <summary>
+    ///     插件自动更新模式: 0=仅手动检查 1=进入插件页自动检查并提示（默认） 2=自动检查并静默更新。
+    ///     无论哪种模式，覆盖插件文件前都会生成 .bak 备份。
+    /// </summary>
+    public int PluginAutoUpdateMode
+    {
+        get;
+        set;
+    } = 1;
+
     /// <summary>是否显示启动画面（Splash，26.3.1 M2）</summary>
     public bool SplashEnabled
     {
@@ -1260,9 +1285,11 @@ public class UpdateSettings
     }
 
     /// <summary>
-    ///     <p><c>ds</c> Directly Silent - 下载后直接安装</p>
-    ///     <p><c>dd</c> Directly Download - 直接下载, 手动安装</p>
-    ///     <c>md</c> Manual Download - 手动下载并安装
+    ///     更新模式，取值与「更新页 → 更新设置 → 更新模式」三档一一对应：
+    ///     <p><c>ds</c> 自动检查更新并安装 —— 启动自动检查；命中新版自动下载，安装前确认后安装并重启。</p>
+    ///     <p><c>dd</c> 自动检查更新并下载 —— 启动自动检查；命中新版自动下载，仅下载不安装。</p>
+    ///     <p><c>md</c> 手动检查更新并安装 —— 启动不自动检查；用户手动检查并下载后，安装前确认再安装。</p>
+    ///     说明：<see cref="AutoCheck" /> 由设置界面依据本值同步维护（旧配置兼容用），启动逻辑以本值为准。
     /// </summary>
     public string Method
     {

@@ -343,7 +343,17 @@ public partial class CreateProxy : UserControl
         }
 
         var type = sender is string t ? t : ProtocolCbBox.SelectedItem?.ToString();
-        var res = (await MEFrpApiConverter.GetFreePortAsync(_node.NodeId, type)).data;
+        var res = -1;
+        try
+        {
+
+            res = (await MEFrpApiConverter.GetFreePortAsync(_node.NodeId, type)).data;
+        }
+        catch (Exception exception)
+        {
+            Core.App.CurrentLogger?.Error(exception, "获取远程端口失败");
+            Growl.Error(string.Format(Languages.Text_CreateProxy_GetRemotePortFailed, exception.Message));
+        }
         Loading.IsVisible = false;
         RemotePortNudBox.Value = res;
     }

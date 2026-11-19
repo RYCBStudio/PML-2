@@ -2373,6 +2373,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to get remote free port: {0}.
+        /// </summary>
+        public static string Text_CreateProxy_GetRemotePortFailed {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.GetRemotePortFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter the username and password.
         /// </summary>
         public static string Text_CreateProxy_HttpBasicAuthDescription {
@@ -7311,7 +7320,12 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} File name: {1} Platform: {2} Suggestion: {3} {4}.
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///File name: {1}
+        ///Platform: {2}
+        ///Suggestion: {3}
+        ///{4}.
         /// </summary>
         public static string Text_Download_FailedContentFormat {
             get {
@@ -7433,8 +7447,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///Countdown to happiness
         ///Windows 10 isn&apos;t for all of us, it&apos;s for each of us.
         ///You and your PC need to restart.
-        ///Heads up
-        ///Windows twe [rest of string was truncated]&quot;;.
+        ///Heads  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_Download_Jokes {
             get {
@@ -7763,6 +7776,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_NoData {
             get {
                 return ResourceManager.GetString("Text.Global.NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network connection lost.
+        /// </summary>
+        public static string Text_Global_NoConnection {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check your network connection and retry.
+        /// </summary>
+        public static string Text_Global_NoConnectionAdvice {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnectionAdvice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Text_Global_Retry {
+            get {
+                return ResourceManager.GetString("Text.Global.Retry", resourceCulture);
             }
         }
         
@@ -8442,6 +8482,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leftover files deleted, freed {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some leftover files are in use and could not be deleted. Open the legacy folder later to clean them up manually.
         /// </summary>
         public static string Text_Legacy_DeleteFailed {
@@ -8456,15 +8505,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Legacy_DeleteNow {
             get {
                 return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Leftover files deleted, freed {0}.
-        /// </summary>
-        public static string Text_Legacy_Deleted {
-            get {
-                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
             }
         }
         
@@ -8519,6 +8559,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Login_CaptchaStep {
             get {
                 return ResourceManager.GetString("Text.Login.CaptchaStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Captcha validation failed. Please retry..
+        /// </summary>
+        public static string Text_Login_CaptchaValidationFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to reach the captcha server. Please check your network connection and retry..
+        /// </summary>
+        public static string Text_Login_CaptchaNetworkFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaNetworkFailed", resourceCulture);
             }
         }
         
@@ -9167,7 +9225,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///### 1. Scope of Information Collection
         ///- **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
         ///- **Device data**: device identifiers, operating system version, crash stacks and error logs
-        ///- **Usage behavior**: f [rest of string was truncated]&quot;;.
+        ///- **Usage behavior [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_MainWindow_PrivacyPolicy {
             get {
@@ -10495,6 +10553,141 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_PluginList_InstalledOnlineCountFormat {
             get {
                 return ResourceManager.GetString("Text.PluginList.InstalledOnlineCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugins with updates available ({0} = count).
+        /// </summary>
+        public static string Text_PluginList_UpdateAvailableFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAvailableFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update all.
+        /// </summary>
+        public static string Text_PluginList_UpdateAll {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update.
+        /// </summary>
+        public static string Text_PluginList_UpdateBadge {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateBadge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   All plugins are up to date.
+        /// </summary>
+        public static string Text_PluginList_UpToDate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Updated {0} plugin(s).
+        /// </summary>
+        public static string Text_PluginList_UpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Automatically updated {0} plugin(s).
+        /// </summary>
+        public static string Text_PluginList_AutoUpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.AutoUpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Some plugins failed to update.
+        /// </summary>
+        public static string Text_PluginList_UpdateFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugin auto-update.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugin auto-update description.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdateDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Manual check only.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Off {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check automatically and notify.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Check {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check automatically and update silently.
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Silent {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Silent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm install after download.
+        /// </summary>
+        public static string Text_Update_ConfirmInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.ConfirmInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Version {0} downloaded automatically.
+        /// </summary>
+        public static string Text_Update_AutoDownloaded {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the update automatically.
+        /// </summary>
+        public static string Text_Update_AutoDownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloadFailed", resourceCulture);
             }
         }
         
@@ -14150,24 +14343,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again..
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong..
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Discard (save space).
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Discard {
@@ -14186,7 +14361,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About to upgrade to {0}. The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved. What should we do with the previous version ({1})?.
+        ///   Looks up a localized string similar to About to upgrade to {0}.
+        ///
+        ///The install directory uses a code/data separated layout: the upgrade only adds a new version folder, and your proxies, themes, plugins and certificates are always preserved.
+        ///
+        ///What should we do with the previous version ({1})?.
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Message {
             get {
@@ -14200,6 +14379,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_AskKeepOldVersion_Title {
             get {
                 return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletes the old version folder after installation, reclaiming about {0} of disk space. Rolling back is no longer possible without downloading the old installer again..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keeps the old version folder, using about {0} of disk space. You can roll back to it from the Update page if anything goes wrong..
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
             }
         }
         
@@ -14528,6 +14725,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ask before each upgrade (recommended).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard old version (less space).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep old version (rollback).
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ask with a dialog before each upgrade — the safest option..
         /// </summary>
         public static string Text_Update_KeepOldVersionDesc_Ask {
@@ -14569,33 +14793,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_KeepOldVersionDescription {
             get {
                 return ResourceManager.GetString("Text.Update.KeepOldVersionDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ask before each upgrade (recommended).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Ask {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Discard old version (less space).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep old version (rollback).
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
             }
         }
         
@@ -14798,7 +14995,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} old version folder(s) will be removed, reclaiming about {1}. Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible..
+        ///   Looks up a localized string similar to {0} old version folder(s) will be removed, reclaiming about {1}.
+        ///
+        ///Your proxies, themes, plugins and certificates all live in data\ and are unaffected, but one-click rollback to those versions will no longer be possible..
         /// </summary>
         public static string Text_Update_VersionCleanup_ConfirmMessage {
             get {
@@ -14870,7 +15069,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are {0} leftover version folders in the install directory, taking up about {1}. They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected)..
+        ///   Looks up a localized string similar to There are {0} leftover version folders in the install directory, taking up about {1}.
+        ///
+        ///They are rollback points kept from previous upgrades and can be deleted safely (your proxies, themes and certificates are unaffected)..
         /// </summary>
         public static string Text_Update_VersionNotify_Message {
             get {
@@ -15307,6 +15508,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_UserCenter_UserInfo {
             get {
                 return ResourceManager.GetString("Text.UserCenter.UserInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load user data.
+        /// </summary>
+        public static string Text_UserCenter_LoadFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.LoadFailed", resourceCulture);
             }
         }
         
@@ -16125,6 +16335,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Started [{0}] tunnel [{1}] successfully. You can access your service via [{2}]..
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started [{0}] tunnel [{1}] successfully. The tunnel is ready..
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyNoAddressFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyNoAddressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tunnel ready.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyTitle {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter your ME Frp email.
         /// </summary>
         public static string Text_Validation_EmailRequired {
@@ -16148,6 +16385,195 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Validation_Required {
             get {
                 return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The accent color is used for buttons, progress bars, and selections..
+        /// </summary>
+        public static string Text_Welcome_AccentDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose an accent color.
+        /// </summary>
+        public static string Text_Welcome_AccentPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finally, pick your favorite accent color..
+        /// </summary>
+        public static string Text_Welcome_AccentStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Text_Welcome_Back {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish.
+        /// </summary>
+        public static string Text_Welcome_Finish {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After confirming, PML 2 will start. You can change these options later in Settings..
+        /// </summary>
+        public static string Text_Welcome_FinishNote {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup is complete.
+        /// </summary>
+        public static string Text_Welcome_FinishPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm your settings, then start using the app..
+        /// </summary>
+        public static string Text_Welcome_FinishStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the app display language. Restart to apply it everywhere..
+        /// </summary>
+        public static string Text_Welcome_LanguageDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose your language.
+        /// </summary>
+        public static string Text_Welcome_LanguagePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to PML 2. Let’s set up the basics..
+        /// </summary>
+        public static string Text_Welcome_LanguageStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Text_Welcome_Next {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome setup.
+        /// </summary>
+        public static string Text_Welcome_Reopen {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Reopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change your language, color mode, and accent color again..
+        /// </summary>
+        public static string Text_Welcome_ReopenDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ReopenDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip setup.
+        /// </summary>
+        public static string Text_Welcome_Skip {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Started.
+        /// </summary>
+        public static string Text_Welcome_Start {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step {0} of {1}.
+        /// </summary>
+        public static string Text_Welcome_StepFormat {
+            get {
+                return ResourceManager.GetString("Text.Welcome.StepFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a color mode.
+        /// </summary>
+        public static string Text_Welcome_ThemePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose the appearance that works best for you..
+        /// </summary>
+        public static string Text_Welcome_ThemeStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Text_Welcome_Title {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use my system accent color.
+        /// </summary>
+        public static string Text_Welcome_UseSystemAccent {
+            get {
+                return ResourceManager.GetString("Text.Welcome.UseSystemAccent", resourceCulture);
             }
         }
         

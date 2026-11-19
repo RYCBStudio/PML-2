@@ -114,6 +114,29 @@ for d in Config/frp Config/Themes Config/Plugins Cache Logs Run; do
 done
 touch "${OUT_DIR}/data/.keep"
 
+# ---- 3b. 随包分发的插件移入数据目录 ----
+# 26.5.1：插件属于「用户数据」而非「代码」——
+#   * 插件引擎要往这个目录里安装 / 保存 / 记录禁用列表，必须可写；
+#   * 版本目录 vXXX\ 在发布版是只读的（Linux 的 /opt/pml-2 更由 root 拥有）；
+#   * 放在 data\ 下还能保证「升级不覆盖用户的插件」。
+# publish 产物里它们位于 Config\Plugins（与代码同级），这里搬到 data\Config\Plugins。
+if [[ -d "${VERSION_PATH}/Config/Plugins" ]]; then
+  mkdir -p "${OUT_DIR}/data/Config/Plugins"
+  # 逐个搬运，避免 cp -a 覆盖 data\ 下用户已有的同名插件
+  for f in "${VERSION_PATH}/Config/Plugins"/*.yaml; do
+    [[ -e "$f" ]] || continue
+    if [[ -e "${OUT_DIR}/data/Config/Plugins/$(basename "$f")" ]]; then
+      echo "警告: data/Config/Plugins 已存在同名插件，保留用户版本: $(basename "$f")" >&2
+      continue
+    fi
+    cp -a "$f" "${OUT_DIR}/data/Config/Plugins/"
+  done
+  # 搬完后版本目录里不再保留副本（该目录是只读代码目录）
+  rm -rf "${VERSION_PATH}/Config/Plugins"
+  rmdir "${VERSION_PATH}/Config" 2>/dev/null || true
+  echo "==> 随包插件已移入 data/Config/Plugins"
+fi
+
 # ---- 4. 版本槽位 ----
 # 仅供本地打包 / 非 Windows 平台（便携包、deb）参考使用：
 # Windows 的 Inno Setup 安装器不会拷贝这份文件，而是在 ssPostInstall 自行写入

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Core.Languages;
 using MEFrpLauncherX.Core.Storage;
 using ReactiveUI;
+using RxVoid = ReactiveUI.Primitives.RxVoid;
 
 namespace MEFrpLauncherX.ViewModels;
 
@@ -16,6 +18,16 @@ public class LoginViewModel : ViewModelBase
 {
     public LoginViewModel()
     {
+        // ReactiveUI 25：无参 ReactiveCommand 的载体类型 RxVoid（替代 System.Reactive.Unit）位于此命名空间。
+        RetryCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            IsNetworkUnavailable = false;
+            if (RetryRequested is { } retry)
+            {
+                await retry();
+            }
+        });
+
         if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
         {
             AuthModes =
@@ -205,10 +217,55 @@ public class LoginViewModel : ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref field, value);
             this.RaisePropertyChanged(nameof(IsMEFrp));
+            this.RaisePropertyChanged(nameof(IsLoginFormVisible));
+            this.RaisePropertyChanged(nameof(IsAcmeFormVisible));
         }
     }
     
     public bool IsMEFrp => SelectedLoginMode == 0;
+
+    /// <summary>
+    ///     MEFrp 登录表单是否可见（网络不可用时让位给 <see cref="Controls.NoConnection" />）。
+    /// </summary>
+    public bool IsLoginFormVisible => IsMEFrp && !IsNetworkUnavailable;
+
+    /// <summary>
+    ///     云上极致登录表单是否可见（网络不可用时让位给 <see cref="Controls.NoConnection" />）。
+    /// </summary>
+    public bool IsAcmeFormVisible => !IsMEFrp && !IsNetworkUnavailable;
+
+    /// <summary>
+    ///     网络不可用（26.5.1 C2）。
+    ///     <para>
+    ///         人机验证请求失败（断网 / 超时）时置为 true，登录页会显示
+    ///         <see cref="Controls.NoConnection" /> 占位并提供「重试」，
+    ///         而不是让用户面对一个卡在加载态的界面。
+    ///     </para>
+    /// </summary>
+    public bool IsNetworkUnavailable
+    {
+        get;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            this.RaisePropertyChanged(nameof(IsLoginFormVisible));
+            this.RaisePropertyChanged(nameof(IsAcmeFormVisible));
+        }
+    }
+
+    /// <summary>
+    ///     「重试」动作（26.5.1 C2）。由 <see cref="Controls.NoConnection" /> 的重试按钮触发。
+    /// </summary>
+    public ReactiveCommand<RxVoid, RxVoid> RetryCommand { get; }
+
+    /// <summary>
+    ///     由视图注册的「重试」回调（26.5.1 C2）。
+    ///     <para>
+    ///         <see cref="Controls.NoConnection" /> 只负责展示与触发命令，
+    ///         真正的重试动作（重新发起人机验证）由 <c>LoginPage</c> 注入。
+    ///     </para>
+    /// </summary>
+    public Func<Task>? RetryRequested { get; set; }
 }
 
 public class ProgressToTextConverter : IValueConverter

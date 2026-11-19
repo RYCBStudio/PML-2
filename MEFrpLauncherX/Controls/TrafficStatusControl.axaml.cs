@@ -177,169 +177,195 @@ public class TrafficStatusControlViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
+    /// <summary>
+    ///     更新流量图表（26.5.1 C4）。
+    ///     <para>
+    ///         这是 <c>async void</c>（供 XAML 事件与同步调用点直接调用），
+    ///         因此<b>必须自行捕获所有异常</b> —— 否则异常会抛到同步上下文：
+    ///         Avalonia 的 UI 线程兜底只在 Release 构建注册（App.axaml.cs 的 #if !DEBUG），
+    ///         Debug 构建下直接崩溃。
+    ///     </para>
+    ///     <para>
+    ///         同时用 try/finally 保证 <see cref="IsLoading" /> 一定复位 ——
+    ///         原先 5 处手工 `IsLoading = false` 分散在各 return 分支，
+    ///         任何一条抛异常的路径都会让进度环永久转动。
+    ///     </para>
+    /// </summary>
     public async void UpdateTrafficData(InfoClasses.TrafficStatus? data, int type = 0, bool shouldLoadNew = false,
         int period = 7)
     {
         IsLoading = true;
-        if (Design.IsDesignMode)
+        try
         {
-            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type: EnumLogType.Warn);
-            return;
-        }
-
-        data ??= (await MEFrpApiConverter.GetTrafficStatusAsync(period)).data;
-//
-#if DEBUG
-        data ??= new InfoClasses.TrafficStatus();
-        data.trafficIn = [
-            15242871936,        // 14.2 GB
-            452890,             // 452 KB
-            1024,               // 1 KB
-            26843545600,        // 25 GB
-            8912,               // 8.7 KB
-            1099511627776,      // 1 TB（超大）
-            64                  // 64 Bytes（极小）
-        ];
-
-        data.trafficOut = [
-            8765432112,         // 8.16 GB
-            2310456,            // 2.2 MB
-            512,                // 512 Bytes
-            52428800,           // 50 MB
-            102400,             // 100 KB
-            549755813888,       // 512 GB
-            128                 // 128 Bytes
-        ];
-
-        data.totalTraffic = [
-            24008304048,        // 22.36 GB (14.2+8.16)
-            2763346,            // 2.64 MB
-            1536,               // 1.5 KB
-            26895974400,        // 25.05 GB
-            111312,             // 108.7 KB
-            1649267441664,      // 1.5 TB (1TB+512GB)
-            192                 // 192 Bytes
-        ];
-#endif
-        if (shouldLoadNew)
-        {
-            // 26.4：显式重新加载 → 跳过 5 分钟缓存
-            var r = await MEFrpApiConverter.GetTrafficStatusAsync(period, true);
-            if (r.code == 200)
+            if (Design.IsDesignMode)
             {
-                data = r.data;
-            }
-            else
-            {
-                Core.App.CurrentLogger?.Log("获取流量失败", module: EnumLogModule.Net, type: EnumLogType.Warn);
-                IsLoading = false;
+                Core.App.CurrentLogger?.Log("设计模式，跳过流量数据加载", module: EnumLogModule.Net, type: EnumLogType.Warn);
                 return;
             }
-        }
 
-        _data = data;
+            data ??= (await MEFrpApiConverter.GetTrafficStatusAsync(period)).data;
+//
+#if DEBUG
+            data ??= new InfoClasses.TrafficStatus();
+            data.trafficIn = [
+                15242871936,        // 14.2 GB
+                452890,             // 452 KB
+                1024,               // 1 KB
+                26843545600,        // 25 GB
+                8912,               // 8.7 KB
+                1099511627776,      // 1 TB（超大）
+                64                  // 64 Bytes（极小）
+            ];
 
-        if (data == null)
-        {
-            Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type: EnumLogType.Warn);
-            XAxes = [new Axis { Labels = [] }];
-            Series = [];
-            IsLoading = false;
-            return;
-        }
+            data.trafficOut = [
+                8765432112,         // 8.16 GB
+                2310456,            // 2.2 MB
+                512,                // 512 Bytes
+                52428800,           // 50 MB
+                102400,             // 100 KB
+                549755813888,       // 512 GB
+                128                 // 128 Bytes
+            ];
 
-        var dates = data.dates ?? [];
-        var trafficIn = data.trafficIn ?? [];
-        var trafficOut = data.trafficOut ?? [];
-        var totalTraffic = data.totalTraffic ?? [];
+            data.totalTraffic = [
+                24008304048,        // 22.36 GB (14.2+8.16)
+                2763346,            // 2.64 MB
+                1536,               // 1.5 KB
+                26895974400,        // 25.05 GB
+                111312,             // 108.7 KB
+                1649267441664,      // 1.5 TB (1TB+512GB)
+                192                 // 192 Bytes
+            ];
+#endif
+            if (shouldLoadNew)
+            {
+                // 26.4：显式重新加载 → 跳过 5 分钟缓存
+                var r = await MEFrpApiConverter.GetTrafficStatusAsync(period, true);
+                if (r.code == 200)
+                {
+                    data = r.data;
+                }
+                else
+                {
+                    Core.App.CurrentLogger?.Log("获取流量失败", module: EnumLogModule.Net, type: EnumLogType.Warn);
+                    return;
+                }
+            }
 
-        if (dates.Length == 0)
-        {
-            Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
-            XAxes = [new Axis { Labels = [] }];
-            Series = [];
-            IsLoading = false;
-            return;
-        }
+            _data = data;
 
-        if (trafficIn.Length == 0 && trafficOut.Length == 0 && totalTraffic.Length == 0)
-        {
-            Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
+            if (data == null)
+            {
+                Core.App.CurrentLogger?.Log("流量数据为 null", module: EnumLogModule.Net, type: EnumLogType.Warn);
+                XAxes = [new Axis { Labels = [] }];
+                Series = [];
+                return;
+            }
+
+            var dates = data.dates ?? [];
+            var trafficIn = data.trafficIn ?? [];
+            var trafficOut = data.trafficOut ?? [];
+            var totalTraffic = data.totalTraffic ?? [];
+
+            if (dates.Length == 0)
+            {
+                Core.App.CurrentLogger?.Log("日期数据为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
+                XAxes = [new Axis { Labels = [] }];
+                Series = [];
+                return;
+            }
+
+            if (trafficIn.Length == 0 && trafficOut.Length == 0 && totalTraffic.Length == 0)
+            {
+                Core.App.CurrentLogger?.Log("所有流量数据均为空，无法显示图表", module: EnumLogModule.Net, type: EnumLogType.Warn);
+                XAxes = [new Axis { Labels = dates }];
+                Series = [];
+                return;
+            }
+
             XAxes = [new Axis { Labels = dates }];
+            var newSeries = new AvaloniaList<ISeries>();
+
+            if (trafficIn.Length > 0)
+            {
+                switch (type)
+                {
+                    case 0:
+                        newSeries.Add(new LineSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(trafficIn),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Inbound
+                        }); break;
+                    case 1:
+                        newSeries.Add(new ColumnSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(trafficIn),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Inbound
+                        }); break;
+                }
+            }
+
+            if (trafficOut.Length > 0)
+            {
+                switch (type)
+                {
+                    case 0:
+                        newSeries.Add(new LineSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(trafficOut),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Outbound
+                        }); break;
+                    case 1:
+                        newSeries.Add(new ColumnSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(trafficOut),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Outbound
+                        }); break;
+                }
+            }
+
+            if (totalTraffic.Length > 0)
+            {
+                switch (type)
+                {
+                    case 0:
+                        newSeries.Add(new LineSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(totalTraffic),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Total
+                        }); break;
+                    case 1:
+                        newSeries.Add(new ColumnSeries<long>
+                        {
+                            Values = new AvaloniaList<long>(totalTraffic),
+                            YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
+                            Name = Languages.Text_Traffic_Total
+                        }); break;
+                }
+            }
+
+            Series = newSeries;
+            Core.App.CurrentLogger?.Log($"图表已更新，日期数：{dates.Length}, 系列数：{newSeries.Count}",
+                module: EnumLogModule.Net);
+        }
+        catch (Exception ex)
+        {
+            // 26.5.1 C4：async void 必须自行兜底，否则异常抛到同步上下文。
+            // 图表渲染失败属局部故障：记录日志、清空图表，不影响页面其余部分。
+            Core.App.CurrentLogger?.Error(ex, "更新流量图表失败", module: EnumLogModule.Net);
+            XAxes = [new Axis { Labels = [] }];
             Series = [];
+        }
+        finally
+        {
+            // 26.5.1 C4：无论走到哪条分支（含异常），进度环都必须停下来。
             IsLoading = false;
-            return;
         }
-
-        XAxes = [new Axis { Labels = dates }];
-        var newSeries = new AvaloniaList<ISeries>();
-
-        if (trafficIn.Length > 0)
-        {
-            switch (type)
-            {
-                case 0:
-                    newSeries.Add(new LineSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(trafficIn),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Inbound
-                    }); break;
-                case 1:
-                    newSeries.Add(new ColumnSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(trafficIn),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Inbound
-                    }); break;
-            }
-        }
-
-        if (trafficOut.Length > 0)
-        {
-            switch (type)
-            {
-                case 0:
-                    newSeries.Add(new LineSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(trafficOut),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Outbound
-                    }); break;
-                case 1:
-                    newSeries.Add(new ColumnSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(trafficOut),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Outbound
-                    }); break;
-            }
-        }
-
-        if (totalTraffic.Length > 0)
-        {
-            switch (type)
-            {
-                case 0:
-                    newSeries.Add(new LineSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(totalTraffic),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Total
-                    }); break;
-                case 1:
-                    newSeries.Add(new ColumnSeries<long>
-                    {
-                        Values = new AvaloniaList<long>(totalTraffic),
-                        YToolTipLabelFormatter = x => ProcessFileSize(x.Model),
-                        Name = Languages.Text_Traffic_Total
-                    }); break;
-            }
-        }
-
-        Series = newSeries;
-        IsLoading = false;
-        Core.App.CurrentLogger?.Log($"图表已更新，日期数：{dates.Length}, 系列数：{newSeries.Count}", module: EnumLogModule.Net);
     }
 
     /// <summary>

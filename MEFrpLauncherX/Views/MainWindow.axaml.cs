@@ -533,6 +533,9 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         await CheckPolicy();
 
+        // 首次启动：在隐私确认后展示欢迎向导，完成/跳过后再继续其他启动提醒。
+        await WelcomeWindow.ShowIfNeededAsync(this);
+
         // 26.5.0：首次从旧版单层布局升级时自动弹出数据迁移向导。
         // 放在隐私政策确认之后、隧道自动恢复之前；标记「已询问」保证只打扰一次，
         // 用户日后仍可从「关于 → 工具箱 → 数据迁移向导」重新打开。
@@ -770,12 +773,8 @@ public partial class MainWindow : FAAppWindow, IDisposable
                 ? $"#{data.StartProxyId}"
                 : data.StartProxyName;
             MainPageFrameViewModel.TerminalPage.CreateNewTerminalWithoutNotification(cmd, title);
-
-            // 26.4 修复：必须切到终端页，否则终端进程永远不会启动。
-            // PTY 终端只在控件 Loaded（页面可见）时拉起进程，而 SendToPtyAsync 在页面
-            // 不可见时不会主动启动，只会挂起等待 —— 表现为「链接已触发，但必须手动切到
-            // 终端页才开始启动隧道」。手动启动隧道的路径同样会切页，此处保持一致。
-            MainPageFrameViewModel.RequestTerminalNavigation();
+            // 26.5.1：链接启动不再切到终端页；PTY 引擎由 TerminalPage 主动拉起进程，
+            // 成功与否通过「隧道已可用」通知反馈（含访问地址）。
         }
         catch (Exception ex)
         {
@@ -820,23 +819,42 @@ public partial class MainWindow : FAAppWindow, IDisposable
 
         if (!_updateChecked)
         {
-            var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
-            // 26.4：把结果回报给静态状态，供精简主页推荐复用（避免重复网络请求）
-            UpdatePageViewModel.ReportUpdateCheck(hasNew, latest);
-            if (hasNew)
-            {
-                Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
-                    string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
-
-                // 触发插件事件：检测到新版本
-                _ = PluginService.Instance.TriggerAsync("app.update.available", new Dictionary<string, object>
-                {
-                    ["currentVersion"] = Core.App.Version,
-                    ["latestVersion"] = latest
-                });
-            }
-
             _updateChecked = true;
+
+            // 更新模式决定是否在启动时自动检查：
+            //   ds（自动检查并安装）/ dd（自动检查并下载）→ 自动检查；
+            //   md（手动检查并安装）→ 不自动检查，等用户到「更新」页手动点。
+            var method = ConfigManager.CurrentConfig.UpdateSettings.Method;
+            var autoCheck = UpdatePageViewModel.ShouldAutoCheckOnStartup(method);
+            if (autoCheck)
+            {
+                try
+                {
+                    var (hasNew, latest) = await UpdatePageViewModel.GetNewVersionAsync();
+                    // 26.4：把结果回报给静态状态，供精简主页推荐复用（避免重复网络请求）
+                    UpdatePageViewModel.ReportUpdateCheck(hasNew, latest);
+                    if (hasNew)
+                    {
+                        Growl.Info(string.Format(Languages.Text_MainWindow_UpdateDetectedFormat, latest),
+                            string.Format(Languages.Text_MainWindow_UpdateDetectedTitleFormat, Core.App.Version, latest));
+
+                        // 触发插件事件：检测到新版本
+                        _ = PluginService.Instance.TriggerAsync("app.update.available", new Dictionary<string, object>
+                        {
+                            ["currentVersion"] = Core.App.Version,
+                            ["latestVersion"] = latest
+                        });
+
+                        // ds：自动下载后在安装前确认；dd：仅自动下载。md 不会走到这里。
+                        await UpdatePageViewModel.AutoDownloadAsync(latest);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 启动检查失败绝不能让 async void 异常冒泡导致崩溃
+                    Core.App.CurrentLogger?.Warning($"启动自动检查更新失败: {ex.Message}");
+                }
+            }
         }
 
         App.SplashService?.Close();

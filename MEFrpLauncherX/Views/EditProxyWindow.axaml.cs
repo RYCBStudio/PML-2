@@ -49,13 +49,15 @@ public partial class EditProxyWindow : Window
             "tcp" => true,
             _ => false
         };
-        SameAsHttp.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).Equals("http", StringComparison.CurrentCultureIgnoreCase);
+        SameAsHttp.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin)
+            .Equals("http", StringComparison.CurrentCultureIgnoreCase);
         Http2Https.IsChecked = pr.httpPlugin.ToLower() switch
         {
             "http2https" => true,
             _ => false
         };
-        SameAsHttps.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin).Equals("https", StringComparison.CurrentCultureIgnoreCase);
+        SameAsHttps.IsChecked = GetTypeFromHttpPlugin(pr.httpPlugin)
+            .Equals("https", StringComparison.CurrentCultureIgnoreCase);
         Https2Http.IsChecked = pr.httpPlugin.ToLower() switch
         {
             "https2http" => true,
@@ -355,7 +357,8 @@ public partial class EditProxyWindow : Window
             hostHeaderRewrite = _createProxyViewModel.HostHeaderRewrite,
             crtPath = _type.Equals("https", StringComparison.CurrentCultureIgnoreCase) ? SslPathBox.Text : string.Empty,
             keyPath = _type.Equals("https", StringComparison.CurrentCultureIgnoreCase) ? SslKeyBox.Text : string.Empty,
-            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString().Contains(Languages.Text_CreateProxy_NotEnabled)
+            proxyProtocolVersion = ProxyProtocolCbBox.SelectionBoxItem.ToString()
+                .Contains(Languages.Text_CreateProxy_NotEnabled)
                 ? ""
                 : ProxyProtocolCbBox.SelectionBoxItem.ToString() ?? "",
             useEncryption = EnableCryptoCBox.IsChecked ?? false,
@@ -472,8 +475,30 @@ public partial class EditProxyWindow : Window
         }
     }
 
-    private async void GetRemotePort_Click(object sender, RoutedEventArgs e) => RemotePortNudBox.Value =
-        (await MEFrpApiConverter.GetFreePortAsync(_proxy.Node.nodeId, _type.ToLower())).data;
+    private async void GetRemotePort_Click(object sender, RoutedEventArgs e)
+    {
+        Loading.IsVisible = true;
+        if (ProxyProtocolCbBox.SelectedItem?.ToString()?.ToLower() is not "tcp" and not "udp" && sender is not string)
+        {
+            Loading.IsVisible = false;
+            return;
+        }
+
+        var type = sender is string t ? t : ProxyProtocolCbBox.SelectedItem?.ToString();
+        var res = -1;
+        try
+        {
+            res = (await MEFrpApiConverter.GetFreePortAsync(_proxy.Node.nodeId, type)).data;
+        }
+        catch (Exception exception)
+        {
+            Core.App.CurrentLogger?.Error(exception, "获取远程端口失败");
+            Growl.Error(string.Format(Languages.Text_CreateProxy_GetRemotePortFailed, exception.Message));
+        }
+
+        Loading.IsVisible = false;
+        RemotePortNudBox.Value = res;
+    }
 
     private void InitPanels()
     {

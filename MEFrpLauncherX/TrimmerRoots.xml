@@ -14,6 +14,15 @@
         <type fullname="*" preserve="all"/>
     </assembly>
 
+    <!-- Markdown 渲染（NuGet 包）：App.axaml 的 StyleInclude 与 XAML 命名空间
+         都不产生静态类型引用，XAML 资源经 avares:// 运行时加载，故整程序集保留 -->
+    <assembly fullname="FluentAvalonia.MarkdownRender">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+    <assembly fullname="MarkdownRenderX.Avalonia">
+        <type fullname="*" preserve="all"/>
+    </assembly>
+
     <!-- Avalonia 核心：Media.* 已覆盖 Imaging / ImageBrush 等子命名空间 -->
     <assembly fullname="Avalonia.Base">
         <type fullname="Avalonia.Media.*" preserve="all"/>

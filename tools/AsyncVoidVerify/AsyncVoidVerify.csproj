@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      AsyncVoidVerify：PML 2 async void 异常兜底自检（26.5.1 C4 回归）
+
+      用法：
+        dotnet run 工具目录 tools/AsyncVoidVerify
+
+      背景（C4）：
+        UserCenterPage.UserControl_Loaded 与 TrafficStatusControl.UpdateTrafficData
+        都是 async void。async void 的异常不会经由 Task 传递，而是直接抛回
+        SynchronizationContext ——
+          · Release 构建：App.axaml.cs 注册了 Dispatcher.UIThread.UnhandledException
+            兜底（但那段代码在 #if !DEBUG 里）。
+          · Debug 构建：完全没有兜底，异常直接崩进程。
+        此外 UpdateTrafficData 原先有 5 处手工 `IsLoading = false` 分散在各 return
+        分支，任何抛异常的路径都会让进度环永久卡住。
+
+      验证内容：
+        1. 实证 async void 未捕获异常确实会逃逸到同步上下文（说明为什么必须兜底）
+        2. 实证 try/catch 能拦住（说明修复有效）
+        3. 源码级断言：两处 async void 都有 catch
+        4. 源码级断言：UpdateTrafficData 的 IsLoading 只在 finally 里复位
+
+      退出码：
+        全部通过 => 退出码 0；任一失败 => 退出码 1 并打印失败原因
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>AsyncVoidVerify</AssemblyName>
+        <RootNamespace>AsyncVoidVerify</RootNamespace>
+        <!-- 避免 dotnet run 提示找不到项目 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+</Project>

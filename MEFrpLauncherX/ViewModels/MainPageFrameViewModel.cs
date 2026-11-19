@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
-using Avalonia.Threading;
 using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.Tools;
@@ -143,9 +142,6 @@ public class MainPageFrameViewModel : ViewModelBase
         get;
     }
 
-    // 主界面尚未创建（用户未登录）时挂起的「切换到终端页」请求
-    private static bool _pendingTerminalNavigation;
-
     // 静态页面实例
     public static AboutPage? AboutPage
     {
@@ -169,57 +165,6 @@ public class MainPageFrameViewModel : ViewModelBase
     {
         get;
         set;
-    }
-
-    /// <summary>
-    ///     请求切换到终端页（26.4 修复）。
-    ///     <para>
-    ///         PTY 终端进程只在控件 <c>Loaded</c>（即页面可见）时才启动，而
-    ///         <c>TerminalView.SendToPtyAsync</c> 在页面不可见时不会主动拉起进程，
-    ///         只会一直等待（上游注释说明是等「页面可见」），因此从链接启动隧道时
-    ///         若不切到终端页，命令会一直挂起，直到用户手动切过去才发出。
-    ///     </para>
-    ///     <para>
-    ///         与手动启动隧道的路径保持一致（<c>UserProxyViewModel.LaunchViaConfigImpl</c>
-    ///         同样是「建 Tab → NavigateToPage("Terminal")」）。
-    ///     </para>
-    /// </summary>
-    /// <remarks>
-    ///     冷启动场景下本方法可能在用户登录之前被调用（主界面 <see cref="Instance" />
-    ///     尚未创建），此时只记录请求，待主界面构造完成后自动补做导航。
-    /// </remarks>
-    public static void RequestTerminalNavigation()
-    {
-        if (Instance is null)
-        {
-            // 用户尚未登录、主界面未创建：挂起请求，登录后由构造函数补做
-            _pendingTerminalNavigation = true;
-            return;
-        }
-
-        // 导航必须在 UI 线程上执行（可能来自命名管道的后台线程）
-        if (!Dispatcher.UIThread.CheckAccess())
-        {
-            Dispatcher.UIThread.Post(() => RequestTerminalNavigation());
-            return;
-        }
-
-        _pendingTerminalNavigation = false;
-        Instance.NavigateToPage("Terminal");
-    }
-
-    /// <summary>
-    ///     消费挂起的终端页导航请求。仅由 <see cref="Views.MainPageFrame" /> 构造完成后调用。
-    /// </summary>
-    internal static void ConsumePendingTerminalNavigation()
-    {
-        if (!_pendingTerminalNavigation)
-        {
-            return;
-        }
-
-        _pendingTerminalNavigation = false;
-        Instance?.NavigateToPage("Terminal");
     }
 
     public void NavigateToPage(object pageName)

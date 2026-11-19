@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -165,8 +165,23 @@
     <data name="Text.Login.Register" xml:space="preserve">
         <value>注册</value>
     </data>
+    <data name="Text.Login.CaptchaNetworkFailed" xml:space="preserve">
+        <value>无法连接人机验证服务器，请检查网络连接后重试。</value>
+    </data>
+    <data name="Text.Login.CaptchaValidationFailed" xml:space="preserve">
+        <value>人机验证失败，请重试。</value>
+    </data>
     <data name="Text.Global.NoData" xml:space="preserve">
         <value>无数据</value>
+    </data>
+    <data name="Text.Global.NoConnection" xml:space="preserve">
+        <value>网络连接已断开</value>
+    </data>
+    <data name="Text.Global.NoConnectionAdvice" xml:space="preserve">
+        <value>请检查网络连接后重试</value>
+    </data>
+    <data name="Text.Global.Retry" xml:space="preserve">
+        <value>重试</value>
     </data>
     <data name="Text.Global.OperationSuccess" xml:space="preserve">
         <value>操作成功完成</value>
@@ -772,6 +787,21 @@
     <data name="Text.Settings.OtherDescription" xml:space="preserve">
         <value>设置一些杂项。</value>
     </data>
+    <data name="Text.Settings.PluginAutoUpdate" xml:space="preserve">
+        <value>插件自动更新</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdateDescription" xml:space="preserve">
+        <value>进入插件页时如何处理在线市场的新版本。无论哪种模式，覆盖前都会先把旧文件备份为 .bak。</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Off" xml:space="preserve">
+        <value>仅手动检查</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Check" xml:space="preserve">
+        <value>自动检查并提示（默认）</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Silent" xml:space="preserve">
+        <value>自动检查并静默更新</value>
+    </data>
     <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
         <value>不显示请求响应</value>
     </data>
@@ -1074,6 +1104,9 @@
     </data>
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
         <value>用户信息</value>
+    </data>
+    <data name="Text.UserCenter.LoadFailed" xml:space="preserve">
+        <value>加载用户数据失败</value>
     </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>查看和管理您的账户基本信息</value>
@@ -1960,6 +1993,15 @@
     <data name="Text.Update.DownloadCompleted" xml:space="preserve">
         <value>更新下载完成</value>
     </data>
+    <data name="Text.Update.ConfirmInstall" xml:space="preserve">
+        <value>更新包已下载完成，是否立即安装并在新版本中重启？</value>
+    </data>
+    <data name="Text.Update.AutoDownloaded" xml:space="preserve">
+        <value>新版本 {0} 已自动下载，可在「更新」页手动安装。</value>
+    </data>
+    <data name="Text.Update.AutoDownloadFailed" xml:space="preserve">
+        <value>自动下载更新失败，请到「更新」页检查网络或切换下载源后重试。</value>
+    </data>
     <data name="Text.Update.InstallTipWindows" xml:space="preserve">
         <value>点击确认打开安装文件所在目录，双击 exe 文件完成安装</value>
     </data>
@@ -2088,6 +2130,27 @@
     </data>
     <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
         <value>成功安装 {0} 个在线插件</value>
+    </data>
+    <data name="Text.PluginList.UpdateAvailableFormat" xml:space="preserve">
+        <value>{0} 个插件有新版本</value>
+    </data>
+    <data name="Text.PluginList.UpdateAll" xml:space="preserve">
+        <value>全部更新</value>
+    </data>
+    <data name="Text.PluginList.UpdateBadge" xml:space="preserve">
+        <value>可更新</value>
+    </data>
+    <data name="Text.PluginList.UpToDate" xml:space="preserve">
+        <value>所有插件均为最新版本</value>
+    </data>
+    <data name="Text.PluginList.UpdatedCountFormat" xml:space="preserve">
+        <value>已更新 {0} 个插件</value>
+    </data>
+    <data name="Text.PluginList.AutoUpdatedCountFormat" xml:space="preserve">
+        <value>已自动更新 {0} 个插件</value>
+    </data>
+    <data name="Text.PluginList.UpdateFailed" xml:space="preserve">
+        <value>部分插件更新失败，请稍后重试或检查网络。</value>
     </data>
     <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
         <value>下载安装失败: {0}</value>
@@ -3102,6 +3165,15 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
         <value>启动隧道: {0} 成功</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyTitle" xml:space="preserve">
+        <value>隧道已可用</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyFormat" xml:space="preserve">
+        <value>启动 [{0}]隧道 [{1}] 成功，您可以使用 [{2}] 访问您的服务</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyNoAddressFormat" xml:space="preserve">
+        <value>启动 [{0}]隧道 [{1}] 成功，隧道已可用</value>
     </data>
     <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
         <value>{0} 文件校验失败，需要重新下载客户端。关闭此窗口尝试直接启动; 点击“否”以取消启动。
@@ -5502,5 +5574,73 @@ Never Gonna Give the Minecraft Up</value>
     </data>
     <data name="Text.Global.Later" xml:space="preserve">
         <value>暂不处理</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
+        <value>获取远程空闲端口失败：{0}</value>
+    </data>
+
+    <data name="Text.Welcome.Title" xml:space="preserve">
+        <value>欢迎</value>
+    </data>
+    <data name="Text.Welcome.LanguagePrompt" xml:space="preserve">
+        <value>设置您的语言</value>
+    </data>
+    <data name="Text.Welcome.LanguageDescription" xml:space="preserve">
+        <value>选择应用显示语言，重启后完整生效。</value>
+    </data>
+    <data name="Text.Welcome.LanguageStep" xml:space="preserve">
+        <value>欢迎使用 PML 2，先让我们完成一些基础设置。</value>
+    </data>
+    <data name="Text.Welcome.ThemePrompt" xml:space="preserve">
+        <value>选择明暗模式</value>
+    </data>
+    <data name="Text.Welcome.ThemeStep" xml:space="preserve">
+        <value>选择更舒适的界面外观。</value>
+    </data>
+    <data name="Text.Welcome.AccentPrompt" xml:space="preserve">
+        <value>选择主题色</value>
+    </data>
+    <data name="Text.Welcome.AccentDescription" xml:space="preserve">
+        <value>主题色将应用于按钮、进度条和选中状态。</value>
+    </data>
+    <data name="Text.Welcome.AccentStep" xml:space="preserve">
+        <value>最后，挑选一个喜欢的主题色。</value>
+    </data>
+    <data name="Text.Welcome.UseSystemAccent" xml:space="preserve">
+        <value>跟随系统主题色</value>
+    </data>
+    <data name="Text.Welcome.Back" xml:space="preserve">
+        <value>上一步</value>
+    </data>
+    <data name="Text.Welcome.Next" xml:space="preserve">
+        <value>下一步</value>
+    </data>
+    <data name="Text.Welcome.Finish" xml:space="preserve">
+        <value>完成</value>
+    </data>
+    <data name="Text.Welcome.Skip" xml:space="preserve">
+        <value>跳过向导</value>
+    </data>
+    <data name="Text.Welcome.StepFormat" xml:space="preserve">
+        <value>第 {0} 步，共 {1} 步</value>
+    </data>
+    <data name="Text.Welcome.Reopen" xml:space="preserve">
+        <value>欢迎向导</value>
+    </data>
+    <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
+        <value>重新设置语言、明暗模式和主题色。</value>
+    </data>
+
+    <data name="Text.Welcome.FinishPrompt" xml:space="preserve">
+        <value>基础设置完成</value>
+    </data>
+    <data name="Text.Welcome.FinishStep" xml:space="preserve">
+        <value>确认设置后就可以开始使用。</value>
+    </data>
+    <data name="Text.Welcome.FinishNote" xml:space="preserve">
+        <value>确认后进入 PML 2；从设置页可随时修改这些选项。</value>
+    </data>
+    <data name="Text.Welcome.Start" xml:space="preserve">
+        <value>开始体验</value>
     </data>
 </root>

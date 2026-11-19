@@ -17,6 +17,17 @@ public partial class PluginEngine : IAction
     private readonly CallFunctionAction _callFuncAction;
     private readonly ConcurrentQueue<PluginExecutionLogEntry> _executionLogs = new();
 
+    /// <summary>
+    ///     插件注册表（触发器 + 函数）的写锁（26.5.1）。
+    ///     <para>
+    ///         <see cref="Reload" /> = <see cref="Unload" /> + <see cref="LoadAll" />，
+    ///         必须原子执行 —— 否则热重载线程与 UI 线程的显式重载交错时，
+    ///         会出现「Unload 清空后、LoadAll 追加前，另一方又 LoadAll 一次」，
+    ///         导致同一插件的触发器被注册两次，事件被触发两遍。
+    ///     </para>
+    /// </summary>
+    private readonly object _registryLock = new();
+
     /// <summary>执行日志新增事件（UI 订阅刷新）</summary>
     public event Action<PluginExecutionLogEntry>? ExecutionLogAdded;
 
@@ -76,47 +87,88 @@ public partial class PluginEngine : IAction
         return ExecuteAction(def, ctx);
     }
 
-    public void LoadAll(string pluginsFolder)
+    public void LoadAll(string pluginsFolder) =>
+        LoadAll([pluginsFolder], null);
+
+    /// <summary>
+    /// 加载所有插件。
+    /// <para>
+    ///     <paramref name="pluginsFolders" />：要扫描的插件目录（可多个，数据目录优先）。
+    ///     <paramref name="disabledPluginIds" />：已禁用的插件 ID 集合 —— 这些插件<b>不注册触发器</b>，
+    ///     禁用才真正生效（原先禁用只是 UI 上的一个标记，插件照样被触发）。
+    /// </para>
+    /// </summary>
+    public void LoadAll(IReadOnlyList<string> pluginsFolders, ISet<string>? disabledPluginIds = null)
     {
         var preprocessor = new PluginPreprocessor();
         var loaded = 0;
         var failed = 0;
         var skippedNonEvent = 0;
-        foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
+        var skippedDisabled = 0;
+        var seenFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // 26.5.1：注册表的写入必须与 Unload 互斥 —— 否则并发重载会让同一插件
+        // 的触发器被注册两次（事件被触发两遍）。
+        lock (_registryLock)
         {
-            try
+            foreach (var pluginsFolder in pluginsFolders)
             {
-                var plugin = preprocessor.Process(file, _funcRegistry);
-                if (plugin.Id == "错误")
+                if (!Directory.Exists(pluginsFolder))
                 {
-                    failed++;
                     continue;
                 }
 
-                // 仅事件类插件参与触发器注册；create-proxy-template 等资源型插件不进入事件引擎
-                if (!string.Equals(plugin.Type, "event", StringComparison.OrdinalIgnoreCase))
+                foreach (var file in Directory.GetFiles(pluginsFolder, "*.yaml", SearchOption.AllDirectories))
                 {
-                    skippedNonEvent++;
-                    continue;
-                }
+                    // 同一文件名在多个目录出现时只处理一次（数据目录优先）。
+                    if (!seenFiles.Add(Path.GetFileName(file)))
+                    {
+                        continue;
+                    }
 
-                loaded++;
-                foreach (var trigger in plugin.Triggers)
-                {
-                    if (!_triggerMap.ContainsKey(trigger.On))
-                        _triggerMap[trigger.On] = [];
-                    _triggerMap[trigger.On].Add(plugin);
+                    try
+                    {
+                        var plugin = preprocessor.Process(file, _funcRegistry);
+                        if (plugin.Id == "错误")
+                        {
+                            failed++;
+                            continue;
+                        }
+
+                        // 仅事件类插件参与触发器注册；create-proxy-template 等资源型插件不进入事件引擎
+                        if (!string.Equals(plugin.Type, "event", StringComparison.OrdinalIgnoreCase))
+                        {
+                            skippedNonEvent++;
+                            continue;
+                        }
+
+                        // 26.5.1：被禁用的插件不注册触发器（禁用必须真正生效）。
+                        if (disabledPluginIds is not null && disabledPluginIds.Contains(plugin.Id))
+                        {
+                            skippedDisabled++;
+                            continue;
+                        }
+
+                        loaded++;
+                        foreach (var trigger in plugin.Triggers)
+                        {
+                            if (!_triggerMap.ContainsKey(trigger.On))
+                                _triggerMap[trigger.On] = [];
+                            _triggerMap[trigger.On].Add(plugin);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        failed++;
+                        App.CurrentLogger.Warning($"加载插件文件失败: {file}, {ex.Message}",
+                            module: EnumLogModule.Plugin);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                failed++;
-                App.CurrentLogger.Warning($"加载插件文件失败: {file}, {ex.Message}", module: EnumLogModule.Plugin);
             }
         }
 
         App.CurrentLogger.Log(
-            $"插件引擎加载完成: 成功 {loaded} 个, 失败 {failed} 个, 跳过非事件类型 {skippedNonEvent} 个, 监听事件 {_triggerMap.Count} 种, 注册函数 {_funcRegistry.Count} 个",
+            $"插件引擎加载完成: 成功 {loaded} 个, 失败 {failed} 个, 跳过非事件类型 {skippedNonEvent} 个, 跳过已禁用 {skippedDisabled} 个, 监听事件 {_triggerMap.Count} 种, 注册函数 {_funcRegistry.Count} 个",
             module: EnumLogModule.Plugin);
     }
 
@@ -249,17 +301,41 @@ public partial class PluginEngine : IAction
     /// </summary>
     public void Unload()
     {
-        _triggerMap.Clear();
+        lock (_registryLock)
+        {
+            _triggerMap.Clear();
+            // 26.5.1：函数注册表也要清 —— 否则被卸载插件定义的函数仍然可被 call_function 调用，
+            // 且注册表会随每次重载单调增长。
+            _funcRegistry.Clear();
+        }
+
         App.CurrentLogger.LogDebug("插件引擎已卸载所有插件", module: EnumLogModule.Plugin);
     }
 
     /// <summary>
     /// 重新加载插件（先卸载再加载）
     /// </summary>
-    public void Reload(string pluginsFolder)
+    public void Reload(string pluginsFolder) =>
+        Reload([pluginsFolder], null);
+
+    /// <summary>
+    /// 重新加载插件（先卸载再加载）。
+    /// <para>
+    ///     26.5.1：这是「替换」而非「追加」—— 直接调用 <see cref="LoadAll(string)" />
+    ///     会把 trigger 追加到已有列表上，导致重载后事件被触发 N 次。
+    /// </para>
+    /// </summary>
+    public void Reload(IReadOnlyList<string> pluginsFolders, ISet<string>? disabledPluginIds = null)
     {
-        Unload();
-        LoadAll(pluginsFolder);
+        // 26.5.1：整个「卸载 + 重载」必须原子执行 ——
+        // Monitor 可重入，所以这里持锁后调用 Unload/LoadAll 不会自锁，
+        // 但能防止另一线程（热重载）在 Unload 与 LoadAll 之间插入 LoadAll，
+        // 导致同一插件的触发器被注册两次。
+        lock (_registryLock)
+        {
+            Unload();
+            LoadAll(pluginsFolders, disabledPluginIds);
+        }
     }
 
     private static readonly Regex TemplateRegex = MyRegex();

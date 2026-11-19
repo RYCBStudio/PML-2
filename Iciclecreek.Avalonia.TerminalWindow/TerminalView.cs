@@ -757,6 +757,23 @@ namespace Iciclecreek.TerminalWindow
             }
         }
 
+        /// <summary>
+        /// True when the key is a modifier (or lock) key pressed on its own, which produces
+        /// no character. Such a press must not clear an active selection: pressing Ctrl
+        /// fires its own KeyDown before the C of Ctrl+C arrives, so clearing here would
+        /// lose the selection before it can be copied (and let Ctrl+C hit the process).
+        /// </summary>
+        private static bool IsModifierKey(Key key) => key switch
+        {
+            Key.LeftShift or Key.RightShift or
+            Key.LeftCtrl or Key.RightCtrl or
+            Key.LeftAlt or Key.RightAlt or
+            Key.LWin or Key.RWin or
+            Key.CapsLock or Key.NumLock or Key.Scroll =>
+                true,
+            _ => false
+        };
+
         protected async override void OnKeyDown(KeyEventArgs e)
         {
             // Only process input if this terminal has focus
@@ -809,8 +826,10 @@ namespace Iciclecreek.TerminalWindow
                     }
                 }
 
-                // Clear selection for any other keystroke
-                if (_terminal.Selection.HasSelection)
+                // Clear selection for any other keystroke - but not for a bare modifier
+                // (Ctrl/Shift/Alt/Meta/lock) press: the modifier's own KeyDown arrives
+                // before Ctrl+C and would otherwise wipe the selection we are about to copy.
+                if (_terminal.Selection.HasSelection && !IsModifierKey(e.Key))
                 {
                     _terminal.Selection.ClearSelection();
                     this.RequestInvalidate();
@@ -1429,6 +1448,47 @@ namespace Iciclecreek.TerminalWindow
         }
 
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
+        /// <summary>
+        ///     Starts the PTY process without waiting for the control to be attached to a visible page.
+        ///     Background tunnel launches (26.5.1) create the terminal tab but no longer navigate to it,
+        ///     so waiting for <c>Loaded</c> here would leave the tunnel process unstarted.
+        /// </summary>
+        /// <param name="timeout">How long to wait for the PTY to become ready.</param>
+        /// <returns><see langword="true" /> when a PTY connection is available.</returns>
+        public async Task<bool> EnsureProcessStartedAsync(TimeSpan? timeout = null)
+        {
+            if (_ptyConnection != null)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(Process))
+            {
+                return false;
+            }
+
+            // LaunchProcess touches terminal state and must run on the UI thread.
+            if (Dispatcher.UIThread.CheckAccess())
+            {
+                LaunchProcess();
+            }
+            else
+            {
+                Dispatcher.UIThread.Post(LaunchProcess);
+            }
+
+            try
+            {
+                await _ptyReady.Task.WaitAsync(timeout ?? TimeSpan.FromSeconds(15)).ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+                return false;
+            }
+
+            return _ptyConnection != null;
+        }
 
         public async Task SendToPtyAsync(string data, CancellationToken ct = default)
         {
