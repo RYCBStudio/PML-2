@@ -31,6 +31,11 @@
                         BorderThickness="1">
                     <Grid RowDefinitions="*,Auto" RowSpacing="12">
                         <Carousel x:Name="GreetingCarousel">
+                            <Carousel.PageTransition>
+                                <CompositePageTransition>
+                                    <CrossFade Duration="0:00:00.500" />
+                                </CompositePageTransition>
+                            </Carousel.PageTransition>
                             <Carousel.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
                                     <TextBlock Text="{Binding}"
@@ -113,6 +118,38 @@
                           Content="{x:Static languages:Languages.Text_Welcome_UseSystemAccent}"
                           IsCheckedChanged="SystemAccentChanged" />
             </StackPanel>
+
+            <!-- 收尾页：确认结果并进入应用 -->
+            <StackPanel x:Name="FinishPanel" IsVisible="False" Spacing="18">
+                <TextBlock Text="{x:Static languages:Languages.Text_Welcome_FinishPrompt}"
+                           FontSize="20" FontWeight="SemiBold" />
+                <Border CornerRadius="10" Padding="16"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <StackPanel Spacing="10">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Settings_Language}"
+                                       Opacity="0.7" />
+                            <TextBlock Grid.Column="1" x:Name="FinishLanguage" TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Settings_Theme}"
+                                       Opacity="0.7" />
+                            <TextBlock Grid.Column="1" x:Name="FinishTheme" TextWrapping="Wrap" />
+                        </Grid>
+                        <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10">
+                            <TextBlock Text="{x:Static languages:Languages.Text_Settings_Material}"
+                                       Opacity="0.7" />
+                            <Ellipse x:Name="FinishAccentPreview" Width="20" Height="20" VerticalAlignment="Center"
+                                     IsVisible="False" />
+                            <TextBlock Grid.Column="2" x:Name="FinishAccent" TextWrapping="Wrap" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="{x:Static languages:Languages.Text_Welcome_FinishNote}"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
@@ -125,6 +162,7 @@
                     Classes="accent" Click="NextClicked" />
         </Grid>
         <Button Grid.Row="2" HorizontalAlignment="Center"
-                Content="{x:Static languages:Languages.Text_Welcome_Skip}" Click="SkipClicked" />
+                Content="{x:Static languages:Languages.Text_Welcome_Skip}" Click="SkipClicked"
+                IsVisible="{Binding !#FinishPanel.IsVisible}" />
     </Grid>
 </Window>

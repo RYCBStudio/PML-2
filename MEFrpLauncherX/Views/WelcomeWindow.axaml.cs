@@ -16,7 +16,10 @@ public partial class WelcomeWindow : Window
     private static readonly string[] Greetings =
     [
         "你好", "Hello", "Bonjour", "Hola", "こんにちは", "안녕하세요",
-        "Guten Tag", "Ciao", "Olá", "Привет", "مرحبا", "สวัสดี"
+        "Guten Tag", "Ciao", "Olá", "Привет", "مرحبا", "สวัสดี", "Hej",
+        "Zdravo", "Ahoj", "Xin chào", "Merhaba", "Здравствуйте", "Witaj",
+        "Dzień dobry", "Dobrý den", "Доброе утро", "Здравствуйте", "Утро доброе", "Доброе вечер", "Добрый вечер",
+        "Bună", "Dobră", "Cześć", "Bok", "Привіт", "Сайн байна уу"
     ];
 
     private static readonly string[] AccentColors =
@@ -29,6 +32,7 @@ public partial class WelcomeWindow : Window
     private readonly DispatcherTimer _greetingTimer = new() { Interval = TimeSpan.FromSeconds(2.5) };
     private int _step;
     private bool _initialized;
+    private bool _finishRequested;
 
     public WelcomeWindow()
     {
@@ -57,12 +61,12 @@ public partial class WelcomeWindow : Window
         Closing += (_, _) =>
         {
             _greetingTimer.Stop();
-            if (!_initialized)
+            if (!_initialized || _finishRequested)
             {
                 return;
             }
 
-            // 直接关窗也视为跳过，避免每次启动重复弹出。
+            // 收尾页尚未确认就关窗（例如任务管理器强杀、Alt+F4），也标记完成，避免重复打扰。
             ConfigManager.UpdateConfig(config => config.WelcomeCompleted = true);
         };
     }
@@ -82,15 +86,46 @@ public partial class WelcomeWindow : Window
         LanguagePanel.IsVisible = _step == 0;
         ThemePanel.IsVisible = _step == 1;
         AccentPanel.IsVisible = _step == 2;
+        FinishPanel.IsVisible = _step == 3;
         BackButton.IsEnabled = _step > 0;
-        NextButton.Content = _step == 2 ? Languages.Text_Welcome_Finish : Languages.Text_Welcome_Next;
+        NextButton.Content = _step == 3 ? Languages.Text_Welcome_Start : Languages.Text_Welcome_Next;
         StepDescription.Text = _step switch
         {
             0 => Languages.Text_Welcome_LanguageStep,
             1 => Languages.Text_Welcome_ThemeStep,
-            _ => Languages.Text_Welcome_AccentStep
+            2 => Languages.Text_Welcome_AccentStep,
+            _ => Languages.Text_Welcome_FinishStep
         };
-        StepIndicator.Text = string.Format(Languages.Text_Welcome_StepFormat, _step + 1, 3);
+        StepIndicator.Text = string.Format(Languages.Text_Welcome_StepFormat, _step + 1, 4);
+        if (_step == 3)
+        {
+            UpdateFinishSummary();
+        }
+    }
+
+    private void UpdateFinishSummary()
+    {
+        FinishLanguage.Text = ConfigManager.CurrentConfig.Language switch
+        {
+            "en-US" => "English (United States)",
+            "zh-Hant" => "繁體中文（台灣）",
+            _ => "简体中文（中国）"
+        };
+        FinishTheme.Text = ConfigManager.CurrentConfig.Theme switch
+        {
+            "Light" => Languages.Text_Settings_Theme_Light,
+            "Dark" => Languages.Text_Settings_Theme_Dark,
+            _ => Languages.Text_Settings_Theme_System
+        };
+        FinishAccentPreview.IsVisible = Color.TryParse(ConfigManager.CurrentConfig.AccentColor, out var color);
+        if (FinishAccentPreview.IsVisible)
+        {
+            FinishAccentPreview.Fill = new SolidColorBrush(color);
+        }
+
+        FinishAccent.Text = FinishAccentPreview.IsVisible
+            ? ConfigManager.CurrentConfig.AccentColor
+            : Languages.Text_Welcome_UseSystemAccent;
     }
 
     private void BackClicked(object? sender, RoutedEventArgs e)
@@ -104,7 +139,7 @@ public partial class WelcomeWindow : Window
 
     private void NextClicked(object? sender, RoutedEventArgs e)
     {
-        if (_step < 2)
+        if (_step < 3)
         {
             _step++;
             UpdateStep();
@@ -114,7 +149,12 @@ public partial class WelcomeWindow : Window
         Close();
     }
 
-    private void SkipClicked(object? sender, RoutedEventArgs e) => Close();
+    private void SkipClicked(object? sender, RoutedEventArgs e)
+    {
+        _finishRequested = true;
+        _step = 3;
+        UpdateStep();
+    }
 
     private void LanguageChanged(object? sender, SelectionChangedEventArgs e)
     {

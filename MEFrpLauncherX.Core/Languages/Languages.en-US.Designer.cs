@@ -16434,6 +16434,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to After confirming, PML 2 will start. You can change these options later in Settings..
+        /// </summary>
+        public static string Text_Welcome_FinishNote {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup is complete.
+        /// </summary>
+        public static string Text_Welcome_FinishPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm your settings, then start using the app..
+        /// </summary>
+        public static string Text_Welcome_FinishStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose the app display language. Restart to apply it everywhere..
         /// </summary>
         public static string Text_Welcome_LanguageDescription {
@@ -16493,6 +16520,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Welcome_Skip {
             get {
                 return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Started.
+        /// </summary>
+        public static string Text_Welcome_Start {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Start", resourceCulture);
             }
         }
         

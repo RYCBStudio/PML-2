@@ -16458,6 +16458,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 确认后进入 PML 2；从设置页可随时修改这些选项。.
+        /// </summary>
+        public static string Text_Welcome_FinishNote {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 基础设置完成.
+        /// </summary>
+        public static string Text_Welcome_FinishPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认设置后就可以开始使用。.
+        /// </summary>
+        public static string Text_Welcome_FinishStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 选择应用显示语言，重启后完整生效。.
         /// </summary>
         public static string Text_Welcome_LanguageDescription {
@@ -16517,6 +16544,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Welcome_Skip {
             get {
                 return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开始体验.
+        /// </summary>
+        public static string Text_Welcome_Start {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Start", resourceCulture);
             }
         }
         

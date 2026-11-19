@@ -5621,4 +5621,17 @@ Never Gonna Give the Minecraft Up</value>
     <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
         <value>重新設定語言、明暗模式與主題色。</value>
     </data>
+
+    <data name="Text.Welcome.FinishPrompt" xml:space="preserve">
+        <value>基本設定完成</value>
+    </data>
+    <data name="Text.Welcome.FinishStep" xml:space="preserve">
+        <value>確認設定後即可開始使用。</value>
+    </data>
+    <data name="Text.Welcome.FinishNote" xml:space="preserve">
+        <value>確認後進入 PML 2；從設定頁可隨時修改這些選項。</value>
+    </data>
+    <data name="Text.Welcome.Start" xml:space="preserve">
+        <value>開始體驗</value>
+    </data>
 </root>

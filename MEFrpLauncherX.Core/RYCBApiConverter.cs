@@ -19,13 +19,28 @@ namespace MEFrpLauncherX.Core;
 
 public static class RYCBApiConverter
 {
-    private const string BaseApiUrl = "https://api.rycb.tech/api/";
+    private static string BaseApiUrl = "https://api.rycb.mxj.pub/api/";
 
     public static async Task<bool> InitializeAsync()
     {
         App.CurrentLogger?.Log("正在初始化API客户端", port: EnumLogPort.Client, module: EnumLogModule.Net);
-        // 消除 CS1998 警告（此异步方法缺少 await 运算符）
-        await Task.CompletedTask;
+        var client = CreateClient("https://api.rycb.mxj.pub/health/", false);
+        var res = await client.ExecuteAsync(new RestRequest { Method = Method.Get });
+        if (!res.IsSuccessful)
+        {
+            App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
+            BaseApiUrl = "https://api.rycb.tech/api/";
+            client = CreateClient("https://api.rycb.tech/health/", false);
+            res = await client.ExecuteAsync(new RestRequest { Method = Method.Get });
+            client.Dispose();
+            if (!res.IsSuccessful)
+            {
+                App.CurrentLogger.Log("API服务器未启动", port: EnumLogPort.Server, module: EnumLogModule.Net);
+                return false;
+            }
+        }
+        
+        client.Dispose();
         App.CurrentLogger?.Log("API客户端初始化完成", port: EnumLogPort.Client, module: EnumLogModule.Net);
         return true;
     }
@@ -422,9 +437,9 @@ public static class RYCBApiConverter
     }
 
 
-    private static RestClient CreateClient(string endpoint)
+    private static RestClient CreateClient(string endpoint, bool addBaseApiUrl = true)
     {
-        return new RestClient(new RestClientOptions(BaseApiUrl + endpoint)
+        return new RestClient(new RestClientOptions(addBaseApiUrl ? BaseApiUrl + endpoint : endpoint)
         {
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             UserAgent = OperatingSystem.IsAndroid() ? $"RYCB-PML2/Android 0.0.2" : $"RYCB-PML2/Desktop {App.Version}",

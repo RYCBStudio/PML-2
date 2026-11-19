@@ -5626,4 +5626,17 @@ Your proxies, themes, plugins and certificates all live in data\ and are unaffec
     <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
         <value>Change your language, color mode, and accent color again.</value>
     </data>
+
+    <data name="Text.Welcome.FinishPrompt" xml:space="preserve">
+        <value>Setup is complete</value>
+    </data>
+    <data name="Text.Welcome.FinishStep" xml:space="preserve">
+        <value>Confirm your settings, then start using the app.</value>
+    </data>
+    <data name="Text.Welcome.FinishNote" xml:space="preserve">
+        <value>After confirming, PML 2 will start. You can change these options later in Settings.</value>
+    </data>
+    <data name="Text.Welcome.Start" xml:space="preserve">
+        <value>Get Started</value>
+    </data>
 </root>
