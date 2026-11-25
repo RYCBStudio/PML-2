@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:local="clr-namespace:MEFrpLauncherX.Controls"
+             xmlns:languages="clr-namespace:MEFrpLauncherX.Core.Languages;assembly=MEFrpLauncherX.Core"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
+             MaxHeight="240" MaxWidth="400"
+             x:Class="MEFrpLauncherX.Controls.NoConnection">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto" Margin="10">
+        <!-- 断网图标：用禁用色而非错误色 —— 「暂时连不上」不等于「出错了」 -->
+        <controls:FASymbolIcon Symbol="WifiWarning"
+                             Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                             FontSize="40"
+                             HorizontalAlignment="Center" />
+
+        <!-- 主提示：默认「网络连接已断开」，可由调用方覆盖 -->
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap"
+                   TextAlignment="Center" Margin="0,10,0,0"
+                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                   Text="{Binding Message, RelativeSource={RelativeSource AncestorType=local:NoConnection}}" />
+
+        <!-- 次要说明：默认留空，调用方需要时可补充（如「请检查网络连接后重试」） -->
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap"
+                   TextAlignment="Center" Margin="0,5,0,0"
+                   Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                   Text="{Binding Description, RelativeSource={RelativeSource AncestorType=local:NoConnection}}" />
+
+        <!-- 重试按钮：仅当调用方提供了 RetryCommand 时才显示 -->
+        <Button Grid.Row="3" HorizontalAlignment="Center" Margin="0,10,0,0"
+                Classes="accent"
+                IsVisible="{Binding RetryCommand, RelativeSource={RelativeSource AncestorType=local:NoConnection}}"
+                Command="{Binding RetryCommand, RelativeSource={RelativeSource AncestorType=local:NoConnection}}"
+                Content="{x:Static languages:Languages.Text_Global_Retry}" />
+    </Grid>
+</UserControl>

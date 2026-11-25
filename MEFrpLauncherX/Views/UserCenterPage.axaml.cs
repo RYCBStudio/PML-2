@@ -142,11 +142,14 @@ public partial class UserCenterPage : UserControl
                     proxies.Text = $"{data.usedProxies}/{data.maxProxies}";
                 }, DispatcherPriority.Background);
                 MainPageFrameViewModel.Instance.IsLoading = false;
-                var trafficStatusData = await Task.Run(() => MEFrpApiConverter.GetTrafficStatusAsync(7));
+                // 26.5.1 C3：GetTrafficStatusAsync 已保证永不返回 null，
+                // 这里再对 data 判空 —— 失败时让它走 UpdateTrafficData 的「无数据」分支，
+                // 而不是把图表标成可见却不填数据。
+                var trafficStatusData = await MEFrpApiConverter.GetTrafficStatusAsync(7);
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     trafficControl.UpdateTrafficData(trafficStatusData.data);
-                    trafficControl.IsVisible = true;
+                    trafficControl.IsVisible = trafficStatusData.data is not null;
                 });
                 var domains = await MEFrpApiConverter.GetIcpDomainListAsync();
                 if (domains.code == 200)
@@ -165,6 +168,15 @@ public partial class UserCenterPage : UserControl
 
                 Core.App.CurrentLogger.Log($"数据已加载，用户名: {data.username}");
             });
+        }
+        catch (Exception ex)
+        {
+            // 26.5.1 C4：async void 的异常会直接抛到同步上下文 ——
+            // Avalonia 的 UI 线程兜底只在 Release 构建注册（App.axaml.cs 里的 #if !DEBUG），
+            // Debug 构建下会直接崩溃；且异常路径上 IsLoading 只能靠 finally 复位。
+            // 这里显式捕获，保证「页面加载失败」只是一次可记录、可提示的局部故障。
+            Core.App.CurrentLogger.Error(ex, "加载用户中心数据失败");
+            Growl.Error(ex.Message, Languages.Text_UserCenter_LoadFailed);
         }
         finally
         {

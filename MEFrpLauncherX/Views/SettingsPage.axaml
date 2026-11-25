@@ -24,6 +24,14 @@
                         </ComboBox>
                     </controls:FASettingsExpanderItem.Footer>
                 </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Welcome_Reopen}"
+                                                IconSource="Education"
+                                                Description="{x:Static languages:Languages.Text_Welcome_ReopenDescription}">
+                    <controls:FASettingsExpanderItem.Footer>
+                        <Button Content="{x:Static languages:Languages.Text_Welcome_Reopen}"
+                                Click="OpenWelcomeWizard" />
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
                 <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_Theme}"
                                                IconSource="New"
                                                Description="{x:Static languages:Languages.Text_Settings_ThemeDescription}">
@@ -353,6 +361,19 @@
                             <controls:FAComboBoxItem Tag="bash" IsEnabled="{OnPlatform Windows=False, Default=True}">Bash</controls:FAComboBoxItem>
                             <controls:FAComboBoxItem Tag="zsh" IsEnabled="{OnPlatform Windows=False, Default=True}">Zsh</controls:FAComboBoxItem>
                         </controls:FAComboBox>
+                    </controls:FASettingsExpanderItem.Footer>
+                </controls:FASettingsExpanderItem>
+                <controls:FASettingsExpanderItem Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate}"
+                                               Description="{x:Static languages:Languages.Text_Settings_PluginAutoUpdateDescription}">
+                    <controls:FASettingsExpanderItem.Footer>
+                        <ComboBox x:Name="PluginAutoUpdateBox" SelectionChanged="PluginAutoUpdateChanged">
+                            <ComboBoxItem Tag="0"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Off}" />
+                            <ComboBoxItem Tag="1"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Check}" />
+                            <ComboBoxItem Tag="2"
+                                          Content="{x:Static languages:Languages.Text_Settings_PluginAutoUpdate_Silent}" />
+                        </ComboBox>
                     </controls:FASettingsExpanderItem.Footer>
                 </controls:FASettingsExpanderItem>
                 <controls:FASettingsExpanderItem IsVisible="{OnPlatform Default=False, Linux=True}">

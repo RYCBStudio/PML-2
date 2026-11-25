@@ -2373,6 +2373,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 获取远程空闲端口失败：{0}.
+        /// </summary>
+        public static string Text_CreateProxy_GetRemotePortFailed {
+            get {
+                return ResourceManager.GetString("Text.CreateProxy.GetRemotePortFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请输入用户名和密码.
         /// </summary>
         public static string Text_CreateProxy_HttpBasicAuthDescription {
@@ -7311,7 +7320,12 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 文件名: {1} 平台: {2} 建议: {3} {4}.
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///文件名: {1}
+        ///平台: {2}
+        ///建议: {3}
+        ///{4}.
         /// </summary>
         public static string Text_Download_FailedContentFormat {
             get {
@@ -7447,7 +7461,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///你今天看起来很聪明！
         ///不要怪我们没有警告过你
         ///头抬起，为了确保你是最新的，我们将要对你的窗10进行更新，请勿™关闭计算机，坐和放宽，你正在成功。
-        ///如果更新失败，没关系，我们都有不顺利的时候。建议你滚回到以前的版本，或者按下功率 (Power)，打开一种新的植物性燃料 (BIOS) 进行设置，然后可以打开微软边缘 [rest of string was truncated]&quot;;.
+        ///如果更新失败，没关系，我们都有不顺利的时候。建议你滚回到以前的版本，或者按下功率 (Power)，打开一种新的 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_Download_Jokes {
             get {
@@ -7776,6 +7790,33 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Global_NoData {
             get {
                 return ResourceManager.GetString("Text.Global.NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 网络连接已断开.
+        /// </summary>
+        public static string Text_Global_NoConnection {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请检查网络连接后重试.
+        /// </summary>
+        public static string Text_Global_NoConnectionAdvice {
+            get {
+                return ResourceManager.GetString("Text.Global.NoConnectionAdvice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重试.
+        /// </summary>
+        public static string Text_Global_Retry {
+            get {
+                return ResourceManager.GetString("Text.Global.Retry", resourceCulture);
             }
         }
         
@@ -8455,6 +8496,15 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 已删除旧版文件，回收 {0}.
+        /// </summary>
+        public static string Text_Legacy_Deleted {
+            get {
+                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 部分旧版文件正被占用，未能删除；可稍后打开 legacy 目录手动清理.
         /// </summary>
         public static string Text_Legacy_DeleteFailed {
@@ -8469,15 +8519,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Legacy_DeleteNow {
             get {
                 return ResourceManager.GetString("Text.Legacy.DeleteNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 已删除旧版文件，回收 {0}.
-        /// </summary>
-        public static string Text_Legacy_Deleted {
-            get {
-                return ResourceManager.GetString("Text.Legacy.Deleted", resourceCulture);
             }
         }
         
@@ -8532,6 +8573,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Login_CaptchaStep {
             get {
                 return ResourceManager.GetString("Text.Login.CaptchaStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 人机验证失败，请重试。.
+        /// </summary>
+        public static string Text_Login_CaptchaValidationFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 无法连接人机验证服务器，请检查网络连接后重试。.
+        /// </summary>
+        public static string Text_Login_CaptchaNetworkFailed {
+            get {
+                return ResourceManager.GetString("Text.Login.CaptchaNetworkFailed", resourceCulture);
             }
         }
         
@@ -9190,9 +9249,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///- 错误监控与性能分析（通过 Sentry）
         ///- 匿名使用统计（通过 Cloudflare，仅统计活跃安装 / 版本 / 平台分布）
         ///### 3. 数据共享
-        ///**我们不会出售用户数据**。仅在以下情况共享：
-        ///- 经您明确同意
-        ///-  [rest of string was truncated]&quot;;.
+        ///**我们不会出售用户数据**。仅在以下情况 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Text_MainWindow_PrivacyPolicy {
             get {
@@ -10520,6 +10577,141 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_PluginList_InstalledOnlineCountFormat {
             get {
                 return ResourceManager.GetString("Text.PluginList.InstalledOnlineCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   插件有新版本的提示（{0}=数量）。
+        /// </summary>
+        public static string Text_PluginList_UpdateAvailableFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAvailableFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   全部更新。
+        /// </summary>
+        public static string Text_PluginList_UpdateAll {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   可更新。
+        /// </summary>
+        public static string Text_PluginList_UpdateBadge {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateBadge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   所有插件均为最新版本。
+        /// </summary>
+        public static string Text_PluginList_UpToDate {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   已更新 {0} 个插件。
+        /// </summary>
+        public static string Text_PluginList_UpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   已自动更新 {0} 个插件。
+        /// </summary>
+        public static string Text_PluginList_AutoUpdatedCountFormat {
+            get {
+                return ResourceManager.GetString("Text.PluginList.AutoUpdatedCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   部分插件更新失败。
+        /// </summary>
+        public static string Text_PluginList_UpdateFailed {
+            get {
+                return ResourceManager.GetString("Text.PluginList.UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   插件自动更新。
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   插件自动更新说明。
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdateDescription {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   仅手动检查。
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Off {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   自动检查并提示。
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Check {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   自动检查并静默更新。
+        /// </summary>
+        public static string Text_Settings_PluginAutoUpdate_Silent {
+            get {
+                return ResourceManager.GetString("Text.Settings.PluginAutoUpdate.Silent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   更新包已下载完成，是否立即安装并重启。
+        /// </summary>
+        public static string Text_Update_ConfirmInstall {
+            get {
+                return ResourceManager.GetString("Text.Update.ConfirmInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   新版本 {0} 已自动下载。
+        /// </summary>
+        public static string Text_Update_AutoDownloaded {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   自动下载更新失败。
+        /// </summary>
+        public static string Text_Update_AutoDownloadFailed {
+            get {
+                return ResourceManager.GetString("Text.Update.AutoDownloadFailed", resourceCulture);
             }
         }
         
@@ -14175,24 +14367,6 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 安装完成后删除旧版本目录，回收约 {0} 磁盘空间。删除后无法一键回滚，只能重新下载旧版本安装包。.
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 保留旧版本目录，占用约 {0} 磁盘空间。出现问题时可在「更新」页一键回滚到该版本。.
-        /// </summary>
-        public static string Text_Update_AskKeepOldVersionDetail_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 删除（省空间）.
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Discard {
@@ -14211,7 +14385,11 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 即将升级到 {0}。 安装目录采用「代码与数据分离」布局：升级只会新增一个版本目录，你的隧道、主题、插件与证书始终保留。 你要如何处理上一个版本（{1}）？.
+        ///   Looks up a localized string similar to 即将升级到 {0}。
+        ///
+        ///安装目录采用「代码与数据分离」布局：升级只会新增一个版本目录，你的隧道、主题、插件与证书始终保留。
+        ///
+        ///你要如何处理上一个版本（{1}）？.
         /// </summary>
         public static string Text_Update_AskKeepOldVersion_Message {
             get {
@@ -14225,6 +14403,24 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_AskKeepOldVersion_Title {
             get {
                 return ResourceManager.GetString("Text.Update.AskKeepOldVersion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 安装完成后删除旧版本目录，回收约 {0} 磁盘空间。删除后无法一键回滚，只能重新下载旧版本安装包。.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留旧版本目录，占用约 {0} 磁盘空间。出现问题时可在「更新」页一键回滚到该版本。.
+        /// </summary>
+        public static string Text_Update_AskKeepOldVersionDetail_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.AskKeepOldVersionDetail_Keep", resourceCulture);
             }
         }
         
@@ -14553,6 +14749,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 每次升级前询问（推荐）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Ask {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 删除旧版本（更省空间）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Discard {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 保留旧版本（可回滚）.
+        /// </summary>
+        public static string Text_Update_KeepOldVersion_Keep {
+            get {
+                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 每次升级前弹窗询问，最稳妥。.
         /// </summary>
         public static string Text_Update_KeepOldVersionDesc_Ask {
@@ -14594,33 +14817,6 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Update_KeepOldVersionDescription {
             get {
                 return ResourceManager.GetString("Text.Update.KeepOldVersionDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 每次升级前询问（推荐）.
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Ask {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Ask", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 删除旧版本（更省空间）.
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Discard {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Discard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 保留旧版本（可回滚）.
-        /// </summary>
-        public static string Text_Update_KeepOldVersion_Keep {
-            get {
-                return ResourceManager.GetString("Text.Update.KeepOldVersion_Keep", resourceCulture);
             }
         }
         
@@ -14823,7 +15019,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 将删除 {0} 个旧版本目录，回收约 {1}。 你的隧道、主题、插件与证书都保存在 data\ 中，不会受影响；但删除后将无法一键回滚到这些版本。.
+        ///   Looks up a localized string similar to 将删除 {0} 个旧版本目录，回收约 {1}。
+        ///
+        ///你的隧道、主题、插件与证书都保存在 data\ 中，不会受影响；但删除后将无法一键回滚到这些版本。.
         /// </summary>
         public static string Text_Update_VersionCleanup_ConfirmMessage {
             get {
@@ -14895,7 +15093,9 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 安装目录中有 {0} 个多余的版本目录，占用约 {1}。 它们是历次升级保留下来的回滚点，可以安全删除（不会影响隧道、主题与证书）。.
+        ///   Looks up a localized string similar to 安装目录中有 {0} 个多余的版本目录，占用约 {1}。
+        ///
+        ///它们是历次升级保留下来的回滚点，可以安全删除（不会影响隧道、主题与证书）。.
         /// </summary>
         public static string Text_Update_VersionNotify_Message {
             get {
@@ -15332,6 +15532,15 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_UserCenter_UserInfo {
             get {
                 return ResourceManager.GetString("Text.UserCenter.UserInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 加载用户数据失败.
+        /// </summary>
+        public static string Text_UserCenter_LoadFailed {
+            get {
+                return ResourceManager.GetString("Text.UserCenter.LoadFailed", resourceCulture);
             }
         }
         
@@ -16150,6 +16359,33 @@ namespace MEFrpLauncherX.Core.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 启动 [{0}]隧道 [{1}] 成功，您可以使用 [{2}] 访问您的服务.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 启动 [{0}]隧道 [{1}] 成功，隧道已可用.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyNoAddressFormat {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyNoAddressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 隧道已可用.
+        /// </summary>
+        public static string Text_UserProxy_TunnelReadyTitle {
+            get {
+                return ResourceManager.GetString("Text.UserProxy.TunnelReadyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 请填写您的 ME Frp 邮箱.
         /// </summary>
         public static string Text_Validation_EmailRequired {
@@ -16173,6 +16409,195 @@ namespace MEFrpLauncherX.Core.Languages {
         public static string Text_Validation_Required {
             get {
                 return ResourceManager.GetString("Text.Validation.Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 主题色将应用于按钮、进度条和选中状态。.
+        /// </summary>
+        public static string Text_Welcome_AccentDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择主题色.
+        /// </summary>
+        public static string Text_Welcome_AccentPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 最后，挑选一个喜欢的主题色。.
+        /// </summary>
+        public static string Text_Welcome_AccentStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.AccentStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 上一步.
+        /// </summary>
+        public static string Text_Welcome_Back {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 完成.
+        /// </summary>
+        public static string Text_Welcome_Finish {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认后进入 PML 2；从设置页可随时修改这些选项。.
+        /// </summary>
+        public static string Text_Welcome_FinishNote {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 基础设置完成.
+        /// </summary>
+        public static string Text_Welcome_FinishPrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 确认设置后就可以开始使用。.
+        /// </summary>
+        public static string Text_Welcome_FinishStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.FinishStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择应用显示语言，重启后完整生效。.
+        /// </summary>
+        public static string Text_Welcome_LanguageDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 设置您的语言.
+        /// </summary>
+        public static string Text_Welcome_LanguagePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguagePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎使用 PML 2，先让我们完成一些基础设置。.
+        /// </summary>
+        public static string Text_Welcome_LanguageStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.LanguageStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下一步.
+        /// </summary>
+        public static string Text_Welcome_Next {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎向导.
+        /// </summary>
+        public static string Text_Welcome_Reopen {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Reopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 重新设置语言、明暗模式和主题色。.
+        /// </summary>
+        public static string Text_Welcome_ReopenDescription {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ReopenDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跳过向导.
+        /// </summary>
+        public static string Text_Welcome_Skip {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开始体验.
+        /// </summary>
+        public static string Text_Welcome_Start {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 第 {0} 步，共 {1} 步.
+        /// </summary>
+        public static string Text_Welcome_StepFormat {
+            get {
+                return ResourceManager.GetString("Text.Welcome.StepFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择明暗模式.
+        /// </summary>
+        public static string Text_Welcome_ThemePrompt {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择更舒适的界面外观。.
+        /// </summary>
+        public static string Text_Welcome_ThemeStep {
+            get {
+                return ResourceManager.GetString("Text.Welcome.ThemeStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欢迎.
+        /// </summary>
+        public static string Text_Welcome_Title {
+            get {
+                return ResourceManager.GetString("Text.Welcome.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 跟随系统主题色.
+        /// </summary>
+        public static string Text_Welcome_UseSystemAccent {
+            get {
+                return ResourceManager.GetString("Text.Welcome.UseSystemAccent", resourceCulture);
             }
         }
         

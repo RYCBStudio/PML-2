@@ -257,6 +257,30 @@
           }
         }
       },
+      "FluentAvalonia.MarkdownRender/12.1.3.8": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "12.1.3",
+          "Avalonia.AvaloniaEdit": "12.0.0",
+          "Avalonia.Skia": "12.1.3",
+          "AvaloniaEdit.TextMate": "12.0.0",
+          "FluentAvaloniaUI": "3.1.0",
+          "Markdig": "1.4.0",
+          "MarkdownRenderX.Avalonia": "12.1.3.8",
+          "SkiaSharp": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
+          "Svg.Controls.Skia.Avalonia": "12.0.0.17",
+          "TextMateSharp": "2.0.4",
+          "TextMateSharp.Grammars": "2.0.4"
+        },
+        "compile": {
+          "lib/net10.0/FluentAvalonia.MarkdownRender.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/FluentAvalonia.MarkdownRender.dll": {}
+        }
+      },
       "FluentAvaloniaUI/3.1.0": {
         "type": "package",
         "dependencies": {
@@ -480,6 +504,28 @@
           "lib/net10.0/Markdig.dll": {
             "related": ".xml"
           }
+        }
+      },
+      "MarkdownRenderX.Avalonia/12.1.3.8": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "12.1.3",
+          "Avalonia.AvaloniaEdit": "12.0.0",
+          "Avalonia.Skia": "12.1.3",
+          "AvaloniaEdit.TextMate": "12.0.0",
+          "Markdig": "1.4.0",
+          "SkiaSharp": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux": "4.153.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
+          "Svg.Controls.Skia.Avalonia": "12.0.0.17",
+          "TextMateSharp": "2.0.4",
+          "TextMateSharp.Grammars": "2.0.4"
+        },
+        "compile": {
+          "lib/net10.0/MarkdownRenderX.Avalonia.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/MarkdownRenderX.Avalonia.dll": {}
         }
       },
       "Message.Avalonia/2.0.0": {
@@ -1421,54 +1467,6 @@
           }
         }
       },
-      "FluentAvalonia.MarkdownRender/12.1.3.6": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "Avalonia": "12.1.3",
-          "Avalonia.AvaloniaEdit": "12.0.0",
-          "Avalonia.Skia": "12.1.3",
-          "AvaloniaEdit.TextMate": "12.0.0",
-          "FluentAvaloniaUI": "3.1.0",
-          "Markdig": "1.4.0",
-          "MarkdownRenderX.Avalonia": "12.1.3.6",
-          "SkiaSharp": "4.153.1",
-          "SkiaSharp.NativeAssets.Linux": "4.153.1",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
-          "Svg.Controls.Skia.Avalonia": "12.0.0.17",
-          "TextMateSharp": "2.0.4",
-          "TextMateSharp.Grammars": "2.0.4"
-        },
-        "compile": {
-          "bin/placeholder/FluentAvalonia.MarkdownRender.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/FluentAvalonia.MarkdownRender.dll": {}
-        }
-      },
-      "MarkdownRenderX.Avalonia/12.1.3.6": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "Avalonia": "12.1.3",
-          "Avalonia.AvaloniaEdit": "12.0.0",
-          "Avalonia.Skia": "12.1.3",
-          "AvaloniaEdit.TextMate": "12.0.0",
-          "Markdig": "1.4.0",
-          "SkiaSharp": "4.153.1",
-          "SkiaSharp.NativeAssets.Linux": "4.153.1",
-          "SkiaSharp.NativeAssets.Linux.NoDependencies": "4.153.1",
-          "Svg.Controls.Skia.Avalonia": "12.0.0.17",
-          "TextMateSharp": "2.0.4",
-          "TextMateSharp.Grammars": "2.0.4"
-        },
-        "compile": {
-          "bin/placeholder/MarkdownRenderX.Avalonia.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/MarkdownRenderX.Avalonia.dll": {}
-        }
-      },
       "Notify.NET/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -1830,6 +1828,21 @@
         "lib/netstandard2.1/FeatherQR.SkiaSharp.xml"
       ]
     },
+    "FluentAvalonia.MarkdownRender/12.1.3.8": {
+      "sha512": "sixueQRGMdlViyItF8DDpwjRSagF5COScibR7eeBB2MvmpSDUA0f6W4cMDrtgsieb14I+HqMKlFe5Cf0WzWa2Q==",
+      "type": "package",
+      "path": "fluentavalonia.markdownrender/12.1.3.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluentavalonia.markdownrender.12.1.3.8.nupkg.sha512",
+        "fluentavalonia.markdownrender.nuspec",
+        "icon.png",
+        "lib/net10.0/FluentAvalonia.MarkdownRender.dll",
+        "readme.txt"
+      ]
+    },
     "FluentAvaloniaUI/3.1.0": {
       "sha512": "3hDozO75M0OQXwuu8+qDRsNt0dg9jx26MB2Sqtn0jy3UKj19hVnmY8haPPCBWh3wQ8tYcnThU6kcbIaGbArFPw==",
       "type": "package",
@@ -2120,6 +2133,21 @@
         "markdig.nuspec",
         "markdig.png",
         "readme.md"
+      ]
+    },
+    "MarkdownRenderX.Avalonia/12.1.3.8": {
+      "sha512": "U3SX99fcCkQZALTMEgneiEOK8xisLuVpYVBLgB4v9Vb1G8Gb7Bn8GcENxo4Itw/CczxriBXm3ap2jRzyuYoTzQ==",
+      "type": "package",
+      "path": "markdownrenderx.avalonia/12.1.3.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/MarkdownRenderX.Avalonia.dll",
+        "markdownrenderx.avalonia.12.1.3.8.nupkg.sha512",
+        "markdownrenderx.avalonia.nuspec",
+        "readme.txt"
       ]
     },
     "Message.Avalonia/2.0.0": {
@@ -3562,16 +3590,6 @@
         "yamldotnet.nuspec"
       ]
     },
-    "FluentAvalonia.MarkdownRender/12.1.3.6": {
-      "type": "project",
-      "path": "../FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender.csproj",
-      "msbuildProject": "../FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender/FluentAvalonia.MarkdownRender.csproj"
-    },
-    "MarkdownRenderX.Avalonia/12.1.3.6": {
-      "type": "project",
-      "path": "../FluentAvalonia.MarkdownRender/MarkdownRenderX.Avalonia/MarkdownRenderX.Avalonia.csproj",
-      "msbuildProject": "../FluentAvalonia.MarkdownRender/MarkdownRenderX.Avalonia/MarkdownRenderX.Avalonia.csproj"
-    },
     "Notify.NET/1.0.0": {
       "type": "project",
       "path": "../Notify.NET/Notify.NET.csproj",
@@ -3584,7 +3602,7 @@
       "Avalonia.AvaloniaEdit >= 12.0.0",
       "Downloader >= 5.9.8",
       "FeatherQR.SkiaSharp >= 2.0.0-preview.2",
-      "FluentAvalonia.MarkdownRender >= 12.1.3.6",
+      "FluentAvalonia.MarkdownRender >= 12.1.3.8",
       "FluentAvaloniaUI >= 3.1.0",
       "LiveChartsCore.SkiaSharpView.Avalonia >= 2.1.0-dev-798",
       "Message.Avalonia >= 2.0.0",
@@ -3643,9 +3661,6 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj": {
-              "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender\\FluentAvalonia.MarkdownRender.csproj"
-            },
             "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj": {
               "projectPath": "F:\\VSProj\\repos\\MEFrpLauncherX\\Notify.NET\\Notify.NET.csproj"
             }
@@ -3662,7 +3677,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.400"
+      "SdkAnalysisLevel": "11.0.100"
     },
     "frameworks": {
       "net10.0": {
@@ -3687,6 +3702,11 @@
           "FeatherQR.SkiaSharp": {
             "target": "Package",
             "version": "[2.0.0-preview.2, )",
+            "versionCentrallyManaged": true
+          },
+          "FluentAvalonia.MarkdownRender": {
+            "target": "Package",
+            "version": "[12.1.3.8, )",
             "versionCentrallyManaged": true
           },
           "FluentAvaloniaUI": {
@@ -3794,6 +3814,7 @@
           "DialogHost.Avalonia": "0.12.3",
           "Downloader": "5.9.8",
           "FeatherQR.SkiaSharp": "2.0.0-preview.2",
+          "FluentAvalonia.MarkdownRender": "12.1.3.8",
           "FluentAvaloniaUI": "3.1.0",
           "Iciclecreek.Avalonia.WindowManager": "5.0.2",
           "IconPacks.Avalonia.FileIcons": "2.0.0",
@@ -3850,7 +3871,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\10.0.400-preview.0.26322.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "G:\\dotnet\\dotnet\\sdk\\11.0.100-rc.3.26522.148/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -4133,13 +4154,13 @@
       "code": "NU1507",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "There are 2 package sources defined in your configuration. When using central package management, please map your package sources with package source mapping (https://aka.ms/nuget-package-source-mapping) or specify a single package source. The following sources are defined: nuget.org, Tencent Cloud"
+      "message": "配置中定义了 2 个包源。使用中央包管理时，请使用包源映射来映射你的包源(https://aka.ms/nuget-package-source-mapping)，或指定单个包源。以下源已定义: nuget.org, Tencent Cloud"
     },
     {
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.International.Converters.PinYinConverter 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net10.0'. This package may not be fully compatible with your project.",
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net10.0”还原包“Microsoft.International.Converters.PinYinConverter 1.0.0”。此包可能与项目不完全兼容。",
       "libraryId": "Microsoft.International.Converters.PinYinConverter",
       "targetGraphs": [
         "net10.0"

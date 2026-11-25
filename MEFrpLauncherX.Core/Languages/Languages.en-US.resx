@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
@@ -165,8 +165,23 @@
     <data name="Text.Login.Register" xml:space="preserve">
         <value>Register</value>
     </data>
+    <data name="Text.Login.CaptchaNetworkFailed" xml:space="preserve">
+        <value>Unable to reach the captcha server. Please check your network connection and retry.</value>
+    </data>
+    <data name="Text.Login.CaptchaValidationFailed" xml:space="preserve">
+        <value>Captcha validation failed. Please retry.</value>
+    </data>
     <data name="Text.Global.NoData" xml:space="preserve">
         <value>No data</value>
+    </data>
+    <data name="Text.Global.NoConnection" xml:space="preserve">
+        <value>Network connection lost</value>
+    </data>
+    <data name="Text.Global.NoConnectionAdvice" xml:space="preserve">
+        <value>Please check your network connection and retry</value>
+    </data>
+    <data name="Text.Global.Retry" xml:space="preserve">
+        <value>Retry</value>
     </data>
     <data name="Text.Global.OperationSuccess" xml:space="preserve">
         <value>Operation completed successfully</value>
@@ -766,6 +781,21 @@
     <data name="Text.Settings.OtherDescription" xml:space="preserve">
         <value>Set some miscellaneous options.</value>
     </data>
+    <data name="Text.Settings.PluginAutoUpdate" xml:space="preserve">
+        <value>Plugin auto-update</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdateDescription" xml:space="preserve">
+        <value>How to handle new plugin versions when you open the Plugins page. The old file is always backed up as .bak before updating.</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Off" xml:space="preserve">
+        <value>Manual check only</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Check" xml:space="preserve">
+        <value>Check automatically and notify (default)</value>
+    </data>
+    <data name="Text.Settings.PluginAutoUpdate.Silent" xml:space="preserve">
+        <value>Check automatically and update silently</value>
+    </data>
     <data name="Text.Settings.DoNotShowResponse" xml:space="preserve">
         <value>Do not show request responses</value>
     </data>
@@ -1068,6 +1098,9 @@
     </data>
     <data name="Text.UserCenter.UserInfo" xml:space="preserve">
         <value>User Information</value>
+    </data>
+    <data name="Text.UserCenter.LoadFailed" xml:space="preserve">
+        <value>Failed to load user data</value>
     </data>
     <data name="Text.UserCenter.UserInfoDescription" xml:space="preserve">
         <value>View and manage your account's basic information</value>
@@ -1960,6 +1993,15 @@
     <data name="Text.Update.DownloadCompleted" xml:space="preserve">
         <value>Update downloaded</value>
     </data>
+    <data name="Text.Update.ConfirmInstall" xml:space="preserve">
+        <value>The update package has been downloaded. Install it now and restart into the new version?</value>
+    </data>
+    <data name="Text.Update.AutoDownloaded" xml:space="preserve">
+        <value>Version {0} has been downloaded automatically. Open the Update page to install it manually.</value>
+    </data>
+    <data name="Text.Update.AutoDownloadFailed" xml:space="preserve">
+        <value>Failed to download the update automatically. Check your network or switch the download source on the Update page, then retry.</value>
+    </data>
     <data name="Text.Update.InstallTipWindows" xml:space="preserve">
         <value>Click OK to open the folder containing the installer, then double-click the exe file to complete the installation</value>
     </data>
@@ -2088,6 +2130,27 @@ Restart now?</value>
     </data>
     <data name="Text.PluginList.InstalledOnlineCountFormat" xml:space="preserve">
         <value>Successfully installed {0} online plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.UpdateAvailableFormat" xml:space="preserve">
+        <value>{0} plugin(s) have updates available</value>
+    </data>
+    <data name="Text.PluginList.UpdateAll" xml:space="preserve">
+        <value>Update all</value>
+    </data>
+    <data name="Text.PluginList.UpdateBadge" xml:space="preserve">
+        <value>Update</value>
+    </data>
+    <data name="Text.PluginList.UpToDate" xml:space="preserve">
+        <value>All plugins are up to date</value>
+    </data>
+    <data name="Text.PluginList.UpdatedCountFormat" xml:space="preserve">
+        <value>Updated {0} plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.AutoUpdatedCountFormat" xml:space="preserve">
+        <value>Automatically updated {0} plugin(s)</value>
+    </data>
+    <data name="Text.PluginList.UpdateFailed" xml:space="preserve">
+        <value>Some plugins failed to update. Please retry later or check your network.</value>
     </data>
     <data name="Text.PluginList.DownloadInstallFailedFormat" xml:space="preserve">
         <value>Failed to download and install: {0}</value>
@@ -3102,6 +3165,15 @@ Details: {1}</value>
     </data>
     <data name="Text.UserProxy.LaunchSucceededFormat" xml:space="preserve">
         <value>Proxy launched successfully: {0}</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyTitle" xml:space="preserve">
+        <value>Tunnel ready</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyFormat" xml:space="preserve">
+        <value>Started [{0}] tunnel [{1}] successfully. You can access your service via [{2}].</value>
+    </data>
+    <data name="Text.UserProxy.TunnelReadyNoAddressFormat" xml:space="preserve">
+        <value>Started [{0}] tunnel [{1}] successfully. The tunnel is ready.</value>
     </data>
     <data name="Text.UserProxy.ClientFileCheckFailedFormat" xml:space="preserve">
         <value>{0} file verification failed, the client needs to be re-downloaded. Close this window to try launching directly; click "No" to cancel the launch.
@@ -5498,5 +5570,73 @@ Your proxies, themes, plugins and certificates all live in data\ and are unaffec
     </data>
     <data name="Text.Global.Later" xml:space="preserve">
         <value>Not now</value>
+    </data>
+    <data name="Text.CreateProxy.GetRemotePortFailed" xml:space="preserve">
+        <value>Failed to get remote free port: {0}</value>
+    </data>
+
+    <data name="Text.Welcome.Title" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="Text.Welcome.LanguagePrompt" xml:space="preserve">
+        <value>Choose your language</value>
+    </data>
+    <data name="Text.Welcome.LanguageDescription" xml:space="preserve">
+        <value>Choose the app display language. Restart to apply it everywhere.</value>
+    </data>
+    <data name="Text.Welcome.LanguageStep" xml:space="preserve">
+        <value>Welcome to PML 2. Let’s set up the basics.</value>
+    </data>
+    <data name="Text.Welcome.ThemePrompt" xml:space="preserve">
+        <value>Choose a color mode</value>
+    </data>
+    <data name="Text.Welcome.ThemeStep" xml:space="preserve">
+        <value>Choose the appearance that works best for you.</value>
+    </data>
+    <data name="Text.Welcome.AccentPrompt" xml:space="preserve">
+        <value>Choose an accent color</value>
+    </data>
+    <data name="Text.Welcome.AccentDescription" xml:space="preserve">
+        <value>The accent color is used for buttons, progress bars, and selections.</value>
+    </data>
+    <data name="Text.Welcome.AccentStep" xml:space="preserve">
+        <value>Finally, pick your favorite accent color.</value>
+    </data>
+    <data name="Text.Welcome.UseSystemAccent" xml:space="preserve">
+        <value>Use my system accent color</value>
+    </data>
+    <data name="Text.Welcome.Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Text.Welcome.Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Text.Welcome.Finish" xml:space="preserve">
+        <value>Finish</value>
+    </data>
+    <data name="Text.Welcome.Skip" xml:space="preserve">
+        <value>Skip setup</value>
+    </data>
+    <data name="Text.Welcome.StepFormat" xml:space="preserve">
+        <value>Step {0} of {1}</value>
+    </data>
+    <data name="Text.Welcome.Reopen" xml:space="preserve">
+        <value>Welcome setup</value>
+    </data>
+    <data name="Text.Welcome.ReopenDescription" xml:space="preserve">
+        <value>Change your language, color mode, and accent color again.</value>
+    </data>
+
+    <data name="Text.Welcome.FinishPrompt" xml:space="preserve">
+        <value>Setup is complete</value>
+    </data>
+    <data name="Text.Welcome.FinishStep" xml:space="preserve">
+        <value>Confirm your settings, then start using the app.</value>
+    </data>
+    <data name="Text.Welcome.FinishNote" xml:space="preserve">
+        <value>After confirming, PML 2 will start. You can change these options later in Settings.</value>
+    </data>
+    <data name="Text.Welcome.Start" xml:space="preserve">
+        <value>Get Started</value>
     </data>
 </root>

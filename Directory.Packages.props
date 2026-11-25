@@ -40,6 +40,9 @@
              见 .qoder/plans/Avalonia_12_P1_依赖对齐_成果_5e38763a.md）。 -->
     <PackageVersion Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.17" />
     <PackageVersion Include="FluentAvaloniaUI" Version="3.1.0" />
+    <!-- Markdown 渲染组件：自 12.1.3.8 起改为 NuGet 引用，不再使用 git submodule。
+         依赖 MarkdownRenderX.Avalonia（同为传递依赖），扩展包 KaTeX / Emoji / Mermaid 可选用。 -->
+    <PackageVersion Include="FluentAvalonia.MarkdownRender" Version="12.1.3.8" />
     <PackageVersion Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.1.0-dev-798" />
     <PackageVersion Include="MessageBox.Avalonia" Version="12.0.0" />
     <!-- MessageBox.Avalonia 12.0.0 传递依赖 DialogHost.Avalonia 0.12.1-nightly.0.1；

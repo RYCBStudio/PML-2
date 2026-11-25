@@ -83,6 +83,7 @@ public partial class SettingsPage : UserControl
         Theme.SelectedIndex = ConfigManager.CurrentConfig.Theme.ToLower().ToUpper(0) switch
         {
             "Light" => 1,
+            "System" => 2,
             _ => 0
         };
         HideInsteadOfClose.IsChecked = ConfigManager.CurrentConfig.HideInsteadOfClose;
@@ -156,6 +157,12 @@ public partial class SettingsPage : UserControl
             0 => 0,
             1 => 1,
             _ => 2
+        };
+        PluginAutoUpdateBox.SelectedIndex = ConfigManager.CurrentConfig.PluginAutoUpdateMode switch
+        {
+            0 => 0,
+            2 => 2,
+            _ => 1
         };
         // 26.3.1 M2：启动画面样式 / 开关
         SplashEnabledSwitch.IsChecked = ConfigManager.CurrentConfig.SplashEnabled;
@@ -702,6 +709,21 @@ public partial class SettingsPage : UserControl
         ConfigManager.UpdateConfig(config => config.DoNotShowSuccessMsg = (sender as ToggleSwitch).IsChecked.Value);
     }
 
+    /// <summary>插件自动更新模式：0=仅手动 1=自动检查并提示 2=静默自动更新。</summary>
+    private void PluginAutoUpdateChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isInit)
+        {
+            return;
+        }
+
+        if ((sender as ComboBox)?.SelectedItem is ComboBoxItem item &&
+            int.TryParse(item.Tag?.ToString(), out var mode))
+        {
+            ConfigManager.UpdateConfig(config => config.PluginAutoUpdateMode = mode);
+        }
+    }
+
     private void TerminalEngineTypeChanged(object? sender, RoutedEventArgs e)
     {
         if (_isInit)
@@ -798,6 +820,12 @@ public partial class SettingsPage : UserControl
         RenderConfigManager.UpdateConfig(cfg => cfg.LowLatencyRendering = (sender as ToggleSwitch).IsChecked.Value);
         RenderRestartNotice.IsOpen = true;
         MainPageFrameViewModel.Instance.NeedRestart = true;
+    }
+
+    private async void OpenWelcomeWizard(object? sender, RoutedEventArgs e)
+    {
+        await WelcomeWindow.ShowIfNeededAsync(Core.App.MainWindow, force: true);
+        InitializeFromConfig();
     }
 
     private void LanguageChanged(object? sender, SelectionChangedEventArgs e)

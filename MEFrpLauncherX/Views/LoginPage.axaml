@@ -65,7 +65,7 @@
             </TabStripItem>
         </TabStrip>
         <Grid
-            IsVisible="{Binding IsMEFrp}"
+            IsVisible="{Binding IsLoginFormVisible}"
             Grid.Row="2" RowDefinitions="Auto,Auto, Auto, Auto, Auto" Classes="animated main">
             <!-- 统一为一个可编辑的 ComboBox：可选择已存账号或输入新账号 -->
             <DockPanel Grid.Row="2"
@@ -145,9 +145,16 @@
             </StackPanel>
         </Grid>
         <Grid
-            IsVisible="{Binding !IsMEFrp}"
+            IsVisible="{Binding IsAcmeFormVisible}"
             Grid.Row="2" RowDefinitions="Auto,Auto, Auto, Auto, Auto" Classes="animated main">
             <controls1:IconContent Symbol="Cancel" Label="{x:Static languages:Languages.Text_Global_NotImplemented}" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
+
+        <!-- 26.5.1 C2：网络不可用时（人机验证请求失败）显示占位提示与重试入口 -->
+        <controls1:NoConnection Grid.Row="2"
+                               IsVisible="{Binding IsNetworkUnavailable}"
+                               Message="{x:Static languages:Languages.Text_Global_NoConnection}"
+                               Description="{x:Static languages:Languages.Text_Global_NoConnectionAdvice}"
+                               RetryCommand="{Binding RetryCommand}" />
     </Grid>
 </UserControl>

@@ -69,8 +69,38 @@ templates:
       localAddress: "127.0.0.1"
       localPort: 19132
       protocol: udp
+      # 双隧道需要两条隧道共用同一个远端端口，因此显式申请而非交给服务端自动分配
+      remotePort: auto
     nodeFilter:
-      protocols: [udp]
+      protocols: [udp, tcp]
+      fallbackProtocols: [udp]
+    # 主隧道（UDP）创建成功后自动补建互补协议隧道：名称追加 (TCP)
+    extraTunnel:
+      nameSuffix: "({PROTO})"
+
+  - id: fivem
+    category: Game
+    name: FiveM
+    description: "FiveM是《侠盗猎车手5》的多人联机模组框架，默认同时使用TCP/UDP 30120端口：UDP承载游戏数据，TCP提供服务器信息与资源接口。默认创建双隧道，玩家可通过同一地址进入服务器。"
+    descriptionLocalized:
+      zh-hant: "FiveM是《俠盜獵車手5》的多人連線模組框架，預設同時使用TCP/UDP 30120連接埠：UDP承載遊戲資料，TCP提供伺服器資訊與資源介面。預設建立雙隧道，玩家可透過同一位址進入伺服器。"
+      en: "FiveM is a multiplayer modification framework for Grand Theft Auto V. It uses both TCP and UDP port 30120 by default: UDP carries game traffic while TCP serves server information and resource endpoints. Dual tunnels are created by default so players can join through the same address."
+    icon:
+      pack: SimpleIcons
+      name: FiveM
+    create:
+      proxyName: "{name}-{nodeId}"
+      localAddress: "127.0.0.1"
+      localPort: 30120
+      protocol: udp
+      # 双隧道需要两条隧道共用同一个远端端口，因此显式申请而非交给服务端自动分配
+      remotePort: auto
+    nodeFilter:
+      protocols: [udp, tcp]
+      fallbackProtocols: [udp]
+    # 主隧道（UDP）创建成功后自动补建互补协议隧道：名称追加 (TCP)
+    extraTunnel:
+      nameSuffix: "({PROTO})"
 
   # ---------------- Productivity ----------------
   - id: rdp

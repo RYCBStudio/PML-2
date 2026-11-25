@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Controls;
 using MEFrpLauncherX.Plugin.Services;
 using MEFrpLauncherX.ViewModels;
@@ -11,6 +12,17 @@ public partial class PluginListPage : UserControl
     {
         InitializeComponent();
         DataContext = new PluginListViewModel();
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        // 按「插件自动更新」设置静默检查/更新；内部已做缓存与并发保护，失败不影响页面
+        if (DataContext is PluginListViewModel vm)
+        {
+            _ = vm.AutoCheckForUpdatesAsync();
+        }
     }
 
     private void OnlinePluginsList_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
