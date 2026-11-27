@@ -12,6 +12,7 @@ using MEFrpLauncherX.Core;
 using MEFrpLauncherX.Views;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
+using ReactiveUI.Binding;
 using ReactiveUI.Primitives;
 
 namespace MEFrpLauncherX.ViewModels;

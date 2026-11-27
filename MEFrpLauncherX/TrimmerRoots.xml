@@ -46,11 +46,15 @@
     </assembly>
 
     <!-- ReactiveUI：按实际用到的 API 保留 -->
+    <!-- ReactiveUI 25 拆分为多程序集：ReactiveCommand / ReactiveObject 仍在 ReactiveUI，
+         ObservableAsPropertyHelper`1 已移至 ReactiveUI.Binding（命名空间同步变为 ReactiveUI.Binding）-->
     <assembly fullname="ReactiveUI">
         <type fullname="ReactiveUI.ReactiveCommand" preserve="all"/>
         <type fullname="ReactiveUI.ReactiveCommand`2" preserve="all"/>
         <type fullname="ReactiveUI.ReactiveObject" preserve="all"/>
-        <type fullname="ReactiveUI.ObservableAsPropertyHelper`1" preserve="all"/>
+    </assembly>
+    <assembly fullname="ReactiveUI.Binding">
+        <type fullname="ReactiveUI.Binding.ObservableAsPropertyHelper`1" preserve="all"/>
     </assembly>
 
     <!-- 端子控件（Avalonia 12 实际程序集名） -->

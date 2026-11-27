@@ -100,6 +100,12 @@ jobs:
           echo "version=$V" >> "$GITHUB_OUTPUT"
           echo "Resolved version: $V"
 
+      # TrimmerRoots.xml 逐条校验（tools/P4Verify）：失效条目会被 linker 静默忽略，
+      # 只有在 AOT 产物上才会以「反射类型不存在」暴露。放这里可在 publish 前拦截。
+      - name: Verify TrimmerRoots.xml (P4Verify)
+        shell: bash
+        run: dotnet run --project tools/P4Verify -c Release --nologo
+
       # ---------- CrashDisplayer & Splash：缓存 + AOT 构建（全平台统一）----------
       - name: Cache CrashDisplayer & Splash
         id: cache-tools

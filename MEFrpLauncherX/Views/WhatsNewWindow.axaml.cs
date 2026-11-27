@@ -165,8 +165,16 @@ public partial class WhatsNewWindow : Window
             }
             catch (Exception exception)
             {
-                Core.App.CurrentLogger?.Error(exception, "Error fetching post");
-                Growl.Error(Languages.Text_Update_FetchFailedTip);
+                // 博客 changelog 是随版本人工发布的，新版本可能尚未上线（D-4）。
+                // 此时不算错误：不打扰用户，仅在博客页显示占位说明。
+                Core.App.CurrentLogger?.Log($"博客更新内容不可用（{url}）：{exception.Message}",
+                    module: EnumLogModule.Custom, customModuleName: "更新说明");
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    BlogPresenter.Value = $"# {Languages.Text_WhatsNew_Unavailable}\n\n`{Core.App.Version}`";
+                    ApiGrid.Hide();
+                    BlogPresenter.Show();
+                });
                 return;
             }
             post = FrontMatter().Replace(post, "");

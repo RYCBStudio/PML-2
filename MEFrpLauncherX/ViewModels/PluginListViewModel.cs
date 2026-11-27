@@ -26,6 +26,7 @@ using MEFrpLauncherX.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using ReactiveUI.Binding;
 // 注意：不能 using ReactiveUI.Primitives —— 其 LinqExtensions 复刻了全套 Rx LINQ 扩展，
 // 会与 System.Reactive.Linq 的 Select/Throttle 等产生 CS0121 二义性。
 // 这里只需要 RxVoid 类型，故用别名导入。
