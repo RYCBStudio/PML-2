@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <!--
+      ConfigWriteVerify：PML 2 配置文件写入的原子性 / 互斥性自检（26.5.1 C7 回归）
+
+      用法：
+        dotnet run 工具目录 tools/ConfigWriteVerify
+
+      背景（C7）：
+        ConfigManager.SaveConfig 原实现直接 File.WriteAllText(ConfigPath, json)：
+          - 写到一半进程被杀 / 断电 → 留下截断的 Settings.json；
+          - 下次启动 LoadConfig 判为「配置损坏」→ 静默重置为默认配置（用户设置全丢）。
+        SaveConfigAsync 的序列化在 lock 内、await 写文件却在 lock 外：
+          - 两次并发保存会交错写同一文件 → 产出半截 JSON。
+
+      验证策略：
+        A. 源码断言：不再有裸 File.WriteAllText(ConfigPath, ...)；
+           同步/异步两条路径共用同一把写锁；用 File.Move(overwrite) 做原子替换；
+           启动时清理上次遗留的 .tmp。
+        B. 行为验证（临时数据根，不触碰真实配置）：
+           1. 保存后不留 .tmp 残留；
+           2. 上次异常退出的 .tmp 在 Initialize 时被清理，且不会覆盖有效配置；
+           3. 并发「写 + 读」时，读方永远看到完整的合法 JSON（原子替换的核心不变量）。
+
+      退出码：
+        全部通过 => 退出码 0；任一失败 => 退出码 1 并打印失败原因
+    -->
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <AssemblyName>ConfigWriteVerify</AssemblyName>
+        <RootNamespace>ConfigWriteVerify</RootNamespace>
+        <!-- 避免 dotnet run 提示找不到项目 -->
+        <ExcludeFromSolution>true</ExcludeFromSolution>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <IsPackable>false</IsPackable>
+        <NoWarn>$(NoWarn);CS8600;CS8602;CS8604</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\MEFrpLauncherX.Core\MEFrpLauncherX.Core.csproj" />
+    </ItemGroup>
+
+</Project>
