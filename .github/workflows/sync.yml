@@ -88,7 +88,7 @@ jobs:
           username = os.environ['OPENLIST_USERNAME']
           password = os.environ['OPENLIST_PASSWORD']
           base_path = os.environ['OPENLIST_PATH']
-          tag = os.environ['TAG']
+          tag = os.environ['TAG'].replace('v', '')
 
           EXT_REGEX = re.compile(
               r'\.(tar\.gz|tar\.xz|tar\.bz2|tar\.zst|tgz|7z|zip|dmg|exe|deb|rpm|apk|msi)$',
