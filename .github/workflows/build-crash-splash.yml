@@ -7,10 +7,6 @@ on:
       - 'MEFrpLauncherX.CrashDisplayer/**'
       - 'RYCB.PML2.Splash/**'
       - '.github/workflows/build-crash-splash.yml'
-  pull_request:
-    paths:
-      - 'MEFrpLauncherX.CrashDisplayer/**'
-      - 'RYCB.PML2.Splash/**'
 
 env:
   DOTNET_VERSION: '10.0.x'
