@@ -23,10 +23,25 @@ public static class ConfigManager
     private static AppConfig _currentConfig;
     private static readonly object _lock = new();
 
+    /// <summary>
+    ///     「写盘」专用串行化信号量（26.5.1 C7）。
+    ///     <para>
+    ///         <c>lock</c> 不能跨越 <c>await</c>，而异步保存需要在 <c>await</c> 写文件期间
+    ///         保持互斥 —— 否则两次并发保存会交错写入同一文件。同步保存也共用它，
+    ///         保证「同步 + 异步」两条路径不会互相踩踏。
+    ///     </para>
+    /// </summary>
+    private static readonly SemaphoreSlim _writeSemaphore = new(1, 1);
+
     public static string ConfigPath
     {
         get;
     } = Path.Combine(ConfigDirectory, "Settings.json");
+
+    /// <summary>
+    ///     配置文件的临时路径：原子写入时先落这里，成功后再替换正式文件。
+    /// </summary>
+    private static string ConfigTempPath => ConfigPath + ".tmp";
 
     /// <summary>
     ///     清理旧布局遗留的「更新前配置备份」（26.5.0 起不再生成）。
@@ -82,6 +97,11 @@ public static class ConfigManager
             Directory.CreateDirectory(ConfigDirectory);
         }
 
+        // 26.5.1 C7：清理上次异常退出遗留的临时文件。
+        // 原子写入的中间产物没有恢复价值（正式文件要么是旧的完整版本，
+        // 要么是新的完整版本），留着只会占地方并造成困惑。
+        CleanupStaleTempFile();
+
         if (!File.Exists(ConfigPath))
         {
             _currentConfig = CreateDefaultConfig();
@@ -94,7 +114,38 @@ public static class ConfigManager
         }
 
         // 无论走哪条分支，都做一次 schema 校验，确保 _currentConfig 结构完整、取值合法。
-        EnsureConfigSchemaLocked();
+        bool needsSave;
+        lock (_lock)
+        {
+            needsSave = EnsureConfigSchemaLocked();
+        }
+
+        // 26.5.1 C7：迁移产生的变更在锁外写盘。
+        if (needsSave)
+        {
+            SaveConfig();
+        }
+    }
+
+    /// <summary>
+    ///     删除原子写入遗留的临时文件（26.5.1 C7）。失败只记日志，不影响启动。
+    /// </summary>
+    private static void CleanupStaleTempFile()
+    {
+        try
+        {
+            if (File.Exists(ConfigTempPath))
+            {
+                File.Delete(ConfigTempPath);
+                App.CurrentLogger?.Log("已清理上次异常退出遗留的配置临时文件",
+                    module: EnumLogModule.Custom, customModuleName: "配置管理");
+            }
+        }
+        catch (Exception ex)
+        {
+            App.CurrentLogger?.Log($"清理配置临时文件失败: {ex.Message}",
+                module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
     }
 
     /// <summary>
@@ -203,24 +254,34 @@ public static class ConfigManager
     /// </summary>
     public static void EnsureConfigSchema()
     {
+        bool needsSave;
         lock (_lock)
         {
-            EnsureConfigSchemaLocked();
+            needsSave = EnsureConfigSchemaLocked();
+        }
+
+        // 26.5.1 C7：写盘放到锁外。
+        if (needsSave)
+        {
+            SaveConfig();
         }
     }
 
-    private static void EnsureConfigSchemaLocked()
+    /// <summary>
+    ///     校验并迁移配置。返回是否需要写盘（26.5.1 C7：写盘由调用方在锁外执行）。
+    /// </summary>
+    private static bool EnsureConfigSchemaLocked()
     {
         if (_currentConfig is null)
         {
             _currentConfig = CreateDefaultConfig();
             _currentConfig.SchemaVersion = CurrentSchemaVersion;
-            return;
+            return false;
         }
 
         if (_schemaChecked)
         {
-            return;
+            return false;
         }
 
         _schemaChecked = true;
@@ -245,8 +306,10 @@ public static class ConfigManager
 
         if (actionCount > 0)
         {
-            SaveConfig();
+            return true;
         }
+
+        return false;
     }
 
     #endregion
@@ -782,16 +845,21 @@ public static class ConfigManager
     {
         try
         {
+            string json;
             lock (_lock)
             {
                 // 每次落盘都写回当前 schema 版本，保证文件自身即描述当前结构。
                 _currentConfig.SchemaVersion = CurrentSchemaVersion;
-                var json = JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig);
-                File.WriteAllText(ConfigPath, SanitizeConfigJson(json));
+                json = SanitizeConfigJson(
+                    JsonSerializer.Serialize(_currentConfig, App.AppJsonSerializerContext.AppConfig));
 
                 // 允许下一次启动（或下一次 EnsureConfigSchema）重新校验一轮。
                 _schemaChecked = false;
             }
+
+            // 26.5.1 C7：序列化在锁内完成，写盘放到锁外 —— 避免「持 _lock 做文件 IO」。
+            // 写盘本身由 _writeSemaphore 串行化，与异步路径共用同一把写锁。
+            WriteConfigAtomically(json);
         }
         catch (Exception ex)
         {
@@ -817,12 +885,96 @@ public static class ConfigManager
                 _schemaChecked = false;
             }
 
-            await File.WriteAllTextAsync(ConfigPath, json);
+            // 26.5.1 C7：落盘必须与同步版本共用同一把「写锁」。
+            // 原先只有序列化在 lock 内、await 写文件在 lock 外 —— 两次并发保存
+            // （如快速连续改设置）会交错写入同一文件，产出半截 JSON。
+            // 这里用独立的异步信号量串行化「写盘」动作本身（lock 不能跨 await）。
+            await _writeSemaphore.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                await WriteConfigAtomicallyAsync(json).ConfigureAwait(false);
+            }
+            finally
+            {
+                _writeSemaphore.Release();
+            }
         }
         catch (Exception ex)
         {
             App.CurrentLogger?.Log($"异步保存配置文件失败: {ex.Message}",
                 module: EnumLogModule.Custom, customModuleName: "配置管理");
+        }
+    }
+
+    /// <summary>
+    ///     原子写入配置文件（26.5.1 C7）。
+    ///     <para>
+    ///         先写同目录下的临时文件，落盘成功后再原子替换正式文件 ——
+    ///         避免「写到一半进程被杀 / 断电」留下截断的 Settings.json。
+    ///         截断的配置在下次启动时会被 <see cref="LoadConfig" /> 判为损坏并
+    ///         回退到默认配置，等于静默清空用户的全部设置。
+    ///     </para>
+    ///     <para>
+    ///         内部获取 <see cref="_writeSemaphore" />，与异步路径共用同一把写锁。
+    ///         锁序始终是 <c>_lock</c> → <c>_writeSemaphore</c>，不会倒置。
+    ///     </para>
+    /// </summary>
+    private static void WriteConfigAtomically(string content)
+    {
+        _writeSemaphore.Wait();
+        try
+        {
+            var temp = ConfigTempPath;
+            File.WriteAllText(temp, content);
+            ReplaceWithTemp(temp);
+        }
+        finally
+        {
+            _writeSemaphore.Release();
+        }
+    }
+
+    /// <summary>
+    ///     原子写入配置文件（异步版本，26.5.1 C7）。
+    ///     <para>调用方必须已持有 <see cref="_writeSemaphore" />。</para>
+    /// </summary>
+    private static async Task WriteConfigAtomicallyAsync(string content)
+    {
+        var temp = ConfigTempPath;
+        await File.WriteAllTextAsync(temp, content).ConfigureAwait(false);
+        ReplaceWithTemp(temp);
+    }
+
+    /// <summary>
+    ///     用临时文件替换正式配置文件（26.5.1 C7）。
+    ///     <para>
+    ///         用 <see cref="File.Move(string, string, bool)" /> 的 overwrite 形式，
+    ///         而不是「先删除再移动」：后者存在一个「正式文件已删、临时文件还没就位」的窗口，
+    ///         若恰好在此刻崩溃，配置文件会直接消失（同样导致设置丢失）。
+    ///     </para>
+    ///     <para>
+    ///         overwrite 形式在底层走的是原子替换 ——
+    ///         Unix 为 <c>rename()</c>，Windows 为 <c>MoveFileEx(MOVEFILE_REPLACE_EXISTING)</c>。
+    ///     </para>
+    /// </summary>
+    private static void ReplaceWithTemp(string temp)
+    {
+        // 目标文件可能正被别处短暂打开（如读取配置），此时原子替换会因共享冲突失败。
+        // 这属于瞬时冲突，重试若干次即可；重试仍失败则抛出，交由调用方记录。
+        const int maxAttempts = 20;
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                File.Move(temp, ConfigPath, overwrite: true);
+                return;
+            }
+            catch (Exception ex) when (
+                attempt < maxAttempts
+                && ex is IOException or UnauthorizedAccessException)
+            {
+                System.Threading.Thread.Sleep(10);
+            }
         }
     }
 
@@ -835,8 +987,10 @@ public static class ConfigManager
         lock (_lock)
         {
             updateAction?.Invoke(_currentConfig);
-            SaveConfig();
         }
+
+        // 26.5.1 C7：保存放到锁外，与 UpdateConfigAsync 一致；避免持锁做文件 IO。
+        SaveConfig();
     }
 
     /// <summary>
@@ -861,8 +1015,10 @@ public static class ConfigManager
         lock (_lock)
         {
             _currentConfig = CreateDefaultConfig();
-            SaveConfig();
         }
+
+        // 26.5.1 C7：保存放到锁外，避免持锁做文件 IO。
+        SaveConfig();
     }
 
     /// <summary>

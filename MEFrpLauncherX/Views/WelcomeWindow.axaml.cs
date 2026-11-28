@@ -107,9 +107,9 @@ public partial class WelcomeWindow : Window
     {
         FinishLanguage.Text = ConfigManager.CurrentConfig.Language switch
         {
-            "en-US" => "English (United States)",
-            "zh-Hant" => "繁體中文（台灣）",
-            _ => "简体中文（中国）"
+            "en-US" => "English (United States) / 英语（美国）",
+            "zh-Hant" => "繁體中文（台灣）/ Chinese (Traditional)",
+            _ => "简体中文（中国）/ Chinese (Simplified)"
         };
         FinishTheme.Text = ConfigManager.CurrentConfig.Theme switch
         {

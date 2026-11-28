@@ -14,7 +14,7 @@
         ShowInTaskbar="False">
     <Grid RowDefinitions="Auto,*,Auto" Margin="28" RowSpacing="20">
         <StackPanel Spacing="5">
-            <TextBlock Text="{x:Static languages:Languages.Text_Welcome_Title}"
+            <TextBlock Text="欢迎 / Welcome"
                        FontSize="30" FontWeight="SemiBold" />
             <TextBlock x:Name="StepDescription"
                        TextWrapping="Wrap"
@@ -61,9 +61,9 @@
                     <ComboBox x:Name="LanguageBox"
                               HorizontalAlignment="Stretch"
                               SelectionChanged="LanguageChanged">
-                        <ComboBoxItem Content="简体中文（中国）" Tag="zh-CN" />
-                        <ComboBoxItem Content="繁體中文（台灣）" Tag="zh-Hant" />
-                        <ComboBoxItem Content="English (United States)" Tag="en-US" />
+                        <ComboBoxItem Content="简体中文（中国）/ Chinese (Simplified)" Tag="zh-CN" />
+                        <ComboBoxItem Content="繁體中文（台灣）/ Chinese (Traditional)" Tag="zh-Hant" />
+                        <ComboBoxItem Content="English (United States) / 英语（美国）" Tag="en-US" />
                     </ComboBox>
                 </StackPanel>
             </Grid>

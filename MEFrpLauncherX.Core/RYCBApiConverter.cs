@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,6 +21,39 @@ namespace MEFrpLauncherX.Core;
 public static class RYCBApiConverter
 {
     private static string BaseApiUrl = "https://api.rycb.mxj.pub/api/";
+
+    /// <summary>API 国际化语言请求头名称</summary>
+    private const string ApiLanguageHeaderName = "x-rycb-api-language";
+
+    /// <summary>
+    ///     当前请求应携带的 API 语言代码：<c>en</c> / <c>zh-Hans</c> / <c>zh-Hant</c>。
+    ///     取值来自用户语言配置（<see cref="Languages.Languages.Culture" />，启动时设置，切换语言需重启）。
+    /// </summary>
+    private static string ApiLanguage
+    {
+        get
+        {
+            var name = Languages.Languages.Culture?.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                name = CultureInfo.CurrentUICulture.Name;
+            }
+
+            if (name.StartsWith("en", StringComparison.OrdinalIgnoreCase))
+            {
+                return "en";
+            }
+
+            var isTraditional = name.Contains("Hant", StringComparison.OrdinalIgnoreCase) ||
+                                name.Contains("-TW", StringComparison.OrdinalIgnoreCase) ||
+                                name.Contains("-HK", StringComparison.OrdinalIgnoreCase) ||
+                                name.Contains("-MO", StringComparison.OrdinalIgnoreCase);
+            return isTraditional ? "zh-Hant" : "zh-Hans";
+        }
+    }
+
+    /// <summary>响应内容随语言变化，缓存键按语言隔离，避免切换语言后命中旧语言文案。</summary>
+    private static string LangScoped(string cacheKey) => $"{cacheKey}@{ApiLanguage}";
 
     public static async Task<bool> InitializeAsync()
     {
@@ -53,6 +87,7 @@ public static class RYCBApiConverter
             request.AddHeader("Content-Type", "application/json");
         }
 
+        request.AddHeader(ApiLanguageHeaderName, ApiLanguage);
         return request;
     }
 
@@ -65,7 +100,8 @@ public static class RYCBApiConverter
     private static T? TryGetCached<T>(string cacheKey, string operationName, Func<string, T?> deserialize)
         where T : class
     {
-        if (!ApiCacheService.TryGetContent(cacheKey, out var cached))
+        var scopedKey = LangScoped(cacheKey);
+        if (!ApiCacheService.TryGetContent(scopedKey, out var cached))
         {
             return null;
         }
@@ -75,11 +111,11 @@ public static class RYCBApiConverter
             var cachedResult = deserialize(cached);
             if (cachedResult is null)
             {
-                ApiCacheService.Invalidate(cacheKey);
+                ApiCacheService.Invalidate(scopedKey);
                 return null;
             }
 
-            App.CurrentLogger?.LogDebug($"[缓存命中] {cacheKey}（5 分钟内不重复请求）",
+            App.CurrentLogger?.LogDebug($"[缓存命中] {scopedKey}（5 分钟内不重复请求）",
                 port: EnumLogPort.Client, module: EnumLogModule.Net);
             MainWindowViewModel.Instance?.AppMessage =
                 string.Format(Languages.Languages.Text_Api_CacheHitFormat, operationName);
@@ -87,8 +123,8 @@ public static class RYCBApiConverter
         }
         catch (Exception ex)
         {
-            App.CurrentLogger?.Error(ex, $"读取 API 缓存失败: {cacheKey}");
-            ApiCacheService.Invalidate(cacheKey);
+            App.CurrentLogger?.Error(ex, $"读取 API 缓存失败: {scopedKey}");
+            ApiCacheService.Invalidate(scopedKey);
             return null;
         }
     }
@@ -101,7 +137,7 @@ public static class RYCBApiConverter
     {
         if (success && !string.IsNullOrEmpty(content))
         {
-            ApiCacheService.SetContent(cacheKey, content);
+            ApiCacheService.SetContent(LangScoped(cacheKey), content);
         }
     }
 
@@ -383,7 +419,7 @@ public static class RYCBApiConverter
             App.AppJsonSerializerContext.SingleApiInfoTunnelErrorInfo);
 
         // 26.4：隧道错误信息按 flag 缓存 5 分钟（终端错误提示反复读取，避免重复请求）
-        var errorCacheKey = $"{ApiCacheKeys.TunnelErrorPrefix}{flag}";
+        var errorCacheKey = LangScoped($"{ApiCacheKeys.TunnelErrorPrefix}{flag}");
         if (result?.Success == true)
         {
             ApiCacheService.SetContent(errorCacheKey, res.Content);

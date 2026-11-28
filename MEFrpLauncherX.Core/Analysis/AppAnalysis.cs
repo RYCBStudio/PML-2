@@ -63,8 +63,10 @@ public static class AppAnalytics
             o.Debug = true;
 #endif
             o.AutoSessionTracking = true;
-#if RELEASE
-            o.TracesSampleRate = 0.3;
+#if !DEBUG
+            // 非 Debug 构建启用性能事务采样。注意：.NET SDK 不会定义 RELEASE 常量，
+            // 因此不能写 #if RELEASE（那样采样率永远不会生效）。
+            o.TracesSampleRate = 0.6;
 #endif
         });
     }

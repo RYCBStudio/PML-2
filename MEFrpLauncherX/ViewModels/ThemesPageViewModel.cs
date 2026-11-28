@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -19,7 +20,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.ViewModels.Commands;
 using ReactiveUI;
-using ReactiveUI.Primitives;
+using ReactiveUI.Binding;
 using SecretLib;
 
 namespace MEFrpLauncherX.ViewModels;
@@ -68,57 +69,57 @@ public class ThemesPageViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> RefreshLocalThemesCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> RefreshLocalThemesCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> FetchOnlineThemesCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> FetchOnlineThemesCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> DownloadThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> DownloadThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> ApplyLocalThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> ApplyLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> EditLocalThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> EditLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> DeleteLocalThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> DeleteLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> PackageLocalThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> PackageLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> AddLocalThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> AddLocalThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> ImportThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> ImportThemeCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> OpenDocumentationCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenDocumentationCommand
     {
         get;
     }
 
-    public ReactiveCommand<RxVoid, RxVoid> RestoreDefaultThemeCommand
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> RestoreDefaultThemeCommand
     {
         get;
     }

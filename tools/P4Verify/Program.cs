@@ -20,11 +20,22 @@ using System.Xml.Linq;
 
 var repoRoot = FindRepoRoot();
 var rootsFile = Path.Combine(repoRoot, "MEFrpLauncherX", "TrimmerRoots.xml");
-var binDir = Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Debug", "net10.0");
+
+// 产物目录按优先级取第一个存在的：Debug → Release(win-x64) → Release。
+// CI 上只跑 Release publish，没有 Debug 产物；没有产物时项目自身程序集
+// （MEFrpLauncherX / .Core / .Plugin / .Fonts）不在 NuGet 缓存里，会被误报为「不存在」。
+var candidateDirs = new[]
+{
+    Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Debug", "net10.0"),
+    Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Release", "net10.0", "win-x64"),
+    Path.Combine(repoRoot, "MEFrpLauncherX", "bin", "Release", "net10.0")
+};
+var binDir = candidateDirs.FirstOrDefault(Directory.Exists)
+             ?? candidateDirs[0];
 
 Console.WriteLine("==> P4 验收：TrimmerRoots.xml 逐项校验");
 Console.WriteLine($"    规则文件: {rootsFile}");
-Console.WriteLine($"    产物目录: {binDir}");
+Console.WriteLine($"    产物目录: {binDir}{(Directory.Exists(binDir) ? "" : "  (不存在，仅用 NuGet 缓存)")}");
 Console.WriteLine();
 
 if (!File.Exists(rootsFile))

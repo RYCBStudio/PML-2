@@ -2531,7 +2531,8 @@ This will delete the currently selected theme configuration file, and takes effe
     </data>
     <data name="Text.MainWindow.PrivacyPolicy" xml:space="preserve">
         <value>### PML 2 Privacy Policy (Key Edition)
-**Important notice:** We use [Sentry](https://sentry.io) for error tracking and performance monitoring to improve software stability. Data is stored on Sentry's servers located in the European Union.
+**Last updated:** 2026-11-28
+**Important notice:** We use [GlitchTip](https://glitchtip.com), a Sentry-protocol service deployed and operated by RYCB Studio, for error tracking and performance monitoring to improve software stability. Its servers are located in mainland China; data is not provided to Sentry.io or any overseas third-party error-monitoring platform.
 ### 1. Scope of Information Collection
 - **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
 - **Device data**: device identifiers, operating system version, crash stacks and error logs
@@ -2542,13 +2543,14 @@ ___
 ### 2. Use of Information
 - Providing core services (account verification, data synchronization)
 - Improving user experience (bug fixes, feature improvements)
-- Error monitoring and performance analysis (via Sentry)
+- Error monitoring and performance analysis (via self-hosted GlitchTip)
 - Anonymous usage statistics (via Cloudflare; active installations, version and platform distribution only)
 ### 3. Data Sharing
 **We do not sell user data**. It is only shared in the following cases:
 - With your explicit consent
 - To fulfill legal obligations
 - When necessary for cooperation with third-party service providers (such as cloud services)
+- Error-monitoring data is submitted to our self-hosted GlitchTip instance (in mainland China); Sentry.io and overseas third parties are not involved
 ___
 ### 4. Certificate assistant (optional)
 The "certificate assistant" requests SSL certificates for domains **you own** (for HTTPS proxies). It is unrelated to the official ME Frp certificate service:

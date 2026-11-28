@@ -9235,7 +9235,8 @@ namespace MEFrpLauncherX.Core.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to ### PML 2 隐私政策 (关键版)
-        ///**重要提示：** 我们使用 [Sentry](https://sentry.io) 进行错误跟踪和性能监控，以改善软件稳定性。数据存储在 Sentry 位于欧盟的服务器上。
+        ///**更新日期：** 2026-11-28
+        ///**重要提示：** 我们使用基于 Sentry 协议的 [GlitchTip](https://glitchtip.com) 进行错误跟踪和性能监控，以改善软件稳定性。该服务由 RYCB Studio 自行部署与运维，服务器位于中华人民共和国境内，数据不会提供给 Sentry.io 或境外第三方错误监控平台。
         ///### 1. 信息收集范围
         ///- **个人数据**：用户名、邮箱、隧道信息（如 API 平均时长, 启动失败等情况）
         ///- **设备数据**：设备标识符、操作系统版本、崩溃堆栈和错误日志
@@ -9246,7 +9247,7 @@ namespace MEFrpLauncherX.Core.Languages {
         ///### 2. 信息用途
         ///- 提供核心功能服务（账号验证、数据同步）
         ///- 优化用户体验（故障修复、功能改进）
-        ///- 错误监控与性能分析（通过 Sentry）
+        ///- 错误监控与性能分析（通过自建 GlitchTip）
         ///- 匿名使用统计（通过 Cloudflare，仅统计活跃安装 / 版本 / 平台分布）
         ///### 3. 数据共享
         ///**我们不会出售用户数据**。仅在以下情况 [rest of string was truncated]&quot;;.

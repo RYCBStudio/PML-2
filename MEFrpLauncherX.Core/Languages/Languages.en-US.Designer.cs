@@ -9221,7 +9221,8 @@ namespace MEFrpLauncherX.Core.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to ### PML 2 Privacy Policy (Key Edition)
-        ///**Important notice:** We use [Sentry](https://sentry.io) for error tracking and performance monitoring to improve software stability. Data is stored on Sentry&apos;s servers located in the European Union.
+        ///**Last updated:** 2026-11-28
+        ///**Important notice:** We use [GlitchTip](https://glitchtip.com), a Sentry-protocol service deployed and operated by RYCB Studio, for error tracking and performance monitoring to improve software stability. Its servers are located in mainland China; data is not provided to Sentry.io or any overseas third-party error-monitoring platform.
         ///### 1. Scope of Information Collection
         ///- **Personal data**: username, email address, proxy information (such as average API duration, launch failures, etc.)
         ///- **Device data**: device identifiers, operating system version, crash stacks and error logs

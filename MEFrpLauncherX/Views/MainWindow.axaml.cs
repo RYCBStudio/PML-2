@@ -745,6 +745,7 @@ public partial class MainWindow : FAAppWindow, IDisposable
             case FAContentDialogResult.Primary:
                 ConfigManager.CurrentConfig.IsTelemetryEnabled = true;
                 ConfigManager.CurrentConfig.PrivacyAgreed = true;
+                ConfigManager.SaveConfig();
                 break;
         }
     }
