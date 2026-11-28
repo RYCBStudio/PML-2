@@ -31,7 +31,7 @@ namespace MEFrpLauncherX;
 
 public partial class App : Application
 {
-    public const string Codename = "Chlorine";
+    public const string Codename = "Argon";
 #pragma warning disable CA2211
     public static ISplashService? SplashService;
 #pragma warning restore CA2211
@@ -148,7 +148,7 @@ public partial class App : Application
         if (!Design.IsDesignMode)
         {
             AppAnalytics.Setup(
-                "https://840a0a2c7a17031d7639b82c602312fc@o4511009461305344.ingest.de.sentry.io/4511009467924560",
+                "https://0438cf897c5a4812924e640eb376a75c@sentry.rycb.mxj.pub/1",
                 Core.App.Version);
 
             if (ConfigManager.CurrentConfig.IsTelemetryEnabled)

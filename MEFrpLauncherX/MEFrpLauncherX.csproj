@@ -121,7 +121,7 @@
         <None Remove="Assets\splash.png" />
         <AvaloniaResource Include="Assets\splash.png" />
         <None Update="Resources\splash.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <ItemGroup>
